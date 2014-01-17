@@ -1,0 +1,69 @@
+name: diego
+
+director_uuid: (( merge ))
+
+releases:
+  - name: diego
+    version: latest
+
+networks: (( merge ))
+
+jobs: (( merge ))
+
+properties:
+  warden:
+    kernel_network_tuning_enabled: true
+
+meta:
+  stemcell:
+    name: bosh-warden-boshlite-ubuntu
+    version: latest
+
+compilation:
+  workers: 6
+  network: cf1
+  reuse_compilation_vms: true
+  cloud_properties: (( merge ))
+
+update:
+  canaries: 1
+  max_in_flight: 3
+  canary_watch_time: 30000-600000
+  update_watch_time: 5000-600000
+
+resource_pools:
+  - name: small_z1
+    network: cf1
+    size: (( auto ))
+    stemcell: (( meta.stemcell ))
+    cloud_properties: (( merge ))
+
+  - name: small_z2
+    network: cf2
+    size: (( auto ))
+    stemcell: (( meta.stemcell ))
+    cloud_properties: (( merge ))
+
+  - name: medium_z1
+    network: cf1
+    size: (( auto ))
+    stemcell: (( meta.stemcell ))
+    cloud_properties: (( merge ))
+
+  - name: medium_z2
+    network: cf2
+    size: (( auto ))
+    stemcell: (( meta.stemcell ))
+    cloud_properties: (( merge ))
+
+  - name: large_z1
+    network: cf1
+    size: (( auto ))
+    stemcell: (( meta.stemcell ))
+    cloud_properties: (( merge ))
+
+  - name: large_z2
+    network: cf2
+    size: (( auto ))
+    stemcell: (( meta.stemcell ))
+    cloud_properties: (( merge ))

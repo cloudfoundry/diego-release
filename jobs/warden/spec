@@ -1,0 +1,18 @@
+---
+name: warden
+
+templates:
+  warden_ctl.erb: bin/warden_ctl
+
+packages:
+  - common
+  - garden
+  - rootfs_lucid64
+
+properties:
+  serf.members:
+    description: "members of the serf cluster"
+    default: []
+  warden.kernel_network_tuning_enabled:
+    description: "enable or disable kernel network tuning; disable for Warden CPI"
+    default: true

@@ -1,0 +1,12 @@
+networks: (( merge ))
+
+jobs:
+  - name: warden_z1
+    template:
+      - warden
+    instances: 5
+    resource_pool: medium_z1
+    networks:
+      - name: cf1
+    properties:
+      network_name: cf1
