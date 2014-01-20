@@ -4,8 +4,8 @@ jobs:
   - name: warden_z1
     template:
       - warden
-    instances: 5
-    resource_pool: medium_z1
+    instances: 1
+    resource_pool: large_z1
     networks:
       - name: cf1
     properties:

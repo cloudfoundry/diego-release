@@ -1,4 +1,8 @@
 meta:
+  stemcell:
+    name: bosh-stemcell
+    version: latest
+
   zones:
     z1: (( properties.template_only.aws.availability_zone ))
     z2: (( properties.template_only.aws.availability_zone2 ))
@@ -69,10 +73,10 @@ resource_pools:
 
   - name: large_z1
     cloud_properties:
-      instance_type: m1.medium
+      instance_type: m2.2xlarge
       availability_zone: (( meta.zones.z1 ))
 
   - name: large_z2
     cloud_properties:
-      instance_type: m1.medium
+      instance_type: m2.2xlarge
       availability_zone: (( meta.zones.z2 ))
