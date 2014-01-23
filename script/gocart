@@ -1,0 +1,11 @@
+#!/bin/bash -l
+
+cd src/diego
+
+export GOPATH=$PWD
+go get github.com/vito/gocart
+gocart
+
+# grab warden submodule
+cd src/github.com/pivotal-cf-experimental/garden
+git submodule update --init --recursive
