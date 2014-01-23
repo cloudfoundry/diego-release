@@ -26,7 +26,7 @@ case $1 in
 
     exec /var/vcap/packages/executor/bin/executor \
       -wardenAddr=/var/vcap/data/warden/warden.sock \
-      -etcdMachines=<%= p("etcd.leader_ip") %>:4001 \
+      -etcdMachines=http://<%= p("etcd.leader_ip") %>:4001 \
       1>>$LOG_DIR/executor.stdout.log \
       2>>$LOG_DIR/executor.stderr.log
 
