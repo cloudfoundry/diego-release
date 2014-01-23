@@ -1,0 +1,45 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/executor
+LOG_DIR=/var/vcap/sys/log/executor
+executor_CONF_DIR=/var/vcap/jobs/dea_next/config
+FIRSTRUN_PATH=$RUN_DIR/firstrun
+PIDFILE=$RUN_DIR/executor.pid
+DATA_DIR=/var/vcap/data/executor
+
+source /var/vcap/packages/common/utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "executor"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $DATA_DIR
+    mkdir -p $LOG_DIR
+
+    depot=$DATA_DIR/depot
+
+    mkdir -p $DATA_DIR/depot
+
+    echo $$ > /var/vcap/sys/run/executor/executor.pid
+
+    exec /var/vcap/packages/executor/bin/executor \
+      -wardenAddr=/var/vcap/data/warden/warden.sock \
+      -etcdMachines=<%= p("etcd.leader_ip") %>:4001 \
+      1>>$LOG_DIR/executor.stdout.log \
+      2>>$LOG_DIR/executor.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: executor_ctl {start|stop}"
+
+    ;;
+
+esac

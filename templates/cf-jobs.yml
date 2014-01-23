@@ -1,12 +1,38 @@
 networks: (( merge ))
 
 jobs:
-  - name: warden_z1
+  - name: executor_z1
     template:
       - warden
+      - executor
     instances: 1
     resource_pool: large_z1
     networks:
       - name: cf1
     properties:
       network_name: cf1
+      etcd:
+        leader_ip: (( jobs.etcd_z1.networks.cf1.static_ips.[0] ))
+
+  - name: etcd_z1
+    template:
+      - etcd
+    instances: 1
+    resource_pool: medium_z1
+    networks:
+      - name: cf1
+        static_ips: (( merge ))
+    properties:
+      network_name: cf1
+
+  - name: etcd_z2
+    template:
+      - etcd
+    instances: 2
+    resource_pool: medium_z1
+    networks:
+      - name: cf2
+    properties:
+      network_name: cf2
+      etcd:
+        leader_ip: (( jobs.etcd_z1.networks.cf1.static_ips.[0] ))
