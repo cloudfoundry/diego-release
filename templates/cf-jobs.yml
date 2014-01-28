@@ -29,7 +29,7 @@ jobs:
     template:
       - etcd
     instances: 2
-    resource_pool: medium_z1
+    resource_pool: medium_z2
     networks:
       - name: cf2
     properties:
