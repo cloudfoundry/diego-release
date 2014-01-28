@@ -1,9 +1,18 @@
-#!/bin/bash -l
+#!/bin/bash -lxe
+
+git submodule update --init --recursive
+
+if ! which hg >/dev/null 2>&1; then
+  echo "mercurial is not installed; aborting"
+  exit 1
+fi
 
 cd src/diego
 
 export GOPATH=$PWD
-go get github.com/vito/gocart
+export PATH=$PWD/bin:$PATH
+
+go get -u github.com/vito/gocart
 gocart
 
 # grab warden submodule
