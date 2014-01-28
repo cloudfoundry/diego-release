@@ -15,6 +15,13 @@ compilation:
     instance_type: c1.medium
     availability_zone: (( meta.zones.z1 ))
 
+jobs:
+  - name: etcd_z1
+    instances: 1
+    networks:
+      - name: cf1
+        static_ips: (( static_ips(0) ))
+
 networks:
   - name: cf1
     type: manual
