@@ -1,11 +1,9 @@
 set -e
 
-find .
-
-cp -a diego/src/ ${BOSH_INSTALL_TARGET}/src/
+cp -a src/ ${BOSH_INSTALL_TARGET}/src/
 
 export GOROOT=$(readlink -nf /var/vcap/packages/golang)
 export GOPATH=$BOSH_INSTALL_TARGET
 export PATH=$GOROOT/bin:$PATH
 
-go install github.com/pivotal-cf-experimental/executor
+go install github.com/cloudfoundry-incubator/executor

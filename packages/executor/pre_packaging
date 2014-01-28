@@ -1,0 +1,20 @@
+set -e
+
+cd ${BUILD_DIR}/
+
+export GOPATH=$PWD
+export PATH=$GOPATH/bin:$PATH
+
+mkdir -p $GOPATH/src/github.com/cloudfoundry-incubator
+mv executor/ $GOPATH/src/github.com/cloudfoundry-incubator/executor/
+
+cd $GOPATH/src/github.com/cloudfoundry-incubator/executor/
+gocart
+
+cd $GOPATH
+
+# etcd has a symlink to its parent, which tar does not take nicely to
+# we only need it for tests anyway
+rm -rf ./src/github.com/coreos/etcd
+
+find . -name .git | xargs rm -rf

@@ -5,8 +5,8 @@ dependencies:
   - golang
 
 files:
-  - diego/src/code.google.com/p/**/*.go
-  - diego/src/github.com/pivotal-cf-experimental/garden/**/*.go
-  - diego/src/github.com/pivotal-cf-experimental/garden/Makefile
-  - diego/src/github.com/pivotal-cf-experimental/garden/warden/warden/root/**/*
-  - diego/src/github.com/pivotal-cf-experimental/garden/warden/warden/src/**/*
+  - garden/**/*.go
+  - garden/Makefile
+  - garden/Cartridge{,.lock}
+  - garden/warden/warden/root/**/*
+  - garden/warden/warden/src/**/*

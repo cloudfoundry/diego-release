@@ -1,0 +1,12 @@
+set -e
+
+cd ${BUILD_DIR}/
+
+export GOPATH=$PWD
+export PATH=$GOPATH/bin:$PATH
+
+mkdir -p $GOPATH/src/github.com/pivotal-cf-experimental
+mv garden/ $GOPATH/src/github.com/pivotal-cf-experimental/garden/
+
+cd $GOPATH/src/github.com/pivotal-cf-experimental/garden/
+gocart
