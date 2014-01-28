@@ -9,4 +9,5 @@ mkdir -p $GOPATH/src/github.com/pivotal-cf-experimental
 mv garden/ $GOPATH/src/github.com/pivotal-cf-experimental/garden/
 
 cd $GOPATH/src/github.com/pivotal-cf-experimental/garden/
+go get github.com/vito/gocart
 gocart

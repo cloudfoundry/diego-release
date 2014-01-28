@@ -9,6 +9,7 @@ mkdir -p $GOPATH/src/github.com/cloudfoundry-incubator
 mv executor/ $GOPATH/src/github.com/cloudfoundry-incubator/executor/
 
 cd $GOPATH/src/github.com/cloudfoundry-incubator/executor/
+go get github.com/vito/gocart
 gocart
 
 cd $GOPATH
