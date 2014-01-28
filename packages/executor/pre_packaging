@@ -19,3 +19,6 @@ cd $GOPATH
 rm -rf ./src/github.com/coreos/etcd
 
 find . -name .git | xargs rm -rf
+
+# don't package gocart; avoid recursive symlink when tarring
+rm -rf $GOPATH/src/github.com/vito/gocart

@@ -11,3 +11,6 @@ mv garden/ $GOPATH/src/github.com/pivotal-cf-experimental/garden/
 cd $GOPATH/src/github.com/pivotal-cf-experimental/garden/
 go get github.com/vito/gocart
 gocart
+
+# don't package gocart; avoid recursive symlink when tarring
+rm -rf $GOPATH/src/github.com/vito/gocart
