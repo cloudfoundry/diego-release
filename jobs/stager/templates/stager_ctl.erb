@@ -1,0 +1,46 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/stager
+LOG_DIR=/var/vcap/sys/log/stager
+DATA_DIR=/var/vcap/data/stager
+
+PIDFILE=$RUN_DIR/stager.pid
+
+source /var/vcap/packages/common/utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "stager"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $DATA_DIR
+    mkdir -p $LOG_DIR
+
+    depot=$DATA_DIR/depot
+
+    mkdir -p $DATA_DIR/depot
+
+    echo $$ > /var/vcap/sys/run/stager/stager.pid
+
+    exec /var/vcap/packages/stager/bin/stager \
+      -etcdMachines=http://<%= p("etcd.leader_ip") %>:4001 \
+      -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
+      -natsUsername=<%= p("nats.user") %> \
+      -natsPassword=<%= p("nats.password") %> \
+      1>>$LOG_DIR/stager.stdout.log \
+      2>>$LOG_DIR/stager.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: stager_ctl {start|stop}"
+
+    ;;
+
+esac

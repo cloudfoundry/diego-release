@@ -7,13 +7,17 @@ meta:
     z1: (( properties.template_only.aws.availability_zone ))
     z2: (( properties.template_only.aws.availability_zone2 ))
 
-properties:
-  template_only: (( merge ))
-
 compilation:
   cloud_properties:
     instance_type: c1.medium
     availability_zone: (( meta.zones.z1 ))
+
+properties:
+  template_only: (( merge ))
+
+  nats:
+    user: nats
+    password: nats
 
 jobs:
   - name: etcd_z1
@@ -21,6 +25,18 @@ jobs:
     networks:
       - name: cf1
         static_ips: (( static_ips(0) ))
+
+  - name: nats_z1
+    instances: 1
+    networks:
+      - name: cf1
+        static_ips: (( static_ips(1) ))
+
+  - name: nats_z2
+    instances: 1
+    networks:
+      - name: cf2
+        static_ips: (( static_ips(1) ))
 
 networks:
   - name: cf1

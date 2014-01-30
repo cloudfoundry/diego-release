@@ -9,13 +9,17 @@ update:
   canary_watch_time: 1000-60000
   update_watch_time: 1000-60000
 
+compilation:
+  cloud_properties:
+    name: random
+
 properties:
   warden:
     kernel_network_tuning_enabled: false
 
-compilation:
-  cloud_properties:
-    name: random
+  nats:
+    user: nats
+    password: nats
 
 jobs:
   - name: etcd_z1
@@ -23,6 +27,18 @@ jobs:
     networks:
       - name: cf1
         static_ips: (( static_ips(0) ))
+
+  - name: nats_z1
+    instances: 1
+    networks:
+      - name: cf1
+        static_ips: (( static_ips(1) ))
+
+  - name: nats_z2
+    instances: 1
+    networks:
+      - name: cf2
+        static_ips: (( static_ips(1) ))
 
 resource_pools:
   - name: small_z1

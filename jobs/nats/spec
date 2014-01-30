@@ -1,0 +1,30 @@
+---
+name: nats
+
+templates:
+  nats_ctl.erb: bin/nats_ctl
+  nats.conf.erb: config/nats.conf
+
+packages:
+  - common
+  - gnatsd
+
+properties:
+  network_name:
+    description: "The name of the subnet that contains this job"
+    
+  nats.user:
+    description: "Username for server authentication."
+
+  nats.password:
+    description: "Password for server authentication."
+
+  nats.port:
+    description: "The port for the NATS server to listen on."
+
+  nats.authorization_timeout:
+    description: "After accepting a connection, wait up to this many seconds for credentials."
+    default: 15
+
+  nats.machines:
+    description: "IP of each NATS cluster member."

@@ -1,6 +1,30 @@
 networks: (( merge ))
 
 jobs:
+  - name: nats_z1
+    template:
+      - nats
+    instances: 1
+    resource_pool: large_z1
+    networks:
+      - name: cf1
+        static_ips: (( merge ))
+    properties:
+      network_name: cf1
+      etcd:
+        leader_ip: (( jobs.etcd_z1.networks.cf1.static_ips.[0] ))
+
+  - name: nats_z2
+    template:
+      - nats
+    instances: 1
+    resource_pool: large_z2
+    networks:
+      - name: cf2
+        static_ips: (( merge ))
+    properties:
+      network_name: cf2
+
   - name: executor_z1
     template:
       - warden
@@ -11,6 +35,43 @@ jobs:
       - name: cf1
     properties:
       network_name: cf1
+      etcd:
+        leader_ip: (( jobs.etcd_z1.networks.cf1.static_ips.[0] ))
+
+  - name: executor_z2
+    template:
+      - warden
+      - executor
+    instances: 1
+    resource_pool: large_z2
+    networks:
+      - name: cf2
+    properties:
+      network_name: cf2
+      etcd:
+        leader_ip: (( jobs.etcd_z1.networks.cf1.static_ips.[0] ))
+
+  - name: stager_z1
+    template:
+      - stager
+    instances: 1
+    resource_pool: small_z1
+    networks:
+      - name: cf1
+    properties:
+      network_name: cf1
+      etcd:
+        leader_ip: (( jobs.etcd_z1.networks.cf1.static_ips.[0] ))
+
+  - name: stager_z2
+    template:
+      - stager
+    instances: 1
+    resource_pool: small_z2
+    networks:
+      - name: cf2
+    properties:
+      network_name: cf2
       etcd:
         leader_ip: (( jobs.etcd_z1.networks.cf1.static_ips.[0] ))
 
@@ -36,3 +97,10 @@ jobs:
       network_name: cf2
       etcd:
         leader_ip: (( jobs.etcd_z1.networks.cf1.static_ips.[0] ))
+
+properties:
+  nats:
+    user: (( merge ))
+    password: (( merge ))
+    port: 4222
+    machines: (( jobs.nats_z1.networks.cf1.static_ips jobs.nats_z2.networks.cf2.static_ips ))

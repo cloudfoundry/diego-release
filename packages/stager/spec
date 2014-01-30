@@ -1,0 +1,9 @@
+---
+name: stager
+
+dependencies:
+  - golang
+
+files:
+  - stager/**/*.go
+  - stager/Cartridge{,.lock}
