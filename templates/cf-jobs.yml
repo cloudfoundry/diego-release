@@ -17,7 +17,7 @@ jobs:
   - name: nats_z2
     template:
       - nats
-    instances: 1
+    instances: 0
     resource_pool: large_z2
     networks:
       - name: cf2

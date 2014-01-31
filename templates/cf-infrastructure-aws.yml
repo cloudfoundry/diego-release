@@ -33,7 +33,7 @@ jobs:
         static_ips: (( static_ips(1) ))
 
   - name: nats_z2
-    instances: 1
+    instances: 0
     networks:
       - name: cf2
         static_ips: (( static_ips(1) ))
