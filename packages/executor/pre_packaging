@@ -10,13 +10,9 @@ mv executor/ $GOPATH/src/github.com/cloudfoundry-incubator/executor/
 
 cd $GOPATH/src/github.com/cloudfoundry-incubator/executor/
 go get github.com/vito/gocart
-gocart
+gocart -x test
 
 cd $GOPATH
-
-# etcd has a symlink to its parent, which tar does not take nicely to
-# we only need it for tests anyway
-rm -rf ./src/github.com/coreos/etcd
 
 find . -name .git | xargs rm -rf
 
