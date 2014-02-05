@@ -9,5 +9,13 @@ packages:
   - executor
 
 properties:
+  executor.memory_capacity_mb:
+    description: "the memory capacity the executor should manage.  this should not be greater than the actual memory on the VM"
+    default: 1024
+
+  executor.disk_capacity_mb:
+    description: "the disk capacity the executor should manage.  this should not be greater than the actual disk quota on the VM"
+    default: 4096
+
   etcd.leader_ip:
     description: "etcd machine used to discover other nodes"
