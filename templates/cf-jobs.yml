@@ -79,6 +79,7 @@ jobs:
     template:
       - etcd
     instances: 1
+    persistent_disk: 10240
     resource_pool: medium_z1
     networks:
       - name: cf1
@@ -90,6 +91,7 @@ jobs:
     template:
       - etcd
     instances: 2
+    persistent_disk: 10240
     resource_pool: medium_z2
     networks:
       - name: cf2
