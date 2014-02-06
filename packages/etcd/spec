@@ -3,7 +3,6 @@ name: etcd
 
 dependencies:
   - golang
-  - git
 
 files:
-  - etcd/etcd-UNSTABLE-20140205.tar.gz
+  - etcd/**/*.go

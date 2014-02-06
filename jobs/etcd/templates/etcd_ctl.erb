@@ -24,7 +24,7 @@ case $1 in
 
     echo $$ > $PIDFILE
 
-    exec chpst -u vcap:vcap /var/vcap/packages/etcd/etcd -snapshot -data-dir=$WORK_DIR \
+    exec chpst -u vcap:vcap /var/vcap/packages/etcd/bin/etcd -snapshot -data-dir=$WORK_DIR \
         -addr=<%= spec.networks.send(properties.network_name).ip %>:4001 \
         -peer-addr=<%= spec.networks.send(properties.network_name).ip %>:7001 \
         -name=<%= "#{name}-#{spec.index}" %> \
