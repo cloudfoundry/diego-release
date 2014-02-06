@@ -27,6 +27,8 @@ copy_to_gopath github.com/cloudfoundry-incubator/inigo
 copy_to_gopath github.com/cloudfoundry-incubator/executor
 copy_to_gopath github.com/cloudfoundry-incubator/stager
 copy_to_gopath github.com/pivotal-cf-experimental/garden
+copy_to_gopath github.com/coreos/etcd
+copy_to_gopath github.com/apcera/gnatsd
 
 export GOPATH=${GOPATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo/Godeps/_workspace
 export PATH=${PATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo/Godeps/_workspace/bin
@@ -39,6 +41,9 @@ export PATH=${PATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/stager/
 
 export GOPATH=${GOPATH}:${GOPATH_ROOT}/src/github.com/pivotal-cf-experimental/garden/Godeps/_workspace
 export PATH=${PATH}:${GOPATH_ROOT}/src/github.com/pivotal-cf-experimental/garden/Godeps/_workspace/bin
+
+go install github.com/apcera/gnatsd
+go install github.com/coreos/etcd
 
 cd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
 
