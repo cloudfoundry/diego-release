@@ -13,10 +13,10 @@ require "yaml"
 require "netaddr"
 
 cf1_subnets = []
-cf1_start = NetAddr::CIDR.create("10.244.0.0/30")
+cf1_start = NetAddr::CIDR.create("10.244.4.0/30")
 
 cf2_subnets = []
-cf2_start = NetAddr::CIDR.create("10.244.2.0/30")
+cf2_start = NetAddr::CIDR.create("10.244.6.0/30")
 
 128.times do
   cf1_subnets << cf1_start
