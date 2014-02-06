@@ -1,13 +1,19 @@
 set -e
 
-cp -a src/ ${BOSH_INSTALL_TARGET}/src/
+REPO_NAME=github.com/pivotal-cf-experimental/garden
+
+REPO_DIR=${BOSH_INSTALL_TARGET}/src/${REPO_NAME}
+
+mkdir -p $(dirname $REPO_DIR)
+
+cp -a $(basename $REPO_NAME)/ $REPO_DIR
 
 export GOROOT=$(readlink -nf /var/vcap/packages/golang)
-export GOPATH=$BOSH_INSTALL_TARGET
+export GOPATH=$BOSH_INSTALL_TARGET:${REPO_DIR}/Godeps/_workspace
 export PATH=$GOROOT/bin:$PATH
 
-go install github.com/pivotal-cf-experimental/garden
+go install ${REPO_NAME}
 
-cd $GOPATH/src/github.com/pivotal-cf-experimental/garden
+cd $REPO_DIR
 
 make
