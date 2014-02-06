@@ -27,9 +27,9 @@ case $1 in
     exec /var/vcap/packages/executor/bin/executor \
       -wardenAddr=/var/vcap/data/warden/warden.sock \
       -etcdMachines=http://<%= p("etcd.leader_ip") %>:4001 \
-      -memoryMB=<%= p("executor.memory_capacity_mb") %> \
-      -diskMB=<%= p("executor.disk_capacity_mb") %> \
       -registrySnapshotFile=$DATA_DIR/executor.snapshot \
+      -memoryMB=<%= p("memoryMB") %> \
+      -diskMB=<%= p("diskMB") %>
       1>>$LOG_DIR/executor.stdout.log \
       2>>$LOG_DIR/executor.stderr.log
 

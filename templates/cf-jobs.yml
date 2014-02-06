@@ -37,6 +37,8 @@ jobs:
       network_name: cf1
       etcd:
         leader_ip: (( jobs.etcd_z1.networks.cf1.static_ips.[0] ))
+      memoryMB: ((merge))
+      diskMB: ((merge))
 
   - name: executor_z2
     template:
@@ -50,6 +52,8 @@ jobs:
       network_name: cf2
       etcd:
         leader_ip: (( jobs.etcd_z1.networks.cf1.static_ips.[0] ))
+      memoryMB: ((merge))
+      diskMB: ((merge))
 
   - name: stager_z1
     template:
