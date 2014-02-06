@@ -1,0 +1,45 @@
+#!/bin/bash
+
+set -e -x
+
+if [ -n "$WORKSPACE" ]; then
+  echo "I see you are running on Jenkins"
+  echo "Let me gvm that for you."
+  . /usr/local/share/gvm/scripts/gvm
+  gvm use go1.2
+fi
+
+rm -rf diego-release-gopath.*
+
+RELEASE_ROOT=$(dirname $(dirname $0))
+
+export GOPATH_ROOT=$(mktemp -d ${PWD}/diego-release-gopath.XXXXX)
+
+export GOPATH=$GOPATH_ROOT
+export PATH=$GOPATH_ROOT/bin:$PATH
+
+function copy_to_gopath {
+  mkdir -p ${GOPATH_ROOT}/src/$(dirname $1)
+  rsync -a src/$(basename $1)/ ${GOPATH}/src/$1/
+}
+
+copy_to_gopath github.com/cloudfoundry-incubator/inigo
+copy_to_gopath github.com/cloudfoundry-incubator/executor
+copy_to_gopath github.com/cloudfoundry-incubator/stager
+copy_to_gopath github.com/pivotal-cf-experimental/garden
+
+export GOPATH=${GOPATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo/Godeps/_workspace
+export PATH=${PATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo/Godeps/_workspace/bin
+
+export GOPATH=${GOPATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/executor/Godeps/_workspace
+export PATH=${PATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/executor/Godeps/_workspace/bin
+
+export GOPATH=${GOPATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/stager/Godeps/_workspace
+export PATH=${PATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/stager/Godeps/_workspace/bin
+
+export GOPATH=${GOPATH}:${GOPATH_ROOT}/src/github.com/pivotal-cf-experimental/garden/Godeps/_workspace
+export PATH=${PATH}:${GOPATH_ROOT}/src/github.com/pivotal-cf-experimental/garden/Godeps/_workspace/bin
+
+cd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
+
+./scripts/test
