@@ -21,17 +21,11 @@ properties:
     user: nats
     password: nats
 
+  executor:
+    memory_capacity_mb: 5000
+    disk_capacity_mb: 50000
+
 jobs:
-  - name: executor_z1
-    properties:
-      memoryMB: 5000
-      diskMB: 50000
-
-  - name: executor_z2
-    properties:
-      memoryMB: 5000
-      diskMB: 50000
-
   - name: etcd_z1
     instances: 1
     persistent_disk: 1024

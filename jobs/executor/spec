@@ -19,7 +19,3 @@ properties:
 
   etcd.leader_ip:
     description: "etcd machine used to discover other nodes"
-  memoryMB:
-    description: "amount of memory available to apps (should be less than total instance memory)"
-  diskMB:
-    description: "amount of disk available to apps (should be less than total instance disk)"
