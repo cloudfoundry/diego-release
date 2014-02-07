@@ -20,7 +20,7 @@ export PATH=$GOPATH_ROOT/bin:$PATH
 
 function copy_to_gopath {
   mkdir -p ${GOPATH_ROOT}/src/$(dirname $1)
-  rsync -a src/$(basename $1)/ ${GOPATH}/src/$1/
+  rsync -a src/$(basename $1)/ ${GOPATH_ROOT}/src/$1/
 }
 
 # grab and set up our components
