@@ -23,27 +23,22 @@ function copy_to_gopath {
   rsync -a src/$(basename $1)/ ${GOPATH}/src/$1/
 }
 
-copy_to_gopath github.com/cloudfoundry-incubator/inigo
-copy_to_gopath github.com/cloudfoundry-incubator/executor
-copy_to_gopath github.com/cloudfoundry-incubator/stager
-copy_to_gopath github.com/pivotal-cf-experimental/garden
-copy_to_gopath github.com/coreos/etcd
-copy_to_gopath github.com/apcera/gnatsd
+# grab and set up our components
+for package in \
+    github.com/cloudfoundry-incubator/inigo \
+    github.com/cloudfoundry-incubator/executor \
+    github.com/cloudfoundry-incubator/stager \
+    github.com/pivotal-cf-experimental/garden; do
+  copy_to_gopath $package
+  export GOPATH=${GOPATH}:${GOPATH_ROOT}/src/$package/Godeps/_workspace
+  export PATH=${PATH}:${GOPATH_ROOT}/src/$package/Godeps/_workspace/bin
+done
 
-export GOPATH=${GOPATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo/Godeps/_workspace
-export PATH=${PATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo/Godeps/_workspace/bin
-
-export GOPATH=${GOPATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/executor/Godeps/_workspace
-export PATH=${PATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/executor/Godeps/_workspace/bin
-
-export GOPATH=${GOPATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/stager/Godeps/_workspace
-export PATH=${PATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/stager/Godeps/_workspace/bin
-
-export GOPATH=${GOPATH}:${GOPATH_ROOT}/src/github.com/pivotal-cf-experimental/garden/Godeps/_workspace
-export PATH=${PATH}:${GOPATH_ROOT}/src/github.com/pivotal-cf-experimental/garden/Godeps/_workspace/bin
-
-go install github.com/apcera/gnatsd
-go install github.com/coreos/etcd
+# install application dependencies
+for package in github.com/coreos/etcd github.com/apcera/gnatsd; do
+  copy_to_gopath $package
+  go install $package
+done
 
 cd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
 
