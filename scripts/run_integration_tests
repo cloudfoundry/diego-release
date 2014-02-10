@@ -2,6 +2,8 @@
 
 set -e -x
 
+apt-get -y install sudo
+
 if [ -n "$WORKSPACE" ]; then
   echo "I see you are running on Jenkins"
   echo "Let me gvm that for you."
