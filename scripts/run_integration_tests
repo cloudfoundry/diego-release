@@ -4,8 +4,6 @@ set -e -x
 
 USE_DRONE=$1
 
-apt-get -y install sudo
-
 if [ -n "$WORKSPACE" ]; then
   echo "I see you are running on Jenkins"
   echo "Let me gvm that for you."
@@ -47,6 +45,8 @@ done
 cd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
 
 if [ "$USE_DRONE" = "true" ]; then
+  # move this somewhere else or stop using sudo later
+  apt-get -y install sudo
   ./scripts/drone-test
 else
   ./scripts/test
