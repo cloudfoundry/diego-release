@@ -2,6 +2,8 @@
 
 set -e -x
 
+USE_DRONE=$1
+
 apt-get -y install sudo
 
 if [ -n "$WORKSPACE" ]; then
@@ -44,4 +46,8 @@ done
 
 cd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
 
-./scripts/test
+if [ "$USE_DRONE" = "true" ]; then
+  ./scripts/drone-test
+else
+  ./scripts/test
+fi
