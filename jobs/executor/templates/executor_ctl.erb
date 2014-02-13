@@ -6,6 +6,7 @@ executor_CONF_DIR=/var/vcap/jobs/dea_next/config
 FIRSTRUN_PATH=$RUN_DIR/firstrun
 PIDFILE=$RUN_DIR/executor.pid
 DATA_DIR=/var/vcap/data/executor
+TMP_DIR=$DATA_DIR/tmp
 
 source /var/vcap/packages/common/utils.sh
 
@@ -21,15 +22,19 @@ case $1 in
     depot=$DATA_DIR/depot
 
     mkdir -p $DATA_DIR/depot
+    mkdir -p $TMP_DIR
 
     echo $$ > /var/vcap/sys/run/executor/executor.pid
 
     exec /var/vcap/packages/executor/bin/executor \
+      -wardenNetwork=unix \
       -wardenAddr=/var/vcap/data/warden/warden.sock \
       -etcdMachines=http://<%= p("etcd.leader_ip") %>:4001 \
-      -registrySnapshotFile=$DATA_DIR/executor.snapshot \
       -memoryMB=<%= p("executor.memory_capacity_mb") %> \
-      -diskMB=<%= p("executor.disk_capacity_mb") %>
+      -diskMB=<%= p("executor.disk_capacity_mb") %> \
+      -registrySnapshotFile=$DATA_DIR/executor.snapshot \
+      -tempDir=$TMP_DIR \
+      -stack=<%= p("executor.stack") %> \
       1>>$LOG_DIR/executor.stdout.log \
       2>>$LOG_DIR/executor.stderr.log
 

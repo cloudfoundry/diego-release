@@ -17,5 +17,9 @@ properties:
     description: "the disk capacity the executor should manage.  this should not be greater than the actual disk quota on the VM"
     default: 4096
 
+  executor.stack:
+    description: "the executor stack"
+    default: "default"
+
   etcd.leader_ip:
     description: "etcd machine used to discover other nodes"
