@@ -48,6 +48,9 @@ export GOPATH=${GOPATH}:${GOPATH_ROOT}/loggregator
 cd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
 
 if [ "$USE_DRONE" = "true" ]; then
+  # for protoc
+  apt-get install --yes protobuf-compiler
+
   ./scripts/drone-test
 else
   ./scripts/test
