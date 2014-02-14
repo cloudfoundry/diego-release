@@ -10,11 +10,7 @@ networks: (( merge ))
 
 jobs: (( merge ))
 
-properties:
-  warden:
-    kernel_network_tuning_enabled: true
-
-  nats: (( merge ))
+properties: ~
 
 meta:
   stemcell:
