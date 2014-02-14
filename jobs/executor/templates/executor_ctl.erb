@@ -35,6 +35,10 @@ case $1 in
       -registrySnapshotFile=$DATA_DIR/executor.snapshot \
       -tempDir=$TMP_DIR \
       -stack=<%= p("executor.stack") %> \
+<% if_p("loggregator_endpoint.host", "loggregator_endpoint.port") do |host, port| %> \
+      --loggregatorServer=<%= host %>:<%= port %> \
+<% end %> \
+      --loggregatorSecret=<%= p("loggregator_endpoint.shared_secret") %> \
       1>>$LOG_DIR/executor.stdout.log \
       2>>$LOG_DIR/executor.stderr.log
 
