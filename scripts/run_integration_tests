@@ -42,15 +42,13 @@ for package in github.com/coreos/etcd github.com/apcera/gnatsd; do
   go install $package
 done
 
-git clone https://github.com/cloudfoundry/loggregator $GOPATH_ROOT/loggregator
-export GOPATH=${GOPATH}:${GOPATH_ROOT}/loggregator
+# put loggregator somewhere
+export LOGGREGATOR_GOPATH=${GOPATH_ROOT}/loggregator
+git clone https://github.com/cloudfoundry/loggregator $LOGGREGATOR_GOPATH
 
 cd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
 
 if [ "$USE_DRONE" = "true" ]; then
-  # for protoc
-  apt-get install --yes protobuf-compiler
-
   ./scripts/drone-test
 else
   ./scripts/test
