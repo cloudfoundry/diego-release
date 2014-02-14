@@ -115,4 +115,6 @@ properties:
     disk_capacity_mb: 10240
     stack: "default"
 
-  loggregator_endpoint: ~
+  loggregator_endpoint:
+    host: ~
+    shared_secret: (( merge ))

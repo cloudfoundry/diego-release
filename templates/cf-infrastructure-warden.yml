@@ -25,6 +25,9 @@ properties:
     memory_capacity_mb: 5000
     disk_capacity_mb: 50000
 
+  loggregator_endpoint:
+    shared_secret: loggregator-secret
+
 jobs:
   - name: etcd_z1
     instances: 1
