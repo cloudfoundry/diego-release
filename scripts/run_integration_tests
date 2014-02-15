@@ -44,7 +44,11 @@ done
 
 # put loggregator somewhere
 export LOGGREGATOR_GOPATH=${GOPATH_ROOT}/loggregator
-git clone https://github.com/cloudfoundry/loggregator $LOGGREGATOR_GOPATH
+git clone https://github.com/cloudfoundry/loggregator $LOGGREGATOR_GOPATH --depth 1
+
+pushd $LOGGREGATOR_GOPATH
+  git submodule update --init --recursive
+popd
 
 cd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
 
