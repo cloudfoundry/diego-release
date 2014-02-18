@@ -20,3 +20,7 @@ properties:
     description: "The port for the NATS server to listen on."
   nats.machines:
     description: "IP of each NATS cluster member."
+
+  stager.compilers:
+    default: "{}"
+    description: "Map of compilers for different stacks in json format {'stack_name':'compiler_url'}"

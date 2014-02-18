@@ -28,6 +28,7 @@ case $1 in
       -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("nats.user") %> \
       -natsPassword=<%= p("nats.password") %> \
+      -compilers=<%= p("stager.compilers") %> \
       1>>$LOG_DIR/stager.stdout.log \
       2>>$LOG_DIR/stager.stderr.log
 
