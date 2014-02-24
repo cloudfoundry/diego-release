@@ -1,0 +1,5 @@
+check process file-server
+  with pidfile /var/vcap/sys/run/file-server/file-server.pid
+  start program "/var/vcap/jobs/file-server/bin/file-server_ctl start"
+  stop program "/var/vcap/jobs/file-server/bin/file-server_ctl stop"
+  group vcap

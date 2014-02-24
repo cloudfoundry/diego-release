@@ -36,7 +36,7 @@ case $1 in
       -depot=/var/vcap/data/warden/depot \
       -rootfs=/var/vcap/packages/rootfs_lucid64 \
       -backend=linux \
-      -root=/var/vcap/packages/garden/src/github.com/pivotal-cf-experimental/garden/root \
+      -bin=/var/vcap/packages/garden/src/github.com/pivotal-cf-experimental/garden/linux_backend/bin \
       -debug \
       1>>$LOG_DIR/warden.stdout.log \
       2>>$LOG_DIR/warden.stderr.log

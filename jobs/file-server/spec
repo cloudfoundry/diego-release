@@ -1,0 +1,24 @@
+---
+name: file-server
+
+templates:
+  file-server_ctl.erb: bin/file-server_ctl
+
+packages:
+  - common
+  - file-server
+  - linux-smelter
+
+properties:
+  etcd.leader_ip:
+    description: "etcd machine used to discover other nodes"
+
+
+  file-server.ip:
+    description: "IP address of interface on which to serve files"
+  file-server.port:
+    default: "8080"
+    description: "IP port on which to serve files"
+  file-server.directory:
+    default: "/var/vcap/jobs/file-server/packages/"
+    description: "Fully-qualified path to the doc root for the file server"

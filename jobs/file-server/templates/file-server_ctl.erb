@@ -1,0 +1,42 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/file-server
+LOG_DIR=/var/vcap/sys/log/file-server
+
+PIDFILE=$RUN_DIR/file-server.pid
+
+source /var/vcap/packages/common/utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "file-server"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $LOG_DIR
+
+    echo $$ > /var/vcap/sys/run/file-server/file-server.pid
+
+    exec /var/vcap/packages/file-server/bin/file-server \
+      -etcdMachines=http://<%= p("etcd.leader_ip") %>:4001 \
+      <% if_p("file-server.ip") do %>\
+      -address=<%= p("file-server.ip") %> \
+      <% end %>\
+      -port=<%= p("file-server.port") %> \
+      -directory=<%= p("file-server.directory") %> \
+      1>>$LOG_DIR/file-server.stdout.log \
+      2>>$LOG_DIR/file-server.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: file-server_ctl {start|stop}"
+
+    ;;
+
+esac
