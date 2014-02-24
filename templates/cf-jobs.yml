@@ -139,6 +139,10 @@ properties:
     disk_capacity_mb: 10240
     stack: "default"
 
+  stager:
+    compilers:
+      default: linux-smelter/linux-smelter.zip
+
   loggregator_endpoint:
     host: ~
     shared_secret: (( merge ))
