@@ -3,6 +3,7 @@
 require 'net/http'
 require 'json'
 require 'optparse'
+require 'openssl'
 
 class String
   COLORS = { yellow: "\e[0;33m", green: "\e[0;32m", red: "\e[0;31m", blue: "\e[0;34m", reset: "\e[0m" }.freeze
