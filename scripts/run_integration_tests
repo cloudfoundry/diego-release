@@ -30,6 +30,7 @@ for package in \
     github.com/cloudfoundry-incubator/inigo \
     github.com/cloudfoundry-incubator/executor \
     github.com/cloudfoundry-incubator/stager \
+    github.com/cloudfoundry-incubator/file-server \
     github.com/pivotal-cf-experimental/garden; do
   copy_to_gopath $package
   export GOPATH=${GOPATH}:${GOPATH_ROOT}/src/$package/Godeps/_workspace
