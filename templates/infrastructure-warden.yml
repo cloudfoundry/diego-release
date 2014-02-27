@@ -33,19 +33,19 @@ jobs:
     instances: 1
     persistent_disk: 1024
     networks:
-      - name: cf1
+      - name: diego1
         static_ips: (( static_ips(0) ))
 
   - name: nats_z1
     instances: 1
     networks:
-      - name: cf1
+      - name: diego1
         static_ips: (( static_ips(1) ))
 
   - name: nats_z2
     instances: 0
     networks:
-      - name: cf2
+      - name: diego2
         static_ips: (( static_ips(1) ))
 
 resource_pools:
@@ -74,7 +74,9 @@ resource_pools:
       name: random
 
 networks:
-- name: cf1
+- <<: (( merge || [] ))
+
+- name: diego1
   subnets:
   - cloud_properties:
       name: random
@@ -908,7 +910,7 @@ networks:
     reserved:
     - 10.244.5.253
     static: []
-- name: cf2
+- name: diego2
   subnets:
   - cloud_properties:
       name: random

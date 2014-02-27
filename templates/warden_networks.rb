@@ -3,8 +3,8 @@
 #
 # We want two subnets, so I've arbitrarily divided this in half for each.
 #
-# cf1 will be 10.244.0.0/23
-# cf2 will be 10.244.2.0/23
+# diego1 will be 10.244.4.0/23
+# diego2 will be 10.244.6.0/23
 #
 # Each network will have 128 subnets, and the first half of each subnet will
 # be given static IPs.
@@ -12,24 +12,24 @@
 require "yaml"
 require "netaddr"
 
-cf1_subnets = []
-cf1_start = NetAddr::CIDR.create("10.244.4.0/30")
+diego1_subnets = []
+diego1_start = NetAddr::CIDR.create("10.244.4.0/30")
 
-cf2_subnets = []
-cf2_start = NetAddr::CIDR.create("10.244.6.0/30")
+diego2_subnets = []
+diego2_start = NetAddr::CIDR.create("10.244.6.0/30")
 
 128.times do
-  cf1_subnets << cf1_start
-  cf1_start = NetAddr::CIDR.create(cf1_start.next_subnet)
+  diego1_subnets << diego1_start
+  diego1_start = NetAddr::CIDR.create(diego1_start.next_subnet)
 
-  cf2_subnets << cf2_start
-  cf2_start = NetAddr::CIDR.create(cf2_start.next_subnet)
+  diego2_subnets << diego2_start
+  diego2_start = NetAddr::CIDR.create(diego2_start.next_subnet)
 end
 
 puts YAML.dump(
   "networks" => [
-    { "name" => "cf1",
-      "subnets" => cf1_subnets.collect.with_index do |subnet, idx|
+    { "name" => "diego1",
+      "subnets" => diego1_subnets.collect.with_index do |subnet, idx|
         { "cloud_properties" => {
             "name" => "random",
           },
@@ -39,8 +39,8 @@ puts YAML.dump(
         }
       end
     },
-    { "name" => "cf2",
-      "subnets" => cf2_subnets.collect.with_index do |subnet, idx|
+    { "name" => "diego2",
+      "subnets" => diego2_subnets.collect.with_index do |subnet, idx|
         { "cloud_properties" => {
             "name" => "random",
           },
