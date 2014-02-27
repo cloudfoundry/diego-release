@@ -1,0 +1,100 @@
+networks: (( merge ))
+
+releases:
+  - name: diego
+    release: diego
+    version: latest
+  - name: cf
+    release: diego
+    version: latest
+
+jobs:
+  - <<: (( merge || [] ))
+
+  - name: executor_z1
+    release: diego
+    template:
+      - warden
+      - executor
+    instances: 1
+    resource_pool: large_z1
+    networks:
+      - name: diego1
+    properties:
+      network_name: diego1
+
+  - name: executor_z2
+    release: diego
+    template:
+      - warden
+      - executor
+    instances: 1
+    resource_pool: large_z2
+    networks:
+      - name: diego2
+    properties:
+      network_name: diego2
+
+  - name: file-server_z1
+    release: diego
+    template:
+      - file-server
+    instances: 1
+    resource_pool: small_z1
+    networks:
+      - name: diego1
+    properties:
+      network_name: diego1
+
+  - name: file-server_z2
+    release: diego
+    template:
+      - file-server
+    instances: 1
+    resource_pool: small_z2
+    networks:
+      - name: diego2
+    properties:
+      network_name: diego2
+
+  - name: stager_z1
+    release: diego
+    template:
+      - stager
+    instances: 1
+    resource_pool: small_z1
+    networks:
+      - name: diego1
+    properties:
+      network_name: diego1
+
+  - name: stager_z2
+    release: diego
+    template:
+      - stager
+    instances: 1
+    resource_pool: small_z2
+    networks:
+      - name: diego2
+    properties:
+      network_name: diego2
+
+properties:
+  <<: (( merge || {} ))
+
+  warden:
+    kernel_network_tuning_enabled: true
+
+  executor:
+    memory_capacity_mb: 1024
+    disk_capacity_mb: 10240
+    stack: "default"
+
+  stager:
+    compilers:
+      default: linux-smelter/linux-smelter.zip
+
+  etcd:
+    leader_ip: (( properties.etcd_ips.[0] ))
+
+  etcd_ips: (( jobs.etcd_leader_z1.networks.cf1.static_ips jobs.etcd_z1.networks.cf1.static_ips jobs.etcd_z2.networks.cf2.static_ips ))

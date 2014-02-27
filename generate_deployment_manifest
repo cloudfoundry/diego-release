@@ -3,16 +3,30 @@
 templates=$(dirname $0)/templates
 
 infrastructure=$1
+cf_release=$2
 
 shift
+shift
+
+function usage() {
+  echo "usage: ./generate_deployment_manifest <aws|warden> /path/to/cf-release [stubs...]"
+  exit 1
+}
 
 if [ "$infrastructure" != "aws" ] && [ "$infrastructure" != "warden" ]; then
-  echo "usage: ./generate_deployment_manifest <aws|warden> [stubs...]"
-  exit 1
+  usage
+fi
+
+if [ -z "$cf_release" ]; then
+  usage
 fi
 
 spiff merge \
-  $templates/cf-deployment.yml \
-  $templates/cf-jobs.yml \
-  $templates/cf-infrastructure-${infrastructure}.yml \
+  $templates/deployment.yml \
+  $cf_release/templates/cf-deployment.yml \
+  $templates/jobs.yml \
+  $cf_release/templates/cf-jobs.yml \
+  $cf_release/templates/cf-properties.yml \
+  $templates/infrastructure-${infrastructure}.yml \
+  $cf_release/templates/cf-infrastructure-${infrastructure}.yml \
   $*
