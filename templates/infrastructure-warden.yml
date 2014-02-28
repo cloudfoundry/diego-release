@@ -29,24 +29,14 @@ properties:
     shared_secret: loggregator-secret
 
 jobs:
-  - name: etcd_z1
-    instances: 1
-    persistent_disk: 1024
-    networks:
-      - name: diego1
-        static_ips: (( static_ips(0) ))
-
-  - name: nats_z1
-    instances: 1
-    networks:
-      - name: diego1
-        static_ips: (( static_ips(1) ))
-
-  - name: nats_z2
+  - name: executor_z2
     instances: 0
-    networks:
-      - name: diego2
-        static_ips: (( static_ips(1) ))
+
+  - name: stager_z2
+    instances: 0
+
+  - name: file-server_z2
+    instances: 0
 
 resource_pools:
   - name: small_z1
