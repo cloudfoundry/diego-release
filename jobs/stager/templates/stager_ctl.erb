@@ -24,7 +24,7 @@ case $1 in
     echo $$ > /var/vcap/sys/run/stager/stager.pid
 
     exec /var/vcap/packages/stager/bin/stager \
-      -etcdMachines=http://<%= p("etcd.leader_ip") %>:4001 \
+      -etcdMachines=<%= p("etcd_ips").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("nats.user") %> \
       -natsPassword=<%= p("nats.password") %> \

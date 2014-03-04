@@ -9,8 +9,8 @@ packages:
   - stager
 
 properties:
-  etcd.leader_ip:
-    description: "etcd machine used to discover other nodes"
+  etcd_ips:
+    description: "IPs pointing to the ETCD cluster"
 
   nats.user:
     description: "Username for server authentication."

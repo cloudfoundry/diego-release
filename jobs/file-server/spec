@@ -10,8 +10,8 @@ packages:
   - linux-smelter
 
 properties:
-  etcd.leader_ip:
-    description: "etcd machine used to discover other nodes"
+  etcd_ips:
+    description: "IPs pointing to the ETCD cluster"
 
 
   file-server.ip:
