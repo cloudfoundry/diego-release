@@ -23,7 +23,7 @@ case $1 in
       -address=<%= p("file-server.ip") %> \
       <% end %>\
       -port=<%= p("file-server.port") %> \
-      -directory=<%= p("file-server.directory") %> \
+      -staticDirectory=<%= p("file-server.static_directory") %> \
       1>>$LOG_DIR/file-server.stdout.log \
       2>>$LOG_DIR/file-server.stderr.log
 
