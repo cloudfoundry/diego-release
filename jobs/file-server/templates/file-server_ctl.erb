@@ -18,12 +18,18 @@ case $1 in
     echo $$ > /var/vcap/sys/run/file-server/file-server.pid
 
     exec /var/vcap/packages/file-server/bin/file-server \
-      -etcdMachines=http://<%= p("etcd.leader_ip") %>:4001 \
+      -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       <% if_p("file-server.ip") do %>\
       -address=<%= p("file-server.ip") %> \
       <% end %>\
       -port=<%= p("file-server.port") %> \
-      -directory=<%= p("file-server.directory") %> \
+      -staticDirectory=<%= p("file-server.directory") %> \
+      -ccAddress=<%= p("cc.srv_api_uri") %> \
+      -ccUsername=<%= p("cc.staging_upload_user") %> \
+      -ccPassword=<%= p("cc.staging_upload_password") %> \
+      <% if_p("cc.jobPollingInterval") do %>\
+      -ccJobPollingInterval=<%= p("cc.jobPollingInterval") %> \
+      <% end %>\
       1>>$LOG_DIR/file-server.stdout.log \
       2>>$LOG_DIR/file-server.stderr.log
 
