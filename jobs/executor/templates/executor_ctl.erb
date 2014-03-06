@@ -29,7 +29,7 @@ case $1 in
     exec /var/vcap/packages/executor/bin/executor \
       -wardenNetwork=unix \
       -wardenAddr=/var/vcap/data/warden/warden.sock \
-      -etcdMachines=http://<%= p("etcd.leader_ip") %>:4001 \
+      -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -memoryMB=<%= p("executor.memory_capacity_mb") %> \
       -diskMB=<%= p("executor.disk_capacity_mb") %> \
       -registrySnapshotFile=$DATA_DIR/executor.snapshot \

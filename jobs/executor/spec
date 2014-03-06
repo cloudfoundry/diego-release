@@ -21,8 +21,8 @@ properties:
     description: "the executor stack"
     default: "default"
 
-  etcd.leader_ip:
-    description: "etcd machine used to discover other nodes"
+  etcd.machines:
+    description: "IPs pointing to the ETCD cluster"
 
   loggregator_endpoint.host:
     description: "The host used to emit messages to the Loggregator"
