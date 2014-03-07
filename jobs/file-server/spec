@@ -31,3 +31,6 @@ properties:
   cc.jobPollingInterval:
     default: "5s"
     description: "the interval between job polling requests"
+  ssl.skip_cert_verify:
+    description: "when connecting over https, ignore bad ssl certificates"
+    default: false

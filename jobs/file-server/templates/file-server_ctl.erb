@@ -30,6 +30,7 @@ case $1 in
       <% if_p("cc.jobPollingInterval") do %>\
       -ccJobPollingInterval=<%= p("cc.jobPollingInterval") %> \
       <% end %>\
+      -skipCertVerify=<%= p("ssl.skip_cert_verify") %> \
       1>>$LOG_DIR/file-server.stdout.log \
       2>>$LOG_DIR/file-server.stderr.log
 
