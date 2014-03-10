@@ -1,4 +1,6 @@
-name: cf-warden
+meta: (( merge ))
+
+name: (( merge ))
 
 director_uuid: (( merge ))
 
@@ -9,11 +11,6 @@ networks: (( merge ))
 jobs: (( merge ))
 
 properties: ~
-
-meta:
-  stemcell:
-    name: (( merge ))
-    version: latest
 
 compilation:
   workers: 6
