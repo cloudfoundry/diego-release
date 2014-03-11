@@ -24,6 +24,14 @@ properties:
   etcd.machines:
     description: "IPs pointing to the ETCD cluster"
 
+  warden.listen_network:
+    description: "Warden server connection mode (tcp or unix)."
+    default: unix
+
+  warden.address:
+    description: "Warden server listening address."
+    default: /var/vcap/data/warden/warden.sock
+
   loggregator_endpoint.host:
     description: "The host used to emit messages to the Loggregator"
 

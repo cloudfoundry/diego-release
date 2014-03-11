@@ -10,9 +10,14 @@ packages:
   - rootfs_lucid64
 
 properties:
-  serf.members:
-    description: "members of the serf cluster"
-    default: []
   warden.kernel_network_tuning_enabled:
     description: "enable or disable kernel network tuning; disable for Warden CPI"
     default: true
+
+  warden.listen_network:
+    description: "Warden server connection mode (tcp or unix)."
+    default: unix
+
+  warden.listen_address:
+    description: "Warden server listening address."
+    default: /var/vcap/data/warden/warden.sock

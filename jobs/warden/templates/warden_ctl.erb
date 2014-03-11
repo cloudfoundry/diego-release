@@ -31,8 +31,8 @@ case $1 in
 
     exec /var/vcap/packages/garden/bin/garden \
       -disableQuotas=true \
-      -listenNetwork=unix \
-      -listenAddr=/var/vcap/data/warden/warden.sock \
+      -listenNetwork=<%= p("warden.listen_network") %> \
+      -listenAddr=<%= p("warden.listen_address") %> \
       -depot=/var/vcap/data/warden/depot \
       -rootfs=/var/vcap/packages/rootfs_lucid64 \
       -backend=linux \

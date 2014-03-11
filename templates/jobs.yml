@@ -86,8 +86,7 @@ jobs:
 properties:
   <<: (( merge || {} ))
 
-  warden:
-    kernel_network_tuning_enabled: true
+  warden: (( merge || {} ))
 
   executor:
     memory_capacity_mb: 1024

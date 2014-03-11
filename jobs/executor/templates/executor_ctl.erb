@@ -27,8 +27,8 @@ case $1 in
     echo $$ > /var/vcap/sys/run/executor/executor.pid
 
     exec /var/vcap/packages/executor/bin/executor \
-      -wardenNetwork=unix \
-      -wardenAddr=/var/vcap/data/warden/warden.sock \
+      -wardenNetwork=<%= p("warden.listen_network") %> \
+      -wardenAddr=<%= p("warden.address") %> \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -memoryMB=<%= p("executor.memory_capacity_mb") %> \
       -diskMB=<%= p("executor.disk_capacity_mb") %> \
