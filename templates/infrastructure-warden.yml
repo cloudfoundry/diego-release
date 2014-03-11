@@ -1,0 +1,62 @@
+meta:
+  stemcell:
+    name: bosh-warden-boshlite-ubuntu
+    version: latest
+
+update:
+  canaries: 0
+  max_in_flight: 10
+  canary_watch_time: 1000-60000
+  update_watch_time: 1000-60000
+
+compilation:
+  cloud_properties:
+    name: random
+
+properties:
+  warden:
+    kernel_network_tuning_enabled: false
+    address: 127.0.0.1:7777
+    listen_network: tcp
+    listen_address: 0.0.0.0:7777
+
+  executor:
+    memory_capacity_mb: 5000
+    disk_capacity_mb: 50000
+
+jobs:
+  - name: executor_z2
+    instances: 0
+
+  - name: stager_z2
+    instances: 0
+
+  - name: file-server_z2
+    instances: 0
+
+resource_pools:
+  - name: small_z1
+    cloud_properties:
+      name: random
+
+  - name: small_z2
+    cloud_properties:
+      name: random
+
+  - name: medium_z1
+    cloud_properties:
+      name: random
+
+  - name: medium_z2
+    cloud_properties:
+      name: random
+
+  - name: large_z1
+    cloud_properties:
+      name: random
+
+  - name: large_z2
+    cloud_properties:
+      name: random
+
+networks: (( merge ))

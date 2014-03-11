@@ -10,9 +10,8 @@ packages:
   - linux-smelter
 
 properties:
-  etcd.leader_ip:
-    description: "etcd machine used to discover other nodes"
-
+  etcd.machines:
+    description: "IPs pointing to the ETCD cluster"
 
   file-server.ip:
     description: "IP address of interface on which to serve files"
@@ -22,3 +21,16 @@ properties:
   file-server.static_directory:
     default: "/var/vcap/jobs/file-server/packages/"
     description: "Fully-qualified path to the doc root for the file server's static files"
+
+  cc.srv_api_uri:
+    description: "URI to access the Cloud Controller"
+  cc.staging_upload_user:
+    description: "User to upload files to Cloud Controller"
+  cc.staging_upload_password:
+    description: "User's password to upload files to Cloud Controller"
+  cc.jobPollingInterval:
+    default: "5s"
+    description: "the interval between job polling requests"
+  ssl.skip_cert_verify:
+    description: "when connecting over https, ignore bad ssl certificates"
+    default: false

@@ -1,21 +1,16 @@
-name: diego
+meta: (( merge ))
+
+name: (( merge ))
 
 director_uuid: (( merge ))
 
-releases:
-  - name: diego
-    version: latest
+releases: (( merge ))
 
 networks: (( merge ))
 
 jobs: (( merge ))
 
 properties: ~
-
-meta:
-  stemcell:
-    name: (( merge ))
-    version: latest
 
 compilation:
   workers: 6
@@ -31,6 +26,8 @@ update:
   update_watch_time: 5000-600000
 
 resource_pools:
+  - <<: (( merge ))
+
   - name: small_z1
     network: cf1
     size: (( auto ))
