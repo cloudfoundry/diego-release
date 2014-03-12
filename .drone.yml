@@ -7,7 +7,8 @@ env:
   - BOSH_TARGET={{BOSH_TARGET}}
   - DEPLOYMENT_NAME={{DEPLOYMENT_NAME}}
 
-script: ./scripts/pipeline
+script:
+  - ./scripts/pipeline
 
 deploy:
   git:
