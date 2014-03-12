@@ -10,7 +10,6 @@ env:
 script:
   - ln -s /tmp/release-blobs .blobs
   - ln -s /tmp/release-final-builds .final_builds
-  - git submodule update --init --recursive
   - ./scripts/pipeline
 
 cache:
