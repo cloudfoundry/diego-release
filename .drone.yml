@@ -7,14 +7,7 @@ env:
   - BOSH_TARGET={{BOSH_TARGET}}
   - DEPLOYMENT_NAME={{DEPLOYMENT_NAME}}
 
-script:
-  - ln -s /tmp/release-blobs .blobs
-  - ln -s /tmp/release-final-builds .final_builds
-  - ./scripts/pipeline
-
-cache:
-  - /tmp/release-blobs
-  - /tmp/release-final-builds
+script: ./scripts/pipeline
 
 deploy:
   git:
