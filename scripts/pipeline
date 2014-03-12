@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+
+function run_system_tests() {
+  echo RUNNING SYSTEM TESTS
+}
+
+case "$DRONE_BRANCH" in
+  develop)
+    exit 0 # temporary
+    ./scripts/run_integration_tests true
+    ;;
+  passed-integration)
+    ./scripts/deploy
+    ;;
+  passed-deploy)
+    run_system_tests
+    ;;
+esac

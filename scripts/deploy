@@ -1,0 +1,55 @@
+#!/bin/bash
+
+FAILED=0
+
+if [ -z "$BOSH_USER" ]; then
+  echo "missing \$BOSH_USER"
+  FAILED=1
+fi
+
+if [ -z "$BOSH_PASSWORD" ]; then
+  echo "missing \$BOSH_PASSWORD"
+  FAILED=1
+fi
+
+if [ -z "$BOSH_TARGET" ]; then
+  echo "missing \$BOSH_TARGET"
+  FAILED=1
+fi
+
+if [ -z "$DEPLOYMENTS_REPO" ]; then
+  echo "missing \$DEPLOYMENTS_REPO"
+  FAILED=1
+fi
+
+if [ -z "$DEPLOYMENT_NAME" ]; then
+  echo "missing \$DEPLOYMENT_NAME"
+  FAILED=1
+fi
+
+if [ "$FAILED" = "1" ]; then
+  exit 1
+fi
+
+git submodule update --init --recursive
+
+bosh target ${BOSH_TARGET}
+
+git clone https://github.com/cloudfoundry/cf-release.git /tmp/cf-release
+git clone $DEPLOYMENTS_REPO /tmp/deployments
+
+pushd cf-release/
+  git submodule update --init --recursive
+
+  echo cf | bosh create release
+  bosh -n upload release --rebase --skip-if-exists
+popd
+
+echo diego | bosh create release
+bosh -n upload release --rebase --skip-if-exists
+
+./generate_combo_manifest aws /tmp/cf-release /tmp/deployments/$DEPLOYMENT_NAME/stubs/* > /tmp/deployment.yml
+
+bosh deployment /tmp/deployment.yml
+
+yes yes | bosh deploy

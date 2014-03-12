@@ -2,7 +2,26 @@ image: cloudfoundry/inigo-ci
 
 env:
   - GOROOT=/usr/local/go
+  - BOSH_USER={{BOSH_USER}}
+  - BOSH_PASSWORD={{BOSH_PASSWORD}}
+  - BOSH_TARGET={{BOSH_TARGET}}
+  - DEPLOYMENT_NAME={{DEPLOYMENT_NAME}}
 
 script:
+  - ln -s /tmp/release-blobs .blobs
+  - ln -s /tmp/release-final-builds .final_builds
   - git submodule update --init --recursive
-  - ./scripts/run_integration_tests true
+  - ./scripts/pipeline
+
+cache:
+  - /tmp/release-blobs
+  - /tmp/release-final-builds
+
+deploy:
+  git:
+    target: git@github.com:cloudfoundry-incubator/diego-release.git
+    force: true
+    branches:
+      develop: passed-integration
+      passed-integration: passed-deploy
+      passed-deploy: master
