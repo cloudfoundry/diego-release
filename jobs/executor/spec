@@ -17,6 +17,10 @@ properties:
     description: "the disk capacity the executor should manage.  this should not be greater than the actual disk quota on the VM"
     default: 4096
 
+  executor.container_inode_limit
+    description: "the inode limit enforced on each warden container."
+    default: 200000
+
   executor.stack:
     description: "the executor stack"
     default: "default"

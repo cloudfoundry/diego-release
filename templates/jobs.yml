@@ -89,6 +89,7 @@ properties:
   executor:
     memory_capacity_mb: 1024
     disk_capacity_mb: 10240
+    container_inode_limit: 200000
     stack: "lucid64"
 
   stager:
