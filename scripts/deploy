@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e -x
+
 FAILED=0
 
 if [ -z "$BOSH_USER" ]; then
