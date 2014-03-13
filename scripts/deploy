@@ -6,12 +6,8 @@ git submodule update --init --recursive
 
 bosh target ${BOSH_TARGET}
 
-if [ ! -d /tmp/cf-release/.git ]; then
-  # clean up after earlier step which will cause an
-  # empty /tmp/cf-release to become cached
-  rm -rf /tmp/cf-release
-
-  git clone https://github.com/cloudfoundry/cf-release.git /tmp/cf-release
+if [ ! -d /tmp/cache/cf-release ]; then
+  git clone https://github.com/cloudfoundry/cf-release.git /tmp/cache/cf-release
 fi
 
 git clone $DEPLOYMENTS_REPO /tmp/deployments

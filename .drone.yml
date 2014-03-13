@@ -11,7 +11,7 @@ script:
   - ./scripts/pipeline
 
 cache:
-  - /tmp/cf-release
+  - /tmp/cache
 
 deploy:
   git:
