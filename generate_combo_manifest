@@ -37,4 +37,5 @@ spiff merge \
   $cf_release/templates/cf-properties.yml \
   $templates/infrastructure-${infrastructure}.yml \
   $cf_release/templates/cf-infrastructure-${infrastructure}.yml \
+  $templates/diego-stub.yml \
   $*
