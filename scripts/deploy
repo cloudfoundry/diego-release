@@ -37,11 +37,12 @@ git submodule update --init --recursive
 
 bosh target ${BOSH_TARGET}
 
-git clone https://github.com/cloudfoundry/cf-release.git /tmp/cf-release
+[ -d /tmp/cf-release ] || git clone https://github.com/cloudfoundry/cf-release.git /tmp/cf-release
+
 git clone $DEPLOYMENTS_REPO /tmp/deployments
 
 pushd /tmp/cf-release/
-  git submodule update --init --recursive
+  ./update
 
   echo cf | bosh create release
   bosh -n upload release --rebase --skip-if-exists

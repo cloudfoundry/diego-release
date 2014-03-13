@@ -10,6 +10,9 @@ env:
 script:
   - ./scripts/pipeline
 
+cache:
+  - /tmp/cf-release
+
 deploy:
   git:
     target: git@github.com:cloudfoundry-incubator/diego-release.git
