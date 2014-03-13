@@ -9,7 +9,7 @@ releases:
     version: latest
 
 jobs:
-  - <<: (( merge || [] ))
+  - <<: (( merge || nil ))
 
   - name: executor_z1
     release: diego
@@ -82,9 +82,9 @@ jobs:
       network_name: cf2
 
 properties:
-  <<: (( merge || {} ))
+  <<: (( merge || nil ))
 
-  warden: (( merge || {} ))
+  warden: ~
 
   executor:
     memory_capacity_mb: 1024
