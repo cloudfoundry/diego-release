@@ -13,6 +13,8 @@ fi
 git clone $DEPLOYMENTS_REPO /tmp/deployments
 
 pushd /tmp/cache/cf-release
+  git checkout develop
+
   ./update
 
   git reset --hard
