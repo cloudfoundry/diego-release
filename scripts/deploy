@@ -22,7 +22,8 @@ popd
 echo diego | bosh create release
 bosh -n upload release --rebase --skip-if-exists
 
-./generate_combo_manifest aws /tmp/cache/cf-release /tmp/deployments/$DEPLOYMENT_NAME/stubs/* > /tmp/deployment.yml
+./generate_combo_manifest aws /tmp/cache/cf-release \
+  /tmp/deployments/$DEPLOYMENT_NAME/stubs/* > /tmp/deployment.yml
 
 bosh deployment /tmp/deployment.yml
 
