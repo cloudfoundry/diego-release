@@ -15,8 +15,9 @@ git clone $DEPLOYMENTS_REPO /tmp/deployments
 pushd /tmp/cache/cf-release
   ./update
 
-  git clean -ffd
-  git submodule foreach --recursive git clean -ffd
+  git reset --hard
+  git clean --force --force -d
+  git submodule foreach --recursive git clean --force --force -d
 
   echo cf | bosh create release
   bosh -n upload release --rebase --skip-if-exists
