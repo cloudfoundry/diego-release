@@ -20,11 +20,11 @@ pushd /tmp/cache/cf-release
   git submodule foreach --recursive git clean --force --force -d
 
   echo cf | bosh create release
-  bosh -n upload release --rebase --skip-if-exists
+  bosh -n upload release --rebase --skip-if-exists || true
 popd
 
 echo diego | bosh create release
-bosh -n upload release --rebase --skip-if-exists
+bosh -n upload release --rebase --skip-if-exists || true
 
 ./generate_combo_manifest aws /tmp/cache/cf-release \
   /tmp/deployments/$DEPLOYMENT_NAME/stubs/* > /tmp/deployment.yml
