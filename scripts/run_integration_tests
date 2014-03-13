@@ -2,15 +2,6 @@
 
 set -e -x
 
-USE_DRONE=$1
-
-if [ -n "$WORKSPACE" ]; then
-  echo "I see you are running on Jenkins"
-  echo "Let me gvm that for you."
-  . /usr/local/share/gvm/scripts/gvm
-  gvm use go1.2
-fi
-
 rm -rf diego-release-gopath.*
 
 RELEASE_ROOT=$(dirname $(dirname $0))
@@ -63,8 +54,4 @@ popd
 
 cd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
 
-if [ "$USE_DRONE" = "true" ]; then
-  ./scripts/drone-test
-else
-  ./scripts/test
-fi
+./scripts/drone-test
