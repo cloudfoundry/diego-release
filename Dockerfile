@@ -8,6 +8,17 @@ RUN locale-gen en_US.UTF-8
 ENV LANG       en_US.UTF-8
 ENV LC_ALL     en_US.UTF-8
 
+ADD https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0/spiff_linux_amd64.zip /tmp/
+RUN ls /tmp
+RUN unzip /tmp/spiff_linux_amd64.zip -d /usr/local/bin
+RUN rm /tmp/spiff_linux_amd64.zip
+
+# bosh_cli (nokogiri)
+RUN apt-get -y install libxml2-dev libxslt-dev libcurl4-openssl-dev
+
+# ccng prepackaging
+RUN apt-get -y install libmysqlclient-dev libpq-dev libsqlite3-dev
+
 ADD http://cache.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p545.tar.gz /tmp/
 RUN apt-get -y install build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev && \
     tar -xzf /tmp/ruby-1.9.3-p545.tar.gz && \
@@ -15,11 +26,6 @@ RUN apt-get -y install build-essential zlib1g-dev libssl-dev libreadline6-dev li
     rm -rf ruby-1.9.3-p545/ && \
     rm -f /tmp/ruby-1.9.3-p545.tar.gz
 
-RUN gem install bundler
-RUN gem install bosh_cli
+RUN gem install bundler --no-rdoc --no-ri
 
-ADD https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0/spiff_linux_amd64.zip /tmp/
-RUN unzip /tmp/spiff_linux_amd64.zip -d /usr/local/bin
-
-# NOKOGIRIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
-RUN apt-get -y install libxml2-dev libxslt-dev libcurl4-openssl-dev
+RUN gem install bosh_cli --no-rdoc --no-ri

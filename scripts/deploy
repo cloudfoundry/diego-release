@@ -23,6 +23,10 @@ pushd /tmp/cache/cf-release
   git clean --force --force -d
   git submodule foreach --recursive git clean --force --force -d
 
+  # work around uaa prepackaging :(
+  rm src/uaa/.git
+  ln -s .git/modules/src/uaa/.git src/uaa/.git
+
   echo cf | bosh create release
   bosh -n upload release --rebase --skip-if-exists || true
 popd
