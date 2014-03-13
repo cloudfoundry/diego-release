@@ -18,6 +18,5 @@ deploy:
     target: git@github.com:cloudfoundry-incubator/diego-release.git
     force: true
     branches:
-      develop: passed-integration
-      passed-integration: passed-deploy
-      passed-deploy: master
+      develop: deploy
+      deploy: system-tests

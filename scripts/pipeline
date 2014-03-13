@@ -11,10 +11,10 @@ case "$DRONE_BRANCH" in
     exit 0 # temporary
     ./scripts/run_integration_tests true
     ;;
-  passed-integration)
+  deploy)
     ./scripts/deploy
     ;;
-  passed-deploy)
+  system-tests)
     run_system_tests
     ;;
 esac
