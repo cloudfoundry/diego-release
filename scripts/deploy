@@ -12,7 +12,7 @@ fi
 
 git clone $DEPLOYMENTS_REPO /tmp/deployments
 
-pushd /tmp/cf-release
+pushd /tmp/cache/cf-release
   ./update
 
   echo cf | bosh create release
@@ -22,7 +22,7 @@ popd
 echo diego | bosh create release
 bosh -n upload release --rebase --skip-if-exists
 
-./generate_combo_manifest aws /tmp/cf-release /tmp/deployments/$DEPLOYMENT_NAME/stubs/* > /tmp/deployment.yml
+./generate_combo_manifest aws /tmp/cache/cf-release /tmp/deployments/$DEPLOYMENT_NAME/stubs/* > /tmp/deployment.yml
 
 bosh deployment /tmp/deployment.yml
 
