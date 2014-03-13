@@ -29,3 +29,6 @@ RUN apt-get -y install build-essential zlib1g-dev libssl-dev libreadline6-dev li
 RUN gem install bundler --no-rdoc --no-ri
 
 RUN gem install bosh_cli --no-rdoc --no-ri
+
+# warden prepackaging
+RUN gem install rake -v 0.9.2.2 --no-rdoc --no-ri
