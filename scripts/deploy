@@ -15,7 +15,9 @@ git clone $DEPLOYMENTS_REPO /tmp/deployments
 pushd /tmp/cache/cf-release
   git checkout develop
 
-  ./update
+  git pull --ff-only origin develop
+  git submodule sync --recursive
+  git submodule update --init --recursive
 
   git reset --hard
   git clean --force --force -d
