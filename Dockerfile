@@ -20,3 +20,6 @@ RUN gem install bosh_cli
 
 ADD https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0/spiff_linux_amd64.zip /tmp/
 RUN unzip /tmp/spiff_linux_amd64.zip -d /usr/local/bin
+
+# NOKOGIRIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+RUN apt-get -y install libxml2-dev libxslt-dev libcurl4-openssl-dev
