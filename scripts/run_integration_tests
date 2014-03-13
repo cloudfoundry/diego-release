@@ -15,7 +15,7 @@ rm -rf diego-release-gopath.*
 
 RELEASE_ROOT=$(dirname $(dirname $0))
 
-export GOPATH_ROOT=$(mktemp -d ${PWD}/diego-release-gopath.XXXXX)
+export GOPATH_ROOT=$(mktemp -d $TMPDIR/diego-release-gopath.XXXXX)
 
 export GOPATH=$GOPATH_ROOT
 export PATH=$GOPATH_ROOT/bin:$PATH
