@@ -12,11 +12,3 @@ script:
 
 cache:
   - /tmp/cache
-
-deploy:
-  git:
-    target: git@github.com:cloudfoundry-incubator/diego-release.git
-    force: true
-    branches:
-      develop: deploy
-      deploy: system-tests
