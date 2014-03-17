@@ -1,25 +1,25 @@
 ---
-name: file-server
+name: file_server
 
 templates:
-  file-server_ctl.erb: bin/file-server_ctl
+  file_server_ctl.erb: bin/file_server_ctl
 
 packages:
   - common
-  - file-server
+  - file_server
   - linux-smelter
 
 properties:
   etcd.machines:
     description: "IPs pointing to the ETCD cluster"
 
-  file-server.ip:
+  file_server.ip:
     description: "IP address of interface on which to serve files"
-  file-server.port:
+  file_server.port:
     default: "8080"
     description: "IP port on which to serve files"
-  file-server.static_directory:
-    default: "/var/vcap/jobs/file-server/packages/"
+  file_server.static_directory:
+    default: "/var/vcap/jobs/file_server/packages/"
     description: "Fully-qualified path to the doc root for the file server's static files"
 
   cc.srv_api_uri:

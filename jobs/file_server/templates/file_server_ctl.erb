@@ -1,29 +1,29 @@
 #!/bin/bash -e
 
-RUN_DIR=/var/vcap/sys/run/file-server
-LOG_DIR=/var/vcap/sys/log/file-server
+RUN_DIR=/var/vcap/sys/run/file_server
+LOG_DIR=/var/vcap/sys/log/file_server
 
-PIDFILE=$RUN_DIR/file-server.pid
+PIDFILE=$RUN_DIR/file_server.pid
 
 source /var/vcap/packages/common/utils.sh
 
 case $1 in
 
   start)
-    pid_guard $PIDFILE "file-server"
+    pid_guard $PIDFILE "file_server"
 
     mkdir -p $RUN_DIR
     mkdir -p $LOG_DIR
 
-    echo $$ > /var/vcap/sys/run/file-server/file-server.pid
+    echo $$ > /var/vcap/sys/run/file_server/file_server.pid
 
-    exec /var/vcap/packages/file-server/bin/file-server \
+    exec /var/vcap/packages/file_server/bin/file-server \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
-      <% if_p("file-server.ip") do %>\
-      -address=<%= p("file-server.ip") %> \
+      <% if_p("file_server.ip") do %>\
+      -address=<%= p("file_server.ip") %> \
       <% end %>\
-      -port=<%= p("file-server.port") %> \
-      -staticDirectory=<%= p("file-server.static_directory") %> \
+      -port=<%= p("file_server.port") %> \
+      -staticDirectory=<%= p("file_server.static_directory") %> \
       -ccAddress=<%= p("cc.srv_api_uri") %> \
       -ccUsername=<%= p("cc.staging_upload_user") %> \
       -ccPassword=<%= p("cc.staging_upload_password") %> \
@@ -31,8 +31,8 @@ case $1 in
       -ccJobPollingInterval=<%= p("cc.jobPollingInterval") %> \
       <% end %>\
       -skipCertVerify=<%= p("ssl.skip_cert_verify") %> \
-      1>>$LOG_DIR/file-server.stdout.log \
-      2>>$LOG_DIR/file-server.stderr.log
+      1>>$LOG_DIR/file_server.stdout.log \
+      2>>$LOG_DIR/file_server.stderr.log
 
     ;;
 
@@ -42,7 +42,7 @@ case $1 in
     ;;
 
   *)
-    echo "Usage: file-server_ctl {start|stop}"
+    echo "Usage: file_server_ctl {start|stop}"
 
     ;;
 

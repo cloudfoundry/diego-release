@@ -37,10 +37,10 @@ jobs:
       network_name: cf2
       loggregator_endpoint: (( meta.loggregator_endpoint.z2 ))
 
-  - name: file-server_z1
+  - name: file_server_z1
     release: diego
     template:
-      - file-server
+      - file_server
     instances: 1
     resource_pool: small_z1
     networks:
@@ -48,10 +48,10 @@ jobs:
     properties:
       network_name: cf1
 
-  - name: file-server_z2
+  - name: file_server_z2
     release: diego
     template:
-      - file-server
+      - file_server
     instances: 1
     resource_pool: small_z2
     networks:
