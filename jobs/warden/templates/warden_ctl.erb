@@ -38,6 +38,7 @@ case $1 in
       -backend=linux \
       -bin=/var/vcap/packages/garden/src/github.com/pivotal-cf-experimental/garden/linux_backend/bin \
       -debug \
+      -containerGraceTime=5m \
       1>>$LOG_DIR/warden.stdout.log \
       2>>$LOG_DIR/warden.stderr.log
 
