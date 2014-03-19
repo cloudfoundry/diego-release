@@ -30,7 +30,7 @@ case $1 in
     echo $$ > /var/vcap/sys/run/warden/warden.pid
 
     exec /var/vcap/packages/garden/bin/garden \
-      -disableQuotas=true \
+      -disableQuotas=<%= !p("warden.disk_quota_enabled") %> \
       -listenNetwork=<%= p("warden.listen_network") %> \
       -listenAddr=<%= p("warden.listen_address") %> \
       -depot=/var/vcap/data/warden/depot \

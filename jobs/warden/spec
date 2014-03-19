@@ -21,3 +21,7 @@ properties:
   warden.listen_address:
     description: "Warden server listening address."
     default: /var/vcap/data/warden/warden.sock
+
+  warden.disk_quota_enabled:
+    description: "Enforce disk quotas."
+    default: true

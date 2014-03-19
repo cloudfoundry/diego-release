@@ -16,6 +16,7 @@ compilation:
 properties:
   warden:
     kernel_network_tuning_enabled: false
+    disk_quota_enabled: false
     address: 127.0.0.1:7777
     listen_network: tcp
     listen_address: 0.0.0.0:7777
