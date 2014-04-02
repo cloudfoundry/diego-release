@@ -6,6 +6,7 @@ env:
   - BOSH_PASSWORD={{BOSH_PASSWORD}}
   - BOSH_TARGET={{BOSH_TARGET}}
   - DEPLOYMENT_NAME={{DEPLOYMENT_NAME}}
+  - GINKGO_PARALLEL={{GINKGO_PARALLEL}}
 
 script:
   - ./scripts/pipeline
