@@ -23,11 +23,16 @@ for package in \
     github.com/cloudfoundry-incubator/stager \
     github.com/cloudfoundry-incubator/linux-smelter \
     github.com/cloudfoundry-incubator/file-server \
-    github.com/pivotal-cf-experimental/garden \
-    github.com/coreos/etcd \
-    github.com/apcera/gnatsd; do
+    github.com/pivotal-cf-experimental/garden;
+    do
   copy_to_gopath $package
 done
+
+# install application dependencies
+go get github.com/coreos/etcd
+go install github.com/coreos/etcd
+go get github.com/apcera/gnatsd
+go install github.com/apcera/gnatsd
 
 # set up inigo's own dependencies
 export GOPATH=${GOPATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo/Godeps/_workspace
@@ -40,10 +45,6 @@ export STAGER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/stager
 export FILE_SERVER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/file-server/Godeps/_workspace:${GOPATH_ROOT}
 export LINUX_SMELTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/linux-smelter/Godeps/_workspace:${GOPATH_ROOT}
 export GARDEN_GOPATH=${GOPATH_ROOT}/src/github.com/pivotal-cf-experimental/garden/Godeps/_workspace:${GOPATH_ROOT}
-
-# install application dependencies
-go install github.com/coreos/etcd
-go install github.com/apcera/gnatsd
 
 # grab master of loggregator
 git clone https://github.com/cloudfoundry/loggregator $LOGGREGATOR_GOPATH --depth 1
