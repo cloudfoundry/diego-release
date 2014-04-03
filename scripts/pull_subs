@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Pulls the latest master for all submodules listed in ./src/
+
+pushd src
+
+for f in *
+do 
+  pushd $f
+  git co master && git pull
+  popd
+done
+popd
