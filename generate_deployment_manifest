@@ -14,7 +14,9 @@
 
 
 infrastructure=$1
+
 shift
+
 $HOME/workspace/diego-release/generate_combo_manifest \
   $infrastructure \
   $HOME/workspace/cf-release \
