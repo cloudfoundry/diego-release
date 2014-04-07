@@ -19,12 +19,14 @@ RUN apt-get -y install libxml2-dev libxslt-dev libcurl4-openssl-dev
 # ccng prepackaging
 RUN apt-get -y install libmysqlclient-dev libpq-dev libsqlite3-dev
 
-ADD http://cache.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p545.tar.gz /tmp/
-RUN apt-get -y install build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev && \
-    tar -xzf /tmp/ruby-1.9.3-p545.tar.gz && \
-    (cd ruby-1.9.3-p545/ && ./configure --disable-install-doc && make && make install) && \
-    rm -rf ruby-1.9.3-p545/ && \
-    rm -f /tmp/ruby-1.9.3-p545.tar.gz
+RUN apt-get -y install build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev 
+
+ADD https://github.com/postmodern/ruby-install/archive/v0.4.1.tar.gz /tmp/
+RUN tar zxf /tmp/v0.4.1.tar.gz -C /tmp
+RUN cd /tmp/ruby-install-0.4.1 && make install
+RUN rm -rf /tmp/ruby-install-0.4.1
+
+RUN ruby-install -i /usr/local/ ruby 1.9.3-p545
 
 RUN gem install bundler --no-rdoc --no-ri
 
