@@ -34,3 +34,8 @@ RUN gem install bosh_cli --no-rdoc --no-ri
 
 # warden prepackaging
 RUN gem install rake -v 0.9.2.2 --no-rdoc --no-ri
+
+# this gem provides the headers to other gems.
+#
+# no, really.
+RUN gem install debugger-ruby_core_source --no-rdoc --no-ri
