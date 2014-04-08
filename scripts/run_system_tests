@@ -1,3 +1,45 @@
 #!/bin/bash
 
-echo GOOD JOB
+set -e -x
+
+RELEASE_ROOT=$(dirname $(dirname $0))
+
+if [ -z "$DEPLOYMENT_NAME" ]; then
+  echo "missing \$DEPLOYMENT_NAME"
+  exit 1
+fi
+
+if [ -z "$DEPLOYMENTS_REPO" ]; then
+  echo "missing \$DEPLOYMENTS_REPO"
+  exit 1
+fi
+
+TMPDIR=${TMPDIR:-/tmp}
+
+rm -rf ${TMPDIR}/diego-release-gopath.*
+rm -rf ${TMPDIR}/diego-release-deployments.*
+
+export GOPATH_ROOT=$(mktemp -d ${TMPDIR}/diego-release-gopath.XXXXX)
+export DEPLOYMENTS_DIR=$(mktemp -d ${TMPDIR}/diego-release-deployments.XXXXXX)/deployments
+
+export GOPATH=$GOPATH_ROOT
+export PATH=$GOPATH_ROOT/bin:$PATH
+
+function copy_to_gopath {
+  mkdir -p ${GOPATH_ROOT}/src/$(dirname $1)
+  rsync -a src/$(basename $1)/ ${GOPATH_ROOT}/src/$1/
+}
+
+copy_to_gopath github.com/cloudfoundry/cf-acceptance-tests
+
+export GOPATH=${GOPATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry/cf-acceptance-tests/Godeps/_workspace
+export PATH=${GOPATH_ROOT}/src/github.com/cloudfoundry/cf-acceptance-tests/Godeps/_workspace/bin:${PATH}
+
+git clone $DEPLOYMENTS_REPO ${DEPLOYMENTS_DIR}
+
+cd $GOPATH_ROOT/src/github.com/cloudfoundry/cf-acceptance-tests
+
+CF_VERBOSE_OUTPUT=true \
+  CF_COLOR=false \
+  CONFIG=${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/ci/system_tests_config.json \
+  ./bin/test -nodes=4 -stream -skip=SSO
