@@ -9,7 +9,6 @@ ENV LANG       en_US.UTF-8
 ENV LC_ALL     en_US.UTF-8
 
 ADD https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0/spiff_linux_amd64.zip /tmp/
-RUN ls /tmp
 RUN unzip /tmp/spiff_linux_amd64.zip -d /usr/local/bin
 RUN rm /tmp/spiff_linux_amd64.zip
 
@@ -39,3 +38,10 @@ RUN gem install rake -v 0.9.2.2 --no-rdoc --no-ri
 #
 # no, really.
 RUN gem install debugger-ruby_core_source --no-rdoc --no-ri
+
+# curl for cats
+RUN apt-get -y install curl
+
+# cf (gcf) for cats
+RUN curl -L http://go-cli.s3-website-us-east-1.amazonaws.com/releases/latest/cf-linux-amd64.tgz | tar zxf - -C /usr/bin
+RUN cp /usr/bin/cf /usr/bin/gcf
