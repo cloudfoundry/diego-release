@@ -1,12 +1,13 @@
 # diego release
 
 <p align="center">
-  ![Go Diego Go!](http://i.imgur.com/WrqaOd9.png)
+  <img src="http://i.imgur.com/WrqaOd9.png" alt="Go Diego Go!" />
 </p>
 
 A BOSH release for deploying the following Diego components:
 
-1. [Executor](https://github.com/cloudfoundry-incubator/executor) and [Garden](https://github.com/cloudfoundry-incubator/executor)
+1. [Executor](https://github.com/cloudfoundry-incubator/executor)
+1. [Garden](https://github.com/cloudfoundry-incubator/executor)
 1. [Stager](https://github.com/cloudfoundry-incubator/stager)
 1. [File Server](https://github.com/cloudfoundry-incubator/file-server)
 
