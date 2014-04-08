@@ -28,9 +28,7 @@ pushd /tmp/cache/cf-release
   ln -s $PWD/.git/modules/src/uaa src/uaa/.git
 
   echo cf | bosh create release
-  bosh vms
-  bosh status
-  bosh -n upload release --rebase --skip-if-exists
+  bosh -n upload release --rebase --skip-if-exists || true
 popd
 
 echo diego | bosh create release
