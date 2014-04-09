@@ -29,14 +29,14 @@ case $1 in
 
     echo $$ > /var/vcap/sys/run/warden/warden.pid
 
-    exec /var/vcap/packages/garden/bin/garden \
+    exec /var/vcap/packages/warden-linux/bin/warden-linux \
       -disableQuotas=<%= !p("warden.disk_quota_enabled") %> \
       -listenNetwork=<%= p("warden.listen_network") %> \
       -listenAddr=<%= p("warden.listen_address") %> \
       -depot=/var/vcap/data/warden/depot \
       -rootfs=/var/vcap/packages/rootfs_lucid64 \
       -backend=linux \
-      -bin=/var/vcap/packages/garden/src/github.com/pivotal-cf-experimental/garden/linux_backend/bin \
+      -bin=/var/vcap/packages/warden-linux/src/github.com/cloudfoundry-incubator/warden-linux/linux_backend/bin \
       -debug \
       -containerGraceTime=5m \
       1>>$LOG_DIR/warden.stdout.log \

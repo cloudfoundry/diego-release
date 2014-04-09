@@ -25,7 +25,7 @@ for package in \
     github.com/cloudfoundry-incubator/stager \
     github.com/cloudfoundry-incubator/linux-smelter \
     github.com/cloudfoundry-incubator/file-server \
-    github.com/pivotal-cf-experimental/garden;
+    github.com/cloudfoundry-incubator/warden-linux;
     do
   copy_to_gopath $package
 done
@@ -46,7 +46,7 @@ export EXECUTOR_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/exec
 export STAGER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/stager/Godeps/_workspace:${GOPATH_ROOT}
 export FILE_SERVER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/file-server/Godeps/_workspace:${GOPATH_ROOT}
 export LINUX_SMELTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/linux-smelter/Godeps/_workspace:${GOPATH_ROOT}
-export GARDEN_GOPATH=${GOPATH_ROOT}/src/github.com/pivotal-cf-experimental/garden/Godeps/_workspace:${GOPATH_ROOT}
+export WARDEN_LINUX_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/warden-linux/Godeps/_workspace:${GOPATH_ROOT}
 
 # grab master of loggregator
 git clone https://github.com/cloudfoundry/loggregator $LOGGREGATOR_GOPATH --depth 1

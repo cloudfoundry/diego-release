@@ -1,9 +1,6 @@
 [submodule "src/executor"]
 	path = src/executor
 	url = https://github.com/cloudfoundry-incubator/executor.git
-[submodule "src/garden"]
-	path = src/garden
-	url = https://github.com/pivotal-cf-experimental/garden
 [submodule "src/stager"]
 	path = src/stager
 	url = https://github.com/cloudfoundry-incubator/stager.git
@@ -20,3 +17,6 @@
 	path = src/cf-acceptance-tests
 	url = https://github.com/cloudfoundry/cf-acceptance-tests.git
 	branch = diego
+[submodule "src/warden-linux"]
+	path = src/warden-linux
+	url = https://github.com/cloudfoundry-incubator/warden-linux
