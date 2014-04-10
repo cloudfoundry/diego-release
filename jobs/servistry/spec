@@ -1,0 +1,22 @@
+---
+name: servistry
+
+templates:
+  servistry_ctl.erb: bin/servistry_ctl
+
+packages:
+  - common
+  - servistry
+
+properties:
+  etcd.machines:
+    description: "IPs pointing to the ETCD cluster"
+
+  nats.user:
+    description: "Username for server authentication."
+  nats.password:
+    description: "Password for server authentication."
+  nats.port:
+    description: "The port for the NATS server to listen on."
+  nats.machines:
+    description: "IP of each NATS cluster member."

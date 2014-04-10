@@ -35,6 +35,9 @@ jobs:
   - name: file_server_z2
     instances: 0
 
+  - name: servistry_z2
+    instances: 0
+
 resource_pools:
   - name: small_z1
     cloud_properties:

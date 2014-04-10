@@ -1,0 +1,5 @@
+check process servistry
+  with pidfile /var/vcap/sys/run/servistry/servistry.pid
+  start program "/var/vcap/jobs/servistry/bin/servistry_ctl start"
+  stop program "/var/vcap/jobs/servistry/bin/servistry_ctl stop"
+  group vcap

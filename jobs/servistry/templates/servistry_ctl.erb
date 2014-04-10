@@ -1,0 +1,40 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/servistry
+LOG_DIR=/var/vcap/sys/log/servistry
+
+PIDFILE=$RUN_DIR/servistry.pid
+
+source /var/vcap/packages/common/utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "servistry"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $LOG_DIR
+
+    echo $$ > /var/vcap/sys/run/servistry/servistry.pid
+
+    exec /var/vcap/packages/servistry/bin/servistry \
+      -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
+      -natsUsername=<%= p("nats.user") %> \
+      -natsPassword=<%= p("nats.password") %> \
+      1>>$LOG_DIR/servistry.stdout.log \
+      2>>$LOG_DIR/servistry.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: servistry_ctl {start|stop}"
+
+    ;;
+
+esac
