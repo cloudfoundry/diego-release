@@ -23,6 +23,7 @@ for package in \
     github.com/cloudfoundry-incubator/inigo \
     github.com/cloudfoundry-incubator/executor \
     github.com/cloudfoundry-incubator/stager \
+    github.com/cloudfoundry-incubator/servistry \
     github.com/cloudfoundry-incubator/linux-smelter \
     github.com/cloudfoundry-incubator/file-server \
     github.com/cloudfoundry-incubator/warden-linux;
@@ -44,6 +45,7 @@ export PATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo/Godeps/_w
 export LOGGREGATOR_GOPATH=${GOPATH_ROOT}/loggregator
 export EXECUTOR_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/executor/Godeps/_workspace:${GOPATH_ROOT}
 export STAGER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/stager/Godeps/_workspace:${GOPATH_ROOT}
+export SERVISTRY_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/servistry/Godeps/_workspace:${GOPATH_ROOT}
 export FILE_SERVER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/file-server/Godeps/_workspace:${GOPATH_ROOT}
 export LINUX_SMELTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/linux-smelter/Godeps/_workspace:${GOPATH_ROOT}
 export WARDEN_LINUX_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/warden-linux/Godeps/_workspace:${GOPATH_ROOT}
