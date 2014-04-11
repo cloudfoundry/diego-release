@@ -32,11 +32,11 @@ properties:
   etcd.machines:
     description: "IPs pointing to the ETCD cluster"
 
-  warden.listen_network:
-    description: "Warden server connection mode (tcp or unix)."
+  executor.warden.network:
+    description: "Network type for the warden server connection (tcp or unix)."
     default: unix
 
-  warden.address:
+  executor.warden.address:
     description: "Warden server listening address."
     default: /var/vcap/data/warden/warden.sock
 

@@ -17,13 +17,15 @@ properties:
   warden:
     kernel_network_tuning_enabled: false
     disk_quota_enabled: false
-    address: 127.0.0.1:7777
     listen_network: tcp
     listen_address: 0.0.0.0:7777
 
   executor:
     memory_capacity_mb: 5000
     disk_capacity_mb: 50000
+    warden:
+      network: tcp
+      address: 127.0.0.1:7777
 
 jobs:
   - name: executor_z2

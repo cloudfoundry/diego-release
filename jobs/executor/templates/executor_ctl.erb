@@ -28,8 +28,8 @@ case $1 in
 
     exec /var/vcap/packages/executor/bin/executor \
       -backendPlugin=<%= p("executor.backend_plugin") %> \
-      -wardenNetwork=<%= p("warden.listen_network") %> \
-      -wardenAddr=<%= p("warden.address") %> \
+      -wardenNetwork=<%= p("executor.warden.network") %> \
+      -wardenAddr=<%= p("executor.warden.address") %> \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -memoryMB=<%= p("executor.memory_capacity_mb") %> \
       -diskMB=<%= p("executor.disk_capacity_mb") %> \
