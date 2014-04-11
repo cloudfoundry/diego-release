@@ -27,6 +27,7 @@ case $1 in
     echo $$ > /var/vcap/sys/run/executor/executor.pid
 
     exec /var/vcap/packages/executor/bin/executor \
+      -backendPlugin=<%= p("executor.backend_plugin") %> \
       -wardenNetwork=<%= p("warden.listen_network") %> \
       -wardenAddr=<%= p("warden.address") %> \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
