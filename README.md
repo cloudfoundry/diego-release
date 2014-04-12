@@ -7,7 +7,7 @@
 A BOSH release for deploying the following Diego components:
 
 1. [Executor](https://github.com/cloudfoundry-incubator/executor)
-1. [Garden](https://github.com/cloudfoundry-incubator/executor)
+1. [Warden-Linux](https://github.com/cloudfoundry-incubator/warden-linux)
 1. [Stager](https://github.com/cloudfoundry-incubator/stager)
 1. [File Server](https://github.com/cloudfoundry-incubator/file-server)
 
