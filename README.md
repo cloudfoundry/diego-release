@@ -1,7 +1,7 @@
 # diego release
 
 <p align="center">
-  <img src="http://i.imgur.com/WrqaOd9.png" alt="Go Diego Go!" />
+  <img src="http://i.imgur.com/WrqaOd9.png" alt="Go Diego Go!" title="Go Diego Go!"/>
 </p>
 
 A BOSH release for deploying the following Diego components:
