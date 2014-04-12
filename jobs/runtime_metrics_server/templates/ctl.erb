@@ -1,0 +1,50 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/runtime_metrics_server
+LOG_DIR=/var/vcap/sys/log/runtime_metrics_server
+DATA_DIR=/var/vcap/data/runtime_metrics_server
+
+PIDFILE=$RUN_DIR/runtime_metrics_server.pid
+
+source /var/vcap/packages/common/utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "runtime_metrics_server"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $DATA_DIR
+    mkdir -p $LOG_DIR
+
+    depot=$DATA_DIR/depot
+
+    mkdir -p $DATA_DIR/depot
+
+    echo $$ > /var/vcap/sys/run/runtime_metrics_server/runtime_metrics_server.pid
+
+    exec /var/vcap/packages/runtime_metrics_server/bin/runtime-metrics-server \
+      -index=<%= spec.index %> \
+      -etcdCluster=<%= p("runtime_metrics_server.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -natsAddresses=<%= p("runtime_metrics_server.nats.machines").collect { |addr| "#{addr}:#{p("runtime_metrics_server.nats.port")}" }.join(",") %> \
+      -natsUsername='<%= p("runtime_metrics_server.nats.username") %>' \
+      -natsPassword='<%= p("runtime_metrics_server.nats.password") %>' \
+      -port=<%= p("runtime_metrics_server.status.port") %> \
+      -username=<%= p("runtime_metrics_server.status.username") %> \
+      -password=<%= p("runtime_metrics_server.status.password") %> \
+      1>>$LOG_DIR/runtime_metrics_server.stdout.log \
+      2>>$LOG_DIR/runtime_metrics_server.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: ctl {start|stop}"
+
+    ;;
+
+esac

@@ -1,0 +1,5 @@
+check process runtime_metrics_server
+  with pidfile /var/vcap/sys/run/runtime_metrics_server/runtime_metrics_server.pid
+  start program "/var/vcap/jobs/runtime_metrics_server/bin/ctl start"
+  stop program "/var/vcap/jobs/runtime_metrics_server/bin/ctl stop"
+  group vcap

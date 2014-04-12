@@ -1,0 +1,38 @@
+---
+name: runtime_metrics_server
+
+templates:
+  ctl.erb: bin/ctl
+
+packages:
+  - common
+  - runtime_metrics_server
+
+properties:
+  runtime_metrics_server.etcd.machines:
+    description: "IPs pointing to the ETCD cluster"
+
+  runtime_metrics_server.nats.machines:
+    description: "array of NATS addresses"
+
+  runtime_metrics_server.nats.port:
+    description: "NATS server port"
+    default: 4222
+
+  runtime_metrics_server.nats.username:
+    description: "NATS server username"
+
+  runtime_metrics_server.nats.password:
+    description: "NATS server password"
+
+  runtime_metrics_server.status.port:
+    description: "listening port for metrics server"
+    default: 5678
+
+  runtime_metrics_server.status.username:
+    description: "basic auth username for metrics server (leave empty for generated)"
+    default: ""
+
+  runtime_metrics_server.status.password:
+    description: "basic auth password for metrics server (leave empty for generated)"
+    default: ""
