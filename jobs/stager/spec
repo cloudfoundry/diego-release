@@ -24,15 +24,3 @@ properties:
   stager.compilers:
     default: "{}"
     description: "Map of compilers for different stacks in json format {'stack_name':'compiler_path'}"
-
-  stager.metrics.port:
-    description: "listening port for stager metrics endpoints"
-    default: 5678
-
-  stager.metrics.username:
-    description: "basic auth username for stager metrics endpoints (leave empty for generated)"
-    default: ""
-
-  stager.metrics.password:
-    description: "basic auth password for stager metrics endpoints (leave empty for generated)"
-    default: ""

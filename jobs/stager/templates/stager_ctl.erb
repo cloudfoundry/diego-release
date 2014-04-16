@@ -24,16 +24,10 @@ case $1 in
     echo $$ > /var/vcap/sys/run/stager/stager.pid
 
     exec /var/vcap/packages/stager/bin/stager \
-      -index=<%= spec.index %> \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("nats.user") %> \
       -natsPassword=<%= p("nats.password") %> \
-
-      -metricsPort=<%= p("stager.metrics.port") %> \
-      -metricsUsername=<%= p("stager.metrics.username") %> \
-      -metricsPassword=<%= p("stager.metrics.password") %> \
-
       -compilers=<%= Shellwords.shellescape(p("stager.compilers").to_json) %> \
       1>>$LOG_DIR/stager.stdout.log \
       2>>$LOG_DIR/stager.stderr.log
