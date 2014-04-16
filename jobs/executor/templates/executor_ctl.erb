@@ -34,7 +34,6 @@ case $1 in
       -memoryMB=<%= p("executor.memory_capacity_mb") %> \
       -diskMB=<%= p("executor.disk_capacity_mb") %> \
       -containerInodeLimit=<%= p("executor.container_inode_limit") %> \
-      -registrySnapshotFile=$DATA_DIR/executor.snapshot \
       -tempDir=$TMP_DIR \
       -stack=<%= p("executor.stack") %> \
 <% if_p("loggregator_endpoint.host", "loggregator_endpoint.port") do |host, port| %> \

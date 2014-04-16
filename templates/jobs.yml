@@ -14,8 +14,8 @@ jobs:
   - name: executor_z1
     release: diego
     template:
-      - warden
       - executor
+      - warden
     instances: 1
     resource_pool: large_z1
     networks:
@@ -27,8 +27,8 @@ jobs:
   - name: executor_z2
     release: diego
     template:
-      - warden
       - executor
+      - warden
     instances: 1
     resource_pool: large_z2
     networks:
