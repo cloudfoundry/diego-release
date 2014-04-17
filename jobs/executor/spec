@@ -4,10 +4,12 @@ name: executor
 templates:
   executor_ctl.erb: bin/executor_ctl
   drain: bin/drain
+  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
   - common
   - executor
+  - syslog_forwarder
 
 properties:
   executor.backend_plugin:
@@ -29,6 +31,12 @@ properties:
   executor.stack:
     description: "the executor stack"
     default: "default"
+
+  executor.syslog_aggregator.address:
+    description: "The address to which rsyslog will forward log messages"
+
+  executor.syslog_aggregator.port:
+    description: "The port to which rsyslog will forward log messages"
 
   etcd.machines:
     description: "IPs pointing to the ETCD cluster"

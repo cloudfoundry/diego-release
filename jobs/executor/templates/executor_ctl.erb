@@ -2,7 +2,7 @@
 
 RUN_DIR=/var/vcap/sys/run/executor
 LOG_DIR=/var/vcap/sys/log/executor
-executor_CONF_DIR=/var/vcap/jobs/dea_next/config
+CONF_DIR=/var/vcap/jobs/executor/config
 FIRSTRUN_PATH=$RUN_DIR/firstrun
 PIDFILE=$RUN_DIR/executor.pid
 DATA_DIR=/var/vcap/data/executor
@@ -26,7 +26,14 @@ case $1 in
 
     echo $$ > /var/vcap/sys/run/executor/executor.pid
 
+    <% if_p("syslog_aggregator.address") do %>
+      /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
+    <% end %>
+
     exec /var/vcap/packages/executor/bin/executor \
+<% if_p("syslog_aggregator.address") do %>
+      -syslogName=vcap.executor \
+<% end %> \
       -backendPlugin=<%= p("executor.backend_plugin") %> \
       -wardenNetwork=<%= p("executor.warden.network") %> \
       -wardenAddr=<%= p("executor.warden.address") %> \
