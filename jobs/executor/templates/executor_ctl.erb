@@ -31,7 +31,7 @@ case $1 in
     <% end %>
 
     exec /var/vcap/packages/executor/bin/executor \
-<% if_p("syslog_aggregator.address") do %>
+<% if_p("syslog_aggregator.address") do %> \
       -syslogName=vcap.executor \
 <% end %> \
       -backendPlugin=<%= p("executor.backend_plugin") %> \
