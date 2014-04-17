@@ -32,10 +32,10 @@ properties:
     description: "the executor stack"
     default: "default"
 
-  executor.syslog_aggregator.address:
+  syslog_aggregator.address:
     description: "The address to which rsyslog will forward log messages"
 
-  executor.syslog_aggregator.port:
+  syslog_aggregator.port:
     description: "The port to which rsyslog will forward log messages"
 
   etcd.machines:

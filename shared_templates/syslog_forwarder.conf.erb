@@ -2,7 +2,7 @@
 
 $ModLoad imuxsock                       # local message reception (rsyslog uses a datagram socket)
 $MaxMessageSize 4k                      # default is 2k
-$WorkDirectory /var/vcap/sys/rsyslog/buffered # where messages should be buffered on disk
+$WorkDirectory /var/vcap/sys/rsyslog/buffered  # where messages should be buffered on disk
 
 # Forward vcap messages to the aggregator
 #
