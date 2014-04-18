@@ -66,23 +66,11 @@ This release must be composed with another release to provide
   ./scripts/update
   ```
 
-1. Generate warden-director stub manifest
+1. Generate warden-director stub manifest with the bosh director uuid
   
   ```bash
   mkdir -p ~/workspace/deployments/warden
-  ```
-
-  Now create a YML file with at ~/workspace/deployments/warden/director.yml with:
-
-  ```yaml
-  ---
-  director_uuid: UUID
-  ```
-
-  where UUID can be obtained via
-
-  ```
-  bosh status --UUID
+  printf "%s\ndirector_uuid: %s" "---" `bosh status --uuid` > ~/workspace/deployments/warden/director.yml
   ```
  
 1. Generate the combo manifest
