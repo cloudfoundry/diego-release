@@ -127,8 +127,7 @@ This release must be composed with another release to provide
 1. Create new CF Org & Space
   ```
   cf api api.10.244.0.34.xip.io
-  cf login
-  <admin/admin>
+  cf auth admin admin
   cf create-org diego
   cf create-space diego
   cf target -o diego -s diego
