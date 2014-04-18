@@ -3,9 +3,11 @@ name: runtime_metrics_server
 
 templates:
   ctl.erb: bin/ctl
+  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
   - common
+  - syslog_forwarder
   - runtime_metrics_server
 
 properties:
@@ -36,3 +38,6 @@ properties:
   runtime_metrics_server.status.password:
     description: "basic auth password for metrics server (leave empty for generated)"
     default: ""
+
+  network_name:
+    description: "Name of the network that the job lives in; used to figure out our IP."

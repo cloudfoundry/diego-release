@@ -17,7 +17,10 @@ case $1 in
 
     echo $$ > /var/vcap/sys/run/file_server/file_server.pid
 
+    /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
+
     exec /var/vcap/packages/file_server/bin/file-server \
+      -syslogName=vcap.file_server \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       <% if_p("file_server.ip") do %>\
       -address=<%= p("file_server.ip") %> \

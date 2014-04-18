@@ -3,9 +3,11 @@ name: file_server
 
 templates:
   file_server_ctl.erb: bin/file_server_ctl
+  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
   - common
+  - syslog_forwarder
   - file_server
   - linux-smelter
 
@@ -34,3 +36,6 @@ properties:
   ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
+
+  network_name:
+    description: "Name of the network that the job lives in; used to figure out our IP."

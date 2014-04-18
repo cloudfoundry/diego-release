@@ -3,9 +3,11 @@ name: stager
 
 templates:
   stager_ctl.erb: bin/stager_ctl
+  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
   - common
+  - syslog_forwarder
   - stager
 
 properties:
@@ -24,3 +26,6 @@ properties:
   stager.compilers:
     default: "{}"
     description: "Map of compilers for different stacks in json format {'stack_name':'compiler_path'}"
+
+  network_name:
+    description: "Name of the network that the job lives in; used to figure out our IP."

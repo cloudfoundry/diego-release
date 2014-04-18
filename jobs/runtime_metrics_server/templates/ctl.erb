@@ -23,7 +23,10 @@ case $1 in
 
     echo $$ > /var/vcap/sys/run/runtime_metrics_server/runtime_metrics_server.pid
 
+    /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
+
     exec /var/vcap/packages/runtime_metrics_server/bin/runtime-metrics-server \
+      -syslogName=vcap.file_server \
       -index=<%= spec.index %> \
       -etcdCluster=<%= p("runtime_metrics_server.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -natsAddresses=<%= p("runtime_metrics_server.nats.machines").collect { |addr| "#{addr}:#{p("runtime_metrics_server.nats.port")}" }.join(",") %> \
