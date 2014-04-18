@@ -20,7 +20,7 @@ template(name="CfLogTemplate" type="list") {
         property(name="pri")
         constant(value=">")
         property(name="timestamp" dateFormat="rfc3339")
-        constant(value=" <%= spec.name %> ")
+        constant(value=" <%= spec.networks.send(properties.network_name).ip %> ")
         property(name="programname")
         constant(value=" [job=")
         property(name="programname")

@@ -58,3 +58,6 @@ properties:
 
   loggregator_endpoint.shared_secret:
     description: "The key used to sign log messages"
+
+  network_name:
+    description: "Name of the network that the job lives in; used to figure out our IP."
