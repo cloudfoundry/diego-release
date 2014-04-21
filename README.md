@@ -29,6 +29,7 @@ This release must be composed with another release to provide
   $ git clone git@github.com:cloudfoundry/bosh-lite.git
   $ cd ~/workspace/bosh-lite
   ```
+
 1. Follow bosh-lite Installation and VMWare Fusion setup steps (requires vmware-fusion license)
 
   ```bash
@@ -40,6 +41,7 @@ This release must be composed with another release to provide
   bosh login admin admin
   scripts/add-route
   ```
+
 1. Download the latest Warden stemcell and upload it to bosh-lite
 
   ```bash
@@ -80,7 +82,6 @@ This release must be composed with another release to provide
   cd ~/workspace/diego-release
   ./generate_combo_manifest warden ../cf-release ~/workspace/deployments/warden/director.yml > ~/workspace/deployments/warden/diego.yml
   ```
-
  
 1. Target the deployment
 
@@ -136,4 +137,3 @@ This release must be composed with another release to provide
   cf set-env hello CF_DIEGO_BETA true
   cf push hello
   ```
-
