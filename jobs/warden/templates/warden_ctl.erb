@@ -33,6 +33,8 @@ case $1 in
       -disableQuotas=<%= !p("warden.disk_quota_enabled") %> \
       -listenNetwork=<%= p("warden.listen_network") %> \
       -listenAddr=<%= p("warden.listen_address") %> \
+      -denyNetworks=<%= p("warden.deny_networks").join(",") %> \
+      -allowNetworks=<%= p("warden.allow_networks").join(",") %> \
       -depot=/var/vcap/data/warden/depot \
       -rootfs=/var/vcap/packages/rootfs_lucid64 \
       -bin=/var/vcap/packages/warden-linux/src/github.com/cloudfoundry-incubator/warden-linux/linux_backend/bin \

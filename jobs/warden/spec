@@ -25,3 +25,11 @@ properties:
   warden.disk_quota_enabled:
     description: "Enforce disk quotas."
     default: true
+
+  warden.deny_networks:
+    description: "List of CIDR blocks to which containers will be denied access."
+    default: []
+
+  warden.allow_networks:
+    description: "List of CIDR blocks to which containers will be allowed access (applied after deny)."
+    default: []

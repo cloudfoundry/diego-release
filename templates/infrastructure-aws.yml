@@ -6,3 +6,11 @@ properties:
   executor:
     memory_capacity_mb: 34000
     disk_capacity_mb: 800000
+
+  warden:
+    deny_networks:
+      - 169.254.0.0/16 # EC2 instance metadata
+      - 10.10.0.0/16 # Entire VPC
+
+    allow_networks:
+      - 10.10.0.2/32 # Amazon DNS
