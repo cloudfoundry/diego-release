@@ -12,10 +12,6 @@ packages:
   - syslog_forwarder
 
 properties:
-  executor.backend_plugin:
-    description: "the backend to use (linux or windows)"
-    default: linux
-
   executor.memory_capacity_mb:
     description: "the memory capacity the executor should manage.  this should not be greater than the actual memory on the VM"
     default: 1024
