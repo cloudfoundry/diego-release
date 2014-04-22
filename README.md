@@ -10,7 +10,7 @@ A BOSH release for deploying the following Diego components:
 1. [Warden-Linux](https://github.com/cloudfoundry-incubator/warden-linux)
 1. [Stager](https://github.com/cloudfoundry-incubator/stager)
 1. [File Server](https://github.com/cloudfoundry-incubator/file-server)
-1. [Runtime Metrics](https://github.com/cloudfoundry-incubator/runtime-metrics-server)
+1. [Runtime Metrics Server](https://github.com/cloudfoundry-incubator/runtime-metrics-server)
 
 These components build out the new runtime architecture for Cloud Foundry,
 replacing the DEA and Health Manager.
