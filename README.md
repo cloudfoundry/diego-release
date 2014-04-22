@@ -133,6 +133,7 @@ This release must be composed with another release to provide
   ```
 
 1. Push hello-world app to CF & Configure it to use Diego
+
   ```
   cf push hello
   cf set-env hello CF_DIEGO_BETA true
