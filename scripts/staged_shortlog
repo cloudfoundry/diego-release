@@ -17,5 +17,5 @@ locations.each do |location, shas|
   Dir.chdir(location) do
     travis = TravisBuild.new(shas, ARGV[0] == "-c")
     travis.log_sorted_by_author_with_travis_status
-  end
+  end if Dir.exists?(location)
 end
