@@ -1,0 +1,35 @@
+# this template merges in the contact points required to talk to external services
+#
+# merge with
+jobs: (( merge ))
+
+properties:
+  domain: (( merge ))
+
+  nats:
+    user: (( merge ))
+    password: (( merge ))
+    port: 4222
+    machines: (( jobs.nats_z1.networks.cf1.static_ips jobs.nats_z2.networks.cf2.static_ips ))
+
+  loggregator_endpoint: (( merge ))
+
+  cc:
+    diego: true
+    srv_api_uri: (( "https://api." properties.domain ))
+    staging_upload_user: (( merge ))
+    staging_upload_password: (( merge ))
+
+external_services:
+  etcd:
+    machines: (( jobs.etcd_leader_z1.networks.cf1.static_ips jobs.etcd_z1.networks.cf1.static_ips jobs.etcd_z2.networks.cf2.static_ips ))
+
+  nats: (( properties.nats ))
+
+  loggregator_endpoint:
+    z1:
+      host: (( jobs.loggregator_trafficcontroller_z1.networks.cf1.static_ips.[0] || nil ))
+      shared_secret: (( properties.loggregator_endpoint.shared_secret ))
+    z2:
+      host: (( jobs.loggregator_trafficcontroller_z2.networks.cf2.static_ips.[0] || nil ))
+      shared_secret: (( properties.loggregator_endpoint.shared_secret ))

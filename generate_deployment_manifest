@@ -1,23 +1,38 @@
 #!/bin/bash
 
-# TLDR: cf_deployer *almost* works with diego. This script is a stop-gap
-#       measure to allow `lite_deploy diego` to succeed.
-#
-# Since diego-release needs to be deployed alongside cf-release, we use
-# `generate_combo_manifest` to produce the necessary manifest file.
-# `generate_combo_manifest` is similar to a standard
-# `generate_deployment_manifest`, but takes an additional argument that
-# points to a cf-release directory.
-#
-# This script just acts as a shim to bridge the gap between the two worlds
-# until we come up with a canonical way to compose releases.
-
+templates=$(dirname $0)/templates
 
 infrastructure=$1
+cf_release=$2
 
 shift
+shift
 
-$HOME/workspace/diego-release/generate_combo_manifest \
-  $infrastructure \
-  $HOME/workspace/cf-release \
-  $*
+function usage() {
+  echo "    Usage:
+    ./generate_deployment_manifest <aws|warden> /path/to/cf-release [stubs...]
+
+    Ex:
+    ~/workspace/diego-release/generate_combo_manifest aws \\
+      ~/workspace/cf-release \\
+      ~/workspace/deployments-aws/ketchup/cf-aws-stub.yml \\
+      ~/workspace/deployments-aws/ketchup/cf-shared-secrets.yml
+"
+  exit 1
+}
+
+if [ "$infrastructure" != "aws" ] && [ "$infrastructure" != "warden" ]; then
+  usage
+fi
+
+if [ -z "$cf_release" ]; then
+  usage
+fi
+
+spiff merge \
+  $templates/deployment.yml \
+  $templates/jobs.yml \
+  $templates/infrastructure-${infrastructure}.yml \
+  $templates/diego-cf-stub.yml \
+  $cf_release/templates/cf-infrastructure-${infrastructure}.yml \
+  "$@"
