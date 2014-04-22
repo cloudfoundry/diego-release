@@ -92,28 +92,6 @@ jobs:
     properties:
       network_name: cf1
 
-  - name: servistry_z1
-    release: diego
-    template:
-      - servistry
-    instances: 1
-    resource_pool: small_z1
-    networks:
-      - name: cf1
-    properties:
-      network_name: cf1
-
-  - name: servistry_z2
-    release: diego
-    template:
-      - servistry
-    instances: 1
-    resource_pool: small_z2
-    networks:
-      - name: cf2
-    properties:
-      network_name: cf2
-
 properties:
   <<: (( merge || nil ))
 
