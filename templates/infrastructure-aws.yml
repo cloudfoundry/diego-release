@@ -1,6 +1,25 @@
-properties:
-  template_only: (( merge ))
+networks: (( merge ))
 
+jobs:
+  - name: etcd_z1
+    instances: 1
+    networks:
+      - name: diego1
+        static_ips: (( static_ips(0) ))
+
+  - name: etcd_z2
+    instances: 1
+    networks:
+      - name: diego2
+        static_ips: (( static_ips(0) ))
+
+  - name: etcd_z3
+    instances: 1
+    networks:
+      - name: diego3
+        static_ips: (( static_ips(0) ))
+
+properties:
   executor:
     memory_capacity_mb: 34000
     disk_capacity_mb: 800000

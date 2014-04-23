@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 templates=$(dirname $0)/templates
 
 infrastructure=$1
@@ -29,10 +31,19 @@ if [ -z "$cf_release" ]; then
   usage
 fi
 
+shared_stub=/tmp/cf-diego-shared.yml
+
+spiff merge \
+  $templates/cf-shared.yml \
+  $templates/diego-cf-stub.yml \
+  $cf_release/templates/cf-properties.yml \
+  $cf_release/templates/cf-infrastructure-${infrastructure}.yml \
+  "$@" \
+  > $shared_stub
+
 spiff merge \
   $templates/deployment.yml \
   $templates/jobs.yml \
   $templates/infrastructure-${infrastructure}.yml \
-  $templates/diego-cf-stub.yml \
-  $cf_release/templates/cf-infrastructure-${infrastructure}.yml \
+  $shared_stub \
   "$@"

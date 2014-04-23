@@ -90,7 +90,45 @@ jobs:
     properties:
       network_name: diego1
 
+  - name: etcd_z1
+    release: diego
+    template:
+      - etcd
+    instances: 1
+    resource_pool: medium_z1
+    networks:
+      - name: diego1
+        static_ips: (( merge ))
+    properties:
+      network_name: diego1
+
+  - name: etcd_z2
+    release: diego
+    template:
+      - etcd
+    instances: 1
+    resource_pool: medium_z2
+    networks:
+      - name: diego2
+        static_ips: (( merge ))
+    properties:
+      network_name: diego2
+
+  - name: etcd_z3
+    release: diego
+    template:
+      - etcd
+    instances: 1
+    resource_pool: medium_z3
+    networks:
+      - name: diego3
+        static_ips: (( merge ))
+    properties:
+      network_name: diego3
+
 properties:
+  <<: (( merge || nil ))
+
   warden: ~
 
   executor:
@@ -104,7 +142,9 @@ properties:
     compilers:
       lucid64: linux-smelter/linux-smelter.zip
 
-  etcd: (( external_services.etcd ))
+  etcd:
+    machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+
   nats: (( external_services.nats ))
   cc: (( external_services.cc ))
 

@@ -1,4 +1,6 @@
-meta: (( merge ))
+meta:
+  environment: (( merge || nil ))
+  stemcell: (( merge ))
 
 name: (( merge || meta.environment "-diego" ))
 
@@ -26,8 +28,6 @@ update:
   update_watch_time: 5000-600000
 
 resource_pools:
-  - <<: (( merge ))
-
   - name: small_z1
     network: diego1
     size: (( auto ))
@@ -36,6 +36,12 @@ resource_pools:
 
   - name: small_z2
     network: diego2
+    size: (( auto ))
+    stemcell: (( meta.stemcell ))
+    cloud_properties: (( merge ))
+
+  - name: small_z3
+    network: diego3
     size: (( auto ))
     stemcell: (( meta.stemcell ))
     cloud_properties: (( merge ))
@@ -52,6 +58,12 @@ resource_pools:
     stemcell: (( meta.stemcell ))
     cloud_properties: (( merge ))
 
+  - name: medium_z3
+    network: diego3
+    size: (( auto ))
+    stemcell: (( meta.stemcell ))
+    cloud_properties: (( merge ))
+
   - name: large_z1
     network: diego1
     size: (( auto ))
@@ -60,6 +72,12 @@ resource_pools:
 
   - name: large_z2
     network: diego2
+    size: (( auto ))
+    stemcell: (( meta.stemcell ))
+    cloud_properties: (( merge ))
+
+  - name: large_z3
+    network: diego3
     size: (( auto ))
     stemcell: (( meta.stemcell ))
     cloud_properties: (( merge ))

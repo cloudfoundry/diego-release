@@ -1,6 +1,3 @@
-# this template merges in the contact points required to talk to external services
-#
-# merge with
 jobs: (( merge ))
 
 properties:
@@ -15,16 +12,14 @@ properties:
   loggregator_endpoint: (( merge ))
 
   cc:
-    diego: true
-    srv_api_uri: (( "https://api." properties.domain ))
+    srv_api_uri: (( merge ))
     staging_upload_user: (( merge ))
     staging_upload_password: (( merge ))
 
 external_services:
-  etcd:
-    machines: (( jobs.etcd_leader_z1.networks.cf1.static_ips jobs.etcd_z1.networks.cf1.static_ips jobs.etcd_z2.networks.cf2.static_ips ))
-
   nats: (( properties.nats ))
+
+  cc: (( properties.cc ))
 
   loggregator_endpoint:
     z1:
