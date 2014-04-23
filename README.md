@@ -59,7 +59,7 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   git checkout develop
   ./update
   ```
- 
+
 1. Checkout diego-release (develop branch) from git
 
   ```bash
@@ -70,45 +70,53 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   ./scripts/update
   ```
 
-1. Generate warden-director stub manifest with the bosh director uuid
-  
+1. Generate a cf-release stub manifest with the bosh director uuid
+
   ```bash
   mkdir -p ~/workspace/deployments/warden
-  printf "%s\ndirector_uuid: %s" "---" `bosh status --uuid` > ~/workspace/deployments/warden/director.yml
+  printf "%s\ndirector_uuid: %s\nreleases: \n  - name: cf\n    version: latest\nproperties:\n  cc:\n    diego: true\n" "---" `bosh status --uuid` > ~/workspace/deployments/warden/cf-director.yml
   ```
- 
-1. Generate the combo manifest
 
+1. Generate and target cf-release manifest:
   ```bash
-  cd ~/workspace/diego-release
-  ./generate_combo_manifest warden ../cf-release ~/workspace/deployments/warden/director.yml > ~/workspace/deployments/warden/diego.yml
-  ```
- 
-1. Target the deployment
-
-  ```
-  bosh deployment ~/workspace/deployments/warden/diego.yml
+  cd ~/workspace/cf-release
+  ./generate_deployment_manifest warden ~/workspace/deployments/warden/cf-director.yml  > ~/workspace/deployments/warden/cf.yml
+  bosh deployment ~/workspace/deployments/warden/cf.yml
   ```
 
-1. Create and upload the releases
-
+1. Do the bosh dance:
   ```bash
-  cd ~/workspace/diego-release
-  bosh create release --force
-  yes yes | bosh upload release
-  
   cd ~/workspace/cf-release
   bosh create release --force
   yes yes | bosh upload release
+  yes yes | bosh deploy
   ```
 
-1. Deploy!
+1. Generate a diego warden-director stub manifest with the bosh director uuid:
 
-  ```
-  bosh deploy
+  ```bash
+  mkdir -p ~/workspace/deployments/warden
+  printf "%s\nname: diego\ndirector_uuid: %s" "---" `bosh status --uuid` > ~/workspace/deployments/warden/diego-director.yml
   ```
 
-1. Login to the locally deployed CF
+1. Generate and target diego's manifest:
+
+  ```bash
+  cd ~/workspace/diego-release
+  ./generate_deployment_manifest warden ../cf-release ~/workspace/deployments/warden/diego-director.yml > ~/workspace/deployments/warden/diego.yml
+  bosh deployment ~/workspace/deployments/warden/diego.yml
+  ```
+
+1. Dance some more:
+
+  ```bash
+  cd ~/workspace/diego-release
+  bosh create release --force
+  yes yes | bosh upload release
+  yes yes | bosh deploy
+  ```
+
+1. Point CF to the locally deployed CF
   ```
   cf api api.10.244.0.34.xip.io
   cf login
@@ -121,11 +129,12 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   cf api api.10.244.0.34.xip.io
   cf auth admin admin
   cf create-org diego
+  cf target -o diego
   cf create-space diego
   cf target -o diego -s diego
   ```
 
-1. Checkout cf-acceptance-tests (to get hello-world app)
+1. Checkout cf-acceptance-tests (to get, for example, the hello-world app)
 
   ```bash
   cd ~/go
