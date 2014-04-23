@@ -107,6 +107,8 @@ jobs:
         static_ips: (( merge ))
     properties:
       network_name: diego1
+    update:
+      serial: true
 
   - name: etcd_z2
     release: diego
@@ -119,6 +121,8 @@ jobs:
         static_ips: (( merge ))
     properties:
       network_name: diego2
+    update:
+      serial: true
 
   - name: etcd_z3
     release: diego
@@ -131,6 +135,8 @@ jobs:
         static_ips: (( merge ))
     properties:
       network_name: diego3
+    update:
+      serial: true
 
 properties:
   <<: (( merge || nil ))
