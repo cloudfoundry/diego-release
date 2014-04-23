@@ -17,8 +17,9 @@ These components build out the new runtime architecture for Cloud Foundry,
 replacing the DEA and Health Manager.
 
 This release relies on a separate deployment to provide
-[NATS](https://github.com/apcera/gnatsd). In practice this comes from
-[cf-release](https://github.com/cloudfoundry/cf-release).
+[NATS](https://github.com/apcera/gnatsd) and
+[Loggregator](https://github.com/cloudfoundry/loggregator). In practice these
+come from [cf-release](https://github.com/cloudfoundry/cf-release).
 
 ## Deploying Diego to a local Bosh-Lite instance
 
