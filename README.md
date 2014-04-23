@@ -11,13 +11,13 @@ A BOSH release for deploying the following Diego components:
 1. [Stager](https://github.com/cloudfoundry-incubator/stager)
 1. [File Server](https://github.com/cloudfoundry-incubator/file-server)
 1. [Runtime Metrics Server](https://github.com/cloudfoundry-incubator/runtime-metrics-server)
+1. [etcd](https://github.com/coreos/etcd)
 
 These components build out the new runtime architecture for Cloud Foundry,
 replacing the DEA and Health Manager.
 
-This release must be composed with another release to provide
-[etcd](https://github.com/coreos/etcd) and
-[NATS](https://github.com/apcera/gnatsd). In practice we always compose with
+This release relies on a separate deployment to provide
+[NATS](https://github.com/apcera/gnatsd). In practice this comes from
 [cf-release](https://github.com/cloudfoundry/cf-release).
 
 ## Deploying Diego to a local Bosh-Lite instance
