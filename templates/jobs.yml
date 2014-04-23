@@ -45,6 +45,8 @@ jobs:
       - name: diego1
     properties:
       network_name: diego1
+      cc: (( external_services.cc ))
+
 
   - name: file_server_z2
     release: diego
@@ -56,6 +58,7 @@ jobs:
       - name: diego2
     properties:
       network_name: diego2
+      cc: (( external_services.cc ))
 
   - name: stager_z1
     release: diego
@@ -67,6 +70,7 @@ jobs:
       - name: diego1
     properties:
       network_name: diego1
+      nats: (( external_services.nats ))
 
   - name: stager_z2
     release: diego
@@ -78,6 +82,7 @@ jobs:
       - name: diego2
     properties:
       network_name: diego2
+      nats: (( external_services.nats ))
 
   - name: runtime_metrics_server_z1
     release: diego
@@ -89,6 +94,7 @@ jobs:
       - name: diego1
     properties:
       network_name: diego1
+      nats: (( external_services.nats ))
 
   - name: etcd_z1
     release: diego
@@ -145,14 +151,11 @@ properties:
   etcd:
     machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
 
-  nats: (( external_services.nats ))
-  cc: (( external_services.cc ))
-
   runtime_metrics_server:
     etcd:
       machines: (( .properties.etcd.machines ))
 
     nats:
-      machines: (( .properties.nats.machines ))
-      username: (( .properties.nats.user ))
-      password: (( .properties.nats.password ))
+      machines: (( external_services.nats.machines ))
+      username: (( external_services.nats.user ))
+      password: (( external_services.nats.password ))

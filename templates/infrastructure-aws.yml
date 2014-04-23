@@ -1,3 +1,9 @@
+meta:
+  zones:
+    z1: (( properties.template_only.aws.availability_zone ))
+    z2: (( properties.template_only.aws.availability_zone2 ))
+    z3: (( properties.template_only.aws.availability_zone3 ))
+
 networks: (( merge ))
 
 jobs:
@@ -19,7 +25,14 @@ jobs:
       - name: diego3
         static_ips: (( static_ips(0) ))
 
+compilation:
+  cloud_properties:
+    instance_type: c1.medium
+    availability_zone: (( meta.zones.z1 ))
+
 properties:
+  template_only: (( merge ))
+
   executor:
     memory_capacity_mb: 34000
     disk_capacity_mb: 800000
@@ -31,3 +44,49 @@ properties:
 
     allow_networks:
       - 10.10.0.2/32 # Amazon DNS
+
+resource_pools:
+  - name: small_z1
+    cloud_properties:
+      instance_type: m1.small
+      availability_zone: (( meta.zones.z1 ))
+
+  - name: small_z2
+    cloud_properties:
+      instance_type: m1.small
+      availability_zone: (( meta.zones.z2 ))
+
+  - name: small_z3
+    cloud_properties:
+      instance_type: m1.small
+      availability_zone: (( meta.zones.z3 ))
+
+  - name: medium_z1
+    cloud_properties:
+      instance_type: m1.medium
+      availability_zone: (( meta.zones.z1 ))
+
+  - name: medium_z2
+    cloud_properties:
+      instance_type: m1.medium
+      availability_zone: (( meta.zones.z2 ))
+
+  - name: medium_z3
+    cloud_properties:
+      instance_type: m1.medium
+      availability_zone: (( meta.zones.z3 ))
+
+  - name: large_z1
+    cloud_properties:
+      instance_type: m1.large
+      availability_zone: (( meta.zones.z1 ))
+
+  - name: large_z2
+    cloud_properties:
+      instance_type: m1.large
+      availability_zone: (( meta.zones.z2 ))
+
+  - name: large_z3
+    cloud_properties:
+      instance_type: m1.large
+      availability_zone: (( meta.zones.z3 ))
