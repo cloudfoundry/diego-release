@@ -139,7 +139,8 @@ jobs:
       serial: true
 
 properties:
-  <<: (( merge || nil ))
+  ssl:
+    skip_cert_verify: false
 
   warden: ~
 
