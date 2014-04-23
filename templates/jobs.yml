@@ -98,8 +98,11 @@ jobs:
 
   - name: etcd_z1
     release: diego
-    template:
-      - etcd
+    templates:
+      - name: etcd
+        release: diego
+      - name: etcd_metrics_server
+        release: diego
     instances: 1
     resource_pool: medium_z1
     networks:
@@ -112,8 +115,11 @@ jobs:
 
   - name: etcd_z2
     release: diego
-    template:
-      - etcd
+    templates:
+      - name: etcd
+        release: diego
+      - name: etcd_metrics_server
+        release: diego
     instances: 1
     resource_pool: medium_z2
     networks:
@@ -126,8 +132,11 @@ jobs:
 
   - name: etcd_z3
     release: diego
-    template:
-      - etcd
+    templates:
+      - name: etcd
+        release: diego
+      - name: etcd_metrics_server
+        release: diego
     instances: 1
     resource_pool: medium_z3
     networks:
@@ -157,6 +166,13 @@ properties:
 
   etcd:
     machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+
+  etcd_metrics_server:
+    job_name: "etcd-diego"
+    nats:
+      machines: (( external_services.nats.machines ))
+      username: (( external_services.nats.user ))
+      password: (( external_services.nats.password ))
 
   runtime_metrics_server:
     etcd:
