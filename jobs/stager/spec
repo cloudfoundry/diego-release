@@ -29,3 +29,9 @@ properties:
 
   network_name:
     description: "Name of the network that the job lives in; used to figure out our IP."
+
+  syslog_aggregator.address:
+    description: "The address to which rsyslog will forward log messages"
+
+  syslog_aggregator.port:
+    description: "The port to which rsyslog will forward log messages"

@@ -3,10 +3,12 @@ name: etcd_metrics_server
 
 templates:
   ctl.erb: bin/ctl
+  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
   - common
   - etcd_metrics_server
+  - syslog_forwarder
 
 properties:
   etcd_metrics_server.job_name:
@@ -45,3 +47,9 @@ properties:
   etcd_metrics_server.status.password:
     description: "basic auth password for metrics server (leave empty for generated)"
     default: ""
+
+  syslog_aggregator.address:
+    description: "The address to which rsyslog will forward log messages"
+
+  syslog_aggregator.port:
+    description: "The port to which rsyslog will forward log messages"

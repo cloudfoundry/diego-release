@@ -4,6 +4,7 @@ RUN_DIR=/var/vcap/sys/run/etcd_metrics_server
 LOG_DIR=/var/vcap/sys/log/etcd_metrics_server
 PIDFILE=$RUN_DIR/etcd_metrics_server.pid
 WORK_DIR=/var/vcap/store/etcd_metrics_server
+CONF_DIR=/var/vcap/jobs/etcd_metrics_server/config
 
 source /var/vcap/packages/common/utils.sh
 
@@ -19,6 +20,8 @@ case $1 in
     chown -R vcap:vcap $LOG_DIR
 
     echo $$ > $PIDFILE
+
+    /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
 
     exec chpst -u vcap:vcap /var/vcap/packages/etcd_metrics_server/bin/etcd-metrics-server \
         -index=<%= spec.index %> \
