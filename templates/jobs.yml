@@ -162,10 +162,6 @@ properties:
 
   syslog_aggregator: ~
 
-  stager:
-    compilers:
-      lucid64: linux-smelter/linux-smelter.zip
-
   etcd:
     machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
 
