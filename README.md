@@ -139,9 +139,8 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 1. Checkout cf-acceptance-tests (to get, for example, the hello-world app)
 
   ```bash
-  cd ~/go
   go get -u -v github.com/cloudfoundry/cf-acceptance-tests/...
-  cd ~/go/src/github.com/cloudfoundry/cf-acceptance-tests/assets/hello-world
+  cd $GOPATH/src/github.com/cloudfoundry/cf-acceptance-tests/assets/hello-world
   ```
 
 1. Push hello-world app to CF & Configure it to use Diego
