@@ -25,13 +25,13 @@ pushd /tmp/cache/cf-release
 
   # work around uaa prepackaging :(
   rm src/uaa/.git
-  ln -s $PWD/.git/modules/src/uaa src/uaa/.git
+  ln -s .git/modules/src/uaa src/uaa/.git
 
   echo cf | bosh create release
   bosh -n upload release --rebase --skip-if-exists || true
 
   ./generate_deployment_manifest aws \
-    /tmp/deployments/$DEPLOYMENT_NAME/stubs/* > /tmp/cf-deployment.yml
+    /tmp/deployments/${DEPLOYMENT_NAME}/stubs/* > /tmp/cf-deployment.yml
 
   bosh deployment /tmp/cf-deployment.yml
 
@@ -42,7 +42,7 @@ echo diego | bosh create release
 bosh -n upload release --rebase --skip-if-exists || true
 
 ./generate_deployment_manifest aws /tmp/cache/cf-release \
-  /tmp/deployments/$DEPLOYMENT_NAME/stubs/* > /tmp/diego-deployment.yml
+  /tmp/deployments/${DEPLOYMENT_NAME}/stubs/* > /tmp/diego-deployment.yml
 
 bosh deployment /tmp/diego-deployment.yml
 
