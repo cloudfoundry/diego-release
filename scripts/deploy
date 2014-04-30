@@ -13,7 +13,7 @@ fi
 git clone $DEPLOYMENTS_REPO /tmp/deployments
 
 pushd /tmp/cache/cf-release
-  git checkout develop
+  git checkout acceptance-deployed
 
   git pull --ff-only origin develop
   git submodule foreach --recursive git submodule sync
