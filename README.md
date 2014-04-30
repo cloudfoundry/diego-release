@@ -42,7 +42,7 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   gem install bosh_cli
   bosh target 192.168.50.4
   bosh login admin admin
-  scripts/add-route
+  ./scripts/add-route
   ```
 
 1. Download the latest Warden stemcell and upload it to bosh-lite
