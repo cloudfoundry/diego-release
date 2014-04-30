@@ -25,7 +25,7 @@ pushd /tmp/cache/cf-release
 
   # work around uaa prepackaging :(
   rm src/uaa/.git
-  ln -s .git/modules/src/uaa src/uaa/.git
+  ln -s $PWD/.git/modules/src/uaa src/uaa/.git
 
   echo cf | bosh create release
   bosh -n upload release --rebase --skip-if-exists || true
