@@ -133,7 +133,7 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   cf create-org diego
   cf target -o diego
   cf create-space diego
-  cf target -o diego -s diego
+  cf target -s diego
   ```
 
 1. Checkout cf-acceptance-tests (to get, for example, the hello-world app)
