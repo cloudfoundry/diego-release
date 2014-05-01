@@ -118,13 +118,6 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   yes yes | bosh deploy
   ```
 
-1. Point CF to the locally deployed CF
-  ```
-  cf api api.10.244.0.34.xip.io
-  cf login
-  <admin/admin>
-  ```
-
 1. Create new CF Org & Space
 
   ```
