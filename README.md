@@ -105,7 +105,9 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 
   ```bash
   cd ~/workspace/diego-release
-  ./generate_deployment_manifest warden ../cf-release ~/workspace/deployments/warden/diego-director.yml > ~/workspace/deployments/warden/diego.yml
+  ./generate_deployment_manifest warden ../cf-release \
+    ~/workspace/deployments/warden/diego-director.yml > \
+    ~/workspace/deployments/warden/diego.yml
   bosh deployment ~/workspace/deployments/warden/diego.yml
   ```
 
