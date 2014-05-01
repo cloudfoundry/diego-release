@@ -7,7 +7,7 @@ templates:
   syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
-  - common
+  - pid_utils
   - executor
   - syslog_forwarder
 

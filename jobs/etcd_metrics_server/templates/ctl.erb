@@ -6,7 +6,7 @@ PIDFILE=$RUN_DIR/etcd_metrics_server.pid
 WORK_DIR=/var/vcap/store/etcd_metrics_server
 CONF_DIR=/var/vcap/jobs/etcd_metrics_server/config
 
-source /var/vcap/packages/common/utils.sh
+source /var/vcap/packages/pid_utils/pid_utils.sh
 
 case $1 in
 

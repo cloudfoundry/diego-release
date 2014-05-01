@@ -6,7 +6,7 @@ templates:
   syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
-  - common
+  - pid_utils
   - etcd_metrics_server
   - syslog_forwarder
 

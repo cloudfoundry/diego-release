@@ -3,7 +3,7 @@ name: etcd
 templates:
   etcd_ctl.erb: bin/etcd_ctl
 packages:
-  - common
+  - pid_utils
   - etcd
 
 properties:
