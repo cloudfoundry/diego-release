@@ -24,8 +24,9 @@ properties:
     description: "IP of each NATS cluster member."
 
   stager.compilers:
-    default: '{ "lucid64": "linux-smelter/linux-smelter.zip" }'
     description: 'Map of compilers for different stacks in json format {"stack_name":"compiler_path"}'
+    default:
+      lucid64: linux-smelter/linux-smelter.zip
 
   network_name:
     description: "Name of the network that the job lives in; used to figure out our IP."
