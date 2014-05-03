@@ -17,7 +17,7 @@ properties:
     default: 1024
 
   executor.disk_capacity_mb:
-    description: "the disk capacity the executor should manage.  this should not be greater than the actual disk quota on the VM"
+    description: "the container disk capacity the executor should manage.  this should not be greater than the actual disk quota on the VM"
     default: 4096
 
   executor.container_max_cpu_shares:
@@ -31,6 +31,14 @@ properties:
   executor.stack:
     description: "the executor stack"
     default: "lucid64"
+
+  executor.cache_path:
+    description: "path to the executor's cache"
+    default: "/var/vcap/data/executor_cache"
+
+  executor.max_cache_size_in_bytes:
+    description: "maximum size of the cache in bytes - this should leam a healthy overhead for temporary items, etc."
+    default: 10000000000
 
   syslog_aggregator.address:
     description: "The address to which rsyslog will forward log messages"

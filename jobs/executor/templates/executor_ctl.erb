@@ -43,6 +43,8 @@ case $1 in
       --loggregatorServer=<%= host %>:<%= port %> \
 <% end %> \
       --loggregatorSecret=<%= p("loggregator_endpoint.shared_secret") %> \
+      --cachePath=<%= p("executor.cache_path") %>\
+      --maxCacheSizeInBytes=<%= p("executor.max_cache_size_in_bytes") %>\
       1>>$LOG_DIR/executor.stdout.log \
       2>>$LOG_DIR/executor.stderr.log
 

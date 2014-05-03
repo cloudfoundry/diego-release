@@ -11,9 +11,11 @@ external_services: (( merge ))
 jobs:
   - name: executor_z1
     release: diego
-    template:
-      - executor
-      - warden
+    templates:
+      - name: executor
+        release: diego
+      - name: warden
+        release: diego
     instances: 1
     resource_pool: large_z1
     networks:
@@ -24,9 +26,11 @@ jobs:
 
   - name: executor_z2
     release: diego
-    template:
-      - executor
-      - warden
+    templates:
+      - name: executor
+        release: diego
+      - name: warden
+        release: diego
     instances: 1
     resource_pool: large_z2
     networks:
@@ -37,8 +41,9 @@ jobs:
 
   - name: file_server_z1
     release: diego
-    template:
-      - file_server
+    templates:
+      - name: file_server
+        release: diego
     instances: 1
     resource_pool: small_z1
     networks:
@@ -50,8 +55,9 @@ jobs:
 
   - name: file_server_z2
     release: diego
-    template:
-      - file_server
+    templates:
+      - name: file_server
+        release: diego
     instances: 1
     resource_pool: small_z2
     networks:
@@ -62,8 +68,9 @@ jobs:
 
   - name: stager_z1
     release: diego
-    template:
-      - stager
+    templates:
+      - name: stager
+        release: diego
     instances: 1
     resource_pool: small_z1
     networks:
@@ -74,8 +81,9 @@ jobs:
 
   - name: stager_z2
     release: diego
-    template:
-      - stager
+    templates:
+      - name: stager
+        release: diego
     instances: 1
     resource_pool: small_z2
     networks:
@@ -86,8 +94,9 @@ jobs:
 
   - name: runtime_metrics_server_z1
     release: diego
-    template:
-      - runtime_metrics_server
+    templates:
+      - name: runtime_metrics_server
+        release: diego
     instances: 1
     resource_pool: small_z1
     networks:
@@ -157,6 +166,8 @@ properties:
     memory_capacity_mb: 1024
     disk_capacity_mb: 10240
     container_inode_limit: 200000
+    cache_path: /var/vcap/data/executor_cache
+    max_cache_size_in_bytes: 10000000000
     warden: ~
 
   syslog_aggregator: ~
