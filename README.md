@@ -89,8 +89,8 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   ```bash
   cd ~/workspace/cf-release
   bosh create release --force
-  yes yes | bosh upload release
-  yes yes | bosh deploy
+  bosh -n upload release
+  bosh -n deploy
   ```
 
 1. Generate a diego warden-director stub manifest with the bosh director uuid:
@@ -118,8 +118,8 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   ```bash
   cd ~/workspace/diego-release
   bosh create release --force
-  yes yes | bosh upload release
-  yes yes | bosh deploy
+  bosh -n upload release
+  bosh -n deploy
   ```
 
 1. Create new CF Org & Space
