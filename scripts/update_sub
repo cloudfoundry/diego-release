@@ -13,6 +13,10 @@ if [ "$#" -ne 1 ]; then
   exit 1
 fi
 
+echo "Skipping cf-acceptance-tests"
+echo "See: https://www.pivotaltracker.com/story/show/70793548"
+echo ""
+
 repo=$1
 release=`pwd`
 
@@ -20,7 +24,7 @@ set -e
 
 # buckle up
 git submodule foreach \
-  "if (pwd | grep -q src/$repo); then" \
+  "if (pwd | grep  src/$repo | grep -q -v cf-acceptance-tests); then" \
   '  sub=`pwd`;' \
   '  git checkout master;' \
   '  git pull;' \
