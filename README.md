@@ -122,6 +122,49 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   bosh -n deploy
   ```
 
+Now you can either run the CATs or deploy your own app.
+
+### Running the CATs
+
+1. Checkout cf-acceptance-tests
+
+  ```bash
+  go get -u -v github.com/cloudfoundry/cf-acceptance-tests/...
+  cd $GOPATH/src/github.com/cloudfoundry/cf-acceptance-tests
+  ```
+
+1. Generate a CATs config file:
+
+  ```bash
+  cd $GOPATH/src/github.com/cloudfoundry/cf-acceptance-tests
+  cat > integration_config.json <<EOF
+  {
+    "api": "api.10.244.0.34.xip.io",
+    "admin_user": "admin",
+    "admin_password": "admin",
+    "apps_domain": "10.244.0.34.xip.io",
+    "skip_ssl_validation": true
+  }
+  EOF
+  export CONFIG=$PWD/integration_config.json
+  ```
+
+1. Run the diego CATs:
+
+  ```bash
+  cd $GOPATH/src/github.com/cloudfoundry/cf-acceptance-tests
+  ginkgo -nodes=4 ./diego
+  ```
+
+1. Run the runtime CATs:
+
+  ```bash
+  cd $GOPATH/src/github.com/cloudfoundry/cf-acceptance-tests
+  ginkgo -nodes=4 ./apps
+  ```
+
+### Deploying an app
+
 1. Create new CF Org & Space
 
   ```
