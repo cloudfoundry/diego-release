@@ -1,0 +1,40 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/converger
+LOG_DIR=/var/vcap/sys/log/converger
+CONF_DIR=/var/vcap/jobs/converger/config
+PIDFILE=$RUN_DIR/converger.pid
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "converger"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $LOG_DIR
+
+    echo $$ > /var/vcap/sys/run/converger/converger.pid
+
+    /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
+
+    exec /var/vcap/packages/converger/bin/converger \
+      -syslogName=vcap.converger \
+      -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      1>>$LOG_DIR/converger.stdout.log \
+      2>>$LOG_DIR/converger.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: converger_ctl {start|stop}"
+
+    ;;
+
+esac

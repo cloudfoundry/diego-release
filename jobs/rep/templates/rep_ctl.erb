@@ -1,0 +1,41 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/rep
+LOG_DIR=/var/vcap/sys/log/rep
+CONF_DIR=/var/vcap/jobs/rep/config
+PIDFILE=$RUN_DIR/rep.pid
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "rep"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $LOG_DIR
+
+    echo $$ > /var/vcap/sys/run/rep/rep.pid
+
+    /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
+
+    exec /var/vcap/packages/rep/bin/rep \
+      -syslogName=vcap.rep \
+      -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -executorURL=<%= p("rep.executor.url") %> \
+      1>>$LOG_DIR/rep.stdout.log \
+      2>>$LOG_DIR/rep.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: rep_ctl {start|stop}"
+
+    ;;
+
+esac

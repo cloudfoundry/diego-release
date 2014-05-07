@@ -1,0 +1,24 @@
+---
+name: converger
+
+templates:
+  converger_ctl.erb: bin/converger_ctl
+  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
+
+packages:
+  - pid_utils
+  - converger
+  - syslog_forwarder
+
+properties:
+  syslog_aggregator.address:
+    description: "The address to which rsyslog will forward log messages"
+
+  syslog_aggregator.port:
+    description: "The port to which rsyslog will forward log messages"
+
+  etcd.machines:
+    description: "IPs pointing to the ETCD cluster"
+
+  network_name:
+    description: "Name of the network that the job lives in; used to figure out our IP."

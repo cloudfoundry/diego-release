@@ -12,6 +12,10 @@ packages:
   - syslog_forwarder
 
 properties:
+  executor.listen_addr:
+    description: "the memory capacity the executor should manage.  this should not be greater than the actual memory on the VM"
+    default: "0.0.0.0:1700"
+
   executor.memory_capacity_mb:
     description: "the memory capacity the executor should manage.  this should not be greater than the actual memory on the VM"
     default: 1024

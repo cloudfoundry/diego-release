@@ -3,7 +3,6 @@
 RUN_DIR=/var/vcap/sys/run/executor
 LOG_DIR=/var/vcap/sys/log/executor
 CONF_DIR=/var/vcap/jobs/executor/config
-FIRSTRUN_PATH=$RUN_DIR/firstrun
 PIDFILE=$RUN_DIR/executor.pid
 DATA_DIR=/var/vcap/data/executor
 TMP_DIR=$DATA_DIR/tmp
@@ -19,9 +18,6 @@ case $1 in
     mkdir -p $DATA_DIR
     mkdir -p $LOG_DIR
 
-    depot=$DATA_DIR/depot
-
-    mkdir -p $DATA_DIR/depot
     mkdir -p $TMP_DIR
 
     echo $$ > /var/vcap/sys/run/executor/executor.pid
@@ -30,6 +26,7 @@ case $1 in
 
     exec /var/vcap/packages/executor/bin/executor \
       -syslogName=vcap.executor \
+      -listenAddr=<%= p("executor.listen_addr") %> \
       -wardenNetwork=<%= p("executor.warden.network") %> \
       -wardenAddr=<%= p("executor.warden.address") %> \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
@@ -40,11 +37,11 @@ case $1 in
       -tempDir=$TMP_DIR \
       -stack=<%= p("executor.stack") %> \
 <% if_p("loggregator_endpoint.host", "loggregator_endpoint.port") do |host, port| %> \
-      --loggregatorServer=<%= host %>:<%= port %> \
+      -loggregatorServer=<%= host %>:<%= port %> \
 <% end %> \
-      --loggregatorSecret=<%= p("loggregator_endpoint.shared_secret") %> \
-      --cachePath=<%= p("executor.cache_path") %>\
-      --maxCacheSizeInBytes=<%= p("executor.max_cache_size_in_bytes") %>\
+      -loggregatorSecret=<%= p("loggregator_endpoint.shared_secret") %> \
+      -cachePath=<%= p("executor.cache_path") %>\
+      -maxCacheSizeInBytes=<%= p("executor.max_cache_size_in_bytes") %>\
       1>>$LOG_DIR/executor.stdout.log \
       2>>$LOG_DIR/executor.stderr.log
 

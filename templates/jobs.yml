@@ -14,6 +14,10 @@ jobs:
     templates:
       - name: executor
         release: diego
+      - name: converger
+        release: diego
+      - name: rep
+        release: diego
       - name: warden
         release: diego
     instances: 1
@@ -28,6 +32,10 @@ jobs:
     release: diego
     templates:
       - name: executor
+        release: diego
+      - name: converger
+        release: diego
+      - name: rep
         release: diego
       - name: warden
         release: diego
