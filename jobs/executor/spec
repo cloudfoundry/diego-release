@@ -18,11 +18,11 @@ properties:
 
   executor.memory_capacity_mb:
     description: "the memory capacity the executor should manage.  this should not be greater than the actual memory on the VM"
-    default: 1024
+    default: "auto"
 
   executor.disk_capacity_mb:
     description: "the container disk capacity the executor should manage.  this should not be greater than the actual disk quota on the VM"
-    default: 4096
+    default: "auto" 
 
   executor.container_max_cpu_shares:
     description: "the maximum number of cpu shares for a container."

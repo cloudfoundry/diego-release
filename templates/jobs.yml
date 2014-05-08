@@ -171,11 +171,6 @@ properties:
   warden: ~
 
   executor:
-    memory_capacity_mb: 1024
-    disk_capacity_mb: 10240
-    container_inode_limit: 200000
-    cache_path: /var/vcap/data/executor_cache
-    max_cache_size_in_bytes: 10000000000
     warden: ~
 
   syslog_aggregator: ~
