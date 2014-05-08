@@ -27,9 +27,9 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 1. checkout bosh-lite from git
 
   ```bash
-  $ cd ~/workspace
-  $ git clone git@github.com:cloudfoundry/bosh-lite.git
-  $ cd ~/workspace/bosh-lite
+  cd ~/workspace
+  git clone git@github.com:cloudfoundry/bosh-lite.git
+  cd ~/workspace/bosh-lite
   ```
 
 1. Follow bosh-lite Installation and VMWare Fusion setup steps (requires vmware-fusion license)
