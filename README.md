@@ -29,15 +29,13 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   ```bash
   cd ~/workspace
   git clone git@github.com:cloudfoundry/bosh-lite.git
-  cd ~/workspace/bosh-lite
   ```
 
 1. Follow bosh-lite Installation and VMWare Fusion setup steps (requires vmware-fusion license)
 
   ```bash
-  install vmware-fusion vagrant plugin
-  vagrant plugin license vagrant-vmware-fusion /path/to/license.lic
-  vagrant up --provider vmware_fusion
+  cd ~/workspace/bosh-lite
+  vagrant up
   gem install bosh_cli
   bosh target 192.168.50.4
   bosh login admin admin
