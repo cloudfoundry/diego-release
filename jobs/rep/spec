@@ -20,6 +20,10 @@ properties:
   etcd.machines:
     description: "IPs pointing to the ETCD cluster"
 
+  rep.stack:
+    description: "the stack for which to handle requests"
+    default: "lucid64"
+
   rep.executor.url:
     description: "URL of the executor to represent."
     default: "http://127.0.0.1:1700" 

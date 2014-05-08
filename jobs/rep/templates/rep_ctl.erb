@@ -22,6 +22,7 @@ case $1 in
     exec /var/vcap/packages/rep/bin/rep \
       -syslogName=vcap.rep \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -stack=<%= p("rep.stack") %> \
       -executorURL=<%= p("rep.executor.url") %> \
       1>>$LOG_DIR/rep.stdout.log \
       2>>$LOG_DIR/rep.stderr.log

@@ -32,10 +32,6 @@ properties:
     description: "the inode limit enforced on each warden container."
     default: 200000
 
-  executor.stack:
-    description: "the executor stack"
-    default: "lucid64"
-
   executor.cache_path:
     description: "path to the executor's cache"
     default: "/var/vcap/data/executor_cache"
