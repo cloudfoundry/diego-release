@@ -5,6 +5,9 @@ set -e -x
 git remote add pipeline git@github.com:cloudfoundry-incubator/diego-release.git
 
 case "$DRONE_BRANCH" in
+  HEAD)
+    ./scripts/run_integration_tests
+    ;;
   develop)
     ./scripts/run_integration_tests
     git push pipeline HEAD:refs/heads/deploy
