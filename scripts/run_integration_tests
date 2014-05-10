@@ -25,6 +25,7 @@ for package in \
     github.com/cloudfoundry-incubator/converger \
     github.com/cloudfoundry-incubator/rep \
     github.com/cloudfoundry-incubator/stager \
+    github.com/cloudfoundry-incubator/app-manager \
     github.com/cloudfoundry-incubator/linux-smelter \
     github.com/cloudfoundry-incubator/file-server \
     github.com/cloudfoundry-incubator/warden-linux;
@@ -48,6 +49,7 @@ export EXECUTOR_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/exec
 export CONVERGER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/converger/Godeps/_workspace:${GOPATH_ROOT}
 export REP_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/rep/Godeps/_workspace:${GOPATH_ROOT}
 export STAGER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/stager/Godeps/_workspace:${GOPATH_ROOT}
+export APP_MANAGER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/app-manager/Godeps/_workspace:${GOPATH_ROOT}
 export FILE_SERVER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/file-server/Godeps/_workspace:${GOPATH_ROOT}
 export LINUX_SMELTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/linux-smelter/Godeps/_workspace:${GOPATH_ROOT}
 export WARDEN_LINUX_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/warden-linux/Godeps/_workspace:${GOPATH_ROOT}

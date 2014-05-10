@@ -1,0 +1,5 @@
+check process app-manager
+  with pidfile /var/vcap/sys/run/app-manager/app-manager.pid
+  start program "/var/vcap/jobs/app-manager/bin/app_manager_ctl start"
+  stop program "/var/vcap/jobs/app-manager/bin/app_manager_ctl stop"
+  group vcap

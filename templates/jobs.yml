@@ -100,6 +100,32 @@ jobs:
       network_name: diego2
       nats: (( external_services.nats ))
 
+  - name: app_manager_z1
+    release: diego
+    templates:
+      - name: app-manager
+        release: diego
+    instances: 1
+    resource_pool: small_z1
+    networks:
+      - name: diego1
+    properties:
+      network_name: diego1
+      nats: (( external_services.nats ))
+
+  - name: app_manager_z2
+    release: diego
+    templates:
+      - name: app-manager
+        release: diego
+    instances: 1
+    resource_pool: small_z2
+    networks:
+      - name: diego2
+    properties:
+      network_name: diego2
+      nats: (( external_services.nats ))
+
   - name: runtime_metrics_server_z1
     release: diego
     templates:
