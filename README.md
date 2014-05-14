@@ -166,7 +166,7 @@ Now you can either run the CATs or deploy your own app.
 1. Create new CF Org & Space
 
   ```
-  cf api api.10.244.0.34.xip.io
+  cf api --skip-ssl-validation api.10.244.0.34.xip.io
   cf auth admin admin
   cf create-org diego
   cf target -o diego
