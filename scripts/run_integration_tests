@@ -41,6 +41,10 @@ go install github.com/coreos/etcd
 go get github.com/apcera/gnatsd
 go install github.com/apcera/gnatsd
 
+# grab master of gorouter
+go get -d github.com/cloudfoundry/gorouter
+export ROUTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry/gorouter/Godeps/_workspace:${GOPATH_ROOT}
+
 # set up inigo's own dependencies
 export GOPATH=${GOPATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo/Godeps/_workspace
 export PATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo/Godeps/_workspace/bin:${PATH}
@@ -60,10 +64,6 @@ export ROUTE_EMITTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator
 
 # grab master of loggregator
 git clone https://github.com/cloudfoundry/loggregator $LOGGREGATOR_GOPATH --depth 1
-
-# grab master of gorouter
-go get -d -u github.com/cloudfoundry/gorouter
-export ROUTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry/gorouter/Godeps/_workspace:${GOPATH_ROOT}
 
 pushd $LOGGREGATOR_GOPATH
   git submodule update --init --recursive
