@@ -21,6 +21,7 @@ function copy_to_gopath {
 # grab and set up our components
 for package in \
     github.com/cloudfoundry-incubator/inigo \
+    github.com/cloudfoundry-incubator/auctioneer \
     github.com/cloudfoundry-incubator/executor \
     github.com/cloudfoundry-incubator/converger \
     github.com/cloudfoundry-incubator/rep \
@@ -45,6 +46,7 @@ export PATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo/Godeps/_w
 
 # set up compile-time $GOPATHs for each component
 export LOGGREGATOR_GOPATH=${GOPATH_ROOT}/loggregator
+export AUCTIONEER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/auctioneer/Godeps/_workspace:${GOPATH_ROOT}
 export EXECUTOR_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/executor/Godeps/_workspace:${GOPATH_ROOT}
 export CONVERGER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/converger/Godeps/_workspace:${GOPATH_ROOT}
 export REP_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/rep/Godeps/_workspace:${GOPATH_ROOT}

@@ -23,6 +23,11 @@ properties:
   nats.machines:
     description: "IP of each NATS cluster member."
 
+  app_manager.health_checks:
+    description: 'Map of compilers for different stacks in json format {"stack_name":"compiler_path"}'
+    default:
+      lucid64: dial-health-check/diego-health-check.tgz
+
   network_name:
     description: "Name of the network that the job lives in; used to figure out our IP."
 

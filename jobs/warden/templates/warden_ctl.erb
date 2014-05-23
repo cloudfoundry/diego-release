@@ -35,6 +35,7 @@ case $1 in
       -allowNetworks=<%= p("warden.allow_networks").join(",") %> \
       -depot=/var/vcap/data/warden/depot \
       -rootfs=/var/vcap/packages/rootfs_lucid64 \
+      -overlays=/var/vcap/data/warden/overlays \
       -bin=/var/vcap/packages/warden-linux/src/github.com/cloudfoundry-incubator/warden-linux/linux_backend/bin \
       -debug \
       -containerGraceTime=5m \

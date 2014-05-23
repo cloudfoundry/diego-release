@@ -1,6 +1,6 @@
 set -e
 
-REPO_NAME=github.com/cloudfoundry-incubator/linux-smelter
+REPO_NAME=github.com/cloudfoundry-incubator/dial-health-check
 
 REPO_DIR=$PWD/src/${REPO_NAME}
 
@@ -9,9 +9,9 @@ mkdir -p $(dirname $REPO_DIR)
 cp -a $(basename $REPO_NAME)/ $REPO_DIR
 
 export GOROOT=$(readlink -nf /var/vcap/packages/golang)
-export GOPATH=$PWD:${REPO_DIR}/Godeps/_workspace
+export GOPATH=$PWD
 export PATH=$GOROOT/bin:$PATH
 
-go build -o run ${REPO_NAME}
+go build -o diego-health-check ${REPO_NAME}
 
-tar -czf ${BOSH_INSTALL_TARGET}/linux-smelter.tgz run
+tar -czf ${BOSH_INSTALL_TARGET}/diego-health-check.tgz diego-health-check

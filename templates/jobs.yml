@@ -18,6 +18,8 @@ jobs:
         release: diego
       - name: rep
         release: diego
+      - name: auctioneer
+        release: diego
       - name: warden
         release: diego
     instances: 1
@@ -36,6 +38,8 @@ jobs:
       - name: converger
         release: diego
       - name: rep
+        release: diego
+      - name: auctioneer
         release: diego
       - name: warden
         release: diego
@@ -200,6 +204,24 @@ properties:
     warden: ~
 
   syslog_aggregator: ~
+
+  rep:
+    etcd:
+      machines: (( .properties.etcd.machines ))
+
+    nats:
+      machines: (( external_services.nats.machines ))
+      username: (( external_services.nats.user ))
+      password: (( external_services.nats.password ))
+
+  auctioneer:
+    etcd:
+      machines: (( .properties.etcd.machines ))
+
+    nats:
+      machines: (( external_services.nats.machines ))
+      username: (( external_services.nats.user ))
+      password: (( external_services.nats.password ))
 
   etcd:
     machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))

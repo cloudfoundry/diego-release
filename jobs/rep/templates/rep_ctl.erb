@@ -21,9 +21,13 @@ case $1 in
 
     exec /var/vcap/packages/rep/bin/rep \
       -syslogName=vcap.rep \
-      -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -etcdCluster=<%= p("rep.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -natsAddresses=<%= p("rep.nats.machines").collect { |addr| "#{addr}:#{p("rep.nats.port")}" }.join(",") %> \
+      -natsUsername=<%= p("rep.nats.username") %> \
+      -natsPassword=<%= p("rep.nats.password") %> \
       -stack=<%= p("rep.stack") %> \
       -executorURL=<%= p("rep.executor.url") %> \
+      -lrpHost=<%= spec.networks.send(properties.network_name).ip %>\
       1>>$LOG_DIR/rep.stdout.log \
       2>>$LOG_DIR/rep.stderr.log
 

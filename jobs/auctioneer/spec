@@ -1,13 +1,13 @@
 ---
-name: rep
+name: auctioneer
 
 templates:
-  rep_ctl.erb: bin/rep_ctl
+  auctioneer_ctl.erb: bin/auctioneer_ctl
   syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
   - pid_utils
-  - rep
+  - auctioneer
   - syslog_forwarder
 
 properties:
@@ -17,25 +17,17 @@ properties:
   syslog_aggregator.port:
     description: "The port to which rsyslog will forward log messages"
 
-  rep.etcd.machines:
+  auctioneer.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
 
-  rep.stack:
-    description: "the stack for which to handle requests"
-    default: "lucid64"
-
-  rep.executor.url:
-    description: "URL of the executor to represent."
-    default: "http://127.0.0.1:1700"
-
-  rep.nats.username:
+  auctioneer.nats.username:
     description: "Username for server authentication."
-  rep.nats.password:
+  auctioneer.nats.password:
     description: "Password for server authentication."
-  rep.nats.port:
+  auctioneer.nats.port:
     description: "The port for the NATS server to listen on."
     default: 4222
-  rep.nats.machines:
+  auctioneer.nats.machines:
     description: "IP of each NATS cluster member."
 
   network_name:

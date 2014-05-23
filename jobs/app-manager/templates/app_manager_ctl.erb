@@ -32,6 +32,7 @@ case $1 in
       -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("nats.user") %> \
       -natsPassword=<%= p("nats.password") %> \
+      -healthChecks=<%= Shellwords.shellescape(p("app_manager.health_checks").to_json) %> \
       1>>$LOG_DIR/app-manager.stdout.log \
       2>>$LOG_DIR/app-manager.stderr.log
 
