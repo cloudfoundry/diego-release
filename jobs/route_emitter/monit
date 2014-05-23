@@ -1,0 +1,5 @@
+check process route_emitter
+  with pidfile /var/vcap/sys/run/route_emitter/route_emitter.pid
+  start program "/var/vcap/jobs/route_emitter/bin/route_emitter_ctl start"
+  stop program "/var/vcap/jobs/route_emitter/bin/route_emitter_ctl stop"
+  group vcap

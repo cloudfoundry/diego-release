@@ -64,7 +64,6 @@ jobs:
       network_name: diego1
       cc: (( external_services.cc ))
 
-
   - name: file_server_z2
     release: diego
     templates:
@@ -121,6 +120,32 @@ jobs:
     release: diego
     templates:
       - name: app-manager
+        release: diego
+    instances: 1
+    resource_pool: small_z2
+    networks:
+      - name: diego2
+    properties:
+      network_name: diego2
+      nats: (( external_services.nats ))
+
+  - name: route_emitter_z1
+    release: diego
+    templates:
+      - name: route_emitter
+        release: diego
+    instances: 1
+    resource_pool: small_z1
+    networks:
+      - name: diego1
+    properties:
+      network_name: diego1
+      nats: (( external_services.nats ))
+
+  - name: route_emitter_z2
+    release: diego
+    templates:
+      - name: route_emitter
         release: diego
     instances: 1
     resource_pool: small_z2
@@ -215,6 +240,15 @@ properties:
       password: (( external_services.nats.password ))
 
   auctioneer:
+    etcd:
+      machines: (( .properties.etcd.machines ))
+
+    nats:
+      machines: (( external_services.nats.machines ))
+      username: (( external_services.nats.user ))
+      password: (( external_services.nats.password ))
+
+  route_emitter:
     etcd:
       machines: (( .properties.etcd.machines ))
 
