@@ -202,4 +202,3 @@ Follow the above instructions, but for step 3:
   cf set-env hello CF_DIEGO_RUN_BETA true
   cf push hello -i 3 -c ./your/start/command
   ```
-
