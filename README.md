@@ -184,9 +184,9 @@ Now you can either run the CATs or deploy your own app.
 1. Push hello-world app to CF & Configure it to use Diego
 
   ```
-  cf push hello --no-start
-  cf set-env hello CF_DIEGO_BETA true
-  cf start hello
+  cf push goodbye --no-start
+  cf set-env goodbye CF_DIEGO_BETA true
+  cf start goodbye
   ```
 
 ### Running an app
@@ -197,8 +197,8 @@ Follow the above instructions, but for step 3:
 1. Push hello-world app to CF & Configure it to use Diego
 
   ```
-  cf push hello --no-start
-  cf set-env hello CF_DIEGO_BETA true
-  cf set-env hello CF_DIEGO_RUN_BETA true
-  cf push hello -i 3 -c ./your/start/command
+  cf push goodbye --no-start
+  cf set-env goodbye CF_DIEGO_BETA true
+  cf set-env goodbye CF_DIEGO_RUN_BETA true
+  cf push goodbye -i 3 -c ./your/start/command
   ```
