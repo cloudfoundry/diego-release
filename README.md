@@ -193,7 +193,6 @@ Now you can either run the CATs or deploy your own app.
 
 Follow the above instructions, but for step 3:
 
-
 1. Push hello-world app to CF & Configure it to use Diego
 
   ```
