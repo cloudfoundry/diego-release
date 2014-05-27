@@ -29,3 +29,6 @@ properties:
     default: 4222
   route_emitter.nats.machines:
     description: "IP of each NATS cluster member."
+
+  network_name:
+    description: "Network that this job resides in."
