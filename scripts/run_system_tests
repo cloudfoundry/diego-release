@@ -42,4 +42,4 @@ cd $GOPATH_ROOT/src/github.com/cloudfoundry/cf-acceptance-tests
 CF_VERBOSE_OUTPUT=true \
   CF_COLOR=false \
   CONFIG=${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/ci/system_tests_config.json \
-  ./bin/test -nodes=4 -skip=SSO
+  ./bin/test_con_diego -nodes=4 -skip=SSO
