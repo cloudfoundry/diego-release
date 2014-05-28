@@ -4,7 +4,6 @@
   <img src="http://i.imgur.com/WrqaOd9.png" alt="Go Diego Go!" title="Go Diego Go!"/>
 </p>
 
-
 A [BOSH](https://github.com/cloudfoundry/bosh) release for deploying the
 following Diego components:
 
