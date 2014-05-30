@@ -32,7 +32,7 @@ case $1 in
       -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("nats.user") %> \
       -natsPassword=<%= p("nats.password") %> \
-      -compilers=<%= Shellwords.shellescape(p("stager.compilers").to_json) %> \
+      -circuses=<%= Shellwords.shellescape(p("stager.lifecycle_bundles").to_json) %> \
       1>>$LOG_DIR/stager.stdout.log \
       2>>$LOG_DIR/stager.stderr.log
 

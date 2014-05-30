@@ -23,10 +23,10 @@ properties:
   nats.machines:
     description: "IP of each NATS cluster member."
 
-  app_manager.health_checks:
-    description: 'Map of compilers for different stacks in json format {"stack_name":"compiler_path"}'
+  app_manager.lifecycle_bundles:
+    description: 'Map of lifecycle bundles for different stacks in json format {"stack_name":"lifecycle_bundle_path"}'
     default:
-      lucid64: dial-health-check/diego-health-check.tgz
+      lucid64: linux-circus/linux-circus.tgz
 
   network_name:
     description: "Name of the network that the job lives in; used to figure out our IP."
