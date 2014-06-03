@@ -3,6 +3,9 @@ meta:
     z1: (( properties.template_only.aws.availability_zone ))
     z2: (( properties.template_only.aws.availability_zone2 ))
     z3: (( properties.template_only.aws.availability_zone3 ))
+  stemcell:
+    name: bosh-aws-xen-ubuntu-trusty-go_agent
+    version: latest
 
 networks: (( merge ))
 
