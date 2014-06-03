@@ -29,6 +29,7 @@ for package in \
     github.com/cloudfoundry-incubator/stager \
     github.com/cloudfoundry-incubator/app-manager \
     github.com/cloudfoundry-incubator/linux-circus \
+    github.com/cloudfoundry-incubator/tps \
     github.com/cloudfoundry-incubator/file-server \
     github.com/cloudfoundry-incubator/warden-linux;
     do
@@ -59,6 +60,7 @@ export STAGER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/stager
 export APP_MANAGER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/app-manager/Godeps/_workspace:${GOPATH_ROOT}
 export FILE_SERVER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/file-server/Godeps/_workspace:${GOPATH_ROOT}
 export LINUX_CIRCUS_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/linux-circus/Godeps/_workspace:${GOPATH_ROOT}
+export TPS_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/tps/Godeps/_workspace:${GOPATH_ROOT}
 export WARDEN_LINUX_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/warden-linux/Godeps/_workspace:${GOPATH_ROOT}
 export ROUTE_EMITTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/route-emitter/Godeps/_workspace:${GOPATH_ROOT}
 
