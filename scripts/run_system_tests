@@ -2,44 +2,14 @@
 
 set -e -x
 
-RELEASE_ROOT=$(dirname $(dirname $0))
+# We generate the CF manifest using the stub ${DEPLOYMENT_NAME}/stubs/cf-aws located in the
+# ${DEPLOYMENTS_REPO} repository.  That stub is a YAML file with a value at meta.environment
+# which happens to equal cf-${DEPLOYMENT_NAME}, and spiff uses the value at that location to
+# determine the following BOSH deployment name.
+CF_DEPLOYMENT_NAME=cf-${DEPLOYMENT_NAME}
 
-if [ -z "$DEPLOYMENT_NAME" ]; then
-  echo "missing \$DEPLOYMENT_NAME"
-  exit 1
-fi
-
-if [ -z "$DEPLOYMENTS_REPO" ]; then
-  echo "missing \$DEPLOYMENTS_REPO"
-  exit 1
-fi
-
-TMPDIR=${TMPDIR:-/tmp}
-
-rm -rf ${TMPDIR}/diego-release-gopath.*
-rm -rf ${TMPDIR}/diego-release-deployments.*
-
-export GOPATH_ROOT=$(mktemp -d ${TMPDIR}/diego-release-gopath.XXXXX)
-export DEPLOYMENTS_DIR=$(mktemp -d ${TMPDIR}/diego-release-deployments.XXXXXX)/deployments
-
-export GOPATH=$GOPATH_ROOT
-export PATH=$GOPATH_ROOT/bin:$PATH
-
-function copy_to_gopath {
-  mkdir -p ${GOPATH_ROOT}/src/$(dirname $1)
-  rsync -a src/$(basename $1)/ ${GOPATH_ROOT}/src/$1/
-}
-
-copy_to_gopath github.com/cloudfoundry/cf-acceptance-tests
-
-export GOPATH=${GOPATH}:${GOPATH_ROOT}/src/github.com/cloudfoundry/cf-acceptance-tests/Godeps/_workspace
-export PATH=${GOPATH_ROOT}/src/github.com/cloudfoundry/cf-acceptance-tests/Godeps/_workspace/bin:${PATH}
-
-git clone $DEPLOYMENTS_REPO ${DEPLOYMENTS_DIR}
-
-cd $GOPATH_ROOT/src/github.com/cloudfoundry/cf-acceptance-tests
-
-CF_VERBOSE_OUTPUT=true \
-  CF_COLOR=false \
-  CONFIG=${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/ci/system_tests_config.json \
-  ./bin/test_con_diego -nodes=4 -skip=SSO
+bosh target ${BOSH_TARGET}
+bosh login ${BOSH_USER} ${BOSH_PASSWORD}
+bosh download manifest ${CF_DEPLOYMENT_NAME} > /tmp/cf-deployment.yml
+bosh deployment /tmp/cf-deployment.yml
+bosh run errand acceptance_tests

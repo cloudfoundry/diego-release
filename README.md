@@ -124,6 +124,26 @@ Now you can either run the CATs or deploy your own app.
 
 ### Running the CATs
 
+#### Option 1: Run as a BOSH errand
+
+The CF deployment includes the CATs as the `acceptance_tests` errand, so you can just run them as an errand.
+
+1. Target the CF deployment:
+   ```
+   bosh deployment ~/workspace/deployments/warden/cf.yml
+   ```
+
+2. Run the errand:
+   ```
+   bosh run errand acceptance_tests
+   ```
+
+
+
+#### Option 2: Run Locally
+
+If you are making changes to the CATs and want to iterate, you may wish to run the CATs locally.  You'll be running `ginkgo` on your host machine, targetted at your BOSH-lite deployment.
+
 1. Checkout cf-acceptance-tests
 
   ```bash
@@ -141,7 +161,9 @@ Now you can either run the CATs or deploy your own app.
     "admin_user": "admin",
     "admin_password": "admin",
     "apps_domain": "10.244.0.34.xip.io",
-    "skip_ssl_validation": true
+    "skip_ssl_validation": true,
+    "nodes": 1,
+    "include_diego": true
   }
   EOF
   export CONFIG=$PWD/integration_config.json
