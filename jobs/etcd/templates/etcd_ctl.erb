@@ -22,6 +22,8 @@ case $1 in
 
     echo $$ > $PIDFILE
 
+    ulimit -n 65536
+
     <% my_ip = spec.networks.send(properties.network_name).ip %>
 
     exec chpst -u vcap:vcap /var/vcap/packages/etcd/etcd -snapshot -data-dir=$WORK_DIR \
