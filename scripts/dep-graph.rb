@@ -25,18 +25,14 @@ def main
       dep_pkg_names.uniq!
 
       subgraph = add_subgraph(graph, job_name)
-      subgraph.add_node(node_id(job_name), :label => job_name, :shape => "point")
+      add_node(subgraph, job_name, nil)
 
       dep_pkg_names.each do |dep_pkg_name|
         unless subpackage?(dep_pkg_name, job_name)
           repo_name, subpackage_name = dep_pkg_name.split('/', 2)
-          subpackage_name ||= ""
           dep_subgraph = add_subgraph(graph, repo_name)
-          dep_subgraph.add_node(node_id(dep_pkg_name), :label => subpackage_name)
-
-          graph.add_edge(node_id(job_name), node_id(dep_pkg_name), {
-            :color => color(job_name),
-          })
+          add_node(dep_subgraph, dep_pkg_name, subpackage_name)
+          add_edge(graph, job_name, dep_pkg_name)
         end
       end
     end
@@ -84,6 +80,19 @@ def add_subgraph(graph, name)
     :label => name,
     :color => color(name),
     :fontsize => 24,
+  })
+end
+
+def add_node(graph, name, label)
+  graph.add_node(node_id(name), {
+    :label => label || "",
+    :shape => label ? "rectangle" : "point"
+  })
+end
+
+def add_edge(graph, from_name, to_name)
+  graph.add_edge(node_id(from_name), node_id(to_name), {
+    :color => color(from_name),
   })
 end
 
