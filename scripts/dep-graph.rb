@@ -70,7 +70,8 @@ def color(name)
     purple3
     tan4
   )
-  @colors[name.hash % @colors.length]
+  @colors_by_name ||= {}
+  @colors_by_name[name] ||= @colors[@colors_by_name.size % @colors.length]
 end
 
 def add_subgraph(graph, name)
