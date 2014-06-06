@@ -36,10 +36,6 @@ compilation:
 properties:
   template_only: (( merge ))
 
-  executor:
-    memory_capacity_mb: 34000
-    disk_capacity_mb: 800000
-
   warden:
     deny_networks:
       - 169.254.0.0/16 # EC2 instance metadata

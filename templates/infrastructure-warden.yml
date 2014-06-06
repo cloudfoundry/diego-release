@@ -21,8 +21,7 @@ properties:
     listen_address: 0.0.0.0:7777
 
   executor:
-    memory_capacity_mb: 5000
-    disk_capacity_mb: 50000
+    drain_timeout: 0
     warden:
       network: tcp
       address: 127.0.0.1:7777
@@ -55,7 +54,7 @@ jobs:
   - name: stager_z2
     instances: 0
 
-  - name: app_manager_z2 
+  - name: app_manager_z2
     instances: 0
 
 resource_pools:
