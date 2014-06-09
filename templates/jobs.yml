@@ -108,6 +108,8 @@ jobs:
     templates:
       - name: app-manager
         release: diego
+      - name: tps
+        release: diego
     instances: 1
     resource_pool: small_z1
     networks:
@@ -120,6 +122,8 @@ jobs:
     release: diego
     templates:
       - name: app-manager
+        release: diego
+      - name: tps
         release: diego
     instances: 1
     resource_pool: small_z2

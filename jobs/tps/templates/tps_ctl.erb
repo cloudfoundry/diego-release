@@ -1,0 +1,47 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/tps
+LOG_DIR=/var/vcap/sys/log/tps
+DATA_DIR=/var/vcap/data/tps
+CONF_DIR=/var/vcap/jobs/tps/config
+
+PIDFILE=$RUN_DIR/tps.pid
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "tps"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $DATA_DIR
+    mkdir -p $LOG_DIR
+
+    depot=$DATA_DIR/depot
+
+    mkdir -p $DATA_DIR/depot
+
+    echo $$ > /var/vcap/sys/run/tps/tps.pid
+
+    /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
+
+    exec /var/vcap/packages/tps/bin/tps \
+      -syslogName=vcap.tps \
+      -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      1>>$LOG_DIR/tps.stdout.log \
+      2>>$LOG_DIR/tps.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: tps_ctl {start|stop}"
+
+    ;;
+
+esac

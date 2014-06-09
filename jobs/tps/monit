@@ -1,0 +1,5 @@
+check process tps
+  with pidfile /var/vcap/sys/run/tps/tps.pid
+  start program "/var/vcap/jobs/tps/bin/tps_ctl start"
+  stop program "/var/vcap/jobs/tps/bin/tps_ctl stop"
+  group vcap
