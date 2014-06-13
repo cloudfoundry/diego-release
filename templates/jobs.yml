@@ -108,6 +108,8 @@ jobs:
     templates:
       - name: app-manager
         release: diego
+      - name: nsync
+        release: diego
       - name: tps
         release: diego
     instances: 1
@@ -122,6 +124,8 @@ jobs:
     release: diego
     templates:
       - name: app-manager
+        release: diego
+      - name: nsync
         release: diego
       - name: tps
         release: diego

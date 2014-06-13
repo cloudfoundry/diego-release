@@ -1,0 +1,50 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/nsync
+LOG_DIR=/var/vcap/sys/log/nsync
+DATA_DIR=/var/vcap/data/nsync
+CONF_DIR=/var/vcap/jobs/nsync/config
+
+PIDFILE=$RUN_DIR/nsync.pid
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "nsync"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $DATA_DIR
+    mkdir -p $LOG_DIR
+
+    depot=$DATA_DIR/depot
+
+    mkdir -p $DATA_DIR/depot
+
+    echo $$ > /var/vcap/sys/run/nsync/nsync.pid
+
+    /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
+
+    exec /var/vcap/packages/nsync/bin/nsync \
+      -syslogName=vcap.nsync \
+      -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
+      -natsUsername=<%= p("nats.user") %> \
+      -natsPassword=<%= p("nats.password") %> \
+      1>>$LOG_DIR/nsync.stdout.log \
+      2>>$LOG_DIR/nsync.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: nsync_ctl {start|stop}"
+
+    ;;
+
+esac

@@ -1,0 +1,5 @@
+check process nsync
+  with pidfile /var/vcap/sys/run/nsync/nsync.pid
+  start program "/var/vcap/jobs/nsync/bin/nsync_ctl start"
+  stop program "/var/vcap/jobs/nsync/bin/nsync_ctl stop"
+  group vcap

@@ -29,9 +29,6 @@ case $1 in
     exec /var/vcap/packages/app-manager/bin/app-manager \
       -syslogName=vcap.app-manager \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
-      -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
-      -natsUsername=<%= p("nats.user") %> \
-      -natsPassword=<%= p("nats.password") %> \
       -circuses=<%= Shellwords.shellescape(p("app_manager.lifecycle_bundles").to_json) %> \
       1>>$LOG_DIR/app-manager.stdout.log \
       2>>$LOG_DIR/app-manager.stderr.log
