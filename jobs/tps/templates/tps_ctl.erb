@@ -29,6 +29,10 @@ case $1 in
     exec /var/vcap/packages/tps/bin/tps \
       -syslogName=vcap.tps \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
+      -natsUsername=<%= p("nats.user") %> \
+      -natsPassword=<%= p("nats.password") %> \
+      -listenAddr=<%= spec.networks.send(properties.network_name).ip %>:1518 \
       1>>$LOG_DIR/tps.stdout.log \
       2>>$LOG_DIR/tps.stderr.log
 
