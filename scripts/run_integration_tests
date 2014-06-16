@@ -30,6 +30,7 @@ for package in \
     github.com/cloudfoundry-incubator/app-manager \
     github.com/cloudfoundry-incubator/linux-circus \
     github.com/cloudfoundry-incubator/tps \
+    github.com/cloudfoundry-incubator/nsync \
     github.com/cloudfoundry-incubator/file-server \
     github.com/cloudfoundry-incubator/warden-linux;
     do
@@ -63,6 +64,7 @@ export LINUX_CIRCUS_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/
 export TPS_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/tps/Godeps/_workspace:${GOPATH_ROOT}
 export WARDEN_LINUX_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/warden-linux/Godeps/_workspace:${GOPATH_ROOT}
 export ROUTE_EMITTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/route-emitter/Godeps/_workspace:${GOPATH_ROOT}
+export NSYNC_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/nsync/Godeps/_workspace:${GOPATH_ROOT}
 
 # grab master of loggregator
 git clone https://github.com/cloudfoundry/loggregator $LOGGREGATOR_GOPATH --depth 1
