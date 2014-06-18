@@ -2,7 +2,7 @@
 name: nsync
 
 templates:
-  nsync_ctl.erb: bin/nsync_ctl
+  nsync_listener_ctl.erb: bin/nsync_listener_ctl
   syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
