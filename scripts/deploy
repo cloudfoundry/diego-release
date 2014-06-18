@@ -4,13 +4,30 @@ set -e -x
 
 git submodule update --init --recursive
 
-bosh target ${BOSH_TARGET}
+bosh -n target $BOSH_TARGET
+
+if ! bosh -n login $BOSH_USER $BOSH_PASSWORD; then
+  echo "Creating director user"
+  bosh -n login admin admin
+  bosh -n create user $BOSH_USER $BOSH_PASSWORD
+  bosh -n login $BOSH_USER $BOSH_PASSWORD
+fi
 
 if [ ! -d /tmp/cache/cf-release ]; then
   git clone https://github.com/cloudfoundry/cf-release.git /tmp/cache/cf-release
 fi
 
 git clone $DEPLOYMENTS_REPO /tmp/deployments
+
+latest_trusty_stemcell_url=https://s3.amazonaws.com/bosh-jenkins-artifacts/bosh-stemcell/aws/light-bosh-stemcell-latest-aws-xen-ubuntu-trusty-go_agent.tgz
+wget -O /tmp/latest_trusty_stemcell $latest_trusty_stemcell_url
+bosh upload stemcell /tmp/latest_trusty_stemcell --skip-if-exists
+
+latest_lucid_stemcell_url=https://s3.amazonaws.com/bosh-jenkins-artifacts/bosh-stemcell/aws/light-bosh-stemcell-latest-aws-xen-ubuntu-lucid-go_agent.tgz
+wget -O /tmp/latest_lucid_stemcell $latest_lucid_stemcell_url
+bosh upload stemcell /tmp/latest_lucid_stemcell --skip-if-exists
+
+rm /tmp/latest_*_stemcell
 
 pushd /tmp/cache/cf-release
   git checkout acceptance-deployed
