@@ -8,9 +8,7 @@ bosh -n target $BOSH_TARGET
 
 if ! bosh -n login $BOSH_USER $BOSH_PASSWORD; then
   echo "Creating director user"
-  bosh -n login admin admin
-  bosh -n create user $BOSH_USER $BOSH_PASSWORD
-  bosh -n login $BOSH_USER $BOSH_PASSWORD
+  bosh -n -u admin -p admin create user $BOSH_USER $BOSH_PASSWORD
 fi
 
 if [ ! -d /tmp/cache/cf-release ]; then
