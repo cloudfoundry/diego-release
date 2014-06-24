@@ -276,6 +276,11 @@ properties:
       username: (( external_services.nats.user ))
       password: (( external_services.nats.password ))
 
+  nsync:
+    cc:
+      base_url: (( external_services.cc.srv_api_uri ))
+      basic_auth_password: (( external_services.cc.bulk_api_password ))
+
   runtime_metrics_server:
     etcd:
       machines: (( .properties.etcd.machines ))

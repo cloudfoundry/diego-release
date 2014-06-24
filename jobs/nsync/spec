@@ -3,6 +3,7 @@ name: nsync
 
 templates:
   nsync_listener_ctl.erb: bin/nsync_listener_ctl
+  nsync_bulker_ctl.erb: bin/nsync_bulker_ctl
   syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
@@ -11,6 +12,28 @@ packages:
   - nsync
 
 properties:
+  nsync.cc.base_url:
+    description: base URL of the cloud controller
+
+  nsync.cc.basic_auth_username:
+    description: "basic auth username for CC bulk API"
+    default: "bulk_api"
+
+  nsync.cc.basic_auth_password:
+    description: "basic auth password for CC bulk API"
+
+  nsync.cc.polling_interval:
+    description: "interval at which to poll bulk API"
+    default: 30s
+
+  nsync.cc.bulk_batch_size:
+    description: "number of apps to fetch at once from bulk API"
+    default: 500
+
+  ssl.skip_cert_verify:
+    description: "when connecting over https, ignore bad ssl certificates"
+    default: false
+
   etcd.machines:
     description: "IPs pointing to the ETCD cluster"
 

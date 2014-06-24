@@ -15,6 +15,7 @@ properties:
     srv_api_uri: (( merge ))
     staging_upload_user: (( merge ))
     staging_upload_password: (( merge ))
+    bulk_api_password: (( merge ))
 
 external_services:
   nats: (( properties.nats ))

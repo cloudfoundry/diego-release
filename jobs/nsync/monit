@@ -3,3 +3,9 @@ check process nsync_listener
   start program "/var/vcap/jobs/nsync/bin/nsync_listener_ctl start"
   stop program "/var/vcap/jobs/nsync/bin/nsync_listener_ctl stop"
   group vcap
+
+check process nsync_bulker
+  with pidfile /var/vcap/sys/run/nsync/nsync_bulker.pid
+  start program "/var/vcap/jobs/nsync/bin/nsync_bulker_ctl start"
+  stop program "/var/vcap/jobs/nsync/bin/nsync_bulker_ctl stop"
+  group vcap
