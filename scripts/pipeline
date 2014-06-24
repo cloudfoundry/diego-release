@@ -20,4 +20,8 @@ case "$DRONE_BRANCH" in
     ./scripts/run_system_tests
     git push pipeline HEAD:refs/heads/master
     ;;
+  *)
+    echo "DRONE_BRANCH was not set correctly, was '$DRONE_BRANCH'"
+    exit 1
+    ;;
 esac
