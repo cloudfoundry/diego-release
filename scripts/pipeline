@@ -2,7 +2,7 @@
 
 set -e -x
 
-git remote add pipeline git@github.com:cloudfoundry-incubator/diego-release.git
+git remote | grep pipeline || git remote add pipeline git@github.com:cloudfoundry-incubator/diego-release.git
 
 case "$DRONE_BRANCH" in
   HEAD)
