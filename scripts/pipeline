@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e -x
+set -e -x -u
 
 case "$GO_STAGE_NAME" in
   integration)
