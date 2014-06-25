@@ -1,15 +1,27 @@
-#!/usr/bin/env ruby
+#!/bin/bash
 
-raise "Needs one argument of file to mutate" unless ARGV.length == 1
+set -e
 
-text = File.read(ARGV[0])
+if [ -z "$1" ]; then
+  echo "Needs one argument of file to mutate"
+  exit 1
+fi
 
-text.scan(/{{(.*)}}/).flatten.each do |var|
-  if ENV[var]
-    text.gsub!("{{#{var}}}", ENV[var].to_s)
+cp $1 "$1.tmp"
+
+cat "$1.tmp" | while read line; do
+  [[ $line =~ {{(.*)}} ]]
+  if [[ -n ${BASH_REMATCH[1]} ]]
+  then
+      VAR_NAME=${BASH_REMATCH[1]}
+      VAR_VALUE=$(eval "echo \${$VAR_NAME}")
+    if [ -n "$VAR_VALUE" ]; then
+      echo $line | sed "s/{{$VAR_NAME}}/$VAR_VALUE/g"
+    fi
   else
-    text.gsub!("- #{var}={{#{var}}}", "")
-  end
-end
+    echo $line
+  fi 
+done > $1
 
-File.open(ARGV[0], 'w') { |f| f.write(text) }
+rm "$1.tmp"
+
