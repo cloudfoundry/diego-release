@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e -x
+set -x
 
 if [ -z "$1" ]; then
   echo "Needs one argument of file to mutate"
