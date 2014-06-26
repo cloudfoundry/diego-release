@@ -10,7 +10,7 @@ fi
 cp $1 "$1.tmp"
 
 cat "$1.tmp" | while read line; do
-  [[ "$line" =~ {{(.*)}} ]]
+  [[ "$line" =~ \{\{(.*)\}\} ]]
   if [[ -n "${BASH_REMATCH[1]}" ]]
   then
     VAR_NAME="${BASH_REMATCH[1]}"
