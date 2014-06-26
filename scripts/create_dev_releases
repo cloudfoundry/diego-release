@@ -1,19 +1,11 @@
 #!/bin/bash
 
-set -e -x
+set -e -x -u
 
-chruby 2.0
-
-WORKING_DIR=`pwd`
-
-pushd cf-release
-  ./update
-  echo cf | bosh create release --with-tarball
-  mv dev_releases/*.tgz "${WORKING_DIR}/cf-release-created-by-ci.tgz"
-popd
-
+export DRONE_TMP=$TMPDIR/drone
 
 pushd diego-release
-  echo diego | bosh create release --force
-  mv dev_releases/*.tgz "${WORKING_DIR}/diego-release-created-by-ci.tgz"
+  /var/vcap/packages/drone/bin/drone -v -privileged build
 popd
+
+mv $DRONE_TMP/diego-release/HEAD/var/cache/drone/src/diego-release/output/*.tgz .

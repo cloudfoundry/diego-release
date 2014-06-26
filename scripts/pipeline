@@ -6,6 +6,9 @@ case "$GO_STAGE_NAME" in
   integration)
     ./scripts/run_integration_tests
     ;;
+  create-dev-releases)
+    ./scripts/create_dev_releases_inner
+    ;;
   deploy-and-test)
     ./scripts/deploy
     ./scripts/run_system_tests
