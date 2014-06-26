@@ -6,11 +6,14 @@ chruby 2.0
 
 WORKING_DIR=`pwd`
 
-pushd ${WORKING_DIR}/cf-release
+pushd cf-release
+  ./update
   echo cf | bosh create release --with-tarball
   mv dev_releases/*.tgz "${WORKING_DIR}/cf-release-created-by-ci.tgz"
 popd
 
-echo diego | bosh create release --force
-mv dev_releases/*.tgz "${WORKING_DIR}/diego-release-created-by-ci.tgz"
 
+pushd diego-release
+  echo diego | bosh create release --force
+  mv dev_releases/*.tgz "${WORKING_DIR}/diego-release-created-by-ci.tgz"
+popd
