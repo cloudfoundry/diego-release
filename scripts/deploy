@@ -2,8 +2,6 @@
 
 set -e -x -u
 
-git submodule update --init --recursive
-
 WORKING_DIR=`pwd`
 
 bosh -n target $BOSH_TARGET
@@ -25,10 +23,6 @@ case "$INFRASTRUCTURE" in
 esac
 
 pushd ${WORKING_DIR}/cf-release
-  # work around uaa prepackaging :(
-  rm src/uaa/.git
-  ln -s $PWD/.git/modules/src/uaa src/uaa/.git
-
   echo cf | bosh create release
   bosh -n upload release --rebase --skip-if-exists || true
 
