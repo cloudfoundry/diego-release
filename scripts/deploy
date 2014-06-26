@@ -22,10 +22,10 @@ case "$INFRASTRUCTURE" in
     ;;
 esac
 
-pushd ${WORKING_DIR}/cf-release
-  echo cf | bosh create release
-  bosh -n upload release --rebase --skip-if-exists || true
+bosh -n upload release "${WORKING_DIR}/cf-release-created-by-ci.tgz" --rebase --skip-if-exists || true
+bosh -n upload release "${WORKING_DIR}/diego-release-created-by-ci.tgz" --rebase --skip-if-exists || true
 
+pushd ${WORKING_DIR}/cf-release
   ./generate_deployment_manifest ${INFRASTRUCTURE} \
     ${WORKING_DIR}/deployments-runtime/${DEPLOYMENT_NAME}/stubs/* > /tmp/cf-deployment.yml
 
@@ -33,9 +33,6 @@ pushd ${WORKING_DIR}/cf-release
 
   yes yes | bosh deploy
 popd
-
-echo diego | bosh create release --force
-bosh -n upload release --rebase --skip-if-exists || true
 
 ./generate_deployment_manifest ${INFRASTRUCTURE} ${WORKING_DIR}/cf-release \
   ${WORKING_DIR}/deployments-runtime/${DEPLOYMENT_NAME}/stubs/* > /tmp/diego-deployment.yml
