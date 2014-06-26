@@ -6,7 +6,6 @@ mkdir -p "output"
 OUTPUT_DIR="$PWD/output"
 
 pushd cf-release
-  ./update
   echo cf | bosh create release --with-tarball
   mv dev_releases/*.tgz "${OUTPUT_DIR}/cf-release-created-by-ci.tgz"
 popd
