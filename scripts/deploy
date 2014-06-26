@@ -25,16 +25,6 @@ case "$INFRASTRUCTURE" in
 esac
 
 pushd ${WORKING_DIR}/cf-release
-  git checkout acceptance-deployed
-
-  git pull --ff-only origin develop
-  git submodule foreach --recursive git submodule sync
-  git submodule update --init --recursive
-
-  git reset --hard
-  git clean --force --force -d
-  git submodule foreach --recursive git clean --force --force -d
-
   # work around uaa prepackaging :(
   rm src/uaa/.git
   ln -s $PWD/.git/modules/src/uaa src/uaa/.git
