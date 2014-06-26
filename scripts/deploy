@@ -34,7 +34,7 @@ pushd ${WORKING_DIR}/cf-release
   yes yes | bosh deploy
 popd
 
-echo diego | bosh create release
+echo diego | bosh create release --force
 bosh -n upload release --rebase --skip-if-exists || true
 
 ./generate_deployment_manifest ${INFRASTRUCTURE} ${WORKING_DIR}/cf-release \
