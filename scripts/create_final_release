@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e -x
+
+export DRONE_TMP=$TMPDIR/drone
+
+pushd diego-release
+  /var/vcap/packages/drone/bin/drone -v -privileged build
+popd
+
+mv $DRONE_TMP/diego-release/HEAD/var/cache/drone/src/diego-release/output/*.tgz .

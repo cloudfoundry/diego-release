@@ -1,27 +1,23 @@
 #!/bin/bash
 
-set -e -x
+set -e -x -u
 
-git remote | grep pipeline || git remote add pipeline git@github.com:cloudfoundry-incubator/diego-release.git
-
-case "$DRONE_BRANCH" in
-  HEAD)
-    ./scripts/run_integration_tests
+case "$GO_STAGE_NAME" in
+  integration)
+    ./scripts/run_integration_tests_inner
     ;;
-  develop)
-    ./scripts/run_integration_tests
-    git push pipeline HEAD:refs/heads/deploy
+  create-dev-releases)
+    ./scripts/create_dev_releases_inner
     ;;
-  deploy)
-    ./scripts/deploy
-    git push pipeline HEAD:refs/heads/system-tests
+  deploy-and-test)
+    ./scripts/deploy_inner
+    ./scripts/run_system_tests_inner
     ;;
-  system-tests)
-    ./scripts/run_system_tests
-    git push pipeline HEAD:refs/heads/master
+  create-final-release)
+    ./scripts/create_final_release_inner
     ;;
   *)
-    echo "DRONE_BRANCH was not set correctly, was '$DRONE_BRANCH'"
+    echo "GO_STAGE_NAME was not set correctly, was '$GO_STAGE_NAME' -- should have been set by gocd"
     exit 1
     ;;
 esac

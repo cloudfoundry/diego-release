@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e -x -u
+
+mkdir -p "output"
+OUTPUT_DIR="$PWD/output"
+
+echo "----- Bring master up to date"
+git checkout master
+git merge develop --ff-only
+./scripts/update
+
+echo "----- Create final release"
+bosh -n create release --final --with-tarball
+
+echo "----- Move tarball to ${OUTPUT_DIR} for artifact publishing"
+mv releases/*.tgz "${OUTPUT_DIR}/diego-final-release-created-by-ci.tgz"
+
+echo "----- Update master and develop branches on origin"
+git commit -Am "CREATE FINAL RELEASE (automated commit)"
+git push origin master
+git checkout develop
+git pull origin/develop --ff-only
+git merge -m "Merge branch 'master' into develop (automated commit)"
+git push origin develop
+

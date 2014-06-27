@@ -5,11 +5,16 @@ env:
   - BOSH_USER={{BOSH_USER}}
   - BOSH_PASSWORD={{BOSH_PASSWORD}}
   - BOSH_TARGET={{BOSH_TARGET}}
+  - INFRASTRUCTURE={{INFRASTRUCTURE}}
   - DEPLOYMENT_NAME={{DEPLOYMENT_NAME}}
   - GINKGO_PARALLEL={{GINKGO_PARALLEL}}
+  - GO_STAGE_NAME={{GO_STAGE_NAME}}
 
 script:
   - ./scripts/pipeline
 
 cache:
   - /tmp/cache
+  - cf-release/.blobs
+  - output
+  - .blobs 
