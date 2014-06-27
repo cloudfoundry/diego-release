@@ -50,9 +50,6 @@ properties:
   syslog_aggregator.port:
     description: "The port to which rsyslog will forward log messages"
 
-  etcd.machines:
-    description: "IPs pointing to the ETCD cluster"
-
   executor.warden.network:
     description: "Network type for the warden server connection (tcp or unix)."
     default: unix

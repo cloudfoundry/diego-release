@@ -29,7 +29,6 @@ case $1 in
       -listenAddr=<%= p("executor.listen_addr") %> \
       -wardenNetwork=<%= p("executor.warden.network") %> \
       -wardenAddr=<%= p("executor.warden.address") %> \
-      -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -memoryMB=<%= p("executor.memory_capacity_mb") %> \
       -diskMB=<%= p("executor.disk_capacity_mb") %> \
       -containerInodeLimit=<%= p("executor.container_inode_limit") %> \
