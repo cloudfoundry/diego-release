@@ -4,10 +4,12 @@
 
 pushd src
 
-for f in *
+for f in */
 do 
   pushd $f
-  git co master && git pull
+  if [ -e .git ]; then
+    git checkout master && git pull
+  fi
   popd
 done
 popd
