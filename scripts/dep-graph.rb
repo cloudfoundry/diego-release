@@ -14,10 +14,12 @@ def main
 
   Dir.entries(src_dir).each do |dir|
     path = "#{src_dir}/#{dir}"
+    next if [".", ".."].include?(dir)
     next if Dir.glob("#{path}/**/*.go").empty?
 
     Dir.chdir(path) do
       job_name = get_pkg_name(`git config --get remote.origin.url`) || next
+
       dep_pkg_names = []
       Yajl::Parser.parse(`go list -json ./...`) do |pkg|
         dep_pkg_names.concat(pkg["Deps"].map { |n| get_pkg_name(n) }.compact)
@@ -30,6 +32,7 @@ def main
       dep_pkg_names.each do |dep_pkg_name|
         unless subpackage?(dep_pkg_name, job_name)
           repo_name, subpackage_name = dep_pkg_name.split('/', 2)
+
           dep_subgraph = add_subgraph(graph, repo_name)
           add_node(dep_subgraph, dep_pkg_name, subpackage_name)
           add_edge(graph, job_name, dep_pkg_name)
