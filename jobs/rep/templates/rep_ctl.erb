@@ -28,7 +28,7 @@ case $1 in
       -stack=<%= p("rep.stack") %> \
       -executorURL=<%= p("rep.executor.url") %> \
       -lrpHost=<%= spec.networks.send(properties.network_name).ip %>\
-      -repID=<%= spec.job.name %>-<%= spec.index %> \
+      -executorID=<%= spec.job.name %>-<%= spec.index %> \
       1>>$LOG_DIR/rep.stdout.log \
       2>>$LOG_DIR/rep.stderr.log
 
