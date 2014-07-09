@@ -6,8 +6,7 @@ mkdir -p "output"
 OUTPUT_DIR="$PWD/output"
 
 echo "----- Clean drone.yml files"
-git checkout -f develop -- .drone.yml
-git checkout -f master -- .drone.yml
+git checkout -- .drone.yml
 
 echo "----- Bring master up to date"
 git checkout master
