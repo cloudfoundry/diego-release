@@ -11,6 +11,10 @@ git checkout -- .drone.yml
 echo "----- Bring master up to date"
 git checkout master
 git merge develop --ff-only
+
+ssh-add tmp/github
+rm tmp/github
+
 ./scripts/update
 
 echo "----- Create final release"
@@ -21,9 +25,12 @@ mv releases/*.tgz "${OUTPUT_DIR}/diego-final-release-created-by-ci.tgz"
 
 echo "----- Update master and develop branches on origin"
 git commit -Am "CREATE FINAL RELEASE (automated commit)"
-git push origin master
+
+echo "----- Merge master back into develop"
 git checkout develop
 git pull origin/develop --ff-only
 git merge -m "Merge branch 'master' into develop (automated commit)"
-git push origin develop
 
+echo "----- Push changes"
+git push origin develop
+git push origin master
