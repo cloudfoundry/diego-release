@@ -12,8 +12,10 @@ echo "----- Bring master up to date"
 git checkout master
 git merge develop --ff-only
 
-ssh-add tmp/github
-rm tmp/github
+echo "----- Configure git to use our ssh key"
+export GIT_SSH=$(pwd)/tmp/git_ssh.sh
+echo "ssh -i $(pwd)/tmp/github" '"$@"' > $GIT_SSH
+chmod +x $GIT_SSH
 
 ./scripts/update
 
