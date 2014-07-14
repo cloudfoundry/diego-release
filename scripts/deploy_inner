@@ -4,6 +4,8 @@ set -e -x
 
 STUBS_DIR=deployments-runtime/${DEPLOYMENT_NAME}/stubs/
 
+chruby 2.1.2
+
 bosh -n target ${BOSH_TARGET}
 
 if ! bosh -n login ${BOSH_USER} ${BOSH_PASSWORD}; then
