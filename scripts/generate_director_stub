@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e -u
+
+TEMPLATE=$(cat <<TEMPLATE
+
+---
+director_uuid: %s
+TEMPLATE
+)
+
+printf "$TEMPLATE" $(bosh status --uuid)
