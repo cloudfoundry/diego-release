@@ -1,5 +1,5 @@
 meta:
-  environment: (( merge || nil ))
+  environment: (( merge ))
   stemcell: (( merge ))
 
 name: (( merge || meta.environment "-diego" ))
