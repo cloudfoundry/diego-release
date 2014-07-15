@@ -1,10 +1,12 @@
 #!/bin/bash
 
-set -e -x
-
-STUBS_DIR=deployments-runtime/${DEPLOYMENT_NAME}/stubs
+set -e
 
 chruby 2.1.2
+
+set -x -u
+
+STUBS_DIR=deployments-runtime/${DEPLOYMENT_NAME}/stubs
 
 bosh -n target ${BOSH_TARGET}
 
@@ -21,7 +23,7 @@ case "${INFRASTRUCTURE}" in
   warden)
     bosh upload stemcell "bosh-stemcell-60-warden-boshlite-ubuntu-lucid-go_agent.tgz" --skip-if-exists
     bosh upload stemcell "bosh-stemcell-3-warden-boshlite-ubuntu-trusty-go_agent.tgz" --skip-if-exists
-    scripts/generate_director_stub > ${STUBS_DIR}/bosh_lite_stub.yml
+    diego-release/scripts/generate_director_stub > ${STUBS_DIR}/bosh_lite_stub.yml
     ;;
   *)
     echo "infrastructure '${INFRASTRUCTURE}' not set up yet"
