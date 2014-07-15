@@ -4,7 +4,7 @@ set -e
 
 chruby 2.1.2
 
-set -x -u
+set -x
 
 # We generate the CF manifest using the stub ${DEPLOYMENT_NAME}/stubs/cf-aws located in the
 # ${DEPLOYMENTS_REPO} repository.  That stub is a YAML file with a value at meta.environment

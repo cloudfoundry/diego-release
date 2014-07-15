@@ -4,7 +4,7 @@ set -e
 
 chruby 2.1.2
 
-set -x -u
+set -x
 
 STUBS_DIR=deployments-runtime/${DEPLOYMENT_NAME}/stubs
 
