@@ -33,6 +33,9 @@ case $1 in
       -natsUsername=<%= p("nats.user") %> \
       -natsPassword=<%= p("nats.password") %> \
       -circuses=<%= Shellwords.shellescape(p("stager.lifecycle_bundles").to_json) %> \
+      -minMemoryMB=<%= p("stager.min_memory_mb") %> \
+      -minDiskMB=<%= p("stager.min_disk_mb") %> \
+      -minFileDescriptors=<%= p("stager.min_file_descriptors") %>  \
       1>>$LOG_DIR/stager.stdout.log \
       2>>$LOG_DIR/stager.stderr.log
 
