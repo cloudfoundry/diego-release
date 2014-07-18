@@ -34,10 +34,10 @@ esac
 bosh -n upload release "cf-release-created-by-ci.tgz" --rebase --skip-if-exists || true
 bosh -n upload release "diego-release-created-by-ci.tgz" --rebase --skip-if-exists || true
 
-cf-release/generate_deployment_manifest ${INFRASTRUCTURE} ${STUBS_DIR}/* > /tmp/cf-deployment.yml
-bosh deployment /tmp/cf-deployment.yml
+cf-release/generate_deployment_manifest ${INFRASTRUCTURE} ${STUBS_DIR}/* > cf-deployment.yml
+bosh deployment cf-deployment.yml
 yes yes | bosh deploy
 
-diego-release/generate_deployment_manifest ${INFRASTRUCTURE} cf-release ${STUBS_DIR}/* > /tmp/diego-deployment.yml
-bosh deployment /tmp/diego-deployment.yml
+diego-release/generate_deployment_manifest ${INFRASTRUCTURE} cf-release ${STUBS_DIR}/* > diego-deployment.yml
+bosh deployment diego-deployment.yml
 yes yes | bosh deploy
