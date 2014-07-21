@@ -22,8 +22,6 @@ case $1 in
 
     echo $$ > /var/vcap/sys/run/executor/executor.pid
 
-    /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
-
     exec /var/vcap/packages/executor/bin/executor \
       -syslogName=vcap.executor \
       -listenAddr=<%= p("executor.listen_addr") %> \

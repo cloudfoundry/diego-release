@@ -17,8 +17,6 @@ case $1 in
 
     echo $$ > /var/vcap/sys/run/converger/converger.pid
 
-    /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
-
     exec /var/vcap/packages/converger/bin/converger \
       -syslogName=vcap.converger \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
