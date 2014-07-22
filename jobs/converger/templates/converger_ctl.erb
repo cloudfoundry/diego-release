@@ -18,10 +18,9 @@ case $1 in
     echo $$ > /var/vcap/sys/run/converger/converger.pid
 
     exec /var/vcap/packages/converger/bin/converger \
-      -syslogName=vcap.converger \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
-      1>>$LOG_DIR/converger.stdout.log \
-      2>>$LOG_DIR/converger.stderr.log
+      2>> $LOG_DIR/converger.stderr.log \
+      1> >(tee -a $LOG_DIR/converger.stdout.log | logger -t vcap.converger)
 
     ;;
 

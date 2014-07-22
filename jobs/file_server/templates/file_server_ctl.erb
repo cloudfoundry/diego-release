@@ -21,7 +21,6 @@ case $1 in
     /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
 
     exec /var/vcap/packages/file_server/bin/file-server \
-      -syslogName=vcap.file_server \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       <% if_p("file_server.ip") do %>\
       -address=<%= p("file_server.ip") %> \
@@ -35,8 +34,8 @@ case $1 in
       -ccJobPollingInterval=<%= p("cc.jobPollingInterval") %> \
       <% end %>\
       -skipCertVerify=<%= p("ssl.skip_cert_verify") %> \
-      1>>$LOG_DIR/file_server.stdout.log \
-      2>>$LOG_DIR/file_server.stderr.log
+      2>> $LOG_DIR/file-server.stderr.log \
+      1> >(tee -a $LOG_DIR/file-server.stdout.log | logger -t vcap.file-server)
 
     ;;
 

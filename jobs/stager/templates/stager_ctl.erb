@@ -27,7 +27,6 @@ case $1 in
     /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
 
     exec /var/vcap/packages/stager/bin/stager \
-      -syslogName=vcap.stager \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("nats.user") %> \
@@ -36,8 +35,9 @@ case $1 in
       -minMemoryMB=<%= p("stager.min_memory_mb") %> \
       -minDiskMB=<%= p("stager.min_disk_mb") %> \
       -minFileDescriptors=<%= p("stager.min_file_descriptors") %>  \
-      1>>$LOG_DIR/stager.stdout.log \
-      2>>$LOG_DIR/stager.stderr.log
+      2>> $LOG_DIR/stager.stderr.log \
+      1> >(tee -a $LOG_DIR/stager.stdout.log | logger -t vcap.stager)
+
 
     ;;
 

@@ -27,14 +27,13 @@ case $1 in
     /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
 
     exec /var/vcap/packages/tps/bin/tps \
-      -syslogName=vcap.tps \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("nats.user") %> \
       -natsPassword=<%= p("nats.password") %> \
       -listenAddr=<%= spec.networks.send(properties.network_name).ip %>:1518 \
-      1>>$LOG_DIR/tps.stdout.log \
-      2>>$LOG_DIR/tps.stderr.log
+      2>> $LOG_DIR/tps.stderr.log \
+      1> >(tee -a $LOG_DIR/tps.stdout.log | logger -t vcap.tps)
 
     ;;
 

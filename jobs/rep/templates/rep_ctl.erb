@@ -20,7 +20,6 @@ case $1 in
     /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
 
     exec /var/vcap/packages/rep/bin/rep \
-      -syslogName=vcap.rep \
       -etcdCluster=<%= p("rep.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -natsAddresses=<%= p("rep.nats.machines").collect { |addr| "#{addr}:#{p("rep.nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("rep.nats.username") %> \
@@ -29,8 +28,8 @@ case $1 in
       -executorURL=<%= p("rep.executor.url") %> \
       -lrpHost=<%= spec.networks.send(properties.network_name).ip %>\
       -executorID=<%= spec.job.name %>-<%= spec.index %> \
-      1>>$LOG_DIR/rep.stdout.log \
-      2>>$LOG_DIR/rep.stderr.log
+      2>> $LOG_DIR/rep.stderr.log \
+      1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep)
 
     ;;
 

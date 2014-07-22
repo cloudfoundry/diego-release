@@ -23,7 +23,6 @@ case $1 in
     echo $$ > /var/vcap/sys/run/executor/executor.pid
 
     exec /var/vcap/packages/executor/bin/executor \
-      -syslogName=vcap.executor \
       -listenAddr=<%= p("executor.listen_addr") %> \
       -wardenNetwork=<%= p("executor.warden.network") %> \
       -wardenAddr=<%= p("executor.warden.address") %> \
@@ -39,8 +38,8 @@ case $1 in
       -loggregatorSecret=<%= p("loggregator_endpoint.shared_secret") %> \
       -cachePath=<%= p("executor.cache_path") %>\
       -maxCacheSizeInBytes=<%= p("executor.max_cache_size_in_bytes") %>\
-      1>>$LOG_DIR/executor.stdout.log \
-      2>>$LOG_DIR/executor.stderr.log
+      2>> $LOG_DIR/executor.stderr.log \
+      1> >(tee -a $LOG_DIR/executor.stdout.log | logger -t vcap.executor)
 
     ;;
 

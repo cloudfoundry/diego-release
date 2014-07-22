@@ -23,7 +23,6 @@ case $1 in
     /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
 
     exec /var/vcap/packages/nsync/bin/bulker \
-      -syslogName=vcap.nsync_bulker \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -ccBaseURL=<%= Shellwords.shellescape(p("nsync.cc.base_url")) %> \
       -ccUsername=<%= Shellwords.shellescape(p("nsync.cc.basic_auth_username")) %> \
@@ -31,8 +30,8 @@ case $1 in
       -pollingInterval=<%= Shellwords.shellescape(p("nsync.cc.polling_interval")) %> \
       -bulkBatchSize=<%= p("nsync.cc.bulk_batch_size") %> \
       -skipCertVerify=<%= p("ssl.skip_cert_verify") %> \
-      1>>$LOG_DIR/nsync_bulker.stdout.log \
-      2>>$LOG_DIR/nsync_bulker.stderr.log
+      2>> $LOG_DIR/nsync_bulker.stderr.log \
+      1> >(tee -a $LOG_DIR/nsync_bulker.stdout.log | logger -t vcap.nsync_bulker)
 
     ;;
 

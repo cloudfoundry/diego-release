@@ -27,11 +27,10 @@ case $1 in
     /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
 
     exec /var/vcap/packages/app-manager/bin/app-manager \
-      -syslogName=vcap.app-manager \
       -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -circuses=<%= Shellwords.shellescape(p("app_manager.lifecycle_bundles").to_json) %> \
-      1>>$LOG_DIR/app-manager.stdout.log \
-      2>>$LOG_DIR/app-manager.stderr.log
+      2>> $LOG_DIR/app-manager.stderr.log \
+      1> >(tee -a $LOG_DIR/app-manager.stdout.log | logger -t vcap.app-manager)
 
     ;;
 
