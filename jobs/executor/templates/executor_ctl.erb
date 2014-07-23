@@ -30,7 +30,6 @@ case $1 in
       -diskMB=<%= p("executor.disk_capacity_mb") %> \
       -containerInodeLimit=<%= p("executor.container_inode_limit") %> \
       -containerMaxCpuShares=<%= p("executor.container_max_cpu_shares") %> \
-      -drainTimeout=<%= p("executor.drain_timeout") %> \
       -tempDir=$TMP_DIR \
 <% if_p("loggregator_endpoint.host", "loggregator_endpoint.port") do |host, port| %> \
       -loggregatorServer=<%= host %>:<%= port %> \

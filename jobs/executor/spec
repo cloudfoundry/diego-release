@@ -40,10 +40,6 @@ properties:
     description: "maximum size of the cache in bytes - this should leam a healthy overhead for temporary items, etc."
     default: 10000000000
 
-  executor.drain_timeout:
-    description: "time to give running tasks to drain before exiting"
-    default: 15m
-
   syslog_aggregator.address:
     description: "The address to which rsyslog will forward log messages"
 
