@@ -24,6 +24,7 @@ case $1 in
 
     exec /var/vcap/packages/executor/bin/executor \
       -listenAddr=<%= p("executor.listen_addr") %> \
+      -debugAddr=<%= p("executor.debug_addr") %> \
       -wardenNetwork=<%= p("executor.warden.network") %> \
       -wardenAddr=<%= p("executor.warden.address") %> \
       -memoryMB=<%= p("executor.memory_capacity_mb") %> \
