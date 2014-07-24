@@ -3,9 +3,5 @@ check process etcd
   start program "/var/vcap/jobs/etcd/bin/etcd_ctl start"
     with timeout 60 seconds
   stop program "/var/vcap/jobs/etcd/bin/etcd_ctl stop"
-  if failed port 4001 protocol HTTP
-    request /v2/stats/self
-    with timeout 10 seconds
-    then restart
   group vcap
 
