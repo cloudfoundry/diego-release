@@ -8,6 +8,7 @@ env:
   - INFRASTRUCTURE={{INFRASTRUCTURE}}
   - DEPLOYMENT_NAME={{DEPLOYMENT_NAME}}
   - GINKGO_PARALLEL={{GINKGO_PARALLEL}}
+  - GO_PIPELINE_COUNTER={{GO_PIPELINE_COUNTER}}
   - GO_STAGE_NAME={{GO_STAGE_NAME}}
   - SHORT_TIMEOUT={{SHORT_TIMEOUT}}
   - LONG_TIMEOUT={{SHORT_TIMEOUT}}
@@ -19,4 +20,4 @@ cache:
   - /tmp/cache
   - cf-release/.blobs
   - output
-  - .blobs 
+  - .blobs
