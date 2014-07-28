@@ -12,7 +12,7 @@ attempts=0
 until bosh -n target ${BOSH_TARGET}; do
   [ $(( attempts++ )) -ge 3 ] && exit 1
   sleep 5
-end
+done
 
 if ! bosh -n login ${BOSH_USER} ${BOSH_PASSWORD}; then
   echo "Creating director user"
