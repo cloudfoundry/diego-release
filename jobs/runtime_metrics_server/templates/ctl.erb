@@ -36,7 +36,7 @@ case $1 in
       -username=<%= p("runtime_metrics_server.status.username") %> \
       -password=<%= p("runtime_metrics_server.status.password") %> \
       2>> $LOG_DIR/runtime_metrics_server.stderr.log \
-      1> >(tee -a $LOG_DIR/runtime_metrics_server.stdout.log | logger -t vcap.runtime_metrics_server)
+      1> >(tee -a $LOG_DIR/runtime_metrics_server.stdout.log | logger -t vcap.runtime-metrics-server)
 
 
     ;;

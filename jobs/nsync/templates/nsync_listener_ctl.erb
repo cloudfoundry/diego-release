@@ -26,7 +26,7 @@ case $1 in
       -natsUsername=<%= p("nats.user") %> \
       -natsPassword=<%= p("nats.password") %> \
       2>> $LOG_DIR/nsync_listener.stderr.log \
-      1> >(tee -a $LOG_DIR/nsync_listener.stdout.log | logger -t vcap.nsync_listener)
+      1> >(tee -a $LOG_DIR/nsync_listener.stdout.log | logger -t vcap.nsync-listener)
 
     ;;
 

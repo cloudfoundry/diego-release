@@ -25,7 +25,7 @@ case $1 in
       -natsUsername=<%= p("route_emitter.nats.username") %> \
       -natsPassword=<%= p("route_emitter.nats.password") %> \
       2>> $LOG_DIR/route_emitter.stderr.log \
-      1> >(tee -a $LOG_DIR/route_emitter.stdout.log | logger -t vcap.route_emitter)
+      1> >(tee -a $LOG_DIR/route_emitter.stdout.log | logger -t vcap.route-emitter)
 
     ;;
 
