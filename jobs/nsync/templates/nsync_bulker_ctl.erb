@@ -31,7 +31,7 @@ case $1 in
       -bulkBatchSize=<%= p("nsync.cc.bulk_batch_size") %> \
       -skipCertVerify=<%= p("ssl.skip_cert_verify") %> \
       2>> $LOG_DIR/nsync_bulker.stderr.log \
-      1> >(tee -a $LOG_DIR/nsync_bulker.stdout.log | logger -t vcap.nsync_bulker)
+      1> >(tee -a $LOG_DIR/nsync_bulker.stdout.log | logger -t vcap.nsync-bulker)
 
     ;;
 
