@@ -111,7 +111,7 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 
   ```bash
   mkdir -p ~/workspace/deployments/warden
-  printf "%s\nname: diego\ndirector_uuid: %s" \
+  printf "%s\nmeta:\n  environment: warden\ndirector_uuid: %s" \
     "---" \
     `bosh status --uuid` \
     > ~/workspace/deployments/warden/diego-director.yml
