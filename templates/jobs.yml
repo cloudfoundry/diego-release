@@ -77,10 +77,14 @@ jobs:
       network_name: diego2
       cc: (( external_services.cc ))
 
-  - name: stager_z1
+  - name: cf_bridge_z1
     release: diego
     templates:
       - name: stager
+        release: diego
+      - name: nsync
+        release: diego
+      - name: tps
         release: diego
     instances: 1
     resource_pool: small_z1
@@ -90,10 +94,14 @@ jobs:
       network_name: diego1
       nats: (( external_services.nats ))
 
-  - name: stager_z2
+  - name: cf_bridge_z2
     release: diego
     templates:
       - name: stager
+        release: diego
+      - name: nsync
+        release: diego
+      - name: tps
         release: diego
     instances: 1
     resource_pool: small_z2
