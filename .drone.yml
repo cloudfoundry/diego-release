@@ -12,6 +12,7 @@ env:
   - GO_STAGE_NAME={{GO_STAGE_NAME}}
   - SHORT_TIMEOUT={{SHORT_TIMEOUT}}
   - LONG_TIMEOUT={{SHORT_TIMEOUT}}
+  - INIGO_REPEAT_COUNT={{INIGO_REPEAT_COUNT}}
 
 script:
   - ./scripts/pipeline
