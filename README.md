@@ -85,6 +85,12 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   ./scripts/update
   ```
 
+1. Install spiff, a tool for generating bosh manifests. spiff is required for running the scripts in later steps. The following installation method assumes that go is installed. For other ways of installing `spiff`, see [the spiff README](https://github.com/cloudfoundry-incubator/spiff).
+
+  ```bash
+  go get github.com/cloudfoundry-incubator/spiff
+  ```
+
 1. Generate a cf-release stub manifest with the bosh director uuid
 
   ```bash
