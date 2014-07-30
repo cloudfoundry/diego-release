@@ -12,6 +12,11 @@ packages:
   - nsync
 
 properties:
+  nsync.lifecycle_bundles:
+    description: 'Map of lifecycle bundles for different stacks in json format {"stack_name":"lifecycle_bundle_path"}'
+    default:
+      lucid64: linux-circus/linux-circus.tgz
+
   nsync.cc.base_url:
     description: base URL of the cloud controller
 

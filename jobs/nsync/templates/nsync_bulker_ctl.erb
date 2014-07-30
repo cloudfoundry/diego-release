@@ -30,6 +30,7 @@ case $1 in
       -pollingInterval=<%= Shellwords.shellescape(p("nsync.cc.polling_interval")) %> \
       -bulkBatchSize=<%= p("nsync.cc.bulk_batch_size") %> \
       -skipCertVerify=<%= p("ssl.skip_cert_verify") %> \
+      -circuses=<%= Shellwords.shellescape(p("nsync.lifecycle_bundles").to_json) %> \
       2>> $LOG_DIR/nsync_bulker.stderr.log \
       1> >(tee -a $LOG_DIR/nsync_bulker.stdout.log | logger -t vcap.nsync-bulker)
 
