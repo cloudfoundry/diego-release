@@ -9,7 +9,7 @@ releases:
 external_services: (( merge ))
 
 jobs:
-  - name: executor_z1
+  - name: cell_z1
     release: diego
     templates:
       - name: executor
@@ -30,7 +30,7 @@ jobs:
       network_name: diego1
       loggregator_endpoint: (( external_services.loggregator_endpoint.z1 ))
 
-  - name: executor_z2
+  - name: cell_z2
     release: diego
     templates:
       - name: executor

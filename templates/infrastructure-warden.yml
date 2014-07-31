@@ -48,7 +48,7 @@ jobs:
       - name: diego3
         static_ips: (( static_ips(0) ))
 
-  - name: executor_z2
+  - name: cell_z2
     instances: 0
 
   - name: cf_bridge_z2
