@@ -31,6 +31,7 @@ case $1 in
       -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("nats.user") %> \
       -natsPassword=<%= p("nats.password") %> \
+      -debugAddr=<%= p("stager.debug_addr") %> \
       -circuses=<%= Shellwords.shellescape(p("stager.lifecycle_bundles").to_json) %> \
       -minMemoryMB=<%= p("stager.min_memory_mb") %> \
       -minDiskMB=<%= p("stager.min_disk_mb") %> \

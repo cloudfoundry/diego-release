@@ -25,6 +25,7 @@ case $1 in
       -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("nats.user") %> \
       -natsPassword=<%= p("nats.password") %> \
+      -debugAddr=<%= p("nsync.listener_debug_addr") %> \
       -circuses=<%= Shellwords.shellescape(p("nsync.lifecycle_bundles").to_json) %> \
       2>> $LOG_DIR/nsync_listener.stderr.log \
       1> >(tee -a $LOG_DIR/nsync_listener.stdout.log | logger -t vcap.nsync-listener)

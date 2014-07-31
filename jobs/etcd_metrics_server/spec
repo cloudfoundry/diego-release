@@ -48,6 +48,10 @@ properties:
     description: "basic auth password for metrics server (leave empty for generated)"
     default: ""
 
+  etcd_metrics_server.debug_addr:
+    description: "address at which to serve debug info"
+    default: "0.0.0.0:17003"
+
   syslog_aggregator.address:
     description: "The address to which rsyslog will forward log messages"
 

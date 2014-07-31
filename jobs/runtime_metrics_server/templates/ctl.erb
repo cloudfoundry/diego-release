@@ -35,6 +35,7 @@ case $1 in
       -port=<%= p("runtime_metrics_server.status.port") %> \
       -username=<%= p("runtime_metrics_server.status.username") %> \
       -password=<%= p("runtime_metrics_server.status.password") %> \
+      -debugAddr=<%= p("runtime_metrics_server.debug_addr") %> \
       2>> $LOG_DIR/runtime_metrics_server.stderr.log \
       1> >(tee -a $LOG_DIR/runtime_metrics_server.stdout.log | logger -t vcap.runtime-metrics-server)
 

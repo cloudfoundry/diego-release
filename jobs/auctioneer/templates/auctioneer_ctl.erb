@@ -20,6 +20,7 @@ case $1 in
     exec /var/vcap/packages/auctioneer/bin/auctioneer \
       -etcdCluster=<%= p("auctioneer.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -natsAddresses=<%= p("auctioneer.nats.machines").collect { |addr| "#{addr}:#{p("auctioneer.nats.port")}" }.join(",") %> \
+      -debugAddr=<%= p("auctioneer.debug_addr") %> \
       -natsUsername=<%= p("auctioneer.nats.username") %> \
       -natsPassword=<%= p("auctioneer.nats.password") %> \
       2>> $LOG_DIR/auctioneer.stderr.log \

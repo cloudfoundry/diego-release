@@ -24,6 +24,7 @@ case $1 in
       -natsAddresses=<%= p("rep.nats.machines").collect { |addr| "#{addr}:#{p("rep.nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("rep.nats.username") %> \
       -natsPassword=<%= p("rep.nats.password") %> \
+      -debugAddr=<%= p("rep.debug_addr") %> \
       -stack=<%= p("rep.stack") %> \
       -executorURL=<%= p("rep.executor.url") %> \
       -lrpHost=<%= spec.networks.send(properties.network_name).ip %>\

@@ -27,6 +27,7 @@ case $1 in
       -ccBaseURL=<%= Shellwords.shellescape(p("nsync.cc.base_url")) %> \
       -ccUsername=<%= Shellwords.shellescape(p("nsync.cc.basic_auth_username")) %> \
       -ccPassword=<%= Shellwords.shellescape(p("nsync.cc.basic_auth_password")) %> \
+      -debugAddr=<%= p("nsync.bulker_debug_addr") %> \
       -pollingInterval=<%= Shellwords.shellescape(p("nsync.cc.polling_interval")) %> \
       -bulkBatchSize=<%= p("nsync.cc.bulk_batch_size") %> \
       -skipCertVerify=<%= p("ssl.skip_cert_verify") %> \

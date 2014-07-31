@@ -35,6 +35,7 @@ case $1 in
       -listenAddr=<%= p("warden.listen_address") %> \
       -denyNetworks=<%= p("warden.deny_networks").join(",") %> \
       -allowNetworks=<%= p("warden.allow_networks").join(",") %> \
+      -debugAddr=<%= p("warden.debug_addr") %> \
       -depot=/var/vcap/data/warden/depot \
       -rootfs=/var/vcap/packages/rootfs_lucid64 \
       -overlays=/var/vcap/data/warden/overlays \

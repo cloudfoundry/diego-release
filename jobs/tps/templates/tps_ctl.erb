@@ -31,6 +31,7 @@ case $1 in
       -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("nats.user") %> \
       -natsPassword=<%= p("nats.password") %> \
+      -debugAddr=<%= p("tps.debug_addr") %> \
       -listenAddr=<%= spec.networks.send(properties.network_name).ip %>:1518 \
       2>> $LOG_DIR/tps.stderr.log \
       1> >(tee -a $LOG_DIR/tps.stdout.log | logger -t vcap.tps)

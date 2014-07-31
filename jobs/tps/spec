@@ -22,3 +22,7 @@ properties:
 
   syslog_aggregator.port:
     description: "The port to which rsyslog will forward log messages"
+
+  tps.debug_addr:
+    description: "address at which to serve debug info"
+    default: "0.0.0.0:17012"

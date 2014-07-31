@@ -30,6 +30,7 @@ case $1 in
         -natsAddresses=<%= p("etcd_metrics_server.nats.machines").collect { |addr| "#{addr}:#{p("etcd_metrics_server.nats.port")}" }.join(",") %> \
         -natsUsername='<%= p("etcd_metrics_server.nats.username") %>' \
         -natsPassword='<%= p("etcd_metrics_server.nats.password") %>' \
+        -debugAddr=<%= p("etcd_metrics_server.debug_addr") %> \
         -port=<%= p("etcd_metrics_server.status.port") %> \
         -username=<%= p("etcd_metrics_server.status.username") %> \
         -password=<%= p("etcd_metrics_server.status.password") %> \

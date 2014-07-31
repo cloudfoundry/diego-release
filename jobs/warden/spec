@@ -34,3 +34,7 @@ properties:
   warden.allow_networks:
     description: "List of CIDR blocks to which containers will be allowed access (applied after deny)."
     default: []
+
+  warden.debug_addr:
+    description: "address at which to serve debug info"
+    default: "0.0.0.0:17013"

@@ -26,6 +26,7 @@ case $1 in
       -address=<%= p("file_server.ip") %> \
       <% end %>\
       -port=<%= p("file_server.port") %> \
+      -debugAddr=<%= p("file_server.debug_addr") %> \
       -staticDirectory=<%= p("file_server.static_directory") %> \
       -ccAddress=<%= p("cc.srv_api_uri") %> \
       -ccUsername=<%= p("cc.staging_upload_user") %> \

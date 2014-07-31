@@ -35,6 +35,14 @@ properties:
     description: "number of apps to fetch at once from bulk API"
     default: 500
 
+  nsync.listener_debug_addr:
+    description: "address at which to serve debug info"
+    default: "0.0.0.0:17006"
+
+  nsync.bulker_debug_addr:
+    description: "address at which to serve debug info"
+    default: "0.0.0.0:17007"
+
   ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false

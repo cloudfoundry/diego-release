@@ -22,3 +22,7 @@ properties:
 
   network_name:
     description: "Name of the network that the job lives in; used to figure out our IP."
+
+  converger.debug_addr:
+    description: "address at which to serve debug info"
+    default: "0.0.0.0:17002"
