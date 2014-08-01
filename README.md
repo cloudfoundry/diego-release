@@ -52,17 +52,15 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   bosh public stemcells
   ```
 
-  Then fetch the `trusty` stemcell for Diego and the `lucid` stemcell for CF-Release:
+  Then fetch the `trusty` stemcell for Diego and CF-Release:
   
   ```bash
   bosh download public stemcell bosh-stemcell-3-warden-boshlite-ubuntu-trusty-go_agent.tgz
-  bosh download public stemcell bosh-stemcell-60-warden-boshlite-ubuntu-lucid-go_agent.tgz
   ```
-  Then upload the stemcells:
+  Then upload the stemcell:
   
   ```bash
   bosh upload stemcell bosh-stemcell-3-warden-boshlite-ubuntu-trusty-go_agent.tgz
-  bosh upload stemcell bosh-stemcell-60-warden-boshlite-ubuntu-lucid-go_agent.tgz
   ```
 
 1. Checkout cf-release (develop branch) from git
@@ -91,17 +89,20 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   go get github.com/cloudfoundry-incubator/spiff
   ```
 
-1. Generate a cf-release stub manifest with the bosh director uuid
+1. Generate a deployment stub with the bosh director uuid
 
   ```bash
   mkdir -p ~/workspace/deployments/warden
-  printf "%s\ndirector_uuid: %s\nreleases: \n  - name: cf\n    version: latest\nproperties:\n  cc:\n    diego: true\n" "---" `bosh status --uuid` > ~/workspace/deployments/warden/cf-director.yml
+  scripts/generate_director_stub > ~/workspace/deployments/warden/director.yml
   ```
 
 1. Generate and target cf-release manifest:
   ```bash
   cd ~/workspace/cf-release
-  ./generate_deployment_manifest warden ~/workspace/deployments/warden/cf-director.yml  > ~/workspace/deployments/warden/cf.yml
+  ./generate_deployment_manifest warden \
+      ~/workspace/deployments/warden/director.yml \
+      ~/workspace/diego-release/templates/enable_diego_in_cc.yml > \
+      ~/workspace/deployments/warden/cf.yml
   bosh deployment ~/workspace/deployments/warden/cf.yml
   ```
 
@@ -113,30 +114,19 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   bosh -n deploy
   ```
 
-1. Generate a diego warden-director stub manifest with the bosh director uuid:
-
-  ```bash
-  mkdir -p ~/workspace/deployments/warden
-  printf "%s\nmeta:\n  environment: warden\ndirector_uuid: %s" \
-    "---" \
-    `bosh status --uuid` \
-    > ~/workspace/deployments/warden/diego-director.yml
-  ```
-
 1. Generate and target diego's manifest:
 
   ```bash
   cd ~/workspace/diego-release
   ./generate_deployment_manifest warden ../cf-release \
-    ~/workspace/deployments/warden/diego-director.yml > \
-    ~/workspace/deployments/warden/diego.yml
+      ~/workspace/deployments/warden/director.yml > \
+      ~/workspace/deployments/warden/diego.yml
   bosh deployment ~/workspace/deployments/warden/diego.yml
   ```
 
 1. Dance some more:
 
   ```bash
-  cd ~/workspace/diego-release
   bosh create release --force
   bosh -n upload release
   bosh -n deploy
