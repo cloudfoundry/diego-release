@@ -16,6 +16,12 @@ case "$GO_STAGE_NAME" in
   create-final-release)
     ./scripts/create_final_release_inner
     ;;
+
+  # TODO - remove this: only used in temporary pipeline
+  create-releases-and-deploy-and-test)
+    ./scripts/create_dev_releases_inner
+    ;;
+
   *)
     echo "GO_STAGE_NAME was not set correctly, was '$GO_STAGE_NAME' -- should have been set by gocd"
     exit 1
