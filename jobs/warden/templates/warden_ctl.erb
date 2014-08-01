@@ -40,6 +40,7 @@ case $1 in
       -rootfs=/var/vcap/packages/rootfs_lucid64 \
       -overlays=/var/vcap/data/warden/overlays \
       -bin=/var/vcap/packages/warden-linux/src/github.com/cloudfoundry-incubator/warden-linux/linux_backend/bin \
+      -debug \
       -containerGraceTime=5m \
       1>>$LOG_DIR/warden.stdout.log \
       2>>$LOG_DIR/warden.stderr.log
