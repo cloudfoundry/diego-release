@@ -5,6 +5,8 @@ networks: (( merge ))
 releases:
   - name: diego
     version: latest
+  - name: cf
+    version: latest
 
 external_services: (( merge ))
 
@@ -22,13 +24,21 @@ jobs:
         release: diego
       - name: warden
         release: diego
+      - name: metron_agent
+        release: cf
     instances: 1
     resource_pool: large_z1
     networks:
       - name: diego1
     properties:
       network_name: diego1
-      loggregator_endpoint: (( external_services.loggregator_endpoint.z1 ))
+      loggregator_endpoint:
+        shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
+      nats: (( external_services.nats ))
+      etcd:
+        machines: (( external_services.cf_etcd.machines ))
+      metron_agent:
+        zone: z1
 
   - name: cell_z2
     release: diego
@@ -43,13 +53,21 @@ jobs:
         release: diego
       - name: warden
         release: diego
+      - name: metron_agent
+        release: cf
     instances: 1
     resource_pool: large_z2
     networks:
       - name: diego2
     properties:
       network_name: diego2
-      loggregator_endpoint: (( external_services.loggregator_endpoint.z2 ))
+      loggregator_endpoint:
+        shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
+      nats: (( external_services.nats ))
+      etcd:
+        machines: (( external_services.cf_etcd.machines ))
+      metron_agent:
+        zone: z2
 
   - name: file_server_z1
     release: diego
@@ -227,6 +245,10 @@ properties:
       machines: (( external_services.nats.machines ))
       username: (( external_services.nats.user ))
       password: (( external_services.nats.password ))
+
+  converger:
+    etcd:
+      machines: (( .properties.etcd.machines ))
 
   auctioneer:
     etcd:

@@ -60,6 +60,7 @@ properties:
 
   loggregator_endpoint.host:
     description: "The host used to emit messages to the Loggregator"
+    default: 127.0.0.1
 
   loggregator_endpoint.port:
     description: "The port used to emit messages to the Loggregator"

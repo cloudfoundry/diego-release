@@ -17,7 +17,7 @@ properties:
   syslog_aggregator.port:
     description: "The port to which rsyslog will forward log messages"
 
-  etcd.machines:
+  converger.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
 
   network_name:

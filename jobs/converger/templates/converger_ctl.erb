@@ -18,7 +18,7 @@ case $1 in
     echo $$ > /var/vcap/sys/run/converger/converger.pid
 
     exec /var/vcap/packages/converger/bin/converger \
-      -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -etcdCluster=<%= p("converger.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -debugAddr=<%= p("converger.debug_addr") %> \
       2>> $LOG_DIR/converger.stderr.log \
       1> >(tee -a $LOG_DIR/converger.stdout.log | logger -t vcap.converger)
