@@ -46,20 +46,9 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 
 1. Download the latest Warden stemcell and upload it to bosh-lite
 
-  First, list the stemcells:
-
   ```bash
   bosh public stemcells
-  ```
-
-  Then fetch the `trusty` stemcell for Diego and CF-Release:
-  
-  ```bash
   bosh download public stemcell bosh-stemcell-3-warden-boshlite-ubuntu-trusty-go_agent.tgz
-  ```
-  Then upload the stemcell:
-  
-  ```bash
   bosh upload stemcell bosh-stemcell-3-warden-boshlite-ubuntu-trusty-go_agent.tgz
   ```
 
