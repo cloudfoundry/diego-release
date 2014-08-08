@@ -5,7 +5,6 @@ set -e -x
 export DRONE_TMP=$TMPDIR/drone
 
 pushd diego-release
+  ./scripts/create_drone_yml scripts/ci/run_diego_cats.drone.yml .drone.yml
   /var/vcap/packages/drone/bin/drone -v -privileged build
 popd
-
-mv $DRONE_TMP/diego-release/HEAD/var/cache/drone/src/diego-release/output/*.tgz .

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+chruby 2.1.2
+
+set -x
+
+./scripts/bosh_setup
+
+bosh download manifest cf-$DEPLOYMENT_NAME cf-deployment.yml
+bosh deployment cf-deployment.yml
+bosh run errand acceptance_tests

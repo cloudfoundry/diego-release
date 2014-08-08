@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e -x
+
+export DRONE_TMP=$TMPDIR/drone
+
+set +e
+rm -rf diego-release/deployments-runtime
+set -e
+cp -R deployments-runtime diego-release/
+
+pushd diego-release
+  ./scripts/create_drone_yml scripts/ci/create_diego_release.drone.yml .drone.yml
+  /var/vcap/packages/drone/bin/drone -v -privileged build
+popd

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e -x
+
+export DRONE_TMP=$TMPDIR/drone
+
+pushd diego-release
+  ./scripts/create_drone_yml scripts/ci/run_inigo.drone.yml .drone.yml
+  /var/vcap/packages/drone/bin/drone -v -privileged build
+popd

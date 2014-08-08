@@ -5,9 +5,6 @@ set -e -x -u
 mkdir -p "output"
 OUTPUT_DIR="$PWD/output"
 
-echo "----- Clean drone.yml files"
-git checkout -- .drone.yml
-
 echo "----- Configure git to use our ssh key"
 export GIT_SSH=$(pwd)/tmp/git_ssh.sh
 chmod 600 $(pwd)/tmp/github

@@ -1,0 +1,9 @@
+image: cloudfoundry/diego-pipeline
+
+env:
+  - GOROOT=/usr/local/go
+  - DEFAULT_EVENTUALLY_TIMEOUT={{BOSH_USER}}
+  - GINKGO_PARALLEL={{BOSH_PASSWORD}}
+
+script:
+  - ./scripts/ci/run_inigo_inner
