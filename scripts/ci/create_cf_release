@@ -8,14 +8,10 @@ pushd cf-release
   ./update
 popd
 
-set +e
-rm -rf diego-release/cf-release
-set -e
+rm -rf diego-release/cf-release || true
 cp -R cf-release diego-release/
 
-set +e
-rm -rf diego-release/deployments-runtime
-set -e
+rm -rf diego-release/deployments-runtime || true
 cp -R deployments-runtime diego-release/
 
 pushd diego-release
