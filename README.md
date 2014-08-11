@@ -163,8 +163,7 @@ If you are making changes to the CATs and want to iterate, you may wish to run t
     "admin_password": "admin",
     "apps_domain": "10.244.0.34.xip.io",
     "skip_ssl_validation": true,
-    "nodes": 1,
-    "include_diego": true
+    "nodes": 1
   }
   EOF
   export CONFIG=$PWD/integration_config.json
