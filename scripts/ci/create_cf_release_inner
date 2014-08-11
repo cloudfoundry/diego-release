@@ -2,7 +2,7 @@
 
 set -e -x -u
 
-STUBS_DIR=deployments-runtime/${DEPLOYMENT_NAME}/stubs
+STUBS_DIR=${PWD}/deployments-runtime/${DEPLOYMENT_NAME}/stubs
 
 ./scripts/bosh_setup
 
@@ -11,7 +11,7 @@ bosh upload stemcell "light-bosh-stemcell-latest-aws-xen-ubuntu-trusty-go_agent.
 pushd cf-release
   bosh -n create release --with-tarball
   bosh -n upload release --rebase --skip-if-exists || true
-  generate_deployment_manifest aws ${STUBS_DIR}/* > cf-deployment.yml
+  ./generate_deployment_manifest aws ${STUBS_DIR}/* > cf-deployment.yml
   bosh deployment cf-deployment.yml
   yes yes | bosh deploy
 popd
