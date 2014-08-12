@@ -4,6 +4,7 @@ set -e -x -u
 
 STUBS_DIR=${PWD}/deployments-runtime/${DEPLOYMENT_NAME}/stubs
 
+eval $(./scripts/ci/bosh_config)
 ./scripts/bosh_setup
 
 bosh -n create release --with-tarball

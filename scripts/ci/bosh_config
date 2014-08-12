@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e -x -u
+
+echo BOSH_CONFIG=\"${BOSH_CONFIG:=${TMPDIR}/${GO_PIPELINE_NAME:-local}-${GO_PIPELINE_COUNTER:-0}-${BOSH_TARGET}.yml}\"
+
