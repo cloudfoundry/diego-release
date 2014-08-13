@@ -48,8 +48,8 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 
   ```bash
   bosh public stemcells
-  bosh download public stemcell bosh-stemcell-3-warden-boshlite-ubuntu-trusty-go_agent.tgz
-  bosh upload stemcell bosh-stemcell-3-warden-boshlite-ubuntu-trusty-go_agent.tgz
+  bosh download public stemcell bosh-stemcell-17-warden-boshlite-ubuntu-trusty-go_agent.tgz
+  bosh upload stemcell bosh-stemcell-17-warden-boshlite-ubuntu-trusty-go_agent.tgz
   ```
 
 1. Checkout cf-release (develop branch) from git
