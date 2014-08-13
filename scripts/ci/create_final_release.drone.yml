@@ -6,6 +6,7 @@ env:
   - BOSH_PASSWORD={{BOSH_PASSWORD}}
   - BOSH_TARGET={{BOSH_TARGET}}
   - DEPLOYMENT_NAME={{DEPLOYMENT_NAME}}
+  - GO_PIPELINE_COUNTER={{GO_PIPELINE_COUNTER}}
 
 script:
   - ./scripts/ci/create_final_release_inner
