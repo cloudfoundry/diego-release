@@ -17,6 +17,10 @@ properties:
     default:
       lucid64: linux-circus/linux-circus.tgz
 
+  nsync.docker_lifecycle_bundle:
+    description: Lifecycle bundle for docker apps
+    default: docker-circus/docker-circus.tgz
+
   nsync.cc.base_url:
     description: base URL of the cloud controller
 

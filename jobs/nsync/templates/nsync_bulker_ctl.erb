@@ -32,6 +32,7 @@ case $1 in
       -bulkBatchSize=<%= p("nsync.cc.bulk_batch_size") %> \
       -skipCertVerify=<%= p("ssl.skip_cert_verify") %> \
       -circuses=<%= Shellwords.shellescape(p("nsync.lifecycle_bundles").to_json) %> \
+      -dockerCircusPath=<%= p("nsync.docker_lifecycle_bundle") %> \
       2>> $LOG_DIR/nsync_bulker.stderr.log \
       1> >(tee -a $LOG_DIR/nsync_bulker.stdout.log | logger -t vcap.nsync-bulker)
 
