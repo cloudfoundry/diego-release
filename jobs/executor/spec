@@ -3,7 +3,6 @@ name: executor
 
 templates:
   executor_ctl.erb: bin/executor_ctl
-  drain: bin/drain
   syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
