@@ -5,7 +5,7 @@ set -e -x
 export DRONE_TMP=$TMPDIR/drone
 
 pushd cf-release
-  ./update
+  git submodule update --init --recursive
 popd
 
 rm -rf diego-release/cf-release || true
