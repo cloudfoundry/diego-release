@@ -1,0 +1,9 @@
+#!/bin/bash
+
+trap "docker ps -q | xargs docker kill" SIGTERM
+
+"$@" &
+
+wait
+
+
