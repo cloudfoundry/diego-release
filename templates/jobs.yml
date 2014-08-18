@@ -225,9 +225,6 @@ properties:
 
   warden: ~
 
-  nsync:
-    lifecycle_bundles: ~
-
   stager:
     lifecycle_bundles: ~
 
@@ -279,6 +276,7 @@ properties:
       password: (( external_services.nats.password ))
 
   nsync:
+    lifecycle_bundles: ~
     cc:
       base_url: (( external_services.cc.srv_api_uri ))
       basic_auth_password: (( external_services.cc.bulk_api_password ))
