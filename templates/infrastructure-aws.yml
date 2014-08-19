@@ -10,6 +10,12 @@ meta:
 networks: (( merge ))
 
 jobs:
+  - name: cell_z1
+    instances: 2
+
+  - name: cell_z2
+    instances: 2
+
   - name: etcd_z1
     instances: 1
     networks:
