@@ -77,15 +77,15 @@ resource_pools:
 
   - name: large_z1
     cloud_properties:
-      instance_type: m1.large
+      instance_type: m2.2xlarge
       availability_zone: (( meta.zones.z1 ))
 
   - name: large_z2
     cloud_properties:
-      instance_type: m1.large
+      instance_type: m2.2xlarge
       availability_zone: (( meta.zones.z2 ))
 
   - name: large_z3
     cloud_properties:
-      instance_type: m1.large
+      instance_type: m2.2xlarge
       availability_zone: (( meta.zones.z3 ))
