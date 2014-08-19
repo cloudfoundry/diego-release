@@ -7,4 +7,4 @@ eval $(./scripts/ci/bosh_config)
 
 bosh download manifest cf-$DEPLOYMENT_NAME cf-deployment.yml
 bosh deployment cf-deployment.yml
-bosh run errand acceptance_tests
+bosh run errand acceptance_tests_diego
