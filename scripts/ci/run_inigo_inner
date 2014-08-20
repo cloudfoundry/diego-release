@@ -52,19 +52,19 @@ export PATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo/Godeps/_w
 
 # set up compile-time $GOPATHs for each component
 export LOGGREGATOR_GOPATH=${GOPATH_ROOT}/loggregator
-export ROUTER_GOPATH=${GOPATH_ROOT}:${GOPATH_ROOT}/src/github.com/cloudfoundry/gorouter/Godeps/_workspace
-export AUCTIONEER_GOPATH=${GOPATH_ROOT}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/auctioneer/Godeps/_workspace
-export CONVERGER_GOPATH=${GOPATH_ROOT}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/converger/Godeps/_workspace
-export EXECUTOR_GOPATH=${GOPATH_ROOT}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/executor/Godeps/_workspace
-export FILE_SERVER_GOPATH=${GOPATH_ROOT}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/file-server/Godeps/_workspace
-export LINUX_CIRCUS_GOPATH=${GOPATH_ROOT}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/linux-circus/Godeps/_workspace
-export DOCKER_CIRCUS_GOPATH=${GOPATH_ROOT}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/docker-circus/Godeps/_workspace
-export NSYNC_GOPATH=${GOPATH_ROOT}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/nsync/Godeps/_workspace
-export REP_GOPATH=${GOPATH_ROOT}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/rep/Godeps/_workspace
-export ROUTE_EMITTER_GOPATH=${GOPATH_ROOT}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/route-emitter/Godeps/_workspace
-export STAGER_GOPATH=${GOPATH_ROOT}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/stager/Godeps/_workspace
-export TPS_GOPATH=${GOPATH_ROOT}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/tps/Godeps/_workspace
-export WARDEN_LINUX_GOPATH=${GOPATH_ROOT}:${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/warden-linux/Godeps/_workspace
+export ROUTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry/gorouter/Godeps/_workspace:${GOPATH_ROOT}
+export AUCTIONEER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/auctioneer/Godeps/_workspace:${GOPATH_ROOT}
+export CONVERGER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/converger/Godeps/_workspace:${GOPATH_ROOT}
+export EXECUTOR_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/executor/Godeps/_workspace:${GOPATH_ROOT}
+export FILE_SERVER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/file-server/Godeps/_workspace:${GOPATH_ROOT}
+export LINUX_CIRCUS_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/linux-circus/Godeps/_workspace:${GOPATH_ROOT}
+export DOCKER_CIRCUS_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/docker-circus/Godeps/_workspace:${GOPATH_ROOT}
+export NSYNC_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/nsync/Godeps/_workspace:${GOPATH_ROOT}
+export REP_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/rep/Godeps/_workspace:${GOPATH_ROOT}
+export ROUTE_EMITTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/route-emitter/Godeps/_workspace:${GOPATH_ROOT}
+export STAGER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/stager/Godeps/_workspace:${GOPATH_ROOT}
+export TPS_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/tps/Godeps/_workspace:${GOPATH_ROOT}
+export WARDEN_LINUX_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/warden-linux/Godeps/_workspace:${GOPATH_ROOT}
 
 # grab master of loggregator
 git clone https://github.com/cloudfoundry/loggregator $LOGGREGATOR_GOPATH --depth 1
