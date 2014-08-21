@@ -219,6 +219,20 @@ jobs:
     update:
       serial: true
 
+  - name: acceptance_tests_diego
+    release: cf
+    templates:
+    - name: acceptance-tests
+      release: cf
+    instances: 0
+    resource_pool: small_errand
+    lifecycle: errand
+    networks:
+      - name: diego1
+    properties:
+      acceptance_tests:
+        diego: true
+
 properties:
   ssl:
     skip_cert_verify: false
@@ -289,3 +303,5 @@ properties:
       machines: (( external_services.nats.machines ))
       username: (( external_services.nats.user ))
       password: (( external_services.nats.password ))
+
+  acceptance_tests: (( merge || nil ))
