@@ -7,3 +7,6 @@
 # template declares it as the whole structure, and the result is then fed into
 # diego's templates.
 external_services: (( merge ))
+
+properties:
+  domain: (( merge ))

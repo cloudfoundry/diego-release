@@ -81,3 +81,9 @@ resource_pools:
     size: (( auto ))
     stemcell: (( meta.stemcell ))
     cloud_properties: (( merge ))
+
+  - name: small_errand
+    network: diego1
+    size: (( auto ))
+    stemcell: (( meta.stemcell ))
+    cloud_properties: (( merge ))
