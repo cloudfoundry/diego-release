@@ -1,0 +1,10 @@
+set -e -x
+
+tar zxf nsenter/util-linux-2.24.tar.gz
+
+mkdir -p ${BOSH_INSTALL_TARGET}/bin
+
+cd util-linux-2.24/
+./configure --without-ncurses
+make LDFLAGS=-all-static nsenter
+cp ./nsenter ${BOSH_INSTALL_TARGET}/bin
