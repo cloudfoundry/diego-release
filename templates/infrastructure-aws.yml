@@ -95,3 +95,8 @@ resource_pools:
     cloud_properties:
       instance_type: m2.2xlarge
       availability_zone: (( meta.zones.z3 ))
+
+  - name: small_errand
+    cloud_properties:
+      instance_type: m1.small
+      availability_zone: (( meta.zones.z1 ))
