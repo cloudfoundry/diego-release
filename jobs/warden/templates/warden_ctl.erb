@@ -41,6 +41,7 @@ case $1 in
       -depot=/var/vcap/data/warden/depot \
       -rootfs=/var/vcap/packages/rootfs_lucid64 \
       -overlays=/var/vcap/data/warden/overlays \
+      -graph=/var/vcap/data/warden/graph \
       -bin=/var/vcap/packages/warden-linux/src/github.com/cloudfoundry-incubator/warden-linux/linux_backend/bin \
       -containerGraceTime=5m \
       1>>$LOG_DIR/warden.stdout.log \
