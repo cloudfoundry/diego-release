@@ -7,6 +7,8 @@ PIDFILE=$RUN_DIR/converger.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
+export DROPSONDE_ORIGIN='<%= name %>/<%= spec.index %>.converger'
+
 case $1 in
 
   start)
