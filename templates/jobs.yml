@@ -15,15 +15,10 @@ jobs:
     release: diego
     templates:
       - name: executor
-        release: diego
       - name: converger
-        release: diego
       - name: rep
-        release: diego
       - name: auctioneer
-        release: diego
       - name: warden
-        release: diego
       - name: metron_agent
         release: cf
     instances: 1
@@ -44,15 +39,10 @@ jobs:
     release: diego
     templates:
       - name: executor
-        release: diego
       - name: converger
-        release: diego
       - name: rep
-        release: diego
       - name: auctioneer
-        release: diego
       - name: warden
-        release: diego
       - name: metron_agent
         release: cf
     instances: 1
@@ -73,7 +63,6 @@ jobs:
     release: diego
     templates:
       - name: file_server
-        release: diego
       - name: metron_agent
         release: cf
     instances: 1
@@ -93,7 +82,6 @@ jobs:
     release: diego
     templates:
       - name: file_server
-        release: diego
       - name: metron_agent
         release: cf
     instances: 1
@@ -113,11 +101,8 @@ jobs:
     release: diego
     templates:
       - name: stager
-        release: diego
       - name: nsync
-        release: diego
       - name: tps
-        release: diego
       - name: metron_agent
         release: cf
     instances: 1
@@ -136,11 +121,8 @@ jobs:
     release: diego
     templates:
       - name: stager
-        release: diego
       - name: nsync
-        release: diego
       - name: tps
-        release: diego
       - name: metron_agent
         release: cf
     instances: 1
@@ -159,7 +141,6 @@ jobs:
     release: diego
     templates:
       - name: route_emitter
-        release: diego
       - name: metron_agent
         release: cf
     instances: 1
@@ -178,7 +159,6 @@ jobs:
     release: diego
     templates:
       - name: route_emitter
-        release: diego
       - name: metron_agent
         release: cf
     instances: 1
@@ -197,7 +177,6 @@ jobs:
     release: diego
     templates:
       - name: runtime_metrics_server
-        release: diego
       - name: metron_agent
         release: cf
     instances: 1
@@ -216,9 +195,7 @@ jobs:
     release: diego
     templates:
       - name: etcd
-        release: diego
       - name: etcd_metrics_server
-        release: diego
     instances: 1
     resource_pool: medium_z1
     networks:
@@ -233,9 +210,7 @@ jobs:
     release: diego
     templates:
       - name: etcd
-        release: diego
       - name: etcd_metrics_server
-        release: diego
     instances: 1
     resource_pool: medium_z2
     networks:
@@ -250,9 +225,7 @@ jobs:
     release: diego
     templates:
       - name: etcd
-        release: diego
       - name: etcd_metrics_server
-        release: diego
     instances: 1
     resource_pool: medium_z3
     networks:
@@ -267,7 +240,6 @@ jobs:
     release: cf
     templates:
     - name: acceptance-tests
-      release: cf
     instances: 0
     resource_pool: small_errand
     lifecycle: errand
