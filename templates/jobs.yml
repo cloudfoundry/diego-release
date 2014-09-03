@@ -94,6 +94,8 @@ jobs:
     templates:
       - name: file_server
         release: diego
+      - name: metron_agent
+        release: cf
     instances: 1
     resource_pool: small_z2
     networks:
@@ -101,6 +103,11 @@ jobs:
     properties:
       network_name: diego2
       cc: (( external_services.cc ))
+      nats: (( external_services.nats ))
+      loggregator_endpoint:
+        shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
+      metron_agent:
+        zone: z2
 
   - name: cf_bridge_z1
     release: diego
