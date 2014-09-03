@@ -118,6 +118,8 @@ jobs:
         release: diego
       - name: tps
         release: diego
+      - name: metron_agent
+        release: cf
     instances: 1
     resource_pool: small_z1
     networks:
@@ -125,6 +127,10 @@ jobs:
     properties:
       network_name: diego1
       nats: (( external_services.nats ))
+      loggregator_endpoint:
+        shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
+      metron_agent:
+        zone: z1
 
   - name: cf_bridge_z2
     release: diego
@@ -135,6 +141,8 @@ jobs:
         release: diego
       - name: tps
         release: diego
+      - name: metron_agent
+        release: cf
     instances: 1
     resource_pool: small_z2
     networks:
@@ -142,6 +150,10 @@ jobs:
     properties:
       network_name: diego2
       nats: (( external_services.nats ))
+      loggregator_endpoint:
+        shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
+      metron_agent:
+        zone: z2
 
   - name: route_emitter_z1
     release: diego
