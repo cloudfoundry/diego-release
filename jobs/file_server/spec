@@ -13,7 +13,7 @@ packages:
   - docker-circus
 
 properties:
-  etcd.machines:
+  file_server.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
 
   file_server.ip:

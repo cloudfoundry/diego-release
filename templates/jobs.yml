@@ -30,8 +30,6 @@ jobs:
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       nats: (( external_services.nats ))
-      etcd:
-        machines: (( external_services.cf_etcd.machines ))
       metron_agent:
         zone: z1
 
@@ -54,8 +52,6 @@ jobs:
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
       nats: (( external_services.nats ))
-      etcd:
-        machines: (( external_services.cf_etcd.machines ))
       metron_agent:
         zone: z2
 
@@ -250,6 +246,13 @@ jobs:
         diego: true
 
 properties:
+  diego:
+    etcd:
+      machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+
+  etcd: # IMPORTANT: metron_agent from cf-release uses top-level etcd property
+    machines: (( external_services.cf_etcd.machines ))
+
   ssl:
     skip_cert_verify: false
 
@@ -266,7 +269,7 @@ properties:
 
   rep:
     etcd:
-      machines: (( .properties.etcd.machines ))
+      machines: (( .properties.diego.etcd.machines ))
 
     nats:
       machines: (( external_services.nats.machines ))
@@ -275,11 +278,11 @@ properties:
 
   converger:
     etcd:
-      machines: (( .properties.etcd.machines ))
+      machines: (( .properties.diego.etcd.machines ))
 
   auctioneer:
     etcd:
-      machines: (( .properties.etcd.machines ))
+      machines: (( .properties.diego.etcd.machines ))
 
     nats:
       machines: (( external_services.nats.machines ))
@@ -288,15 +291,12 @@ properties:
 
   route_emitter:
     etcd:
-      machines: (( .properties.etcd.machines ))
+      machines: (( .properties.diego.etcd.machines ))
 
     nats:
       machines: (( external_services.nats.machines ))
       username: (( external_services.nats.user ))
       password: (( external_services.nats.password ))
-
-  etcd:
-    machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
 
   etcd_metrics_server:
     job_name: "etcd-diego"
@@ -305,7 +305,13 @@ properties:
       username: (( external_services.nats.user ))
       password: (( external_services.nats.password ))
 
+  file_server:
+      etcd:
+        machines: (( .properties.diego.etcd.machines ))
+  
   nsync:
+    etcd:
+      machines: (( .properties.diego.etcd.machines ))
     lifecycle_bundles: ~
     cc:
       base_url: (( external_services.cc.srv_api_uri ))
@@ -313,11 +319,19 @@ properties:
 
   runtime_metrics_server:
     etcd:
-      machines: (( .properties.etcd.machines ))
+      machines: (( .properties.diego.etcd.machines ))
 
     nats:
       machines: (( external_services.nats.machines ))
       username: (( external_services.nats.user ))
       password: (( external_services.nats.password ))
+
+  stager:
+    etcd:
+      machines: (( .properties.diego.etcd.machines ))
+
+  tps:
+    etcd:
+      machines: (( .properties.diego.etcd.machines ))
 
   acceptance_tests: (( merge || nil ))

@@ -23,7 +23,7 @@ case $1 in
     /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
 
     exec /var/vcap/packages/file_server/bin/file-server \
-      -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -etcdCluster=<%= p("file_server.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       <% if_p("file_server.ip") do %>\
       -address=<%= p("file_server.ip") %> \
       <% end %>\
