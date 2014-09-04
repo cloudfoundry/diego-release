@@ -73,6 +73,8 @@ jobs:
       network_name: diego1
       cc: (( external_services.cc ))
       nats: (( external_services.nats ))
+      etcd:
+        machines: (( external_services.cf_etcd.machines ))
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       metron_agent:
@@ -92,6 +94,8 @@ jobs:
       network_name: diego2
       cc: (( external_services.cc ))
       nats: (( external_services.nats ))
+      etcd:
+        machines: (( external_services.cf_etcd.machines ))
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
       metron_agent:
@@ -112,6 +116,8 @@ jobs:
     properties:
       network_name: diego1
       nats: (( external_services.nats ))
+      etcd:
+        machines: (( external_services.cf_etcd.machines ))
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       metron_agent:
@@ -132,6 +138,8 @@ jobs:
     properties:
       network_name: diego2
       nats: (( external_services.nats ))
+      etcd:
+        machines: (( external_services.cf_etcd.machines ))
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
       metron_agent:
@@ -150,6 +158,8 @@ jobs:
     properties:
       network_name: diego1
       nats: (( external_services.nats ))
+      etcd:
+        machines: (( external_services.cf_etcd.machines ))
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       metron_agent:
@@ -168,6 +178,8 @@ jobs:
     properties:
       network_name: diego2
       nats: (( external_services.nats ))
+      etcd:
+        machines: (( external_services.cf_etcd.machines ))
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
       metron_agent:
@@ -186,6 +198,8 @@ jobs:
     properties:
       network_name: diego1
       nats: (( external_services.nats ))
+      etcd:
+        machines: (( external_services.cf_etcd.machines ))
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       metron_agent:
