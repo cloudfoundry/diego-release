@@ -9,7 +9,7 @@ PIDFILE=$RUN_DIR/tps.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-export DROPSONDE_ORIGIN='<%= name %>/<%= spec.index %>.tps'
+export DROPSONDE_ORIGIN='tps'
 
 case $1 in
 

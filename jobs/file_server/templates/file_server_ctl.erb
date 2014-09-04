@@ -8,7 +8,7 @@ PIDFILE=$RUN_DIR/file_server.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-export DROPSONDE_ORIGIN='<%= name %>/<%= spec.index %>.file_server'
+export DROPSONDE_ORIGIN='file_server'
 
 case $1 in
 

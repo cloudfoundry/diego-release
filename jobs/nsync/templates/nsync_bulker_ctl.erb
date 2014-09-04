@@ -10,7 +10,7 @@ source /var/vcap/packages/pid_utils/pid_utils.sh
 
 <% require "shellwords" %>
 
-export DROPSONDE_ORIGIN='<%= name %>/<%= spec.index %>.nsync_bulker'
+export DROPSONDE_ORIGIN='nsync_bulker'
 
 case $1 in
 

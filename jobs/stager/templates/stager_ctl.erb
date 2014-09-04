@@ -9,7 +9,7 @@ PIDFILE=$RUN_DIR/stager.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-export DROPSONDE_ORIGIN='<%= name %>/<%= spec.index %>.stager'
+export DROPSONDE_ORIGIN='stager'
 
 case $1 in
 

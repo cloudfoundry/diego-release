@@ -7,7 +7,7 @@ PIDFILE=$RUN_DIR/auctioneer.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-export DROPSONDE_ORIGIN='<%= name %>/<%= spec.index %>.auctioneer'
+export DROPSONDE_ORIGIN='auctioneer'
 
 case $1 in
 
