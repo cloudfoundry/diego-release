@@ -9,7 +9,7 @@ TMP_DIR=$DATA_DIR/tmp
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-DROPSONDE_ORIGIN='<%= name %>.<%= spec.index %>.executor'
+export DROPSONDE_ORIGIN=executor
 
 case $1 in
 
