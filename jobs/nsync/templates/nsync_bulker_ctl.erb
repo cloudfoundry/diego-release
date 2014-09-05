@@ -25,7 +25,7 @@ case $1 in
     /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
 
     exec /var/vcap/packages/nsync/bin/bulker \
-      -etcdCluster=<%= p("etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -etcdCluster=<%= p("nsync.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -ccBaseURL=<%= Shellwords.shellescape(p("nsync.cc.base_url")) %> \
       -ccUsername=<%= Shellwords.shellescape(p("nsync.cc.basic_auth_username")) %> \
       -ccPassword=<%= Shellwords.shellescape(p("nsync.cc.basic_auth_password")) %> \
