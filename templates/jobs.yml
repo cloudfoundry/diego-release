@@ -29,7 +29,6 @@ jobs:
       network_name: diego1
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
-      nats: (( external_services.nats ))
       metron_agent:
         zone: z1
 
@@ -51,7 +50,6 @@ jobs:
       network_name: diego2
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
-      nats: (( external_services.nats ))
       metron_agent:
         zone: z2
 
@@ -67,8 +65,6 @@ jobs:
       - name: diego1
     properties:
       network_name: diego1
-      cc: (( external_services.cc ))
-      nats: (( external_services.nats ))
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       metron_agent:
@@ -86,8 +82,6 @@ jobs:
       - name: diego2
     properties:
       network_name: diego2
-      cc: (( external_services.cc ))
-      nats: (( external_services.nats ))
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
       metron_agent:
@@ -107,7 +101,6 @@ jobs:
       - name: diego1
     properties:
       network_name: diego1
-      nats: (( external_services.nats ))
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       metron_agent:
@@ -145,7 +138,6 @@ jobs:
       - name: diego1
     properties:
       network_name: diego1
-      nats: (( external_services.nats ))
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       metron_agent:
@@ -163,7 +155,6 @@ jobs:
       - name: diego2
     properties:
       network_name: diego2
-      nats: (( external_services.nats ))
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
       metron_agent:
@@ -181,7 +172,6 @@ jobs:
       - name: diego1
     properties:
       network_name: diego1
-      nats: (( external_services.nats ))
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       metron_agent:
@@ -246,92 +236,106 @@ jobs:
         diego: true
 
 properties:
-  diego:
-    etcd:
-      machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
-
-  etcd: # IMPORTANT: metron_agent from cf-release uses top-level etcd property
+  # -- Properties below are used by jobs from cf-release --
+  acceptance_tests: (( merge || nil ))
+  nats: (( external_services.nats )) # For metron_agent to talk to collector
+  etcd: # For metron_agent to find loggregator
     machines: (( external_services.cf_etcd.machines ))
 
-  ssl:
-    skip_cert_verify: false
-
-  warden: ~
-
-  stager:
-    lifecycle_bundles: ~
-
-  executor:
-    drain_timeout: ~
-    warden: ~
-
-  syslog_aggregator: ~
-
-  rep:
+  diego:
+    # -- Global properties --
     etcd:
-      machines: (( .properties.diego.etcd.machines ))
+      machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+    nats: (( external_services.nats ))
+    ssl:
+      skip_cert_verify: false
 
-    nats:
-      machines: (( external_services.nats.machines ))
-      username: (( external_services.nats.user ))
-      password: (( external_services.nats.password ))
+    syslog_aggregator: ~
 
-  converger:
-    etcd:
-      machines: (( .properties.diego.etcd.machines ))
-
-  auctioneer:
-    etcd:
-      machines: (( .properties.diego.etcd.machines ))
-
-    nats:
-      machines: (( external_services.nats.machines ))
-      username: (( external_services.nats.user ))
-      password: (( external_services.nats.password ))
-
-  route_emitter:
-    etcd:
-      machines: (( .properties.diego.etcd.machines ))
-
-    nats:
-      machines: (( external_services.nats.machines ))
-      username: (( external_services.nats.user ))
-      password: (( external_services.nats.password ))
-
-  etcd_metrics_server:
-    job_name: "etcd-diego"
-    nats:
-      machines: (( external_services.nats.machines ))
-      username: (( external_services.nats.user ))
-      password: (( external_services.nats.password ))
-
-  file_server:
+    # -- Job specific properties --
+    auctioneer:
       etcd:
         machines: (( .properties.diego.etcd.machines ))
-  
-  nsync:
-    etcd:
-      machines: (( .properties.diego.etcd.machines ))
-    lifecycle_bundles: ~
-    cc:
-      base_url: (( external_services.cc.srv_api_uri ))
-      basic_auth_password: (( external_services.cc.bulk_api_password ))
 
-  runtime_metrics_server:
-    etcd:
-      machines: (( .properties.diego.etcd.machines ))
+      nats:
+        machines: (( external_services.nats.machines ))
+        username: (( external_services.nats.user ))
+        password: (( external_services.nats.password ))
 
-    nats:
-      machines: (( external_services.nats.machines ))
-      username: (( external_services.nats.user ))
-      password: (( external_services.nats.password ))
+    converger:
+      etcd:
+        machines: (( .properties.diego.etcd.machines ))
 
-  stager:
-    etcd:
-      machines: (( .properties.diego.etcd.machines ))
+    etcd_metrics_server:
+      job_name: "etcd-diego"
+      nats:
+        machines: (( external_services.nats.machines ))
+        username: (( external_services.nats.user ))
+        password: (( external_services.nats.password ))
 
-  tps:
-    etcd:
-      machines: (( .properties.diego.etcd.machines ))
+    executor:
+      drain_timeout: ~
+      warden: ~
 
-  acceptance_tests: (( merge || nil ))
+    file_server:
+      cc: (( external_services.cc ))
+      etcd:
+        machines: (( .properties.diego.etcd.machines ))
+
+    nsync:
+      cc:
+        base_url: (( external_services.cc.srv_api_uri ))
+        basic_auth_password: (( external_services.cc.bulk_api_password ))
+      etcd:
+        machines: (( .properties.diego.etcd.machines ))
+      lifecycle_bundles: ~
+      nats:
+        machines: (( external_services.nats.machines ))
+        username: (( external_services.nats.user ))
+        password: (( external_services.nats.password ))
+        port: (( external_services.nats.port ))
+
+    rep:
+      etcd:
+        machines: (( .properties.diego.etcd.machines ))
+      nats:
+        machines: (( external_services.nats.machines ))
+        username: (( external_services.nats.user ))
+        password: (( external_services.nats.password ))
+
+    route_emitter:
+      etcd:
+        machines: (( .properties.diego.etcd.machines ))
+      nats:
+        machines: (( external_services.nats.machines ))
+        username: (( external_services.nats.user ))
+        password: (( external_services.nats.password ))
+
+    runtime_metrics_server:
+      etcd:
+        machines: (( .properties.diego.etcd.machines ))
+      nats:
+        machines: (( external_services.nats.machines ))
+        username: (( external_services.nats.user ))
+        password: (( external_services.nats.password ))
+
+    stager:
+      lifecycle_bundles: ~
+      etcd:
+        machines: (( .properties.diego.etcd.machines ))
+      nats:
+        machines: (( external_services.nats.machines ))
+        username: (( external_services.nats.user ))
+        password: (( external_services.nats.password ))
+        port: (( external_services.nats.port ))
+    tps:
+      etcd:
+        machines: (( .properties.diego.etcd.machines ))
+      nats:
+        machines: (( external_services.nats.machines ))
+        username: (( external_services.nats.user ))
+        password: (( external_services.nats.password ))
+        port: (( external_services.nats.port ))
+
+    warden: ~
+

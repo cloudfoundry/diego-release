@@ -12,62 +12,51 @@ packages:
   - nsync
 
 properties:
-  nsync.lifecycle_bundles:
+  diego.ssl.skip_cert_verify:
+    description: "when connecting over https, ignore bad ssl certificates"
+    default: false
+  diego.syslog_aggregator.address:
+    description: "The address to which rsyslog will forward log messages"
+  diego.syslog_aggregator.port:
+    description: "The port to which rsyslog will forward log messages"
+  
+  diego.nsync.lifecycle_bundles:
     description: 'Map of lifecycle bundles for different stacks in json format {"stack_name":"lifecycle_bundle_path"}'
     default:
       lucid64: linux-circus/linux-circus.tgz
-
-  nsync.docker_lifecycle_bundle:
+  diego.nsync.docker_lifecycle_bundle:
     description: Lifecycle bundle for docker apps
     default: docker-circus/docker-circus.tgz
-
-  nsync.cc.base_url:
+  diego.nsync.cc.base_url:
     description: base URL of the cloud controller
-
-  nsync.cc.basic_auth_username:
+  diego.nsync.cc.basic_auth_username:
     description: "basic auth username for CC bulk API"
     default: "bulk_api"
-
-  nsync.cc.basic_auth_password:
+  diego.nsync.cc.basic_auth_password:
     description: "basic auth password for CC bulk API"
-
-  nsync.cc.polling_interval:
+  diego.nsync.cc.polling_interval:
     description: "interval at which to poll bulk API"
     default: 30s
-
-  nsync.cc.bulk_batch_size:
+  diego.nsync.cc.bulk_batch_size:
     description: "number of apps to fetch at once from bulk API"
     default: 500
-
-  nsync.listener_debug_addr:
+  diego.nsync.listener_debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17006"
-
-  nsync.bulker_debug_addr:
+  diego.nsync.bulker_debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17007"
-
-  ssl.skip_cert_verify:
-    description: "when connecting over https, ignore bad ssl certificates"
-    default: false
-
-  nsync.etcd.machines:
+  diego.nsync.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
-
-  nats.user:
+  diego.nsync.nats.username:
     description: "Username for server authentication."
-  nats.password:
+  diego.nsync.nats.password:
     description: "Password for server authentication."
-  nats.port:
+  diego.nsync.nats.port:
     description: "The port for the NATS server to listen on."
-  nats.machines:
+  diego.nsync.nats.machines:
     description: "IP of each NATS cluster member."
 
   network_name:
     description: "Name of the network that the job lives in; used to figure out our IP."
 
-  syslog_aggregator.address:
-    description: "The address to which rsyslog will forward log messages"
-
-  syslog_aggregator.port:
-    description: "The port to which rsyslog will forward log messages"

@@ -25,21 +25,21 @@ case $1 in
     echo $$ > /var/vcap/sys/run/executor/executor.pid
 
     exec /var/vcap/packages/executor/bin/executor \
-      -listenAddr=<%= p("executor.listen_addr") %> \
-      -debugAddr=<%= p("executor.debug_addr") %> \
-      -wardenNetwork=<%= p("executor.warden.network") %> \
-      -wardenAddr=<%= p("executor.warden.address") %> \
-      -memoryMB=<%= p("executor.memory_capacity_mb") %> \
-      -diskMB=<%= p("executor.disk_capacity_mb") %> \
-      -containerInodeLimit=<%= p("executor.container_inode_limit") %> \
-      -containerMaxCpuShares=<%= p("executor.container_max_cpu_shares") %> \
+      -listenAddr=<%= p("diego.executor.listen_addr") %> \
+      -debugAddr=<%= p("diego.executor.debug_addr") %> \
+      -wardenNetwork=<%= p("diego.executor.warden.network") %> \
+      -wardenAddr=<%= p("diego.executor.warden.address") %> \
+      -memoryMB=<%= p("diego.executor.memory_capacity_mb") %> \
+      -diskMB=<%= p("diego.executor.disk_capacity_mb") %> \
+      -containerInodeLimit=<%= p("diego.executor.container_inode_limit") %> \
+      -containerMaxCpuShares=<%= p("diego.executor.container_max_cpu_shares") %> \
       -tempDir=$TMP_DIR \
 <% if_p("loggregator_endpoint.host", "loggregator_endpoint.port") do |host, port| %> \
       -loggregatorServer=<%= host %>:<%= port %> \
 <% end %> \
       -loggregatorSecret=<%= p("loggregator_endpoint.shared_secret") %> \
-      -cachePath=<%= p("executor.cache_path") %>\
-      -maxCacheSizeInBytes=<%= p("executor.max_cache_size_in_bytes") %>\
+      -cachePath=<%= p("diego.executor.cache_path") %>\
+      -maxCacheSizeInBytes=<%= p("diego.executor.max_cache_size_in_bytes") %>\
       2>> $LOG_DIR/executor.stderr.log \
       1> >(tee -a $LOG_DIR/executor.stdout.log | logger -t vcap.executor)
 

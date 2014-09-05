@@ -18,7 +18,7 @@ case $1 in
     mkdir -p $DATA_DIR
     mkdir -p $LOG_DIR
 
-    <% if p("warden.kernel_network_tuning_enabled") == true %>
+    <% if p("diego.warden.kernel_network_tuning_enabled") == true %>
     # Use default local port range (higher ports are used for pooling)
     echo 32768 61000 > /proc/sys/net/ipv4/ip_local_port_range
     <% end %>
@@ -33,12 +33,12 @@ case $1 in
     export PATH=/var/vcap/packages/iptables/sbin:$PATH
 
     exec /var/vcap/packages/warden-linux/bin/warden-linux \
-      -disableQuotas=<%= !p("warden.disk_quota_enabled") %> \
-      -listenNetwork=<%= p("warden.listen_network") %> \
-      -listenAddr=<%= p("warden.listen_address") %> \
-      -denyNetworks=<%= p("warden.deny_networks").join(",") %> \
-      -allowNetworks=<%= p("warden.allow_networks").join(",") %> \
-      -debugAddr=<%= p("warden.debug_addr") %> \
+      -disableQuotas=<%= !p("diego.warden.disk_quota_enabled") %> \
+      -listenNetwork=<%= p("diego.warden.listen_network") %> \
+      -listenAddr=<%= p("diego.warden.listen_address") %> \
+      -denyNetworks=<%= p("diego.warden.deny_networks").join(",") %> \
+      -allowNetworks=<%= p("diego.warden.allow_networks").join(",") %> \
+      -debugAddr=<%= p("diego.warden.debug_addr") %> \
       -depot=/var/vcap/data/warden/depot \
       -rootfs=/var/vcap/packages/rootfs_lucid64 \
       -overlays=/var/vcap/data/warden/overlays \

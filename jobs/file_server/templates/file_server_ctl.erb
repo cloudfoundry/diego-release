@@ -23,20 +23,20 @@ case $1 in
     /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
 
     exec /var/vcap/packages/file_server/bin/file-server \
-      -etcdCluster=<%= p("file_server.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
-      <% if_p("file_server.ip") do %>\
-      -address=<%= p("file_server.ip") %> \
+      -etcdCluster=<%= p("diego.file_server.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      <% if_p("diego.file_server.ip") do %>\
+      -address=<%= p("diego.file_server.ip") %> \
       <% end %>\
-      -port=<%= p("file_server.port") %> \
-      -debugAddr=<%= p("file_server.debug_addr") %> \
-      -staticDirectory=<%= p("file_server.static_directory") %> \
-      -ccAddress=<%= p("cc.srv_api_uri") %> \
-      -ccUsername=<%= p("cc.staging_upload_user") %> \
-      -ccPassword=<%= p("cc.staging_upload_password") %> \
-      <% if_p("cc.jobPollingInterval") do %>\
-      -ccJobPollingInterval=<%= p("cc.jobPollingInterval") %> \
+      -port=<%= p("diego.file_server.port") %> \
+      -debugAddr=<%= p("diego.file_server.debug_addr") %> \
+      -staticDirectory=<%= p("diego.file_server.static_directory") %> \
+      -ccAddress=<%= p("diego.file_server.cc.srv_api_uri") %> \
+      -ccUsername=<%= p("diego.file_server.cc.staging_upload_user") %> \
+      -ccPassword=<%= p("diego.file_server.cc.staging_upload_password") %> \
+      <% if_p("diego.file_server.cc.jobPollingInterval") do %>\
+      -ccJobPollingInterval=<%= p("diego.file_server.cc.jobPollingInterval") %> \
       <% end %>\
-      -skipCertVerify=<%= p("ssl.skip_cert_verify") %> \
+      -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       2>> $LOG_DIR/file-server.stderr.log \
       1> >(tee -a $LOG_DIR/file-server.stdout.log | logger -t vcap.file-server)
 

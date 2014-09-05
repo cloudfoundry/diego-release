@@ -25,15 +25,15 @@ case $1 in
 
     exec chpst -u vcap:vcap /var/vcap/packages/etcd_metrics_server/bin/etcd-metrics-server \
         -index=<%= spec.index %> \
-        -jobName='<%= p("etcd_metrics_server.job_name") %>' \
-        -etcdAddress=<%= p("etcd_metrics_server.etcd.machine") %>:<%= p("etcd_metrics_server.etcd.port") %> \
-        -natsAddresses=<%= p("etcd_metrics_server.nats.machines").collect { |addr| "#{addr}:#{p("etcd_metrics_server.nats.port")}" }.join(",") %> \
-        -natsUsername='<%= p("etcd_metrics_server.nats.username") %>' \
-        -natsPassword='<%= p("etcd_metrics_server.nats.password") %>' \
-        -debugAddr=<%= p("etcd_metrics_server.debug_addr") %> \
-        -port=<%= p("etcd_metrics_server.status.port") %> \
-        -username=<%= p("etcd_metrics_server.status.username") %> \
-        -password=<%= p("etcd_metrics_server.status.password") %> \
+        -jobName='<%= p("diego.etcd_metrics_server.job_name") %>' \
+        -etcdAddress=<%= p("diego.etcd_metrics_server.etcd.machine") %>:<%= p("diego.etcd_metrics_server.etcd.port") %> \
+        -natsAddresses=<%= p("diego.etcd_metrics_server.nats.machines").collect { |addr| "#{addr}:#{p("diego.etcd_metrics_server.nats.port")}" }.join(",") %> \
+        -natsUsername='<%= p("diego.etcd_metrics_server.nats.username") %>' \
+        -natsPassword='<%= p("diego.etcd_metrics_server.nats.password") %>' \
+        -debugAddr=<%= p("diego.etcd_metrics_server.debug_addr") %> \
+        -port=<%= p("diego.etcd_metrics_server.status.port") %> \
+        -username=<%= p("diego.etcd_metrics_server.status.username") %> \
+        -password=<%= p("diego.etcd_metrics_server.status.password") %> \
         2>> $LOG_DIR/etcd_metrics_server.stderr.log \
         1> >(tee -a $LOG_DIR/etcd_metrics_server.stdout.log | logger -t vcap.etcd-metrics-server)
 

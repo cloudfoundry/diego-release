@@ -23,13 +23,13 @@ case $1 in
     /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
 
     exec /var/vcap/packages/nsync/bin/listener \
-      -etcdCluster=<%= p("nsync.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
-      -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
-      -natsUsername=<%= p("nats.user") %> \
-      -natsPassword=<%= p("nats.password") %> \
-      -debugAddr=<%= p("nsync.listener_debug_addr") %> \
-      -circuses=<%= Shellwords.shellescape(p("nsync.lifecycle_bundles").to_json) %> \
-      -dockerCircusPath=<%= p("nsync.docker_lifecycle_bundle") %> \
+      -etcdCluster=<%= p("diego.nsync.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -natsAddresses=<%= p("diego.nsync.nats.machines").collect { |addr| "#{addr}:#{p("diego.nsync.nats.port")}" }.join(",") %> \
+      -natsUsername=<%= p("diego.nsync.nats.username") %> \
+      -natsPassword=<%= p("diego.nsync.nats.password") %> \
+      -debugAddr=<%= p("diego.nsync.listener_debug_addr") %> \
+      -circuses=<%= Shellwords.shellescape(p("diego.nsync.lifecycle_bundles").to_json) %> \
+      -dockerCircusPath=<%= p("diego.nsync.docker_lifecycle_bundle") %> \
       2>> $LOG_DIR/nsync_listener.stderr.log \
       1> >(tee -a $LOG_DIR/nsync_listener.stdout.log | logger -t vcap.nsync-listener)
 

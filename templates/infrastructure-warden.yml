@@ -16,22 +16,6 @@ compilation:
 
 properties:
   domain: (( jobs.ha_proxy_z1.networks.cf1.static_ips.[0] ".xip.io" ))
-
-  warden:
-    kernel_network_tuning_enabled: false
-    disk_quota_enabled: false
-    listen_network: tcp
-    listen_address: 0.0.0.0:7777
-
-  executor:
-    drain_timeout: 0
-    warden:
-      network: tcp
-      address: 127.0.0.1:7777
-
-  ssl:
-    skip_cert_verify: true
-
   acceptance_tests:
     api:  (( "api." domain ))
     apps_domain: (( domain ))
@@ -40,6 +24,21 @@ properties:
     skip_ssl_validation: true
     diego: true
     nodes: 1
+  diego:
+    warden:
+      kernel_network_tuning_enabled: false
+      disk_quota_enabled: false
+      listen_network: tcp
+      listen_address: 0.0.0.0:7777
+
+    executor:
+      drain_timeout: 0
+      warden:
+        network: tcp
+        address: 127.0.0.1:7777
+
+    ssl:
+      skip_cert_verify: true
 
 jobs:
   - name: etcd_z1

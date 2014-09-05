@@ -22,13 +22,13 @@ case $1 in
     /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
 
     exec /var/vcap/packages/rep/bin/rep \
-      -etcdCluster=<%= p("rep.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
-      -natsAddresses=<%= p("rep.nats.machines").collect { |addr| "#{addr}:#{p("rep.nats.port")}" }.join(",") %> \
-      -natsUsername=<%= p("rep.nats.username") %> \
-      -natsPassword=<%= p("rep.nats.password") %> \
-      -debugAddr=<%= p("rep.debug_addr") %> \
-      -stack=<%= p("rep.stack") %> \
-      -executorURL=<%= p("rep.executor.url") %> \
+      -etcdCluster=<%= p("diego.rep.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -natsAddresses=<%= p("diego.rep.nats.machines").collect { |addr| "#{addr}:#{p("diego.rep.nats.port")}" }.join(",") %> \
+      -natsUsername=<%= p("diego.rep.nats.username") %> \
+      -natsPassword=<%= p("diego.rep.nats.password") %> \
+      -debugAddr=<%= p("diego.rep.debug_addr") %> \
+      -stack=<%= p("diego.rep.stack") %> \
+      -executorURL=<%= p("diego.rep.executor.url") %> \
       -lrpHost=<%= spec.networks.send(properties.network_name).ip %>\
       -executorID=<%= spec.job.name %>-<%= spec.index %> \
       2>> $LOG_DIR/rep.stderr.log \

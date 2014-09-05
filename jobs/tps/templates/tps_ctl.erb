@@ -29,11 +29,11 @@ case $1 in
     /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
 
     exec /var/vcap/packages/tps/bin/tps \
-      -etcdCluster=<%= p("tps.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
-      -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
-      -natsUsername=<%= p("nats.user") %> \
-      -natsPassword=<%= p("nats.password") %> \
-      -debugAddr=<%= p("tps.debug_addr") %> \
+      -etcdCluster=<%= p("diego.tps.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -natsAddresses=<%= p("diego.tps.nats.machines").collect { |addr| "#{addr}:#{p("diego.tps.nats.port")}" }.join(",") %> \
+      -natsUsername=<%= p("diego.tps.nats.username") %> \
+      -natsPassword=<%= p("diego.tps.nats.password") %> \
+      -debugAddr=<%= p("diego.tps.debug_addr") %> \
       -listenAddr=<%= spec.networks.send(properties.network_name).ip %>:1518 \
       2>> $LOG_DIR/tps.stderr.log \
       1> >(tee -a $LOG_DIR/tps.stdout.log | logger -t vcap.tps)

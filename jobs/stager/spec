@@ -11,42 +11,39 @@ packages:
   - stager
 
 properties:
-  stager.etcd.machines:
+  diego.syslog_aggregator.address:
+    description: "The address to which rsyslog will forward log messages"
+  diego.syslog_aggregator.port:
+    description: "The port to which rsyslog will forward log messages"
+
+  diego.stager.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
-
-  nats.user:
+  diego.stager.nats.username:
     description: "Username for server authentication."
-  nats.password:
+  diego.stager.nats.password:
     description: "Password for server authentication."
-  nats.port:
+  diego.stager.nats.port:
     description: "The port for the NATS server to listen on."
-  nats.machines:
+  diego.stager.nats.machines:
     description: "IP of each NATS cluster member."
-
-  stager.lifecycle_bundles:
+  diego.stager.lifecycle_bundles:
     description: 'Map of lifecycle bundles for different stacks in json format {"stack_name":"lifecycle_bundle_path"}'
     default:
       lucid64: linux-circus/linux-circus.tgz
-
-  stager.min_memory_mb:
+  diego.stager.min_memory_mb:
     description: Minimum memory in megabytes that will be used for staging
     default: 1024
-  stager.min_disk_mb:
+  diego.stager.min_disk_mb:
     description: Minimum disk space in megabytes that will be used for staging
     default: 3072
-  stager.min_file_descriptors:
+  diego.stager.min_file_descriptors:
     description: Minimum number of file descriptors that will be made available for staging
     default: 1024
-
-  stager.debug_addr:
+  diego.stager.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17011"
 
   network_name:
     description: "Name of the network that the job lives in; used to figure out our IP."
 
-  syslog_aggregator.address:
-    description: "The address to which rsyslog will forward log messages"
 
-  syslog_aggregator.port:
-    description: "The port to which rsyslog will forward log messages"
