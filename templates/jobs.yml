@@ -238,7 +238,11 @@ jobs:
 properties:
   # -- Properties below are used by jobs from cf-release --
   acceptance_tests: (( merge || nil ))
-  nats: (( external_services.nats )) # For metron_agent to talk to collector
+  nats: # For metron_agent to talk to collector
+    machines: (( external_services.nats.machines ))
+    user: (( external_services.nats.user ))
+    password: (( external_services.nats.password ))
+    port: (( external_services.nats.port ))
   etcd: # For metron_agent to find loggregator
     machines: (( external_services.cf_etcd.machines ))
 
