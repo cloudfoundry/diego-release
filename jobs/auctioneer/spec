@@ -11,26 +11,23 @@ packages:
   - syslog_forwarder
 
 properties:
-  syslog_aggregator.address:
+  diego.syslog_aggregator.address:
     description: "The address to which rsyslog will forward log messages"
-
-  syslog_aggregator.port:
+  diego.syslog_aggregator.port:
     description: "The port to which rsyslog will forward log messages"
 
-  auctioneer.etcd.machines:
+  diego.auctioneer.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
-
-  auctioneer.nats.username:
+  diego.auctioneer.nats.username:
     description: "Username for server authentication."
-  auctioneer.nats.password:
+  diego.auctioneer.nats.password:
     description: "Password for server authentication."
-  auctioneer.nats.port:
+  diego.auctioneer.nats.port:
     description: "The port for the NATS server to listen on."
     default: 4222
-  auctioneer.nats.machines:
+  diego.auctioneer.nats.machines:
     description: "IP of each NATS cluster member."
-
-  auctioneer.debug_addr:
+  diego.auctioneer.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17001"
 

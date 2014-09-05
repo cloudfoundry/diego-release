@@ -12,30 +12,30 @@ packages:
   - shadow
 
 properties:
-  warden.kernel_network_tuning_enabled:
+  diego.warden.kernel_network_tuning_enabled:
     description: "enable or disable kernel network tuning; disable for Warden CPI"
     default: true
 
-  warden.listen_network:
+  diego.warden.listen_network:
     description: "Warden server connection mode (tcp or unix)."
     default: unix
 
-  warden.listen_address:
+  diego.warden.listen_address:
     description: "Warden server listening address."
     default: /var/vcap/data/warden/warden.sock
 
-  warden.disk_quota_enabled:
+  diego.warden.disk_quota_enabled:
     description: "Enforce disk quotas."
     default: true
 
-  warden.deny_networks:
+  diego.warden.deny_networks:
     description: "List of CIDR blocks to which containers will be denied access."
     default: []
 
-  warden.allow_networks:
+  diego.warden.allow_networks:
     description: "List of CIDR blocks to which containers will be allowed access (applied after deny)."
     default: []
 
-  warden.debug_addr:
+  diego.warden.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17013"

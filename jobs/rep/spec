@@ -11,34 +11,29 @@ packages:
   - syslog_forwarder
 
 properties:
-  syslog_aggregator.address:
+  diego.syslog_aggregator.address:
     description: "The address to which rsyslog will forward log messages"
-
-  syslog_aggregator.port:
+  diego.syslog_aggregator.port:
     description: "The port to which rsyslog will forward log messages"
 
-  rep.etcd.machines:
+  diego.rep.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
-
-  rep.stack:
+  diego.rep.stack:
     description: "the stack for which to handle requests"
     default: "lucid64"
-
-  rep.executor.url:
+  diego.rep.executor.url:
     description: "URL of the executor to represent."
     default: "http://127.0.0.1:1700"
-
-  rep.nats.username:
+  diego.rep.nats.username:
     description: "Username for server authentication."
-  rep.nats.password:
+  diego.rep.nats.password:
     description: "Password for server authentication."
-  rep.nats.port:
+  diego.rep.nats.port:
     description: "The port for the NATS server to listen on."
     default: 4222
-  rep.nats.machines:
+  diego.rep.nats.machines:
     description: "IP of each NATS cluster member."
-
-  rep.debug_addr:
+  diego.rep.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17008"
 

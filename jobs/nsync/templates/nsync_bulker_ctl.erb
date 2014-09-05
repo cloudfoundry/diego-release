@@ -25,16 +25,16 @@ case $1 in
     /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
 
     exec /var/vcap/packages/nsync/bin/bulker \
-      -etcdCluster=<%= p("nsync.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
-      -ccBaseURL=<%= Shellwords.shellescape(p("nsync.cc.base_url")) %> \
-      -ccUsername=<%= Shellwords.shellescape(p("nsync.cc.basic_auth_username")) %> \
-      -ccPassword=<%= Shellwords.shellescape(p("nsync.cc.basic_auth_password")) %> \
-      -debugAddr=<%= p("nsync.bulker_debug_addr") %> \
-      -pollingInterval=<%= Shellwords.shellescape(p("nsync.cc.polling_interval")) %> \
-      -bulkBatchSize=<%= p("nsync.cc.bulk_batch_size") %> \
-      -skipCertVerify=<%= p("ssl.skip_cert_verify") %> \
-      -circuses=<%= Shellwords.shellescape(p("nsync.lifecycle_bundles").to_json) %> \
-      -dockerCircusPath=<%= p("nsync.docker_lifecycle_bundle") %> \
+      -etcdCluster=<%= p("diego.nsync.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -ccBaseURL=<%= Shellwords.shellescape(p("diego.nsync.cc.base_url")) %> \
+      -ccUsername=<%= Shellwords.shellescape(p("diego.nsync.cc.basic_auth_username")) %> \
+      -ccPassword=<%= Shellwords.shellescape(p("diego.nsync.cc.basic_auth_password")) %> \
+      -debugAddr=<%= p("diego.nsync.bulker_debug_addr") %> \
+      -pollingInterval=<%= Shellwords.shellescape(p("diego.nsync.cc.polling_interval")) %> \
+      -bulkBatchSize=<%= p("diego.nsync.cc.bulk_batch_size") %> \
+      -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
+      -circuses=<%= Shellwords.shellescape(p("diego.nsync.lifecycle_bundles").to_json) %> \
+      -dockerCircusPath=<%= p("diego.nsync.docker_lifecycle_bundle") %> \
       2>> $LOG_DIR/nsync_bulker.stderr.log \
       1> >(tee -a $LOG_DIR/nsync_bulker.stdout.log | logger -t vcap.nsync-bulker)
 

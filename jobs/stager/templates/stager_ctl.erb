@@ -29,15 +29,15 @@ case $1 in
     /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
 
     exec /var/vcap/packages/stager/bin/stager \
-      -etcdCluster=<%= p("stager.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
-      -natsAddresses=<%= p("nats.machines").collect { |addr| "#{addr}:#{p("nats.port")}" }.join(",") %> \
-      -natsUsername=<%= p("nats.user") %> \
-      -natsPassword=<%= p("nats.password") %> \
-      -debugAddr=<%= p("stager.debug_addr") %> \
-      -circuses=<%= Shellwords.shellescape(p("stager.lifecycle_bundles").to_json) %> \
-      -minMemoryMB=<%= p("stager.min_memory_mb") %> \
-      -minDiskMB=<%= p("stager.min_disk_mb") %> \
-      -minFileDescriptors=<%= p("stager.min_file_descriptors") %>  \
+      -etcdCluster=<%= p("diego.stager.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -natsAddresses=<%= p("diego.stager.nats.machines").collect { |addr| "#{addr}:#{p("diego.stager.nats.port")}" }.join(",") %> \
+      -natsUsername=<%= p("diego.stager.nats.username") %> \
+      -natsPassword=<%= p("diego.stager.nats.password") %> \
+      -debugAddr=<%= p("diego.stager.debug_addr") %> \
+      -circuses=<%= Shellwords.shellescape(p("diego.stager.lifecycle_bundles").to_json) %> \
+      -minMemoryMB=<%= p("diego.stager.min_memory_mb") %> \
+      -minDiskMB=<%= p("diego.stager.min_disk_mb") %> \
+      -minFileDescriptors=<%= p("diego.stager.min_file_descriptors") %>  \
       2>> $LOG_DIR/stager.stderr.log \
       1> >(tee -a $LOG_DIR/stager.stdout.log | logger -t vcap.stager)
 

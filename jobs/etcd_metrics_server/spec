@@ -11,49 +11,39 @@ packages:
   - syslog_forwarder
 
 properties:
-  etcd_metrics_server.job_name:
+  diego.syslog_aggregator.address:
+    description: "The address to which rsyslog will forward log messages"
+  diego.syslog_aggregator.port:
+    description: "The port to which rsyslog will forward log messages"
+  
+  diego.etcd_metrics_server.job_name:
     description: "job name for collector"
     default: "etcd"
-
-  etcd_metrics_server.etcd.machine:
+  diego.etcd_metrics_server.etcd.machine:
     description: "address of ETCD server to instrument"
     default: "127.0.0.1"
-
-  etcd_metrics_server.etcd.port:
+  diego.etcd_metrics_server.etcd.port:
     description: "port of ETCD server to instrument"
     default: 4001
-
-  etcd_metrics_server.nats.machines:
+  diego.etcd_metrics_server.nats.machines:
     description: "array of NATS addresses"
-
-  etcd_metrics_server.nats.port:
+  diego.etcd_metrics_server.nats.port:
     description: "NATS server port"
     default: 4222
-
-  etcd_metrics_server.nats.username:
+  diego.etcd_metrics_server.nats.username:
     description: "NATS server username"
-
-  etcd_metrics_server.nats.password:
+  diego.etcd_metrics_server.nats.password:
     description: "NATS server password"
-
-  etcd_metrics_server.status.port:
+  diego.etcd_metrics_server.status.port:
     description: "listening port for metrics server"
     default: 5678
-
-  etcd_metrics_server.status.username:
+  diego.etcd_metrics_server.status.username:
     description: "basic auth username for metrics server (leave empty for generated)"
     default: ""
-
-  etcd_metrics_server.status.password:
+  diego.etcd_metrics_server.status.password:
     description: "basic auth password for metrics server (leave empty for generated)"
     default: ""
-
-  etcd_metrics_server.debug_addr:
+  diego.etcd_metrics_server.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17003"
 
-  syslog_aggregator.address:
-    description: "The address to which rsyslog will forward log messages"
-
-  syslog_aggregator.port:
-    description: "The port to which rsyslog will forward log messages"

@@ -11,62 +11,50 @@ packages:
   - syslog_forwarder
 
 properties:
-  executor.listen_addr:
-    description: "address at which to serve API requests"
-    default: "0.0.0.0:1700"
-
-  executor.debug_addr:
-    description: "address at which to serve debug info"
-    default: "0.0.0.0:17004"
-
-  executor.memory_capacity_mb:
-    description: "the memory capacity the executor should manage.  this should not be greater than the actual memory on the VM"
-    default: "auto"
-
-  executor.disk_capacity_mb:
-    description: "the container disk capacity the executor should manage.  this should not be greater than the actual disk quota on the VM"
-    default: "auto"
-
-  executor.container_max_cpu_shares:
-    description: "the maximum number of cpu shares for a container."
-    default: 1024
-
-  executor.container_inode_limit:
-    description: "the inode limit enforced on each warden container."
-    default: 200000
-
-  executor.cache_path:
-    description: "path to the executor's cache"
-    default: "/var/vcap/data/executor_cache"
-
-  executor.max_cache_size_in_bytes:
-    description: "maximum size of the cache in bytes - this should leam a healthy overhead for temporary items, etc."
-    default: 10000000000
-
-  syslog_aggregator.address:
-    description: "The address to which rsyslog will forward log messages"
-
-  syslog_aggregator.port:
-    description: "The port to which rsyslog will forward log messages"
-
-  executor.warden.network:
-    description: "Network type for the warden server connection (tcp or unix)."
-    default: unix
-
-  executor.warden.address:
-    description: "Warden server listening address."
-    default: /var/vcap/data/warden/warden.sock
-
   loggregator_endpoint.host:
     description: "The host used to emit messages to the Loggregator"
     default: 127.0.0.1
-
   loggregator_endpoint.port:
     description: "The port used to emit messages to the Loggregator"
     default: 3456
-
   loggregator_endpoint.shared_secret:
     description: "The key used to sign log messages"
+
+  diego.syslog_aggregator.address:
+    description: "The address to which rsyslog will forward log messages"
+  diego.syslog_aggregator.port:
+    description: "The port to which rsyslog will forward log messages"
+
+  diego.executor.listen_addr:
+    description: "address at which to serve API requests"
+    default: "0.0.0.0:1700"
+  diego.executor.debug_addr:
+    description: "address at which to serve debug info"
+    default: "0.0.0.0:17004"
+  diego.executor.memory_capacity_mb:
+    description: "the memory capacity the executor should manage.  this should not be greater than the actual memory on the VM"
+    default: "auto"
+  diego.executor.disk_capacity_mb:
+    description: "the container disk capacity the executor should manage.  this should not be greater than the actual disk quota on the VM"
+    default: "auto"
+  diego.executor.container_max_cpu_shares:
+    description: "the maximum number of cpu shares for a container."
+    default: 1024
+  diego.executor.container_inode_limit:
+    description: "the inode limit enforced on each warden container."
+    default: 200000
+  diego.executor.cache_path:
+    description: "path to the executor's cache"
+    default: "/var/vcap/data/executor_cache"
+  diego.executor.max_cache_size_in_bytes:
+    description: "maximum size of the cache in bytes - this should leam a healthy overhead for temporary items, etc."
+    default: 10000000000
+  diego.executor.warden.address:
+    description: "Warden server listening address."
+    default: /var/vcap/data/warden/warden.sock
+  diego.executor.warden.network:
+    description: "Network type for the warden server connection (tcp or unix)."
+    default: unix
 
   network_name:
     description: "Name of the network that the job lives in; used to figure out our IP."

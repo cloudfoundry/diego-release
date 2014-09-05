@@ -13,41 +13,37 @@ packages:
   - docker-circus
 
 properties:
-  file_server.etcd.machines:
-    description: "IPs pointing to the ETCD cluster"
-
-  file_server.ip:
-    description: "IP address of interface on which to serve files"
-  file_server.port:
-    default: "8080"
-    description: "IP port on which to serve files"
-  file_server.static_directory:
-    default: "/var/vcap/jobs/file_server/packages/"
-    description: "Fully-qualified path to the doc root for the file server's static files"
-
-  file_server.debug_addr:
-    description: "address at which to serve debug info"
-    default: "0.0.0.0:17005"
-
-  cc.srv_api_uri:
-    description: "URI to access the Cloud Controller"
-  cc.staging_upload_user:
-    description: "User to upload files to Cloud Controller"
-  cc.staging_upload_password:
-    description: "User's password to upload files to Cloud Controller"
-  cc.jobPollingInterval:
-    default: "5s"
-    description: "the interval between job polling requests"
-
-  ssl.skip_cert_verify:
+  diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
+  diego.syslog_aggregator.address:
+    description: "The address to which rsyslog will forward log messages"
+  diego.syslog_aggregator.port:
+    description: "The port to which rsyslog will forward log messages"
+
+  diego.file_server.etcd.machines:
+    description: "IPs pointing to the ETCD cluster"
+  diego.file_server.ip:
+    description: "IP address of interface on which to serve files"
+  diego.file_server.port:
+    default: "8080"
+    description: "IP port on which to serve files"
+  diego.file_server.static_directory:
+    default: "/var/vcap/jobs/file_server/packages/"
+    description: "Fully-qualified path to the doc root for the file server's static files"
+  diego.file_server.debug_addr:
+    description: "address at which to serve debug info"
+    default: "0.0.0.0:17005"
+  diego.file_server.cc.srv_api_uri:
+    description: "URI to access the Cloud Controller"
+  diego.file_server.cc.staging_upload_user:
+    description: "User to upload files to Cloud Controller"
+  diego.file_server.cc.staging_upload_password:
+    description: "User's password to upload files to Cloud Controller"
+  diego.file_server.cc.jobPollingInterval:
+    default: "5s"
+    description: "the interval between job polling requests"
 
   network_name:
     description: "Name of the network that the job lives in; used to figure out our IP."
 
-  syslog_aggregator.address:
-    description: "The address to which rsyslog will forward log messages"
-
-  syslog_aggregator.port:
-    description: "The port to which rsyslog will forward log messages"
