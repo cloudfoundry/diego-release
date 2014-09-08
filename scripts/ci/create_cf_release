@@ -15,7 +15,6 @@ rm -rf diego-release/deployments-runtime || true
 cp -R deployments-runtime diego-release/
 
 pushd diego-release
-  wget https://s3.amazonaws.com/bosh-jenkins-artifacts/bosh-stemcell/aws/light-bosh-stemcell-latest-aws-xen-ubuntu-trusty-go_agent.tgz
   ./scripts/create_drone_yml scripts/ci/create_cf_release.drone.yml .drone.yml
   /var/vcap/packages/drone/bin/drone -v -privileged build
 popd
