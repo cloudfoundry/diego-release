@@ -15,7 +15,5 @@ pushd cf-release
   ./generate_deployment_manifest aws ${STUBS_DIR}/* > cf-deployment.yml
   bosh deployment cf-deployment.yml
 
-  ./scripts/emit_datadog_deploy_event started ${DEPLOYMENT_NAME} cf
   yes yes | bosh deploy
-  ./scripts/emit_datadog_deploy_event finished ${DEPLOYMENT_NAME} cf
 popd
