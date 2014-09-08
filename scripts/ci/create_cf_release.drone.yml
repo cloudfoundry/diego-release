@@ -6,6 +6,7 @@ env:
   - BOSH_PASSWORD={{BOSH_PASSWORD}}
   - BOSH_TARGET={{BOSH_TARGET}}
   - DEPLOYMENT_NAME={{DEPLOYMENT_NAME}}
+  - DATADOG_API_KEY={{DATADOG_API_KEY}}
 
 script:
   - ./scripts/ci/create_cf_release_inner
