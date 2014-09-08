@@ -12,4 +12,7 @@ bosh -n upload release --rebase --skip-if-exists || true
 
 ./generate_deployment_manifest aws cf-release ${STUBS_DIR}/* > diego-deployment.yml
 bosh deployment diego-deployment.yml
+
+./scripts/emit_datadog_deploy_event started ${DEPLOYMENT_NAME} diego
 yes yes | bosh deploy
+./scripts/emit_datadog_deploy_event finished ${DEPLOYMENT_NAME} diego
