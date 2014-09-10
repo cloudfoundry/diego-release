@@ -1,63 +1,48 @@
-[submodule "src/executor"]
-	path = src/executor
-	url = https://github.com/cloudfoundry-incubator/executor.git
-	branch = master
-[submodule "src/stager"]
-	path = src/stager
-	url = https://github.com/cloudfoundry-incubator/stager.git
-	branch = master
-[submodule "src/inigo"]
-	path = src/inigo
-	url = https://github.com/cloudfoundry-incubator/inigo.git
-	branch = master
-[submodule "src/file-server"]
-	path = src/file-server
-	url = https://github.com/cloudfoundry-incubator/file-server.git
-	branch = master
-[submodule "src/warden-linux"]
-	path = src/warden-linux
-	url = https://github.com/cloudfoundry-incubator/warden-linux
-	branch = master
-[submodule "src/runtime-metrics-server"]
-	path = src/runtime-metrics-server
-	url = https://github.com/cloudfoundry-incubator/runtime-metrics-server.git
-	branch = master
-[submodule "src/etcd"]
-	path = src/etcd
-	url = https://github.com/coreos/etcd.git
-	branch = master
-[submodule "src/etcd-metrics-server"]
-	path = src/etcd-metrics-server
-	url = https://github.com/cloudfoundry-incubator/etcd-metrics-server.git
-	branch = master
-[submodule "src/converger"]
-	path = src/converger
-	url = https://github.com/cloudfoundry-incubator/converger
-	branch = master
-[submodule "src/rep"]
-	path = src/rep
-	url = https://github.com/cloudfoundry-incubator/rep.git
-	branch = master
-[submodule "src/auctioneer"]
-	path = src/auctioneer
-	url = https://github.com/cloudfoundry-incubator/auctioneer
-	branch = master
-[submodule "src/route-emitter"]
-	path = src/route-emitter
-	url = https://github.com/cloudfoundry-incubator/route-emitter.git
-	branch = master
-[submodule "src/linux-circus"]
-	path = src/linux-circus
-	url = https://github.com/cloudfoundry-incubator/linux-circus.git
-	branch = master
-[submodule "src/tps"]
-	path = src/tps
-	url = https://github.com/cloudfoundry-incubator/tps
-	branch = master
-[submodule "src/nsync"]
-	path = src/nsync
-	url = https://github.com/cloudfoundry-incubator/nsync.git
-	branch = master
-[submodule "src/docker-circus"]
-	path = src/docker-circus
+[submodule "src/github.com/cloudfoundry-incubator/auctioneer"]
+	path = src/github.com/cloudfoundry-incubator/auctioneer
+	url = https://github.com/cloudfoundry-incubator/auctioneer.git
+[submodule "src/github.com/cloudfoundry-incubator/converger"]
+	path = src/github.com/cloudfoundry-incubator/converger
+	url = https://github.com/cloudfoundry-incubator/converger.git
+[submodule "src/github.com/cloudfoundry-incubator/docker-circus"]
+	path = src/github.com/cloudfoundry-incubator/docker-circus
 	url = https://github.com/cloudfoundry-incubator/docker-circus.git
+[submodule "src/github.com/cloudfoundry-incubator/etcd-metrics-server"]
+	path = src/github.com/cloudfoundry-incubator/etcd-metrics-server
+	url = https://github.com/cloudfoundry-incubator/etcd-metrics-server.git
+[submodule "src/github.com/cloudfoundry-incubator/executor"]
+	path = src/github.com/cloudfoundry-incubator/executor
+	url = https://github.com/cloudfoundry-incubator/executor.git
+[submodule "src/github.com/cloudfoundry-incubator/file-server"]
+	path = src/github.com/cloudfoundry-incubator/file-server
+	url = https://github.com/cloudfoundry-incubator/file-server.git
+[submodule "src/github.com/cloudfoundry-incubator/inigo"]
+	path = src/github.com/cloudfoundry-incubator/inigo
+	url = https://github.com/cloudfoundry-incubator/inigo.git
+[submodule "src/github.com/cloudfoundry-incubator/linux-circus"]
+	path = src/github.com/cloudfoundry-incubator/linux-circus
+	url = https://github.com/cloudfoundry-incubator/linux-circus.git
+[submodule "src/github.com/cloudfoundry-incubator/nsync"]
+	path = src/github.com/cloudfoundry-incubator/nsync
+	url = https://github.com/cloudfoundry-incubator/nsync.git
+[submodule "src/github.com/cloudfoundry-incubator/rep"]
+	path = src/github.com/cloudfoundry-incubator/rep
+	url = https://github.com/cloudfoundry-incubator/rep.git
+[submodule "src/github.com/cloudfoundry-incubator/route-emitter"]
+	path = src/github.com/cloudfoundry-incubator/route-emitter
+	url = https://github.com/cloudfoundry-incubator/route-emitter.git
+[submodule "src/github.com/cloudfoundry-incubator/runtime-metrics-server"]
+	path = src/github.com/cloudfoundry-incubator/runtime-metrics-server
+	url = https://github.com/cloudfoundry-incubator/runtime-metrics-server.git
+[submodule "src/github.com/coreos/etcd"]
+	path = src/github.com/coreos/etcd
+	url = https://github.com/coreos/etcd.git
+[submodule "src/github.com/cloudfoundry-incubator/stager"]
+	path = src/github.com/cloudfoundry-incubator/stager
+	url = https://github.com/cloudfoundry-incubator/stager.git
+[submodule "src/github.com/cloudfoundry-incubator/tps"]
+	path = src/github.com/cloudfoundry-incubator/tps
+	url = https://github.com/cloudfoundry-incubator/tps.git
+[submodule "src/github.com/cloudfoundry-incubator/warden-linux"]
+	path = src/github.com/cloudfoundry-incubator/warden-linux
+	url = https://github.com/cloudfoundry-incubator/warden-linux.git
