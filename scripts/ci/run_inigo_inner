@@ -42,7 +42,7 @@ go get github.com/coreos/etcd
 
 # -- lock down etcd to a version that works
 # -- see : https://www.pivotaltracker.com/story/show/78210298
-etcd_sha=$(git submodule status -- src/etcd | cut -d' ' -f2)
+etcd_sha=$(git submodule status -- src/github.com/coreos/etcd | cut -d' ' -f2)
 pushd ${GOPATH_ROOT}/src/github.com/coreos/etcd
 git checkout $etcd_sha
 popd
