@@ -10,7 +10,7 @@ diffs.each do |diff|
   end
 end
 
-puts "Bump #{locations.keys.join(", ")}"
+puts "Bump #{locations.keys.map { |l| l.split('/').last }.join(", ")}"
 puts # Second line of git commit message should always be empty
 
 locations.each do |location, shas|
