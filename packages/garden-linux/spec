@@ -1,0 +1,10 @@
+---
+name: garden-linux
+
+dependencies:
+  - golang
+
+files:
+  - github.com/cloudfoundry-incubator/garden-linux/**/*.go
+  - github.com/cloudfoundry-incubator/garden-linux/linux_backend/**/*
+  - github.com/cloudfoundry-incubator/garden-linux/Makefile
