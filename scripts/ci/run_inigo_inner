@@ -32,7 +32,7 @@ for package in \
     github.com/cloudfoundry-incubator/tps \
     github.com/cloudfoundry-incubator/nsync \
     github.com/cloudfoundry-incubator/file-server \
-    github.com/cloudfoundry-incubator/warden-linux;
+    github.com/cloudfoundry-incubator/garden-linux;
     do
   copy_to_gopath $package
 done
@@ -73,7 +73,7 @@ export REP_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/rep/Godep
 export ROUTE_EMITTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/route-emitter/Godeps/_workspace:${GOPATH_ROOT}
 export STAGER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/stager/Godeps/_workspace:${GOPATH_ROOT}
 export TPS_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/tps/Godeps/_workspace:${GOPATH_ROOT}
-export WARDEN_LINUX_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/warden-linux/Godeps/_workspace:${GOPATH_ROOT}
+export WARDEN_LINUX_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace:${GOPATH_ROOT}
 
 # grab master of loggregator
 git clone https://github.com/cloudfoundry/loggregator $LOGGREGATOR_GOPATH --depth 1

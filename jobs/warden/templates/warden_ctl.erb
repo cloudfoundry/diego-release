@@ -32,7 +32,7 @@ case $1 in
     export PATH=/var/vcap/packages/shadow/sbin:$PATH
     export PATH=/var/vcap/packages/iptables/sbin:$PATH
 
-    exec /var/vcap/packages/warden-linux/bin/warden-linux \
+    exec /var/vcap/packages/garden-linux/bin/garden-linux \
       -disableQuotas=<%= !p("diego.warden.disk_quota_enabled") %> \
       -listenNetwork=<%= p("diego.warden.listen_network") %> \
       -listenAddr=<%= p("diego.warden.listen_address") %> \
@@ -43,7 +43,7 @@ case $1 in
       -rootfs=/var/vcap/packages/rootfs_lucid64 \
       -overlays=/var/vcap/data/warden/overlays \
       -graph=/var/vcap/data/warden/graph \
-      -bin=/var/vcap/packages/warden-linux/src/github.com/cloudfoundry-incubator/warden-linux/linux_backend/bin \
+      -bin=/var/vcap/packages/garden-linux/src/github.com/cloudfoundry-incubator/garden-linux/linux_backend/bin \
       -containerGraceTime=5m \
       1>>$LOG_DIR/warden.stdout.log \
       2>>$LOG_DIR/warden.stderr.log
