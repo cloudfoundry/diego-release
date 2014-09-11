@@ -1,0 +1,11 @@
+---
+image: docker:///cloudfoundry/inigo-ci
+
+params:
+  GINKGO_PARALLEL: true
+  DEFAULT_EVENTUALLY_TIMEOUT:
+  INIGO_REPEAT_COUNT: 1
+  USE_TMPFS: true
+
+run:
+  path: scripts/ci/run_inigo_inner

@@ -1,86 +1,32 @@
 #!/bin/bash
 
-set -e -x -u
+set -e -x
 
-RELEASE_ROOT=$(dirname $(dirname $0))
+export GOROOT=/usr/local/go
+export GOPATH_ROOT=$PWD
+export GOPATH=:${GOPATH_ROOT}
 
-TMPDIR=${TMPDIR:-/tmp}
+export PATH=${GOPATH_ROOT}/bin:${GOROOT}/bin:${PATH}
 
-rm -rf ${TMPDIR}/diego-release-gopath.*
-
-export GOPATH_ROOT=$(mktemp -d ${TMPDIR}/diego-release-gopath.XXXXX)
-
-export GOPATH=$GOPATH_ROOT
-export PATH=$GOPATH_ROOT/bin:$PATH
-
-function copy_to_gopath {
-  mkdir -p ${GOPATH_ROOT}/src/$(dirname $1)
-  rsync -a src/$1/ ${GOPATH_ROOT}/src/$1/
-}
-
-# grab and set up our components
-for package in \
-    github.com/cloudfoundry-incubator/inigo \
-    github.com/cloudfoundry-incubator/auctioneer \
-    github.com/cloudfoundry-incubator/executor \
-    github.com/cloudfoundry-incubator/route-emitter \
-    github.com/cloudfoundry-incubator/converger \
-    github.com/cloudfoundry-incubator/rep \
-    github.com/cloudfoundry-incubator/stager \
-    github.com/cloudfoundry-incubator/linux-circus \
-    github.com/cloudfoundry-incubator/docker-circus \
-    github.com/cloudfoundry-incubator/tps \
-    github.com/cloudfoundry-incubator/nsync \
-    github.com/cloudfoundry-incubator/file-server \
-    github.com/cloudfoundry-incubator/garden-linux;
-    do
-  copy_to_gopath $package
-done
+export ROUTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry/gorouter/Godeps/_workspace:${GOPATH_ROOT}
+export LOGGREGATOR_GOPATH=${GOPATH_ROOT}/loggregator
+export AUCTIONEER_GOPATH=${GOPATH_ROOT}
+export CONVERGER_GOPATH=${GOPATH_ROOT}
+export EXECUTOR_GOPATH=${GOPATH_ROOT}
+export FILE_SERVER_GOPATH=${GOPATH_ROOT}
+export LINUX_CIRCUS_GOPATH=${GOPATH_ROOT}
+export DOCKER_CIRCUS_GOPATH=${GOPATH_ROOT}
+export NSYNC_GOPATH=${GOPATH_ROOT}
+export REP_GOPATH=${GOPATH_ROOT}
+export ROUTE_EMITTER_GOPATH=${GOPATH_ROOT}
+export STAGER_GOPATH=${GOPATH_ROOT}
+export TPS_GOPATH=${GOPATH_ROOT}
+export WARDEN_LINUX_GOPATH=${GOPATH_ROOT}
 
 # install application dependencies
-go get github.com/coreos/etcd
-
-# -- lock down etcd to a version that works
-# -- see : https://www.pivotaltracker.com/story/show/78210298
-etcd_sha=$(git submodule status -- src/github.com/coreos/etcd | cut -d' ' -f2)
-pushd ${GOPATH_ROOT}/src/github.com/coreos/etcd
-git checkout $etcd_sha
-popd
-# --
-
-go install github.com/coreos/etcd
-go get github.com/apcera/gnatsd
-go install github.com/apcera/gnatsd
-
-# grab master of gorouter
-go get -d github.com/cloudfoundry/gorouter
-export ROUTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry/gorouter/Godeps/_workspace:${GOPATH_ROOT}
-
-# set up inigo's own dependencies
-export GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo/Godeps/_workspace:${GOPATH}
-export PATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo/Godeps/_workspace/bin:${PATH}
-
-# set up compile-time $GOPATHs for each component
-export LOGGREGATOR_GOPATH=${GOPATH_ROOT}/loggregator
-export AUCTIONEER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/auctioneer/Godeps/_workspace:${GOPATH_ROOT}
-export CONVERGER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/converger/Godeps/_workspace:${GOPATH_ROOT}
-export EXECUTOR_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/executor/Godeps/_workspace:${GOPATH_ROOT}
-export FILE_SERVER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/file-server/Godeps/_workspace:${GOPATH_ROOT}
-export LINUX_CIRCUS_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/linux-circus/Godeps/_workspace:${GOPATH_ROOT}
-export DOCKER_CIRCUS_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/docker-circus/Godeps/_workspace:${GOPATH_ROOT}
-export NSYNC_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/nsync/Godeps/_workspace:${GOPATH_ROOT}
-export REP_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/rep/Godeps/_workspace:${GOPATH_ROOT}
-export ROUTE_EMITTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/route-emitter/Godeps/_workspace:${GOPATH_ROOT}
-export STAGER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/stager/Godeps/_workspace:${GOPATH_ROOT}
-export TPS_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/tps/Godeps/_workspace:${GOPATH_ROOT}
-export WARDEN_LINUX_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace:${GOPATH_ROOT}
-
-# grab master of loggregator
-git clone https://github.com/cloudfoundry/loggregator $LOGGREGATOR_GOPATH --depth 1
-
-pushd $LOGGREGATOR_GOPATH
-  git submodule update --init --recursive
-popd
+for package in github.com/coreos/etcd github.com/apcera/gnatsd; do
+  go install $package
+done
 
 cd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
 

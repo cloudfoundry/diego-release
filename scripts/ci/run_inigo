@@ -2,9 +2,11 @@
 
 set -e -x
 
-export DRONE_TMP=$TMPDIR/drone
 
-pushd diego-release
+if which fly; then
+  fly -c scripts/ci/run_inigo.build.yml -i src=src -i loggregator=loggregator -i scripts=scripts
+else
+  export DRONE_TMP=$TMPDIR/drone
   ./scripts/create_drone_yml scripts/ci/run_inigo.drone.yml .drone.yml
-  /var/vcap/packages/drone/bin/drone -v -privileged build
-popd
+  drone -v -privileged build
+fi
