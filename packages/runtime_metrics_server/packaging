@@ -1,15 +1,9 @@
 set -e
 
-REPO_NAME=github.com/cloudfoundry-incubator/runtime-metrics-server
-
-REPO_DIR=${BOSH_INSTALL_TARGET}/src/${REPO_NAME}
-
-mkdir -p $(dirname $REPO_DIR)
-
-cp -a $REPO_NAME $REPO_DIR
+mkdir -p ${BOSH_INSTALL_TARGET}/src
+cp -a . ${BOSH_INSTALL_TARGET}/src
+export GOPATH=$BOSH_INSTALL_TARGET
 
 export GOROOT=$(readlink -nf /var/vcap/packages/golang)
-export GOPATH=$BOSH_INSTALL_TARGET:${REPO_DIR}/Godeps/_workspace
 export PATH=$GOROOT/bin:$PATH
-
-go install ${REPO_NAME}
+go install github.com/cloudfoundry-incubator/runtime-metrics-server
