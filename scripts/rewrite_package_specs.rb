@@ -19,9 +19,16 @@ packages = {
 }
 
 packages.each do |bosh_package, go_package|
+  # Remove existing ".go" files from the package spec
   system("sed -i '' '/\\.go$/d' ./packages/#{bosh_package}/spec") or fail
+
+  # Find all go dependencies of the package
   deps=%x(go list -f '{{join .Deps "\\n"}}' #{go_package}/... | xargs go list -f '{{if not .Standard}}{{.ImportPath}}{{end}}').split
+
+  # Include the package source itself in the spec file
   system("echo '  - #{go_package}/**/*.go' >> packages/#{bosh_package}/spec") or fail
+
+  # Add all the dependencies to the spec file
   deps.each do |dep_package|
     system("echo '  - #{dep_package}/*.go' >> packages/#{bosh_package}/spec") or fail
   end
