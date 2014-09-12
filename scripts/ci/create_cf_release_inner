@@ -7,9 +7,6 @@ STUBS_DIR=${PWD}/deployments-runtime/${DEPLOYMENT_NAME}/stubs
 eval $(./scripts/ci/bosh_config)
 ./scripts/bosh_setup
 
-# This comes from GoCD
-bosh upload stemcell "light-bosh-stemcell-latest-aws-xen-ubuntu-trusty-go_agent.tgz" --skip-if-exists
-
 pushd cf-release
   bosh -n create release --with-tarball
   bosh -n upload release --rebase --skip-if-exists || true
