@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd $(dirname $0)/../src/github.com/cloudfoundry-incubator
+ginkgo -r -keepGoing -skipPackage="simulation,inigo,garden-linux,dropsonde"
