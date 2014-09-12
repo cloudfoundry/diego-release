@@ -30,6 +30,9 @@ properties:
     description: 'Map of lifecycle bundles for different stacks in json format {"stack_name":"lifecycle_bundle_path"}'
     default:
       lucid64: linux-circus/linux-circus.tgz
+  diego.stager.docker_lifecycle_bundle:
+    description: Lifecycle bundle for docker apps
+    default: docker-circus/docker-circus.tgz
   diego.stager.min_memory_mb:
     description: Minimum memory in megabytes that will be used for staging
     default: 1024

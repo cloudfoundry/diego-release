@@ -35,6 +35,7 @@ case $1 in
       -natsPassword=<%= p("diego.stager.nats.password") %> \
       -debugAddr=<%= p("diego.stager.debug_addr") %> \
       -circuses=<%= Shellwords.shellescape(p("diego.stager.lifecycle_bundles").to_json) %> \
+      -dockerCircusPath=<%= p("diego.stager.docker_lifecycle_bundle") %> \
       -minMemoryMB=<%= p("diego.stager.min_memory_mb") %> \
       -minDiskMB=<%= p("diego.stager.min_disk_mb") %> \
       -minFileDescriptors=<%= p("diego.stager.min_file_descriptors") %>  \
