@@ -47,7 +47,7 @@ def main
 end
 
 def src_dir
-  File.expand_path("../../src", __FILE__)
+  File.expand_path("../../src/github.com/cloudfoundry-incubator", __FILE__)
 end
 
 def get_pkg_name(string)
