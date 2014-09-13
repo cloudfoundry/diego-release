@@ -5,8 +5,6 @@ env:
   - BOSH_USER={{BOSH_USER}}
   - BOSH_PASSWORD={{BOSH_PASSWORD}}
   - BOSH_TARGET={{BOSH_TARGET}}
-  - DEPLOYMENT_NAME={{DEPLOYMENT_NAME}}
-  - DATADOG_API_KEY={{DATADOG_API_KEY}}
 
 script:
   - ./scripts/ci/upload_stemcell_inner
