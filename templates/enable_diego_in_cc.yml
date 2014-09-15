@@ -3,5 +3,7 @@ update:
   serial: true # See https://www.pivotaltracker.com/story/show/75653902
 properties:
   cc:
-    diego: true
+    diego:
+        staging: optional
+        running: optional
     diego_docker: true
