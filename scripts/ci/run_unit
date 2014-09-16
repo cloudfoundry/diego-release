@@ -1,0 +1,21 @@
+#!/bin/bash
+# vim: set ft=sh
+
+set -e
+
+export GOROOT=/usr/local/go
+export PATH=$GOROOT/bin:$PATH
+
+cd diego-release/
+
+export GOPATH=$PWD
+export PATH=$PWD/bin:$PATH
+
+if [ -z "$PACKAGE" ]; then
+  echo "usage: PACKAGE=github.com/foo $0 [ginkgo args...]" >&2
+  exit 1
+fi
+
+go install github.com/onsi/ginkgo/ginkgo
+
+ginkgo -r -p "$@" "./src/${PACKAGE}"

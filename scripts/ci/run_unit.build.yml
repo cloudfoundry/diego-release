@@ -1,0 +1,8 @@
+---
+image: docker:///cloudfoundry/diego-ci
+
+params:
+  PACKAGE:
+
+run:
+  path: diego-release/scripts/ci/run_unit
