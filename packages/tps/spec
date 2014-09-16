@@ -21,6 +21,7 @@ files:
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/stop_auction_bbs/*.go
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/task_bbs/*.go
   - github.com/cloudfoundry-incubator/runtime-schema/heartbeater/*.go
+  - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go
   - github.com/cloudfoundry-incubator/tps/api/*.go
   - github.com/cloudfoundry-incubator/tps/handler/*.go
@@ -28,9 +29,11 @@ files:
   - github.com/cloudfoundry-incubator/tps/heartbeat/*.go
   - github.com/cloudfoundry/dropsonde/*.go
   - github.com/cloudfoundry/dropsonde/autowire/*.go
+  - github.com/cloudfoundry/dropsonde/autowire/metrics/*.go
   - github.com/cloudfoundry/dropsonde/emitter/*.go
   - github.com/cloudfoundry/dropsonde/events/*.go
   - github.com/cloudfoundry/dropsonde/factories/*.go
+  - github.com/cloudfoundry/dropsonde/metric_sender/*.go
   - github.com/cloudfoundry/dropsonde/runtime_stats/*.go
   - github.com/cloudfoundry/gunk/group_runner/*.go
   - github.com/cloudfoundry/gunk/timeprovider/*.go
