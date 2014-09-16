@@ -8,8 +8,6 @@ export GOPATH=:${GOPATH_ROOT}
 
 export PATH=${GOPATH_ROOT}/bin:${GOROOT}/bin:${PATH}
 
-export ROUTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry/gorouter/Godeps/_workspace:${GOPATH_ROOT}
-export LOGGREGATOR_GOPATH=${GOPATH_ROOT}/loggregator
 export AUCTIONEER_GOPATH=${GOPATH_ROOT}
 export CONVERGER_GOPATH=${GOPATH_ROOT}
 export EXECUTOR_GOPATH=${GOPATH_ROOT}
@@ -21,7 +19,11 @@ export REP_GOPATH=${GOPATH_ROOT}
 export ROUTE_EMITTER_GOPATH=${GOPATH_ROOT}
 export STAGER_GOPATH=${GOPATH_ROOT}
 export TPS_GOPATH=${GOPATH_ROOT}
-export WARDEN_LINUX_GOPATH=${GOPATH_ROOT}
+
+# These components vendor their own dependencies
+export LOGGREGATOR_GOPATH=${GOPATH_ROOT}/loggregator
+export ROUTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry/gorouter/Godeps/_workspace:${GOPATH_ROOT}
+export GARDEN_LINUX_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry/garden-linux/Godeps/_workspace:${GOPATH_ROOT}
 
 # install application dependencies
 for package in github.com/coreos/etcd github.com/apcera/gnatsd; do
