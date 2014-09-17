@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require "yaml"
+
 packages = {
   "auctioneer" => "github.com/cloudfoundry-incubator/auctioneer",
   "converger" => "github.com/cloudfoundry-incubator/converger",
@@ -18,23 +20,37 @@ packages = {
   "tps" => "github.com/cloudfoundry-incubator/tps",
 }
 
+threads = []
+
 packages.each do |bosh_package, go_package|
-  # Remove existing ".go" files from the package spec
-  system("sed -i '' '/\\.go$/d' ./packages/#{bosh_package}/spec") or fail
+  threads << Thread.new do
+    spec_path = File.join("packages", bosh_package, "spec")
 
-  # Find all go dependencies of the package
-  deps=%x(go list -f '{{join .Deps "\\n"}}' #{go_package}/... | xargs go list -f '{{if not .Standard}}{{.ImportPath}}{{end}}').split
+    spec = YAML.load_file(spec_path)
 
-  # Include the package source itself in the spec file
-  system("echo '  - #{go_package}/**/*.go' >> packages/#{bosh_package}/spec") or fail
+    # Remove existing ".go" files from the package spec
+    spec["files"].reject! { |g| g =~ /\.go$/ }
 
-  # Add all the dependencies to the spec file
-  deps.each do |dep_package|
-    system("echo '  - #{dep_package}/*.go' >> packages/#{bosh_package}/spec") or fail
-  end
+    # Find all go dependencies of the package
+    deps = %x(go list -f '{{join .Deps "\\n"}}' #{go_package}/... | xargs go list -f '{{if not .Standard}}{{.ImportPath}}{{end}}').split
 
-  # check if spec was modified
-  if `git status --porcelain -- packages/#{bosh_package}/spec` != ""
-    puts "packages/#{bosh_package}/spec"
+    # Include the package source itself in the spec file
+    spec["files"] << "#{go_package}/**/*.go"
+
+    # Add all the dependencies to the spec file
+    deps.each do |dep_package|
+      spec["files"] << "#{dep_package}/*.go"
+    end
+
+    # check if spec was modified
+    File.open(spec_path, "w") do |io|
+      YAML.dump(spec, io)
+    end
+
+    unless `git status --porcelain -- #{spec_path}`.empty?
+      puts spec_path
+    end
   end
 end
+
+threads.each(&:join)
