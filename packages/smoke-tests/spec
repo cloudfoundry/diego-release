@@ -1,0 +1,45 @@
+---
+name: smoke-tests
+dependencies:
+- golang
+- cf-cli
+files:
+- github.com/cloudfoundry-incubator/cf-test-helpers/cf/*.go
+- github.com/cloudfoundry-incubator/cf-test-helpers/generator/*.go
+- github.com/cloudfoundry-incubator/cf-test-helpers/runner/*.go
+- github.com/cloudfoundry-incubator/diego-smoke-tests/**/*.go
+- github.com/cloudfoundry-incubator/diego-smoke-tests/dora/**
+- github.com/nu7hatch/gouuid/*.go
+- github.com/onsi/ginkgo/*.go
+- github.com/onsi/ginkgo/config/*.go
+- github.com/onsi/ginkgo/ginkgo/convert/*.go
+- github.com/onsi/ginkgo/ginkgo/nodot/*.go
+- github.com/onsi/ginkgo/ginkgo/testrunner/*.go
+- github.com/onsi/ginkgo/ginkgo/testsuite/*.go
+- github.com/onsi/ginkgo/ginkgo/watch/*.go
+- github.com/onsi/ginkgo/internal/codelocation/*.go
+- github.com/onsi/ginkgo/internal/containernode/*.go
+- github.com/onsi/ginkgo/internal/failer/*.go
+- github.com/onsi/ginkgo/internal/leafnodes/*.go
+- github.com/onsi/ginkgo/internal/remote/*.go
+- github.com/onsi/ginkgo/internal/spec/*.go
+- github.com/onsi/ginkgo/internal/specrunner/*.go
+- github.com/onsi/ginkgo/internal/suite/*.go
+- github.com/onsi/ginkgo/internal/testingtproxy/*.go
+- github.com/onsi/ginkgo/internal/writer/*.go
+- github.com/onsi/ginkgo/reporters/*.go
+- github.com/onsi/ginkgo/reporters/stenographer/*.go
+- github.com/onsi/ginkgo/types/*.go
+- github.com/onsi/gomega/*.go
+- github.com/onsi/gomega/format/*.go
+- github.com/onsi/gomega/gbytes/*.go
+- github.com/onsi/gomega/gexec/*.go
+- github.com/onsi/gomega/internal/assertion/*.go
+- github.com/onsi/gomega/internal/asyncassertion/*.go
+- github.com/onsi/gomega/internal/testingtsupport/*.go
+- github.com/onsi/gomega/matchers/*.go
+- github.com/onsi/gomega/matchers/support/goraph/bipartitegraph/*.go
+- github.com/onsi/gomega/matchers/support/goraph/edge/*.go
+- github.com/onsi/gomega/matchers/support/goraph/node/*.go
+- github.com/onsi/gomega/matchers/support/goraph/util/*.go
+- github.com/onsi/gomega/types/*.go

@@ -18,7 +18,10 @@ packages = {
   "runtime_metrics_server" => "github.com/cloudfoundry-incubator/runtime-metrics-server",
   "stager" => "github.com/cloudfoundry-incubator/stager",
   "tps" => "github.com/cloudfoundry-incubator/tps",
+  "smoke-tests" => "github.com/cloudfoundry-incubator/diego-smoke-tests",
 }
+
+include_test_deps = ["smoke-tests"]
 
 threads = []
 
@@ -34,8 +37,21 @@ packages.each do |bosh_package, go_package|
     # Find all go dependencies of the package
     deps = %x(go list -f '{{join .Deps "\\n"}}' #{go_package}/... | xargs go list -f '{{if not .Standard}}{{.ImportPath}}{{end}}').split
 
+    if include_test_deps.include?(bosh_package)
+      # Then, add test dependencies
+      test_imports = %x(go list -f '{{join .XTestImports "\\n"}}' #{go_package}/... | xargs go list -f '{{if not .Standard}}{{.ImportPath}}{{end}}').split
+      deps += test_imports
+
+      # ...and their dependencies.
+      test_imports.each do |test_import|
+        deps += %x(go list -f '{{join .Deps "\\n"}}' #{test_import}/... | xargs go list -f '{{if not .Standard}}{{.ImportPath}}{{end}}').split
+      end
+    end
+
     # Include the package source itself in the spec file
     spec["files"] << "#{go_package}/**/*.go"
+
+    deps.uniq!
 
     # Add all the dependencies to the spec file
     deps.each do |dep_package|

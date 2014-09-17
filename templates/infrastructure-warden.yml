@@ -74,6 +74,18 @@ jobs:
   - name: acceptance_tests_diego
     instances: 1
 
+  - name: diego_smoke_tests
+    instances: 1
+    resource_pool: small_errand
+    properties:
+      diego:
+        smoke_tests:
+          api: (( "api." .properties.domain ))
+          user: admin
+          password: admin
+          org: smoke
+          space: tests
+
 resource_pools:
   - name: small_z1
     cloud_properties:

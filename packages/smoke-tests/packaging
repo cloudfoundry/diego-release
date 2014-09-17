@@ -1,0 +1,29 @@
+# vim: set ft=sh
+
+set -e -x
+
+export GOROOT=$(readlink -nf /var/vcap/packages/golang)
+export PATH=${GOROOT}/bin:${PATH}
+
+dirs=$(ls)
+
+mkdir src/
+for dir in $dirs; do
+  if [ "$dir" = "packaging" ]; then
+    continue
+  fi
+
+  mv $dir src/${dir}
+done
+
+export GOPATH=${PWD}
+export PATH=${PWD}/bin:$PATH
+
+find src/
+
+cd src/github.com/cloudfoundry-incubator/diego-smoke-tests
+
+go test -c
+
+mv dora ${BOSH_INSTALL_TARGET}/dora
+mv diego-smoke-tests.test ${BOSH_INSTALL_TARGET}

@@ -1,0 +1,24 @@
+#!/bin/bash
+# vim: set ft=sh
+
+set -e -x
+
+export PATH=/var/vcap/packages/cf-cli/bin:${PATH}
+
+export HOME=$(mktemp -d /tmp/diego-smoke-tests.XXXXX)
+
+cf api <%= p("diego.smoke_tests.api") %> \
+  --skip-ssl-validation=<%= p("diego.ssl.skip_cert_verify").inspect %>
+
+cf auth <%= p("diego.smoke_tests.user") %> <%= p("diego.smoke_tests.password") %>
+
+# assume org exists, otherwise we have to be admin, which is a bad idea
+cf target -o <%= p("diego.smoke_tests.org") %>
+
+cf create-space <%= p("diego.smoke_tests.space") %>
+cf target -s <%= p("diego.smoke_tests.space") %>
+
+cd /var/vcap/packages/smoke-tests
+
+# assumes dora asset lives in working directory
+./diego-smoke-tests.test
