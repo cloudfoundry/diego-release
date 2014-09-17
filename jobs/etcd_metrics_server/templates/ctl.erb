@@ -35,7 +35,7 @@ case $1 in
         -username=<%= p("diego.etcd_metrics_server.status.username") %> \
         -password=<%= p("diego.etcd_metrics_server.status.password") %> \
         2>> $LOG_DIR/etcd_metrics_server.stderr.log \
-        1> >(tee -a $LOG_DIR/etcd_metrics_server.stdout.log | logger -t vcap.etcd-metrics-server)
+        1> >(tee -a $LOG_DIR/etcd_metrics_server.stdout.log | logger -t etcd-metrics-server)
 
     ;;
 

@@ -1,5 +1,6 @@
 <% if_p("diego.syslog_aggregator.address", "diego.syslog_aggregator.port") do |address, port| %>
-
+$PrivDropToUser vcap
+$PrivDropToGroup vcap
 $ModLoad imuxsock                       # local message reception (rsyslog uses a datagram socket)
 $MaxMessageSize 4k                      # default is 2k
 $WorkDirectory /var/vcap/sys/rsyslog/buffered  # where messages should be buffered on disk
@@ -15,31 +16,29 @@ $ActionQueueHighWaterMark 8000          # Num messages. Assuming avg size of 512
 $ActionQueueTimeoutEnqueue 0            # Discard messages if the queue + disk is full
 $ActionQueueSaveOnShutdown on           # Save in-memory data to disk if rsyslog shuts down
 
+<% ip = spec.networks.send(properties.networks.apps).ip %>
 template(name="CfLogTemplate" type="list") {
         constant(value="<")
         property(name="pri")
         constant(value=">")
         property(name="timestamp" dateFormat="rfc3339")
-        constant(value=" <%= spec.networks.send(properties.network_name).ip %> ")
+        constant(value=" <%= ip.strip %> ")
         property(name="programname")
-        constant(value=" [job=")
-        property(name="programname")
-        constant(value=" index=<%= spec.index.to_i %>] ")
+        constant(value=" [job=<%= name %> index=<%= spec.index.to_i %>] ")
         property(name="msg")
 }
 
-:programname, startswith, "vcap." @@<%= address %>:<%= port %>;CfLogTemplate
+*.* @@<%= address %>:<%= port %>;CfLogTemplate
+
+# Log vcap messages locally, too
+#$template VcapComponentLogFile, "/var/log/%programname:6:$%/%programname:6:$%.log"
+#$template VcapComponentLogFormat, "%timegenerated% %syslogseverity-text% -- %msg%\n"
+#:programname, startswith, "vcap." -?VcapComponentLogFile;VcapComponentLogFormat
 
 # Prevent them from reaching anywhere else
 :programname, startswith, "vcap." ~
-
-<% if properties.diego.syslog_aggregator.all %>
-*.*  @@<%= address %>:<%= port %>
-<% end %>
 
 <% end.else do %>
-
 # Prevent them from reaching anywhere else
 :programname, startswith, "vcap." ~
-
 <% end %>

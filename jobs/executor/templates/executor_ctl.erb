@@ -41,7 +41,7 @@ case $1 in
       -cachePath=<%= p("diego.executor.cache_path") %>\
       -maxCacheSizeInBytes=<%= p("diego.executor.max_cache_size_in_bytes") %>\
       2>> $LOG_DIR/executor.stderr.log \
-      1> >(tee -a $LOG_DIR/executor.stdout.log | logger -t vcap.executor)
+      1> >(tee -a $LOG_DIR/executor.stdout.log | logger -t executor)
 
     ;;
 

@@ -38,7 +38,7 @@ case $1 in
       <% end %>\
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       2>> $LOG_DIR/file-server.stderr.log \
-      1> >(tee -a $LOG_DIR/file-server.stdout.log | logger -t vcap.file-server)
+      1> >(tee -a $LOG_DIR/file-server.stdout.log | logger -t file-server)
 
     ;;
 

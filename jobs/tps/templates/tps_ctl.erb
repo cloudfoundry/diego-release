@@ -36,7 +36,7 @@ case $1 in
       -debugAddr=<%= p("diego.tps.debug_addr") %> \
       -listenAddr=<%= spec.networks.send(properties.network_name).ip %>:1518 \
       2>> $LOG_DIR/tps.stderr.log \
-      1> >(tee -a $LOG_DIR/tps.stdout.log | logger -t vcap.tps)
+      1> >(tee -a $LOG_DIR/tps.stdout.log | logger -t tps)
 
     ;;
 

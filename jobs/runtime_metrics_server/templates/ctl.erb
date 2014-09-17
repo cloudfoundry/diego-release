@@ -39,7 +39,7 @@ case $1 in
       -password=<%= p("diego.runtime_metrics_server.status.password") %> \
       -debugAddr=<%= p("diego.runtime_metrics_server.debug_addr") %> \
       2>> $LOG_DIR/runtime_metrics_server.stderr.log \
-      1> >(tee -a $LOG_DIR/runtime_metrics_server.stdout.log | logger -t vcap.runtime-metrics-server)
+      1> >(tee -a $LOG_DIR/runtime_metrics_server.stdout.log | logger -t runtime-metrics-server)
 
 
     ;;
