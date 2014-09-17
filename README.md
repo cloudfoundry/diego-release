@@ -69,6 +69,7 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   git clone git@github.com:cloudfoundry-incubator/diego-release.git
   cd ~/workspace/diego-release
   git checkout develop
+  ./scripts/install-git-hooks
   ./scripts/update
   ```
 

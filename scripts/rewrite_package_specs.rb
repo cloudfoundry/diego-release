@@ -32,4 +32,9 @@ packages.each do |bosh_package, go_package|
   deps.each do |dep_package|
     system("echo '  - #{dep_package}/*.go' >> packages/#{bosh_package}/spec") or fail
   end
+
+  # check if spec was modified
+  if `git status --porcelain -- packages/#{bosh_package}/spec` != ""
+    puts "packages/#{bosh_package}/spec"
+  end
 end

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+modified_packages=$(./scripts/rewrite_package_specs.rb)
+  
+if [ -n "$modified_packages" ]; then
+  echo $'\e[31mthe following package specs are not staged:\e[0m'
+  echo
+  echo "$modified_packages"
+  exit 1
+fi
