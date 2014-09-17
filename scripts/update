@@ -10,6 +10,8 @@ fi
 
 set -x
 
+$(dirname $0)/install-git-hooks
+
 if [[ "$(git --version | grep 'version 1.7')x" != "x" ]]; then
   git pull && git submodule foreach --recursive git submodule sync && git submodule update --init --recursive
 else
