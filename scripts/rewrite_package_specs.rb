@@ -42,12 +42,13 @@ packages.each do |bosh_package, go_package|
       spec["files"] << "#{dep_package}/*.go"
     end
 
-    # check if spec was modified
+    spec["files"].sort!
     File.open(spec_path, "w") do |io|
       YAML.dump(spec, io)
     end
 
-    unless `git status --porcelain -- #{spec_path}`.empty?
+    # check if spec was modified
+    if `git status --porcelain -- #{spec_path}`[1] == "M"
       puts spec_path
     end
   end

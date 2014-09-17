@@ -1,43 +1,43 @@
 ---
 name: etcd
 dependencies:
-  - golang
+- golang
 files:
-  - github.com/coreos/etcd/build
-  - github.com/coreos/etcd/**/*.go
-  - github.com/coreos/etcd/config/*.go
-  - github.com/coreos/etcd/discovery/*.go
-  - github.com/coreos/etcd/error/*.go
-  - github.com/coreos/etcd/etcd/*.go
-  - github.com/coreos/etcd/http/*.go
-  - github.com/coreos/etcd/log/*.go
-  - github.com/coreos/etcd/metrics/*.go
-  - github.com/coreos/etcd/mod/*.go
-  - github.com/coreos/etcd/mod/dashboard/*.go
-  - github.com/coreos/etcd/mod/dashboard/resources/*.go
-  - github.com/coreos/etcd/mod/leader/v2/*.go
-  - github.com/coreos/etcd/mod/lock/v2/*.go
-  - github.com/coreos/etcd/pkg/btrfs/*.go
-  - github.com/coreos/etcd/pkg/http/*.go
-  - github.com/coreos/etcd/pkg/strings/*.go
-  - github.com/coreos/etcd/server/*.go
-  - github.com/coreos/etcd/server/v1/*.go
-  - github.com/coreos/etcd/server/v2/*.go
-  - github.com/coreos/etcd/store/*.go
-  - github.com/coreos/etcd/store/v2/*.go
-  - github.com/coreos/etcd/third_party/bitbucket.org/kardianos/osext/*.go
-  - github.com/coreos/etcd/third_party/code.google.com/p/gogoprotobuf/proto/*.go
-  - github.com/coreos/etcd/third_party/github.com/BurntSushi/toml/*.go
-  - github.com/coreos/etcd/third_party/github.com/coreos/go-etcd/etcd/*.go
-  - github.com/coreos/etcd/third_party/github.com/coreos/go-log/log/*.go
-  - github.com/coreos/etcd/third_party/github.com/coreos/go-systemd/journal/*.go
-  - github.com/coreos/etcd/third_party/github.com/goraft/raft/*.go
-  - github.com/coreos/etcd/third_party/github.com/goraft/raft/protobuf/*.go
-  - github.com/coreos/etcd/third_party/github.com/gorilla/context/*.go
-  - github.com/coreos/etcd/third_party/github.com/gorilla/mux/*.go
-  - github.com/coreos/etcd/third_party/github.com/mreiferson/go-httpclient/*.go
-  - github.com/coreos/etcd/third_party/github.com/rcrowley/go-metrics/*.go
-  - github.com/stretchr/objx/*.go
-  - github.com/stretchr/testify/assert/*.go
-  - github.com/stretchr/testify/mock/*.go
-  - github.com/stathat/go/*.go
+- github.com/coreos/etcd/**/*.go
+- github.com/coreos/etcd/build
+- github.com/coreos/etcd/config/*.go
+- github.com/coreos/etcd/discovery/*.go
+- github.com/coreos/etcd/error/*.go
+- github.com/coreos/etcd/etcd/*.go
+- github.com/coreos/etcd/http/*.go
+- github.com/coreos/etcd/log/*.go
+- github.com/coreos/etcd/metrics/*.go
+- github.com/coreos/etcd/mod/*.go
+- github.com/coreos/etcd/mod/dashboard/*.go
+- github.com/coreos/etcd/mod/dashboard/resources/*.go
+- github.com/coreos/etcd/mod/leader/v2/*.go
+- github.com/coreos/etcd/mod/lock/v2/*.go
+- github.com/coreos/etcd/pkg/btrfs/*.go
+- github.com/coreos/etcd/pkg/http/*.go
+- github.com/coreos/etcd/pkg/strings/*.go
+- github.com/coreos/etcd/server/*.go
+- github.com/coreos/etcd/server/v1/*.go
+- github.com/coreos/etcd/server/v2/*.go
+- github.com/coreos/etcd/store/*.go
+- github.com/coreos/etcd/store/v2/*.go
+- github.com/coreos/etcd/third_party/bitbucket.org/kardianos/osext/*.go
+- github.com/coreos/etcd/third_party/code.google.com/p/gogoprotobuf/proto/*.go
+- github.com/coreos/etcd/third_party/github.com/BurntSushi/toml/*.go
+- github.com/coreos/etcd/third_party/github.com/coreos/go-etcd/etcd/*.go
+- github.com/coreos/etcd/third_party/github.com/coreos/go-log/log/*.go
+- github.com/coreos/etcd/third_party/github.com/coreos/go-systemd/journal/*.go
+- github.com/coreos/etcd/third_party/github.com/goraft/raft/*.go
+- github.com/coreos/etcd/third_party/github.com/goraft/raft/protobuf/*.go
+- github.com/coreos/etcd/third_party/github.com/gorilla/context/*.go
+- github.com/coreos/etcd/third_party/github.com/gorilla/mux/*.go
+- github.com/coreos/etcd/third_party/github.com/mreiferson/go-httpclient/*.go
+- github.com/coreos/etcd/third_party/github.com/rcrowley/go-metrics/*.go
+- github.com/stathat/go/*.go
+- github.com/stretchr/objx/*.go
+- github.com/stretchr/testify/assert/*.go
+- github.com/stretchr/testify/mock/*.go
