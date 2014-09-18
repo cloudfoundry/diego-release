@@ -3,6 +3,7 @@ name: etcd_metrics_server
 dependencies:
 - golang
 files:
+- github.com/apcera/nats/*.go
 - github.com/cloudfoundry-incubator/cf-debug-server/*.go
 - github.com/cloudfoundry-incubator/cf-lager/*.go
 - github.com/cloudfoundry-incubator/etcd-metrics-server/**/*.go
