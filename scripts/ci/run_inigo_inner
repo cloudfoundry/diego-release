@@ -36,4 +36,62 @@ done
 
 cd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
 
-./scripts/drone-test
+pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/garden-linux
+  make # compile wshd/etc.
+  export WARDEN_BINPATH=$PWD/linux_backend/bin
+popd
+
+go install github.com/onsi/ginkgo/ginkgo
+
+export WARDEN_ROOTFS=/opt/warden/rootfs
+
+# used for routing to apps; same logic that Warden uses.
+export EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\s/\1/;tx;d;:x')
+
+# WARDEN_GRAPH_PATH is the root of the docker image filesystem
+export WARDEN_GRAPH_PATH=/tmp/warden-tmp
+
+mkdir -p $WARDEN_GRAPH_PATH
+
+if [ "$USE_TMPFS" = "true" ]; then
+  mount -t tmpfs none $WARDEN_GRAPH_PATH
+else
+  warden_graph_loopback="$WARDEN_GRAPH_PATH.img"
+
+  # unmount and delete warden graph fs
+  set +e
+  umount $WARDEN_GRAPH_PATH
+  losetup --all | grep $warden_graph_loopback | cut --delimiter=: --fields=1 | xargs --no-run-if-empty --max-args=1 losetup --detach
+  rm $warden_graph_loopback
+  set -e
+
+  # create and mount WARDEN_GRAPH_PATH as a loopback device so we don't consume RAM
+
+  dd if=/dev/null of=$warden_graph_loopback bs=1M seek=6000 1> /dev/null 2> /dev/null
+  mkfs.ext4 -b 4096 -q -F -O ^has_journal,uninit_bg $warden_graph_loopback
+  losetup --all | grep $warden_graph_loopback | cut --delimiter=: --fields=1 | xargs --no-run-if-empty --max-args=1 losetup --detach
+  losetup --find $warden_graph_loopback
+  graph_loop_device=$(losetup --all | grep $warden_graph_loopback | cut --delimiter=: --fields=1 | head -1)
+  mount $graph_loop_device $WARDEN_GRAPH_PATH
+fi
+
+color_flag=""
+if [ -n "$GO_PIPELINE_COUNTER" ]; then
+  color_flag="-noColor"
+fi
+
+nodes_flag=""
+if [ "$GINKGO_PARALLEL" = "true" ]; then
+  nodes_flag="-nodes=4"
+fi
+
+pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
+  ginkgo $color_flag $nodes_flag -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@"
+popd
+
+# unmount and delete warden graph fs
+if [ "$USE_TMPFS" = "" ]; then
+  umount -l $WARDEN_GRAPH_PATH
+  losetup --all | grep $warden_graph_loopback | cut --delimiter=: --fields=1 | xargs --no-run-if-empty --max-args=1 losetup --detach
+  rm $warden_graph_loopback
+fi
