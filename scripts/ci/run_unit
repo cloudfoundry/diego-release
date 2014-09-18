@@ -13,4 +13,4 @@ export PATH=$PWD/bin:$PATH
 
 go install github.com/onsi/ginkgo/ginkgo
 
-./scripts/run_unit_tests
+./scripts/run_unit_tests "$@"
