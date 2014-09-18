@@ -4,7 +4,7 @@
   <img src="http://i.imgur.com/WrqaOd9.png" alt="Go Diego Go!" title="Go Diego Go!"/>
 </p>
 
-####Learn more about Diego and its components at [diego-design-notes](https://github.com/cloudfoundry-incubator/diego-design-notes)
+#### Learn more about Diego and its components at [diego-design-notes](https://github.com/cloudfoundry-incubator/diego-design-notes)
 
 A [BOSH](https://github.com/cloudfoundry/bosh) release for deploying the
 following Diego components:
@@ -23,6 +23,24 @@ This release relies on a separate deployment to provide
 [NATS](https://github.com/apcera/gnatsd) and
 [Loggregator](https://github.com/cloudfoundry/loggregator). In practice these
 come from [cf-release](https://github.com/cloudfoundry/cf-release).
+
+## Running Integration Tests
+
+1. Install and start [Concourse](http://concourse.ci), following its
+   [README](https://github.com/concourse/concourse/blob/master/README.md).
+
+1. Install the `fly` CLI:
+
+    ```sh
+    go get github.com/concourse/fly
+    ```
+
+1. Run [Inigo](https://github.com/cloudfoundry-incubator/inigo).
+
+    ```sh
+    ./scripts/run_inigo
+    ```
+
 
 ## Deploying Diego to a local Bosh-Lite instance
 
