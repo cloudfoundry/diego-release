@@ -3,10 +3,14 @@
 set -e -x
 
 export GOROOT=/usr/local/go
-export GOPATH_ROOT=$PWD
-export GOPATH=:${GOPATH_ROOT}
+export PATH=${GOROOT}/bin:${PATH}
 
-export PATH=${GOPATH_ROOT}/bin:${GOROOT}/bin:${PATH}
+cd diego-release/
+
+export GOPATH_ROOT=$PWD
+
+export GOPATH=${GOPATH_ROOT}
+export PATH=${GOPATH_ROOT}/bin:${PATH}
 
 export AUCTIONEER_GOPATH=${GOPATH_ROOT}
 export CONVERGER_GOPATH=${GOPATH_ROOT}
