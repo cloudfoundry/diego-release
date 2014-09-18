@@ -6,5 +6,5 @@ else
   cd src/github.com/cloudfoundry-incubator/
 
   ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress \
-    -skipPackage="simulation,inigo,garden-linux,dropsonde,candiedyaml,diego-smoke-tests"
+    -skipPackage="simulation,inigo,garden-linux,dropsonde,candiedyaml,diego-smoke-tests,cf-test-helpers"
 fi
