@@ -8,3 +8,6 @@ export GOROOT=$(readlink -nf /var/vcap/packages/golang)
 export PATH=$GOROOT/bin:$PATH
 go install github.com/cloudfoundry-incubator/nsync/listener
 go install github.com/cloudfoundry-incubator/nsync/bulker
+
+# clean up source artifacts
+rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg

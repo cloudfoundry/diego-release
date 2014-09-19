@@ -5,25 +5,17 @@ set -e -x
 export GOROOT=$(readlink -nf /var/vcap/packages/golang)
 export PATH=${GOROOT}/bin:${PATH}
 
-dirs=$(ls)
+export GOPATH=$BOSH_INSTALL_TARGET
 
-mkdir src/
-for dir in $dirs; do
-  if [ "$dir" = "packaging" ]; then
-    continue
-  fi
+mkdir -p ${GOPATH}/src
+cp -a . ${GOPATH}/src
 
-  mv $dir src/${dir}
-done
-
-export GOPATH=${PWD}
-export PATH=${PWD}/bin:$PATH
-
-find src/
-
-cd src/github.com/cloudfoundry-incubator/diego-smoke-tests
+cd ${GOPATH}/src/github.com/cloudfoundry-incubator/diego-smoke-tests
 
 go test -c
 
-mv dora ${BOSH_INSTALL_TARGET}/dora
-mv diego-smoke-tests.test ${BOSH_INSTALL_TARGET}
+mv diego-smoke-tests.test ${GOPATH}
+mv dora ${GOPATH}/dora
+
+# clean up source artifacts
+rm -rf ${GOPATH}/src ${GOPATH}/pkg

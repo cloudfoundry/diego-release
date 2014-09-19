@@ -11,3 +11,9 @@ go install github.com/cloudfoundry-incubator/garden-linux
 cd ${BOSH_INSTALL_TARGET}/src/github.com/cloudfoundry-incubator/garden-linux
 
 make
+
+cp -a linux_backend/bin ${BOSH_INSTALL_TARGET}/garden-bin
+cp -a linux_backend/skeleton ${BOSH_INSTALL_TARGET}/skeleton
+
+# clean up source artifacts
+rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg

@@ -11,3 +11,6 @@ go build github.com/cloudfoundry-incubator/docker-circus/soldier
 go build github.com/cloudfoundry-incubator/docker-circus/spy
 
 tar -czf ${BOSH_INSTALL_TARGET}/docker-circus.tgz tailor soldier spy
+
+# clean up source artifacts
+rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg
