@@ -1,1 +1,1 @@
-git commit -m "`$(dirname $0)/staged_shortlog`"
+git commit -m "`$(dirname $0)/staged_shortlog "$@"`"

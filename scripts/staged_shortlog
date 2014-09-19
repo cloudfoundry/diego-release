@@ -13,6 +13,12 @@ end
 puts "Bump #{locations.keys.map { |l| l.split('/').last }.join(", ")}"
 puts # Second line of git commit message should always be empty
 
+delivers = ARGV.collect { |story_id| "[delivers \##{story_id}]" }
+unless delivers.empty?
+  puts delivers.join(" ")
+  puts
+end
+
 locations.each do |location, shas|
   Dir.chdir(location) do
     travis = TravisBuild.new(shas, ARGV[0] == "-c")
