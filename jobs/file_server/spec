@@ -3,11 +3,9 @@ name: file_server
 
 templates:
   file_server_ctl.erb: bin/file_server_ctl
-  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
   - pid_utils
-  - syslog_forwarder
   - file_server
   - linux-circus
   - docker-circus
@@ -16,10 +14,6 @@ properties:
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
-  diego.syslog_aggregator.address:
-    description: "The address to which rsyslog will forward log messages"
-  diego.syslog_aggregator.port:
-    description: "The port to which rsyslog will forward log messages"
 
   diego.file_server.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
@@ -43,7 +37,3 @@ properties:
   diego.file_server.cc.jobPollingInterval:
     default: "5s"
     description: "the interval between job polling requests"
-
-  network_name:
-    description: "Name of the network that the job lives in; used to figure out our IP."
-

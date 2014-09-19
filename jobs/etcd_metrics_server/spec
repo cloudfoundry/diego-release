@@ -3,19 +3,12 @@ name: etcd_metrics_server
 
 templates:
   ctl.erb: bin/ctl
-  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
   - pid_utils
   - etcd_metrics_server
-  - syslog_forwarder
 
 properties:
-  diego.syslog_aggregator.address:
-    description: "The address to which rsyslog will forward log messages"
-  diego.syslog_aggregator.port:
-    description: "The port to which rsyslog will forward log messages"
-  
   diego.etcd_metrics_server.job_name:
     description: "job name for collector"
     default: "etcd"

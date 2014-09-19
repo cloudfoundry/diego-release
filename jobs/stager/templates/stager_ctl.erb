@@ -26,8 +26,6 @@ case $1 in
 
     echo $$ > /var/vcap/sys/run/stager/stager.pid
 
-    /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
-
     exec /var/vcap/packages/stager/bin/stager \
       -etcdCluster=<%= p("diego.stager.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -natsAddresses=<%= p("diego.stager.nats.machines").collect { |addr| "#{addr}:#{p("diego.stager.nats.port")}" }.join(",") %> \

@@ -3,19 +3,12 @@ name: route_emitter
 
 templates:
   route_emitter_ctl.erb: bin/route_emitter_ctl
-  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
   - pid_utils
   - route_emitter
-  - syslog_forwarder
 
 properties:
-  diego.syslog_aggregator.address:
-    description: "The address to which rsyslog will forward log messages"
-  diego.syslog_aggregator.port:
-    description: "The port to which rsyslog will forward log messages"
-
   diego.route_emitter.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
   diego.route_emitter.nats.username:
@@ -30,6 +23,3 @@ properties:
   diego.route_emitter.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17009"
-
-  network_name:
-    description: "Network that this job resides in."

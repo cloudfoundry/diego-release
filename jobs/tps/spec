@@ -3,19 +3,12 @@ name: tps
 
 templates:
   tps_ctl.erb: bin/tps_ctl
-  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
   - pid_utils
-  - syslog_forwarder
   - tps
 
 properties:
-  diego.syslog_aggregator.address:
-    description: "The address to which rsyslog will forward log messages"
-  diego.syslog_aggregator.port:
-    description: "The port to which rsyslog will forward log messages"
-
   diego.tps.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
   diego.tps.debug_addr:
@@ -29,6 +22,6 @@ properties:
     description: "The port for the NATS server to listen on."
   diego.tps.nats.machines:
     description: "IP of each NATS cluster member."
- 
+
   network_name:
     description: "Name of the network that the job lives in; used to figure out our IP."

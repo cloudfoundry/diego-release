@@ -20,8 +20,6 @@ case $1 in
 
     echo $$ > $PIDFILE
 
-    /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
-
     exec /var/vcap/packages/nsync/bin/listener \
       -etcdCluster=<%= p("diego.nsync.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -natsAddresses=<%= p("diego.nsync.nats.machines").collect { |addr| "#{addr}:#{p("diego.nsync.nats.port")}" }.join(",") %> \

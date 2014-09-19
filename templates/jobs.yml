@@ -27,6 +27,8 @@ jobs:
       - name: diego1
     properties:
       network_name: diego1
+      networks:
+        apps: diego1
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       metron_agent:
@@ -48,6 +50,8 @@ jobs:
       - name: diego2
     properties:
       network_name: diego2
+      networks:
+        apps: diego2
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
       metron_agent:
@@ -64,7 +68,8 @@ jobs:
     networks:
       - name: diego1
     properties:
-      network_name: diego1
+      networks:
+        apps: diego1
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       metron_agent:
@@ -81,7 +86,8 @@ jobs:
     networks:
       - name: diego2
     properties:
-      network_name: diego2
+      networks:
+        apps: diego2
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
       metron_agent:
@@ -100,6 +106,8 @@ jobs:
     networks:
       - name: diego1
     properties:
+      networks:
+        apps: diego1
       network_name: diego1
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
@@ -119,6 +127,8 @@ jobs:
     networks:
       - name: diego2
     properties:
+      networks:
+        apps: diego2
       network_name: diego2
       nats: (( external_services.nats ))
       loggregator_endpoint:
@@ -137,7 +147,8 @@ jobs:
     networks:
       - name: diego1
     properties:
-      network_name: diego1
+      networks:
+        apps: diego1
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       metron_agent:
@@ -154,7 +165,8 @@ jobs:
     networks:
       - name: diego2
     properties:
-      network_name: diego2
+      networks:
+        apps: diego2
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
       metron_agent:
@@ -171,7 +183,8 @@ jobs:
     networks:
       - name: diego1
     properties:
-      network_name: diego1
+      networks:
+        apps: diego1
       loggregator_endpoint:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       metron_agent:

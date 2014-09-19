@@ -3,19 +3,12 @@ name: stager
 
 templates:
   stager_ctl.erb: bin/stager_ctl
-  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
   - pid_utils
-  - syslog_forwarder
   - stager
 
 properties:
-  diego.syslog_aggregator.address:
-    description: "The address to which rsyslog will forward log messages"
-  diego.syslog_aggregator.port:
-    description: "The port to which rsyslog will forward log messages"
-
   diego.stager.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
   diego.stager.nats.username:
@@ -45,8 +38,3 @@ properties:
   diego.stager.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17011"
-
-  network_name:
-    description: "Name of the network that the job lives in; used to figure out our IP."
-
-

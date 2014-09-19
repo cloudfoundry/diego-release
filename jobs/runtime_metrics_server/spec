@@ -3,19 +3,12 @@ name: runtime_metrics_server
 
 templates:
   ctl.erb: bin/ctl
-  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
   - pid_utils
-  - syslog_forwarder
   - runtime_metrics_server
 
 properties:
-  diego.syslog_aggregator.address:
-    description: "The address to which rsyslog will forward log messages"
-  diego.syslog_aggregator.port:
-    description: "The port to which rsyslog will forward log messages"
-
   diego.runtime_metrics_server.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
   diego.runtime_metrics_server.nats.machines:
@@ -39,7 +32,3 @@ properties:
   diego.runtime_metrics_server.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17010"
-
-  network_name:
-    description: "Name of the network that the job lives in; used to figure out our IP."
-

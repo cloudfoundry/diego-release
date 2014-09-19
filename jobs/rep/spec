@@ -3,19 +3,12 @@ name: rep
 
 templates:
   rep_ctl.erb: bin/rep_ctl
-  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
   - pid_utils
   - rep
-  - syslog_forwarder
 
 properties:
-  diego.syslog_aggregator.address:
-    description: "The address to which rsyslog will forward log messages"
-  diego.syslog_aggregator.port:
-    description: "The port to which rsyslog will forward log messages"
-
   diego.rep.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
   diego.rep.stack:

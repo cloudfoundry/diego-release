@@ -3,12 +3,10 @@ name: executor
 
 templates:
   executor_ctl.erb: bin/executor_ctl
-  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
   - pid_utils
   - executor
-  - syslog_forwarder
 
 properties:
   loggregator_endpoint.host:
@@ -19,11 +17,6 @@ properties:
     default: 3456
   loggregator_endpoint.shared_secret:
     description: "The key used to sign log messages"
-
-  diego.syslog_aggregator.address:
-    description: "The address to which rsyslog will forward log messages"
-  diego.syslog_aggregator.port:
-    description: "The port to which rsyslog will forward log messages"
 
   diego.executor.listen_addr:
     description: "address at which to serve API requests"
@@ -55,6 +48,3 @@ properties:
   diego.executor.warden.network:
     description: "Network type for the warden server connection (tcp or unix)."
     default: unix
-
-  network_name:
-    description: "Name of the network that the job lives in; used to figure out our IP."

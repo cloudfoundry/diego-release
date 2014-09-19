@@ -21,8 +21,6 @@ case $1 in
 
     echo $$ > $PIDFILE
 
-    /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
-
     exec chpst -u vcap:vcap /var/vcap/packages/etcd_metrics_server/bin/etcd-metrics-server \
         -index=<%= spec.index %> \
         -jobName='<%= p("diego.etcd_metrics_server.job_name") %>' \

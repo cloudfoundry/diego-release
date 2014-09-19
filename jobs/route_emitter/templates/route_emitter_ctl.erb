@@ -19,8 +19,6 @@ case $1 in
 
     echo $$ > /var/vcap/sys/run/route_emitter/route_emitter.pid
 
-    /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
-
     exec /var/vcap/packages/route_emitter/bin/route-emitter \
       -etcdCluster=<%= p("diego.route_emitter.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -natsAddresses=<%= p("diego.route_emitter.nats.machines").collect { |addr| "#{addr}:#{p("diego.route_emitter.nats.port")}" }.join(",") %> \

@@ -3,19 +3,12 @@ name: auctioneer
 
 templates:
   auctioneer_ctl.erb: bin/auctioneer_ctl
-  syslog_forwarder.conf.erb: config/syslog_forwarder.conf
 
 packages:
   - pid_utils
   - auctioneer
-  - syslog_forwarder
 
 properties:
-  diego.syslog_aggregator.address:
-    description: "The address to which rsyslog will forward log messages"
-  diego.syslog_aggregator.port:
-    description: "The port to which rsyslog will forward log messages"
-
   diego.auctioneer.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
   diego.auctioneer.nats.username:
@@ -30,6 +23,3 @@ properties:
   diego.auctioneer.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17001"
-
-  network_name:
-    description: "Name of the network that the job lives in; used to figure out our IP."

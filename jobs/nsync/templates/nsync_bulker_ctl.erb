@@ -22,8 +22,6 @@ case $1 in
 
     echo $$ > $PIDFILE
 
-    /var/vcap/packages/syslog_forwarder/syslog_forwarder.sh $CONF_DIR/syslog_forwarder.conf
-
     exec /var/vcap/packages/nsync/bin/bulker \
       -etcdCluster=<%= p("diego.nsync.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -ccBaseURL=<%= Shellwords.shellescape(p("diego.nsync.cc.base_url")) %> \
