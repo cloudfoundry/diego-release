@@ -3,9 +3,10 @@
 set -e -x
 
 export DRONE_TMP=$TMPDIR/drone
+export PATH=/var/vcap/packages/drone/bin:$PATH
 
 ./diego-release/scripts/create_drone_yml \
   ./diego-release/scripts/ci/run_inigo.drone.yml \
   .drone.yml
 
-/var/vcap/packages/drone/bin/drone -v -privileged build
+drone -v -privileged build

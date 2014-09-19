@@ -1,16 +1,12 @@
 #!/bin/bash
-# vim: set ft=sh
 
-set -e
+set -e -x
 
-export GOROOT=/usr/local/go
-export PATH=$GOROOT/bin:$PATH
+export DRONE_TMP=$TMPDIR/drone
+export PATH=/var/vcap/packages/drone/bin:$PATH
 
-cd diego-release/
+./diego-release/scripts/create_drone_yml \
+  ./diego-release/scripts/ci/run_unit.drone.yml \
+  .drone.yml
 
-export GOPATH=$PWD
-export PATH=$PWD/bin:$PATH
-
-go install github.com/onsi/ginkgo/ginkgo
-
-./scripts/run_unit_tests "$@"
+drone -v build
