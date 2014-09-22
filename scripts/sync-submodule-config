@@ -2,6 +2,10 @@
  
 set -e -x
 
+if ! which gosub >/dev/null 2>&1; then
+  go install github.com/vito/gosub
+fi
+
 {
   gosub list \
     -app github.com/cloudfoundry-incubator/auctioneer \
