@@ -1,5 +1,50 @@
 #!/bin/bash
-# vim: set ft=sh
+ 
+set -e -x
 
-scripts=$(cd $(dirname $0) && pwd)
-git submodule foreach ${scripts}'/register-submodule $path'
+{
+  gosub list \
+    -app github.com/cloudfoundry-incubator/auctioneer \
+    -app github.com/cloudfoundry-incubator/converger \
+    -app github.com/cloudfoundry-incubator/docker-circus/... \
+    -app github.com/cloudfoundry-incubator/etcd-metrics-server \
+    -app github.com/cloudfoundry-incubator/executor \
+    -app github.com/cloudfoundry-incubator/file-server \
+    -app github.com/cloudfoundry-incubator/garden-linux \
+    -app github.com/cloudfoundry-incubator/linux-circus/... \
+    -app github.com/cloudfoundry-incubator/nsync/... \
+    -app github.com/cloudfoundry-incubator/rep \
+    -app github.com/cloudfoundry-incubator/route-emitter \
+    -app github.com/cloudfoundry-incubator/runtime-metrics-server \
+    -app github.com/cloudfoundry-incubator/stager \
+    -app github.com/cloudfoundry-incubator/tps \
+    \
+    -app github.com/apcera/gnatsd \
+    -app github.com/coreos/etcd
+
+  # separate these so gosub doesn't asplode
+  gosub list -test github.com/cloudfoundry-incubator/auctioneer/... \
+  gosub list -test github.com/cloudfoundry-incubator/converger/... \
+  gosub list -test github.com/cloudfoundry-incubator/docker-circus/... \
+  gosub list -test github.com/cloudfoundry-incubator/etcd-metrics-server/... \
+  gosub list -test github.com/cloudfoundry-incubator/executor/... \
+  gosub list -test github.com/cloudfoundry-incubator/file-server/... \
+  gosub list -test github.com/cloudfoundry-incubator/garden-linux/... \
+  gosub list -test github.com/cloudfoundry-incubator/linux-circus/... \
+  gosub list -test github.com/cloudfoundry-incubator/nsync/... \
+  gosub list -test github.com/cloudfoundry-incubator/rep/... \
+  gosub list -test github.com/cloudfoundry-incubator/route-emitter/... \
+  gosub list -test github.com/cloudfoundry-incubator/runtime-metrics-server/... \
+  gosub list -test github.com/cloudfoundry-incubator/stager/... \
+  gosub list -test github.com/cloudfoundry-incubator/tps/... \
+
+  gosub list -test github.com/cloudfoundry-incubator/auction/... \
+    \
+    -test github.com/cloudfoundry-incubator/inigo \
+    -test github.com/cloudfoundry-incubator/diego-smoke-tests \
+    \
+    -app github.com/concourse/fly \
+    -app github.com/vito/gosub
+} > /tmp/packages
+
+cat /tmp/packages | xargs gosub sync
