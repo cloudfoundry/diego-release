@@ -4,7 +4,7 @@ cd $(dirname $0)/..
 
 set -e -x
 
-./scripts/rewrite_package_specs.rb
+./scripts/sync-package-specs
 ./scripts/run_unit_tests
 ./scripts/run_inigo
 ./scripts/commit_with_shortlog "$@"
