@@ -11,11 +11,11 @@ while read bosh_pkg type go_pkg; do
     } > spec.new
 
     mv spec.new spec
-
-    if [ "$(git status --porcelain spec | cut -c2)" = "M" ]; then
-      echo packages/$bosh_pkg/spec
-    fi
   popd >/dev/null
+
+  if [ "$(git status --porcelain packages/${bosh_pkg}/spec | cut -c2)" = "M" ]; then
+    echo packages/$bosh_pkg/spec
+  fi
 done < <(
   echo auctioneer app github.com/cloudfoundry-incubator/auctioneer
   echo converger app github.com/cloudfoundry-incubator/converger
