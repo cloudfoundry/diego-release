@@ -1,6 +1,6 @@
 #!/bin/bash
 
-modified_packages=$(./scripts/rewrite_package_specs.rb)
+modified_packages=$(./scripts/sync-package-specs)
   
 if [ -n "$modified_packages" ]; then
   echo $'\e[31mthe following package specs are not staged:\e[0m'

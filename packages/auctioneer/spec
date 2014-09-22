@@ -1,78 +1,52 @@
 ---
 name: auctioneer
+
 dependencies:
-- golang
+  - golang
+
 files:
-- code.google.com/p/gogoprotobuf/proto/*.go
-- github.com/apcera/nats/*.go
-- github.com/cloudfoundry-incubator/auction/auctionrunner/*.go
-- github.com/cloudfoundry-incubator/auction/auctionrunner/algorithms/*.go
-- github.com/cloudfoundry-incubator/auction/auctiontypes/*.go
-- github.com/cloudfoundry-incubator/auction/communication/nats/*.go
-- github.com/cloudfoundry-incubator/auction/communication/nats/auction_nats_client/*.go
-- github.com/cloudfoundry-incubator/auction/communication/nats/nats_muxer/*.go
-- github.com/cloudfoundry-incubator/auction/util/*.go
-- github.com/cloudfoundry-incubator/auctioneer/**/*.go
-- github.com/cloudfoundry-incubator/auctioneer/auctioneer/*.go
-- github.com/cloudfoundry-incubator/cf-debug-server/*.go
-- github.com/cloudfoundry-incubator/cf-lager/*.go
-- github.com/cloudfoundry-incubator/delta_force/delta_force/*.go
-- github.com/cloudfoundry-incubator/runtime-schema/bbs/*.go
-- github.com/cloudfoundry-incubator/runtime-schema/bbs/lock_bbs/*.go
-- github.com/cloudfoundry-incubator/runtime-schema/bbs/lrp_bbs/*.go
-- github.com/cloudfoundry-incubator/runtime-schema/bbs/prune/*.go
-- github.com/cloudfoundry-incubator/runtime-schema/bbs/services_bbs/*.go
-- github.com/cloudfoundry-incubator/runtime-schema/bbs/shared/*.go
-- github.com/cloudfoundry-incubator/runtime-schema/bbs/start_auction_bbs/*.go
-- github.com/cloudfoundry-incubator/runtime-schema/bbs/stop_auction_bbs/*.go
-- github.com/cloudfoundry-incubator/runtime-schema/bbs/task_bbs/*.go
-- github.com/cloudfoundry-incubator/runtime-schema/heartbeater/*.go
-- github.com/cloudfoundry-incubator/runtime-schema/metric/*.go
-- github.com/cloudfoundry-incubator/runtime-schema/models/*.go
-- github.com/cloudfoundry/dropsonde/*.go
-- github.com/cloudfoundry/dropsonde/autowire/*.go
-- github.com/cloudfoundry/dropsonde/autowire/metrics/*.go
-- github.com/cloudfoundry/dropsonde/emitter/*.go
-- github.com/cloudfoundry/dropsonde/events/*.go
-- github.com/cloudfoundry/dropsonde/factories/*.go
-- github.com/cloudfoundry/dropsonde/metric_sender/*.go
-- github.com/cloudfoundry/dropsonde/runtime_stats/*.go
-- github.com/cloudfoundry/gunk/group_runner/*.go
-- github.com/cloudfoundry/gunk/timeprovider/*.go
-- github.com/cloudfoundry/storeadapter/*.go
-- github.com/cloudfoundry/storeadapter/etcdstoreadapter/*.go
-- github.com/cloudfoundry/storeadapter/workerpool/*.go
-- github.com/cloudfoundry/yagnats/*.go
-- github.com/coreos/go-etcd/etcd/*.go
-- github.com/nu7hatch/gouuid/*.go
-- github.com/onsi/ginkgo/*.go
-- github.com/onsi/ginkgo/config/*.go
-- github.com/onsi/ginkgo/internal/codelocation/*.go
-- github.com/onsi/ginkgo/internal/containernode/*.go
-- github.com/onsi/ginkgo/internal/failer/*.go
-- github.com/onsi/ginkgo/internal/leafnodes/*.go
-- github.com/onsi/ginkgo/internal/remote/*.go
-- github.com/onsi/ginkgo/internal/spec/*.go
-- github.com/onsi/ginkgo/internal/specrunner/*.go
-- github.com/onsi/ginkgo/internal/suite/*.go
-- github.com/onsi/ginkgo/internal/testingtproxy/*.go
-- github.com/onsi/ginkgo/internal/writer/*.go
-- github.com/onsi/ginkgo/reporters/*.go
-- github.com/onsi/ginkgo/reporters/stenographer/*.go
-- github.com/onsi/ginkgo/types/*.go
-- github.com/onsi/gomega/*.go
-- github.com/onsi/gomega/format/*.go
-- github.com/onsi/gomega/gbytes/*.go
-- github.com/onsi/gomega/gexec/*.go
-- github.com/onsi/gomega/internal/assertion/*.go
-- github.com/onsi/gomega/internal/asyncassertion/*.go
-- github.com/onsi/gomega/internal/testingtsupport/*.go
-- github.com/onsi/gomega/matchers/*.go
-- github.com/onsi/gomega/matchers/support/goraph/bipartitegraph/*.go
-- github.com/onsi/gomega/matchers/support/goraph/edge/*.go
-- github.com/onsi/gomega/matchers/support/goraph/node/*.go
-- github.com/onsi/gomega/matchers/support/goraph/util/*.go
-- github.com/onsi/gomega/types/*.go
-- github.com/pivotal-golang/lager/*.go
-- github.com/tedsuo/ifrit/*.go
-- github.com/tedsuo/ifrit/sigmon/*.go
+  - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
+  - code.google.com/p/gogoprotobuf/proto/*.go # gosub
+  - github.com/apcera/nats/*.go # gosub
+  - github.com/cloudfoundry-incubator/auction/auctionrunner/*.go # gosub
+  - github.com/cloudfoundry-incubator/auction/auctionrunner/algorithms/*.go # gosub
+  - github.com/cloudfoundry-incubator/auction/auctiontypes/*.go # gosub
+  - github.com/cloudfoundry-incubator/auction/communication/nats/*.go # gosub
+  - github.com/cloudfoundry-incubator/auction/communication/nats/auction_nats_client/*.go # gosub
+  - github.com/cloudfoundry-incubator/auction/communication/nats/nats_muxer/*.go # gosub
+  - github.com/cloudfoundry-incubator/auction/util/*.go # gosub
+  - github.com/cloudfoundry-incubator/auctioneer/auctioneer/*.go # gosub
+  - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
+  - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
+  - github.com/cloudfoundry-incubator/delta_force/delta_force/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/bbs/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/bbs/lock_bbs/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/bbs/lrp_bbs/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/bbs/prune/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/bbs/services_bbs/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/bbs/shared/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/bbs/start_auction_bbs/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/bbs/stop_auction_bbs/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/bbs/task_bbs/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/heartbeater/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/autowire/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/autowire/metrics/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/events/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/factories/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/runtime_stats/*.go # gosub
+  - github.com/cloudfoundry/gunk/group_runner/*.go # gosub
+  - github.com/cloudfoundry/gunk/timeprovider/*.go # gosub
+  - github.com/cloudfoundry/storeadapter/*.go # gosub
+  - github.com/cloudfoundry/storeadapter/etcdstoreadapter/*.go # gosub
+  - github.com/cloudfoundry/storeadapter/workerpool/*.go # gosub
+  - github.com/cloudfoundry/yagnats/*.go # gosub
+  - github.com/coreos/go-etcd/etcd/*.go # gosub
+  - github.com/nu7hatch/gouuid/*.go # gosub
+  - github.com/pivotal-golang/lager/*.go # gosub
+  - github.com/tedsuo/ifrit/*.go # gosub
+  - github.com/tedsuo/ifrit/sigmon/*.go # gosub

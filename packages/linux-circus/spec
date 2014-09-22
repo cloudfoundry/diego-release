@@ -1,10 +1,14 @@
 ---
 name: linux-circus
+
 dependencies:
-- golang
+  - golang
+
 files:
-- github.com/cloudfoundry-incubator/candiedyaml/*.go
-- github.com/cloudfoundry-incubator/linux-circus/**/*.go
-- github.com/cloudfoundry-incubator/linux-circus/buildpackrunner/*.go
-- github.com/cloudfoundry-incubator/linux-circus/protocol/*.go
-- github.com/cloudfoundry-incubator/runtime-schema/models/*.go
+  - github.com/cloudfoundry-incubator/linux-circus/buildpackrunner/*.go # gosub
+  - github.com/cloudfoundry-incubator/linux-circus/protocol/*.go # gosub
+  - github.com/cloudfoundry-incubator/linux-circus/soldier/*.go # gosub
+  - github.com/cloudfoundry-incubator/linux-circus/spy/*.go # gosub
+  - github.com/cloudfoundry-incubator/linux-circus/tailor/*.go # gosub
+  - github.com/cloudfoundry-incubator/candiedyaml/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub

@@ -1,23 +1,25 @@
 ---
 name: etcd_metrics_server
+
 dependencies:
-- golang
+  - golang
+
 files:
-- github.com/apcera/nats/*.go
-- github.com/cloudfoundry-incubator/cf-debug-server/*.go
-- github.com/cloudfoundry-incubator/cf-lager/*.go
-- github.com/cloudfoundry-incubator/etcd-metrics-server/**/*.go
-- github.com/cloudfoundry-incubator/etcd-metrics-server/health_check/*.go
-- github.com/cloudfoundry-incubator/etcd-metrics-server/instruments/*.go
-- github.com/cloudfoundry-incubator/etcd-metrics-server/metrics_server/*.go
-- github.com/cloudfoundry-incubator/metricz/*.go
-- github.com/cloudfoundry-incubator/metricz/auth/*.go
-- github.com/cloudfoundry-incubator/metricz/collector_registrar/*.go
-- github.com/cloudfoundry-incubator/metricz/instrumentation/*.go
-- github.com/cloudfoundry-incubator/metricz/localip/*.go
-- github.com/cloudfoundry/gunk/urljoiner/*.go
-- github.com/cloudfoundry/loggregatorlib/cfcomponent/localip/*.go
-- github.com/cloudfoundry/yagnats/*.go
-- github.com/pivotal-golang/lager/*.go
-- github.com/tedsuo/ifrit/*.go
-- github.com/tedsuo/ifrit/sigmon/*.go
+  - github.com/cloudfoundry-incubator/etcd-metrics-server/*.go # gosub
+  - github.com/apcera/nats/*.go # gosub
+  - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
+  - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
+  - github.com/cloudfoundry-incubator/etcd-metrics-server/health_check/*.go # gosub
+  - github.com/cloudfoundry-incubator/etcd-metrics-server/instruments/*.go # gosub
+  - github.com/cloudfoundry-incubator/etcd-metrics-server/metrics_server/*.go # gosub
+  - github.com/cloudfoundry-incubator/metricz/*.go # gosub
+  - github.com/cloudfoundry-incubator/metricz/auth/*.go # gosub
+  - github.com/cloudfoundry-incubator/metricz/collector_registrar/*.go # gosub
+  - github.com/cloudfoundry-incubator/metricz/instrumentation/*.go # gosub
+  - github.com/cloudfoundry-incubator/metricz/localip/*.go # gosub
+  - github.com/cloudfoundry/gunk/urljoiner/*.go # gosub
+  - github.com/cloudfoundry/loggregatorlib/cfcomponent/localip/*.go # gosub
+  - github.com/cloudfoundry/yagnats/*.go # gosub
+  - github.com/pivotal-golang/lager/*.go # gosub
+  - github.com/tedsuo/ifrit/*.go # gosub
+  - github.com/tedsuo/ifrit/sigmon/*.go # gosub
