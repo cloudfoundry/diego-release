@@ -2,34 +2,42 @@
 
 set -e
 
-while read bosh_pkg type go_pkg; do
-  pushd packages/$bosh_pkg >/dev/null
+function sync_package() {
+  bosh_pkg=${1}
+
+  shift
+
+  (
+    set -e
+
+    cd packages/${bosh_pkg}
+
     {
       cat spec | grep -v '# gosub'
-      gosub list -${type} $go_pkg | \
+      gosub list "$@" | \
         sed -e 's/\(.*\)/  - \1\/*.go # gosub/g'
     } > spec.new
 
     mv spec.new spec
-  popd >/dev/null
+  )
+}
 
-  if [ "$(git status --porcelain packages/${bosh_pkg}/spec | cut -c2)" = "M" ]; then
-    echo packages/$bosh_pkg/spec
-  fi
-done < <(
-  echo auctioneer app github.com/cloudfoundry-incubator/auctioneer
-  echo converger app github.com/cloudfoundry-incubator/converger
-  echo docker-circus app github.com/cloudfoundry-incubator/docker-circus/...
-  echo etcd app github.com/coreos/etcd
-  echo etcd_metrics_server app github.com/cloudfoundry-incubator/etcd-metrics-server
-  echo executor app github.com/cloudfoundry-incubator/executor
-  echo file_server app github.com/cloudfoundry-incubator/file-server
-  echo linux-circus app github.com/cloudfoundry-incubator/linux-circus/...
-  echo nsync app github.com/cloudfoundry-incubator/nsync/...
-  echo rep app github.com/cloudfoundry-incubator/rep
-  echo route_emitter app github.com/cloudfoundry-incubator/route-emitter
-  echo runtime_metrics_server app github.com/cloudfoundry-incubator/runtime-metrics-server
-  echo stager app github.com/cloudfoundry-incubator/stager
-  echo tps app github.com/cloudfoundry-incubator/tps
-  echo smoke-tests test github.com/cloudfoundry-incubator/diego-smoke-tests
-)
+sync_package auctioneer             -app  github.com/cloudfoundry-incubator/auctioneer &
+sync_package converger              -app  github.com/cloudfoundry-incubator/converger &
+sync_package docker-circus          -app  github.com/cloudfoundry-incubator/docker-circus/... &
+sync_package etcd                   -app  github.com/coreos/etcd &
+sync_package etcd_metrics_server    -app  github.com/cloudfoundry-incubator/etcd-metrics-server &
+sync_package executor               -app  github.com/cloudfoundry-incubator/executor &
+sync_package file_server            -app  github.com/cloudfoundry-incubator/file-server &
+sync_package linux-circus           -app  github.com/cloudfoundry-incubator/linux-circus/... &
+sync_package nsync                  -app  github.com/cloudfoundry-incubator/nsync/... &
+sync_package rep                    -app  github.com/cloudfoundry-incubator/rep &
+sync_package route_emitter          -app  github.com/cloudfoundry-incubator/route-emitter &
+sync_package runtime_metrics_server -app  github.com/cloudfoundry-incubator/runtime-metrics-server &
+sync_package stager                 -app  github.com/cloudfoundry-incubator/stager &
+sync_package tps                    -app  github.com/cloudfoundry-incubator/tps &
+sync_package smoke-tests            -test github.com/cloudfoundry-incubator/diego-smoke-tests &
+
+wait
+
+git status --porcelain packages/*/spec
