@@ -27,14 +27,7 @@ case $1 in
     echo $$ > /var/vcap/sys/run/runtime_metrics_server/runtime_metrics_server.pid
 
     exec /var/vcap/packages/runtime_metrics_server/bin/runtime-metrics-server \
-      -index=<%= spec.index %> \
       -etcdCluster=<%= p("diego.runtime_metrics_server.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
-      -natsAddresses=<%= p("diego.runtime_metrics_server.nats.machines").collect { |addr| "#{addr}:#{p("diego.runtime_metrics_server.nats.port")}" }.join(",") %> \
-      -natsUsername='<%= p("diego.runtime_metrics_server.nats.username") %>' \
-      -natsPassword='<%= p("diego.runtime_metrics_server.nats.password") %>' \
-      -port=<%= p("diego.runtime_metrics_server.status.port") %> \
-      -username=<%= p("diego.runtime_metrics_server.status.username") %> \
-      -password=<%= p("diego.runtime_metrics_server.status.password") %> \
       -debugAddr=<%= p("diego.runtime_metrics_server.debug_addr") %> \
       2>> $LOG_DIR/runtime_metrics_server.stderr.log \
       1> >(tee -a $LOG_DIR/runtime_metrics_server.stdout.log | logger -t runtime-metrics-server)
