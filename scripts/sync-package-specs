@@ -40,4 +40,4 @@ sync_package smoke-tests            -test github.com/cloudfoundry-incubator/dieg
 
 wait
 
-git status --porcelain packages/*/spec
+git diff --name-only packages/*/spec
