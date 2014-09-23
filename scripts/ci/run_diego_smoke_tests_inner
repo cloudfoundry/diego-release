@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e -x -u
+
+eval $(./scripts/ci/bosh_config)
+./scripts/bosh_setup
+
+bosh download manifest cf-${DEPLOYMENT_NAME}-diego diego-deployment.yml
+bosh deployment diego-deployment.yml
+bosh run errand diego_smoke_tests
