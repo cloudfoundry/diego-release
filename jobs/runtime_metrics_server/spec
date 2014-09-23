@@ -11,24 +11,6 @@ packages:
 properties:
   diego.runtime_metrics_server.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
-  diego.runtime_metrics_server.nats.machines:
-    description: "array of NATS addresses"
-  diego.runtime_metrics_server.nats.port:
-    description: "NATS server port"
-    default: 4222
-  diego.runtime_metrics_server.nats.username:
-    description: "NATS server username"
-  diego.runtime_metrics_server.nats.password:
-    description: "NATS server password"
-  diego.runtime_metrics_server.status.port:
-    description: "listening port for metrics server"
-    default: 5678
-  diego.runtime_metrics_server.status.username:
-    description: "basic auth username for metrics server (leave empty for generated)"
-    default: ""
-  diego.runtime_metrics_server.status.password:
-    description: "basic auth password for metrics server (leave empty for generated)"
-    default: ""
   diego.runtime_metrics_server.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17010"
