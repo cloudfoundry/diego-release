@@ -271,6 +271,7 @@ properties:
     port: (( external_services.nats.port ))
   etcd: # For metron_agent to find loggregator
     machines: (( external_services.cf_etcd.machines ))
+  syslog_aggregator: ~
 
   diego:
     # -- Global properties --
@@ -279,8 +280,6 @@ properties:
     nats: (( external_services.nats ))
     ssl:
       skip_cert_verify: false
-
-    syslog_aggregator: ~
 
     # -- Job specific properties --
     auctioneer:
