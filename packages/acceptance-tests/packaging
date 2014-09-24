@@ -1,0 +1,19 @@
+set -e -x
+
+export GOROOT=$(readlink -nf /var/vcap/packages/golang)
+export PATH=${GOROOT}/bin:${PATH}
+
+export GOPATH=$BOSH_INSTALL_TARGET
+
+mkdir -p ${GOPATH}/src
+cp -a . ${GOPATH}/src
+
+cd ${GOPATH}/src/github.com/cloudfoundry-incubator/diego-acceptance-tests
+
+go install github.com/onsi/ginkgo/ginkgo
+
+go test -c ./diego
+
+# clean up artifacts
+rm *.test
+rm -rf ${GOPATH}/pkg

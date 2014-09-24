@@ -7,4 +7,4 @@ eval $(./scripts/ci/bosh_config)
 
 bosh download manifest cf-${DEPLOYMENT_NAME}-diego diego-deployment.yml
 bosh deployment diego-deployment.yml
-bosh run errand acceptance_tests_diego
+bosh run errand diego_acceptance_tests
