@@ -235,19 +235,6 @@ jobs:
     update:
       serial: true
 
-  - name: acceptance_tests_diego
-    release: cf
-    templates:
-    - name: acceptance-tests
-    instances: 0
-    resource_pool: small_errand
-    lifecycle: errand
-    networks:
-      - name: diego1
-    properties:
-      acceptance_tests:
-        diego: true
-
   - name: diego_smoke_tests
     release: diego
     templates:
@@ -260,6 +247,16 @@ jobs:
     properties:
       diego:
         smoke_tests: ~
+
+  - name: diego_acceptance_tests
+    release: diego
+    templates:
+    - name: acceptance-tests
+    instances: 0
+    resource_pool: small_errand
+    lifecycle: errand
+    networks:
+      - name: diego1
 
 properties:
   # -- Properties below are used by jobs from cf-release --

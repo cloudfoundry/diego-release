@@ -45,6 +45,7 @@ go install github.com/vito/gosub
     \
     -test github.com/cloudfoundry-incubator/inigo \
     -test github.com/cloudfoundry-incubator/diego-smoke-tests \
+    -test github.com/cloudfoundry-incubator/diego-acceptance-tests/... \
     \
     -app github.com/concourse/fly \
     -app github.com/vito/gosub

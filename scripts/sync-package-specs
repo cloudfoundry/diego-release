@@ -36,7 +36,12 @@ sync_package route_emitter          -app  github.com/cloudfoundry-incubator/rout
 sync_package runtime_metrics_server -app  github.com/cloudfoundry-incubator/runtime-metrics-server &
 sync_package stager                 -app  github.com/cloudfoundry-incubator/stager &
 sync_package tps                    -app  github.com/cloudfoundry-incubator/tps &
-sync_package smoke-tests            -test github.com/cloudfoundry-incubator/diego-smoke-tests &
+
+sync_package acceptance-tests \
+    -test github.com/cloudfoundry-incubator/diego-acceptance-tests/... \
+    -app github.com/onsi/ginkgo/ginkgo &
+
+sync_package smoke-tests      -test github.com/cloudfoundry-incubator/diego-smoke-tests &
 
 wait
 
