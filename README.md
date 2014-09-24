@@ -24,6 +24,66 @@ This release relies on a separate deployment to provide
 [Loggregator](https://github.com/cloudfoundry/loggregator). In practice these
 come from [cf-release](https://github.com/cloudfoundry/cf-release).
 
+
+## Developer Workflow
+
+Work out of the submodules under `src/`. See [Initial Setup](#initial-setup).
+
+Run the individual component unit tests as you work on them. To see if
+*everything* still works, run `./scripts/run_unit_tests` in the root of the
+release.
+
+When you're ready to commit, run:
+
+    ```bash
+    ./scripts/preparetodiego
+    ```
+
+This will synchronize submodules, update the BOSH package specs, run all unit
+tests, all integration tests, and make a commit, bringing up a commit edit
+dialogue.
+
+If you're introducing a new component (e.g. a new job/errand), make sure it
+has been added to `./scripts/sync-package-specs` and
+`./scripts/sync-submodule-config`.
+
+
+## Initial Setup
+
+This BOSH release doubles as a `$GOPATH`. It will automatically be set up for
+you if you have [direnv](http://direnv.net) installed.
+
+```bash
+# fetch release repo
+mkdir -p ~/workspace
+cd ~/workspace
+git clone https://github.com/cloudfoundry-incubator/diego-release.git
+cd diego-release/
+
+# automate $GOPATH and $PATH setup
+direnv allow
+
+# switch to develop branch (not master!)
+git checkout develop
+
+# initialize and sync submodules
+./scripts/update
+```
+
+
+## Running Unit Tests
+
+1. Install ginkgo
+   ```sh
+   go install github.com/onsi/ginkgo/ginkgo
+   ```
+
+1. Run the unit test script
+   ```sh
+   ./scripts/run_unit_tests
+   ```
+
+
 ## Running Integration Tests
 
 1. Install and start [Concourse](http://concourse.ci), following its
@@ -32,7 +92,7 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 1. Install the `fly` CLI:
 
     ```sh
-    go get github.com/concourse/fly
+    go install github.com/concourse/fly
     ```
 
 1. Run [Inigo](https://github.com/cloudfoundry-incubator/inigo).
@@ -44,30 +104,16 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 
 ## Deploying Diego to a local Bosh-Lite instance
 
-1. checkout bosh-lite from git
+1. Install and start [BOSH Lite](https://github.com/cloudfoundry/bosh-lite),
+   following its
+   [README](https://github.com/cloudfoundry/bosh-lite/blob/master/README.md).
 
-  ```bash
-  cd ~/workspace
-  git clone git@github.com:cloudfoundry/bosh-lite.git
-  ```
-
-1. Follow bosh-lite Installation and VMWare Fusion setup steps (requires vmware-fusion license)
-
-  ```bash
-  cd ~/workspace/bosh-lite
-  vagrant up
-  gem install bosh_cli
-  bosh target 192.168.50.4
-  bosh login admin admin
-  ./scripts/add-route
-  ```
-
-1. Download the latest Warden stemcell and upload it to bosh-lite
+1. Download the latest Warden Trusty Go-Agent stemcell and upload it to bosh-lite
 
   ```bash
   bosh public stemcells
-  bosh download public stemcell bosh-stemcell-17-warden-boshlite-ubuntu-trusty-go_agent.tgz
-  bosh upload stemcell bosh-stemcell-17-warden-boshlite-ubuntu-trusty-go_agent.tgz
+  bosh download public stemcell (name)
+  bosh upload stemcell (downloaded filename)
   ```
 
 1. Checkout cf-release (develop branch) from git
@@ -90,7 +136,10 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   ./scripts/update
   ```
 
-1. Install spiff, a tool for generating bosh manifests. spiff is required for running the scripts in later steps. The following installation method assumes that go is installed. For other ways of installing `spiff`, see [the spiff README](https://github.com/cloudfoundry-incubator/spiff).
+1. Install spiff, a tool for generating bosh manifests. spiff is required for
+   running the scripts in later steps. The following installation method
+   assumes that go is installed. For other ways of installing `spiff`, see
+   [the spiff README](https://github.com/cloudfoundry-incubator/spiff).
 
   ```bash
   go get github.com/cloudfoundry-incubator/spiff
@@ -99,18 +148,18 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 1. Generate a deployment stub with the bosh director uuid
 
   ```bash
-  mkdir -p ~/workspace/deployments/warden
-  scripts/generate_director_stub > ~/workspace/deployments/warden/director.yml
+  mkdir -p ~/deployments/warden
+  scripts/generate_director_stub > ~/deployments/warden/director.yml
   ```
 
 1. Generate and target cf-release manifest:
   ```bash
   cd ~/workspace/cf-release
   ./generate_deployment_manifest warden \
-      ~/workspace/deployments/warden/director.yml \
+      ~/deployments/warden/director.yml \
       ~/workspace/diego-release/templates/enable_diego_in_cc.yml > \
-      ~/workspace/deployments/warden/cf.yml
-  bosh deployment ~/workspace/deployments/warden/cf.yml
+      ~/deployments/warden/cf.yml
+  bosh deployment ~/deployments/warden/cf.yml
   ```
 
 1. Do the bosh dance:
@@ -126,9 +175,9 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   ```bash
   cd ~/workspace/diego-release
   ./generate_deployment_manifest warden ../cf-release \
-      ~/workspace/deployments/warden/director.yml > \
-      ~/workspace/deployments/warden/diego.yml
-  bosh deployment ~/workspace/deployments/warden/diego.yml
+      ~/deployments/warden/director.yml > \
+      ~/deployments/warden/diego.yml
+  bosh deployment ~/deployments/warden/diego.yml
   ```
 
 1. Dance some more:
@@ -141,65 +190,19 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 
 Now you can either run the CATs or deploy your own app.
 
-### Running the CATs
+### Running the CATs & DATs
 
 #### Option 1: Run as a BOSH errand
 
-The CF deployment includes the CATs as the `acceptance_tests` errand, so you can just run them as an errand.
+The CF deployment includes the CATs as the `acceptance_tests` errand, so you
+can just run them as an errand.
 
-1. Target the CF deployment:
-   ```
-   bosh deployment ~/workspace/deployments/warden/cf.yml
-   ```
+Run both errands:
 
-2. Run the errand:
-   ```
-   bosh run errand acceptance_tests
-   ```
-
-
-
-#### Option 2: Run Locally
-
-If you are making changes to the CATs and want to iterate, you may wish to run the CATs locally.  You'll be running `ginkgo` on your host machine, targetted at your BOSH-lite deployment.
-
-1. Checkout cf-acceptance-tests
-
-  ```bash
-  go get -u -v github.com/cloudfoundry/cf-acceptance-tests/...
-  cd $GOPATH/src/github.com/cloudfoundry/cf-acceptance-tests
-  ```
-
-1. Generate a CATs config file:
-
-  ```bash
-  cd $GOPATH/src/github.com/cloudfoundry/cf-acceptance-tests
-  cat > integration_config.json <<EOF
-  {
-    "api": "api.10.244.0.34.xip.io",
-    "admin_user": "admin",
-    "admin_password": "admin",
-    "apps_domain": "10.244.0.34.xip.io",
-    "skip_ssl_validation": true,
-    "nodes": 1
-  }
-  EOF
-  export CONFIG=$PWD/integration_config.json
-  ```
-
-1. Run the diego CATs:
-
-  ```bash
-  cd $GOPATH/src/github.com/cloudfoundry/cf-acceptance-tests
-  ginkgo -nodes=4 ./diego
-  ```
-
-1. Run the runtime CATs:
-
-  ```bash
-  cd $GOPATH/src/github.com/cloudfoundry/cf-acceptance-tests
-  ginkgo -nodes=4 ./apps
-  ```
+```
+bosh -d ~/deployments/warden/cf.yml run errand acceptance_tests
+bosh -d ~/deployments/warden/diego.yml run errand diego_acceptance_tests
+```
 
 ### Deploying an app
 
