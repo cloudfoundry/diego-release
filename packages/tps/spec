@@ -36,7 +36,6 @@ files:
   - github.com/cloudfoundry/dropsonde/factories/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
   - github.com/cloudfoundry/dropsonde/runtime_stats/*.go # gosub
-  - github.com/cloudfoundry/gunk/group_runner/*.go # gosub
   - github.com/cloudfoundry/gunk/natsclientrunner/*.go # gosub
   - github.com/cloudfoundry/gunk/timeprovider/*.go # gosub
   - github.com/cloudfoundry/storeadapter/*.go # gosub
@@ -47,6 +46,8 @@ files:
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/pivotal-golang/lager/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
+  - github.com/tedsuo/ifrit/grouper/*.go # gosub
   - github.com/tedsuo/ifrit/http_server/*.go # gosub
+  - github.com/tedsuo/ifrit/proxy/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
