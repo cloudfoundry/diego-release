@@ -53,32 +53,32 @@ properties:
 resource_pools:
   - name: small_z1
     cloud_properties:
-      instance_type: m1.small
+      instance_type: m3.medium
       availability_zone: (( meta.zones.z1 ))
 
   - name: small_z2
     cloud_properties:
-      instance_type: m1.small
+      instance_type: m3.medium
       availability_zone: (( meta.zones.z2 ))
 
   - name: small_z3
     cloud_properties:
-      instance_type: m1.small
+      instance_type: m3.medium
       availability_zone: (( meta.zones.z3 ))
 
   - name: medium_z1
     cloud_properties:
-      instance_type: m1.medium
+      instance_type: m3.medium
       availability_zone: (( meta.zones.z1 ))
 
   - name: medium_z2
     cloud_properties:
-      instance_type: m1.medium
+      instance_type: m3.medium
       availability_zone: (( meta.zones.z2 ))
 
   - name: medium_z3
     cloud_properties:
-      instance_type: m1.medium
+      instance_type: m3.medium
       availability_zone: (( meta.zones.z3 ))
 
   - name: large_z1
@@ -98,5 +98,5 @@ resource_pools:
 
   - name: small_errand
     cloud_properties:
-      instance_type: m1.small
+      instance_type: m3.medium
       availability_zone: (( meta.zones.z1 ))
