@@ -5,6 +5,6 @@ if [ -n "$PACKAGE" ]; then
 else
   cd src/github.com/cloudfoundry-incubator/
 
-  ginkgo -r -keepGoing -p -race -trace -randomizeAllSpecs -progress \
+  ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress \
     -skipPackage="simulation,inigo,garden-linux,dropsonde,candiedyaml,diego-smoke-tests,diego-acceptance-tests,cf-test-helpers" "$@"
 fi
