@@ -192,19 +192,14 @@ Now you can either run the CATs or deploy your own app.
 
 ### Running the CATs & DATs
 
-#### Option 1: Run as a BOSH errand
-
-The CF deployment includes the CATs as the `acceptance_tests` errand, so you
-can just run them as an errand.
-
-Run both errands:
+These can both be run as BOSH errands:
 
 ```
 bosh -d ~/deployments/warden/cf.yml run errand acceptance_tests
 bosh -d ~/deployments/warden/diego.yml run errand diego_acceptance_tests
 ```
 
-### Deploying an app
+### Pushing an Application to Diego
 
 1. Create new CF Org & Space
 
@@ -217,30 +212,13 @@ bosh -d ~/deployments/warden/diego.yml run errand diego_acceptance_tests
   cf target -s diego
   ```
 
-1. Checkout cf-acceptance-tests (to get, for example, the hello-world app)
-
-  ```bash
-  go get -u -v github.com/cloudfoundry/cf-acceptance-tests/...
-  cd $GOPATH/src/github.com/cloudfoundry/cf-acceptance-tests/assets/hello-world
-  ```
-
-1. Push hello-world app to CF & Configure it to use Diego
+1. Push your application
 
   ```
-  cf push goodbye --no-start
-  cf set-env goodbye CF_DIEGO_BETA true
-  cf start goodbye
+  cf push my-app --no-start
+  cf set-env my-app CF_DIEGO_BETA true
+  cf set-env my-app CF_DIEGO_RUN_BETA true
+  cf start my-app
   ```
 
-### Running an app
-
-Follow the above instructions, but for step 3:
-
-1. Push hello-world app to CF & Configure it to use Diego
-
-  ```
-  cf push goodbye --no-start
-  cf set-env goodbye CF_DIEGO_BETA true
-  cf set-env goodbye CF_DIEGO_RUN_BETA true
-  cf push goodbye -i 3 -c ./your/start/command
-  ```
+  The `CF_DIEGO_BETA` flag instructs the cloud controller to stage the application on Diego.  `CF_DIEGO_RUN_BETA` instructs the cloud controller to run the application on Diego.  While apps that run on Diego *must* stage on Diego, you can experiment with *staging* an app on Diego but running it on the DEAs.  Simply skip specifying `CF_DIEGO_RUN_BETA`.
