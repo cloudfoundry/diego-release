@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e -x -u
+
+STUBS_DIR=${PWD}/deployments-aws/${DEPLOYMENT_NAME}/stubs
+
+eval $(./scripts/ci/bosh_config)
+./scripts/bosh_setup
+
+bosh -n upload release diego-final-release-created-by-ci.tgz --rebase --skip-if-exists || true
+
+./generate_deployment_manifest aws cf-release ${STUBS_DIR}/* > diego-deployment.yml
+bosh deployment diego-deployment.yml
+
+./scripts/emit_datadog_deploy_event started ${DEPLOYMENT_NAME} diego
+yes yes | bosh deploy
+./scripts/emit_datadog_deploy_event finished ${DEPLOYMENT_NAME} diego

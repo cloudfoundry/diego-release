@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e -x
+
+export DRONE_TMP=$TMPDIR/drone
+
+rm -rf diego-release/deployments-aws || true
+cp -R deployments-aws diego-release/
+
+rm -rf diego-release/cf-release || true
+cp -R cf-release diego-release/
+
+rm -rf diego-release/diego-final-release-created-by-ci.tgz.tgz || true
+cp diego-final-release-created-by-ci.tgz diego-release/
+
+pushd diego-release
+  ./scripts/create_drone_yml scripts/ci/diego_deploy.drone.yml .drone.yml
+  /var/vcap/packages/drone/bin/drone -v -privileged build
+popd
