@@ -1,4 +1,4 @@
-# Each Warden container is a /30 in Warden's network range, which is
+# Each Garden container is a /30 in Garden's network range, which is
 # configured as 10.244.0.0/22. There are 256 available entries.
 #
 # We want two subnets, so I've arbitrarily divided this in half for each.

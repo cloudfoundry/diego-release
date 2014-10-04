@@ -12,7 +12,7 @@ shift
 
 function usage() {
   echo "    Usage:
-    ./generate_deployment_manifest <aws|warden> /path/to/cf-release [stubs...]
+    ./generate_deployment_manifest <aws|bosh-lite> /path/to/cf-release [stubs...]
 
     Ex:
     ~/workspace/diego-release/generate_combo_manifest aws \\
@@ -23,7 +23,7 @@ function usage() {
   exit 1
 }
 
-if [ "$infrastructure" != "aws" ] && [ "$infrastructure" != "warden" ]; then
+if [ "$infrastructure" != "aws" ] && [ "$infrastructure" != "bosh-lite" ]; then
   usage
 fi
 
@@ -32,12 +32,16 @@ if [ -z "$cf_release" ]; then
 fi
 
 shared_stub=/tmp/cf-diego-shared.yml
+cf_infrastructure=$infrastructure
+if [ "$infrastructure" == "bosh-lite" ]; then
+  cf_infrastructure="warden"
+fi
 
 spiff merge \
   $templates/cf-shared.yml \
   $templates/diego-cf-stub.yml \
   $cf_release/templates/cf-properties.yml \
-  $cf_release/templates/cf-infrastructure-${infrastructure}.yml \
+  $cf_release/templates/cf-infrastructure-${cf_infrastructure}.yml \
   "$@" \
   > $shared_stub
 

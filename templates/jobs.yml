@@ -18,7 +18,7 @@ jobs:
       - name: converger
       - name: rep
       - name: auctioneer
-      - name: warden
+      - name: garden
       - name: metron_agent
         release: cf
     instances: 1
@@ -41,7 +41,7 @@ jobs:
       - name: converger
       - name: rep
       - name: auctioneer
-      - name: warden
+      - name: garden
       - name: metron_agent
         release: cf
     instances: 1
@@ -301,7 +301,7 @@ properties:
 
     executor:
       drain_timeout: ~
-      warden: ~
+      garden: ~
 
     file_server:
       cc: (( external_services.cc ))
@@ -363,5 +363,5 @@ properties:
         password: (( external_services.nats.password ))
         port: (( external_services.nats.port ))
 
-    warden: ~
+    garden: ~
 

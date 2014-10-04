@@ -27,8 +27,8 @@ case $1 in
     exec /var/vcap/packages/executor/bin/executor \
       -listenAddr=<%= p("diego.executor.listen_addr") %> \
       -debugAddr=<%= p("diego.executor.debug_addr") %> \
-      -wardenNetwork=<%= p("diego.executor.warden.network") %> \
-      -wardenAddr=<%= p("diego.executor.warden.address") %> \
+      -gardenNetwork=<%= p("diego.executor.garden.network") %> \
+      -gardenAddr=<%= p("diego.executor.garden.address") %> \
       -memoryMB=<%= p("diego.executor.memory_capacity_mb") %> \
       -diskMB=<%= p("diego.executor.disk_capacity_mb") %> \
       -containerInodeLimit=<%= p("diego.executor.container_inode_limit") %> \

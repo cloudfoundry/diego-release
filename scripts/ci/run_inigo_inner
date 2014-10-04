@@ -36,43 +36,43 @@ done
 
 cd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
 
-pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/garden-linux
+pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/garden-linux/old
   make # compile wshd/etc.
-  export WARDEN_BINPATH=$PWD/linux_backend/bin
+  export GARDEN_BINPATH=$PWD/linux_backend/bin
 popd
 
 go install github.com/onsi/ginkgo/ginkgo
 
-export WARDEN_ROOTFS=/opt/warden/rootfs
+export GARDEN_ROOTFS=/opt/garden/rootfs
 
-# used for routing to apps; same logic that Warden uses.
+# used for routing to apps; same logic that Garden uses.
 export EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\s/\1/;tx;d;:x')
 
-# WARDEN_GRAPH_PATH is the root of the docker image filesystem
-export WARDEN_GRAPH_PATH=/tmp/warden-tmp
+# GARDEN_GRAPH_PATH is the root of the docker image filesystem
+export GARDEN_GRAPH_PATH=/tmp/garden-tmp
 
-mkdir -p $WARDEN_GRAPH_PATH
+mkdir -p $GARDEN_GRAPH_PATH
 
 if [ "$USE_TMPFS" = "true" ]; then
-  mount -t tmpfs none $WARDEN_GRAPH_PATH
+  mount -t tmpfs none $GARDEN_GRAPH_PATH
 else
-  warden_graph_loopback="$WARDEN_GRAPH_PATH.img"
+  garden_graph_loopback="$GARDEN_GRAPH_PATH.img"
 
-  # unmount and delete warden graph fs
+  # unmount and delete garden graph fs
   set +e
-  umount $WARDEN_GRAPH_PATH
-  losetup --all | grep $warden_graph_loopback | cut --delimiter=: --fields=1 | xargs --no-run-if-empty --max-args=1 losetup --detach
-  rm $warden_graph_loopback
+  umount $GARDEN_GRAPH_PATH
+  losetup --all | grep $garden_graph_loopback | cut --delimiter=: --fields=1 | xargs --no-run-if-empty --max-args=1 losetup --detach
+  rm $garden_graph_loopback
   set -e
 
-  # create and mount WARDEN_GRAPH_PATH as a loopback device so we don't consume RAM
+  # create and mount GARDEN_GRAPH_PATH as a loopback device so we don't consume RAM
 
-  dd if=/dev/null of=$warden_graph_loopback bs=1M seek=6000 1> /dev/null 2> /dev/null
-  mkfs.ext4 -b 4096 -q -F -O ^has_journal,uninit_bg $warden_graph_loopback
-  losetup --all | grep $warden_graph_loopback | cut --delimiter=: --fields=1 | xargs --no-run-if-empty --max-args=1 losetup --detach
-  losetup --find $warden_graph_loopback
-  graph_loop_device=$(losetup --all | grep $warden_graph_loopback | cut --delimiter=: --fields=1 | head -1)
-  mount $graph_loop_device $WARDEN_GRAPH_PATH
+  dd if=/dev/null of=$garden_graph_loopback bs=1M seek=6000 1> /dev/null 2> /dev/null
+  mkfs.ext4 -b 4096 -q -F -O ^has_journal,uninit_bg $garden_graph_loopback
+  losetup --all | grep $garden_graph_loopback | cut --delimiter=: --fields=1 | xargs --no-run-if-empty --max-args=1 losetup --detach
+  losetup --find $garden_graph_loopback
+  graph_loop_device=$(losetup --all | grep $garden_graph_loopback | cut --delimiter=: --fields=1 | head -1)
+  mount $graph_loop_device $GARDEN_GRAPH_PATH
 fi
 
 color_flag=""
@@ -89,9 +89,9 @@ pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
   ginkgo $color_flag $nodes_flag -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@"
 popd
 
-# unmount and delete warden graph fs
+# unmount and delete garden graph fs
 if [ "$USE_TMPFS" = "" ]; then
-  umount -l $WARDEN_GRAPH_PATH
-  losetup --all | grep $warden_graph_loopback | cut --delimiter=: --fields=1 | xargs --no-run-if-empty --max-args=1 losetup --detach
-  rm $warden_graph_loopback
+  umount -l $GARDEN_GRAPH_PATH
+  losetup --all | grep $garden_graph_loopback | cut --delimiter=: --fields=1 | xargs --no-run-if-empty --max-args=1 losetup --detach
+  rm $garden_graph_loopback
 fi

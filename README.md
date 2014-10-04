@@ -148,18 +148,18 @@ git checkout develop
 1. Generate a deployment stub with the bosh director uuid
 
   ```bash
-  mkdir -p ~/deployments/warden
-  scripts/generate_director_stub > ~/deployments/warden/director.yml
+  mkdir -p ~/deployments/bosh-lite
+  scripts/generate_director_stub > ~/deployments/bosh-lite/director.yml
   ```
 
 1. Generate and target cf-release manifest:
   ```bash
   cd ~/workspace/cf-release
   ./generate_deployment_manifest warden \
-      ~/deployments/warden/director.yml \
+      ~/deployments/bosh-lite/director.yml \
       ~/workspace/diego-release/templates/enable_diego_in_cc.yml > \
-      ~/deployments/warden/cf.yml
-  bosh deployment ~/deployments/warden/cf.yml
+      ~/deployments/bosh-lite/cf.yml
+  bosh deployment ~/deployments/bosh-lite/cf.yml
   ```
 
 1. Do the bosh dance:
@@ -174,10 +174,10 @@ git checkout develop
 
   ```bash
   cd ~/workspace/diego-release
-  ./generate_deployment_manifest warden ../cf-release \
-      ~/deployments/warden/director.yml > \
-      ~/deployments/warden/diego.yml
-  bosh deployment ~/deployments/warden/diego.yml
+  ./generate_deployment_manifest bosh-lite ../cf-release \
+      ~/deployments/bosh-lite/director.yml > \
+      ~/deployments/bosh-lite/diego.yml
+  bosh deployment ~/deployments/bosh-lite/diego.yml
   ```
 
 1. Dance some more:
@@ -195,8 +195,8 @@ Now you can either run the CATs or deploy your own app.
 These can both be run as BOSH errands:
 
 ```
-bosh -d ~/deployments/warden/cf.yml run errand acceptance_tests
-bosh -d ~/deployments/warden/diego.yml run errand diego_acceptance_tests
+bosh -d ~/deployments/bosh-lite/cf.yml run errand acceptance_tests
+bosh -d ~/deployments/bosh-lite/diego.yml run errand diego_acceptance_tests
 ```
 
 ### Pushing an Application to Diego

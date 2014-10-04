@@ -10,7 +10,7 @@ RUN apt-get update && apt-get -y install libxml2-dev libxslt-dev
 # ccng prepackaging
 RUN apt-get update && apt-get -y --force-yes install libssl1.0.0/trusty libssl-dev/trusty openssl/trusty libmysqlclient-dev libpq-dev libsqlite3-dev
 
-RUN apt-get update && apt-get -y install build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev 
+RUN apt-get update && apt-get -y install build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev
 
 ADD https://github.com/postmodern/ruby-install/archive/v0.4.1.tar.gz /tmp/
 RUN tar zxf /tmp/v0.4.1.tar.gz -C /tmp
@@ -23,7 +23,7 @@ RUN gem install bundler --no-rdoc --no-ri
 
 RUN gem install bosh_cli --no-rdoc --no-ri
 
-# warden prepackaging
+# garden prepackaging
 RUN gem install rake -v 0.9.2.2 --no-rdoc --no-ri
 
 # this gem provides the headers to other gems.

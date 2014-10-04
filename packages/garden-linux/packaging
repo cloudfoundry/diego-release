@@ -8,7 +8,7 @@ export GOROOT=$(readlink -nf /var/vcap/packages/golang)
 export PATH=$GOROOT/bin:$PATH
 go install github.com/cloudfoundry-incubator/garden-linux
 
-cd ${BOSH_INSTALL_TARGET}/src/github.com/cloudfoundry-incubator/garden-linux
+cd ${BOSH_INSTALL_TARGET}/src/github.com/cloudfoundry-incubator/garden-linux/old
 
 make
 

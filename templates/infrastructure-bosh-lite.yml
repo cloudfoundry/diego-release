@@ -1,5 +1,5 @@
 meta:
-  environment: warden
+  environment: garden
   stemcell:
     name: bosh-warden-boshlite-ubuntu-trusty-go_agent
     version: latest
@@ -25,7 +25,7 @@ properties:
     diego: true
     nodes: 1
   diego:
-    warden:
+    garden:
       kernel_network_tuning_enabled: false
       disk_quota_enabled: false
       listen_network: tcp
@@ -33,7 +33,7 @@ properties:
 
     executor:
       drain_timeout: 0
-      warden:
+      garden:
         network: tcp
         address: 127.0.0.1:7777
 

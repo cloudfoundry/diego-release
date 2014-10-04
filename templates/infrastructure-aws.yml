@@ -42,7 +42,7 @@ compilation:
 properties:
   template_only: (( merge ))
   diego:
-    warden:
+    garden:
       deny_networks:
         - 169.254.0.0/16 # EC2 instance metadata
         - 10.10.0.0/16 # Entire VPC
