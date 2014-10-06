@@ -8,7 +8,7 @@ eval $(./scripts/ci/bosh_config)
 ./scripts/bosh_setup
 
 bosh -n create release --with-tarball
-bosh -n upload release --rebase --skip-if-exists || true
+bosh -n upload release --skip-if-exists || true
 
 ./generate_deployment_manifest aws cf-release ${STUBS_DIR}/* > diego-deployment.yml
 bosh deployment diego-deployment.yml

@@ -287,6 +287,7 @@ properties:
         machines: (( external_services.nats.machines ))
         username: (( external_services.nats.user ))
         password: (( external_services.nats.password ))
+        port: (( external_services.nats.port ))
 
     converger:
       etcd:
@@ -298,6 +299,7 @@ properties:
         machines: (( external_services.nats.machines ))
         username: (( external_services.nats.user ))
         password: (( external_services.nats.password ))
+        port: (( external_services.nats.port ))
 
     executor:
       drain_timeout: ~
@@ -328,6 +330,7 @@ properties:
         machines: (( external_services.nats.machines ))
         username: (( external_services.nats.user ))
         password: (( external_services.nats.password ))
+        port: (( external_services.nats.port ))
 
     route_emitter:
       etcd:
@@ -336,6 +339,7 @@ properties:
         machines: (( external_services.nats.machines ))
         username: (( external_services.nats.user ))
         password: (( external_services.nats.password ))
+        port: (( external_services.nats.port ))
 
     runtime_metrics_server:
       etcd:
@@ -344,6 +348,7 @@ properties:
         machines: (( external_services.nats.machines ))
         username: (( external_services.nats.user ))
         password: (( external_services.nats.password ))
+        port: (( external_services.nats.port ))
 
     stager:
       lifecycle_bundles: ~
