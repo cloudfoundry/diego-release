@@ -92,7 +92,14 @@ git checkout develop
 1. Install the `fly` CLI:
 
     ```sh
+    # cd to the concourse release repo
+    cd concourse/
+
+    # install the version of fly from Concourse's release
     go install github.com/concourse/fly
+
+    # add the concourse release repo's bin/ directory to your $PATH
+    export PATH=$PWD/bin:$PATH
     ```
 
 1. Run [Inigo](https://github.com/cloudfoundry-incubator/inigo).
