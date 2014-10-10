@@ -66,7 +66,6 @@ files:
   - github.com/cloudfoundry/gunk/command_runner/*.go # gosub
   - github.com/cloudfoundry/gunk/command_runner/linux_command_runner/*.go # gosub
   - github.com/docker/docker/api/*.go # gosub
-  - github.com/docker/docker/archive/*.go # gosub
   - github.com/docker/docker/daemon/graphdriver/*.go # gosub
   - github.com/docker/docker/daemon/graphdriver/aufs/*.go # gosub
   - github.com/docker/docker/daemon/graphdriver/vfs/*.go # gosub
@@ -76,6 +75,8 @@ files:
   - github.com/docker/docker/image/*.go # gosub
   - github.com/docker/docker/nat/*.go # gosub
   - github.com/docker/docker/opts/*.go # gosub
+  - github.com/docker/docker/pkg/archive/*.go # gosub
+  - github.com/docker/docker/pkg/fileutils/*.go # gosub
   - github.com/docker/docker/pkg/httputils/*.go # gosub
   - github.com/docker/docker/pkg/ioutils/*.go # gosub
   - github.com/docker/docker/pkg/log/*.go # gosub
@@ -85,10 +86,12 @@ files:
   - github.com/docker/docker/pkg/parsers/filters/*.go # gosub
   - github.com/docker/docker/pkg/parsers/kernel/*.go # gosub
   - github.com/docker/docker/pkg/pools/*.go # gosub
+  - github.com/docker/docker/pkg/promise/*.go # gosub
   - github.com/docker/docker/pkg/sysinfo/*.go # gosub
   - github.com/docker/docker/pkg/system/*.go # gosub
   - github.com/docker/docker/pkg/tarsum/*.go # gosub
   - github.com/docker/docker/pkg/term/*.go # gosub
+  - github.com/docker/docker/pkg/timeutils/*.go # gosub
   - github.com/docker/docker/pkg/truncindex/*.go # gosub
   - github.com/docker/docker/pkg/units/*.go # gosub
   - github.com/docker/docker/pkg/version/*.go # gosub
@@ -99,6 +102,9 @@ files:
   - github.com/docker/libcontainer/cgroups/*.go # gosub
   - github.com/docker/libcontainer/devices/*.go # gosub
   - github.com/docker/libcontainer/label/*.go # gosub
+  - github.com/docker/libtrust/*.go # gosub
+  - github.com/gorilla/context/*.go # gosub
+  - github.com/gorilla/mux/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/pivotal-golang/lager/*.go # gosub
   - github.com/tchap/go-patricia/patricia/*.go # gosub
