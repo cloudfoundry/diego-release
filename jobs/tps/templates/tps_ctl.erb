@@ -32,6 +32,7 @@ case $1 in
       -natsUsername=<%= p("diego.tps.nats.username") %> \
       -natsPassword=<%= p("diego.tps.nats.password") %> \
       -debugAddr=<%= p("diego.tps.debug_addr") %> \
+      -maxInFlightRequests=<%= p("diego.tps.max_in_flight_requests") %> \
       -listenAddr=<%= spec.networks.send(properties.network_name).ip %>:1518 \
       2>> $LOG_DIR/tps.stderr.log \
       1> >(tee -a $LOG_DIR/tps.stdout.log | logger -t tps)

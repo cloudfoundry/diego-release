@@ -22,6 +22,9 @@ properties:
     description: "The port for the NATS server to listen on."
   diego.tps.nats.machines:
     description: "IP of each NATS cluster member."
+  diego.tps.max_in_flight_requests:
+    description: "Maximum number of requests to handle at once."
+    default: 200
 
   network_name:
     description: "Name of the network that the job lives in; used to figure out our IP."
