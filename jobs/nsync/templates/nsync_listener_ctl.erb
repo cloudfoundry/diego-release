@@ -8,6 +8,8 @@ PIDFILE=$RUN_DIR/nsync_listener.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
+<% require "shellwords" %>
+
 export DROPSONDE_ORIGIN='nsync_listener'
 
 case $1 in
