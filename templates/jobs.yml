@@ -240,7 +240,7 @@ jobs:
     templates:
     - name: smoke-tests
     instances: 0
-    resource_pool: small_errand
+    resource_pool: errand
     lifecycle: errand
     networks:
       - name: diego1
@@ -253,7 +253,7 @@ jobs:
     templates:
     - name: acceptance-tests
     instances: 0
-    resource_pool: small_errand
+    resource_pool: errand
     lifecycle: errand
     networks:
       - name: diego1

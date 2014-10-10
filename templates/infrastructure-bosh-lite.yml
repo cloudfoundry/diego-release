@@ -76,7 +76,7 @@ jobs:
 
   - name: diego_smoke_tests
     instances: 1
-    resource_pool: small_errand
+    resource_pool: errand
     properties:
       diego:
         smoke_tests:
@@ -123,7 +123,7 @@ resource_pools:
     cloud_properties:
       name: random
 
-  - name: small_errand
+  - name: errand
     cloud_properties:
       name: random
 
