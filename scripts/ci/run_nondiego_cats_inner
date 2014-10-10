@@ -3,7 +3,7 @@
 set -e -x -u
 
 eval $(./scripts/ci/bosh_config)
-./scripts/bosh_setup
+./scripts/ci/bosh_setup
 
 bosh download manifest cf-$DEPLOYMENT_NAME cf-deployment.yml
 bosh deployment cf-deployment.yml

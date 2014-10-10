@@ -5,7 +5,7 @@ set -e -x -u
 STUBS_DIR=${PWD}/deployments-aws/${DEPLOYMENT_NAME}/stubs
 
 eval $(./scripts/ci/bosh_config)
-./scripts/bosh_setup
+./scripts/ci/bosh_setup
 
 bosh -n upload release diego-final-release-created-by-ci.tgz --skip-if-exists || true
 
