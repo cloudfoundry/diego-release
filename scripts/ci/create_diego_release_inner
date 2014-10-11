@@ -10,7 +10,7 @@ eval $(./scripts/ci/bosh_config)
 bosh -n create release --with-tarball
 bosh -n upload release --skip-if-exists || true
 
-./generate_deployment_manifest aws cf-release ${STUBS_DIR}/* > diego-deployment.yml
+./scripts/generate-deployment-manifest aws cf-release ${STUBS_DIR}/* > diego-deployment.yml
 bosh deployment diego-deployment.yml
 
 ./scripts/ci/emit-datadog-deploy-event started ${DEPLOYMENT_NAME} diego

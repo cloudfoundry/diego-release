@@ -156,7 +156,7 @@ git checkout develop
 
   ```bash
   mkdir -p ~/deployments/bosh-lite
-  scripts/generate-director-stub > ~/deployments/bosh-lite/director.yml
+  ./scripts/print-director-stub > ~/deployments/bosh-lite/director.yml
   ```
 
 1. Generate and target cf-release manifest:
@@ -181,7 +181,7 @@ git checkout develop
 
   ```bash
   cd ~/workspace/diego-release
-  ./generate_deployment_manifest bosh-lite ../cf-release \
+  ./scripts/generate-deployment-manifest bosh-lite ../cf-release \
       ~/deployments/bosh-lite/director.yml > \
       ~/deployments/bosh-lite/diego.yml
   bosh deployment ~/deployments/bosh-lite/diego.yml

@@ -12,10 +12,10 @@ shift
 
 function usage() {
   echo "    Usage:
-    ./generate_deployment_manifest <aws|bosh-lite> /path/to/cf-release [stubs...]
+    $0 <aws|bosh-lite> /path/to/cf-release [stubs...]
 
     Ex:
-    ~/workspace/diego-release/generate_combo_manifest aws \\
+    $0 aws \\
       ~/workspace/cf-release \\
       ~/workspace/deployments-aws/ketchup/cf-aws-stub.yml \\
       ~/workspace/deployments-aws/ketchup/cf-shared-secrets.yml
