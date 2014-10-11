@@ -6,8 +6,8 @@ set -e -x
 
 ./scripts/sync-submodule-config
 ./scripts/sync-package-specs
-./scripts/run_unit_tests
-./scripts/run_inigo
-./scripts/commit_with_shortlog "$@"
+./scripts/run-unit-tests
+./scripts/run-inigo
+./scripts/commit-with-submodule-log "$@"
 
 git commit --amend

@@ -11,6 +11,6 @@ rm -rf diego-release/light-bosh-stemcell-latest-aws-xen-ubuntu-trusty-go_agent.t
 cp light-bosh-stemcell-latest-aws-xen-ubuntu-trusty-go_agent.tgz diego-release/
 
 pushd diego-release
-  ./scripts/create_drone_yml scripts/ci/upload_stemcell.drone.yml .drone.yml
+  ./scripts/ci/create_drone_yml scripts/ci/upload_stemcell.drone.yml .drone.yml
   /var/vcap/packages/drone/bin/drone -v -privileged build
 popd

@@ -30,13 +30,13 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 Work out of the submodules under `src/`. See [Initial Setup](#initial-setup).
 
 Run the individual component unit tests as you work on them. To see if
-*everything* still works, run `./scripts/run_unit_tests` in the root of the
+*everything* still works, run `./scripts/run-unit-tests` in the root of the
 release.
 
 When you're ready to commit, run:
 
     ```bash
-    ./scripts/preparetodiego
+    ./scripts/prepare-to-diego
     ```
 
 This will synchronize submodules, update the BOSH package specs, run all unit
@@ -80,7 +80,7 @@ git checkout develop
 
 1. Run the unit test script
    ```sh
-   ./scripts/run_unit_tests
+   ./scripts/run-unit-tests
    ```
 
 
@@ -105,7 +105,7 @@ git checkout develop
 1. Run [Inigo](https://github.com/cloudfoundry-incubator/inigo).
 
     ```sh
-    ./scripts/run_inigo
+    ./scripts/run-inigo
     ```
 
 
@@ -156,7 +156,7 @@ git checkout develop
 
   ```bash
   mkdir -p ~/deployments/bosh-lite
-  scripts/generate_director_stub > ~/deployments/bosh-lite/director.yml
+  scripts/generate-director-stub > ~/deployments/bosh-lite/director.yml
   ```
 
 1. Generate and target cf-release manifest:

@@ -15,6 +15,6 @@ rm -rf diego-release/deployments-runtime || true
 cp -R deployments-runtime diego-release/
 
 pushd diego-release
-  ./scripts/create_drone_yml scripts/ci/create_cf_release.drone.yml .drone.yml
+  ./scripts/ci/create_drone_yml scripts/ci/create_cf_release.drone.yml .drone.yml
   /var/vcap/packages/drone/bin/drone -v -privileged build
 popd

@@ -2,7 +2,7 @@
 
 require "yaml"
 
-BLOB_PATH = ARGV[0] || abort("usage: remove_blob BLOB_PATH")
+BLOB_PATH = ARGV[0] || abort("usage: #$0 BLOB_PATH")
 
 blobs = YAML.load_file("config/blobs.yml")
 
