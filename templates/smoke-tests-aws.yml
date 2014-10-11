@@ -1,0 +1,64 @@
+name: diego-smoke-tests
+
+director_uuid: (( merge ))
+
+releases:
+  - name: diego
+    version: latest
+
+networks:
+  - name: default
+    type: dynamic
+    cloud_properties:
+      security_groups:
+        - (( Resources.SecurityGroupName.Internal ))
+      subnet: (( Resources.Subnet.DiegoZ1 ))
+
+resource_pools:
+  - name: small_errand
+    network: default
+    stemcell:
+      name: bosh-aws-xen-ubuntu-trusty-go_agent
+      version: latest
+    cloud_properties:
+      availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
+      instance_type: m3.medium
+
+compilation:
+  network: default
+  workers: 6
+  reuse_compilation_vms: true
+  cloud_properties:
+    availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
+    instance_type: c1.medium
+
+update:
+  canaries: 1
+  max_in_flight: 3
+  serial: false
+  canary_watch_time: 30000-600000
+  update_watch_time: 5000-600000
+
+jobs:
+- name: diego_smoke_tests
+  templates:
+    - name: smoke-tests
+      release: diego
+  lifecycle: errand
+  instances: 1
+  networks:
+    - name: default
+  resource_pool: small_errand
+
+properties:
+  acceptance_tests: (( merge ))   # ugly hack
+  diego:
+    smoke_tests:
+      api: (( properties.acceptance_tests.api ))
+      user: (( properties.acceptance_tests.admin_user ))
+      password: (( properties.acceptance_tests.admin_password ))
+      org: smoke-tests
+      space: tests
+    ssl: (( merge ))
+
+Resources: (( merge ))
