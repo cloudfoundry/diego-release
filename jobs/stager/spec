@@ -9,6 +9,10 @@ packages:
   - stager
 
 properties:
+  diego.ssl.skip_cert_verify:
+    description: "when connecting over https, ignore bad ssl certificates"
+    default: false
+
   diego.stager.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
   diego.stager.nats.username:
@@ -19,6 +23,13 @@ properties:
     description: "The port for the NATS server to listen on."
   diego.stager.nats.machines:
     description: "IP of each NATS cluster member."
+  diego.stager.cc.base_url:
+    description: "URI to access the Cloud Controller"
+  diego.stager.cc.basic_auth_username:
+    description: "Basic auth username for CC internal API"
+    default: "internal_user"
+  diego.stager.cc.basic_auth_password:
+    description: "Basic auth password for CC internal API"
   diego.stager.lifecycle_bundles:
     description: 'Map of lifecycle bundles for different stacks in json format {"stack_name":"lifecycle_bundle_path"}'
     default:

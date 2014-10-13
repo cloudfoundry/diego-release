@@ -351,6 +351,9 @@ properties:
         port: (( external_services.nats.port ))
 
     stager:
+      cc:
+        base_url: (( external_services.cc.srv_api_uri ))
+        basic_auth_password: (( external_services.cc.internal_api_password ))
       lifecycle_bundles: ~
       etcd:
         machines: (( .properties.diego.etcd.machines ))

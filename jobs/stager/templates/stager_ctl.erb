@@ -31,6 +31,10 @@ case $1 in
       -natsAddresses=<%= p("diego.stager.nats.machines").collect { |addr| "#{addr}:#{p("diego.stager.nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("diego.stager.nats.username") %> \
       -natsPassword=<%= p("diego.stager.nats.password") %> \
+      -ccBaseURL=<%= Shellwords.shellescape(p("diego.stager.cc.base_url")) %> \
+      -ccUsername=<%= Shellwords.shellescape(p("diego.stager.cc.basic_auth_username")) %> \
+      -ccPassword=<%= Shellwords.shellescape(p("diego.stager.cc.basic_auth_password")) %> \
+      -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       -debugAddr=<%= p("diego.stager.debug_addr") %> \
       -circuses=<%= Shellwords.shellescape(p("diego.stager.lifecycle_bundles").to_json) %> \
       -dockerCircusPath=<%= p("diego.stager.docker_lifecycle_bundle") %> \
