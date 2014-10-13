@@ -51,6 +51,17 @@ jobs:
   resource_pool: small_errand
 
 properties:
-  acceptance_tests: (( merge ))
+  domain: (( merge ))
+  app_domains: (( merge || [] ))
+  acceptance_tests:
+    api:  (( "api." properties.domain ))
+    apps_domain: (( properties.app_domains.[0] || properties.domain ))
+    admin_user: (( cloud_controller_admin_credentials.username ))
+    admin_password: (( cloud_controller_admin_credentials.password ))
+    skip_ssl_validation: (( properties.diego.ssl.skip_cert_verify ))
+  diego:
+    ssl: (( merge ))
 
 Resources: (( merge ))
+
+cloud_controller_admin_credentials: (( merge ))

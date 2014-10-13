@@ -51,14 +51,16 @@ jobs:
   resource_pool: small_errand
 
 properties:
-  acceptance_tests: (( merge ))   # ugly hack
+  domain: (( merge ))
   diego:
     smoke_tests:
-      api: (( properties.acceptance_tests.api ))
-      user: (( properties.acceptance_tests.admin_user ))
-      password: (( properties.acceptance_tests.admin_password ))
+      api: (( "api." properties.domain ))
+      user: (( cloud_controller_admin_credentials.username ))
+      password: (( cloud_controller_admin_credentials.password ))
       org: smoke-tests
       space: tests
     ssl: (( merge ))
 
 Resources: (( merge ))
+
+cloud_controller_admin_credentials: (( merge ))
