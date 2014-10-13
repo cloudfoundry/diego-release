@@ -64,7 +64,7 @@ jobs:
       - name: metron_agent
         release: cf
     instances: 1
-    resource_pool: small_z1
+    resource_pool: file_server_z1
     networks:
       - name: diego1
     properties:
@@ -82,7 +82,7 @@ jobs:
       - name: metron_agent
         release: cf
     instances: 1
-    resource_pool: small_z2
+    resource_pool: file_server_z2
     networks:
       - name: diego2
     properties:
