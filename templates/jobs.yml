@@ -306,14 +306,17 @@ properties:
       garden: ~
 
     file_server:
-      cc: (( external_services.cc ))
+      cc:
+        srv_api_uri: (( external_services.cc.srv_api_uri ))
+        staging_upload_user: (( external_services.cc.staging_upload_user ))
+        staging_upload_password: (( external_services.cc.staging_upload_password ))
       etcd:
         machines: (( .properties.diego.etcd.machines ))
 
     nsync:
       cc:
         base_url: (( external_services.cc.srv_api_uri ))
-        basic_auth_password: (( external_services.cc.bulk_api_password ))
+        basic_auth_password: (( external_services.cc.internal_api_password ))
       etcd:
         machines: (( .properties.diego.etcd.machines ))
       lifecycle_bundles: ~
