@@ -34,6 +34,5 @@ properties:
     description: "User to upload files to Cloud Controller"
   diego.file_server.cc.staging_upload_password:
     description: "User's password to upload files to Cloud Controller"
-  diego.file_server.cc.jobPollingInterval:
-    default: "5s"
+  diego.file_server.cc.job_polling_interval:
     description: "the interval between job polling requests"

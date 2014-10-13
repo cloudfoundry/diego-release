@@ -31,8 +31,8 @@ case $1 in
       -ccAddress=<%= p("diego.file_server.cc.srv_api_uri") %> \
       -ccUsername=<%= p("diego.file_server.cc.staging_upload_user") %> \
       -ccPassword=<%= p("diego.file_server.cc.staging_upload_password") %> \
-      <% if_p("diego.file_server.cc.jobPollingInterval") do %>\
-      -ccJobPollingInterval=<%= p("diego.file_server.cc.jobPollingInterval") %> \
+      <% if_p("diego.file_server.cc.job_polling_interval") do |interval| %>\
+      -ccJobPollingInterval=<%= interval %> \
       <% end %>\
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       2>> $LOG_DIR/file-server.stderr.log \
