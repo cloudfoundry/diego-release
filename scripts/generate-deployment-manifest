@@ -2,7 +2,7 @@
 
 set -e -x
 
-templates=$(dirname $0)/templates
+templates=$(dirname $0)/../templates
 
 infrastructure=$1
 cf_release=$2
