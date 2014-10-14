@@ -25,7 +25,7 @@ properties:
     description: base URL of the cloud controller
   diego.nsync.cc.basic_auth_username:
     description: "basic auth username for CC bulk API"
-    default: "bulk_api"
+    default: "internal_user"
   diego.nsync.cc.basic_auth_password:
     description: "basic auth password for CC bulk API"
   diego.nsync.cc.polling_interval:
