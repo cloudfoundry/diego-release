@@ -5,11 +5,16 @@ set -e
 if [ -n "$PACKAGE" ]; then
   ginkgo -r -p "$@" "./src/${PACKAGE}"
 else
-  cd ./src/github.com/cloudfoundry/gunk/diegonats
-  ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress
-  cd -
+  pushd ./src/github.com/cloudfoundry/gunk/diegonats/
+    ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress
+  popd
 
-  cd src/github.com/cloudfoundry-incubator/
-  ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress \
-    -skipPackage="simulation,inigo,garden-linux,dropsonde,candiedyaml,diego-smoke-tests,diego-acceptance-tests,cf-test-helpers" "$@"
+  pushd ./src/github.com/pivotal-golang/cacheddownloader/
+    ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress
+  popd
+
+  pushd src/github.com/cloudfoundry-incubator/
+    ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress \
+      -skipPackage="simulation,inigo,garden-linux,dropsonde,candiedyaml,diego-smoke-tests,diego-acceptance-tests,cf-test-helpers" "$@"
+  popd
 fi
