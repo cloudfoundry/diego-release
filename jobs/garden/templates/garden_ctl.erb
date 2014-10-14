@@ -44,7 +44,7 @@ case $1 in
       -rootfs=/var/vcap/packages/rootfs_lucid64 \
       -overlays=/var/vcap/data/garden/overlays \
       -graph=/var/vcap/data/garden/graph \
-      -containerGraceTime=5m \
+      -containerGraceTime=1h \
       1>>$LOG_DIR/garden.stdout.log \
       2>>$LOG_DIR/garden.stderr.log
 
