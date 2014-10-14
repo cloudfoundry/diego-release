@@ -19,6 +19,7 @@ jobs:
       - name: rep
       - name: auctioneer
       - name: garden
+      - name: runtime_metrics_server
       - name: metron_agent
         release: cf
     instances: 1
@@ -42,6 +43,7 @@ jobs:
       - name: rep
       - name: auctioneer
       - name: garden
+      - name: runtime_metrics_server
       - name: metron_agent
         release: cf
     instances: 1
@@ -171,24 +173,6 @@ jobs:
         shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
       metron_agent:
         zone: z2
-
-  - name: runtime_metrics_server_z1
-    release: diego
-    templates:
-      - name: runtime_metrics_server
-      - name: metron_agent
-        release: cf
-    instances: 1
-    resource_pool: small_z1
-    networks:
-      - name: diego1
-    properties:
-      networks:
-        apps: diego1
-      loggregator_endpoint:
-        shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
-      metron_agent:
-        zone: z1
 
   - name: etcd_z1
     release: diego
