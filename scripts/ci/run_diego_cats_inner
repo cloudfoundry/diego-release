@@ -2,12 +2,17 @@
 
 set -e -x -u
 
-STUBS_DIR=${PWD}/deployments-runtime/${DEPLOYMENT_NAME}/stubs
+eval $(./diego-release/scripts/ci/bosh_config)
+./diego-release/scripts/ci/bosh_setup
 
-eval $(./scripts/ci/bosh_config)
-./scripts/ci/bosh_setup
+STUBS_DIR=deployments-runtime/${DEPLOYMENT_NAME}/stubs
+spiff merge diego-release/templates/acceptance-tests-aws.yml \
+            ${STUBS_DIR}/aws.yml                             \
+            ${STUBS_DIR}/shared-secrets.yml                  \
+            ${STUBS_DIR}/ssl.yml                             \
+            > acceptance-tests-aws.yml
 
-spiff merge templates/acceptance-tests-aws.yml ${STUBS_DIR}/aws.yml ${STUBS_DIR}/shared-secrets.yml ${STUBS_DIR}/ssl.yml > acceptance-tests-aws.yml
 bosh deployment acceptance-tests-aws.yml
 bosh -n deploy
+
 bosh run errand diego_acceptance_tests

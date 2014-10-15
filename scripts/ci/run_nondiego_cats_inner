@@ -2,9 +2,17 @@
 
 set -e -x -u
 
-eval $(./scripts/ci/bosh_config)
-./scripts/ci/bosh_setup
+eval $(./diego-release/scripts/ci/bosh_config)
+./diego-release/scripts/ci/bosh_setup
 
-bosh download manifest cf-$DEPLOYMENT_NAME cf-deployment.yml
-bosh deployment cf-deployment.yml
-bosh run errand acceptance_tests
+STUBS_DIR=deployments-runtime/${DEPLOYMENT_NAME}/stubs
+spiff merge cf-release/templates/acceptance-tests-aws.yml \
+            ${STUBS_DIR}/aws.yml                          \
+            ${STUBS_DIR}/shared-secrets.yml               \
+            ${STUBS_DIR}/ssl.yml                          \
+            > acceptance-tests-aws.yml
+
+bosh deployment acceptance-tests-aws.yml
+bosh -n deploy
+
+bosh run errand cf_acceptance_tests
