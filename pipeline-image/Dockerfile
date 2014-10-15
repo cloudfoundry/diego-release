@@ -1,6 +1,6 @@
 FROM cloudfoundry/inigo-ci
 
-ADD https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0/spiff_linux_amd64.zip /tmp/
+ADD https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.3/spiff_linux_amd64.zip /tmp/
 RUN unzip /tmp/spiff_linux_amd64.zip -d /usr/local/bin
 RUN rm /tmp/spiff_linux_amd64.zip
 
