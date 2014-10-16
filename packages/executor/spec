@@ -23,6 +23,7 @@ files:
   - github.com/cloudfoundry-incubator/executor/server/delete_container/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/server/error_headers/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/server/get_container/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/server/get_files/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/server/initialize_container/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/server/list_containers/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/server/ping/*.go # gosub
@@ -32,7 +33,6 @@ files:
   - github.com/cloudfoundry-incubator/executor/steps/download_step/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/steps/emit_progress_step/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/steps/emittable_error/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/steps/fetch_result_step/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/steps/monitor_step/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/steps/parallel_step/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/steps/run_step/*.go # gosub
