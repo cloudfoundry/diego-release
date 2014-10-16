@@ -8,4 +8,4 @@ env:
   - DEPLOYMENT_NAME={{DEPLOYMENT_NAME}}
 
 script:
-  - ./scripts/ci/run_diego_cats_inner
+  - ./diego-release/scripts/ci/run_diego_cats_inner
