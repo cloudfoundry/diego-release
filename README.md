@@ -162,7 +162,7 @@ git checkout develop
 1. Generate and target cf-release manifest:
   ```bash
   cd ~/workspace/cf-release
-  ./generate_deployment_manifest warden \
+  ./scripts/generate-deployment-manifest warden \
       ~/deployments/bosh-lite/director.yml \
       ~/workspace/diego-release/templates/enable_diego_in_cc.yml > \
       ~/deployments/bosh-lite/cf.yml
