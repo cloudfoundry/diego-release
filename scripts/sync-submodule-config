@@ -17,6 +17,7 @@ go install github.com/vito/gosub
     -app github.com/cloudfoundry-incubator/garden-linux/old/iodaemon \
     -app github.com/cloudfoundry-incubator/linux-circus/... \
     -app github.com/cloudfoundry-incubator/nsync/... \
+    -app github.com/cloudfoundry-incubator/receptor \
     -app github.com/cloudfoundry-incubator/rep \
     -app github.com/cloudfoundry-incubator/route-emitter \
     -app github.com/cloudfoundry-incubator/runtime-metrics-server \
@@ -36,6 +37,7 @@ go install github.com/vito/gosub
   gosub list -test github.com/cloudfoundry-incubator/garden-linux/... \
   gosub list -test github.com/cloudfoundry-incubator/linux-circus/... \
   gosub list -test github.com/cloudfoundry-incubator/nsync/... \
+  gosub list -test github.com/cloudfoundry-incubator/receptor/... \
   gosub list -test github.com/cloudfoundry-incubator/rep/... \
   gosub list -test github.com/cloudfoundry-incubator/route-emitter/... \
   gosub list -test github.com/cloudfoundry-incubator/runtime-metrics-server/... \
