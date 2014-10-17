@@ -5,41 +5,42 @@ dependencies:
   - golang
 
 files:
-  - github.com/cloudfoundry-incubator/executor/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/cmd/executor/*.go # gosub
   - code.google.com/p/gogoprotobuf/proto/*.go # gosub
   - code.google.com/p/goprotobuf/proto/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/api/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/configuration/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/cmd/executor/configuration/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/log_streamer/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/metrics/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/registry/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/sequence/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/server/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/server/allocate_container/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/server/delete_container/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/server/error_headers/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/server/get_container/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/server/get_files/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/server/initialize_container/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/server/list_containers/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/server/ping/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/server/remaining_resources/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/server/run_actions/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/server/total_resources/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/steps/download_step/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/steps/emit_progress_step/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/steps/emittable_error/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/steps/monitor_step/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/steps/parallel_step/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/steps/run_step/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/steps/try_step/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/steps/upload_step/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/transformer/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/uploader/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/log_streamer/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/metrics/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/registry/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/sequence/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/steps/download_step/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/steps/emit_progress_step/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/steps/emittable_error/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/steps/monitor_step/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/steps/parallel_step/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/steps/run_step/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/steps/try_step/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/steps/upload_step/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/transformer/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/uploader/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/server/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/server/allocate_container/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/server/delete_container/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/server/error_headers/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/server/get_container/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/server/get_files/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/server/initialize_container/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/server/list_containers/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/server/ping/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/server/remaining_resources/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/server/run_actions/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/server/total_resources/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/api/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/client/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/client/connection/*.go # gosub

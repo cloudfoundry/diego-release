@@ -27,7 +27,7 @@ sync_package converger              -app  github.com/cloudfoundry-incubator/conv
 sync_package docker-circus          -app  github.com/cloudfoundry-incubator/docker-circus/... &
 sync_package etcd                   -app  github.com/coreos/etcd &
 sync_package etcd_metrics_server    -app  github.com/cloudfoundry-incubator/etcd-metrics-server &
-sync_package executor               -app  github.com/cloudfoundry-incubator/executor &
+sync_package executor               -app  github.com/cloudfoundry-incubator/executor/cmd/executor &
 sync_package file_server            -app  github.com/cloudfoundry-incubator/file-server &
 sync_package garden-linux           -app  github.com/cloudfoundry-incubator/garden-linux/... &
 sync_package linux-circus           -app  github.com/cloudfoundry-incubator/linux-circus/... &

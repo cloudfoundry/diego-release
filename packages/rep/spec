@@ -18,8 +18,9 @@ files:
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/delta_force/delta_force/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/api/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/client/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/client/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/api/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/api/lrprunning/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/api/taskcomplete/*.go # gosub
