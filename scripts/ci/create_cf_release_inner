@@ -9,7 +9,7 @@ eval $(./scripts/ci/bosh_config)
 
 pushd cf-release
   bosh -n create release --with-tarball
-  bosh -n upload release --rebase --skip-if-exists || true
+  bosh -n upload release --rebase || true
   ./generate_deployment_manifest aws ${STUBS_DIR}/* > cf-deployment.yml
   bosh deployment cf-deployment.yml
 
