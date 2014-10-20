@@ -22,6 +22,12 @@ case $1 in
     exec /var/vcap/packages/converger/bin/converger \
       -etcdCluster=<%= p("diego.converger.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -debugAddr=<%= p("diego.converger.debug_addr") %> \
+      -convergeRepeatInterval=<%= p("diego.converger.repeat.interval") %> \
+      -kickPendingTaskDuration=<%= p("diego.converger.kick.pending.task.duration") %> \
+      -expireCompletedTaskDuration=<%= p("diego.converger.expire.completed.duration") %> \
+      -expirePendingTaskDuration=<%= p("diego.converger.expire.pending.duration") %> \
+      -kickPendingLRPStartAuctionDuration=<%= p("diego.converger.kick.lrp.pending.start.auction.duration") %> \
+      -expireClaimedLRPStartAuctionDuration=<%= p("diego.converger.expire.claimed.lrp.start.auction.duration") %> \
       2>> $LOG_DIR/converger.stderr.log \
       1> >(tee -a $LOG_DIR/converger.stdout.log | logger -t converger)
 
