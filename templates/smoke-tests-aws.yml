@@ -3,7 +3,7 @@ director_uuid: (( merge ))
 meta:
   smoke_tests:
     api: (( merge ))
-    ssl: (( merge ))
+    skip_ssl_validation: (( merge ))
     username: (( merge ))
     password: (( merge ))
     organization: (( merge ))
