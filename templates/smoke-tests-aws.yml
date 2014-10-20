@@ -1,6 +1,20 @@
-name: diego-smoke-tests
-
 director_uuid: (( merge ))
+
+meta:
+  smoke_tests:
+    api: (( merge ))
+    skip_ssl_validation: (( merge ))
+    username: (( merge ))
+    password: (( merge ))
+    organization: (( merge ))
+    space: (( merge ))
+
+    infrastructure:
+      subnet: (( merge ))
+      security_group: (( merge ))
+      availability_zone: (( merge ))
+
+name: diego-smoke-tests
 
 releases:
   - name: diego
@@ -10,9 +24,9 @@ networks:
   - name: default
     type: dynamic
     cloud_properties:
+      subnet: (( meta.smoke_tests.infrastructure.subnet ))
       security_groups:
-        - (( Resources.SecurityGroupName.Internal ))
-      subnet: (( Resources.Subnet.DiegoZ1 ))
+        - (( meta.smoke_tests.infrastructure.security_group ))
 
 resource_pools:
   - name: small_errand
@@ -21,7 +35,7 @@ resource_pools:
       name: bosh-aws-xen-ubuntu-trusty-go_agent
       version: latest
     cloud_properties:
-      availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
+      availability_zone: (( meta.smoke_tests.infrastructure.availability_zone ))
       instance_type: m3.medium
 
 compilation:
@@ -29,7 +43,7 @@ compilation:
   workers: 6
   reuse_compilation_vms: true
   cloud_properties:
-    availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
+    availability_zone: (( meta.smoke_tests.infrastructure.availability_zone ))
     instance_type: c1.medium
 
 update:
@@ -51,16 +65,13 @@ jobs:
   resource_pool: small_errand
 
 properties:
-  domain: (( merge ))
   diego:
     smoke_tests:
-      api: (( "api." properties.domain ))
-      user: (( cloud_controller_admin_credentials.username ))
-      password: (( cloud_controller_admin_credentials.password ))
-      org: smoke-tests
-      space: tests
-    ssl: (( merge ))
+      api: (( meta.smoke_tests.api ))
+      user: (( meta.smoke_tests.username ))
+      password: (( meta.smoke_tests.password ))
+      org: (( meta.smoke_tests.organization ))
+      space: (( meta.smoke_tests.space ))
 
-Resources: (( merge ))
-
-cloud_controller_admin_credentials: (( merge ))
+    ssl:
+      skip_cert_verify: (( meta.smoke_tests.skip_ssl_validation ))

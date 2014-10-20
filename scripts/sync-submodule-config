@@ -12,11 +12,11 @@ go install github.com/vito/gosub
     -app github.com/cloudfoundry-incubator/docker-circus/... \
     -app github.com/cloudfoundry-incubator/etcd-metrics-server \
     -app github.com/cloudfoundry-incubator/executor/cmd/executor \
-    -app github.com/cloudfoundry-incubator/file-server \
+    -app github.com/cloudfoundry-incubator/file-server/cmd/file-server \
     -app github.com/cloudfoundry-incubator/garden-linux \
     -app github.com/cloudfoundry-incubator/garden-linux/old/iodaemon \
     -app github.com/cloudfoundry-incubator/linux-circus/... \
-    -app github.com/cloudfoundry-incubator/nsync/... \
+    -app github.com/cloudfoundry-incubator/nsync/cmd/... \
     -app github.com/cloudfoundry-incubator/receptor \
     -app github.com/cloudfoundry-incubator/rep \
     -app github.com/cloudfoundry-incubator/route-emitter \

@@ -14,3 +14,21 @@ properties:
   diego.converger.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17002"
+  diego.converger.repeat.interval:
+    description: "the interval between runs of the converge process"
+    default: "30s"
+  diego.converger.kick.pending.task.duration:
+    description: "the interval, in seconds, between kicks to pending tasks"
+    default: "30s"
+  diego.converger.expire.completed.duration:
+    description: "completed, unresolved tasks are deleted after this duration"
+    default: "120s"
+  diego.converger.expire.pending.duration:
+    description: "unclaimed tasks are marked as failed, after this duration"
+    default: "30m"
+  diego.converger.kick.lrp.pending.start.auction.duration:
+    description: "the interval between kicks to pending start auctions for long-running process"
+    default: "30s"
+  diego.converger.expire.claimed.lrp.start.auction.duration:
+    description: "unclaimed start auctions for long-running processes are deleted, after this interval"
+    default: "300s"
