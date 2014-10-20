@@ -20,6 +20,7 @@ jobs:
       - name: auctioneer
       - name: garden
       - name: runtime_metrics_server
+      - name: receptor
       - name: metron_agent
         release: cf
     instances: 1
@@ -44,6 +45,7 @@ jobs:
       - name: auctioneer
       - name: garden
       - name: runtime_metrics_server
+      - name: receptor
       - name: metron_agent
         release: cf
     instances: 1
@@ -285,6 +287,10 @@ properties:
         username: (( external_services.nats.user ))
         password: (( external_services.nats.password ))
         port: (( external_services.nats.port ))
+
+    receptor:
+      etcd:
+        machines: (( .properties.diego.etcd.machines ))
 
     rep:
       etcd:

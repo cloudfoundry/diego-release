@@ -1,0 +1,48 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/receptor
+LOG_DIR=/var/vcap/sys/log/receptor
+CONF_DIR=/var/vcap/jobs/receptor/config
+PIDFILE=$RUN_DIR/receptor.pid
+DATA_DIR=/var/vcap/data/receptor
+TMP_DIR=$DATA_DIR/tmp
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+export DROPSONDE_ORIGIN=receptor
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "receptor"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $DATA_DIR
+    mkdir -p $LOG_DIR
+
+    mkdir -p $TMP_DIR
+
+    echo $$ > $PIDFILE
+
+    exec /var/vcap/packages/receptor/bin/receptor \
+      -address=<%= p("diego.receptor.listen_addr") %> \
+      -debugAddr=<%= p("diego.receptor.debug_addr") %> \
+      -etcdCluster=<%= p("diego.receptor.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -username=<%= p("diego.receptor.username") %> \
+      -password=<%= p("diego.receptor.password") %> \
+      2>> $LOG_DIR/receptor.stderr.log \
+      1> >(tee -a $LOG_DIR/receptor.stdout.log | logger -t receptor)
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: receptor_ctl {start|stop}"
+
+    ;;
+
+esac
