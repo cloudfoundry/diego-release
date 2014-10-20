@@ -21,7 +21,7 @@ go install github.com/vito/gosub
     -app github.com/cloudfoundry-incubator/rep \
     -app github.com/cloudfoundry-incubator/route-emitter \
     -app github.com/cloudfoundry-incubator/runtime-metrics-server \
-    -app github.com/cloudfoundry-incubator/stager \
+    -app github.com/cloudfoundry-incubator/stager/cmd/... \
     -app github.com/cloudfoundry-incubator/tps \
     \
     -app github.com/apcera/gnatsd \

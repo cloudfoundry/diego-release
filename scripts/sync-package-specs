@@ -35,7 +35,7 @@ sync_package nsync                  -app  github.com/cloudfoundry-incubator/nsyn
 sync_package rep                    -app  github.com/cloudfoundry-incubator/rep &
 sync_package route_emitter          -app  github.com/cloudfoundry-incubator/route-emitter &
 sync_package runtime_metrics_server -app  github.com/cloudfoundry-incubator/runtime-metrics-server &
-sync_package stager                 -app  github.com/cloudfoundry-incubator/stager &
+sync_package stager                 -app  github.com/cloudfoundry-incubator/stager/cmd/... &
 sync_package tps                    -app  github.com/cloudfoundry-incubator/tps &
 
 sync_package acceptance-tests \
