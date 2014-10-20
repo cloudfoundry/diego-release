@@ -7,22 +7,22 @@ go install github.com/vito/gosub
 
 {
   gosub list \
-    -app github.com/cloudfoundry-incubator/auctioneer \
-    -app github.com/cloudfoundry-incubator/converger \
+    -app github.com/cloudfoundry-incubator/auctioneer/cmd/... \
+    -app github.com/cloudfoundry-incubator/converger/cmd/... \
     -app github.com/cloudfoundry-incubator/docker-circus/... \
-    -app github.com/cloudfoundry-incubator/etcd-metrics-server \
-    -app github.com/cloudfoundry-incubator/executor/cmd/executor \
-    -app github.com/cloudfoundry-incubator/file-server/cmd/file-server \
+    -app github.com/cloudfoundry-incubator/etcd-metrics-server/cmd/... \
+    -app github.com/cloudfoundry-incubator/executor/cmd/... \
+    -app github.com/cloudfoundry-incubator/file-server/cmd/... \
     -app github.com/cloudfoundry-incubator/garden-linux \
     -app github.com/cloudfoundry-incubator/garden-linux/old/iodaemon \
     -app github.com/cloudfoundry-incubator/linux-circus/... \
     -app github.com/cloudfoundry-incubator/nsync/cmd/... \
     -app github.com/cloudfoundry-incubator/receptor \
-    -app github.com/cloudfoundry-incubator/rep \
-    -app github.com/cloudfoundry-incubator/route-emitter \
-    -app github.com/cloudfoundry-incubator/runtime-metrics-server \
+    -app github.com/cloudfoundry-incubator/rep/cmd/... \
+    -app github.com/cloudfoundry-incubator/route-emitter/cmd/... \
+    -app github.com/cloudfoundry-incubator/runtime-metrics-server/cmd/... \
     -app github.com/cloudfoundry-incubator/stager/cmd/... \
-    -app github.com/cloudfoundry-incubator/tps \
+    -app github.com/cloudfoundry-incubator/tps/cmd/... \
     \
     -app github.com/apcera/gnatsd \
     -app github.com/coreos/etcd

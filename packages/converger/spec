@@ -5,7 +5,7 @@ dependencies:
   - golang
 
 files:
-  - github.com/cloudfoundry-incubator/converger/*.go # gosub
+  - github.com/cloudfoundry-incubator/converger/cmd/converger/*.go # gosub
   - code.google.com/p/gogoprotobuf/proto/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub

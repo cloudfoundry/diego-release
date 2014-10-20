@@ -5,7 +5,7 @@ dependencies:
   - golang
 
 files:
-  - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
+  - github.com/cloudfoundry-incubator/auctioneer/cmd/auctioneer/*.go # gosub
   - code.google.com/p/gogoprotobuf/proto/*.go # gosub
   - github.com/apcera/nats/*.go # gosub
   - github.com/cloudfoundry-incubator/auction/auctionrunner/*.go # gosub

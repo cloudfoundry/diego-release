@@ -5,7 +5,7 @@ dependencies:
   - golang
 
 files:
-  - github.com/cloudfoundry-incubator/route-emitter/*.go # gosub
+  - github.com/cloudfoundry-incubator/route-emitter/cmd/route-emitter/*.go # gosub
   - code.google.com/p/gogoprotobuf/proto/*.go # gosub
   - github.com/apcera/nats/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub

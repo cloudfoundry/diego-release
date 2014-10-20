@@ -5,7 +5,8 @@ dependencies:
   - golang
 
 files:
-  - github.com/cloudfoundry-incubator/tps/*.go # gosub
+  - github.com/cloudfoundry-incubator/tps/cmd/tps/*.go # gosub
+  - github.com/cloudfoundry-incubator/tps/cmd/tps/testrunner/*.go # gosub
   - code.google.com/p/gogoprotobuf/proto/*.go # gosub
   - github.com/apcera/nats/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub

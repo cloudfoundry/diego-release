@@ -5,7 +5,7 @@ dependencies:
   - golang
 
 files:
-  - github.com/cloudfoundry-incubator/etcd-metrics-server/*.go # gosub
+  - github.com/cloudfoundry-incubator/etcd-metrics-server/cmd/etcd-metrics-server/*.go # gosub
   - github.com/apcera/nats/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
