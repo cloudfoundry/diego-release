@@ -73,4 +73,5 @@ properties:
       org: (( meta.smoke_tests.organization ))
       space: (( meta.smoke_tests.space ))
 
-    ssl: (( meta.smoke_tests.ssl ))
+    ssl:
+      skip_cert_verify: (( meta.smoke_tests.skip_ssl_validation ))
