@@ -7,7 +7,7 @@ STUBS_DIR=${PWD}/deployments-runtime/${DEPLOYMENT_NAME}/stubs
 eval $(./scripts/ci/bosh_config)
 ./scripts/ci/bosh_setup
 
-spiff merge templates/smoke-tests-aws.yml ${STUBS_DIR}/aws.yml ${STUBS_DIR}/shared-secrets.yml ${STUBS_DIR}/ssl.yml > smoke-tests-aws.yml
+spiff merge templates/smoke-tests-aws.yml ${STUBS_DIR}/smoke-tests.yml ${STUBS_DIR}/micro_uuid.yml > smoke-tests-aws.yml
 bosh deployment smoke-tests-aws.yml
 bosh -n deploy
 bosh run errand diego_smoke_tests
