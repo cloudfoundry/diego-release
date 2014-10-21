@@ -6,6 +6,8 @@ env:
   - BOSH_PASSWORD={{BOSH_PASSWORD}}
   - BOSH_TARGET={{BOSH_TARGET}}
   - DEPLOYMENT_NAME={{DEPLOYMENT_NAME}}
+  - DIRECTOR_STUB={{DIRECTOR_STUB}}
+  - SMOKE_TESTS_STUB={{SMOKE_TESTS_STUB}}
 
 script:
   - ./scripts/ci/run_diego_smoke_tests_inner
