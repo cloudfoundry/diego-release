@@ -1,0 +1,26 @@
+---
+name: receptor
+
+templates:
+  receptor_ctl.erb: bin/receptor_ctl
+
+packages:
+  - pid_utils
+  - receptor
+
+properties:
+  diego.receptor.etcd.machines:
+    description: "IPs pointing to the ETCD cluster"
+
+  diego.receptor.listen_addr:
+    description: "address at which to serve API requests"
+    default: "0.0.0.0:8888"
+  diego.receptor.debug_addr:
+    description: "address at which to serve debug info"
+    default: "0.0.0.0:17014"
+  diego.receptor.username:
+    description: "username for basic auth"
+    default: ""
+  diego.receptor.password:
+    description: "password for basic auth"
+    default: ""

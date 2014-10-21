@@ -1,9 +1,5 @@
 # diego release
 
-<p align="center">
-  <img src="http://i.imgur.com/WrqaOd9.png" alt="Go Diego Go!" title="Go Diego Go!"/>
-</p>
-
 #### Learn more about Diego and its components at [diego-design-notes](https://github.com/cloudfoundry-incubator/diego-design-notes)
 
 A [BOSH](https://github.com/cloudfoundry/bosh) release for deploying the
