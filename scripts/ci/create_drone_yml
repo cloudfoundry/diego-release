@@ -28,7 +28,7 @@ cat $drone_source | while read line; do
     VAR_NAME="${BASH_REMATCH[1]}"
     VAR_VALUE=$(eval "echo \${$VAR_NAME}")
     if [ -n "$VAR_VALUE" ]; then
-      echo "$line" | sed "s/{{$VAR_NAME}}/$VAR_VALUE/g"
+      echo "$line" | sed "s|{{$VAR_NAME}}|$VAR_VALUE|g"
     fi
   else
     echo "$line"
