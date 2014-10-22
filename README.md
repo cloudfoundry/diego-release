@@ -152,6 +152,7 @@ git checkout develop
 
   ```bash
   mkdir -p ~/deployments/bosh-lite
+  cd ~/workspace/diego-release
   ./scripts/print-director-stub > ~/deployments/bosh-lite/director.yml
   ```
 
