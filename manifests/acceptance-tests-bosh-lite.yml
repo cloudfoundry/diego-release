@@ -1,0 +1,82 @@
+name: diego-acceptance-tests
+
+director_uuid: (( merge ))
+
+meta:
+  domain: 10.244.0.34.xip.io
+  app_domains: []
+  acceptance_tests:
+    api: (( "api." domain ))
+    skip_cert_verify: true
+    username: admin
+    password: admin
+
+releases:
+  - name: diego
+    version: latest
+
+networks:
+- name: acceptance-tests
+  subnets:
+  - cloud_properties:
+      name: random
+    range: 10.244.20.8/30
+    reserved:
+    - 10.244.20.9
+    static: []
+  - cloud_properties:
+      name: random
+    range: 10.244.20.12/30
+    reserved:
+    - 10.244.20.13
+    static: []
+
+resource_pools:
+  - name: acceptance-tests
+    network: acceptance-tests
+    stemcell:
+      name: bosh-warden-boshlite-ubuntu-trusty-go_agent
+      version: latest
+    cloud_properties:
+      name: random
+
+compilation:
+  cloud_properties:
+    name: random
+  network: acceptance-tests
+  reuse_compilation_vms: true
+  workers: 6
+
+update:
+  canaries: 0
+  max_in_flight: 10
+  canary_watch_time: 1000-60000
+  update_watch_time: 1000-60000
+
+jobs:
+- name: diego_acceptance_tests
+  templates:
+    - name: acceptance-tests
+      release: diego
+  lifecycle: errand
+  instances: 1
+  networks:
+    - name: acceptance-tests
+  resource_pool: acceptance-tests
+
+properties:
+  domain: (( meta.domain ))
+  app_domains: (( meta.app_domains ))
+  acceptance_tests:
+    api:  (( "api." properties.domain ))
+    apps_domain: (( properties.app_domains.[0] || properties.domain ))
+    admin_user: (( meta.acceptance_tests.username ))
+    admin_password: (( meta.acceptance_tests.password ))
+    skip_ssl_validation: (( meta.acceptance_tests.skip_cert_verify ))
+  diego:
+    ssl:
+      skip_cert_verify: (( meta.acceptance_tests.skip_cert_verify ))
+
+cloud_controller_admin_credentials:
+  username: (( meta.acceptance_tests.username ))
+  password: (( meta.acceptance_tests.password ))

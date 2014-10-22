@@ -192,16 +192,29 @@ git checkout develop
   bosh -n deploy
   ```
 
-Now you can either run the CATs or deploy your own app.
+Now you can either run the DATs or deploy your own app.
 
-### Running the CATs & DATs
+### Running Smoke Tests & DATs
 
-These can both be run as BOSH errands:
+To deploy and run the smoke tests:
 
-```
-bosh -d ~/deployments/bosh-lite/cf.yml run errand acceptance_tests
-bosh -d ~/deployments/bosh-lite/diego.yml run errand diego_acceptance_tests
-```
+  ```bash
+  spiff merge ~/workspace/diego-release/manifests/smoke-tests-bosh-lite.yml \
+  ~/deployments/bosh-lite/director.yml \
+  > ~/deployments/bosh-lite/diego-smoke-tests.yml
+  bosh -d ~/deployments/bosh-lite/diego-smoke-tests.yml deploy
+  bosh -d ~/deployments/bosh-lite/diego-smoke-tests.yml run errand diego_smoke_tests
+  ```
+
+To deploy and run the DATs:
+
+  ```bash
+  spiff merge ~/workspace/diego-release/manifests/acceptance-tests-bosh-lite.yml \
+  ~/deployments/bosh-lite/director.yml \
+  > ~/deployments/bosh-lite/diego-acceptance-tests.yml
+  bosh -d ~/deployments/bosh-lite/diego-acceptance-tests.yml deploy
+  bosh -d ~/deployments/bosh-lite/diego-acceptance-tests.yml run errand diego_acceptance_tests
+  ```
 
 ### Pushing an Application to Diego
 
