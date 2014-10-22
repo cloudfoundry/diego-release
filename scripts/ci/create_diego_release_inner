@@ -14,5 +14,8 @@ bosh -n upload release --rebase || true
 bosh deployment diego-deployment.yml
 
 ./scripts/ci/emit-datadog-deploy-event started ${DEPLOYMENT_NAME} diego
-yes yes | bosh deploy
-./scripts/ci/emit-datadog-deploy-event finished ${DEPLOYMENT_NAME} diego
+if bosh -n deploy; then
+  ./scripts/ci/emit-datadog-deploy-event finished ${DEPLOYMENT_NAME} diego
+else
+  ./scripts/ci/emit-datadog-deploy-event failed ${DEPLOYMENT_NAME} diego
+fi
