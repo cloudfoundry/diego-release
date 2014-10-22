@@ -13,6 +13,7 @@ pushd cf-release
   ./generate_deployment_manifest aws ${STUBS_DIR}/* > cf-deployment.yml
   bosh deployment cf-deployment.yml
 
+  ../scripts/ci/emit-datadog-deploy-event started cf-${DEPLOYMENT_NAME} cf
   if bosh -n deploy; then
     ../scripts/ci/emit-datadog-deploy-event finished cf-${DEPLOYMENT_NAME} cf
   else
