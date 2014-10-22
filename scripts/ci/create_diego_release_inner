@@ -18,4 +18,5 @@ if bosh -n deploy; then
   ./scripts/ci/emit-datadog-deploy-event finished ${DEPLOYMENT_NAME} diego
 else
   ./scripts/ci/emit-datadog-deploy-event failed ${DEPLOYMENT_NAME} diego
+  exit 1
 fi
