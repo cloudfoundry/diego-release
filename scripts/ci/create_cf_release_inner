@@ -14,9 +14,9 @@ pushd cf-release
   bosh deployment cf-deployment.yml
 
   if bosh -n deploy; then
-    ./scripts/ci/emit-datadog-deploy-event finished ${DEPLOYMENT_NAME} cf
+    ../scripts/ci/emit-datadog-deploy-event finished ${DEPLOYMENT_NAME} cf
   else
-    ./scripts/ci/emit-datadog-deploy-event failed ${DEPLOYMENT_NAME} cf
+    ../scripts/ci/emit-datadog-deploy-event failed ${DEPLOYMENT_NAME} cf
     exit 1
   fi
 popd
