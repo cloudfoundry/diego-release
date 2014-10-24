@@ -2,15 +2,6 @@ name: diego-acceptance-tests
 
 director_uuid: (( merge ))
 
-meta:
-  domain: 10.244.0.34.xip.io
-  app_domains: []
-  acceptance_tests:
-    api: (( "api." domain ))
-    skip_cert_verify: true
-    username: admin
-    password: admin
-
 releases:
   - name: diego
     version: latest
@@ -65,18 +56,9 @@ jobs:
   resource_pool: acceptance-tests
 
 properties:
-  domain: (( meta.domain ))
-  app_domains: (( meta.app_domains ))
   acceptance_tests:
-    api:  (( "api." properties.domain ))
-    apps_domain: (( properties.app_domains.[0] || properties.domain ))
-    admin_user: (( meta.acceptance_tests.username ))
-    admin_password: (( meta.acceptance_tests.password ))
-    skip_ssl_validation: (( meta.acceptance_tests.skip_cert_verify ))
-  diego:
-    ssl:
-      skip_cert_verify: (( meta.acceptance_tests.skip_cert_verify ))
-
-cloud_controller_admin_credentials:
-  username: (( meta.acceptance_tests.username ))
-  password: (( meta.acceptance_tests.password ))
+    api:  api.10.244.0.34.xip.io
+    apps_domain: 10.244.0.34.xip.io
+    admin_user: admin
+    admin_password: admin
+    skip_ssl_validation: true

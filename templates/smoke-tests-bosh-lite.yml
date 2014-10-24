@@ -1,14 +1,5 @@
 director_uuid: (( merge ))
 
-meta:
-  domain: 10.244.0.34.xip.io
-  smoke_tests:
-    api: (( "api." domain ))
-    skip_ssl_validation: true
-    username: admin
-    password: admin
-    organization: smoke-tests
-
 name: diego-smoke-tests
 
 releases:
@@ -67,11 +58,10 @@ jobs:
 properties:
   diego:
     smoke_tests:
-      api: (( meta.smoke_tests.api ))
-      user: (( meta.smoke_tests.username ))
-      password: (( meta.smoke_tests.password ))
-      org: (( meta.smoke_tests.organization ))
-      space: (( meta.smoke_tests.space ))
-
+      api: api.10.244.0.34.xip.io
+      user: admin
+      password: admin
+      org: smoke-tests
+      space: smoke-tests
     ssl:
-      skip_cert_verify: (( meta.smoke_tests.skip_ssl_validation ))
+      skip_cert_verify: true
