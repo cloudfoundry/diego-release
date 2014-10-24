@@ -25,7 +25,7 @@ Run the individual component unit tests as you work on them using
 
 When you're ready to commit, run:
 
-	./scripts/prepare-to-diego <story-id> <another-story-id>...
+    ./scripts/prepare-to-diego <story-id> <another-story-id>...
 
 This will synchronize submodules, update the Bosh package specs, run all unit
 tests, all integration tests, and make a commit, bringing up a commit edit
@@ -51,14 +51,14 @@ you if you have [direnv](http://direnv.net) installed.
     git clone https://github.com/cloudfoundry-incubator/diego-release.git
     cd diego-release/
 
-	# automate $GOPATH and $PATH setup
-	direnv allow
+    # automate $GOPATH and $PATH setup
+    direnv allow
 
-	# switch to develop branch (not master!)
-	git checkout develop
+    # switch to develop branch (not master!)
+    git checkout develop
 
-	# initialize and sync submodules
-	./scripts/update
+    # initialize and sync submodules
+    ./scripts/update
 
 If you do not wish to use direnv, you can simply `source` the `.envrc` file in the root
 of the release repo.  You may manually need to update your `$GOPATH` and `$PATH` variables
@@ -69,11 +69,11 @@ as you switch in and out of the directory.
 
 1. Install ginkgo
 
-   		go install github.com/onsi/ginkgo/ginkgo
+    go install github.com/onsi/ginkgo/ginkgo
 
 1. Run the unit test script
 
-	   ./scripts/run-unit-tests
+    ./scripts/run-unit-tests
 
 
 ---
@@ -84,25 +84,25 @@ as you switch in and out of the directory.
 
 1. Install the `fly` CLI:
 
-	    # cd to the concourse release repo, 
-    	cd /path/to/concourse/repo
+    # cd to the concourse release repo, 
+    cd /path/to/concourse/repo
 
-		# switch to using the concourse $GOPATH and $PATH setup temporarily
-		direnv allow
-		
-	    # install the version of fly from Concourse's release
-    	go install github.com/concourse/fly
+    # switch to using the concourse $GOPATH and $PATH setup temporarily
+    direnv allow
 
-	    # add the concourse release repo's bin/ directory to your $PATH
-    	export PATH=$PWD/bin:$PATH
+    # install the version of fly from Concourse's release
+    go install github.com/concourse/fly
+
+    # add the concourse release repo's bin/ directory to your $PATH
+    export PATH=$PWD/bin:$PATH
 
 1. Run [Inigo](https://github.com/cloudfoundry-incubator/inigo).
 
-	    # cd back to the diego-release release repo
-    	cd diego-release/
-    	
-    	# run the tests
-	    ./scripts/run-inigo
+    # cd back to the diego-release release repo
+    cd diego-release/
+
+    # run the tests
+    ./scripts/run-inigo
 
 ---
 
@@ -114,68 +114,68 @@ as you switch in and out of the directory.
 
 1. Download the latest Warden Trusty Go-Agent stemcell and upload it to bosh-lite
 
-		bosh public stemcells
-		bosh download public stemcell (name)
-		bosh upload stemcell (downloaded filename)
+    bosh public stemcells
+    bosh download public stemcell (name)
+    bosh upload stemcell (downloaded filename)
 
 1. Checkout cf-release (develop branch) from git
 
-		cd ~/workspace
-		git clone git@github.com:cloudfoundry/cf-release.git
-		cd ~/workspace/cf-release
-		git checkout develop
-		./update
+    cd ~/workspace
+    git clone git@github.com:cloudfoundry/cf-release.git
+    cd ~/workspace/cf-release
+    git checkout develop
+    ./update
 
 1. Checkout diego-release (develop branch) from git
 
-		cd ~/workspace
-		git clone git@github.com:cloudfoundry-incubator/diego-release.git
-		cd ~/workspace/diego-release
-		git checkout develop
-		./scripts/update
+    cd ~/workspace
+    git clone git@github.com:cloudfoundry-incubator/diego-release.git
+    cd ~/workspace/diego-release
+    git checkout develop
+    ./scripts/update
 
 1. Install spiff, a tool for generating bosh manifests. spiff is required for
    running the scripts in later steps. The following installation method
    assumes that go is installed. For other ways of installing `spiff`, see
    [the spiff README](https://github.com/cloudfoundry-incubator/spiff).
 
-		go get github.com/cloudfoundry-incubator/spiff
+    go get github.com/cloudfoundry-incubator/spiff
 
 1. Generate a deployment stub with the bosh director uuid
 
-		mkdir -p ~/deployments/bosh-lite
-		cd ~/workspace/diego-release
-		./scripts/print-director-stub > ~/deployments/bosh-lite/director.yml
+    mkdir -p ~/deployments/bosh-lite
+    cd ~/workspace/diego-release
+    ./scripts/print-director-stub > ~/deployments/bosh-lite/director.yml
 
 1. Generate and target cf-release manifest:
 
-		cd ~/workspace/cf-release
-		./generate_deployment_manifest warden \
-		    ~/deployments/bosh-lite/director.yml \
-			~/workspace/diego-release/templates/enable_diego_in_cc.yml > \
-		    ~/deployments/bosh-lite/cf.yml
-		bosh deployment ~/deployments/bosh-lite/cf.yml
+    cd ~/workspace/cf-release
+    ./generate_deployment_manifest warden \
+        ~/deployments/bosh-lite/director.yml \
+        ~/workspace/diego-release/templates/enable_diego_in_cc.yml > \
+        ~/deployments/bosh-lite/cf.yml
+    bosh deployment ~/deployments/bosh-lite/cf.yml
 
 1. Do the bosh dance:
 
-		cd ~/workspace/cf-release
-		bosh create release --force
-		bosh -n upload release
-		bosh -n deploy
+    cd ~/workspace/cf-release
+    bosh create release --force
+    bosh -n upload release
+    bosh -n deploy
 
 1. Generate and target diego's manifest:
 
-		cd ~/workspace/diego-release
-		./scripts/generate-deployment-manifest bosh-lite ../cf-release \
-		    ~/deployments/bosh-lite/director.yml > \
-		    ~/deployments/bosh-lite/diego.yml
-		bosh deployment ~/deployments/bosh-lite/diego.yml
+    cd ~/workspace/diego-release
+    ./scripts/generate-deployment-manifest bosh-lite ../cf-release \
+        ~/deployments/bosh-lite/director.yml > \
+        ~/deployments/bosh-lite/diego.yml
+    bosh deployment ~/deployments/bosh-lite/diego.yml
 
 1. Dance some more:
 
-		bosh create release --force
-		bosh -n upload release
-		bosh -n deploy
+    bosh create release --force
+    bosh -n upload release
+    bosh -n deploy
 
 Now you can either run the DATs or deploy your own app.
 
@@ -186,49 +186,51 @@ To deploy and run the smoke tests:
 
 1. Create a test Organization and Space for your smoke test applications:
 
-		cf api --skip-ssl-validation api.10.244.0.34.xip.io
-		cf auth admin admin
-		cf create-org smoke-tests
-		cf create-space smoke-tests -o smoke-tests
+    cf api --skip-ssl-validation api.10.244.0.34.xip.io
+    cf auth admin admin
+    cf create-org smoke-tests
+    cf create-space smoke-tests -o smoke-tests
 
 1. Create a deployment manifest for the smoke test task (known as a Bosh errand).
 
-		spiff merge ~/workspace/diego-release/templates/smoke-tests-bosh-lite.yml \
-			~/deployments/bosh-lite/director.yml \
-			> ~/deployments/bosh-lite/diego-smoke-tests.yml
+    spiff merge ~/workspace/diego-release/templates/smoke-tests-bosh-lite.yml \
+        ~/deployments/bosh-lite/director.yml \
+        > ~/deployments/bosh-lite/diego-smoke-tests.yml
 
 1. Deploy the task and run it.
 
-		bosh -d ~/deployments/bosh-lite/diego-smoke-tests.yml deploy
-		bosh -d ~/deployments/bosh-lite/diego-smoke-tests.yml run errand diego_smoke_tests
+    bosh -d ~/deployments/bosh-lite/diego-smoke-tests.yml deploy
+    bosh -d ~/deployments/bosh-lite/diego-smoke-tests.yml run errand diego_smoke_tests
 
 To deploy and run the DATs:
 
 1. Create a deployment manifest for the DATs errand (you do not need to create an Org or Space for this):
 
-		spiff merge ~/workspace/diego-release/templates/acceptance-tests-bosh-lite.yml \
-			~/deployments/bosh-lite/director.yml \
-			> ~/deployments/bosh-lite/diego-acceptance-tests.yml
-		bosh -d ~/deployments/bosh-lite/diego-acceptance-tests.yml deploy
-		bosh -d ~/deployments/bosh-lite/diego-acceptance-tests.yml run errand diego_acceptance_tests
+    spiff merge ~/workspace/diego-release/templates/acceptance-tests-bosh-lite.yml \
+        ~/deployments/bosh-lite/director.yml \
+        > ~/deployments/bosh-lite/diego-acceptance-tests.yml
+    bosh -d ~/deployments/bosh-lite/diego-acceptance-tests.yml deploy
+    bosh -d ~/deployments/bosh-lite/diego-acceptance-tests.yml run errand diego_acceptance_tests
 
 ---
 ### Pushing an Application to Diego
 
 1. Create new CF Org & Space
 
-		cf api --skip-ssl-validation api.10.244.0.34.xip.io
-		cf auth admin admin
-		cf create-org diego
-		cf target -o diego
-		cf create-space diego
-		cf target -s diego
+    cf api --skip-ssl-validation api.10.244.0.34.xip.io
+    cf auth admin admin
+    cf create-org diego
+    cf target -o diego
+    cf create-space diego
+    cf target -s diego
 
 1. Push your application
 
-		cf push my-app --no-start
-		cf set-env my-app CF_DIEGO_BETA true
-		cf set-env my-app CF_DIEGO_RUN_BETA true
-		cf start my-app
+    cf push my-app --no-start
+    cf set-env my-app DIEGO_BETA true
+    cf set-env my-app DIEGO_RUN_BETA true
+    cf start my-app
 
-The `CF_DIEGO_BETA` flag instructs the Cloud Controller to stage the application on Diego.  `CF_DIEGO_RUN_BETA` instructs the Cloud Controller to run the application on Diego.  While apps that run on Diego *must* stage on Diego, you can experiment with *staging* an app on Diego but running it on the DEAs.  Simply skip specifying `CF_DIEGO_RUN_BETA`.
+The `DIEGO_STAGE_BETA` flag instructs the Cloud Controller to stage the application on Diego.
+`DIEGO_RUN_BETA` instructs the Cloud Controller to run the application on Diego.
+
