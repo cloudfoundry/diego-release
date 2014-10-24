@@ -59,6 +59,24 @@ jobs:
       - name: diego3
         static_ips: (( static_ips(0) ))
 
+  - name: consul_z1
+    instances: 1
+    networks:
+      - name: diego1
+        static_ips: (( static_ips(1) ))
+
+  - name: consul_z2
+    instances: 0
+    networks:
+      - name: diego2
+        static_ips: (( static_ips(1) ))
+
+  - name: consul_z3
+    instances: 0
+    networks:
+      - name: diego3
+        static_ips: (( static_ips(1) ))
+
   - name: cell_z2
     instances: 0
 

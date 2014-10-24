@@ -21,6 +21,7 @@ jobs:
       - name: garden
       - name: runtime_metrics_server
       - name: receptor
+      - name: consul-agent
       - name: metron_agent
         release: cf
     instances: 1
@@ -35,6 +36,10 @@ jobs:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       metron_agent:
         zone: z1
+      consul:
+        agent:
+          services: [{name: cell}]
+          servers: {lan: (( .properties.diego.consul_server.machines ))}
 
   - name: cell_z2
     release: diego
@@ -103,6 +108,7 @@ jobs:
       - name: stager
       - name: nsync
       - name: tps
+      - name: consul-agent
       - name: metron_agent
         release: cf
     instances: 1
@@ -117,6 +123,10 @@ jobs:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       metron_agent:
         zone: z1
+      consul:
+        agent:
+          services: [{name: cc_bridge}]
+          servers: {lan: (( .properties.diego.consul_server.machines ))}
 
   - name: cc_bridge_z2
     release: diego
@@ -221,6 +231,61 @@ jobs:
     update:
       serial: true
 
+  - name: consul_z1
+    release: diego
+    templates:
+      - name: consul-agent
+    instances: 1
+    resource_pool: medium_z1
+    networks:
+      - name: diego1
+        static_ips: (( merge ))
+    properties:
+      network_name: diego1
+      consul:
+        agent:
+          mode: server
+          servers: {lan: (( .properties.diego.consul_server.machines ))}
+
+    update:
+      serial: true
+
+  - name: consul_z2
+    release: diego
+    templates:
+      - name: consul-agent
+    instances: 1
+    resource_pool: medium_z2
+    networks:
+      - name: diego2
+        static_ips: (( merge ))
+    update:
+      serial: true
+    properties:
+      network_name: diego2
+      consul:
+        agent:
+          mode: server
+          servers: {lan: (( .properties.diego.consul_server.machines ))}
+
+  - name: consul_z3
+    release: diego
+    templates:
+      - name: consul-agent
+    instances: 1
+    resource_pool: medium_z3
+    networks:
+      - name: diego3
+        static_ips: (( merge ))
+    update:
+      serial: true
+    properties:
+      network_name: diego3
+      consul:
+        agent:
+          mode: server
+          servers: {lan: (( .properties.diego.consul_server.machines ))}
+
 properties:
   # -- Properties below are used by jobs from cf-release --
   nats: # For metron_agent to talk to collector
@@ -236,6 +301,8 @@ properties:
     # -- Global properties --
     etcd:
       machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+    consul_server:
+      machines: (( jobs.consul_z1.networks.diego1.static_ips jobs.consul_z2.networks.diego2.static_ips jobs.consul_z3.networks.diego3.static_ips ))
     nats: (( external_services.nats ))
     ssl:
       skip_cert_verify: false
