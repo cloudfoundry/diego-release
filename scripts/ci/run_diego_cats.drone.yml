@@ -5,7 +5,7 @@ env:
   - BOSH_USER={{BOSH_USER}}
   - BOSH_PASSWORD={{BOSH_PASSWORD}}
   - BOSH_TARGET={{BOSH_TARGET}}
-  - DEPLOYMENT_NAME={{DEPLOYMENT_NAME}}
+  - ACCEPTANCE_TESTS_MANIFEST={{ACCEPTANCE_TESTS_MANIFEST}}
 
 script:
   - ./diego-release/scripts/ci/run_diego_cats_inner
