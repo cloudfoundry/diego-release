@@ -8,10 +8,12 @@ files:
   - github.com/cloudfoundry-incubator/receptor/cmd/receptor/*.go # gosub
   - github.com/cloudfoundry-incubator/receptor/cmd/receptor/testrunner/*.go # gosub
   - code.google.com/p/gogoprotobuf/proto/*.go # gosub
+  - github.com/apcera/nats/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/delta_force/delta_force/*.go # gosub
+  - github.com/cloudfoundry-incubator/natbeat/*.go # gosub
   - github.com/cloudfoundry-incubator/receptor/*.go # gosub
   - github.com/cloudfoundry-incubator/receptor/handlers/*.go # gosub
   - github.com/cloudfoundry-incubator/receptor/serialization/*.go # gosub
@@ -36,6 +38,7 @@ files:
   - github.com/cloudfoundry/dropsonde/factories/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
   - github.com/cloudfoundry/dropsonde/runtime_stats/*.go # gosub
+  - github.com/cloudfoundry/gunk/diegonats/*.go # gosub
   - github.com/cloudfoundry/gunk/timeprovider/*.go # gosub
   - github.com/cloudfoundry/gunk/urljoiner/*.go # gosub
   - github.com/cloudfoundry/gunk/workpool/*.go # gosub
@@ -44,13 +47,6 @@ files:
   - github.com/coreos/go-etcd/etcd/*.go # gosub
   - github.com/goji/httpauth/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
-  - github.com/pivotal-golang/lager/*.go # gosub
-  - github.com/tedsuo/ifrit/*.go # gosub
-  - github.com/tedsuo/ifrit/grouper/*.go # gosub
-  - github.com/tedsuo/ifrit/http_server/*.go # gosub
-  - github.com/tedsuo/ifrit/proxy/*.go # gosub
-  - github.com/tedsuo/ifrit/sigmon/*.go # gosub
-  - github.com/tedsuo/rata/*.go # gosub
   - github.com/onsi/ginkgo/*.go # gosub
   - github.com/onsi/ginkgo/config/*.go # gosub
   - github.com/onsi/ginkgo/internal/codelocation/*.go # gosub
@@ -79,4 +75,11 @@ files:
   - github.com/onsi/gomega/matchers/support/goraph/node/*.go # gosub
   - github.com/onsi/gomega/matchers/support/goraph/util/*.go # gosub
   - github.com/onsi/gomega/types/*.go # gosub
+  - github.com/pivotal-golang/lager/*.go # gosub
+  - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/ginkgomon/*.go # gosub
+  - github.com/tedsuo/ifrit/grouper/*.go # gosub
+  - github.com/tedsuo/ifrit/http_server/*.go # gosub
+  - github.com/tedsuo/ifrit/restart/*.go # gosub
+  - github.com/tedsuo/ifrit/sigmon/*.go # gosub
+  - github.com/tedsuo/rata/*.go # gosub
