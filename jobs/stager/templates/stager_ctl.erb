@@ -32,6 +32,8 @@ case $1 in
       -natsUsername=<%= p("diego.stager.nats.username") %> \
       -natsPassword=<%= p("diego.stager.nats.password") %> \
       -ccBaseURL=<%= Shellwords.shellescape(p("diego.stager.cc.base_url")) %> \
+      -diegoAPIURL=<%= p("diego.stager.diego_api_url") %> \
+      -stagerURL=<%= p("diego.stager.stager_url") %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.stager.cc.basic_auth_username")) %> \
       -ccPassword=<%= Shellwords.shellescape(p("diego.stager.cc.basic_auth_password")) %> \
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \

@@ -46,6 +46,12 @@ properties:
   diego.stager.min_file_descriptors:
     description: Minimum number of file descriptors that will be made available for staging
     default: 1024
+  diego.stager.stager_url:
+    description: URL of stager, used for completion callbacks from receptor API
+    default: http://stager.service.dc1.consul:8888
+  diego.stager.diego_api_url:
+    description: URL of diego API
+    default: receptor.service.dc1.consul:8888
   diego.stager.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17011"
