@@ -33,3 +33,7 @@ properties:
   consul.agent.services:
     description: "List of services to configure."
     default: []
+
+  consul.agent.protocol_version:
+    description: "The Consul protocol to use."
+    default: 2
