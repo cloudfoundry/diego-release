@@ -23,9 +23,19 @@ case $1 in
     mkdir -p $DATA_DIR
     chown -R vcap:vcap $DATA_DIR
 
-    <% p("consul.agent.services").each do |service| %>
-    cat > $CONF_DIR/service-<%= service["name"] %>.json <<EOF
-<%= { "service" => service }.to_json %>
+    <% p("consul.agent.services").each do |service_name| %>
+    cat > $CONF_DIR/service-<%= service_name %>.json <<EOF
+<%=
+{
+  "service" => {
+    "name" => service_name,
+    "check" => {
+      "script" => "/var/vcap/jobs/#{service_name}/bin/dns_health_check",
+      "interval" => "3s"
+    }
+  }
+}.to_json
+%>
 EOF
     <% end %>
 

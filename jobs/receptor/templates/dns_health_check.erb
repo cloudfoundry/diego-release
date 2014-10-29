@@ -1,0 +1,3 @@
+#!/bin/bash -e
+<% port = p("diego.receptor.listen_addr").split(':')[1] %>
+curl <%= "http://127.0.0.1:#{port}" %>

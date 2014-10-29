@@ -38,7 +38,7 @@ jobs:
         zone: z1
       consul:
         agent:
-          services: [{name: receptor}]
+          services: [receptor]
           servers: {lan: (( .properties.diego.consul_server.machines ))}
 
   - name: cell_z2
@@ -125,7 +125,7 @@ jobs:
         zone: z1
       consul:
         agent:
-          services: [{name: stager}]
+          services: [stager]
           servers: {lan: (( .properties.diego.consul_server.machines ))}
 
   - name: cc_bridge_z2
