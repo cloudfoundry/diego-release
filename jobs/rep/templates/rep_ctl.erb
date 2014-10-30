@@ -30,7 +30,7 @@ case $1 in
       -lrpHost=<%= spec.networks.send(properties.network_name).ip %>\
       -executorID=<%= spec.job.name %>-<%= spec.index %> \
       2>> $LOG_DIR/rep.stderr.log \
-      1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t rep)
+      1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep)
 
     ;;
 

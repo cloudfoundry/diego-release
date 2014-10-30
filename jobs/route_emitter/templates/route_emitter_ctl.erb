@@ -26,7 +26,7 @@ case $1 in
       -natsPassword=<%= p("diego.route_emitter.nats.password") %> \
       -debugAddr=<%= p("diego.route_emitter.debug_addr") %> \
       2>> $LOG_DIR/route_emitter.stderr.log \
-      1> >(tee -a $LOG_DIR/route_emitter.stdout.log | logger -t route-emitter)
+      1> >(tee -a $LOG_DIR/route_emitter.stdout.log | logger -t vcap.route-emitter)
 
     ;;
 

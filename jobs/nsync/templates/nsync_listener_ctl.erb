@@ -31,7 +31,7 @@ case $1 in
       -circuses=<%= Shellwords.shellescape(p("diego.nsync.lifecycle_bundles").to_json) %> \
       -dockerCircusPath=<%= p("diego.nsync.docker_lifecycle_bundle") %> \
       2>> $LOG_DIR/nsync_listener.stderr.log \
-      1> >(tee -a $LOG_DIR/nsync_listener.stdout.log | logger -t nsync-listener)
+      1> >(tee -a $LOG_DIR/nsync_listener.stdout.log | logger -t vcap.nsync-listener)
 
     ;;
 

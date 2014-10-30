@@ -31,7 +31,7 @@ case $1 in
       -username=<%= p("diego.receptor.username") %> \
       -password=<%= p("diego.receptor.password") %> \
       2>> $LOG_DIR/receptor.stderr.log \
-      1> >(tee -a $LOG_DIR/receptor.stdout.log | logger -t receptor)
+      1> >(tee -a $LOG_DIR/receptor.stdout.log | logger -t vcap.receptor)
 
     ;;
 

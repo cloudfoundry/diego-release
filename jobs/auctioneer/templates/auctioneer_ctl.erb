@@ -26,7 +26,7 @@ case $1 in
       -natsUsername=<%= p("diego.auctioneer.nats.username") %> \
       -natsPassword=<%= p("diego.auctioneer.nats.password") %> \
       2>> $LOG_DIR/auctioneer.stderr.log \
-      1> >(tee -a $LOG_DIR/auctioneer.stdout.log | logger -t auctioneer)
+      1> >(tee -a $LOG_DIR/auctioneer.stdout.log | logger -t vcap.auctioneer)
 
     ;;
 

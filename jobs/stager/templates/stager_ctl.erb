@@ -44,7 +44,7 @@ case $1 in
       -minDiskMB=<%= p("diego.stager.min_disk_mb") %> \
       -minFileDescriptors=<%= p("diego.stager.min_file_descriptors") %>  \
       2>> $LOG_DIR/stager.stderr.log \
-      1> >(tee -a $LOG_DIR/stager.stdout.log | logger -t stager)
+      1> >(tee -a $LOG_DIR/stager.stdout.log | logger -t vcap.stager)
 
 
     ;;
