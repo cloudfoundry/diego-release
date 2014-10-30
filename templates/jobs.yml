@@ -11,6 +11,60 @@ releases:
 external_services: (( merge ))
 
 jobs:
+  - name: consul_z1
+    release: diego
+    templates:
+      - name: consul-agent
+    instances: 1
+    resource_pool: medium_z1
+    networks:
+      - name: diego1
+        static_ips: (( merge ))
+    update:
+      serial: true
+    properties:
+      network_name: diego1
+      consul:
+        agent:
+          mode: server
+          servers: {lan: (( .properties.diego.consul_server.machines ))}
+
+  - name: consul_z2
+    release: diego
+    templates:
+      - name: consul-agent
+    instances: 1
+    resource_pool: medium_z2
+    networks:
+      - name: diego2
+        static_ips: (( merge ))
+    update:
+      serial: true
+    properties:
+      network_name: diego2
+      consul:
+        agent:
+          mode: server
+          servers: {lan: (( .properties.diego.consul_server.machines ))}
+
+  - name: consul_z3
+    release: diego
+    templates:
+      - name: consul-agent
+    instances: 1
+    resource_pool: medium_z3
+    networks:
+      - name: diego3
+        static_ips: (( merge ))
+    update:
+      serial: true
+    properties:
+      network_name: diego3
+      consul:
+        agent:
+          mode: server
+          servers: {lan: (( .properties.diego.consul_server.machines ))}
+
   - name: cell_z1
     release: diego
     templates:
@@ -240,61 +294,6 @@ jobs:
       network_name: diego3
     update:
       serial: true
-
-  - name: consul_z1
-    release: diego
-    templates:
-      - name: consul-agent
-    instances: 1
-    resource_pool: medium_z1
-    networks:
-      - name: diego1
-        static_ips: (( merge ))
-    properties:
-      network_name: diego1
-      consul:
-        agent:
-          mode: server
-          servers: {lan: (( .properties.diego.consul_server.machines ))}
-
-    update:
-      serial: true
-
-  - name: consul_z2
-    release: diego
-    templates:
-      - name: consul-agent
-    instances: 1
-    resource_pool: medium_z2
-    networks:
-      - name: diego2
-        static_ips: (( merge ))
-    update:
-      serial: true
-    properties:
-      network_name: diego2
-      consul:
-        agent:
-          mode: server
-          servers: {lan: (( .properties.diego.consul_server.machines ))}
-
-  - name: consul_z3
-    release: diego
-    templates:
-      - name: consul-agent
-    instances: 1
-    resource_pool: medium_z3
-    networks:
-      - name: diego3
-        static_ips: (( merge ))
-    update:
-      serial: true
-    properties:
-      network_name: diego3
-      consul:
-        agent:
-          mode: server
-          servers: {lan: (( .properties.diego.consul_server.machines ))}
 
 properties:
   # -- Properties below are used by jobs from cf-release --
