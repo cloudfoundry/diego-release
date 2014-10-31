@@ -14,8 +14,6 @@ properties:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
 
-  diego.stager.etcd.machines:
-    description: "IPs pointing to the ETCD cluster"
   diego.stager.nats.username:
     description: "Username for server authentication."
   diego.stager.nats.password:
@@ -56,3 +54,6 @@ properties:
   diego.stager.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17011"
+  diego.file_server.file_server_url:
+    description: URL of file server
+    default: http://file_server.service.dc1.consul:8080

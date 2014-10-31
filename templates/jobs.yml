@@ -129,6 +129,7 @@ jobs:
     release: diego
     templates:
       - name: file_server
+      - name: consul-agent
       - name: metron_agent
         release: cf
     instances: 1
@@ -142,11 +143,16 @@ jobs:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       metron_agent:
         zone: z1
+      consul:
+        agent:
+          services: [file_server]
+          servers: {lan: (( .properties.diego.consul_server.machines ))}
 
   - name: file_server_z2
     release: diego
     templates:
       - name: file_server
+      - name: consul-agent
       - name: metron_agent
         release: cf
     instances: 1
@@ -160,6 +166,10 @@ jobs:
         shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
       metron_agent:
         zone: z2
+      consul:
+        agent:
+          services: [file_server]
+          servers: {lan: (( .properties.diego.consul_server.machines ))}
 
   - name: cc_bridge_z1
     release: diego
@@ -348,8 +358,6 @@ properties:
         srv_api_uri: (( external_services.cc.srv_api_uri ))
         staging_upload_user: (( external_services.cc.staging_upload_user ))
         staging_upload_password: (( external_services.cc.staging_upload_password ))
-      etcd:
-        machines: (( .properties.diego.etcd.machines ))
 
     nsync:
       cc:
@@ -400,8 +408,6 @@ properties:
         base_url: (( external_services.cc.srv_api_uri ))
         basic_auth_password: (( external_services.cc.internal_api_password ))
       lifecycle_bundles: ~
-      etcd:
-        machines: (( .properties.diego.etcd.machines ))
       nats:
         machines: (( external_services.nats.machines ))
         username: (( external_services.nats.user ))

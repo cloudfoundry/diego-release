@@ -27,7 +27,6 @@ case $1 in
     echo $$ > /var/vcap/sys/run/stager/stager.pid
 
     exec /var/vcap/packages/stager/bin/stager \
-      -etcdCluster=<%= p("diego.stager.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -natsAddresses=<%= p("diego.stager.nats.machines").collect { |addr| "#{addr}:#{p("diego.stager.nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("diego.stager.nats.username") %> \
       -natsPassword=<%= p("diego.stager.nats.password") %> \
@@ -43,6 +42,7 @@ case $1 in
       -minMemoryMB=<%= p("diego.stager.min_memory_mb") %> \
       -minDiskMB=<%= p("diego.stager.min_disk_mb") %> \
       -minFileDescriptors=<%= p("diego.stager.min_file_descriptors") %>  \
+      -fileServerURL=<%= p("diego.file_server.file_server_url") %> \
       2>> $LOG_DIR/stager.stderr.log \
       1> >(tee -a $LOG_DIR/stager.stdout.log | logger -t vcap.stager)
 

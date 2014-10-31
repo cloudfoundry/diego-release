@@ -33,6 +33,7 @@ case $1 in
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       -circuses=<%= Shellwords.shellescape(p("diego.nsync.lifecycle_bundles").to_json) %> \
       -dockerCircusPath=<%= p("diego.nsync.docker_lifecycle_bundle") %> \
+      -fileServerURL=<%= p("diego.file_server.file_server_url") %> \
       2>> $LOG_DIR/nsync_bulker.stderr.log \
       1> >(tee -a $LOG_DIR/nsync_bulker.stdout.log | logger -t vcap.nsync-bulker)
 

@@ -21,7 +21,6 @@ case $1 in
     echo $$ > /var/vcap/sys/run/file_server/file_server.pid
 
     exec /var/vcap/packages/file_server/bin/file-server \
-      -etcdCluster=<%= p("diego.file_server.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       <% if_p("diego.file_server.ip") do %>\
       -address=<%= p("diego.file_server.ip") %> \
       <% end %>\

@@ -50,3 +50,6 @@ properties:
     description: "The port for the NATS server to listen on."
   diego.nsync.nats.machines:
     description: "IP of each NATS cluster member."
+  diego.file_server.file_server_url:
+    description: URL of file server
+    default: http://file_server.service.dc1.consul:8080
