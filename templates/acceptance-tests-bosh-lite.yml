@@ -1,6 +1,6 @@
 name: diego-acceptance-tests
 
-director_uuid: (( merge ))
+director_uuid: <%= `bosh status --uuid` %>
 
 releases:
   - name: diego

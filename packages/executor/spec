@@ -15,11 +15,8 @@ files:
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/depot/allocations/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/depot/exchanger/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/log_streamer/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/metrics/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/depot/registry/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/sequence/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/steps/download_step/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/steps/emit_progress_step/*.go # gosub
@@ -29,6 +26,7 @@ files:
   - github.com/cloudfoundry-incubator/executor/depot/steps/run_step/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/steps/try_step/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/steps/upload_step/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/store/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/transformer/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/uploader/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/http/*.go # gosub

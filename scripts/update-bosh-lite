@@ -127,6 +127,8 @@ parallel() {
   trap - EXIT
 }
 
+prepare_bosh_lite_deployments_dir
+
 update_repo $BOSH_LITE_DIR https://github.com/cloudfoundry/bosh-lite
 update_bosh_lite_vm
 update_stemcell
