@@ -375,6 +375,13 @@ properties:
     receptor:
       etcd:
         machines: (( .properties.diego.etcd.machines ))
+      nats:
+        machines: (( external_services.nats.machines ))
+        username: (( external_services.nats.user ))
+        password: (( external_services.nats.password ))
+        port: (( external_services.nats.port ))
+      register_with_router: (( merge || false ))
+      domain_names: (( merge || [] ))
 
     rep:
       etcd:

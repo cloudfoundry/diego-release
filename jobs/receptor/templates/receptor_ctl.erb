@@ -30,6 +30,11 @@ case $1 in
       -etcdCluster=<%= p("diego.receptor.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -username=<%= p("diego.receptor.username") %> \
       -password=<%= p("diego.receptor.password") %> \
+      -registerWithRouter=<%= p("diego.receptor.register_with_router") %> \
+      -domainNames=<%= p("diego.receptor.domain_names").join(",") %> \
+      -natsAddresses=<%= p("diego.receptor.nats.machines").collect { |addr| "#{addr}:#{p("diego.receptor.nats.port")}" }.join(",") %> \
+      -natsUsername=<%= p("diego.receptor.nats.username") %> \
+      -natsPassword=<%= p("diego.receptor.nats.password") %> \
       2>> $LOG_DIR/receptor.stderr.log \
       1> >(tee -a $LOG_DIR/receptor.stdout.log | logger -t vcap.receptor)
 

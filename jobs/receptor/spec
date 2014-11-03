@@ -25,3 +25,21 @@ properties:
   diego.receptor.password:
     description: "password for basic auth"
     default: ""
+  diego.receptor.register_with_router:
+    description: "Controls if the receptor should register itself with the router."
+    default: false
+  diego.receptor.domain_names:
+    description: "Domain names to be registered with the router."
+    default: []
+  diego.receptor.nats.machines:
+    description: "IP of each NATS cluster member."
+    default: []
+  diego.receptor.nats.port:
+    description: "The port for the NATS server to listen on."
+    default: ""
+  diego.receptor.nats.username:
+    description: "Username for NATS authentication."
+    default: ""
+  diego.receptor.nats.password:
+    description: "Password for NATS authentication."
+    default: ""
