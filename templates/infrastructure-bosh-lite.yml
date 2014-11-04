@@ -40,6 +40,10 @@ properties:
     ssl:
       skip_cert_verify: true
 
+    receptor:
+      register_with_router: true
+      domain_names: [ (( "receptor." domain )) ]
+
 jobs:
   - name: etcd_z1
     instances: 1

@@ -77,11 +77,11 @@ prepare_bosh_lite_deployments_dir() {
   echo "director_uuid: $(bosh status --uuid)" > $BOSH_LITE_DEPLOYMENTS_DIR/director.yml
 }
 
-update_release() {
+upload_release() {
   LOCAL_DIR=$1
 
   cd $LOCAL_DIR
-  echo "==> Updating release $LOCAL_DIR..."
+  echo "==> Uploading release $LOCAL_DIR..."
   bosh -n -q create release --force
   bosh -n -q upload release --skip-if-exists
 }
@@ -127,11 +127,13 @@ parallel() {
   trap - EXIT
 }
 
-prepare_bosh_lite_deployments_dir
-
 update_repo $BOSH_LITE_DIR https://github.com/cloudfoundry/bosh-lite
 update_bosh_lite_vm
 update_stemcell
 
-parallel "update_release $CF_RELEASE_DIR" "update_release $DIEGO_RELEASE_DIR"
+prepare_bosh_lite_deployments_dir
+
+parallel "upload_release $CF_RELEASE_DIR" "upload_release $DIEGO_RELEASE_DIR"
 parallel "retry 3 deploy_cf_release" "retry 3 deploy_diego_release"
+
+echo "Bosh-lite update successful."
