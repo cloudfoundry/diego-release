@@ -1,8 +1,8 @@
 ---
-name: garden
+name: garden-linux
 
 templates:
-  garden_ctl.erb: bin/garden_ctl
+  garden-linux_ctl.erb: bin/garden-linux_ctl
 
 packages:
   - pid_utils
@@ -12,30 +12,30 @@ packages:
   - shadow
 
 properties:
-  diego.garden.kernel_network_tuning_enabled:
+  diego.garden-linux.kernel_network_tuning_enabled:
     description: "enable or disable kernel network tuning; disable for Garden CPI"
     default: true
 
-  diego.garden.listen_network:
+  diego.garden-linux.listen_network:
     description: "Garden server connection mode (tcp or unix)."
     default: unix
 
-  diego.garden.listen_address:
+  diego.garden-linux.listen_address:
     description: "Garden server listening address."
-    default: /var/vcap/data/garden/garden.sock
+    default: /var/vcap/data/garden-linux/garden-linux.sock
 
-  diego.garden.disk_quota_enabled:
+  diego.garden-linux.disk_quota_enabled:
     description: "Enforce disk quotas."
     default: true
 
-  diego.garden.deny_networks:
+  diego.garden-linux.deny_networks:
     description: "List of CIDR blocks to which containers will be denied access."
     default: []
 
-  diego.garden.allow_networks:
+  diego.garden-linux.allow_networks:
     description: "List of CIDR blocks to which containers will be allowed access (applied after deny)."
     default: []
 
-  diego.garden.debug_addr:
+  diego.garden-linux.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17013"

@@ -72,7 +72,7 @@ jobs:
       - name: converger
       - name: rep
       - name: auctioneer
-      - name: garden
+      - name: garden-linux
       - name: runtime_metrics_server
       - name: receptor
       - name: consul-agent
@@ -102,7 +102,7 @@ jobs:
       - name: converger
       - name: rep
       - name: auctioneer
-      - name: garden
+      - name: garden-linux
       - name: runtime_metrics_server
       - name: receptor
       - name: consul-agent
@@ -430,4 +430,4 @@ properties:
         password: (( external_services.nats.password ))
         port: (( external_services.nats.port ))
 
-    garden: ~
+    garden-linux: ~

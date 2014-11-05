@@ -1,0 +1,63 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/garden-linux
+LOG_DIR=/var/vcap/sys/log/garden-linux
+PIDFILE=$RUN_DIR/garden-linux.pid
+DATA_DIR=/var/vcap/data/garden-linux
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+export DROPSONDE_ORIGIN='garden-linux'
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "garden-linux"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $DATA_DIR
+    mkdir -p $LOG_DIR
+
+    <% if p("diego.garden-linux.kernel_network_tuning_enabled") == true %>
+    # Use default local port range (higher ports are used for pooling)
+    echo 32768 61000 > /proc/sys/net/ipv4/ip_local_port_range
+    <% end %>
+
+    depot=$DATA_DIR/depot
+
+    mkdir -p $depot
+
+    echo $$ > $PIDFILE
+
+    export PATH=/var/vcap/packages/shadow/sbin:$PATH
+    export PATH=/var/vcap/packages/iptables/sbin:$PATH
+
+    exec /var/vcap/packages/garden-linux/bin/garden-linux \
+      -disableQuotas=<%= !p("diego.garden-linux.disk_quota_enabled") %> \
+      -listenNetwork=<%= p("diego.garden-linux.listen_network") %> \
+      -listenAddr=<%= p("diego.garden-linux.listen_address") %> \
+      -denyNetworks=<%= p("diego.garden-linux.deny_networks").join(",") %> \
+      -allowNetworks=<%= p("diego.garden-linux.allow_networks").join(",") %> \
+      -debugAddr=<%= p("diego.garden-linux.debug_addr") %> \
+      -bin=/var/vcap/packages/garden-linux/garden-bin \
+      -depot=/var/vcap/data/garden-linux/depot \
+      -rootfs=/var/vcap/packages/rootfs_lucid64 \
+      -overlays=/var/vcap/data/garden-linux/overlays \
+      -graph=/var/vcap/data/garden-linux/graph \
+      -containerGraceTime=1h \
+      1>>$LOG_DIR/garden-linux.stdout.log \
+      2>>$LOG_DIR/garden-linux.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: garden-linux_ctl {start|stop}"
+
+    ;;
+
+esac
