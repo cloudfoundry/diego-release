@@ -60,6 +60,8 @@ compilation:
 properties:
   template_only: (( merge ))
   diego:
+    stager:
+      min_disk_mb: 10240
     garden:
       deny_networks:
         - 169.254.0.0/16 # EC2 instance metadata

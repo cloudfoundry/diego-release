@@ -420,6 +420,7 @@ properties:
         username: (( external_services.nats.user ))
         password: (( external_services.nats.password ))
         port: (( external_services.nats.port ))
+      min_disk_mb: ~
     tps:
       etcd:
         machines: (( .properties.diego.etcd.machines ))
