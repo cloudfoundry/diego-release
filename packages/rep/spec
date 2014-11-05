@@ -25,11 +25,11 @@ files:
   - github.com/cloudfoundry-incubator/rep/api/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/api/lrprunning/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/auction_delegate/*.go # gosub
+  - github.com/cloudfoundry-incubator/rep/harvester/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/lrp_stopper/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/maintain/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/routes/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/stop_lrp_listener/*.go # gosub
-  - github.com/cloudfoundry-incubator/rep/tallyman/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/task_scheduler/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/lock_bbs/*.go # gosub
@@ -94,3 +94,4 @@ files:
   - github.com/tedsuo/ifrit/http_server/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
+  - github.com/vito/go-sse/sse/*.go # gosub

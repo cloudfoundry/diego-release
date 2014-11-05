@@ -15,6 +15,7 @@ files:
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/event/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/log_streamer/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/metrics/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/sequence/*.go # gosub
@@ -35,6 +36,7 @@ files:
   - github.com/cloudfoundry-incubator/executor/http/server/allocate_container/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/http/server/delete_container/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/http/server/error_headers/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/server/events/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/http/server/get_container/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/http/server/get_files/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/http/server/list_containers/*.go # gosub
@@ -78,6 +80,7 @@ files:
   - github.com/tedsuo/ifrit/http_server/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
+  - github.com/vito/go-sse/sse/*.go # gosub
   - github.com/onsi/ginkgo/*.go # gosub
   - github.com/onsi/ginkgo/config/*.go # gosub
   - github.com/onsi/ginkgo/internal/codelocation/*.go # gosub
