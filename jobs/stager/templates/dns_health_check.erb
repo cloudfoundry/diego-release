@@ -1,6 +1,2 @@
 #!/bin/bash -e
-<%
-url = URI.parse(p("diego.stager.stager_url"))
-url.host = '127.0.0.1'
-%>
-curl <%= "#{url}" %>
+nc -z 127.0.0.1 <%= URI.parse(p("diego.stager.stager_url")).port %>

@@ -1,3 +1,2 @@
 #!/bin/bash -e
-<% port = p("diego.file_server.port") %>
-curl <%= "http://127.0.0.1:#{port}" %>
+nc -z 127.0.0.1 <%= p("diego.file_server.port") %>
