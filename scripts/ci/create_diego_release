@@ -11,6 +11,8 @@ rm -rf diego-release/cf-release || true
 cp -R cf-release diego-release/
 
 pushd diego-release
+  git submodule update --init --recursive
+
   ./scripts/ci/create_drone_yml scripts/ci/create_diego_release.drone.yml .drone.yml
   /var/vcap/packages/drone/bin/drone -v -privileged build
 popd

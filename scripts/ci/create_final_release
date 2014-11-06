@@ -9,6 +9,8 @@ cp runtime-credentials/diego-ci/ssh_keys/diego-release-push-pull diego-release/t
 cp runtime-credentials/diego-ci/private.yml diego-release/config/private.yml
 
 pushd diego-release
+  git submodule update --init --recursive
+
   ./scripts/ci/create_drone_yml scripts/ci/create_final_release.drone.yml .drone.yml
   /var/vcap/packages/drone/bin/drone -v -privileged build
 popd
