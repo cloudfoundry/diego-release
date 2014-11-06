@@ -7,12 +7,14 @@ dependencies:
 files:
   - github.com/cloudfoundry-incubator/garden-linux/**/*
   - github.com/cloudfoundry-incubator/garden-linux/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/fences/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/fences/fake_fences/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/fences/network/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/fences/network/subnets/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/integration/lifecycle/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/integration/measurements/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/integration/networking/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/integration/runner/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/net_fence/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/net_fence/subnets/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/integration/wshd/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/integration/wshd/shm_test/*.go # gosub
@@ -33,7 +35,6 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/container_pool/rootfs_provider/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/container_pool/rootfs_provider/fake_rootfs_provider/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/network/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/network_pool/fake_network_pool/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/port_pool/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/port_pool/fake_port_pool/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/process_tracker/*.go # gosub
@@ -59,12 +60,20 @@ files:
   - github.com/cloudfoundry-incubator/garden/server/timebomb/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/transport/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
-  - github.com/cloudfoundry/dropsonde/autowire/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/control/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
   - github.com/cloudfoundry/dropsonde/events/*.go # gosub
   - github.com/cloudfoundry/dropsonde/factories/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/instrumented_handler/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/instrumented_round_tripper/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/log_sender/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/logs/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/metrics/*.go # gosub
   - github.com/cloudfoundry/dropsonde/runtime_stats/*.go # gosub
   - github.com/cloudfoundry/gosigar/*.go # gosub
+  - github.com/cloudfoundry/gosteno/*.go # gosub
+  - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
   - github.com/cloudfoundry/gunk/command_runner/*.go # gosub
   - github.com/cloudfoundry/gunk/command_runner/linux_command_runner/*.go # gosub
   - github.com/docker/docker/api/*.go # gosub

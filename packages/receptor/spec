@@ -31,13 +31,19 @@ files:
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
-  - github.com/cloudfoundry/dropsonde/autowire/*.go # gosub
-  - github.com/cloudfoundry/dropsonde/autowire/metrics/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/control/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
   - github.com/cloudfoundry/dropsonde/events/*.go # gosub
   - github.com/cloudfoundry/dropsonde/factories/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/instrumented_handler/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/instrumented_round_tripper/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/log_sender/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/logs/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/metrics/*.go # gosub
   - github.com/cloudfoundry/dropsonde/runtime_stats/*.go # gosub
+  - github.com/cloudfoundry/gosteno/*.go # gosub
+  - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
   - github.com/cloudfoundry/gunk/diegonats/*.go # gosub
   - github.com/cloudfoundry/gunk/localip/*.go # gosub
   - github.com/cloudfoundry/gunk/timeprovider/*.go # gosub
