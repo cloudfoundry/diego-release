@@ -12,6 +12,6 @@ curl  -X POST -H "Content-type: application/json" -d "{                   \
       \"points\":[[${time_stamp}, ${metric_value}]],                      \
       \"type\":\"gauge\",                                                 \
       \"tags\":[\"deployment:${deployment_tag}\"]                         \
-    ]}                                                                    \
+    }]                                                                    \
   }" "https://app.datadoghq.com/api/v1/series?api_key=${DATADOG_API_KEY}"
 
