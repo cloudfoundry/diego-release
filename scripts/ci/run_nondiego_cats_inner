@@ -10,6 +10,7 @@ spiff merge cf-release/templates/acceptance-tests-aws.yml \
             ${STUBS_DIR}/aws.yml                          \
             ${STUBS_DIR}/shared-secrets.yml               \
             ${STUBS_DIR}/ssl.yml                          \
+            ${STUBS_DIR}/cats-ginkgo-opts.yml             \
             > acceptance-tests-aws.yml
 
 bosh deployment acceptance-tests-aws.yml
