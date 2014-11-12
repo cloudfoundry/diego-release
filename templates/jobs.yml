@@ -314,7 +314,7 @@ properties:
     port: (( external_services.nats.port ))
   etcd: # For metron_agent to find loggregator
     machines: (( external_services.cf_etcd.machines ))
-  syslog_aggregator: ~
+  syslog_daemon_config: ~
 
   diego:
     # -- Global properties --
