@@ -22,14 +22,12 @@ files:
   - github.com/cloudfoundry-incubator/executor/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/http/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/http/client/*.go # gosub
-  - github.com/cloudfoundry-incubator/rep/api/*.go # gosub
-  - github.com/cloudfoundry-incubator/rep/api/lrprunning/*.go # gosub
+  - github.com/cloudfoundry-incubator/rep/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/auction_delegate/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/harvester/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/lrp_stopper/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/maintain/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/reaper/*.go # gosub
-  - github.com/cloudfoundry-incubator/rep/routes/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/stop_lrp_listener/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/task_scheduler/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/*.go # gosub
@@ -98,7 +96,6 @@ files:
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/ginkgomon/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
-  - github.com/tedsuo/ifrit/http_server/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
   - github.com/vito/go-sse/sse/*.go # gosub

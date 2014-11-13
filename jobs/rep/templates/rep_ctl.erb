@@ -27,9 +27,9 @@ case $1 in
       -executorURL=<%= p("diego.rep.executor.url") %> \
       -lrpHost=<%= spec.networks.send(properties.network_name).ip %>\
       -executorID=<%= spec.job.name %>-<%= spec.index %> \
-      <% if_p("diego.rep.task_complete_polling_interval") do |interval| %> \
-      -taskCompletePollingInterval=<%= interval %> \
-      <% end %> \
+<% if_p("diego.rep.polling_interval") do |interval| %> \
+      -pollingInterval=<%= interval %> \
+<% end %> \
       2>> $LOG_DIR/rep.stderr.log \
       1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep)
 

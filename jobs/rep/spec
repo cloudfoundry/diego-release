@@ -29,11 +29,11 @@ properties:
   diego.rep.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17008"
-  diego.rep.task_complete_polling_interval:
+  diego.rep.polling_interval:
     description: >
-      The interval on which to look for completed tasks. Normally they are
-      handled immediately, but if an event is missed the continuous polling
-      will catch it.
+      The interval on which to look for completed tasks and LRPs. Normally
+      they are handled immediately, but if an event is missed the continuous
+      polling will catch it.
 
   network_name:
     description: "Name of the network that the job lives in; used to figure out our IP."
