@@ -24,6 +24,7 @@ case $1 in
 
     exec /var/vcap/packages/executor/bin/executor \
       -listenAddr=<%= p("diego.executor.listen_addr") %> \
+      -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       -debugAddr=<%= p("diego.executor.debug_addr") %> \
       -gardenNetwork=<%= p("diego.executor.garden.network") %> \
       -gardenAddr=<%= p("diego.executor.garden.address") %> \

@@ -9,6 +9,10 @@ packages:
   - executor
 
 properties:
+  diego.ssl.skip_cert_verify:
+    description: "when connecting over https, ignore bad ssl certificates"
+    default: false
+
   loggregator_endpoint.host:
     description: "The host used to emit messages to the Loggregator"
     default: 127.0.0.1
