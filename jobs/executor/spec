@@ -52,3 +52,6 @@ properties:
   diego.executor.garden.network:
     description: "Network type for the garden server connection (tcp or unix)."
     default: unix
+  diego.executor.allow_privileged:
+    description: "Allow creation of privileged containers."
+    default: false

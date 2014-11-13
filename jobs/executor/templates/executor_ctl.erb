@@ -39,6 +39,7 @@ case $1 in
       -loggregatorSecret=<%= p("loggregator_endpoint.shared_secret") %> \
       -cachePath=<%= p("diego.executor.cache_path") %>\
       -maxCacheSizeInBytes=<%= p("diego.executor.max_cache_size_in_bytes") %>\
+      -allowPrivileged=<%= p("diego.executor.allow_privileged") %>\
       2>> $LOG_DIR/executor.stderr.log \
       1> >(tee -a $LOG_DIR/executor.stdout.log | logger -t vcap.executor)
 
