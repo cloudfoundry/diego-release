@@ -2,7 +2,8 @@ set -e
 
 mkdir -p ${BOSH_INSTALL_TARGET}/src
 cp -a . ${BOSH_INSTALL_TARGET}/src
-export GOPATH=$BOSH_INSTALL_TARGET
+
+export GOPATH=${BOSH_INSTALL_TARGET}/src/github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace:${BOSH_INSTALL_TARGET}
 
 export GOROOT=$(readlink -nf /var/vcap/packages/golang)
 export PATH=$GOROOT/bin:$PATH

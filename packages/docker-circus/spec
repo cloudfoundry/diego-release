@@ -10,6 +10,7 @@ files:
   - github.com/cloudfoundry-incubator/docker-circus/soldier/*.go # gosub
   - github.com/cloudfoundry-incubator/docker-circus/spy/*.go # gosub
   - github.com/cloudfoundry-incubator/docker-circus/tailor/*.go # gosub
+  - github.com/Sirupsen/logrus/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
   - github.com/docker/docker/api/*.go # gosub
   - github.com/docker/docker/daemon/graphdriver/*.go # gosub
@@ -22,7 +23,6 @@ files:
   - github.com/docker/docker/pkg/fileutils/*.go # gosub
   - github.com/docker/docker/pkg/httputils/*.go # gosub
   - github.com/docker/docker/pkg/ioutils/*.go # gosub
-  - github.com/docker/docker/pkg/log/*.go # gosub
   - github.com/docker/docker/pkg/mflag/*.go # gosub
   - github.com/docker/docker/pkg/mount/*.go # gosub
   - github.com/docker/docker/pkg/parsers/*.go # gosub
