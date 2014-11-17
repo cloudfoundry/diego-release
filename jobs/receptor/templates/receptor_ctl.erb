@@ -33,6 +33,7 @@ case $1 in
       -natsAddresses=<%= p("diego.receptor.nats.machines").collect { |addr| "#{addr}:#{p("diego.receptor.nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("diego.receptor.nats.username") %> \
       -natsPassword=<%= p("diego.receptor.nats.password") %> \
+      -corsEnabled=<%= p("diego.receptor.cors_enabled") %> \
       2>> $LOG_DIR/receptor.stderr.log \
       1> >(tee -a $LOG_DIR/receptor.stdout.log | logger -t vcap.receptor)
 

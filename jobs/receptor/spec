@@ -43,3 +43,6 @@ properties:
   diego.receptor.nats.password:
     description: "Password for NATS authentication."
     default: ""
+  diego.receptor.cors_enabled:
+    description: "Enable support for CORS requests."
+    default: false
