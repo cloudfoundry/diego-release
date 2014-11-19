@@ -91,7 +91,7 @@ pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
   ginkgo $color_flag -p -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@" executor/
 
   # run everything but executor with normal rules
-  ginkgo $color_flag $nodes_flag -r -skipPackage=executor/ -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@"
+  ginkgo $color_flag $nodes_flag -r -skipPackage=executor -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@"
 popd
 
 # unmount and delete garden graph fs
