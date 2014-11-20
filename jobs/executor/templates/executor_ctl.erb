@@ -40,6 +40,7 @@ case $1 in
       -cachePath=<%= p("diego.executor.cache_path") %>\
       -maxCacheSizeInBytes=<%= p("diego.executor.max_cache_size_in_bytes") %>\
       -allowPrivileged=<%= p("diego.executor.allow_privileged") %>\
+      -exportNetworkEnvVars=<%= p("diego.executor.export_network_env_vars") %>\
       2>> $LOG_DIR/executor.stderr.log \
       1> >(tee -a $LOG_DIR/executor.stdout.log | logger -t vcap.executor)
 

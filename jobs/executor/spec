@@ -55,3 +55,6 @@ properties:
   diego.executor.allow_privileged:
     description: "Allow creation of privileged containers."
     default: false
+  diego.executor.export_network_env_vars:
+    description: "Export network environment variables into container (e.g. CF_INSTANCE_IP, CF_INSTANCE_PORT)."
+    default: false
