@@ -8,9 +8,7 @@ export GOPATH=${BOSH_INSTALL_TARGET}/src/github.com/cloudfoundry-incubator/garde
 export GOROOT=$(readlink -nf /var/vcap/packages/golang)
 export PATH=$GOROOT/bin:$PATH
 
-mkdir -p ${BOSH_INSTALL_TARGET}/bin
-go build -a -tags daemon -o ${BOSH_INSTALL_TARGET}/bin/garden-linux \
-  github.com/cloudfoundry-incubator/garden-linux
+go install -tags daemon github.com/cloudfoundry-incubator/garden-linux
 
 cd ${BOSH_INSTALL_TARGET}/src/github.com/cloudfoundry-incubator/garden-linux/old
 
