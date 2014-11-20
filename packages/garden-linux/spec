@@ -49,7 +49,7 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/old/system_info/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/system_info/fake_system_info/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/code.google.com/p/gogoprotobuf/proto/*.go # gosub
-  - github.com/Sirupsen/logrus/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/Sirupsen/logrus/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
@@ -77,6 +77,7 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/cloudfoundry/gosteno/syslog/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/cloudfoundry/gunk/command_runner/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/cloudfoundry/gunk/command_runner/linux_command_runner/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/cloudfoundry/gunk/localip/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/docker/api/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/docker/daemon/graphdriver/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/docker/daemon/graphdriver/aufs/*.go # gosub
@@ -98,7 +99,7 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/docker/pkg/parsers/kernel/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/docker/pkg/pools/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/docker/pkg/promise/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/docker/pkg/sysinfo/*.go # gosub
+  - github.com/docker/docker/pkg/sysinfo/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/docker/pkg/system/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/docker/pkg/tarsum/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/docker/pkg/term/*.go # gosub
@@ -110,8 +111,8 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/docker/runconfig/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/docker/utils/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/docker/vendor/src/code.google.com/p/go/src/pkg/archive/tar/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/libcontainer/cgroups/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/libcontainer/devices/*.go # gosub
+  - github.com/docker/libcontainer/cgroups/*.go # gosub
+  - github.com/docker/libcontainer/devices/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/libcontainer/label/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/libtrust/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/gorilla/context/*.go # gosub
