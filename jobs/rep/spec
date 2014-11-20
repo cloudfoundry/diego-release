@@ -17,15 +17,9 @@ properties:
   diego.rep.executor.url:
     description: "URL of the executor to represent."
     default: "http://127.0.0.1:1700"
-  diego.rep.nats.username:
-    description: "Username for server authentication."
-  diego.rep.nats.password:
-    description: "Password for server authentication."
-  diego.rep.nats.port:
-    description: "The port for the NATS server to listen on."
-    default: 4222
-  diego.rep.nats.machines:
-    description: "IP of each NATS cluster member."
+  diego.rep.auction_listen_addr:
+    description: "address to serve auction requests on."
+    default: "0.0.0.0:1800"
   diego.rep.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17008"
