@@ -11,15 +11,6 @@ packages:
 properties:
   diego.auctioneer.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
-  diego.auctioneer.nats.username:
-    description: "Username for server authentication."
-  diego.auctioneer.nats.password:
-    description: "Password for server authentication."
-  diego.auctioneer.nats.port:
-    description: "The port for the NATS server to listen on."
-    default: 4222
-  diego.auctioneer.nats.machines:
-    description: "IP of each NATS cluster member."
   diego.auctioneer.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17001"
