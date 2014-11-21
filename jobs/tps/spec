@@ -9,8 +9,9 @@ packages:
   - tps
 
 properties:
-  diego.tps.etcd.machines:
-    description: "IPs pointing to the ETCD cluster"
+  diego.tps.diego_api_url:
+    description: URL of diego API
+    default: http://receptor.service.dc1.consul:8888
   diego.tps.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17012"

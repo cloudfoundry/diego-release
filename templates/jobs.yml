@@ -422,8 +422,6 @@ properties:
         port: (( external_services.nats.port ))
       min_disk_mb: ~
     tps:
-      etcd:
-        machines: (( .properties.diego.etcd.machines ))
       nats:
         machines: (( external_services.nats.machines ))
         username: (( external_services.nats.user ))

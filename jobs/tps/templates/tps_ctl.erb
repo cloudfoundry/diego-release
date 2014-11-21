@@ -25,7 +25,7 @@ case $1 in
     echo $$ > /var/vcap/sys/run/tps/tps.pid
 
     exec /var/vcap/packages/tps/bin/tps \
-      -etcdCluster=<%= p("diego.tps.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -diegoAPIURL=<%= p("diego.tps.diego_api_url") %> \
       -natsAddresses=<%= p("diego.tps.nats.machines").collect { |addr| "#{addr}:#{p("diego.tps.nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("diego.tps.nats.username") %> \
       -natsPassword=<%= p("diego.tps.nats.password") %> \
