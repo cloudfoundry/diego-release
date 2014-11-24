@@ -21,6 +21,7 @@ case $1 in
     echo $$ > $PIDFILE
 
     exec /var/vcap/packages/nsync/bin/nsync-bulker \
+      -diegoAPIURL=<%= p("diego.nsync.diego_api_url") %> \
       -etcdCluster=<%= p("diego.nsync.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -ccBaseURL=<%= Shellwords.shellescape(p("diego.nsync.cc.base_url")) %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.nsync.cc.basic_auth_username")) %> \

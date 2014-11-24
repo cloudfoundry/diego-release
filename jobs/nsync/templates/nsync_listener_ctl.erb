@@ -21,6 +21,7 @@ case $1 in
     echo $$ > $PIDFILE
 
     exec /var/vcap/packages/nsync/bin/nsync-listener \
+      -diegoAPIURL=<%= p("diego.nsync.diego_api_url") %> \
       -etcdCluster=<%= p("diego.nsync.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -natsAddresses=<%= p("diego.nsync.nats.machines").collect { |addr| "#{addr}:#{p("diego.nsync.nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("diego.nsync.nats.username") %> \
