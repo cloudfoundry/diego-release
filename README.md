@@ -227,10 +227,10 @@ To deploy and run the DATs:
 1. Push your application
 
         cf push my-app --no-start
-        cf set-env my-app DIEGO_BETA true
+        cf set-env my-app DIEGO_STAGE_BETA true
         cf set-env my-app DIEGO_RUN_BETA true
         cf start my-app
 
-The `DIEGO_STAGE_BETA` flag instructs the Cloud Controller to stage the application on Diego.
+The DIEGO_STAGE_BETA` flag instructs the Cloud Controller to stage the application on Diego.
 `DIEGO_RUN_BETA` instructs the Cloud Controller to run the application on Diego.
 
