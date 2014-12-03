@@ -46,8 +46,8 @@ go install github.com/vito/gosub
 
   gosub list -test github.com/cloudfoundry-incubator/auction/... \
     \
-    -test github.com/cloudfoundry-incubator/inigo \
-    -test github.com/cloudfoundry-incubator/diego-smoke-tests \
+    -test github.com/cloudfoundry-incubator/inigo/... \
+    -test github.com/cloudfoundry-incubator/diego-smoke-tests/... \
     -test github.com/cloudfoundry-incubator/diego-acceptance-tests/... \
     \
     -app github.com/vito/gosub
