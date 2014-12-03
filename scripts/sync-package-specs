@@ -37,7 +37,6 @@ sync_package docker-circus          -app  github.com/cloudfoundry-incubator/dock
 sync_package etcd_metrics_server    -app  github.com/cloudfoundry-incubator/etcd-metrics-server/cmd/... &
 sync_package executor               -app  github.com/cloudfoundry-incubator/executor/cmd/... &
 sync_package file_server            -app  github.com/cloudfoundry-incubator/file-server/cmd/... &
-sync_package garden-linux           -app  github.com/cloudfoundry-incubator/garden-linux/... &
 sync_package linux-circus           -app  github.com/cloudfoundry-incubator/linux-circus/... &
 sync_package nsync                  -app  github.com/cloudfoundry-incubator/nsync/cmd/... &
 sync_package receptor               -app  github.com/cloudfoundry-incubator/receptor/cmd/... &
@@ -47,6 +46,8 @@ sync_package runtime_metrics_server -app  github.com/cloudfoundry-incubator/runt
 sync_package stager                 -app  github.com/cloudfoundry-incubator/stager/cmd/... &
 sync_package tps                    -app  github.com/cloudfoundry-incubator/tps/cmd/... &
 sync_package etcd                   -app  github.com/coreos/etcd &
+
+GOPATH=$GOPATH:$GOPATH/src/github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace sync_package garden-linux -app  github.com/cloudfoundry-incubator/garden-linux/... &
 
 sync_package acceptance-tests \
     -test github.com/cloudfoundry-incubator/diego-acceptance-tests/... \

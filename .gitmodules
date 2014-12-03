@@ -1,6 +1,3 @@
-[submodule "loggregator"]
-	path = loggregator
-	url = https://github.com/cloudfoundry/loggregator.git
 [submodule "src/github.com/pivotal-golang/cacheddownloader"]
 	path = src/github.com/pivotal-golang/cacheddownloader
 	url = https://github.com/pivotal-golang/cacheddownloader.git
@@ -85,9 +82,6 @@
 	path = src/github.com/cloudfoundry-incubator/candiedyaml
 	url = https://github.com/cloudfoundry-incubator/candiedyaml.git
 	branch = master
-[submodule "src/github.com/gorilla/websocket"]
-	path = src/github.com/gorilla/websocket
-	url = https://github.com/gorilla/websocket.git
 [submodule "src/github.com/cloudfoundry-incubator/garden-linux"]
 	path = src/github.com/cloudfoundry-incubator/garden-linux
 	url = https://github.com/cloudfoundry-incubator/garden-linux.git
@@ -146,10 +140,6 @@
 [submodule "src/github.com/cloudfoundry/storeadapter"]
 	path = src/github.com/cloudfoundry/storeadapter
 	url = https://github.com/cloudfoundry/storeadapter.git
-	branch = master
-[submodule "src/github.com/cloudfoundry/loggregatorlib"]
-	path = src/github.com/cloudfoundry/loggregatorlib
-	url = https://github.com/cloudfoundry/loggregatorlib.git
 	branch = master
 [submodule "src/github.com/cloudfoundry-incubator/runtime-metrics-server"]
 	path = src/github.com/cloudfoundry-incubator/runtime-metrics-server
@@ -260,3 +250,11 @@
 [submodule "src/github.com/golang/protobuf"]
 	path = src/github.com/golang/protobuf
 	url = https://github.com/golang/protobuf.git
+[submodule "src/github.com/cloudfoundry/loggregatorlib"]
+	path = src/github.com/cloudfoundry/loggregatorlib
+	url = https://github.com/cloudfoundry/loggregatorlib
+	branch = master
+[submodule "src/github.com/pivotal-golang/localip"]
+	path = src/github.com/pivotal-golang/localip
+	url = https://github.com/pivotal-golang/localip
+	branch = master
