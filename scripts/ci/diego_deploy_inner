@@ -2,7 +2,7 @@
 
 set -e -x -u
 
-STUBS_DIR=${PWD}/deployments-aws/${DEPLOYMENT_NAME}/stubs
+STUBS_DIR=${PWD}/deployments-aws/${DEPLOYMENT_NAME}/diego-stubs
 
 eval $(./scripts/ci/bosh_config)
 ./scripts/ci/bosh_setup
