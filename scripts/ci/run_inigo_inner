@@ -87,11 +87,15 @@ if [ "$GINKGO_PARALLEL" = "true" ]; then
 fi
 
 pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
-  # always attempt to run executor in parallel
-  ginkgo $color_flag -nodes=4 -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@" executor/
+  if [ "$GINKGO_PARALLEL" = "true" ]; then
+    ginkgo $color_flag $nodes_flag -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@"
+  else
+    # always attempt to run executor in parallel
+    ginkgo $color_flag -nodes=4 -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@" executor/
 
-  # run everything but executor with normal rules
-  ginkgo $color_flag $nodes_flag -r -skipPackage=executor -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@"
+    # run everything but executor with normal rules
+    ginkgo $color_flag $nodes_flag -r -skipPackage=executor -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@"
+  fi
 popd
 
 # unmount and delete garden graph fs
