@@ -13,8 +13,6 @@ go install github.com/vito/gosub
     -app github.com/cloudfoundry-incubator/etcd-metrics-server/cmd/... \
     -app github.com/cloudfoundry-incubator/executor/cmd/... \
     -app github.com/cloudfoundry-incubator/file-server/cmd/... \
-    -app github.com/cloudfoundry-incubator/garden-linux \
-    -app github.com/cloudfoundry-incubator/garden-linux/old/iodaemon \
     -app github.com/cloudfoundry-incubator/linux-circus/... \
     -app github.com/cloudfoundry-incubator/nsync/cmd/... \
     -app github.com/cloudfoundry-incubator/receptor/cmd/receptor \
@@ -34,7 +32,6 @@ go install github.com/vito/gosub
   gosub list -test github.com/cloudfoundry-incubator/etcd-metrics-server/... \
   gosub list -test github.com/cloudfoundry-incubator/executor/... \
   gosub list -test github.com/cloudfoundry-incubator/file-server/... \
-  gosub list -test github.com/cloudfoundry-incubator/garden-linux/... \
   gosub list -test github.com/cloudfoundry-incubator/linux-circus/... \
   gosub list -test github.com/cloudfoundry-incubator/nsync/... \
   gosub list -test github.com/cloudfoundry-incubator/receptor/... \
@@ -51,6 +48,9 @@ go install github.com/vito/gosub
     -test github.com/cloudfoundry-incubator/diego-acceptance-tests/... \
     \
     -app github.com/vito/gosub
+
+  # garden-linux uses godeps, so we should really only need its parent package
+  echo github.com/cloudfoundry-incubator/garden-linux
 } > /tmp/packages
 
 cat /tmp/packages | xargs gosub sync

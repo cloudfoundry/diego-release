@@ -47,7 +47,7 @@ sync_package stager                 -app  github.com/cloudfoundry-incubator/stag
 sync_package tps                    -app  github.com/cloudfoundry-incubator/tps/cmd/... &
 sync_package etcd                   -app  github.com/coreos/etcd &
 
-GOPATH=$GOPATH:$GOPATH/src/github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace sync_package garden-linux -app  github.com/cloudfoundry-incubator/garden-linux/... &
+GOPATH=$GOPATH/src/github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace:$GOPATH sync_package garden-linux -app  github.com/cloudfoundry-incubator/garden-linux/... &
 
 sync_package acceptance-tests \
     -test github.com/cloudfoundry-incubator/diego-acceptance-tests/... \
