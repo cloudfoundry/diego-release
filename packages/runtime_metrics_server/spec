@@ -7,6 +7,7 @@ dependencies:
 files:
   - github.com/cloudfoundry-incubator/runtime-metrics-server/cmd/runtime-metrics-server/*.go # gosub
   - code.google.com/p/gogoprotobuf/proto/*.go # gosub
+  - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/delta_force/delta_force/*.go # gosub
@@ -22,9 +23,11 @@ files:
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/start_auction_bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/stop_auction_bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/task_bbs/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/cell_client/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/heartbeater/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/routes/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
   - github.com/cloudfoundry/dropsonde/control/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
@@ -49,3 +52,4 @@ files:
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
+  - github.com/tedsuo/rata/*.go # gosub
