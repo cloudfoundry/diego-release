@@ -87,13 +87,13 @@ fi
 
 pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
   if [ "$GINKGO_PARALLEL" = "true" ]; then
-    ginkgo $color_flag $nodes_flag -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@"
+    ginkgo $color_flag $nodes_flag -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
   else
     # always attempt to run executor in parallel
     ginkgo $color_flag -nodes=4 -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@" executor/
 
     # run everything but executor with normal rules
-    ginkgo $color_flag $nodes_flag -r -skipPackage=executor -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@"
+    ginkgo $color_flag $nodes_flag -r -skipPackage=executor -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
   fi
 popd
 
