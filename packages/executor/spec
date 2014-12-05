@@ -61,7 +61,6 @@ files:
   - github.com/cloudfoundry/gunk/timeprovider/*.go # gosub
   - github.com/cloudfoundry/loggregatorlib/cfcomponent/generic_logger/*.go # gosub
   - github.com/cloudfoundry/loggregatorlib/cfcomponent/instrumentation/*.go # gosub
-  - github.com/cloudfoundry/loggregatorlib/cfcomponent/localip/*.go # gosub
   - github.com/cloudfoundry/loggregatorlib/loggregatorclient/*.go # gosub
   - github.com/cloudfoundry/loggregatorlib/logmessage/*.go # gosub
   - github.com/cloudfoundry/loggregatorlib/signature/*.go # gosub
@@ -72,6 +71,7 @@ files:
   - github.com/pivotal-golang/bytefmt/*.go # gosub
   - github.com/pivotal-golang/cacheddownloader/*.go # gosub
   - github.com/pivotal-golang/lager/*.go # gosub
+  - github.com/pivotal-golang/localip/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
   - github.com/tedsuo/ifrit/http_server/*.go # gosub
