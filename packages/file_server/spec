@@ -16,7 +16,7 @@ files:
   - github.com/cloudfoundry-incubator/file-server/handlers/upload_build_artifacts/*.go # gosub
   - github.com/cloudfoundry-incubator/file-server/handlers/upload_droplet/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/routes/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/router/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
   - github.com/cloudfoundry/dropsonde/control/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
@@ -37,4 +37,3 @@ files:
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
   - github.com/tedsuo/ifrit/http_server/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
-  - github.com/tedsuo/rata/*.go # gosub
