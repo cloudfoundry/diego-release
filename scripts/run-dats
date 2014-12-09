@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+./scripts/generate-deployment-manifest \
+  bosh-lite                            \
+  ../cf-release                        \
+  ~/deployments/bosh-lite/director.yml \
+  > ~/deployments/bosh-lite/diego.yml
+
+echo "WARNING: targeting BOSH-Lite director and setting Diego deployment manifest"
+bosh target lite
+bosh deployment ~/deployments/bosh-lite/diego.yml
+bosh create release --force
+bosh -n upload release
+bosh -n deploy
+
+pushd ./src/github.com/cloudfoundry-incubator/diego-acceptance-tests/
+
+export CONFIG=`pwd`/integration_config.json
+ginkgo -r -nodes=3 diego/
+unset CONFIG
+
+popd
