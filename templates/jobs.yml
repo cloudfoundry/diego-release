@@ -318,6 +318,8 @@ properties:
 
   diego:
     # -- Global properties --
+    api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.dc1.consul:8888" ))
+
     etcd:
       machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
     consul_server:
@@ -354,6 +356,7 @@ properties:
         staging_upload_password: (( external_services.cc.staging_upload_password ))
 
     nsync:
+      diego_api_url: (( .properties.diego.api_url ))
       cc:
         base_url: (( external_services.cc.srv_api_uri ))
         basic_auth_password: (( external_services.cc.internal_api_password ))
@@ -376,8 +379,8 @@ properties:
         port: (( external_services.nats.port ))
       register_with_router: (( merge || false ))
       domain_names: (( merge || [] ))
-      username: ~
-      password: ~
+      username: ""
+      password: ""
 
     rep:
       etcd:
@@ -402,6 +405,7 @@ properties:
         port: (( external_services.nats.port ))
 
     stager:
+      diego_api_url: (( .properties.diego.api_url ))
       cc:
         base_url: (( external_services.cc.srv_api_uri ))
         basic_auth_password: (( external_services.cc.internal_api_password ))
@@ -412,7 +416,9 @@ properties:
         password: (( external_services.nats.password ))
         port: (( external_services.nats.port ))
       min_disk_mb: ~
+
     tps:
+      diego_api_url: (( .properties.diego.api_url ))
       nats:
         machines: (( external_services.nats.machines ))
         username: (( external_services.nats.user ))
