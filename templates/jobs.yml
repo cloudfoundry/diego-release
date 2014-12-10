@@ -376,6 +376,8 @@ properties:
         port: (( external_services.nats.port ))
       register_with_router: (( merge || false ))
       domain_names: (( merge || [] ))
+      username: ~
+      password: ~
 
     rep:
       etcd:
