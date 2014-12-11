@@ -17,8 +17,8 @@ properties:
   diego.rep.executor.url:
     description: "URL of the executor to represent."
     default: "http://127.0.0.1:1700"
-  diego.rep.auction_listen_addr:
-    description: "address to serve auction requests on."
+  diego.rep.listen_addr:
+    description: "address to serve auction and LRP stop requests on."
     default: "0.0.0.0:1800"
   diego.rep.debug_addr:
     description: "address at which to serve debug info"
