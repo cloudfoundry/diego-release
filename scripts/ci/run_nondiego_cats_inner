@@ -15,4 +15,4 @@ spiff merge cf-release/templates/acceptance-tests-aws.yml \
 bosh deployment acceptance-tests-aws.yml
 bosh -n deploy
 
-bosh run errand cf_acceptance_tests
+bosh run errand cf_acceptance_tests --keep-alive
