@@ -71,7 +71,15 @@ as you switch in and out of the directory.
 
         go install github.com/onsi/ginkgo/ginkgo
 
-1. Run the unit test script
+2. Install gnatsd
+
+        go install github.com/apcera/gnatsd
+
+3. Install etcd
+
+        go install github.com/coreos/etcd
+
+4. Run the unit test script
 
         ./scripts/run-unit-tests
 
