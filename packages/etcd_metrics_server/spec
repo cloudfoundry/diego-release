@@ -2,7 +2,7 @@
 name: etcd_metrics_server
 
 dependencies:
-  - golang
+  - golang_1.4
 
 files:
   - github.com/cloudfoundry-incubator/etcd-metrics-server/cmd/etcd-metrics-server/*.go # gosub

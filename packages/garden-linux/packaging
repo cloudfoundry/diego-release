@@ -5,7 +5,7 @@ cp -a . ${BOSH_INSTALL_TARGET}/src
 
 export GOPATH=${BOSH_INSTALL_TARGET}/src/github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace:${BOSH_INSTALL_TARGET}
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang)
+export GOROOT=$(readlink -nf /var/vcap/packages/golang_1.4)
 export PATH=$GOROOT/bin:$PATH
 
 go install -tags daemon github.com/cloudfoundry-incubator/garden-linux

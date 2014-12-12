@@ -4,7 +4,7 @@ mkdir -p ${BOSH_INSTALL_TARGET}/src
 cp -a . ${BOSH_INSTALL_TARGET}/src
 export GOPATH=$BOSH_INSTALL_TARGET
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang)
+export GOROOT=$(readlink -nf /var/vcap/packages/golang_1.4)
 export PATH=$GOROOT/bin:$PATH
 go install github.com/cloudfoundry-incubator/auctioneer/cmd/auctioneer
 
