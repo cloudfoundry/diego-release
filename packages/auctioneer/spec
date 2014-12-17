@@ -13,8 +13,8 @@ files:
   - github.com/cloudfoundry-incubator/auction/communication/http/auction_http_client/*.go # gosub
   - github.com/cloudfoundry-incubator/auction/communication/http/routes/*.go # gosub
   - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
-  - github.com/cloudfoundry-incubator/auctioneer/auctioninbox/*.go # gosub
   - github.com/cloudfoundry-incubator/auctioneer/auctionrunnerdelegate/*.go # gosub
+  - github.com/cloudfoundry-incubator/auctioneer/handlers/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/delta_force/delta_force/*.go # gosub
@@ -25,7 +25,6 @@ files:
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/prune/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/services_bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/shared/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/bbs/start_auction_bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/task_bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/cb/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/heartbeater/*.go # gosub
@@ -53,7 +52,9 @@ files:
   - github.com/coreos/go-etcd/etcd/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/pivotal-golang/lager/*.go # gosub
+  - github.com/pivotal-golang/localip/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
+  - github.com/tedsuo/ifrit/http_server/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub

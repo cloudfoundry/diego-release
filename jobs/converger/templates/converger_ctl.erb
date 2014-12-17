@@ -24,8 +24,6 @@ case $1 in
       -kickPendingTaskDuration=<%= p("diego.converger.kick.pending.task.duration") %> \
       -expireCompletedTaskDuration=<%= p("diego.converger.expire.completed.duration") %> \
       -expirePendingTaskDuration=<%= p("diego.converger.expire.pending.duration") %> \
-      -kickPendingLRPStartAuctionDuration=<%= p("diego.converger.kick.lrp.pending.start.auction.duration") %> \
-      -expireClaimedLRPStartAuctionDuration=<%= p("diego.converger.expire.claimed.lrp.start.auction.duration") %> \
       2>> $LOG_DIR/converger.stderr.log \
       1> >(tee -a $LOG_DIR/converger.stdout.log | logger -t vcap.converger)
 
