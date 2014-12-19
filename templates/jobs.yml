@@ -68,6 +68,7 @@ jobs:
   - name: brain_z1
     release: diego
     templates:
+      - name: consul-agent
       - name: auctioneer
       - name: converger
       - name: runtime_metrics_server
@@ -85,10 +86,14 @@ jobs:
         shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
       metron_agent:
         zone: z1
+      consul:
+        agent:
+          servers: {lan: (( .properties.diego.consul_server.machines ))}
 
   - name: brain_z2
     release: diego
     templates:
+      - name: consul-agent
       - name: auctioneer
       - name: converger
       - name: runtime_metrics_server
@@ -106,6 +111,9 @@ jobs:
         shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
       metron_agent:
         zone: z2
+      consul:
+        agent:
+          servers: {lan: (( .properties.diego.consul_server.machines ))}
 
   - name: cell_z1
     release: diego
