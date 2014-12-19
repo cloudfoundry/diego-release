@@ -81,6 +81,9 @@ jobs:
       - name: diego3
         static_ips: (( static_ips(1) ))
 
+  - name: brain_z2
+    instances: 0
+
   - name: cell_z2
     instances: 0
 
