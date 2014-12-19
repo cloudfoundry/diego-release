@@ -24,6 +24,7 @@ case $1 in
 
     exec /var/vcap/packages/receptor/bin/receptor \
       -address=<%= p("diego.receptor.listen_addr") %> \
+      -taskHandlerAddress=<%= "#{spec.networks.send(properties.network_name).ip}:1169" %> \
       -debugAddr=<%= p("diego.receptor.debug_addr") %> \
       -etcdCluster=<%= p("diego.receptor.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -username=<%= p("diego.receptor.username") %> \
