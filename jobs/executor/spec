@@ -13,15 +13,6 @@ properties:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
 
-  loggregator_endpoint.host:
-    description: "The host used to emit messages to the Loggregator"
-    default: 127.0.0.1
-  loggregator_endpoint.port:
-    description: "The port used to emit messages to the Loggregator"
-    default: 3456
-  loggregator_endpoint.shared_secret:
-    description: "The key used to sign log messages"
-
   diego.executor.listen_addr:
     description: "address at which to serve API requests"
     default: "0.0.0.0:1700"
