@@ -23,7 +23,6 @@ case $1 in
       -stack=<%= p("diego.rep.stack") %> \
       -executorURL=<%= p("diego.rep.executor.url") %> \
       -listenAddr=<%= p("diego.rep.listen_addr") %> \
-      -lrpHost=<%= spec.networks.send(properties.network_name).ip %>\
       -cellID=<%= spec.job.name %>-<%= spec.index %> \
 <% if_p("diego.rep.polling_interval") do |interval| %> \
       -pollingInterval=<%= interval %> \
