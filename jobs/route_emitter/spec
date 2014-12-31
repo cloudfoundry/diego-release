@@ -23,3 +23,6 @@ properties:
   diego.route_emitter.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17009"
+  diego.route_emitter.sync_interval:
+    description: "Interval to sync routes to the router in seconds."
+    default: 60

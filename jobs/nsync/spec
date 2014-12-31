@@ -37,6 +37,9 @@ properties:
   diego.nsync.cc.bulk_batch_size:
     description: "number of apps to fetch at once from bulk API"
     default: 500
+  diego.nsync.cc.fetch_timeout:
+    description: "How long to wait for completion of requests to CC in seconds."
+    default: 30
   diego.nsync.listener_debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17006"

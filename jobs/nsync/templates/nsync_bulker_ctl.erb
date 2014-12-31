@@ -26,6 +26,7 @@ case $1 in
       -ccBaseURL=<%= Shellwords.shellescape(p("diego.nsync.cc.base_url")) %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.nsync.cc.basic_auth_username")) %> \
       -ccPassword=<%= Shellwords.shellescape(p("diego.nsync.cc.basic_auth_password")) %> \
+      -ccFetchTimeout=<%= "#{p("diego.nsync.cc.fetch_timeout")}s" %> \
       -debugAddr=<%= p("diego.nsync.bulker_debug_addr") %> \
       -pollingInterval=<%= Shellwords.shellescape(p("diego.nsync.cc.polling_interval")) %> \
       -bulkBatchSize=<%= p("diego.nsync.cc.bulk_batch_size") %> \

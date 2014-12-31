@@ -1,2 +1,2 @@
 #!/bin/bash -e
-nc -z 127.0.0.1 <%= p("diego.file_server.port") %>
+nc -z 127.0.0.1 <%= p("diego.file_server.address").split(":")[1] %>

@@ -25,9 +25,8 @@ properties:
     default: "0.0.0.0:17008"
   diego.rep.polling_interval:
     description: >
-      The interval on which to look for completed tasks and LRPs. Normally
-      they are handled immediately, but if an event is missed the continuous
-      polling will catch it.
+      The interval to look for completed tasks and LRPs in seconds.
+    default: 30
 
   rep.zone:
     description:

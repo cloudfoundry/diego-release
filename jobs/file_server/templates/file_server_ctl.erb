@@ -19,10 +19,7 @@ case $1 in
     echo $$ > /var/vcap/sys/run/file_server/file_server.pid
 
     exec /var/vcap/packages/file_server/bin/file-server \
-      <% if_p("diego.file_server.ip") do %>\
-      -address=<%= p("diego.file_server.ip") %> \
-      <% end %>\
-      -port=<%= p("diego.file_server.port") %> \
+      -address=<%= p("diego.file_server.address") %> \
       -debugAddr=<%= p("diego.file_server.debug_addr") %> \
       -staticDirectory=<%= p("diego.file_server.static_directory") %> \
       -ccAddress=<%= p("diego.file_server.cc.srv_api_uri") %> \

@@ -49,3 +49,12 @@ properties:
   diego.executor.export_network_env_vars:
     description: "Export network environment variables into container (e.g. INSTANCE_IP, INSTANCE_PORT)."
     default: false
+  diego.executor.drain_timeout:
+    description: "Duration to wait before shutting down in seconds."
+    default: 900
+  diego.executor.healthy_monitoring_interval:
+    description: "Interval to check healthy containers in seconds."
+    default: 30
+  diego.executor.unhealthy_monitoring_interval:
+    description: "Interval to check unhealthy containers in seconds."
+    default: 0.5
