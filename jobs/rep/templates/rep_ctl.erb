@@ -24,6 +24,7 @@ case $1 in
       -executorURL=<%= p("diego.rep.executor.url") %> \
       -listenAddr=<%= p("diego.rep.listen_addr") %> \
       -cellID=<%= spec.job.name %>-<%= spec.index %> \
+      -zone=<%= p("rep.zone") %> \
 <% if_p("diego.rep.polling_interval") do |interval| %> \
       -pollingInterval=<%= interval %> \
 <% end %> \
