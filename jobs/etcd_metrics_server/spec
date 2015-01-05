@@ -9,9 +9,6 @@ packages:
   - etcd_metrics_server
 
 properties:
-  diego.etcd_metrics_server.job_name:
-    description: "job name for collector"
-    default: "etcd"
   diego.etcd_metrics_server.etcd.machine:
     description: "address of ETCD server to instrument"
     default: "127.0.0.1"
@@ -40,3 +37,6 @@ properties:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17003"
 
+  etcd_metrics_server.job_name:
+    description: "job name for collector"
+    default: "etcd"
