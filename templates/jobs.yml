@@ -337,6 +337,8 @@ jobs:
         static_ips: (( merge ))
     properties:
       network_name: diego1
+      etcd_metrics_server:
+        job_name: (( .properties.diego.etcd_metrics_server.job_name "-z1" ))
     update:
       serial: true
 
@@ -352,6 +354,8 @@ jobs:
         static_ips: (( merge ))
     properties:
       network_name: diego2
+      etcd_metrics_server:
+        job_name: (( .properties.diego.etcd_metrics_server.job_name "-z2" ))
     update:
       serial: true
 
@@ -367,6 +371,8 @@ jobs:
         static_ips: (( merge ))
     properties:
       network_name: diego3
+      etcd_metrics_server:
+        job_name: (( .properties.diego.etcd_metrics_server.job_name "-z3" ))
     update:
       serial: true
 
