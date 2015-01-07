@@ -20,12 +20,11 @@ files:
   - github.com/cloudfoundry-incubator/executor/http/client/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/auction_cell_rep/*.go # gosub
-  - github.com/cloudfoundry-incubator/rep/gatherer/*.go # gosub
-  - github.com/cloudfoundry-incubator/rep/harvester/*.go # gosub
+  - github.com/cloudfoundry-incubator/rep/harmonizer/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/http_server/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/lrp_stopper/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/maintain/*.go # gosub
-  - github.com/cloudfoundry-incubator/rep/reaper/*.go # gosub
+  - github.com/cloudfoundry-incubator/rep/snapshot/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/bbserrors/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/domain_bbs/*.go # gosub
@@ -62,6 +61,7 @@ files:
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/pivotal-golang/lager/*.go # gosub
   - github.com/pivotal-golang/localip/*.go # gosub
+  - github.com/pivotal-golang/operationq/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
   - github.com/tedsuo/ifrit/http_server/*.go # gosub
