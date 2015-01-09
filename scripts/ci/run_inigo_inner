@@ -43,7 +43,7 @@ popd
 
 go install github.com/onsi/ginkgo/ginkgo
 
-export GARDEN_ROOTFS=/opt/garden/rootfs
+export GARDEN_ROOTFS=/opt/inigo/rootfs
 
 # used for routing to apps; same logic that Garden uses.
 export EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\s/\1/;tx;d;:x')
