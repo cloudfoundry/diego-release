@@ -2,7 +2,7 @@
 
 set -e -x
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang)
+export GOROOT=$(readlink -nf /var/vcap/packages/golang_1.4)
 export PATH=${GOROOT}/bin:${PATH}
 
 export PATH=/var/vcap/packages/cf-cli/bin:${PATH} # put the cli on the path
