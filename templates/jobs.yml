@@ -345,7 +345,7 @@ jobs:
     templates:
       - name: etcd
       - name: etcd_metrics_server
-    instances: 1
+    instances: 0
     resource_pool: medium_z2
     networks:
       - name: diego2
@@ -360,7 +360,7 @@ jobs:
     templates:
       - name: etcd
       - name: etcd_metrics_server
-    instances: 1
+    instances: 0
     resource_pool: medium_z3
     networks:
       - name: diego3
