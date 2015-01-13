@@ -13,17 +13,17 @@ files:
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/allocationstore/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/event/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/depot/gardenstore/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/log_streamer/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/metrics/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/steps/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/depot/store/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/depot/tallyman/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/transformer/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/depot/uploader/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/http/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/http/server/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/http/server/allocate_container/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/http/server/allocate_containers/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/http/server/delete_container/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/http/server/error_headers/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/http/server/events/*.go # gosub
