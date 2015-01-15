@@ -22,6 +22,7 @@ case $1 in
       -natsAddresses=<%= p("diego.route_emitter.nats.machines").collect { |addr| "#{addr}:#{p("diego.route_emitter.nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("diego.route_emitter.nats.username") %> \
       -natsPassword=<%= p("diego.route_emitter.nats.password") %> \
+      -diegoAPIURL=<%= p("diego.route_emitter.diego_api_url") %> \
       -debugAddr=<%= p("diego.route_emitter.debug_addr") %> \
       -syncInterval=<%= "#{p("diego.route_emitter.sync_interval")}s" %> \
       2>> $LOG_DIR/route_emitter.stderr.log \

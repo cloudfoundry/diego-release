@@ -26,3 +26,6 @@ properties:
   diego.route_emitter.sync_interval:
     description: "Interval to sync routes to the router in seconds."
     default: 60
+  diego.route_emitter.diego_api_url:
+    description: URL of diego API
+    default: http://receptor.service.dc1.consul:8888
