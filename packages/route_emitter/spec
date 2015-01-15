@@ -12,6 +12,8 @@ files:
   - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
+  - github.com/cloudfoundry-incubator/receptor/*.go # gosub
+  - github.com/cloudfoundry-incubator/receptor/serialization/*.go # gosub
   - github.com/cloudfoundry-incubator/route-emitter/nats_emitter/*.go # gosub
   - github.com/cloudfoundry-incubator/route-emitter/routing_table/*.go # gosub
   - github.com/cloudfoundry-incubator/route-emitter/syncer/*.go # gosub
@@ -87,3 +89,4 @@ files:
   - github.com/tedsuo/ifrit/restart/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
+  - github.com/vito/go-sse/sse/*.go # gosub

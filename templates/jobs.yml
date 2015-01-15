@@ -293,6 +293,7 @@ jobs:
     release: diego
     templates:
       - name: route_emitter
+      - name: consul-agent
       - name: metron_agent
         release: cf
     instances: 1
@@ -300,6 +301,10 @@ jobs:
     networks:
       - name: diego1
     properties:
+      consul:
+        agent:
+          servers:
+            lan: (( .properties.diego.consul_server.machines ))
       networks:
         apps: diego1
       loggregator_endpoint:
@@ -311,6 +316,7 @@ jobs:
     release: diego
     templates:
       - name: route_emitter
+      - name: consul-agent
       - name: metron_agent
         release: cf
     instances: 1
@@ -318,6 +324,10 @@ jobs:
     networks:
       - name: diego2
     properties:
+      consul:
+        agent:
+          servers:
+            lan: (( .properties.diego.consul_server.machines ))
       networks:
         apps: diego2
       loggregator_endpoint:
@@ -452,6 +462,7 @@ properties:
         machines: (( .properties.diego.etcd.machines ))
 
     route_emitter:
+      diego_api_url: (( .properties.diego.api_url ))
       etcd:
         machines: (( .properties.diego.etcd.machines ))
       nats:
