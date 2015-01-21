@@ -30,6 +30,8 @@ properties:
       disk_quota_enabled: false
       listen_network: tcp
       listen_address: 0.0.0.0:7777
+      deny_networks:
+        - 0.0.0.0/0
 
     executor:
       drain_timeout: 0

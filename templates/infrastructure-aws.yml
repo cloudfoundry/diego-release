@@ -64,8 +64,7 @@ properties:
       min_disk_mb: 10240
     garden-linux:
       deny_networks:
-        - 169.254.0.0/16 # EC2 instance metadata
-        - 10.10.0.0/16 # Entire VPC
+        - 0.0.0.0/0
 
       allow_networks:
         - 10.10.0.2/32 # Amazon DNS
