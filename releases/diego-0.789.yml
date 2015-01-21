@@ -1,0 +1,344 @@
+---
+packages:
+- name: garden-linux
+  version: !binary |-
+    Y2QyOTQ1MzllY2IxM2FmMGJiMTBhN2Y4YjcyOTdlMmZjZjgwNmFjZA==
+  sha1: !binary |-
+    MDg5YjJmNjgxNjc1NjE3ZDBlNWI4MTNhMDU0ZjQ5ZGQ0MGMzYTNjOA==
+  fingerprint: !binary |-
+    Y2QyOTQ1MzllY2IxM2FmMGJiMTBhN2Y4YjcyOTdlMmZjZjgwNmFjZA==
+  dependencies:
+  - golang_1.4
+- name: smoke-tests
+  version: !binary |-
+    NjVlYmEyMzA5ODg2NjIzYjZjNjM1Mzc3MzAzOTk3ZmVlOTE0NWQ1Zg==
+  sha1: !binary |-
+    YjEwZmQzNGJiMDA1ZWQ4ZTRhOTVhNzc5YzUzMmUwYjEyZWJkY2E5YQ==
+  fingerprint: !binary |-
+    NjVlYmEyMzA5ODg2NjIzYjZjNjM1Mzc3MzAzOTk3ZmVlOTE0NWQ1Zg==
+  dependencies:
+  - golang_1.4
+- name: shadow
+  version: !binary |-
+    ZmZkMTc0MWJkOWUwYTE3NmU2N2M2MWVmNzBjZDBlZDc2YjBlYzI4NQ==
+  sha1: !binary |-
+    MTUxMjA2NjY3ZmI0MjQzMTUzYjUwODA2ZTk3YjFmYjdkZTlhOTRjZg==
+  fingerprint: !binary |-
+    ZmZkMTc0MWJkOWUwYTE3NmU2N2M2MWVmNzBjZDBlZDc2YjBlYzI4NQ==
+  dependencies: []
+- name: consul_0.4
+  version: !binary |-
+    MzAyNzgxNTk5NjIyM2I1NjBiOTdkNDUwMzA2MzZlZjc0NGIyMWJkYw==
+  sha1: !binary |-
+    YTlmN2IzZmI2MDZmOWQxMjQ5ZTkwODYxZGUyNGQzYjdjMzFkYjM2Mw==
+  fingerprint: !binary |-
+    MzAyNzgxNTk5NjIyM2I1NjBiOTdkNDUwMzA2MzZlZjc0NGIyMWJkYw==
+  dependencies: []
+- name: docker-circus
+  version: !binary |-
+    NzZiZmQxNWVhYTZlNjU2Zjk1ODZhODczZWE4NWVlYzlmMDY1NTcxZQ==
+  sha1: !binary |-
+    OTc2NDY4MDU1ODVjMTY3ZGYxYjgwYmQ1ZDliYjk5MTI4NmFkNzhiZg==
+  fingerprint: !binary |-
+    NzZiZmQxNWVhYTZlNjU2Zjk1ODZhODczZWE4NWVlYzlmMDY1NTcxZQ==
+  dependencies:
+  - golang_1.4
+- name: golang_1.4
+  version: !binary |-
+    ODBmZDEwYWFjYTdmYWZhZGE2ZTdmMjI4ZjAzYzUwMjRmYWEwYjUxYQ==
+  sha1: !binary |-
+    ZjA5NTMzNGE4N2Q2NmRmOTc0YjA5YzcwMjFlYWQ1MTkxM2E4NjMwNQ==
+  fingerprint: !binary |-
+    ODBmZDEwYWFjYTdmYWZhZGE2ZTdmMjI4ZjAzYzUwMjRmYWEwYjUxYQ==
+  dependencies: []
+- name: route_emitter
+  version: !binary |-
+    YjY5NzkwYTVhYmNlMjQwZDc2NDBlNTFjMDU2NDBjYmJmNzc3YzUzOQ==
+  sha1: !binary |-
+    YTNiNTRjNzk5MDk5MTBmYTAwOTc4MzgzZDVjNDJlNzA1YjMyMDg5Nw==
+  fingerprint: !binary |-
+    YjY5NzkwYTVhYmNlMjQwZDc2NDBlNTFjMDU2NDBjYmJmNzc3YzUzOQ==
+  dependencies:
+  - golang_1.4
+- name: etcd_metrics_server
+  version: !binary |-
+    ZDhmZjEwZmE3OWQxNTljNTQ5MGQ3NmYyOTQ4MDFjZTNlMzc1ZmQyNg==
+  sha1: !binary |-
+    MWU1ZjY3YmY0ZjI0N2U3MjM2Yzg1NWUxMWZiMTM4ODFkMGY1YmViMg==
+  fingerprint: !binary |-
+    ZDhmZjEwZmE3OWQxNTljNTQ5MGQ3NmYyOTQ4MDFjZTNlMzc1ZmQyNg==
+  dependencies:
+  - golang_1.4
+- name: file_server
+  version: !binary |-
+    ZmViMDE0MTYyMDM1NzdkYzkyNTA4NjEwN2Q0NGFhMzMxMjUyMjZkNw==
+  sha1: !binary |-
+    NTU5ZWU0NDhhZTA2OGU4YWE3NDBlNTk5N2E4MWQzM2ZjMWJiYjlhYQ==
+  fingerprint: !binary |-
+    ZmViMDE0MTYyMDM1NzdkYzkyNTA4NjEwN2Q0NGFhMzMxMjUyMjZkNw==
+  dependencies:
+  - golang_1.4
+- name: nsync
+  version: !binary |-
+    MjI5ODYzZDQ2ZjY3MTNiZjcyOGUyODA4NzkxMGRiZThiMWM0NDZkNg==
+  sha1: !binary |-
+    Y2E4OWUyMjZhMmFmMDc1NjExYTYyODdjMDY4ZWRjM2EyZTFmYjU0Mw==
+  fingerprint: !binary |-
+    MjI5ODYzZDQ2ZjY3MTNiZjcyOGUyODA4NzkxMGRiZThiMWM0NDZkNg==
+  dependencies:
+  - golang_1.4
+- name: rootfs_lucid64
+  version: !binary |-
+    MGM3NDIwZjdmNjJlYzQzZTU0MGE0NjU2YzE1YTE1NTZkYjRkN2Y3Zg==
+  sha1: !binary |-
+    NGUyOTNiNWQwMjBkNmRiZGVhN2FmMjZhYmUzZTRmMDg2NGJjNjFmMg==
+  fingerprint: !binary |-
+    MGM3NDIwZjdmNjJlYzQzZTU0MGE0NjU2YzE1YTE1NTZkYjRkN2Y3Zg==
+  dependencies: []
+- name: tps
+  version: !binary |-
+    ZTczMDMyMzYzZjM3YjBjMWRmODFiNDFjODQzODY5MjcwZWQyNWNiMw==
+  sha1: !binary |-
+    MzNlN2E1ZjEyYmI4YzE1MmQyYWEzOWJkMDNmYmI1MDA1ZjhjNzA0OA==
+  fingerprint: !binary |-
+    ZTczMDMyMzYzZjM3YjBjMWRmODFiNDFjODQzODY5MjcwZWQyNWNiMw==
+  dependencies:
+  - golang_1.4
+- name: iptables
+  version: !binary |-
+    NzIyNmQzMTFlOTBmNDliMDUyODdlNzlmMzM5NTgxYTFkZTllYTgyZQ==
+  sha1: !binary |-
+    NWIwZmZiYTAxMGIyM2RkMjFlZjIxZTdjMDM4NWQ0NjhhNWRhYTNiMw==
+  fingerprint: !binary |-
+    NzIyNmQzMTFlOTBmNDliMDUyODdlNzlmMzM5NTgxYTFkZTllYTgyZQ==
+  dependencies: []
+- name: rep
+  version: !binary |-
+    M2U5ZDQ1MDdlY2M5MzEyZmI2YzEwYTUyNGEwN2ZjN2M5MGQ3NTc3Zg==
+  sha1: !binary |-
+    Yzc2YTgyNDlmZDFkM2Q0ZjBkNGI0OTZmOTIyYTgyYjJiZGQzNGNhNw==
+  fingerprint: !binary |-
+    M2U5ZDQ1MDdlY2M5MzEyZmI2YzEwYTUyNGEwN2ZjN2M5MGQ3NTc3Zg==
+  dependencies:
+  - golang_1.4
+- name: receptor
+  version: !binary |-
+    MDM3OWJiNTlmZmZiMzlhNjM0YWU5NjQ0MWJlYTQ4ODYwOTE5OGI4MA==
+  sha1: !binary |-
+    MGYwMjM2MDI4MTRmYTJmMGZmOTE1MWRjYzc0YTgwN2JhMzAzYjBmYg==
+  fingerprint: !binary |-
+    MDM3OWJiNTlmZmZiMzlhNjM0YWU5NjQ0MWJlYTQ4ODYwOTE5OGI4MA==
+  dependencies:
+  - golang_1.4
+- name: executor
+  version: !binary |-
+    ZGNjZmVhMWY4MzBmYWUyZGMyN2NiNGMxOTY4NTgxZWVjNDgwMmY0MQ==
+  sha1: !binary |-
+    NGJkYWI2ZWY5M2VhZmIyZWM2ZTFjNDljNmExNjBlMWIwOTcxNzRlZQ==
+  fingerprint: !binary |-
+    ZGNjZmVhMWY4MzBmYWUyZGMyN2NiNGMxOTY4NTgxZWVjNDgwMmY0MQ==
+  dependencies:
+  - golang_1.4
+- name: converger
+  version: !binary |-
+    M2I2MGUzNGY2ZjVmNzEzM2JlMzhjMDk0OTRlODBhYzRmNjkzMjczMg==
+  sha1: !binary |-
+    MzIzNzI3MTQzYWJjNTMyOTk1MDdkYTJmZDI2ZGI0NWMyMTIxM2FiZA==
+  fingerprint: !binary |-
+    M2I2MGUzNGY2ZjVmNzEzM2JlMzhjMDk0OTRlODBhYzRmNjkzMjczMg==
+  dependencies:
+  - golang_1.4
+- name: cf-cli
+  version: !binary |-
+    OWMwOGVhNTgzNDhkOTlkYTg3ODVmNjBlYWJhMjc5MTBjM2FkM2I5Ng==
+  sha1: !binary |-
+    YmE5MTU5MGQ0YjdlY2FjNGNjMTVlNzFhYWUyNmQzM2I4ZTc4ZDhkOA==
+  fingerprint: !binary |-
+    OWMwOGVhNTgzNDhkOTlkYTg3ODVmNjBlYWJhMjc5MTBjM2FkM2I5Ng==
+  dependencies: []
+- name: linux-circus
+  version: !binary |-
+    NDcxODNjODkyMzlkYmE5MDBiNDFhMjhlZWY5M2U0YzliZDUxYWUwNw==
+  sha1: !binary |-
+    ZWYyNmVhY2JlMThjNjI2NjRlZDAwYjMxM2U5MTVlYjMxY2QxNzQzMQ==
+  fingerprint: !binary |-
+    NDcxODNjODkyMzlkYmE5MDBiNDFhMjhlZWY5M2U0YzliZDUxYWUwNw==
+  dependencies:
+  - golang_1.4
+- name: stager
+  version: !binary |-
+    ZGI2MmZlNWZjNGQ2Y2MyY2E0OTcyZjUwMmQ2ZmZlMjBlZGMxMTM3ZQ==
+  sha1: !binary |-
+    ZDA3N2MxMzQzYTQ1YjUwNDYxYzRkOGQ5YzU3MWVmOTQwZDRhM2I1OA==
+  fingerprint: !binary |-
+    ZGI2MmZlNWZjNGQ2Y2MyY2E0OTcyZjUwMmQ2ZmZlMjBlZGMxMTM3ZQ==
+  dependencies:
+  - golang_1.4
+- name: auctioneer
+  version: !binary |-
+    ZTlhMGUxZTZmYzU3OTE5NTJjMWFjNjhiZjkzYWExZmE0MDQwNTBkMQ==
+  sha1: !binary |-
+    MzQ1NWY0ZWYxZWRjMGMwYjZkOTk2NmZhNzNkMTAwMjBkMTQxNWI0Mw==
+  fingerprint: !binary |-
+    ZTlhMGUxZTZmYzU3OTE5NTJjMWFjNjhiZjkzYWExZmE0MDQwNTBkMQ==
+  dependencies:
+  - golang_1.4
+- name: runtime_metrics_server
+  version: !binary |-
+    YmJiNDEyZTEzZTMyN2VmMzAxMGVlNTBmOWQ0NGU1ZGM2ZWNjMmIxNg==
+  sha1: !binary |-
+    ZTk1ODNjZTVmYTRiYTM0MzJmOTFhZTRkNjU2NWFhMTcwYjg4N2VmMw==
+  fingerprint: !binary |-
+    YmJiNDEyZTEzZTMyN2VmMzAxMGVlNTBmOWQ0NGU1ZGM2ZWNjMmIxNg==
+  dependencies:
+  - golang_1.4
+- name: acceptance-tests
+  version: !binary |-
+    M2YzODgyNTFjZDE0ZDFiYzI5YjQwNGFhNGUxODFjN2Y2MDBiOGVjZg==
+  sha1: !binary |-
+    NDUwNTdjMmM4YjI3NTgwZDE2MDdjOTU3MzQyODBlZGQwOTFkZjMwOQ==
+  fingerprint: !binary |-
+    M2YzODgyNTFjZDE0ZDFiYzI5YjQwNGFhNGUxODFjN2Y2MDBiOGVjZg==
+  dependencies:
+  - golang_1.4
+- name: pid_utils
+  version: !binary |-
+    MmIwMGU0NjJlMzdhYjkzNTJmZTAxNmQ4NjYzOTVmNzM0MzA2OTg4MA==
+  sha1: !binary |-
+    ODNlZmQ2ZGE2OGYzMTFhZGFiYzg0OTMxOGU1NjcxMjczODU3YTdjZg==
+  fingerprint: !binary |-
+    MmIwMGU0NjJlMzdhYjkzNTJmZTAxNmQ4NjYzOTVmNzM0MzA2OTg4MA==
+  dependencies: []
+- name: etcd
+  version: !binary |-
+    YjNiZWZhOTNjZWJmNGI1NWRkYjVjNjA5Njk1YjM0ZGI4ZTYzMDQ5NQ==
+  sha1: !binary |-
+    ZTMzMWE3Y2QwZjM5NjRjZmJhOTQxZGU2MTMwMzdmYjQyZGY4YzljYg==
+  fingerprint: !binary |-
+    YjNiZWZhOTNjZWJmNGI1NWRkYjVjNjA5Njk1YjM0ZGI4ZTYzMDQ5NQ==
+  dependencies:
+  - golang_1.4
+jobs:
+- name: garden-linux
+  version: !binary |-
+    MjQwMjZiNzE1YTI2MDE1MzFhYjg2NDNiMTllYzNiYTZmNmQ3ZmFkZA==
+  fingerprint: !binary |-
+    MjQwMjZiNzE1YTI2MDE1MzFhYjg2NDNiMTllYzNiYTZmNmQ3ZmFkZA==
+  sha1: !binary |-
+    NTdlOWJmZTM5ODVhZWI5MzY5Mjc0MGNhZTg4ZTM5YzM1YWI3YTIwMg==
+- name: smoke-tests
+  version: !binary |-
+    ZjA1NzZjNDhkY2U4ZDU4MTRhNDJmOTQ5YWZkMTgzMGQyY2E2NjZhYw==
+  fingerprint: !binary |-
+    ZjA1NzZjNDhkY2U4ZDU4MTRhNDJmOTQ5YWZkMTgzMGQyY2E2NjZhYw==
+  sha1: !binary |-
+    YjQxNDIyZTJmN2I0NjIyMzA5NTdkOWZlZGI5MDk0MDBlNmEzOTllNg==
+- name: route_emitter
+  version: !binary |-
+    ZGVmNDRhYzZkZTBlYzk3MGE3M2MyMDNjYjk2MTViZTc0NjZiMTRkMg==
+  fingerprint: !binary |-
+    ZGVmNDRhYzZkZTBlYzk3MGE3M2MyMDNjYjk2MTViZTc0NjZiMTRkMg==
+  sha1: !binary |-
+    ODM3NDlmYzcxNDYzZTEwYmMwMzAzNDU3NDMxMzRkMzdmZThlNTY4ZQ==
+- name: etcd_metrics_server
+  version: !binary |-
+    Zjc5ZTk4NDRmZjA2MzM5MmEyZWU3NTBjMTc2ZGE4ZTgyMTI5YmFiYQ==
+  fingerprint: !binary |-
+    Zjc5ZTk4NDRmZjA2MzM5MmEyZWU3NTBjMTc2ZGE4ZTgyMTI5YmFiYQ==
+  sha1: !binary |-
+    ZGFkMWZmZTQ4MWY4MjJmYjc4ZmQzYWM3YTRjZjVhNDAyZjE0OTIwOQ==
+- name: file_server
+  version: !binary |-
+    NDllYTc4NTVhZDQxYjE4NmUxNWFhMGQ0NzY0YWY2MzcyOThlZjRjMQ==
+  fingerprint: !binary |-
+    NDllYTc4NTVhZDQxYjE4NmUxNWFhMGQ0NzY0YWY2MzcyOThlZjRjMQ==
+  sha1: !binary |-
+    ODQxMTNkZjAwNjBjNDRmYWZmYjUzZWQ3YTEyZTMxYWNmNzNmMTMwOQ==
+- name: nsync
+  version: !binary |-
+    YmFiNjYyOTE3MzkzOGI1NDRiYTU1MzUzODRlNzVjOWI5NWU1NGU1MA==
+  fingerprint: !binary |-
+    YmFiNjYyOTE3MzkzOGI1NDRiYTU1MzUzODRlNzVjOWI5NWU1NGU1MA==
+  sha1: !binary |-
+    YzEzZThjNDMyM2VmZGRmYzNjZjRhMWVjNzRiZThiOGI3OTA4ZTdhZQ==
+- name: tps
+  version: !binary |-
+    ZmIwYmY3Y2U4OThlMDFkMzhiOTZjMThkOWZhYTBjYmYzMWE0N2FkMA==
+  fingerprint: !binary |-
+    ZmIwYmY3Y2U4OThlMDFkMzhiOTZjMThkOWZhYTBjYmYzMWE0N2FkMA==
+  sha1: !binary |-
+    MjYzMjZiNGFmNGM4NmJhNGEzYWNhOTJhMmYwNGRjMzY3ODM5N2E5Nw==
+- name: rep
+  version: !binary |-
+    ZDRkOGQ0ZTY0MWM2MTM2ZjJlMDViNGFlMjM0OTMyYmU4YWU3OTFiZA==
+  fingerprint: !binary |-
+    ZDRkOGQ0ZTY0MWM2MTM2ZjJlMDViNGFlMjM0OTMyYmU4YWU3OTFiZA==
+  sha1: !binary |-
+    ODhiZjFlYThkYmQxN2I5NmQxNGY0OWIxYjJmMjcwYTliOGFhY2Q5NQ==
+- name: receptor
+  version: !binary |-
+    YjgxMzY5ZDA5MmIzN2I4MDBjN2Y2YzMyOWNmODI0ZjFlMTM2YzQ1Yw==
+  fingerprint: !binary |-
+    YjgxMzY5ZDA5MmIzN2I4MDBjN2Y2YzMyOWNmODI0ZjFlMTM2YzQ1Yw==
+  sha1: !binary |-
+    OGQwNTU3YzBhZDlmM2FmY2IxODRhOTk3MWRlODAwNTZjOTA5N2NhZg==
+- name: executor
+  version: !binary |-
+    Njc1NGIxNDI3ZmVlYjc3M2YwNTEyOGIxY2U4MjVkNTVjYmMyNzg1Zg==
+  fingerprint: !binary |-
+    Njc1NGIxNDI3ZmVlYjc3M2YwNTEyOGIxY2U4MjVkNTVjYmMyNzg1Zg==
+  sha1: !binary |-
+    NDAwNWQ3NjQwYWZjNTliMTU3NDM5NjZmODMxZTVmMDU1ZTE2ZGJjMA==
+- name: converger
+  version: !binary |-
+    MDk3ZGU5NThkOTA2MDIwYjZlOTYxMDI5NWNmNzc0YTFiYmFmYjA1MQ==
+  fingerprint: !binary |-
+    MDk3ZGU5NThkOTA2MDIwYjZlOTYxMDI5NWNmNzc0YTFiYmFmYjA1MQ==
+  sha1: !binary |-
+    YzgwNzAwYThkYWU0MTM0MTk4YTUyOTgyODkyZTNlMDMzMGI3OGNjNw==
+- name: consul-agent
+  version: !binary |-
+    Y2M1ODg0YTMxOGFhNmMzYjZiMmY0YmRlNjhkZDI0MmNjNTE0ZTkzZA==
+  fingerprint: !binary |-
+    Y2M1ODg0YTMxOGFhNmMzYjZiMmY0YmRlNjhkZDI0MmNjNTE0ZTkzZA==
+  sha1: !binary |-
+    MDExZWM5ZDgyZjcwMzhlYjY3OTdkNDFiMDUyOGQxNGViNTQ4YmIzZg==
+- name: stager
+  version: !binary |-
+    M2Y5NDRiNGE3YTBjYTdmZDAzMWJkZDkwODg4Mzk0NGI5ZGNiOTRhOQ==
+  fingerprint: !binary |-
+    M2Y5NDRiNGE3YTBjYTdmZDAzMWJkZDkwODg4Mzk0NGI5ZGNiOTRhOQ==
+  sha1: !binary |-
+    NmQ5NWQwM2MwYjE0MzEzNTQxZjQ3MmMzZjcwMTE1YzMwMzgyYWNiMA==
+- name: auctioneer
+  version: !binary |-
+    NWU5NzY3ODNjMmE4ZTRhM2QzNjUxNjkyZGE0ZWI0NTVmNTllMDI2Yw==
+  fingerprint: !binary |-
+    NWU5NzY3ODNjMmE4ZTRhM2QzNjUxNjkyZGE0ZWI0NTVmNTllMDI2Yw==
+  sha1: !binary |-
+    NmJjNTdmZWZjZDI5NjliY2M0NmRmNDIzYWJhNWM4OTliOWFmNGIwYg==
+- name: runtime_metrics_server
+  version: !binary |-
+    YmI1NzY3MDIxZWJmMWU0NjM5YjQ3YzllZTgxM2Q1NGQ2ZjljNmJjZQ==
+  fingerprint: !binary |-
+    YmI1NzY3MDIxZWJmMWU0NjM5YjQ3YzllZTgxM2Q1NGQ2ZjljNmJjZQ==
+  sha1: !binary |-
+    MjFlZDQyOGUwNTEwZDE0YzIwNjg1OGI3YzFjZTFhNTczMDNjOTMyZA==
+- name: acceptance-tests
+  version: !binary |-
+    ZWFlYzU3YzZmZGU1ZGQxNjJkYzdmZmZkNGM4MDMyZDM4Njk4YWUzNg==
+  fingerprint: !binary |-
+    ZWFlYzU3YzZmZGU1ZGQxNjJkYzdmZmZkNGM4MDMyZDM4Njk4YWUzNg==
+  sha1: !binary |-
+    NjAyYzM3NGY4M2ZkMjBiNzUwMmYyZDFlY2Y0YTg4NDg3Njc4N2Q1OQ==
+- name: etcd
+  version: !binary |-
+    ZjgxNTBlMWY4NDllMjZhZjRiYWQ2YmQ2NzU0OGQ3MDVlYWNjNGYyNA==
+  fingerprint: !binary |-
+    ZjgxNTBlMWY4NDllMjZhZjRiYWQ2YmQ2NzU0OGQ3MDVlYWNjNGYyNA==
+  sha1: !binary |-
+    MzFiNDJiOTYwYzBkMWUwMDhkZTE4YmFlNDYxZDI5OTBkZjllNGZjZQ==
+commit_hash: c36b6f6c
+uncommitted_changes: true
+name: diego
+version: '0.789'
