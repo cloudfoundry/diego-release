@@ -37,9 +37,6 @@ case $1 in
       -debugAddr=<%= p("diego.stager.debug_addr") %> \
       -circuses=<%= Shellwords.shellescape(p("diego.stager.lifecycle_bundles").to_json) %> \
       -dockerCircusPath=<%= p("diego.stager.docker_lifecycle_bundle") %> \
-      -minMemoryMB=<%= p("diego.stager.min_memory_mb") %> \
-      -minDiskMB=<%= p("diego.stager.min_disk_mb") %> \
-      -minFileDescriptors=<%= p("diego.stager.min_file_descriptors") %>  \
       -fileServerURL=<%= p("diego.file_server.file_server_url") %> \
       2>> $LOG_DIR/stager.stderr.log \
       1> >(tee -a $LOG_DIR/stager.stdout.log | logger -t vcap.stager)
