@@ -50,7 +50,6 @@ files:
   - github.com/cloudfoundry/gosteno/*.go # gosub
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
   - github.com/cloudfoundry/gunk/diegonats/*.go # gosub
-  - github.com/cloudfoundry/gunk/timeprovider/*.go # gosub
   - github.com/cloudfoundry/gunk/workpool/*.go # gosub
   - github.com/cloudfoundry/storeadapter/*.go # gosub
   - github.com/cloudfoundry/storeadapter/etcdstoreadapter/*.go # gosub
@@ -85,6 +84,7 @@ files:
   - github.com/onsi/gomega/matchers/support/goraph/node/*.go # gosub
   - github.com/onsi/gomega/matchers/support/goraph/util/*.go # gosub
   - github.com/onsi/gomega/types/*.go # gosub
+  - github.com/pivotal-golang/clock/*.go # gosub
   - github.com/pivotal-golang/lager/*.go # gosub
   - github.com/pivotal-golang/localip/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub

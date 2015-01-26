@@ -115,12 +115,12 @@ resource_pools:
       instance_type: m2.2xlarge
       availability_zone: (( meta.zones.z3 ))
 
-  - name: file_server_z1
+  - name: bridge_z1
     cloud_properties:
       instance_type: c3.xlarge
       availability_zone: (( meta.zones.z1 ))
 
-  - name: file_server_z2
+  - name: bridge_z2
     cloud_properties:
       instance_type: c3.xlarge
       availability_zone: (( meta.zones.z2 ))

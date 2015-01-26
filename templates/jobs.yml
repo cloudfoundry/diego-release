@@ -184,65 +184,18 @@ jobs:
         zone: (( properties.zone ))
       zone: z2
 
-  - name: file_server_z1
-    release: diego
-    templates:
-      - name: file_server
-      - name: consul-agent
-      - name: metron_agent
-        release: cf
-    instances: 1
-    resource_pool: file_server_z1
-    networks:
-      - name: diego1
-    properties:
-      networks:
-        apps: diego1
-      loggregator_endpoint:
-        shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
-      metron_agent:
-        zone: z1
-      consul:
-        agent:
-          services: [file_server]
-          servers:
-            lan: (( .properties.diego.consul_server.machines ))
-
-  - name: file_server_z2
-    release: diego
-    templates:
-      - name: file_server
-      - name: consul-agent
-      - name: metron_agent
-        release: cf
-    instances: 1
-    resource_pool: file_server_z2
-    networks:
-      - name: diego2
-    properties:
-      networks:
-        apps: diego2
-      loggregator_endpoint:
-        shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
-      metron_agent:
-        zone: z2
-      consul:
-        agent:
-          services: [file_server]
-          servers:
-            lan: (( .properties.diego.consul_server.machines ))
-
   - name: cc_bridge_z1
     release: diego
     templates:
       - name: stager
       - name: nsync
       - name: tps
+      - name: file_server
       - name: consul-agent
       - name: metron_agent
         release: cf
     instances: 1
-    resource_pool: small_z1
+    resource_pool: bridge_z1
     networks:
       - name: diego1
     properties:
@@ -257,6 +210,7 @@ jobs:
         agent:
           services:
             - stager
+            - file_server
           servers:
             lan: (( .properties.diego.consul_server.machines ))
 
@@ -266,11 +220,12 @@ jobs:
       - name: stager
       - name: nsync
       - name: tps
+      - name: file_server
       - name: consul-agent
       - name: metron_agent
         release: cf
     instances: 1
-    resource_pool: small_z2
+    resource_pool: bridge_z2
     networks:
       - name: diego2
     properties:
@@ -286,6 +241,7 @@ jobs:
         agent:
           services:
             - stager
+            - file_server
           servers:
             lan: (( .properties.diego.consul_server.machines ))
 
