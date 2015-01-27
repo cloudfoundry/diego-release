@@ -26,6 +26,9 @@ properties:
   diego.rep.polling_interval:
     description: "The interval to look for completed tasks and LRPs in seconds"
     default: 30
+  diego.rep.evacuation_timeout:
+    description: "The time to wait for evacuation to complete in seconds"
+    default: 180
 
   rep.zone:
     description: "The zone associated with the rep"
