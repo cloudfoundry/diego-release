@@ -12,25 +12,23 @@ properties:
   diego.rep.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
   diego.rep.stack:
-    description: "the stack for which to handle requests"
+    description: "The stack for which to handle requests"
     default: "lucid64"
   diego.rep.executor.url:
-    description: "URL of the executor to represent."
+    description: "URL of the executor to represent"
     default: "http://127.0.0.1:1700"
   diego.rep.listen_addr:
-    description: "address to serve auction and LRP stop requests on."
+    description: "address to serve auction and LRP stop requests on"
     default: "0.0.0.0:1800"
   diego.rep.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17008"
   diego.rep.polling_interval:
-    description: >
-      The interval to look for completed tasks and LRPs in seconds.
+    description: "The interval to look for completed tasks and LRPs in seconds"
     default: 30
 
   rep.zone:
-    description:
-      The zone associated with the rep
+    description: "The zone associated with the rep"
 
   network_name:
-    description: "Name of the network that the job lives in; used to figure out our IP."
+    description: "Name of the network that the job lives in; used to figure out our IP"
