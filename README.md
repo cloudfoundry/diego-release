@@ -32,7 +32,7 @@ tests, all integration tests, and make a commit, bringing up a commit edit
 dialogue.  The story IDs correspond to stories in our
 [Pivotal Tracker backlog](https://www.pivotaltracker.com/n/projects/1003146).
 You should simultaneously also build the release and deploy it to a local
-[BOSH-Lite](github.com/cloudfoundry/bosh-lite) environment, and run the acceptance
+[BOSH-Lite](https://github.com/cloudfoundry/bosh-lite) environment, and run the acceptance
 tests.  See [Running Smoke Tests & DATs](#smokes-and-dats).
 
 If you're introducing a new component (e.g. a new job/errand) or changing the main path
