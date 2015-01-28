@@ -29,6 +29,9 @@ properties:
   diego.rep.evacuation_timeout:
     description: "The time to wait for evacuation to complete in seconds"
     default: 180
+  diego.rep.evacuation_polling_interval:
+    description: "The interval on which to scan the executor for containers during evacuation in seconds"
+    default: 30
 
   rep.zone:
     description: "The zone associated with the rep"

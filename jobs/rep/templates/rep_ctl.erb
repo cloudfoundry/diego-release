@@ -27,6 +27,7 @@ case $1 in
       -zone=<%= p("rep.zone") %> \
       -pollingInterval=<%= "#{p("diego.rep.polling_interval")}s" %> \
       -evacuationTimeout=<%= "#{p("diego.rep.evacuation_timeout")}s" %> \
+      -evacuationPollingInterval=<%= "#{p("diego.rep.evacuation_polling_interval")}s" %> \
       2>> $LOG_DIR/rep.stderr.log \
       1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep)
 
