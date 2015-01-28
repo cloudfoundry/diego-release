@@ -3,6 +3,7 @@
 set -e -x
 
 # ensure gosub is installed (this will recompile it only if necessary)
+go get github.com/vito/gosub
 go install github.com/vito/gosub
 
 {
@@ -45,9 +46,7 @@ go install github.com/vito/gosub
     \
     -test github.com/cloudfoundry-incubator/inigo/... \
     -test github.com/cloudfoundry-incubator/diego-smoke-tests/... \
-    -test github.com/cloudfoundry-incubator/diego-acceptance-tests/... \
-    \
-    -app github.com/vito/gosub
+    -test github.com/cloudfoundry-incubator/diego-acceptance-tests/...
 
   # garden-linux uses godeps, so we should really only need its parent package
   echo github.com/cloudfoundry-incubator/garden-linux
