@@ -32,21 +32,21 @@ function sync_package() {
   )
 }
 
-sync_package auctioneer             -app  github.com/cloudfoundry-incubator/auctioneer/cmd/... &
-sync_package converger              -app  github.com/cloudfoundry-incubator/converger/cmd/... &
-sync_package docker-circus          -app  github.com/cloudfoundry-incubator/docker-circus/... &
-sync_package etcd_metrics_server    -app  github.com/cloudfoundry-incubator/etcd-metrics-server/cmd/... &
-sync_package executor               -app  github.com/cloudfoundry-incubator/executor/cmd/... &
-sync_package file_server            -app  github.com/cloudfoundry-incubator/file-server/cmd/... &
-sync_package linux-circus           -app  github.com/cloudfoundry-incubator/linux-circus/... &
-sync_package nsync                  -app  github.com/cloudfoundry-incubator/nsync/cmd/... &
-sync_package receptor               -app  github.com/cloudfoundry-incubator/receptor/cmd/... &
-sync_package rep                    -app  github.com/cloudfoundry-incubator/rep/cmd/... &
-sync_package route_emitter          -app  github.com/cloudfoundry-incubator/route-emitter/cmd/... &
-sync_package runtime_metrics_server -app  github.com/cloudfoundry-incubator/runtime-metrics-server/cmd/... &
-sync_package stager                 -app  github.com/cloudfoundry-incubator/stager/cmd/... &
-sync_package tps                    -app  github.com/cloudfoundry-incubator/tps/cmd/... &
-sync_package etcd                   -app  github.com/coreos/etcd &
+sync_package auctioneer              -app  github.com/cloudfoundry-incubator/auctioneer/cmd/... &
+sync_package converger               -app  github.com/cloudfoundry-incubator/converger/cmd/... &
+sync_package docker_app_lifecycle    -app  github.com/cloudfoundry-incubator/docker_app_lifecycle/... &
+sync_package etcd_metrics_server     -app  github.com/cloudfoundry-incubator/etcd-metrics-server/cmd/... &
+sync_package executor                -app  github.com/cloudfoundry-incubator/executor/cmd/... &
+sync_package file_server             -app  github.com/cloudfoundry-incubator/file-server/cmd/... &
+sync_package buildpack_app_lifecycle -app  github.com/cloudfoundry-incubator/buildpack_app_lifecycle/... &
+sync_package nsync                   -app  github.com/cloudfoundry-incubator/nsync/cmd/... &
+sync_package receptor                -app  github.com/cloudfoundry-incubator/receptor/cmd/... &
+sync_package rep                     -app  github.com/cloudfoundry-incubator/rep/cmd/... &
+sync_package route_emitter           -app  github.com/cloudfoundry-incubator/route-emitter/cmd/... &
+sync_package runtime_metrics_server  -app  github.com/cloudfoundry-incubator/runtime-metrics-server/cmd/... &
+sync_package stager                  -app  github.com/cloudfoundry-incubator/stager/cmd/... &
+sync_package tps                     -app  github.com/cloudfoundry-incubator/tps/cmd/... &
+sync_package etcd                    -app  github.com/coreos/etcd &
 
 GOPATH=$GOPATH/src/github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace:$GOPATH sync_package garden-linux -app  github.com/cloudfoundry-incubator/garden-linux/... &
 
