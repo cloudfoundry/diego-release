@@ -20,10 +20,10 @@ properties:
   diego.nsync.lifecycle_bundles:
     description: 'Map of lifecycle bundles for different stacks in json format {"stack_name":"lifecycle_bundle_path"}'
     default:
-      lucid64: linux-circus/linux-circus.tgz
+      lucid64: buildpack_app_lifecycle/buildpack_app_lifecycle.tgz
   diego.nsync.docker_lifecycle_bundle:
     description: Lifecycle bundle for docker apps
-    default: docker-circus/docker-circus.tgz
+    default: docker_app_lifecycle/docker_app_lifecycle.tgz
   diego.nsync.cc.base_url:
     description: base URL of the cloud controller
   diego.nsync.cc.basic_auth_username:

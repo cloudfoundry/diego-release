@@ -32,10 +32,10 @@ properties:
   diego.stager.lifecycle_bundles:
     description: 'Map of lifecycle bundles for different stacks in json format {"stack_name":"lifecycle_bundle_path"}'
     default:
-      lucid64: linux-circus/linux-circus.tgz
+      lucid64: buildpack_app_lifecycle/buildpack_app_lifecycle.tgz
   diego.stager.docker_lifecycle_bundle:
     description: Lifecycle bundle for docker apps
-    default: docker-circus/docker-circus.tgz
+    default: docker_app_lifecycle/docker_app_lifecycle.tgz
   diego.stager.stager_url:
     description: URL of stager, used for completion callbacks from receptor API
     default: http://stager.service.dc1.consul:8888

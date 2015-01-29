@@ -8,8 +8,8 @@ templates:
 packages:
   - pid_utils
   - file_server
-  - linux-circus
-  - docker-circus
+  - buildpack_app_lifecycle
+  - docker_app_lifecycle
 
 properties:
   diego.ssl.skip_cert_verify:

@@ -26,10 +26,6 @@
 	path = src/github.com/cloudfoundry-incubator/file-server
 	url = https://github.com/cloudfoundry-incubator/file-server.git
 	branch = master
-[submodule "src/github.com/cloudfoundry-incubator/linux-circus"]
-	path = src/github.com/cloudfoundry-incubator/linux-circus
-	url = https://github.com/cloudfoundry-incubator/linux-circus.git
-	branch = master
 [submodule "src/github.com/coreos/go-etcd"]
 	path = src/github.com/coreos/go-etcd
 	url = https://github.com/coreos/go-etcd.git
@@ -133,10 +129,6 @@
 	path = src/github.com/pivotal-golang/lager
 	url = https://github.com/pivotal-golang/lager.git
 	branch = master
-[submodule "src/github.com/cloudfoundry-incubator/docker-circus"]
-	path = src/github.com/cloudfoundry-incubator/docker-circus
-	url = https://github.com/cloudfoundry-incubator/docker-circus.git
-	branch = master
 [submodule "src/github.com/cloudfoundry-incubator/cf-lager"]
 	path = src/github.com/cloudfoundry-incubator/cf-lager
 	url = https://github.com/cloudfoundry-incubator/cf-lager.git
@@ -224,4 +216,12 @@
 [submodule "src/github.com/pivotal-golang/eventhub"]
 	path = src/github.com/pivotal-golang/eventhub
 	url = https://github.com/pivotal-golang/eventhub
+	branch = master
+[submodule "src/github.com/cloudfoundry-incubator/buildpack_app_lifecycle"]
+	path = src/github.com/cloudfoundry-incubator/buildpack_app_lifecycle
+	url = https://github.com/cloudfoundry-incubator/buildpack_app_lifecycle
+	branch = master
+[submodule "src/github.com/cloudfoundry-incubator/docker_app_lifecycle"]
+	path = src/github.com/cloudfoundry-incubator/docker_app_lifecycle
+	url = https://github.com/cloudfoundry-incubator/docker_app_lifecycle
 	branch = master

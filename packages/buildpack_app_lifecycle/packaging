@@ -1,0 +1,16 @@
+set -e
+
+mkdir -p ${BOSH_INSTALL_TARGET}/src
+cp -a . ${BOSH_INSTALL_TARGET}/src
+export GOPATH=$BOSH_INSTALL_TARGET
+
+export GOROOT=$(readlink -nf /var/vcap/packages/golang_1.4)
+export PATH=$GOROOT/bin:$PATH
+go build github.com/cloudfoundry-incubator/buildpack_app_lifecycle/builder
+go build github.com/cloudfoundry-incubator/buildpack_app_lifecycle/launcher
+go build github.com/cloudfoundry-incubator/buildpack_app_lifecycle/healthcheck
+
+tar -czf ${BOSH_INSTALL_TARGET}/buildpack_app_lifecycle.tgz builder launcher healthcheck
+
+# clean up source artifacts
+rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg
