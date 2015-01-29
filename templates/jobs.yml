@@ -301,8 +301,6 @@ jobs:
     networks:
       - name: diego1
         static_ips: (( merge ))
-    properties:
-      network_name: diego1
     update:
       serial: true
 
@@ -316,8 +314,6 @@ jobs:
     networks:
       - name: diego2
         static_ips: (( merge ))
-    properties:
-      network_name: diego2
     update:
       serial: true
 
@@ -331,8 +327,6 @@ jobs:
     networks:
       - name: diego3
         static_ips: (( merge ))
-    properties:
-      network_name: diego3
     update:
       serial: true
 

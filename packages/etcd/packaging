@@ -5,6 +5,6 @@ export PATH=$GOROOT/bin:$PATH
 
 pushd github.com/coreos/etcd
 ./build
-cp ./bin/etcd ${BOSH_INSTALL_TARGET}
+cp ./bin/{etcd,etcdctl,etcd-dump-logs} ${BOSH_INSTALL_TARGET}
 popd
 

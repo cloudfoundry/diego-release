@@ -5,38 +5,48 @@ dependencies:
   - golang_1.4
 
 files:
-  - github.com/coreos/etcd/bench/*.go
   - github.com/coreos/etcd/build
   - github.com/coreos/etcd/*.go # gosub
-  - github.com/coreos/etcd/config/*.go # gosub
+  - github.com/coreos/etcd/etcdctl/*.go # gosub
+  - github.com/coreos/etcd/tools/etcd-migrate/*.go # gosub
+  - github.com/coreos/etcd/tools/etcd-dump-logs/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/code.google.com/p/gogoprotobuf/proto/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/github.com/jonboulle/clockwork/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/golang.org/x/net/context/*.go # gosub
+  - github.com/coreos/etcd/client/*.go # gosub
   - github.com/coreos/etcd/discovery/*.go # gosub
   - github.com/coreos/etcd/error/*.go # gosub
-  - github.com/coreos/etcd/etcd/*.go # gosub
-  - github.com/coreos/etcd/http/*.go # gosub
-  - github.com/coreos/etcd/log/*.go # gosub
-  - github.com/coreos/etcd/metrics/*.go # gosub
-  - github.com/coreos/etcd/mod/*.go # gosub
-  - github.com/coreos/etcd/mod/dashboard/*.go # gosub
-  - github.com/coreos/etcd/mod/dashboard/resources/*.go # gosub
-  - github.com/coreos/etcd/mod/leader/v2/*.go # gosub
-  - github.com/coreos/etcd/mod/lock/v2/*.go # gosub
-  - github.com/coreos/etcd/pkg/btrfs/*.go # gosub
-  - github.com/coreos/etcd/pkg/http/*.go # gosub
-  - github.com/coreos/etcd/pkg/strings/*.go # gosub
-  - github.com/coreos/etcd/server/*.go # gosub
-  - github.com/coreos/etcd/server/v1/*.go # gosub
-  - github.com/coreos/etcd/server/v2/*.go # gosub
+  - github.com/coreos/etcd/etcdmain/*.go # gosub
+  - github.com/coreos/etcd/etcdserver/*.go # gosub
+  - github.com/coreos/etcd/etcdserver/etcdhttp/*.go # gosub
+  - github.com/coreos/etcd/etcdserver/etcdhttp/httptypes/*.go # gosub
+  - github.com/coreos/etcd/etcdserver/etcdserverpb/*.go # gosub
+  - github.com/coreos/etcd/etcdserver/stats/*.go # gosub
+  - github.com/coreos/etcd/migrate/*.go # gosub
+  - github.com/coreos/etcd/migrate/etcd4pb/*.go # gosub
+  - github.com/coreos/etcd/pkg/cors/*.go # gosub
+  - github.com/coreos/etcd/pkg/crc/*.go # gosub
+  - github.com/coreos/etcd/pkg/fileutil/*.go # gosub
+  - github.com/coreos/etcd/pkg/flags/*.go # gosub
+  - github.com/coreos/etcd/pkg/idutil/*.go # gosub
+  - github.com/coreos/etcd/pkg/ioutil/*.go # gosub
+  - github.com/coreos/etcd/pkg/metrics/*.go # gosub
+  - github.com/coreos/etcd/pkg/netutil/*.go # gosub
+  - github.com/coreos/etcd/pkg/pbutil/*.go # gosub
+  - github.com/coreos/etcd/pkg/timeutil/*.go # gosub
+  - github.com/coreos/etcd/pkg/transport/*.go # gosub
+  - github.com/coreos/etcd/pkg/types/*.go # gosub
+  - github.com/coreos/etcd/pkg/wait/*.go # gosub
+  - github.com/coreos/etcd/proxy/*.go # gosub
+  - github.com/coreos/etcd/raft/*.go # gosub
+  - github.com/coreos/etcd/raft/raftpb/*.go # gosub
+  - github.com/coreos/etcd/rafthttp/*.go # gosub
+  - github.com/coreos/etcd/snap/*.go # gosub
+  - github.com/coreos/etcd/snap/snappb/*.go # gosub
   - github.com/coreos/etcd/store/*.go # gosub
-  - github.com/coreos/etcd/store/v2/*.go # gosub
-  - github.com/coreos/etcd/third_party/bitbucket.org/kardianos/osext/*.go # gosub
-  - github.com/coreos/etcd/third_party/code.google.com/p/gogoprotobuf/proto/*.go # gosub
-  - github.com/coreos/etcd/third_party/github.com/BurntSushi/toml/*.go # gosub
-  - github.com/coreos/etcd/third_party/github.com/coreos/go-etcd/etcd/*.go # gosub
-  - github.com/coreos/etcd/third_party/github.com/coreos/go-log/log/*.go # gosub
-  - github.com/coreos/etcd/third_party/github.com/coreos/go-systemd/journal/*.go # gosub
-  - github.com/coreos/etcd/third_party/github.com/goraft/raft/*.go # gosub
-  - github.com/coreos/etcd/third_party/github.com/goraft/raft/protobuf/*.go # gosub
-  - github.com/coreos/etcd/third_party/github.com/gorilla/context/*.go # gosub
-  - github.com/coreos/etcd/third_party/github.com/gorilla/mux/*.go # gosub
-  - github.com/coreos/etcd/third_party/github.com/mreiferson/go-httpclient/*.go # gosub
-  - github.com/coreos/etcd/third_party/github.com/rcrowley/go-metrics/*.go # gosub
+  - github.com/coreos/etcd/version/*.go # gosub
+  - github.com/coreos/etcd/wal/*.go # gosub
+  - github.com/coreos/etcd/wal/walpb/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/github.com/codegangsta/cli/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/github.com/coreos/go-etcd/etcd/*.go # gosub
+  - github.com/coreos/etcd/etcdctl/command/*.go # gosub
