@@ -1,9 +1,12 @@
 #!/bin/bash
 
+set -e -u
+
 RUN_DIR=/var/vcap/sys/run/etcd
 LOG_DIR=/var/vcap/sys/log/etcd
 PIDFILE=$RUN_DIR/etcd.pid
-WORK_DIR=/var/vcap/store/etcd
+STORE_DIR=/var/vcap/store
+DATA_DIR=${STORE_DIR}/etcd
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
@@ -34,13 +37,18 @@ case $1 in
   start)
     pid_guard $PIDFILE "etcd"
 
+    if ! mountpoint -q $STORE_DIR; then
+      echo "$STORE_DIR must be a persistent disk"
+      exit 1
+    fi
+
     mkdir -p $RUN_DIR
     mkdir -p $LOG_DIR
-    mkdir -p $WORK_DIR
+    mkdir -p $DATA_DIR
 
     chown -R vcap:vcap $RUN_DIR
     chown -R vcap:vcap $LOG_DIR
-    chown -R vcap:vcap $WORK_DIR
+    chown -R vcap:vcap $DATA_DIR
 
     echo $$ > $PIDFILE
 
@@ -48,7 +56,7 @@ case $1 in
 
     exec chpst -u vcap:vcap /var/vcap/packages/etcd/etcd \
         --name=<%= my_ip %> \
-        --data-dir=$WORK_DIR \
+        --data-dir=$DATA_DIR \
         --heartbeat-interval=<%= p("diego.etcd.heartbeat_interval_in_milliseconds") %>\
         --election-timeout=<%= p("diego.etcd.election_timeout_in_milliseconds") %>\
         --listen-peer-urls=http://0.0.0.0:7001 \
