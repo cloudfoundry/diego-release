@@ -304,13 +304,14 @@ jobs:
         static_ips: (( merge ))
     update:
       serial: true
+      max_in_flight: 1
 
   - name: etcd_z2
     release: diego
     templates:
       - name: etcd
       - name: etcd_metrics_server
-    instances: 0
+    instances: 1
     persistent_disk: 1024
     resource_pool: medium_z2
     networks:
@@ -318,13 +319,14 @@ jobs:
         static_ips: (( merge ))
     update:
       serial: true
+      max_in_flight: 1
 
   - name: etcd_z3
     release: diego
     templates:
       - name: etcd
       - name: etcd_metrics_server
-    instances: 0
+    instances: 1
     persistent_disk: 1024
     resource_pool: medium_z3
     networks:
@@ -332,6 +334,7 @@ jobs:
         static_ips: (( merge ))
     update:
       serial: true
+      max_in_flight: 1
 
 properties:
   # -- Properties below are used by jobs from cf-release --
