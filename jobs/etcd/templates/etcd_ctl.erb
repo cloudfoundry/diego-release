@@ -55,14 +55,14 @@ case $1 in
     ulimit -n 65536
 
     exec chpst -u vcap:vcap /var/vcap/packages/etcd/etcd \
-        --name=<%= my_ip %> \
+        --name=<%= "#{name}-#{spec.index}" %>\
         --data-dir=$DATA_DIR \
         --heartbeat-interval=<%= p("diego.etcd.heartbeat_interval_in_milliseconds") %>\
         --election-timeout=<%= p("diego.etcd.election_timeout_in_milliseconds") %>\
         --listen-peer-urls=http://0.0.0.0:7001 \
         --listen-client-urls=http://0.0.0.0:4001 \
         --initial-advertise-peer-urls=http://<%= my_ip %>:7001 \
-        --initial-cluster '<%= p("diego.etcd.machines").reverse.map { |m| "#{m}=http://#{m}:7001" }.join(",") %>' \
+        --initial-cluster '<%= p("diego.etcd.machines").reverse.map { |m| "#{name}-#{spec.index}=http://#{m}:7001" }.join(",") %>' \
         --advertise-client-urls=http://<%= my_ip %>:4001 \
         2> >(tee -a $LOG_DIR/etcd.stderr.log | logger -t vcap.etcd) \
         1> >(tee -a $LOG_DIR/etcd.stdout.log | logger -t vcap.etcd)
