@@ -8,6 +8,8 @@ LOG_DIR=/var/vcap/sys/log/rep
 LOGFILE=$LOG_DIR/drain.log
 LISTEN_ADDR=<%= p("diego.rep.listen_addr") %>
 
+exec 3>&1
+
 exec 1>> $LOGFILE
 exec 2>> $LOGFILE
 
@@ -17,7 +19,7 @@ heartbeat() {
 
 if [ ! -f $PIDFILE ]; then
   echo "$(date): PIDFILE does not exist"
-  echo 0
+  echo 0 >&3
   exit 0
 fi
 
@@ -32,9 +34,9 @@ if kill -USR1 $pid; then
   done
 
   echo "$(date): rep exited"
-  echo 0
+  echo 0 >&3
   exit 0
 else
   echo "$(date): rep exited"
-  echo 0
+  echo 0 >&3
 fi
