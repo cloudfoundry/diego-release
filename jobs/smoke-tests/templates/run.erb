@@ -18,6 +18,8 @@ cf target -o <%= p("diego.smoke_tests.org") %>
 cf create-space <%= p("diego.smoke_tests.space") %>
 cf target -s <%= p("diego.smoke_tests.space") %>
 
+export SMOKE_TESTS_APPS_DOMAIN=<%= p("diego.smoke_tests.apps_domain") %>
+
 cd /var/vcap/packages/smoke-tests
 
 # assumes dora asset lives in working directory

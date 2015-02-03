@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e
+
+RUN_DIR=/var/vcap/sys/run/rep
+PIDFILE=$RUN_DIR/rep.pid
+LOG_DIR=/var/vcap/sys/log/rep
+LOGFILE=$LOG_DIR/drain.log
+LISTEN_ADDR=<%= p("diego.rep.listen_addr") %>
+
+exec 3>&1
+
+exec 1>> $LOGFILE
+exec 2>> $LOGFILE
+
+heartbeat() {
+  curl --fail --silent http://$LISTEN_ADDR/ping 1>&2> /dev/null
+}
+
+if [ ! -f $PIDFILE ]; then
+  echo "$(date): PIDFILE does not exist"
+  echo 0 >&3
+  exit 0
+fi
+
+pid=$(cat $PIDFILE)
+
+if kill -USR1 $pid; then
+  echo "$(date): drain triggered"
+
+  while heartbeat; do
+    sleep 5
+    echo "$(date): waiting"
+  done
+
+  echo "$(date): rep exited"
+  echo 0 >&3
+  exit 0
+else
+  echo "$(date): rep exited"
+  echo 0 >&3
+fi

@@ -409,6 +409,7 @@ properties:
         port: (( external_services.nats.port ))
       register_with_router: (( merge || false ))
       domain_names: (( merge || [] ))
+      cors_enabled: false
       username: ""
       password: ""
 
