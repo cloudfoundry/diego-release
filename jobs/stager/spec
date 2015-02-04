@@ -48,3 +48,5 @@ properties:
   diego.file_server.file_server_url:
     description: URL of file server
     default: http://file_server.service.dc1.consul:8080
+  diego.stager.docker_registry_url:
+    description: URL of a private Docker Registry, used for reproducible scale up

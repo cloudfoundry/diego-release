@@ -448,6 +448,7 @@ properties:
         password: (( external_services.nats.password ))
         port: (( external_services.nats.port ))
       min_disk_mb: ~
+      docker_registry_url: ~
 
     tps:
       diego_api_url: (( .properties.diego.api_url ))
