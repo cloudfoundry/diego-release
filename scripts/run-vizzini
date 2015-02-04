@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd $(dirname $0)/..
+
+fly -x -c builds/vizzini.yml -- "$@"
