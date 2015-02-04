@@ -18,4 +18,4 @@ properties:
     description: "IPs of etcd machines"
   diego.etcd.log_sync_timeout_in_seconds:
     description: "Time to wait for a joining node to finish syncing logs with the existing cluster"
-    default: 180
+    default: 30
