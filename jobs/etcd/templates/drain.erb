@@ -1,7 +1,11 @@
 #!/bin/bash
 
+set -u -x
+
 LOG_DIR=/var/vcap/sys/log/etcd
 LOGFILE=$LOG_DIR/drain.log
+STORE_DIR=/var/vcap/store
+DATA_DIR=${STORE_DIR}/etcd
 
 exec 3>&1
 
@@ -31,12 +35,31 @@ exec 2>> $LOGFILE
   peers=p("diego.etcd.machines").map { |m| "http://#{m}:4001" }.join(",")
 %>
 
-my_id=$(/var/vcap/packages/etcd/etcdctl -C '<%= peers %>' member list | grep <%= my_ip %> | sed 's/:.*//')
-if [ ! -z "$my_id" ]; then
-  /var/vcap/packages/etcd/etcdctl -C '<%= peers %>' member remove $my_id
-fi
+member_list() {
+  /var/vcap/packages/etcd/etcdctl -C '<%= peers %>' member list || echo ""
+}
 
-rm -rf /var/vcap/data/store/*
+member_remove() {
+  /var/vcap/packages/etcd/etcdctl -C '<%= peers %>' member remove $1
+}
+
+prior_cluster_had_other_nodes() {
+  [ "$( wc -l <<< '$1' )" -ne 1 ] || ! grep <%= my_ip %> <<< "$1"
+}
+
+extract_my_id() {
+  echo $1 | grep <%= my_ip %> | sed 's/:.*//'
+}
+
+prior_member_list=$(member_list)
+
+if prior_cluster_had_other_nodes "$prior_member_list"; then
+  my_id=$(extract_my_id "$prior_member_list")
+  if [ ! -z "$my_id" ]; then
+    member_remove $my_id
+  fi
+  rm -rf ${DATA_DIR}/*
+fi
 
 echo 0 >&3
 exit 0
