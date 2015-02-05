@@ -311,7 +311,7 @@ jobs:
     templates:
       - name: etcd
       - name: etcd_metrics_server
-    instances: 1
+    instances: 0
     persistent_disk: 1024
     resource_pool: medium_z2
     networks:
@@ -326,7 +326,7 @@ jobs:
     templates:
       - name: etcd
       - name: etcd_metrics_server
-    instances: 1
+    instances: 0
     persistent_disk: 1024
     resource_pool: medium_z3
     networks:
