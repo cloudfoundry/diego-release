@@ -1,8 +1,9 @@
 ---
 name: etcd
 templates:
+  etcd_bosh_utils.sh.erb: bin/etcd_bosh_utils.sh
   etcd_ctl.erb: bin/etcd_ctl
-  drain.erb: bin/drain
+  drain: bin/drain
 packages:
   - pid_utils
   - etcd
