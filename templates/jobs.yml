@@ -304,6 +304,7 @@ jobs:
         static_ips: (( merge ))
     update:
       serial: true
+      max_in_flight: 1
 
   - name: etcd_z2
     release: diego
@@ -318,6 +319,7 @@ jobs:
         static_ips: (( merge ))
     update:
       serial: true
+      max_in_flight: 1
 
   - name: etcd_z3
     release: diego
@@ -332,6 +334,7 @@ jobs:
         static_ips: (( merge ))
     update:
       serial: true
+      max_in_flight: 1
 
 properties:
   # -- Properties below are used by jobs from cf-release --

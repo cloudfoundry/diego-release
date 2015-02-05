@@ -57,13 +57,13 @@ jobs:
     instances: 0
     networks:
       - name: diego2
-        static_ips: (( static_ips(0) ))
+        static_ips: []
 
   - name: etcd_z3
     instances: 0
     networks:
       - name: diego3
-        static_ips: (( static_ips(0) ))
+        static_ips: []
 
   - name: consul_z1
     instances: 1

@@ -1,9 +1,0 @@
----
-image: docker:///cloudfoundry/inigo-ci
-
-params:
-  RECEPTOR_ADDRESS: http://10.244.17.6:8888
-  ROUTABLE_DOMAIN_SUFFIX: 10.244.0.34.xip.io
-
-run:
-  path: diego-release/scripts/ci/run-vizzini
