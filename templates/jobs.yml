@@ -377,7 +377,7 @@ properties:
         port: (( external_services.nats.port ))
 
     executor:
-      drain_timeout: ~
+      drain_timeout_in_seconds: ~
       garden: ~
       allow_privileged: ~
       export_network_env_vars: ~
