@@ -51,7 +51,7 @@ extract_cluster_from_member_list() {
 }
 
 prior_cluster_had_other_nodes() {
-  [ "$( wc -l <<< '$1' )" -ne 1 ] || ! grep <%= my_ip %> <<< "$1"
+  [ "$( wc -l <<< "$1" )" -ne 1 ] || ! grep <%= my_ip %> <<< "$1"
 }
 
 extract_my_id() {
