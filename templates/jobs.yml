@@ -123,11 +123,11 @@ jobs:
   - name: cell_z1
     release: diego
     templates:
+      - name: rep
       - name: consul-agent
       - name: executor
       - name: garden-linux
       - name: receptor
-      - name: rep
       - name: metron_agent
         release: cf
     instances: 1
@@ -155,11 +155,11 @@ jobs:
   - name: cell_z2
     release: diego
     templates:
+      - name: rep
       - name: consul-agent
       - name: executor
       - name: garden-linux
       - name: receptor
-      - name: rep
       - name: metron_agent
         release: cf
     instances: 1

@@ -6,15 +6,19 @@ RUN_DIR=/var/vcap/sys/run/rep
 PIDFILE=$RUN_DIR/rep.pid
 LOG_DIR=/var/vcap/sys/log/rep
 LOGFILE=$LOG_DIR/drain.log
-LISTEN_ADDR=<%= p("diego.rep.listen_addr") %>
+ADDRESS=<%= p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") %>
 
 exec 3>&1
 
 exec 1>> $LOGFILE
 exec 2>> $LOGFILE
 
+evacuate() {
+  curl --fail --silent -X POST http://$ADDRESS/evacuate >/dev/null 2>&1
+}
+
 heartbeat() {
-  curl --fail --silent http://$LISTEN_ADDR/ping 1>&2> /dev/null
+  curl --fail --silent http://$ADDRESS/ping >/dev/null 2>&1
 }
 
 if [ ! -f $PIDFILE ]; then
@@ -25,7 +29,7 @@ fi
 
 pid=$(cat $PIDFILE)
 
-if kill -USR1 $pid; then
+if evacuate; then
   echo "$(date): drain triggered"
 
   while heartbeat; do
