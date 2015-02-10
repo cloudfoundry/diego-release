@@ -55,7 +55,7 @@ prior_cluster_had_other_nodes() {
 }
 
 extract_my_id() {
-  echo $1 | grep <%= my_ip %> | sed 's/:.*//'
+  echo "$1" | grep <%= my_ip %> | sed 's/:.*//'
 }
 
 safe_teardown() {
