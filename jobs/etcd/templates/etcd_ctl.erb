@@ -3,73 +3,15 @@
 set -e -u -x
 
 RUN_DIR=/var/vcap/sys/run/etcd
-LOG_DIR=/var/vcap/sys/log/etcd
-PIDFILE=$RUN_DIR/etcd.pid
-STORE_DIR=/var/vcap/store
-DATA_DIR=${STORE_DIR}/etcd
+PIDFILE=${RUN_DIR}/etcd.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-<%
-  def discover_external_ip
-    networks = spec.networks.marshal_dump
-
-    _, network = networks.find do |_name, network_spec|
-      network_spec.default
-    end
-
-    if !network
-      _, network = networks.first
-    end
-
-    if !network
-      raise "Could not determine IP via network spec: #{networks}"
-    end
-
-    network.ip
-  end
-
-  my_ip     = discover_external_ip
-  peers     = p("diego.etcd.machines").map { |m| "http://#{m}:4001" }.join(",")
-  node_name = "#{name}-#{spec.index}"
-
-  listen_peer_url      = "http://0.0.0.0:7001"
-  listen_client_url    = "http://0.0.0.0:4001"
-  advertise_peer_url   = "http://#{my_ip}:7001"
-  advertise_client_url = "http://#{my_ip}:4001"
-
-  this_node = "#{node_name}=#{advertise_peer_url}"
-%>
-
-member_list() {
-  /var/vcap/packages/etcd/etcdctl -C '<%= peers %>' member list || echo ""
-}
-
-member_remove() {
-  /var/vcap/packages/etcd/etcdctl -C '<%= peers %>' member remove $1
-}
-
-member_add() {
-  /var/vcap/packages/etcd/etcdctl -C '<%= peers %>' member add <%= node_name %> <%= advertise_peer_url %>
-}
-
-extract_cluster_from_member_list() {
-  members_with_names=$(echo "$1" | grep -v 'name= ')
-  name_peerURL_pairs=$(echo "$members_with_names" | sed 's/.*name=//' | sed 's/ clientURLs.*//' | sed 's/ peerURLs//')
-  echo "$name_peerURL_pairs" | tr -s "\n" "," | sed 's/,$//'
-}
-
-prior_cluster_had_other_nodes() {
-  [ "$( wc -l <<< '$1' )" -ne 1 ] || ! grep <%= my_ip %> <<< "$1"
-}
-
-extract_my_id() {
-  echo $1 | grep <%= my_ip %> | sed 's/:.*//'
-}
+source /var/vcap/jobs/etcd/bin/etcd_bosh_utils.sh
 
 wait_for_this_node_to_synchronize() {
   for i in $(seq <%= p("diego.etcd.log_sync_timeout_in_seconds") %>); do
-    if /var/vcap/packages/etcd/etcdctl -C '<%= advertise_client_url %>' ls; then
+    if /var/vcap/packages/etcd/etcdctl -C ${advertise_client_url} ls; then
       synced=true
       break
     fi
@@ -77,56 +19,48 @@ wait_for_this_node_to_synchronize() {
   done
 }
 
+
 case $1 in
 
   start)
 
-    pid_guard $PIDFILE "etcd"
+    pid_guard ${PIDFILE} "etcd"
 
-    if ! mountpoint -q $STORE_DIR; then
+    if ! mountpoint -q ${STORE_DIR}; then
       echo "$STORE_DIR must be a persistent disk"
       exit 1
     fi
 
-    mkdir -p $RUN_DIR
-    mkdir -p $LOG_DIR
-    mkdir -p $DATA_DIR
+    mkdir -p ${RUN_DIR}
+    mkdir -p ${LOG_DIR}
+    mkdir -p ${DATA_DIR}
 
-    chown -R vcap:vcap $RUN_DIR
-    chown -R vcap:vcap $LOG_DIR
-    chown -R vcap:vcap $DATA_DIR
+    chown -R vcap:vcap ${RUN_DIR}
+    chown -R vcap:vcap ${LOG_DIR}
+    chown -R vcap:vcap ${DATA_DIR}
 
     # bump open file descriptor limit from default
     ulimit -n 65536
 
     prior_member_list=$(member_list)
 
-    if [ -z "$prior_member_list" ]; then
+    if [ -z "${prior_member_list}" ]; then
       cluster_state=new
-      cluster='<%= this_node %>'
+      cluster="${this_node}"
     else
       cluster_state=existing
-      existing_cluster=$(extract_cluster_from_member_list "$prior_member_list")
-      cluster="${existing_cluster},<%= this_node %>"
+      cluster=$(extract_cluster_from_member_list "${prior_member_list}")
 
-      # Only remove the DATA_DIR and leave the cluster if this is part of a
-      # multi-node cluster to ensure a clean re-join. We will sync the data from
-      # the other nodes. We can't do this for single-node cluster without data
-      # loss.
-      if prior_cluster_had_other_nodes "$prior_member_list"; then
-        my_id=$(extract_my_id "$prior_member_list")
-        if [ ! -z "$my_id" ]; then
-          member_remove $my_id
-        fi
-        rm -rf ${DATA_DIR}/*
+      # If this node is not in the existing cluster, add it. It generally should
+      # not be in the cluster, but if a prior shutdown failed to remove it, we
+      # don't want to have it duplicated in the list (etcd server will fail to
+      # start). Note extract_my_id determines membership solely based on IP, so
+      # this logic is not future-proof against changing node names or ports.
+      my_id=$(extract_my_id "${prior_member_list}")
+      if [ -z "${my_id}" ]; then
+        member_add
+        cluster="${cluster},${this_node}"
       fi
-    fi
-
-    # Don't reuse $prior_member_list here because we may have changed it above
-    # via the member_remove
-    my_id=$(extract_my_id member_list)
-    if [ -z "$my_id" ] && [ $cluster_state == "existing" ]; then
-      member_add
     fi
 
     # Sleep to allow member_add to propagate to entire cluster because starting
@@ -134,37 +68,30 @@ case $1 in
     sleep 2
 
     chpst -u vcap:vcap /var/vcap/packages/etcd/etcd                                             \
-        --name                        <%= node_name %>                                          \
-        --data-dir                    $DATA_DIR                                                 \
+        --name                        ${node_name}                                              \
+        --data-dir                    ${DATA_DIR}                                               \
         --heartbeat-interval          <%= p("diego.etcd.heartbeat_interval_in_milliseconds") %> \
         --election-timeout            <%= p("diego.etcd.election_timeout_in_milliseconds") %>   \
-        --listen-peer-urls            <%= listen_peer_url %>                                    \
-        --listen-client-urls          <%= listen_client_url %>                                  \
-        --initial-advertise-peer-urls <%= advertise_peer_url %>                                 \
-        --advertise-client-urls       <%= advertise_client_url %>                               \
-        --initial-cluster             $cluster                                                  \
-        --initial-cluster-state       $cluster_state                                            \
-        2> >(tee -a $LOG_DIR/etcd.stderr.log | logger -t vcap.etcd)                             \
-        1> >(tee -a $LOG_DIR/etcd.stdout.log | logger -t vcap.etcd) &
+        --listen-peer-urls            ${listen_peer_url}                                        \
+        --listen-client-urls          ${listen_client_url}                                      \
+        --initial-advertise-peer-urls ${advertise_peer_url}                                     \
+        --advertise-client-urls       ${advertise_client_url}                                   \
+        --initial-cluster             ${cluster}                                                \
+        --initial-cluster-state       ${cluster_state}                                          \
+        2> >(tee -a ${LOG_DIR}/etcd.stderr.log | logger -t vcap.etcd)                           \
+        1> >(tee -a ${LOG_DIR}/etcd.stdout.log | logger -t vcap.etcd) &
 
     etcd_pid=$!
 
     synced=false
     wait_for_this_node_to_synchronize # mutates $synced
 
-    if $synced; then
-      echo $etcd_pid > $PIDFILE
-      wait $etcd_pid
+    if ${synced}; then
+      echo ${etcd_pid} > ${PIDFILE}
+      wait ${etcd_pid}
     else
-      if prior_cluster_had_other_nodes "$prior_member_list"; then
-        my_id=$(extract_my_id member_list)
-        if [ ! -z "$my_id" ]; then
-          member_remove $my_id
-        fi
-        rm -rf ${DATA_DIR}/*
-      fi
-
-      kill -9 $etcd_pid
+      safe_teardown "${prior_member_list}"
+      kill -9 ${etcd_pid}
       exit 1
     fi
 
@@ -172,7 +99,7 @@ case $1 in
 
   stop)
 
-    kill_and_wait $PIDFILE
+    kill_and_wait ${PIDFILE}
 
     ;;
 

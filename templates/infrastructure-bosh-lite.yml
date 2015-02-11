@@ -34,7 +34,7 @@ properties:
         - 0.0.0.0/0
 
     executor:
-      drain_timeout: 0
+      drain_timeout_in_seconds: 0
       garden:
         network: tcp
         address: 127.0.0.1:7777

@@ -24,7 +24,7 @@ case $1 in
       -natsPassword=<%= p("diego.route_emitter.nats.password") %> \
       -diegoAPIURL=<%= p("diego.route_emitter.diego_api_url") %> \
       -debugAddr=<%= p("diego.route_emitter.debug_addr") %> \
-      -syncInterval=<%= "#{p("diego.route_emitter.sync_interval")}s" %> \
+      -syncInterval=<%= "#{p("diego.route_emitter.sync_interval_in_seconds")}s" %> \
       2>> $LOG_DIR/route_emitter.stderr.log \
       1> >(tee -a $LOG_DIR/route_emitter.stdout.log | logger -t vcap.route-emitter)
 

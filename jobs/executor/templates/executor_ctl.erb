@@ -37,9 +37,9 @@ case $1 in
       -maxCacheSizeInBytes=<%= p("diego.executor.max_cache_size_in_bytes") %>\
       -allowPrivileged=<%= p("diego.executor.allow_privileged") %>\
       -exportNetworkEnvVars=<%= p("diego.executor.export_network_env_vars") %>\
-      -drainTimeout=<%= "#{p("diego.executor.drain_timeout")}s" %> \
-      -healthyMonitoringInterval=<%= "#{p("diego.executor.healthy_monitoring_interval")}s" %> \
-      -unhealthyMonitoringInterval=<%= "#{p("diego.executor.unhealthy_monitoring_interval")}s" %> \
+      -drainTimeout=<%= "#{p("diego.executor.drain_timeout_in_seconds")}s" %> \
+      -healthyMonitoringInterval=<%= "#{p("diego.executor.healthy_monitoring_interval_in_seconds")}s" %> \
+      -unhealthyMonitoringInterval=<%= "#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s" %> \
       2>> $LOG_DIR/executor.stderr.log \
       1> >(tee -a $LOG_DIR/executor.stdout.log | logger -t vcap.executor)
 

@@ -31,13 +31,13 @@ properties:
     default: "internal_user"
   diego.nsync.cc.basic_auth_password:
     description: "basic auth password for CC bulk API"
-  diego.nsync.cc.polling_interval:
-    description: "interval at which to poll bulk API"
-    default: 30s
+  diego.nsync.cc.polling_interval_in_seconds:
+    description: "interval at which to poll bulk API in seconds"
+    default: 30
   diego.nsync.cc.bulk_batch_size:
     description: "number of apps to fetch at once from bulk API"
     default: 500
-  diego.nsync.cc.fetch_timeout:
+  diego.nsync.cc.fetch_timeout_in_seconds:
     description: "How long to wait for completion of requests to CC in seconds."
     default: 30
   diego.nsync.listener_debug_addr:
