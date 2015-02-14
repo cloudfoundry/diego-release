@@ -53,7 +53,7 @@ case $1 in
       -natsPassword=<%= p("diego.tps.nats.password") %> \
       -debugAddr=<%= p("diego.tps.debug_addr") %> \
       -maxInFlightRequests=<%= p("diego.tps.max_in_flight_requests") %> \
-      -listenAddr=<%= "#{my_ip}:1518}" %> \
+      -listenAddr=<%= "#{my_ip}:1518" %> \
       2>> $LOG_DIR/tps.stderr.log \
       1> >(tee -a $LOG_DIR/tps.stdout.log | logger -t vcap.tps)
 
