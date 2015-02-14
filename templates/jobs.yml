@@ -148,8 +148,9 @@ jobs:
       network_name: diego1
       networks:
         apps: diego1
-      rep:
-        zone: (( properties.zone ))
+      diego:
+        rep:
+          zone: (( properties.zone ))
       zone: z1
 
   - name: cell_z2
@@ -180,8 +181,9 @@ jobs:
       network_name: diego2
       networks:
         apps: diego2
-      rep:
-        zone: (( properties.zone ))
+      diego:
+        rep:
+          zone: (( properties.zone ))
       zone: z2
 
   - name: cc_bridge_z1
@@ -384,7 +386,7 @@ properties:
 
     file_server:
       cc:
-        srv_api_uri: (( external_services.cc.srv_api_uri ))
+        base_url: (( external_services.cc.srv_api_uri ))
         staging_upload_user: (( external_services.cc.staging_upload_user ))
         staging_upload_password: (( external_services.cc.staging_upload_password ))
 
