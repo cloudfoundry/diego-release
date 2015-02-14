@@ -297,7 +297,6 @@ jobs:
     release: diego
     templates:
       - name: etcd
-      - name: etcd_metrics_server
     instances: 1
     persistent_disk: 1024
     resource_pool: medium_z1
@@ -312,7 +311,6 @@ jobs:
     release: diego
     templates:
       - name: etcd
-      - name: etcd_metrics_server
     instances: 0
     persistent_disk: 1024
     resource_pool: medium_z2
@@ -327,7 +325,6 @@ jobs:
     release: diego
     templates:
       - name: etcd
-      - name: etcd_metrics_server
     instances: 0
     persistent_disk: 1024
     resource_pool: medium_z3
