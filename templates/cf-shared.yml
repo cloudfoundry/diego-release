@@ -1,4 +1,4 @@
-# this tiny template is so that only external_services ends up being the only
+# this tiny template is so that only external_cf_services ends up being the only
 # thing in the resulting template. a template further down constructs it, but
 # must do so by pulling in everything else (namely, all of the jobs and some
 # properties) from cf-release.
@@ -6,7 +6,7 @@
 # the border between cf and diego is ideally only this one property. so, this
 # template declares it as the whole structure, and the result is then fed into
 # diego's templates.
-external_services: (( merge ))
+external_cf_services: (( merge ))
 
 properties:
   domain: (( merge ))
