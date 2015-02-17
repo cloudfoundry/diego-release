@@ -38,6 +38,7 @@ case $1 in
       -lifecycles=<%= Shellwords.shellescape(p("diego.stager.lifecycle_bundles").to_json) %> \
       -dockerLifecyclePath=<%= p("diego.stager.docker_lifecycle_bundle") %> \
       -fileServerURL=<%= p("diego.file_server.file_server_url") %> \
+      -consulAgentURL=<%= p("diego.stager.consul_agent_url") %> \
       <% if_p("diego.stager.docker_registry_url") do |registry| %>\
       -dockerRegistryURL=<%= registry %> \
       <% end %>\
