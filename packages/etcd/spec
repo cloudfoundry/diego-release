@@ -24,6 +24,8 @@ files:
   - github.com/coreos/etcd/etcdserver/stats/*.go # gosub
   - github.com/coreos/etcd/migrate/*.go # gosub
   - github.com/coreos/etcd/migrate/etcd4pb/*.go # gosub
+  - github.com/coreos/etcd/migrate/starter/*.go # gosub
+  - github.com/coreos/etcd/pkg/coreos/*.go # gosub
   - github.com/coreos/etcd/pkg/cors/*.go # gosub
   - github.com/coreos/etcd/pkg/crc/*.go # gosub
   - github.com/coreos/etcd/pkg/fileutil/*.go # gosub
@@ -32,6 +34,7 @@ files:
   - github.com/coreos/etcd/pkg/ioutil/*.go # gosub
   - github.com/coreos/etcd/pkg/metrics/*.go # gosub
   - github.com/coreos/etcd/pkg/netutil/*.go # gosub
+  - github.com/coreos/etcd/pkg/osutil/*.go # gosub
   - github.com/coreos/etcd/pkg/pbutil/*.go # gosub
   - github.com/coreos/etcd/pkg/timeutil/*.go # gosub
   - github.com/coreos/etcd/pkg/transport/*.go # gosub
