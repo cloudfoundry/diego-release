@@ -60,8 +60,6 @@ compilation:
 properties:
   template_only: (( merge ))
   diego:
-    stager:
-      min_disk_mb: 10240
     garden-linux:
       deny_networks:
         - 0.0.0.0/0
