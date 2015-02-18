@@ -30,6 +30,7 @@ export ROUTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry/gorouter/Godeps/
 export GARDEN_LINUX_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace:${GOPATH_ROOT}
 
 # install application dependencies
+echo "Installing go dependencies ..."
 for package in github.com/coreos/etcd github.com/apcera/gnatsd; do
   go install $package
 done

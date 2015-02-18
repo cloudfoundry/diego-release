@@ -22,74 +22,63 @@ compilation:
 
 update:
   canaries: 1
-  max_in_flight: 3
+  max_in_flight: 1
   serial: false
-  canary_watch_time: 30000-600000
+  canary_watch_time: 5000-600000
   update_watch_time: 5000-600000
 
 resource_pools:
   - name: small_z1
     network: diego1
-    size: (( auto ))
     stemcell: (( meta.stemcell ))
     cloud_properties: (( merge ))
 
   - name: small_z2
     network: diego2
-    size: (( auto ))
     stemcell: (( meta.stemcell ))
     cloud_properties: (( merge ))
 
   - name: small_z3
     network: diego3
-    size: (( auto ))
     stemcell: (( meta.stemcell ))
     cloud_properties: (( merge ))
 
   - name: medium_z1
     network: diego1
-    size: (( auto ))
     stemcell: (( meta.stemcell ))
     cloud_properties: (( merge ))
 
   - name: medium_z2
     network: diego2
-    size: (( auto ))
     stemcell: (( meta.stemcell ))
     cloud_properties: (( merge ))
 
   - name: medium_z3
     network: diego3
-    size: (( auto ))
     stemcell: (( meta.stemcell ))
     cloud_properties: (( merge ))
 
   - name: large_z1
     network: diego1
-    size: (( auto ))
     stemcell: (( meta.stemcell ))
     cloud_properties: (( merge ))
 
   - name: large_z2
     network: diego2
-    size: (( auto ))
     stemcell: (( meta.stemcell ))
     cloud_properties: (( merge ))
 
   - name: large_z3
     network: diego3
-    size: (( auto ))
     stemcell: (( meta.stemcell ))
     cloud_properties: (( merge ))
 
   - name: bridge_z1
     network: diego1
-    size: (( auto ))
     stemcell: (( meta.stemcell ))
     cloud_properties: (( merge ))
 
   - name: bridge_z2
     network: diego2
-    size: (( auto ))
     stemcell: (( meta.stemcell ))
     cloud_properties: (( merge ))

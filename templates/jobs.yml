@@ -8,7 +8,10 @@ releases:
   - name: cf
     version: latest
 
-external_services: (( merge ))
+external_cf_services: (( merge ))
+
+etcd_cluster: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+consul_servers: (( jobs.consul_z1.networks.diego1.static_ips jobs.consul_z2.networks.diego2.static_ips jobs.consul_z3.networks.diego3.static_ips ))
 
 jobs:
   - name: consul_z1
@@ -16,57 +19,34 @@ jobs:
     templates:
       - name: consul-agent
     instances: 1
+    persistent_disk: 1024
     resource_pool: medium_z1
     networks:
       - name: diego1
         static_ips: (( merge ))
     update:
       serial: true
+      max_in_flight: 1
     properties:
-      network_name: diego1
       consul:
         agent:
           mode: server
           servers:
-            lan: (( .properties.diego.consul_server.machines ))
+            lan: (( consul_servers ))
 
-  - name: consul_z2
+  - name: etcd_z1
     release: diego
     templates:
-      - name: consul-agent
+      - name: etcd
     instances: 1
-    resource_pool: medium_z2
+    persistent_disk: 1024
+    resource_pool: medium_z1
     networks:
-      - name: diego2
+      - name: diego1
         static_ips: (( merge ))
     update:
       serial: true
-    properties:
-      network_name: diego2
-      consul:
-        agent:
-          mode: server
-          servers:
-            lan: (( .properties.diego.consul_server.machines ))
-
-  - name: consul_z3
-    release: diego
-    templates:
-      - name: consul-agent
-    instances: 1
-    resource_pool: medium_z3
-    networks:
-      - name: diego3
-        static_ips: (( merge ))
-    update:
-      serial: true
-    properties:
-      network_name: diego3
-      consul:
-        agent:
-          mode: server
-          servers:
-            lan: (( .properties.diego.consul_server.machines ))
+      max_in_flight: 1
 
   - name: brain_z1
     release: diego
@@ -82,43 +62,14 @@ jobs:
     networks:
       - name: diego1
     properties:
-      network_name: diego1
-      networks:
-        apps: diego1
       loggregator_endpoint:
-        shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
+        shared_secret: (( external_cf_services.loggregator_endpoint.shared_secret ))
       metron_agent:
         zone: z1
       consul:
         agent:
           servers:
-            lan: (( .properties.diego.consul_server.machines ))
-
-  - name: brain_z2
-    release: diego
-    templates:
-      - name: consul-agent
-      - name: auctioneer
-      - name: converger
-      - name: runtime_metrics_server
-      - name: metron_agent
-        release: cf
-    instances: 1
-    resource_pool: large_z2
-    networks:
-      - name: diego2
-    properties:
-      network_name: diego2
-      networks:
-        apps: diego2
-      loggregator_endpoint:
-        shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
-      metron_agent:
-        zone: z2
-      consul:
-        agent:
-          servers:
-            lan: (( .properties.diego.consul_server.machines ))
+            lan: (( consul_servers ))
 
   - name: cell_z1
     release: diego
@@ -140,18 +91,119 @@ jobs:
           services:
             - receptor
           servers:
-            lan: (( .properties.diego.consul_server.machines ))
+            lan: (( consul_servers ))
       loggregator_endpoint:
-        shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
+        shared_secret: (( external_cf_services.loggregator_endpoint.shared_secret ))
       metron_agent:
-        zone: (( properties.zone ))
-      network_name: diego1
-      networks:
-        apps: diego1
+        zone: z1
       diego:
         rep:
-          zone: (( properties.zone ))
-      zone: z1
+          zone: z1
+
+  - name: cc_bridge_z1
+    release: diego
+    templates:
+      - name: stager
+      - name: nsync
+      - name: tps
+      - name: file_server
+      - name: consul-agent
+      - name: metron_agent
+        release: cf
+    instances: 1
+    resource_pool: bridge_z1
+    networks:
+      - name: diego1
+    properties:
+      loggregator_endpoint:
+        shared_secret: (( external_cf_services.loggregator_endpoint.shared_secret ))
+      metron_agent:
+        zone: z1
+      consul:
+        agent:
+          services:
+            - stager
+            - file_server
+          servers:
+            lan: (( consul_servers ))
+
+  - name: route_emitter_z1
+    release: diego
+    templates:
+      - name: route_emitter
+      - name: consul-agent
+      - name: metron_agent
+        release: cf
+    instances: 1
+    resource_pool: small_z1
+    networks:
+      - name: diego1
+    properties:
+      consul:
+        agent:
+          servers:
+            lan: (( consul_servers ))
+      loggregator_endpoint:
+        shared_secret: (( external_cf_services.loggregator_endpoint.shared_secret ))
+      metron_agent:
+        zone: z1
+
+  - name: consul_z2
+    release: diego
+    templates:
+      - name: consul-agent
+    instances: 1
+    persistent_disk: 1024
+    resource_pool: medium_z2
+    networks:
+      - name: diego2
+        static_ips: (( merge ))
+    update:
+      serial: true
+      max_in_flight: 1
+    properties:
+      consul:
+        agent:
+          mode: server
+          servers:
+            lan: (( consul_servers ))
+
+  - name: etcd_z2
+    release: diego
+    templates:
+      - name: etcd
+    instances: 0
+    persistent_disk: 1024
+    resource_pool: medium_z2
+    networks:
+      - name: diego2
+        static_ips: (( merge ))
+    update:
+      serial: true
+      max_in_flight: 1
+
+  - name: brain_z2
+    release: diego
+    templates:
+      - name: consul-agent
+      - name: auctioneer
+      - name: converger
+      - name: runtime_metrics_server
+      - name: metron_agent
+        release: cf
+    instances: 1
+    resource_pool: large_z2
+    networks:
+      - name: diego2
+    properties:
+      loggregator_endpoint:
+        shared_secret: (( external_cf_services.loggregator_endpoint.shared_secret ))
+      metron_agent:
+        zone: z2
+      consul:
+        agent:
+          servers:
+            lan: (( consul_servers ))
 
   - name: cell_z2
     release: diego
@@ -173,48 +225,14 @@ jobs:
           services:
             - receptor
           servers:
-            lan: (( .properties.diego.consul_server.machines ))
+            lan: (( consul_servers ))
       loggregator_endpoint:
-        shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
+        shared_secret: (( external_cf_services.loggregator_endpoint.shared_secret ))
       metron_agent:
-        zone: (( properties.zone ))
-      network_name: diego2
-      networks:
-        apps: diego2
+        zone: z2
       diego:
         rep:
-          zone: (( properties.zone ))
-      zone: z2
-
-  - name: cc_bridge_z1
-    release: diego
-    templates:
-      - name: stager
-      - name: nsync
-      - name: tps
-      - name: file_server
-      - name: consul-agent
-      - name: metron_agent
-        release: cf
-    instances: 1
-    resource_pool: bridge_z1
-    networks:
-      - name: diego1
-    properties:
-      networks:
-        apps: diego1
-      network_name: diego1
-      loggregator_endpoint:
-        shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
-      metron_agent:
-        zone: z1
-      consul:
-        agent:
-          services:
-            - stager
-            - file_server
-          servers:
-            lan: (( .properties.diego.consul_server.machines ))
+          zone: z2
 
   - name: cc_bridge_z2
     release: diego
@@ -231,12 +249,9 @@ jobs:
     networks:
       - name: diego2
     properties:
-      networks:
-        apps: diego2
-      network_name: diego2
-      nats: (( external_services.nats ))
+      nats: (( external_cf_services.nats ))
       loggregator_endpoint:
-        shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
+        shared_secret: (( external_cf_services.loggregator_endpoint.shared_secret ))
       metron_agent:
         zone: z2
       consul:
@@ -245,30 +260,7 @@ jobs:
             - stager
             - file_server
           servers:
-            lan: (( .properties.diego.consul_server.machines ))
-
-  - name: route_emitter_z1
-    release: diego
-    templates:
-      - name: route_emitter
-      - name: consul-agent
-      - name: metron_agent
-        release: cf
-    instances: 1
-    resource_pool: small_z1
-    networks:
-      - name: diego1
-    properties:
-      consul:
-        agent:
-          servers:
-            lan: (( .properties.diego.consul_server.machines ))
-      networks:
-        apps: diego1
-      loggregator_endpoint:
-        shared_secret: (( external_services.loggregator_endpoint.z1.shared_secret ))
-      metron_agent:
-        zone: z1
+            lan: (( consul_servers ))
 
   - name: route_emitter_z2
     release: diego
@@ -285,41 +277,31 @@ jobs:
       consul:
         agent:
           servers:
-            lan: (( .properties.diego.consul_server.machines ))
-      networks:
-        apps: diego2
+            lan: (( consul_servers ))
       loggregator_endpoint:
-        shared_secret: (( external_services.loggregator_endpoint.z2.shared_secret ))
+        shared_secret: (( external_cf_services.loggregator_endpoint.shared_secret ))
       metron_agent:
         zone: z2
 
-  - name: etcd_z1
+  - name: consul_z3
     release: diego
     templates:
-      - name: etcd
+      - name: consul-agent
     instances: 1
     persistent_disk: 1024
-    resource_pool: medium_z1
+    resource_pool: medium_z3
     networks:
-      - name: diego1
+      - name: diego3
         static_ips: (( merge ))
     update:
       serial: true
       max_in_flight: 1
-
-  - name: etcd_z2
-    release: diego
-    templates:
-      - name: etcd
-    instances: 0
-    persistent_disk: 1024
-    resource_pool: medium_z2
-    networks:
-      - name: diego2
-        static_ips: (( merge ))
-    update:
-      serial: true
-      max_in_flight: 1
+    properties:
+      consul:
+        agent:
+          mode: server
+          servers:
+            lan: (( consul_servers ))
 
   - name: etcd_z3
     release: diego
@@ -338,112 +320,93 @@ jobs:
 properties:
   # -- Properties below are used by jobs from cf-release --
   nats: # For metron_agent to talk to collector
-    machines: (( external_services.nats.machines ))
-    user: (( external_services.nats.user ))
-    password: (( external_services.nats.password ))
-    port: (( external_services.nats.port ))
+    machines: (( external_cf_services.nats.machines ))
+    user: (( external_cf_services.nats.user ))
+    password: (( external_cf_services.nats.password ))
+    port: (( external_cf_services.nats.port ))
+
   etcd: # For metron_agent to find loggregator
-    machines: (( external_services.cf_etcd.machines ))
+    machines: (( external_cf_services.etcd.machines ))
+
   syslog_daemon_config: ~
 
   diego:
     # -- Global properties --
     api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.dc1.consul:8888" ))
 
-    etcd:
-      machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
-    consul_server:
-      machines: (( jobs.consul_z1.networks.diego1.static_ips jobs.consul_z2.networks.diego2.static_ips jobs.consul_z3.networks.diego3.static_ips ))
-    nats: (( external_services.nats ))
     ssl:
       skip_cert_verify: false
 
+    nats: (( external_cf_services.nats ))
+
+    etcd:
+      machines: (( etcd_cluster ))
+
+    # -- Helper alias --
+    cc_config:
+      base_url: (( external_cf_services.cc.srv_api_uri ))
+      basic_auth_password: (( external_cf_services.cc.internal_api_password ))
+      staging_upload_user: (( external_cf_services.cc.staging_upload_user ))
+      staging_upload_password: (( external_cf_services.cc.staging_upload_password ))
+
+    etcd_config:
+      machines: (( etcd_cluster ))
+
+    nats_config:
+      machines: (( external_cf_services.nats.machines ))
+      username: (( external_cf_services.nats.user ))
+      password: (( external_cf_services.nats.password ))
+      port: (( external_cf_services.nats.port ))
+
     # -- Job specific properties --
     auctioneer:
-      etcd:
-        machines: (( .properties.diego.etcd.machines ))
+      etcd: (( etcd_config ))
 
     converger:
-      etcd:
-        machines: (( .properties.diego.etcd.machines ))
-
-    etcd_metrics_server:
-      job_name: "etcd-diego"
-      nats:
-        machines: (( external_services.nats.machines ))
-        username: (( external_services.nats.user ))
-        password: (( external_services.nats.password ))
-        port: (( external_services.nats.port ))
+      etcd: (( etcd_config ))
 
     executor:
-      drain_timeout_in_seconds: ~
-      garden: ~
       allow_privileged: ~
+      drain_timeout_in_seconds: ~
       export_network_env_vars: ~
+      garden: ~
 
     file_server:
-      cc:
-        base_url: (( external_services.cc.srv_api_uri ))
-        staging_upload_user: (( external_services.cc.staging_upload_user ))
-        staging_upload_password: (( external_services.cc.staging_upload_password ))
+      cc: (( cc_config ))
 
     nsync:
       diego_api_url: (( .properties.diego.api_url ))
-      cc:
-        base_url: (( external_services.cc.srv_api_uri ))
-        basic_auth_password: (( external_services.cc.internal_api_password ))
-      etcd:
-        machines: (( .properties.diego.etcd.machines ))
+      cc: (( cc_config ))
+      etcd: (( etcd_config ))
       lifecycle_bundles: ~
-      nats:
-        machines: (( external_services.nats.machines ))
-        username: (( external_services.nats.user ))
-        password: (( external_services.nats.password ))
-        port: (( external_services.nats.port ))
+      nats: (( nats_config ))
 
     receptor:
-      etcd:
-        machines: (( .properties.diego.etcd.machines ))
-      nats:
-        machines: (( external_services.nats.machines ))
-        username: (( external_services.nats.user ))
-        password: (( external_services.nats.password ))
-        port: (( external_services.nats.port ))
-      register_with_router: (( merge || false ))
-      domain_names: (( merge || [] ))
       cors_enabled: false
+      domain_names: ~
+      etcd: (( etcd_config ))
+      nats: (( nats_config ))
       username: ""
       password: ""
+      register_with_router: false
 
     rep:
-      etcd:
-        machines: (( .properties.diego.etcd.machines ))
+      etcd: (( etcd_config ))
 
     route_emitter:
       diego_api_url: (( .properties.diego.api_url ))
-      etcd:
-        machines: (( .properties.diego.etcd.machines ))
-      nats:
-        machines: (( external_services.nats.machines ))
-        username: (( external_services.nats.user ))
-        password: (( external_services.nats.password ))
-        port: (( external_services.nats.port ))
+      etcd: (( etcd_config ))
+      nats: (( nats_config ))
 
     runtime_metrics_server:
-      etcd:
-        machines: (( .properties.diego.etcd.machines ))
-      nats:
-        machines: (( external_services.nats.machines ))
-        username: (( external_services.nats.user ))
-        password: (( external_services.nats.password ))
-        port: (( external_services.nats.port ))
+      etcd: (( etcd_config ))
+      nats: (( nats_config ))
 
     stager:
+      cc: (( cc_config ))
       diego_api_url: (( .properties.diego.api_url ))
-      cc:
-        base_url: (( external_services.cc.srv_api_uri ))
-        basic_auth_password: (( external_services.cc.internal_api_password ))
       lifecycle_bundles: ~
+<<<<<<< HEAD
       nats:
         machines: (( external_services.nats.machines ))
         username: (( external_services.nats.user ))
@@ -451,13 +414,12 @@ properties:
         port: (( external_services.nats.port ))
       min_disk_mb: ~
       docker_registry_url: ~
+=======
+      nats: (( nats_config ))
+>>>>>>> origin/master
 
     tps:
       diego_api_url: (( .properties.diego.api_url ))
-      nats:
-        machines: (( external_services.nats.machines ))
-        username: (( external_services.nats.user ))
-        password: (( external_services.nats.password ))
-        port: (( external_services.nats.port ))
+      nats: (( nats_config ))
 
     garden-linux: ~
