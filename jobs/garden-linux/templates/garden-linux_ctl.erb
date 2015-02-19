@@ -25,6 +25,8 @@ case $1 in
 
     mkdir -p $depot
 
+    ulimit -n 65536
+
     echo $$ > $PIDFILE
 
     export PATH=/var/vcap/packages/shadow/sbin:$PATH
