@@ -406,17 +406,8 @@ properties:
       cc: (( cc_config ))
       diego_api_url: (( .properties.diego.api_url ))
       lifecycle_bundles: ~
-<<<<<<< HEAD
-      nats:
-        machines: (( external_services.nats.machines ))
-        username: (( external_services.nats.user ))
-        password: (( external_services.nats.password ))
-        port: (( external_services.nats.port ))
-      min_disk_mb: ~
-      docker_registry_url: ~
-=======
       nats: (( nats_config ))
->>>>>>> origin/master
+      docker_registry_url: ~
 
     tps:
       diego_api_url: (( .properties.diego.api_url ))
