@@ -29,6 +29,7 @@ case $1 in
         -ccJobPollingInterval=<%= "#{interval}s" %> \
       <% end %>\
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
+      -logLevel=<%= p("diego.file_server.log_level") %> \
       2>> $LOG_DIR/file-server.stderr.log \
       1> >(tee -a $LOG_DIR/file-server.stdout.log | logger -t vcap.file-server)
 

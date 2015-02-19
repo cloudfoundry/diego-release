@@ -21,6 +21,7 @@ case $1 in
       -etcdCluster=<%= p("diego.auctioneer.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -debugAddr=<%= p("diego.auctioneer.debug_addr") %> \
       -listenAddr=<%= p("diego.auctioneer.listen_addr") %> \
+      -logLevel=<%= p("diego.auctioneer.log_level") %> \
       2>> $LOG_DIR/auctioneer.stderr.log \
       1> >(tee -a $LOG_DIR/auctioneer.stdout.log | logger -t vcap.auctioneer)
 

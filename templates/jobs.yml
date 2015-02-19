@@ -361,18 +361,22 @@ properties:
     # -- Job specific properties --
     auctioneer:
       etcd: (( etcd_config ))
+      log_level: info
 
     converger:
       etcd: (( etcd_config ))
+      log_level: info
 
     executor:
       allow_privileged: ~
       drain_timeout_in_seconds: ~
       export_network_env_vars: ~
       garden: ~
+      log_level: info
 
     file_server:
       cc: (( cc_config ))
+      log_level: info
 
     nsync:
       diego_api_url: (( .properties.diego.api_url ))
@@ -389,14 +393,17 @@ properties:
       username: ""
       password: ""
       register_with_router: false
+      log_level: info
 
     rep:
       etcd: (( etcd_config ))
+      log_level: info
 
     route_emitter:
       diego_api_url: (( .properties.diego.api_url ))
       etcd: (( etcd_config ))
       nats: (( nats_config ))
+      log_level: info
 
     runtime_metrics_server:
       etcd: (( etcd_config ))
@@ -407,9 +414,11 @@ properties:
       diego_api_url: (( .properties.diego.api_url ))
       lifecycle_bundles: ~
       nats: (( nats_config ))
+      log_level: info
 
     tps:
       diego_api_url: (( .properties.diego.api_url ))
       nats: (( nats_config ))
+      log_level: info
 
     garden-linux: ~

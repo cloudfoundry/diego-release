@@ -26,3 +26,6 @@ properties:
   diego.converger.expire_pending_task_duration_in_seconds:
     description: "unclaimed tasks are marked as failed, after this duration in seconds"
     default: 1800
+  diego.converger.log_level:
+    description: "Log level"
+    default: "info"

@@ -57,6 +57,7 @@ case $1 in
       -natsUsername=<%= p("diego.receptor.nats.username") %> \
       -natsPassword=<%= p("diego.receptor.nats.password") %> \
       -corsEnabled=<%= p("diego.receptor.cors_enabled") %> \
+      -logLevel=<%= p("diego.receptor.log_level") %> \
       2>> $LOG_DIR/receptor.stderr.log \
       1> >(tee -a $LOG_DIR/receptor.stdout.log | logger -t vcap.receptor)
 

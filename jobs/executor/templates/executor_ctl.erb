@@ -40,6 +40,7 @@ case $1 in
       -drainTimeout=<%= "#{p("diego.executor.drain_timeout_in_seconds")}s" %> \
       -healthyMonitoringInterval=<%= "#{p("diego.executor.healthy_monitoring_interval_in_seconds")}s" %> \
       -unhealthyMonitoringInterval=<%= "#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s" %> \
+      -logLevel=<%= p("diego.executor.log_level") %> \
       2>> $LOG_DIR/executor.stderr.log \
       1> >(tee -a $LOG_DIR/executor.stdout.log | logger -t vcap.executor)
 

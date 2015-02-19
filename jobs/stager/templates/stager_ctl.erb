@@ -38,6 +38,7 @@ case $1 in
       -lifecycles=<%= Shellwords.shellescape(p("diego.stager.lifecycle_bundles").to_json) %> \
       -dockerLifecyclePath=<%= p("diego.stager.docker_lifecycle_bundle") %> \
       -fileServerURL=<%= p("diego.file_server.file_server_url") %> \
+      -logLevel=<%= p("diego.stager.log_level") %> \
       2>> $LOG_DIR/stager.stderr.log \
       1> >(tee -a $LOG_DIR/stager.stdout.log | logger -t vcap.stager)
 

@@ -46,3 +46,6 @@ properties:
   diego.receptor.cors_enabled:
     description: "Enable support for CORS requests."
     default: false
+  diego.receptor.log_level:
+    description: "Log level"
+    default: "info"
