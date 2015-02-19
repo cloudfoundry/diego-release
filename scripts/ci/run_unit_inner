@@ -11,6 +11,8 @@ cd diego-release/
 export GOPATH=$PWD
 export PATH=$PWD/bin:$PATH
 
+go install github.com/apcera/gnatsd
+go install github.com/coreos/etcd
 go install github.com/onsi/ginkgo/ginkgo
 
 ./scripts/run-unit-tests -race "$@"
