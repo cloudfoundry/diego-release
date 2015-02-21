@@ -61,6 +61,8 @@ jobs:
     resource_pool: large_z1
     networks:
       - name: diego1
+    update:
+      serial: true
     properties:
       loggregator_endpoint:
         shared_secret: (( external_cf_services.loggregator_endpoint.shared_secret ))
@@ -195,6 +197,8 @@ jobs:
     resource_pool: large_z2
     networks:
       - name: diego2
+    update:
+      serial: true
     properties:
       loggregator_endpoint:
         shared_secret: (( external_cf_services.loggregator_endpoint.shared_secret ))
