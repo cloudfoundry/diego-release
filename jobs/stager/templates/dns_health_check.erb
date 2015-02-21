@@ -1,2 +1,8 @@
-#!/bin/bash -e
+#!/bin/bash
+
 nc -z 127.0.0.1 <%= URI.parse(p("diego.stager.stager_url")).port %>
+
+# http://www.consul.io/docs/agent/checks.html
+if [ $? -ne 0 ]; then
+  exit 2 # Exit higher than 1 to ensure service is registered as 'critical'
+fi
