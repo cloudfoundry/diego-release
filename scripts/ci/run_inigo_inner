@@ -77,10 +77,3 @@ pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
     ginkgo $color_flag $nodes_flag -r -skipPackage=executor -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
   fi
 popd
-
-# unmount and delete garden graph fs
-if [ "$USE_TMPFS" = "" ]; then
-  umount -l $GARDEN_GRAPH_PATH
-  losetup --all | grep $garden_graph_loopback | cut --delimiter=: --fields=1 | xargs --no-run-if-empty --max-args=1 losetup --detach
-  rm $garden_graph_loopback
-fi
