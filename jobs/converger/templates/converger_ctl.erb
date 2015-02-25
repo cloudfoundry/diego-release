@@ -24,6 +24,7 @@ case $1 in
       -kickPendingTaskDuration=<%= "#{p("diego.converger.kick_pending_task_duration_in_seconds")}s" %> \
       -expireCompletedTaskDuration=<%= "#{p("diego.converger.expire_completed_task_duration_in_seconds")}s" %> \
       -expirePendingTaskDuration=<%= "#{p("diego.converger.expire_pending_task_duration_in_seconds")}s" %> \
+      -logLevel=<%= p("diego.converger.log_level") %> \
       2>> $LOG_DIR/converger.stderr.log \
       1> >(tee -a $LOG_DIR/converger.stdout.log | logger -t vcap.converger)
 

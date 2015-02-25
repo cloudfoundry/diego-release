@@ -58,3 +58,6 @@ properties:
   diego.executor.unhealthy_monitoring_interval_in_seconds:
     description: "Interval to check unhealthy containers in seconds."
     default: 0.5
+  diego.executor.log_level:
+    description: "Log level"
+    default: "info"

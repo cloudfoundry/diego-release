@@ -29,3 +29,6 @@ properties:
   diego.route_emitter.diego_api_url:
     description: URL of diego API
     default: http://receptor.service.dc1.consul:8888
+  diego.route_emitter.log_level:
+    description: "Log level"
+    default: "info"

@@ -26,3 +26,6 @@ properties:
   diego.tps.max_in_flight_requests:
     description: "Maximum number of requests to handle at once."
     default: 200
+  diego.tps.log_level:
+    description: "Log level"
+    default: "info"

@@ -13,10 +13,10 @@ bosh -n upload release --rebase || true
 ./scripts/generate-deployment-manifest aws cf-release ${STUBS_DIR}/* > diego-deployment.yml
 bosh deployment diego-deployment.yml
 
-./scripts/ci/emit-datadog-deploy-event started ${DEPLOYMENT_NAME} diego
+./scripts/ci/emit-datadog-deploy-event started cf-${DEPLOYMENT_NAME} diego
 if bosh -n deploy; then
-  ./scripts/ci/emit-datadog-deploy-event finished ${DEPLOYMENT_NAME} diego
+  ./scripts/ci/emit-datadog-deploy-event finished cf-${DEPLOYMENT_NAME} diego
 else
-  ./scripts/ci/emit-datadog-deploy-event failed ${DEPLOYMENT_NAME} diego
+  ./scripts/ci/emit-datadog-deploy-event failed cf-${DEPLOYMENT_NAME} diego
   exit 1
 fi

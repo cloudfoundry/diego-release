@@ -14,3 +14,6 @@ properties:
   diego.runtime_metrics_server.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17010"
+  diego.runtime_metrics_server.log_level:
+    description: "Log level"
+    default: "info"
