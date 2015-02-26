@@ -89,7 +89,7 @@ upload_release() {
 deploy_cf_release() {
   cd $CF_RELEASE_DIR
   echo "==> Deploying cf-release..."
-  ./generate_deployment_manifest warden $BOSH_LITE_DEPLOYMENTS_DIR/director.yml $DIEGO_RELEASE_DIR/templates/enable_diego_in_cc.yml > $BOSH_LITE_DEPLOYMENTS_DIR/cf.yml
+  ./generate_deployment_manifest warden $BOSH_LITE_DEPLOYMENTS_DIR/director.yml $DIEGO_RELEASE_DIR/templates/enable_diego_docker_in_cc.yml > $BOSH_LITE_DEPLOYMENTS_DIR/cf.yml
   bosh -d $BOSH_LITE_DEPLOYMENTS_DIR/cf.yml -q -n deploy
 }
 
