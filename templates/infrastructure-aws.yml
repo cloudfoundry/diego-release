@@ -63,9 +63,9 @@ properties:
     garden-linux:
       deny_networks:
         - 0.0.0.0/0
-
       allow_networks:
         - 10.10.0.2/32 # Amazon DNS
+      disk_quota_enabled: ~
 
 resource_pools:
   - name: small_z1
