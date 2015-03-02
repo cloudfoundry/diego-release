@@ -11,7 +11,7 @@ docker run -a stdout -a stderr -w /root/workspace \
   -e BOSH_USER \
   -e DEPLOYMENT_NAME \
   -e DATADOG_API_KEY \
-  -e DEPLOYMENT_DIR \
+  -e DEPLOYMENTS_DIR \
   -e STUBS_DIR \
   -e INFRASTRUCTURE \
   cloudfoundry/diego-pipeline \
