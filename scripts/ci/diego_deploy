@@ -4,13 +4,13 @@ set -e -x
 
 export DRONE_TMP=$TMPDIR/drone
 
-rm -rf diego-release/deployments-aws || true
-cp -R deployments-aws diego-release/
+rm -rf "diego-release/${DEPLOYMENTS_DIR}"
+cp -R "${DEPLOYMENTS_DIR}" diego-release/
 
-rm -rf diego-release/cf-release || true
+rm -rf diego-release/cf-release
 cp -R cf-release diego-release/
 
-rm -rf diego-release/diego-final-release-created-by-ci.tgz.tgz || true
+rm -f diego-release/diego-final-release-created-by-ci.tgz
 cp diego-final-release-created-by-ci.tgz diego-release/
 
 pushd diego-release
