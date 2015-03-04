@@ -15,7 +15,9 @@ case $1 in
     mkdir -p $RUN_DIR
     mkdir -p $LOG_DIR
 
-    /var/vcap/packages/rep/bin/rep \
+    echo $$ > /var/vcap/sys/run/rep/rep.pid
+
+    exec /var/vcap/packages/rep/bin/rep \
       -etcdCluster=<%= p("diego.rep.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -debugAddr=<%= p("diego.rep.debug_addr") %> \
       -stack=<%= p("diego.rep.stack") %> \
@@ -28,30 +30,7 @@ case $1 in
       -evacuationTimeout=<%= "#{p("diego.rep.evacuation_timeout_in_seconds")}s" %> \
       -logLevel=<%= p("diego.rep.log_level") %> \
       2>> $LOG_DIR/rep.stderr.log \
-      1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep) &
-
-    pid=$!
-
-    set +e
-
-    address=<%= p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") %>
-    start=`date +%s`
-    while [ $(( $(date +%s) - 60 )) -lt $start ]; do
-      if curl --fail --silent http://$address/ping >/dev/null 2>&1
-      then
-        echo $pid > $PIDFILE
-        break
-      fi
-      sleep 1
-    done
-
-    if [ -f $PIDFILE ]; then
-      wait $(cat $PIDFILE)
-    else
-      echo "$(date) rep did not start in time"
-      echo $pid > ${PIDFILE}.fail
-      kill_and_wait ${PIDFILE}.fail
-    fi
+      1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep)
 
     ;;
 
