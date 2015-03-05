@@ -160,7 +160,7 @@ as you switch in and out of the directory.
         cd ~/workspace/cf-release
         ./generate_deployment_manifest warden \
             ~/deployments/bosh-lite/director.yml \
-            ~/workspace/diego-release/templates/enable_diego_in_cc.yml > \
+            ~/workspace/diego-release/templates/enable_diego_docker_in_cc.yml > \
             ~/deployments/bosh-lite/cf.yml
         bosh deployment ~/deployments/bosh-lite/cf.yml
 
@@ -223,7 +223,7 @@ To deploy and run the DATs:
 ---
 ### Pushing an Application to Diego
 
-1. Create new CF Org & Space
+1. Create new CF Org & Space:
 
         cf api --skip-ssl-validation api.10.244.0.34.xip.io
         cf auth admin admin
@@ -232,13 +232,13 @@ To deploy and run the DATs:
         cf create-space diego
         cf target -s diego
 
-1. Push your application
+1. Push your application without starting it:
 
         cf push my-app --no-start
-        cf set-env my-app DIEGO_STAGE_BETA true
-        cf set-env my-app DIEGO_RUN_BETA true
-        cf start my-app
 
-The DIEGO_STAGE_BETA` flag instructs the Cloud Controller to stage the application on Diego.
-`DIEGO_RUN_BETA` instructs the Cloud Controller to run the application on Diego.
+1. [Enable Diego](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/migrating-to-diego.md#targeting-diego) for your application.
+
+1. Start your application:
+
+        cf start my-app
 

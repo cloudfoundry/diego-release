@@ -2,22 +2,23 @@
 
 set -e -x -u
 
-STUBS_DIR=${PWD}/deployments-runtime/${DEPLOYMENT_NAME}/stubs
+stubs_path="${PWD}/${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/${STUBS_DIR}"
 
-eval $(./scripts/ci/bosh_config)
-./scripts/ci/bosh_setup
+eval $(./diego-release/scripts/ci/bosh_config)
+./diego-release/scripts/ci/bosh_setup
 
 pushd cf-release
+  git submodule update --init --recursive
   bosh -n create release --with-tarball
   bosh -n upload release --rebase || true
-  ./generate_deployment_manifest aws ${STUBS_DIR}/* > cf-deployment.yml
+  ./generate_deployment_manifest ${INFRASTRUCTURE} ${stubs_path}/* > cf-deployment.yml
   bosh deployment cf-deployment.yml
 
-  ../scripts/ci/emit-datadog-deploy-event started cf-${DEPLOYMENT_NAME} cf
+  ../diego-release/scripts/ci/emit-datadog-deploy-event started cf-${DEPLOYMENT_NAME} cf
   if bosh -n deploy; then
-    ../scripts/ci/emit-datadog-deploy-event finished cf-${DEPLOYMENT_NAME} cf
+    ../diego-release/scripts/ci/emit-datadog-deploy-event finished cf-${DEPLOYMENT_NAME} cf
   else
-    ../scripts/ci/emit-datadog-deploy-event failed cf-${DEPLOYMENT_NAME} cf
+    ../diego-release/scripts/ci/emit-datadog-deploy-event failed cf-${DEPLOYMENT_NAME} cf
     exit 1
   fi
 popd

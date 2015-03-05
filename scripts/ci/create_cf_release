@@ -2,19 +2,18 @@
 
 set -e -x
 
-export DRONE_TMP=$TMPDIR/drone
+docker run -a stdout -a stderr -w /root/workspace \
+  -v $PWD:/root/workspace \
+  -v $PWD/bosh-cache:/root/.bosh/cache \
+  -e GOROOT=/usr/local/go \
+  -e BOSH_PASSWORD \
+  -e BOSH_TARGET \
+  -e BOSH_USER \
+  -e DEPLOYMENT_NAME \
+  -e DATADOG_API_KEY \
+  -e DEPLOYMENTS_DIR \
+  -e STUBS_DIR \
+  -e INFRASTRUCTURE \
+  cloudfoundry/diego-pipeline \
+  /bin/bash -l diego-release/scripts/ci/create_cf_release_inner
 
-pushd cf-release
-  git submodule update --init --recursive
-popd
-
-rm -rf diego-release/cf-release || true
-cp -R cf-release diego-release/
-
-rm -rf diego-release/deployments-runtime || true
-cp -R deployments-runtime diego-release/
-
-pushd diego-release
-  ./scripts/ci/create_drone_yml scripts/ci/create_cf_release.drone.yml .drone.yml
-  /var/vcap/packages/drone/bin/drone -v -privileged build
-popd

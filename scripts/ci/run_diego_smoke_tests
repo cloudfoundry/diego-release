@@ -4,8 +4,8 @@ set -e -x
 
 export DRONE_TMP=$TMPDIR/drone
 
-rm -rf diego-release/deployments-runtime || true
-cp -R deployments-runtime diego-release/
+rm -rf "diego-release/${DEPLOYMENTS_DIR}"
+cp -R "${DEPLOYMENTS_DIR}" diego-release/
 
 pushd diego-release
   ./scripts/ci/create_drone_yml scripts/ci/run_diego_smoke_tests.drone.yml .drone.yml
