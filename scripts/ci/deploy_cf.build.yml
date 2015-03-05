@@ -1,0 +1,22 @@
+---
+platform: linux
+
+image: docker:///cloudfoundry/diego-pipeline
+
+inputs:
+  - name: diego-release
+  - name: cf-release
+  - name: deployments-runtime
+
+params:
+  BOSH_PASSWORD:
+  BOSH_TARGET:
+  BOSH_USER:
+  DEPLOYMENT_NAME:
+  DATADOG_API_KEY:
+  DEPLOYMENTS_DIR:
+  STUBS_DIR:
+  INFRASTRUCTURE:
+
+run:
+  path: diego-release/scripts/ci/deploy_cf_inner
