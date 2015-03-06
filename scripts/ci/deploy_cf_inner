@@ -4,6 +4,10 @@ set -e -x -u
 
 stubs_path="${PWD}/${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/${STUBS_DIR}"
 
+# add writable location for gems for prepackaging
+export GEM_HOME="${HOME}/.gem"
+mkdir -p "${GEM_HOME}"
+
 eval $(./diego-release/scripts/ci/bosh_config)
 ./diego-release/scripts/ci/bosh_setup
 
