@@ -10,14 +10,14 @@ inputs:
   - name: diego-release
 
 params:
-  BOSH_PASSWORD: : ~
-  BOSH_TARGET: : ~
-  BOSH_USER: : ~
-  DATADOG_API_KEY: : ~
-  DEPLOYMENTS_DIR: : ~
-  DEPLOYMENT_NAME: : ~
-  INFRASTRUCTURE: : ~
-  STUBS_DIR: : ~
+  BOSH_PASSWORD: ~
+  BOSH_TARGET: ~
+  BOSH_USER: ~
+  DATADOG_API_KEY: ~
+  DEPLOYMENTS_DIR: ~
+  DEPLOYMENT_NAME: ~
+  INFRASTRUCTURE: ~
+  STUBS_DIR: ~
 
 run:
   path: diego-release/scripts/ci/deploy_diego
