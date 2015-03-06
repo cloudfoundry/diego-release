@@ -4,19 +4,20 @@ platform: linux
 image: docker:///cloudfoundry/diego-pipeline
 
 inputs:
-  - name: diego-release
+  - name: bosh-stemcell
   - name: cf-release
   - name: deployments-runtime
+  - name: diego-release
 
 params:
-  BOSH_PASSWORD:
-  BOSH_TARGET:
-  BOSH_USER:
-  DEPLOYMENT_NAME:
-  DATADOG_API_KEY:
-  DEPLOYMENTS_DIR:
-  STUBS_DIR:
-  INFRASTRUCTURE:
+  BOSH_PASSWORD: : ~
+  BOSH_TARGET: : ~
+  BOSH_USER: : ~
+  DATADOG_API_KEY: : ~
+  DEPLOYMENTS_DIR: : ~
+  DEPLOYMENT_NAME: : ~
+  INFRASTRUCTURE: : ~
+  STUBS_DIR: : ~
 
 run:
-  path: diego-release/scripts/ci/create_diego_release_inner
+  path: diego-release/scripts/ci/deploy_diego

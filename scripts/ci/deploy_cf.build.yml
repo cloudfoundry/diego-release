@@ -4,9 +4,10 @@ platform: linux
 image: docker:///cloudfoundry/diego-pipeline
 
 inputs:
-  - name: diego-release
+  - name: bosh-stemcell
   - name: cf-release
   - name: deployments-runtime
+  - name: diego-release
 
 params:
   BOSH_PASSWORD:
@@ -19,4 +20,4 @@ params:
   INFRASTRUCTURE:
 
 run:
-  path: diego-release/scripts/ci/deploy_cf_inner
+  path: diego-release/scripts/ci/deploy_cf
