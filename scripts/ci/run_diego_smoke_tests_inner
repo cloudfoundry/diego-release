@@ -4,8 +4,8 @@ set -e -x -u
 
 smoke_tests_manifest="${PWD}/${SMOKE_TESTS_MANIFEST}"
 
-eval $(./scripts/ci/bosh_config)
-./scripts/ci/bosh_setup
+eval $($(dirname $0)/bosh_config)
+$(dirname $0)/bosh_setup
 
 bosh deployment ${smoke_tests_manifest}
 bosh -n deploy
@@ -13,6 +13,6 @@ bosh -n deploy
 smoke_tests_metric=1
 bosh run errand diego_smoke_tests --keep-alive || smoke_tests_metric=0
 
-./scripts/ci/emit-datadog-smoke-test-metric $smoke_tests_metric ${DEPLOYMENT_TAG}
+$(dirname $0)/emit-datadog-smoke-test-metric $smoke_tests_metric ${DEPLOYMENT_TAG}
 
 exit $((1 - $smoke_tests_metric))
