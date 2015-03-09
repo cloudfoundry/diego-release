@@ -42,6 +42,11 @@ pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/garden-linux/old
   export GARDEN_BINPATH=$PWD/linux_backend/bin
 popd
 
+pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo/docker
+  wget -c https://get.docker.com/builds/Linux/x86_64/docker-latest -O docker
+  chmod +x docker
+popd
+
 go install github.com/onsi/ginkgo/ginkgo
 
 export GARDEN_ROOTFS=/tmp/opt/inigo/rootfs
