@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -e -x -u
+
+stubs_path="${PWD}/${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/${STUBS_DIR}"
+
+# add writable location for gems for prepackaging
+export GEM_HOME="${HOME}/.gem"
+mkdir -p "${GEM_HOME}"
+
+eval $(./diego-release/scripts/ci/bosh_config)
+./diego-release/scripts/ci/bosh_setup
+
+bosh -n upload stemcell bosh-stemcell/*.tgz --skip-if-exists
+
+pushd cf-release
+  bosh -n create release --with-tarball
+  bosh -n upload release --rebase || true
+  ./generate_deployment_manifest ${INFRASTRUCTURE} ${stubs_path}/* > cf-deployment.yml
+  bosh deployment cf-deployment.yml
+
+  ../diego-release/scripts/ci/emit-datadog-deploy-event started cf-${DEPLOYMENT_NAME} cf
+  if bosh -n deploy; then
+    ../diego-release/scripts/ci/emit-datadog-deploy-event finished cf-${DEPLOYMENT_NAME} cf
+  else
+    ../diego-release/scripts/ci/emit-datadog-deploy-event failed cf-${DEPLOYMENT_NAME} cf
+    exit 1
+  fi
+popd

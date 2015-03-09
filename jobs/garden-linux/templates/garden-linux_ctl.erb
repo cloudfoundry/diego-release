@@ -11,6 +11,10 @@ case $1 in
 
   start)
     pid_guard $PIDFILE "garden-linux"
+    if (( $(pidof garden-linux) )); then
+      echo "$(date) garden-linux is already running, please stop it first"
+      exit 1
+    fi
 
     mkdir -p $RUN_DIR
     mkdir -p $DATA_DIR

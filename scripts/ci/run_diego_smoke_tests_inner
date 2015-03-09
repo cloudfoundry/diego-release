@@ -10,19 +10,9 @@ eval $(./scripts/ci/bosh_config)
 bosh deployment ${smoke_tests_manifest}
 bosh -n deploy
 
-(
-  bosh run errand diego_smoke_tests --keep-alive
-)
-
-smoke_tests_status=$?
-
-if [[ $smoke_tests_status -eq 0 ]]
-then
-  smoke_tests_metric=1
-else
-  smoke_tests_metric=0
-fi
+smoke_tests_metric=1
+bosh run errand diego_smoke_tests --keep-alive || smoke_tests_metric=0
 
 ./scripts/ci/emit-datadog-smoke-test-metric $smoke_tests_metric ${DEPLOYMENT_TAG}
 
-exit $smoke_tests_status
+exit $((1 - $smoke_tests_metric))
