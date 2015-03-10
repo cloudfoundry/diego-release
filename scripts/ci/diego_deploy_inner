@@ -4,8 +4,7 @@ set -e -x -u
 
 stubs_path="${PWD}/${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/${STUBS_DIR}"
 
-(
-  cd diego-release
+pushd diego-release
   eval $(./scripts/ci/bosh_config)
   ./scripts/ci/bosh_setup
 
@@ -21,4 +20,4 @@ stubs_path="${PWD}/${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/${STUBS_DIR}"
     ./scripts/ci/emit-datadog-deploy-event failed cf-${DEPLOYMENT_NAME} diego
     exit 1
   fi
-)
+popd
