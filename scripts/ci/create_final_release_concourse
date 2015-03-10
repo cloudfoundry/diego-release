@@ -1,0 +1,52 @@
+#!/bin/bash
+
+set -e -x -u
+
+echo "----- Copy private blobstore credentials into diego-release"
+cp runtime-credentials/diego-ci/private.yml diego-release/config/private.yml
+
+echo "----- Configure git to use diego CI ssh key"
+mkdir -p diego-release/tmp
+cp runtime-credentials/diego-ci/ssh_keys/diego-release-push-pull diego-release/tmp/github
+chmod 600 diego-release/tmp/github
+
+export GIT_SSH=$(pwd)/diego-release/tmp/git_ssh.sh
+echo "ssh -i $(pwd)/tmp/github" '"$@"' > $GIT_SSH
+chmod +x $GIT_SSH
+
+FINAL_RELEASE_VERSION=$(cat version/number)
+
+pushd diego-release
+  echo "----- Create dev release" # to work around https://www.pivotaltracker.com/story/show/74823266
+  bosh -n create release
+
+  echo "----- Create final release"
+  bosh -n create release --final --version $FINAL_RELEASE_VERSION
+
+  echo "----- Set git identity"
+  git config user.email "cf-diego@pivotal.io"
+  git config user.name "CI (Automated)"
+
+  echo "----- Update master and develop branches on origin"
+  git add -A
+  git commit -m "Create final release ${FINAL_RELEASE_VERSION}"
+
+  echo "----- DEBUG: what did we just create?"
+  git show HEAD
+
+  echo "----- Merge final release commit into master"
+  git fetch origin master
+  git show-ref origin/master # DEBUG
+  git merge origin/master
+
+  # uncomment when ready to have concourse cut final releases
+  # git push origin HEAD:master
+
+  echo "----- Merge final release commit from master back into develop"
+  git fetch origin develop
+  git show-ref origin/develop # DEBUG
+  git merge origin/develop
+
+  # uncomment when ready to have concourse cut final releases
+  # git push origin HEAD:develop
+popd
