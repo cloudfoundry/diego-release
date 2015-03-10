@@ -5,7 +5,6 @@ image: docker:///cloudfoundry/diego-pipeline
 
 inputs:
   - name: diego-release
-  - name: cf-release
   - name: deployments-runtime
 
 params:
