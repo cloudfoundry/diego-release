@@ -31,7 +31,7 @@ pushd diego-release
   git add -A
   git commit -m "Create final release ${FINAL_RELEASE_VERSION}"
 
-  echo "----- DEBUG: what did we just create?"
+  echo "----- DEBUG: show the commit we just created"
   git --no-pager show HEAD
 
   echo "----- Merge final release commit into master"
