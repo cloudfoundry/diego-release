@@ -160,7 +160,6 @@ as you switch in and out of the directory.
         cd ~/workspace/cf-release
         ./generate_deployment_manifest warden \
             ~/deployments/bosh-lite/director.yml \
-            ~/workspace/cf-release/templates/cf-minimal-dev.yml \
             ~/workspace/diego-release/templates/enable_diego_docker_in_cc.yml > \
             ~/deployments/bosh-lite/cf.yml
         bosh deployment ~/deployments/bosh-lite/cf.yml
