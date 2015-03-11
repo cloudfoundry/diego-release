@@ -37,13 +37,13 @@ pushd diego-release
   echo "----- Merge final release commit into master"
   git fetch origin master
   git show-ref origin/master # DEBUG
-  git merge origin/master
+  git merge --no-edit origin/master
   git push origin HEAD:master
 
   echo "----- Merge final release commit from master back into develop"
   git fetch origin develop
   git show-ref origin/develop # DEBUG
-  git merge origin/develop
+  git merge --no-edit origin/develop
   git push origin HEAD:develop
 popd
 
