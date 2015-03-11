@@ -1,0 +1,12 @@
+---
+platform: linux
+
+image: docker:///cloudfoundry/diego-pipeline
+
+inputs:
+  - name: diego-release
+  - name: runtime-credentials
+  - name: version
+
+run:
+  path: diego-release/scripts/ci/create_final_release_concourse

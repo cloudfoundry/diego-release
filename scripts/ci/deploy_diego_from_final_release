@@ -1,14 +1,15 @@
 #!/bin/bash
 
 set -e -x -u
-
 stubs_path="${PWD}/${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/${STUBS_DIR}"
 
-pushd diego-release
+(
+  cd diego-release
   eval $(./scripts/ci/bosh_config)
   ./scripts/ci/bosh_setup
 
-  bosh -n upload release ../diego-final-release-created-by-ci.tgz --skip-if-exists || true
+  latest_final_release=$(ls releases/diego-*.yml | sort -n | tail -n1)
+  bosh -n upload release $latest_final_release --skip-if-exists || true
 
   ./scripts/generate-deployment-manifest ${INFRASTRUCTURE} ../cf-release ${stubs_path}/* > diego-deployment.yml
   bosh deployment diego-deployment.yml
@@ -20,4 +21,4 @@ pushd diego-release
     ./scripts/ci/emit-datadog-deploy-event failed cf-${DEPLOYMENT_NAME} diego
     exit 1
   fi
-popd
+)
