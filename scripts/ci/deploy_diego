@@ -10,7 +10,7 @@ eval $(./diego-release/scripts/ci/bosh_config)
 bosh -n upload stemcell bosh-stemcell/*.tgz --skip-if-exists
 
 pushd diego-release
-  bosh -n create release --with-tarball
+  bosh -n create release
   bosh -n upload release --rebase || true
 
   ./scripts/generate-deployment-manifest ${INFRASTRUCTURE} ../cf-release ${stubs_path}/* > diego-deployment.yml
