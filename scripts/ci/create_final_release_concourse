@@ -38,16 +38,12 @@ pushd diego-release
   git fetch origin master
   git show-ref origin/master # DEBUG
   git merge origin/master
-
-  # uncomment when ready to have concourse cut final releases
-  # git push origin HEAD:master
+  git push origin HEAD:master
 
   echo "----- Merge final release commit from master back into develop"
   git fetch origin develop
   git show-ref origin/develop # DEBUG
   git merge origin/develop
-
-  # uncomment when ready to have concourse cut final releases
-  # git push origin HEAD:develop
+  git push origin HEAD:develop
 popd
 
