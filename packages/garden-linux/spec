@@ -24,6 +24,7 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/iodaemon/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/iodaemon/link/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/iodaemon/winsizereporter/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/linux_container/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/network/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/network/cnet/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/network/cnet/container-net/*.go # gosub
@@ -43,17 +44,17 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/bandwidth_manager/fake_bandwidth_manager/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/cgroups_manager/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/cgroups_manager/fake_cgroups_manager/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/container_pool/repository_fetcher/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/container_pool/repository_fetcher/fake_repository_fetcher/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/container_pool/repository_fetcher/fakes/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/container_pool/rootfs_provider/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/container_pool/rootfs_provider/fake_graph_driver/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/container_pool/rootfs_provider/fake_rootfs_provider/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/network/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/port_pool/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/port_pool/fake_port_pool/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/quota_manager/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/quota_manager/fake_quota_manager/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/repository_fetcher/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/repository_fetcher/fake_repository_fetcher/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/repository_fetcher/fakes/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/rootfs_provider/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/rootfs_provider/fake_graph_driver/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/rootfs_provider/fake_rootfs_provider/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/uid_pool/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/uid_pool/fake_uid_pool/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/logging/*.go # gosub
