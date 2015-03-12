@@ -11,7 +11,7 @@ cp runtime-credentials/diego-ci/ssh_keys/diego-release-push-pull diego-release/t
 chmod 600 diego-release/tmp/github
 
 export GIT_SSH=$(pwd)/diego-release/tmp/git_ssh.sh
-echo "ssh -i $(pwd)/diego-release/tmp/github" '"$@"' > $GIT_SSH
+echo "ssh -o StrictHostKeyChecking=no -i $(pwd)/diego-release/tmp/github" '"$@"' > $GIT_SSH
 chmod +x $GIT_SSH
 
 FINAL_RELEASE_VERSION=$(cat version/number)
