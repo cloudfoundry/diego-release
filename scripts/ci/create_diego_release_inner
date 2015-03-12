@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e -x -u
+
+stubs_path="${PWD}/${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/${STUBS_DIR}"
+
+pushd diego-release
+  eval $(./scripts/ci/bosh_config)
+  ./scripts/ci/bosh_setup
+
+  bosh -n create release --with-tarball
+  bosh -n upload release --rebase || true
+
+  ./scripts/generate-deployment-manifest ${INFRASTRUCTURE} ../cf-release ${stubs_path}/* > diego-deployment.yml
+  bosh deployment diego-deployment.yml
+
+  ./scripts/ci/emit-datadog-deploy-event started cf-${DEPLOYMENT_NAME} diego
+  if bosh -n deploy; then
+    ./scripts/ci/emit-datadog-deploy-event finished cf-${DEPLOYMENT_NAME} diego
+  else
+    ./scripts/ci/emit-datadog-deploy-event failed cf-${DEPLOYMENT_NAME} diego
+    exit 1
+  fi
+popd
+
