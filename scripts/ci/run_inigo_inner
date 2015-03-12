@@ -42,11 +42,6 @@ pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/garden-linux/old
   export GARDEN_BINPATH=$PWD/linux_backend/bin
 popd
 
-pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo/docker
-  wget -c https://get.docker.com/builds/Linux/x86_64/docker-latest -O docker
-  chmod +x docker
-popd
-
 go install github.com/onsi/ginkgo/ginkgo
 
 export GARDEN_ROOTFS=/tmp/opt/inigo/rootfs
@@ -74,7 +69,9 @@ fi
 
 pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
   if [ "$GINKGO_PARALLEL" = "true" ]; then
-    ginkgo $color_flag $nodes_flag -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
+    ginkgo $color_flag $nodes_flag -r -skipPackage=docker -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
+    # always run docker tests serially
+    ginkgo $color_flag -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@" docker/
   else
     # always attempt to run executor in parallel
     ginkgo $color_flag -nodes=4 -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@" executor/
