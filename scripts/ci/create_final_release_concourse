@@ -30,6 +30,7 @@ pushd diego-release
   echo "----- Update master and develop branches on origin"
   git add -A
   git commit -m "Create final release ${FINAL_RELEASE_VERSION}"
+  git config url.git@github.com:.pushinsteadof https://github.com/
 
   echo "----- DEBUG: show the commit we just created"
   git --no-pager show HEAD
