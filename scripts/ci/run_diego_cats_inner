@@ -4,7 +4,6 @@ set -e -x -u
 
 acceptance_tests_manifest=${PWD}/${ACCEPTANCE_TESTS_MANIFEST}
 
-eval $(./diego-release/scripts/ci/bosh_config)
 ./diego-release/scripts/ci/bosh_setup
 
 bosh deployment ${acceptance_tests_manifest}

@@ -4,7 +4,6 @@ set -e -x -u
 
 stubs_path="${PWD}/${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/${STUBS_DIR}"
 
-eval $(./diego-release/scripts/ci/bosh_config)
 ./diego-release/scripts/ci/bosh_setup
 
 bosh -n upload stemcell bosh-stemcell/*.tgz --skip-if-exists

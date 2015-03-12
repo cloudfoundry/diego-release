@@ -1,6 +1,0 @@
-#!/bin/bash
-
-set -e -x -u
-
-echo export BOSH_CONFIG=\"${BOSH_CONFIG:=${TMPDIR:-$PWD}/${GO_PIPELINE_NAME:-diego}-${GO_PIPELINE_COUNTER:-0}-${BOSH_TARGET}.yml}\"
-

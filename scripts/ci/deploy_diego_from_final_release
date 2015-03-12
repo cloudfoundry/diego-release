@@ -6,7 +6,6 @@ stubs_path="${PWD}/${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/${STUBS_DIR}"
 FINAL_RELEASE_VERSION=$(cat version/number)
 
 pushd diego-release
-  eval $(./scripts/ci/bosh_config)
   ./scripts/ci/bosh_setup
 
   latest_final_release="releases/diego-${FINAL_RELEASE_VERSION}.yml"

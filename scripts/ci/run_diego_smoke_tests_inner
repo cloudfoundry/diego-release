@@ -4,7 +4,6 @@ set -e -x -u
 
 smoke_tests_manifest="${PWD}/${SMOKE_TESTS_MANIFEST}"
 
-eval $($(dirname $0)/bosh_config)
 $(dirname $0)/bosh_setup
 
 bosh deployment ${smoke_tests_manifest}
