@@ -1,9 +1,0 @@
-#!/bin/bash
-
-set -e -x -u
-
-eval $(./scripts/ci/bosh_config)
-./scripts/ci/bosh_setup
-
-# This comes from GoCD
-bosh upload stemcell "light-bosh-stemcell-latest-aws-xen-ubuntu-trusty-go_agent.tgz" --skip-if-exists
