@@ -15,7 +15,10 @@ case $1 in
     mkdir -p $RUN_DIR
     mkdir -p $LOG_DIR
 
-    echo $$ > /var/vcap/sys/run/auctioneer/auctioneer.pid
+    echo $$ > $PIDFILE
+
+    # Allowed number of open file descriptors
+    ulimit -n 100000
 
     exec /var/vcap/packages/auctioneer/bin/auctioneer \
       -etcdCluster=<%= p("diego.auctioneer.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
