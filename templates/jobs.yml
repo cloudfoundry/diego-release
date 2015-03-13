@@ -11,29 +11,8 @@ releases:
 external_cf_services: (( merge ))
 
 etcd_cluster: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
-consul_servers: (( jobs.consul_z1.networks.diego1.static_ips jobs.consul_z2.networks.diego2.static_ips jobs.consul_z3.networks.diego3.static_ips ))
 
 jobs:
-  - name: consul_z1
-    release: diego
-    templates:
-      - name: consul-agent
-    instances: 1
-    persistent_disk: 1024
-    resource_pool: medium_z1
-    networks:
-      - name: diego1
-        static_ips: (( merge ))
-    update:
-      serial: true
-      max_in_flight: 1
-    properties:
-      consul:
-        agent:
-          mode: server
-          servers:
-            lan: (( consul_servers ))
-
   - name: etcd_z1
     release: diego
     templates:
@@ -51,7 +30,8 @@ jobs:
   - name: brain_z1
     release: diego
     templates:
-      - name: consul-agent
+      - name: consul_agent
+        release: cf
       - name: auctioneer
       - name: converger
       - name: runtime_metrics_server
@@ -71,13 +51,14 @@ jobs:
       consul:
         agent:
           servers:
-            lan: (( consul_servers ))
+            lan: (( external_cf_services.consul.servers ))
 
   - name: cell_z1
     release: diego
     templates:
       - name: rep
-      - name: consul-agent
+      - name: consul_agent
+        release: cf
       - name: executor
       - name: garden-linux
       - name: receptor
@@ -93,7 +74,7 @@ jobs:
           services:
             - receptor
           servers:
-            lan: (( consul_servers ))
+            lan: (( external_cf_services.consul.servers ))
       loggregator_endpoint:
         shared_secret: (( external_cf_services.loggregator_endpoint.shared_secret ))
       metron_agent:
@@ -109,7 +90,8 @@ jobs:
       - name: nsync
       - name: tps
       - name: file_server
-      - name: consul-agent
+      - name: consul_agent
+        release: cf
       - name: metron_agent
         release: cf
     instances: 1
@@ -127,13 +109,14 @@ jobs:
             - stager
             - file_server
           servers:
-            lan: (( consul_servers ))
+            lan: (( external_cf_services.consul.servers ))
 
   - name: route_emitter_z1
     release: diego
     templates:
       - name: route_emitter
-      - name: consul-agent
+      - name: consul_agent
+        release: cf
       - name: metron_agent
         release: cf
     instances: 1
@@ -144,31 +127,11 @@ jobs:
       consul:
         agent:
           servers:
-            lan: (( consul_servers ))
+            lan: (( external_cf_services.consul.servers ))
       loggregator_endpoint:
         shared_secret: (( external_cf_services.loggregator_endpoint.shared_secret ))
       metron_agent:
         zone: z1
-
-  - name: consul_z2
-    release: diego
-    templates:
-      - name: consul-agent
-    instances: 1
-    persistent_disk: 1024
-    resource_pool: medium_z2
-    networks:
-      - name: diego2
-        static_ips: (( merge ))
-    update:
-      serial: true
-      max_in_flight: 1
-    properties:
-      consul:
-        agent:
-          mode: server
-          servers:
-            lan: (( consul_servers ))
 
   - name: etcd_z2
     release: diego
@@ -187,7 +150,8 @@ jobs:
   - name: brain_z2
     release: diego
     templates:
-      - name: consul-agent
+      - name: consul_agent
+        release: cf
       - name: auctioneer
       - name: converger
       - name: runtime_metrics_server
@@ -207,13 +171,14 @@ jobs:
       consul:
         agent:
           servers:
-            lan: (( consul_servers ))
+            lan: (( external_cf_services.consul.servers ))
 
   - name: cell_z2
     release: diego
     templates:
       - name: rep
-      - name: consul-agent
+      - name: consul_agent
+        release: cf
       - name: executor
       - name: garden-linux
       - name: receptor
@@ -229,7 +194,7 @@ jobs:
           services:
             - receptor
           servers:
-            lan: (( consul_servers ))
+            lan: (( external_cf_services.consul.servers ))
       loggregator_endpoint:
         shared_secret: (( external_cf_services.loggregator_endpoint.shared_secret ))
       metron_agent:
@@ -245,7 +210,8 @@ jobs:
       - name: nsync
       - name: tps
       - name: file_server
-      - name: consul-agent
+      - name: consul_agent
+        release: cf
       - name: metron_agent
         release: cf
     instances: 1
@@ -264,13 +230,14 @@ jobs:
             - stager
             - file_server
           servers:
-            lan: (( consul_servers ))
+            lan: (( external_cf_services.consul.servers ))
 
   - name: route_emitter_z2
     release: diego
     templates:
       - name: route_emitter
-      - name: consul-agent
+      - name: consul_agent
+        release: cf
       - name: metron_agent
         release: cf
     instances: 1
@@ -281,31 +248,11 @@ jobs:
       consul:
         agent:
           servers:
-            lan: (( consul_servers ))
+            lan: (( external_cf_services.consul.servers ))
       loggregator_endpoint:
         shared_secret: (( external_cf_services.loggregator_endpoint.shared_secret ))
       metron_agent:
         zone: z2
-
-  - name: consul_z3
-    release: diego
-    templates:
-      - name: consul-agent
-    instances: 1
-    persistent_disk: 1024
-    resource_pool: medium_z3
-    networks:
-      - name: diego3
-        static_ips: (( merge ))
-    update:
-      serial: true
-      max_in_flight: 1
-    properties:
-      consul:
-        agent:
-          mode: server
-          servers:
-            lan: (( consul_servers ))
 
   - name: etcd_z3
     release: diego
