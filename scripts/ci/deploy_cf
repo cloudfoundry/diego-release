@@ -10,6 +10,8 @@ mkdir -p "${GEM_HOME}"
 
 ./diego-release/scripts/ci/bosh_setup
 
+bosh -n cleanup
+
 bosh -n upload stemcell bosh-stemcell/*.tgz --skip-if-exists
 
 pushd cf-release

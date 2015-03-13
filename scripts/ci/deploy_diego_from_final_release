@@ -13,6 +13,8 @@ pushd diego-release
     exit 1
   fi
 
+  bosh -n cleanup
+
   bosh -n upload release $latest_final_release --skip-if-exists || true
 
   ./scripts/generate-deployment-manifest ${INFRASTRUCTURE} ../cf-release ${stubs_path}/* > diego-deployment.yml
