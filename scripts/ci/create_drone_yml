@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -x
+
+drone_source=$1
+drone_target=$2
+
+if [ "$drone_source" == "" ]; then
+  echo "USAGE: create_drone_yml src_file target_file"
+  exit 1
+fi
+
+if [ "$drone_target" == "" ]; then
+  echo "USAGE: create_drone_yml src_file target_file"
+  exit 1
+fi
+
+set +x
+rm $drone_target
+set -x
+
+touch $drone_target
+
+cat $drone_source | while read line; do
+  [[ "$line" =~ \{\{(.*)\}\} ]]
+  if [[ -n "${BASH_REMATCH[1]}" ]]
+  then
+    VAR_NAME="${BASH_REMATCH[1]}"
+    VAR_VALUE=$(eval "echo \${$VAR_NAME}")
+    if [ -n "$VAR_VALUE" ]; then
+      echo "$line" | sed "s|{{$VAR_NAME}}|$VAR_VALUE|g"
+    fi
+  else
+    echo "$line"
+  fi
+done > $drone_target
+
+cat $drone_target
