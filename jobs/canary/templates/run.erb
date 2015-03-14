@@ -1,0 +1,29 @@
+#!/bin/bash
+# vim: set ft=sh
+
+set -e -x
+
+export PATH=/var/vcap/packages/cf-cli/bin:${PATH}
+
+export HOME=$(mktemp -d /tmp/diego-canary.XXXXX)
+
+cf api <%= p("diego.canary.api") %> \
+  --skip-ssl-validation=<%= p("diego.ssl.skip_cert_verify").inspect %>
+
+cf auth <%= p("diego.canary.user") %> <%= p("diego.canary.password") %>
+
+# assume org exists, otherwise we have to be admin, which is a bad idea
+cf target -o <%= p("diego.canary.org") %>
+
+cf create-space <%= p("diego.canary.space") %>
+cf target -s <%= p("diego.canary.space") %>
+
+export APP_NAME=<%= p("diego.canary.app_name") %>
+export DATADOG_API_KEY=<%= p("diego.canary.datadog_api_key") %>
+export DEPLOYMENT_NAME=<%= p("diego.canary.deployment_name") %>
+export DOMAIN=<%= p("diego.canary.app_domain") %>
+export INSTANCE_COUNT=<%= p("diego.canary.instance_count") %>
+
+cd /var/vcap/packages/canary
+
+./scripts/deploy

@@ -1,0 +1,7 @@
+# vim: set ft=sh
+
+set -e -x
+
+
+cd github.com/cloudfoundry-incubator/diegocanaryapp
+cp -a . ${BOSH_INSTALL_TARGET}

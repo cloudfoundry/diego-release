@@ -1,0 +1,44 @@
+---
+name: canary
+
+packages:
+  - cf-cli
+  - canary
+
+templates:
+  run.erb: bin/run
+
+properties:
+  diego.canary.api:
+    description: The Elastic Runtime API endpoint URL
+
+  diego.ssl.skip_cert_verify:
+    default: false
+    description: Toggles cli verification of the Elastic Runtime API SSL certificate
+
+  diego.canary.user:
+    description: The Elastic Runtime API user
+
+  diego.canary.password:
+    description: The Elastic Runtime API user's password
+
+  diego.canary.org:
+    description: The Elastic Runtime organization name to use for the canary app
+
+  diego.canary.space:
+    description: The Elastic Runtime space name to use for the canary app
+
+  diego.canary.app_domain:
+    description: The domain to use for the canary app
+
+  diego.canary.app_name:
+    description: App name for the canary app
+
+  diego.canary.deployment_name:
+    description: Deployment name for the canary app
+
+  diego.canary.instance_count:
+    description: Number of instances of the canary app
+
+  diego.canary.datadog_api_key:
+    description: Datadog API key for the canary app
