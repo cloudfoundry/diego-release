@@ -1,7 +1,0 @@
-image: cloudfoundry/golang-ci
-
-env:
-  - GOROOT=/usr/local/go
-
-script:
-  - ./diego-release/scripts/ci/run_unit_inner

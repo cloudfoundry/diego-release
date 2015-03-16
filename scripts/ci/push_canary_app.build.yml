@@ -1,0 +1,18 @@
+---
+platform: linux
+
+image: docker:///cloudfoundry/diego-pipeline
+
+inputs:
+  - name: diego-release
+  - name: deployments-runtime
+
+params:
+  BOSH_USER: ~
+  BOSH_PASSWORD: ~
+  BOSH_TARGET: ~
+  CANARY_APP_ERRAND_MANIFEST: ~
+
+run:
+  path: diego-release/scripts/ci/push_canary_app
+

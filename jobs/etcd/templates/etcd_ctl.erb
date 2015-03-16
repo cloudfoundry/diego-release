@@ -39,8 +39,8 @@ case $1 in
     chown -R vcap:vcap ${LOG_DIR}
     chown -R vcap:vcap ${DATA_DIR}
 
-    # bump open file descriptor limit from default
-    ulimit -n 65536
+    # Allowed number of open file descriptors
+    ulimit -n 100000
 
     prior_member_list=$(member_list)
 

@@ -4,13 +4,14 @@ set -e -x -u
 
 stubs_path="${PWD}/${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/${STUBS_DIR}"
 
-eval $(./diego-release/scripts/ci/bosh_config)
 ./diego-release/scripts/ci/bosh_setup
+
+bosh -n cleanup
 
 bosh -n upload stemcell bosh-stemcell/*.tgz --skip-if-exists
 
 pushd diego-release
-  bosh -n create release --with-tarball
+  bosh -n create release
   bosh -n upload release --rebase || true
 
   ./scripts/generate-deployment-manifest ${INFRASTRUCTURE} ../cf-release ${stubs_path}/* > diego-deployment.yml

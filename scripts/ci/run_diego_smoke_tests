@@ -2,12 +2,16 @@
 
 set -e -x
 
-export DRONE_TMP=$TMPDIR/drone
+docker run -a stdout -a stderr -w /root/workspace \
+  -v $PWD:/root/workspace \
+  -e GOROOT=/usr/local/go \
+  -e BOSH_PASSWORD \
+  -e BOSH_TARGET \
+  -e BOSH_USER \
+  -e DATADOG_API_KEY \
+  -e DEPLOYMENTS_DIR \
+  -e DEPLOYMENT_TAG \
+  -e SMOKE_TESTS_MANIFEST \
+  cloudfoundry/diego-pipeline \
+  /bin/bash -l diego-release/scripts/ci/run_diego_smoke_tests_inner
 
-rm -rf "diego-release/${DEPLOYMENTS_DIR}"
-cp -R "${DEPLOYMENTS_DIR}" diego-release/
-
-pushd diego-release
-  ./scripts/ci/create_drone_yml scripts/ci/run_diego_smoke_tests.drone.yml .drone.yml
-  /var/vcap/packages/drone/bin/drone -v -privileged build
-popd

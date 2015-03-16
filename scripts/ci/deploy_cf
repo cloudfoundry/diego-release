@@ -8,13 +8,14 @@ stubs_path="${PWD}/${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/${STUBS_DIR}"
 export GEM_HOME="${HOME}/.gem"
 mkdir -p "${GEM_HOME}"
 
-eval $(./diego-release/scripts/ci/bosh_config)
 ./diego-release/scripts/ci/bosh_setup
+
+bosh -n cleanup
 
 bosh -n upload stemcell bosh-stemcell/*.tgz --skip-if-exists
 
 pushd cf-release
-  bosh -n create release --with-tarball
+  bosh -n create release
   bosh -n upload release --rebase || true
   ./generate_deployment_manifest ${INFRASTRUCTURE} ${stubs_path}/* > cf-deployment.yml
   bosh deployment cf-deployment.yml

@@ -1,13 +1,25 @@
+#!/usr/bin/env ruby
+
 require "optparse"
 require "yaml"
 require "netaddr"
+
 
 options = {
   networks: {}
 }
 
 OptionParser.new do |opts|
-  opts.banner = "Usage: example.rb [options]"
+  opts.banner = <<TEXT
+Usage: #$0 [options]\n
+  Example:
+    #$0 \\
+        -ndiego1 -c10.244.16.0/30 -s128 -i64 \\
+        -ndiego2 -c10.244.18.0/30 -s128 -i64 \\
+        -ndiego3 -c10.244.20.0/30 -s128 -i64
+
+TEXT
+
 
   current_network = nil
 

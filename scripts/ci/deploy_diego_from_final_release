@@ -3,12 +3,18 @@
 set -e -x -u
 stubs_path="${PWD}/${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/${STUBS_DIR}"
 
-(
-  cd diego-release
-  eval $(./scripts/ci/bosh_config)
+FINAL_RELEASE_VERSION=$(cat version/number)
+
+pushd diego-release
   ./scripts/ci/bosh_setup
 
-  latest_final_release=$(ls releases/diego-*.yml | sort -n | tail -n1)
+  latest_final_release="releases/diego-${FINAL_RELEASE_VERSION}.yml"
+  if [[ ! -f $latest_final_release ]]; then
+    exit 1
+  fi
+
+  bosh -n cleanup
+
   bosh -n upload release $latest_final_release --skip-if-exists || true
 
   ./scripts/generate-deployment-manifest ${INFRASTRUCTURE} ../cf-release ${stubs_path}/* > diego-deployment.yml
@@ -21,4 +27,4 @@ stubs_path="${PWD}/${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/${STUBS_DIR}"
     ./scripts/ci/emit-datadog-deploy-event failed cf-${DEPLOYMENT_NAME} diego
     exit 1
   fi
-)
+popd

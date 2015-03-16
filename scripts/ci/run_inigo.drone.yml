@@ -1,9 +1,0 @@
-image: cloudfoundry/inigo-ci
-
-env:
-  - GOROOT=/usr/local/go
-  - DEFAULT_EVENTUALLY_TIMEOUT={{DEFAULT_EVENTUALLY_TIMEOUT}}
-  - GINKGO_PARALLEL={{GINKGO_PARALLEL}}
-
-script:
-  - ./diego-release/scripts/ci/run_inigo_inner
