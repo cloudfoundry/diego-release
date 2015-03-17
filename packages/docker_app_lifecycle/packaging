@@ -4,13 +4,15 @@ mkdir -p ${BOSH_INSTALL_TARGET}/src
 cp -a . ${BOSH_INSTALL_TARGET}/src
 export GOPATH=$BOSH_INSTALL_TARGET
 
+cp /var/vcap/packages/docker/docker ./docker
+
 export GOROOT=$(readlink -nf /var/vcap/packages/golang_1.4)
 export PATH=$GOROOT/bin:$PATH
 go build github.com/cloudfoundry-incubator/docker_app_lifecycle/builder
 go build github.com/cloudfoundry-incubator/docker_app_lifecycle/launcher
 go build github.com/cloudfoundry-incubator/docker_app_lifecycle/healthcheck
 
-tar -czf ${BOSH_INSTALL_TARGET}/docker_app_lifecycle.tgz builder launcher healthcheck
+tar -czf ${BOSH_INSTALL_TARGET}/docker_app_lifecycle.tgz builder launcher healthcheck docker
 
 # clean up source artifacts
 rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg
