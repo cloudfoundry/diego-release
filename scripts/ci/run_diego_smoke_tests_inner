@@ -8,10 +8,4 @@ $(dirname $0)/bosh_setup
 
 bosh deployment ${smoke_tests_manifest}
 bosh -n deploy
-
-smoke_tests_metric=1
-bosh run errand diego_smoke_tests --keep-alive || smoke_tests_metric=0
-
-$(dirname $0)/emit-datadog-smoke-test-metric $smoke_tests_metric ${DEPLOYMENT_TAG}
-
-exit $((1 - $smoke_tests_metric))
+bosh run errand diego_smoke_tests --keep-alive
