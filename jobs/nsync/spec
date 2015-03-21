@@ -16,7 +16,7 @@ properties:
 
   diego.nsync.diego_api_url:
     description: URL of diego API
-    default: http://receptor.service.dc1.consul:8888
+    default: http://receptor.service.consul:8888
   diego.nsync.lifecycle_bundles:
     description: 'Map of lifecycle bundles for different stacks in json format {"stack_name":"lifecycle_bundle_path"}'
     default:
@@ -62,4 +62,4 @@ properties:
 
   diego.file_server.file_server_url:
     description: URL of file server
-    default: http://file_server.service.dc1.consul:8080
+    default: http://file_server.service.consul:8080

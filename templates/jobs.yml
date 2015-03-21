@@ -285,7 +285,7 @@ properties:
 
   diego:
     # -- Global properties --
-    api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.dc1.consul:8888" ))
+    api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
 
     ssl:
       skip_cert_verify: false
@@ -367,7 +367,6 @@ properties:
       cc: (( cc_config ))
       diego_api_url: (( .properties.diego.api_url ))
       lifecycle_bundles: ~
-      nats: (( nats_config ))
       log_level: info
 
     tps:

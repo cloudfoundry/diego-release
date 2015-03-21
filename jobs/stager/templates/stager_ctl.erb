@@ -43,18 +43,14 @@ case $1 in
     ulimit -n 100000
 
     exec /var/vcap/packages/stager/bin/stager \
-      -natsAddresses=<%= p("diego.stager.nats.machines").collect { |addr| "#{addr}:#{p("diego.stager.nats.port")}" }.join(",") %> \
-      -natsUsername=<%= p("diego.stager.nats.username") %> \
-      -natsPassword=<%= p("diego.stager.nats.password") %> \
-      -ccBaseURL=<%= Shellwords.shellescape(p("diego.stager.cc.base_url")) %> \
       -diegoAPIURL=<%= p("diego.stager.diego_api_url") %> \
       -stagerURL=<%= p("diego.stager.stager_url") %> \
+      -ccBaseURL=http://cloud_controller_ng.service.consul:<%= p("diego.stager.cc.external_port") %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.stager.cc.basic_auth_username")) %> \
       -ccPassword=<%= Shellwords.shellescape(p("diego.stager.cc.basic_auth_password")) %> \
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       -debugAddr=<%= p("diego.stager.debug_addr") %> \
       -lifecycles=<%= Shellwords.shellescape(p("diego.stager.lifecycle_bundles").to_json) %> \
-      -dockerLifecyclePath=<%= p("diego.stager.docker_lifecycle_bundle") %> \
       -fileServerURL=<%= p("diego.file_server.file_server_url") %> \
       -logLevel=<%= p("diego.stager.log_level") %> \
       2>> $LOG_DIR/stager.stderr.log \
