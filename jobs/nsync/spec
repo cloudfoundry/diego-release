@@ -4,6 +4,7 @@ name: nsync
 templates:
   nsync_listener_ctl.erb: bin/nsync_listener_ctl
   nsync_bulker_ctl.erb: bin/nsync_bulker_ctl
+  dns_health_check.erb: bin/dns_health_check
 
 packages:
   - pid_utils
@@ -17,13 +18,11 @@ properties:
   diego.nsync.diego_api_url:
     description: URL of diego API
     default: http://receptor.service.consul:8888
+  diego.nsync.nsync_url:
+    description: URL of nsync
+    default: http://nsync.service.consul:8787
   diego.nsync.lifecycle_bundles:
-    description: 'Map of lifecycle bundles for different stacks in json format {"stack_name":"lifecycle_bundle_path"}'
-    default:
-      lucid64: buildpack_app_lifecycle/buildpack_app_lifecycle.tgz
-  diego.nsync.docker_lifecycle_bundle:
-    description: Lifecycle bundle for docker apps
-    default: docker_app_lifecycle/docker_app_lifecycle.tgz
+    description: 'Map of lifecycle bundles for different stacks in json format {"lifecycle/stack_name":"lifecycle_bundle_path"}'
   diego.nsync.cc.base_url:
     description: base URL of the cloud controller
   diego.nsync.cc.basic_auth_username:
@@ -48,14 +47,6 @@ properties:
     default: "0.0.0.0:17007"
   diego.nsync.etcd.machines:
     description: "IPs pointing to the ETCD cluster"
-  diego.nsync.nats.username:
-    description: "Username for server authentication."
-  diego.nsync.nats.password:
-    description: "Password for server authentication."
-  diego.nsync.nats.port:
-    description: "The port for the NATS server to listen on."
-  diego.nsync.nats.machines:
-    description: "IP of each NATS cluster member."
   diego.nsync.log_level:
     description: "Log level"
     default: "info"
