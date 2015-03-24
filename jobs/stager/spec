@@ -14,16 +14,8 @@ properties:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
 
-  diego.stager.nats.username:
-    description: "Username for server authentication."
-  diego.stager.nats.password:
-    description: "Password for server authentication."
-  diego.stager.nats.port:
-    description: "The port for the NATS server to listen on."
-  diego.stager.nats.machines:
-    description: "IP of each NATS cluster member."
-  diego.stager.cc.base_url:
-    description: "URI to access the Cloud Controller"
+  diego.stager.cc.external_port:
+    description: "External port to access the Cloud Controller"
   diego.stager.cc.basic_auth_username:
     description: "Basic auth username for CC internal API"
     default: "internal_user"
@@ -32,16 +24,14 @@ properties:
   diego.stager.lifecycle_bundles:
     description: 'Map of lifecycle bundles for different stacks in json format {"stack_name":"lifecycle_bundle_path"}'
     default:
-      lucid64: buildpack_app_lifecycle/buildpack_app_lifecycle.tgz
-  diego.stager.docker_lifecycle_bundle:
-    description: Lifecycle bundle for docker apps
-    default: docker_app_lifecycle/docker_app_lifecycle.tgz
+      buildpack/lucid64: buildpack_app_lifecycle/buildpack_app_lifecycle.tgz
+      docker: docker_app_lifecycle/docker_app_lifecycle.tgz
   diego.stager.stager_url:
     description: URL of stager, used for completion callbacks from receptor API
-    default: http://stager.service.dc1.consul:8888
+    default: http://stager.service.consul:8888
   diego.stager.diego_api_url:
     description: URL of diego API
-    default: http://receptor.service.dc1.consul:8888
+    default: http://receptor.service.consul:8888
   diego.stager.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17011"
@@ -51,7 +41,7 @@ properties:
 
   diego.file_server.file_server_url:
     description: URL of file server
-    default: http://file_server.service.dc1.consul:8080
+    default: http://file_server.service.consul:8080
   diego.stager.docker_registry_url:
     description: "Private Docker Registry URL"
   diego.stager.consul_agent_url:

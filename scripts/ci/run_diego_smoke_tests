@@ -1,17 +1,11 @@
 #!/bin/bash
 
-set -e -x
+set -e -x -u
 
-docker run -a stdout -a stderr -w /root/workspace \
-  -v $PWD:/root/workspace \
-  -e GOROOT=/usr/local/go \
-  -e BOSH_PASSWORD \
-  -e BOSH_TARGET \
-  -e BOSH_USER \
-  -e DATADOG_API_KEY \
-  -e DEPLOYMENTS_DIR \
-  -e DEPLOYMENT_TAG \
-  -e SMOKE_TESTS_MANIFEST \
-  cloudfoundry/diego-pipeline \
-  /bin/bash -l diego-release/scripts/ci/run_diego_smoke_tests_inner
+smoke_tests_manifest="${PWD}/${SMOKE_TESTS_MANIFEST}"
 
+$(dirname $0)/bosh_setup
+
+bosh deployment ${smoke_tests_manifest}
+bosh -n deploy
+bosh run errand diego_smoke_tests --keep-alive

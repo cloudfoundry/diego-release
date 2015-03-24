@@ -44,13 +44,14 @@ case $1 in
 
     mkdir -p $DATA_DIR/depot
 
-    echo $$ > /var/vcap/sys/run/tps/tps.pid
+    echo $$ > $PIDFILE
 
     exec /var/vcap/packages/tps/bin/tps \
       -diegoAPIURL=<%= p("diego.tps.diego_api_url") %> \
-      -natsAddresses=<%= p("diego.tps.nats.machines").collect { |addr| "#{addr}:#{p("diego.tps.nats.port")}" }.join(",") %> \
-      -natsUsername=<%= p("diego.tps.nats.username") %> \
-      -natsPassword=<%= p("diego.tps.nats.password") %> \
+      -ccBaseURL=http://cloud_controller_ng.service.consul:<%= p("diego.tps.cc.external_port") %> \
+      -ccUsername=<%= Shellwords.shellescape(p("diego.tps.cc.basic_auth_username")) %> \
+      -ccPassword=<%= Shellwords.shellescape(p("diego.tps.cc.basic_auth_password")) %> \
+      -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       -debugAddr=<%= p("diego.tps.debug_addr") %> \
       -maxInFlightRequests=<%= p("diego.tps.max_in_flight_requests") %> \
       -listenAddr=<%= "#{my_ip}:1518" %> \

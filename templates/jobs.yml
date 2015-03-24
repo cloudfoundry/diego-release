@@ -106,8 +106,9 @@ jobs:
       consul:
         agent:
           services:
-            - stager
             - file_server
+            - stager
+            - tps
           servers:
             lan: (( external_cf_services.consul.servers ))
 
@@ -227,8 +228,9 @@ jobs:
       consul:
         agent:
           services:
-            - stager
             - file_server
+            - stager
+            - tps
           servers:
             lan: (( external_cf_services.consul.servers ))
 
@@ -283,7 +285,7 @@ properties:
 
   diego:
     # -- Global properties --
-    api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.dc1.consul:8888" ))
+    api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
 
     ssl:
       skip_cert_verify: false
@@ -297,6 +299,7 @@ properties:
     cc_config:
       base_url: (( external_cf_services.cc.srv_api_uri ))
       basic_auth_password: (( external_cf_services.cc.internal_api_password ))
+      external_port: (( external_cf_services.cc.external_port ))
       staging_upload_user: (( external_cf_services.cc.staging_upload_user ))
       staging_upload_password: (( external_cf_services.cc.staging_upload_password ))
 
@@ -364,13 +367,12 @@ properties:
       cc: (( cc_config ))
       diego_api_url: (( .properties.diego.api_url ))
       lifecycle_bundles: ~
-      nats: (( nats_config ))
       docker_registry_url: ~
       log_level: info
 
     tps:
+      cc: (( cc_config ))
       diego_api_url: (( .properties.diego.api_url ))
-      nats: (( nats_config ))
       log_level: info
 
     garden-linux: ~

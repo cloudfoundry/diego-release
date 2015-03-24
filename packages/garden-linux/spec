@@ -8,10 +8,9 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/**/*
   - github.com/cloudfoundry-incubator/garden-linux/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/container_pool/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/container_pool/fake_cn_persistor/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/container_pool/fake_cnet/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/container_pool/fake_container_pool/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/container_pool/fake_graph/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/container_pool/fake_subnet_pool/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/hook/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/hook/hook/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/integration/bind_mount/*.go # gosub
@@ -24,9 +23,11 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/iodaemon/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/iodaemon/link/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/iodaemon/winsizereporter/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/linux_container/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/network/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/network/cnet/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/network/cnet/container-net/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/network/bridgemgr/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/network/bridgemgr/fake_bridge_manager/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/network/container-net/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/network/devices/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/network/devices/fakedevices/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/network/fakes/*.go # gosub
@@ -43,17 +44,19 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/bandwidth_manager/fake_bandwidth_manager/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/cgroups_manager/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/cgroups_manager/fake_cgroups_manager/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/container_pool/repository_fetcher/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/container_pool/repository_fetcher/fake_repository_fetcher/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/container_pool/repository_fetcher/fakes/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/container_pool/rootfs_provider/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/container_pool/rootfs_provider/fake_graph_driver/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/container_pool/rootfs_provider/fake_rootfs_provider/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/container_repository/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/fakes/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/network/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/port_pool/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/port_pool/fake_port_pool/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/quota_manager/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/quota_manager/fake_quota_manager/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/repository_fetcher/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/repository_fetcher/fake_repository_fetcher/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/repository_fetcher/fakes/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/rootfs_provider/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/rootfs_provider/fake_graph_driver/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/rootfs_provider/fake_rootfs_provider/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/uid_pool/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/linux_backend/uid_pool/fake_uid_pool/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/logging/*.go # gosub
@@ -126,6 +129,7 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/docker/utils/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/docker/vendor/src/code.google.com/p/go/src/pkg/archive/tar/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/libcontainer/label/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/libcontainer/netlink/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/libtrust/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/gorilla/context/*.go # gosub
@@ -170,4 +174,3 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/tedsuo/ifrit/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/tedsuo/ifrit/ginkgomon/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/kr/pty/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/libcontainer/netlink/*.go # gosub

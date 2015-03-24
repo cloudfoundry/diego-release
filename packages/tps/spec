@@ -8,7 +8,6 @@ files:
   - github.com/cloudfoundry-incubator/tps/cmd/tps/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/cmd/tps/testrunner/*.go # gosub
   - code.google.com/p/gogoprotobuf/proto/*.go # gosub
-  - github.com/apcera/nats/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
@@ -18,9 +17,10 @@ files:
   - github.com/cloudfoundry-incubator/runtime-schema/diego_errors/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/*.go # gosub
+  - github.com/cloudfoundry-incubator/tps/cc_client/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/lrpstatus/*.go # gosub
-  - github.com/cloudfoundry-incubator/tps/heartbeat/*.go # gosub
+  - github.com/cloudfoundry-incubator/tps/watcher/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
   - github.com/cloudfoundry/dropsonde/control/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
@@ -35,8 +35,16 @@ files:
   - github.com/cloudfoundry/dropsonde/runtime_stats/*.go # gosub
   - github.com/cloudfoundry/gosteno/*.go # gosub
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
-  - github.com/cloudfoundry/gunk/diegonats/*.go # gosub
+  - github.com/cloudfoundry/gunk/urljoiner/*.go # gosub
+  - github.com/cloudfoundry/gunk/workpool/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
+  - github.com/pivotal-golang/lager/*.go # gosub
+  - github.com/tedsuo/ifrit/*.go # gosub
+  - github.com/tedsuo/ifrit/grouper/*.go # gosub
+  - github.com/tedsuo/ifrit/http_server/*.go # gosub
+  - github.com/tedsuo/ifrit/sigmon/*.go # gosub
+  - github.com/tedsuo/rata/*.go # gosub
+  - github.com/vito/go-sse/sse/*.go # gosub
   - github.com/onsi/ginkgo/*.go # gosub
   - github.com/onsi/ginkgo/config/*.go # gosub
   - github.com/onsi/ginkgo/internal/codelocation/*.go # gosub
@@ -65,11 +73,4 @@ files:
   - github.com/onsi/gomega/matchers/support/goraph/node/*.go # gosub
   - github.com/onsi/gomega/matchers/support/goraph/util/*.go # gosub
   - github.com/onsi/gomega/types/*.go # gosub
-  - github.com/pivotal-golang/lager/*.go # gosub
-  - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/ginkgomon/*.go # gosub
-  - github.com/tedsuo/ifrit/grouper/*.go # gosub
-  - github.com/tedsuo/ifrit/http_server/*.go # gosub
-  - github.com/tedsuo/ifrit/sigmon/*.go # gosub
-  - github.com/tedsuo/rata/*.go # gosub
-  - github.com/vito/go-sse/sse/*.go # gosub
