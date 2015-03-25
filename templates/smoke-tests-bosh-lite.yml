@@ -56,9 +56,10 @@ jobs:
   resource_pool: smoke-test
 
 properties:
+  domain: (( merge || "10.244.0.34.xip.io" ))
   diego:
     smoke_tests:
-      api: api.10.244.0.34.xip.io
+      api: (( "api." properties.domain ))
       user: admin
       password: admin
       org: smoke-tests
