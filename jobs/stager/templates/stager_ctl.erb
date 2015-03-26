@@ -45,7 +45,7 @@ case $1 in
     exec /var/vcap/packages/stager/bin/stager \
       -diegoAPIURL=<%= p("diego.stager.diego_api_url") %> \
       -stagerURL=<%= p("diego.stager.stager_url") %> \
-      -ccBaseURL=http://cloud_controller_ng.service.consul:<%= p("diego.stager.cc.external_port") %> \
+      -ccBaseURL=http://cloud-controller-ng.service.consul:<%= p("diego.stager.cc.external_port") %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.stager.cc.basic_auth_username")) %> \
       -ccPassword=<%= Shellwords.shellescape(p("diego.stager.cc.basic_auth_password")) %> \
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \

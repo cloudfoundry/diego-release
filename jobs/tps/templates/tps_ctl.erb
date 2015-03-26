@@ -48,7 +48,7 @@ case $1 in
 
     exec /var/vcap/packages/tps/bin/tps \
       -diegoAPIURL=<%= p("diego.tps.diego_api_url") %> \
-      -ccBaseURL=http://cloud_controller_ng.service.consul:<%= p("diego.tps.cc.external_port") %> \
+      -ccBaseURL=http://cloud-controller-ng.service.consul:<%= p("diego.tps.cc.external_port") %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.tps.cc.basic_auth_username")) %> \
       -ccPassword=<%= Shellwords.shellescape(p("diego.tps.cc.basic_auth_password")) %> \
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
