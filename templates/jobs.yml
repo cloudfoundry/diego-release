@@ -221,7 +221,6 @@ jobs:
     networks:
       - name: diego2
     properties:
-      nats: (( external_cf_services.nats ))
       loggregator_endpoint:
         shared_secret: (( external_cf_services.loggregator_endpoint.shared_secret ))
       metron_agent:
@@ -230,6 +229,7 @@ jobs:
         agent:
           services:
             - file_server
+            - nsync
             - stager
             - tps
           servers:
