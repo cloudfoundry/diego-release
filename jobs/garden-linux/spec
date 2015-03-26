@@ -40,3 +40,7 @@ properties:
   diego.garden-linux.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17013"
+
+  diego.garden-linux.insecure_docker_registry_list:
+    description: "Comma-separated list of docker registries to allow connection to even if they are not secure"
+

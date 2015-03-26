@@ -32,6 +32,7 @@ properties:
       listen_address: 0.0.0.0:7777
       deny_networks:
         - 0.0.0.0/0
+      insecure_docker_registry_list: ~
 
     executor:
       drain_timeout_in_seconds: 0
