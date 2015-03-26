@@ -342,7 +342,6 @@ properties:
       cc: (( cc_config ))
       etcd: (( etcd_config ))
       lifecycle_bundles: (( .properties.lifecycle_bundles ))
-      nats: (( nats_config ))
 
     receptor:
       cors_enabled: false
