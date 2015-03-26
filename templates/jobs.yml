@@ -372,8 +372,8 @@ properties:
       cc: (( cc_config ))
       diego_api_url: (( .properties.diego.api_url ))
       lifecycle_bundles: (( .properties.lifecycle_bundles ))
-      docker_registry_url: ~
       log_level: info
+      docker_registry_url: ~
 
     tps:
       cc: (( cc_config ))
