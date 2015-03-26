@@ -283,6 +283,7 @@ properties:
     machines: (( external_cf_services.etcd.machines ))
 
   lifecycle_bundles:
+    buildpack/cflinuxfs2: buildpack_app_lifecycle/buildpack_app_lifecycle.tgz
     buildpack/lucid64: buildpack_app_lifecycle/buildpack_app_lifecycle.tgz
     docker: docker_app_lifecycle/docker_app_lifecycle.tgz
 
