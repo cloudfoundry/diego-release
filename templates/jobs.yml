@@ -107,6 +107,7 @@ jobs:
         agent:
           services:
             - file_server
+            - nsync
             - stager
             - tps
           servers:
@@ -281,6 +282,10 @@ properties:
   etcd: # For metron_agent to find loggregator
     machines: (( external_cf_services.etcd.machines ))
 
+  lifecycle_bundles:
+    buildpack/lucid64: buildpack_app_lifecycle/buildpack_app_lifecycle.tgz
+    docker: docker_app_lifecycle/docker_app_lifecycle.tgz
+
   syslog_daemon_config: ~
 
   diego:
@@ -336,7 +341,7 @@ properties:
       diego_api_url: (( .properties.diego.api_url ))
       cc: (( cc_config ))
       etcd: (( etcd_config ))
-      lifecycle_bundles: ~
+      lifecycle_bundles: (( .properties.lifecycle_bundles ))
       nats: (( nats_config ))
 
     receptor:
@@ -366,7 +371,7 @@ properties:
     stager:
       cc: (( cc_config ))
       diego_api_url: (( .properties.diego.api_url ))
-      lifecycle_bundles: ~
+      lifecycle_bundles: (( .properties.lifecycle_bundles ))
       docker_registry_url: ~
       log_level: info
 

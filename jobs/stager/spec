@@ -23,9 +23,6 @@ properties:
     description: "Basic auth password for CC internal API"
   diego.stager.lifecycle_bundles:
     description: 'Map of lifecycle bundles for different stacks in json format {"stack_name":"lifecycle_bundle_path"}'
-    default:
-      buildpack/lucid64: buildpack_app_lifecycle/buildpack_app_lifecycle.tgz
-      docker: docker_app_lifecycle/docker_app_lifecycle.tgz
   diego.stager.stager_url:
     description: URL of stager, used for completion callbacks from receptor API
     default: http://stager.service.consul:8888
