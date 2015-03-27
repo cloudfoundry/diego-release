@@ -26,12 +26,6 @@ properties:
   diego.file_server.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17005"
-  diego.file_server.cc.base_url:
-    description: "URI to access the Cloud Controller"
-  diego.file_server.cc.staging_upload_user:
-    description: "User to upload files to Cloud Controller"
-  diego.file_server.cc.staging_upload_password:
-    description: "User's password to upload files to Cloud Controller"
   diego.file_server.cc.job_polling_interval_in_seconds:
     description: "the interval between job polling requests"
   diego.file_server.log_level:

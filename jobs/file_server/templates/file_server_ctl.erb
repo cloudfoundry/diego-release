@@ -44,9 +44,6 @@ case $1 in
       -address=<%= p("diego.file_server.address") %> \
       -debugAddr=<%= p("diego.file_server.debug_addr") %> \
       -staticDirectory=<%= p("diego.file_server.static_directory") %> \
-      -ccAddress=<%= p("diego.file_server.cc.base_url") %> \
-      -ccUsername=<%= p("diego.file_server.cc.staging_upload_user") %> \
-      -ccPassword=<%= p("diego.file_server.cc.staging_upload_password") %> \
       <% if_p("diego.file_server.cc.job_polling_interval_in_seconds") do |interval| %>\
         -ccJobPollingInterval=<%= "#{interval}s" %> \
       <% end %>\
