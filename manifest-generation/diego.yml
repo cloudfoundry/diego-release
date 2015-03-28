@@ -1,0 +1,583 @@
+name: (( config_from_cf.cf_deployment_name "-diego" ))
+
+releases:
+  - name: diego
+    version: latest
+  - name: cf
+    version: latest
+
+compilation:
+  workers: 6
+  network: diego1
+  reuse_compilation_vms: true
+  cloud_properties: (( iaas_settings.compilation_cloud_properties ))
+
+update:
+  canaries: 1
+  canary_watch_time: 5000-120000
+  update_watch_time: 5000-120000
+  max_in_flight: 1
+  serial: false
+
+networks:
+  - name: diego1
+    type: manual
+    subnets: (( iaas_settings.subnet_configs.diego1.subnets ))
+  - name: diego2
+    type: manual
+    subnets: (( iaas_settings.subnet_configs.diego2.subnets ))
+  - name: diego3
+    type: manual
+    subnets: (( iaas_settings.subnet_configs.diego3.subnets ))
+
+resource_pools:
+  - name: brain_z1
+    network: diego1
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.brain_z1.cloud_properties ))
+  - name: brain_z2
+    network: diego2
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.brain_z2.cloud_properties ))
+  - name: brain_z3
+    network: diego3
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.brain_z3.cloud_properties ))
+  - name: cc_bridge_z1
+    network: diego1
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.cc_bridge_z1.cloud_properties ))
+  - name: cc_bridge_z2
+    network: diego2
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.cc_bridge_z2.cloud_properties ))
+  - name: cc_bridge_z3
+    network: diego3
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.cc_bridge_z3.cloud_properties ))
+  - name: cell_z1
+    network: diego1
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.cell_z1.cloud_properties ))
+  - name: cell_z2
+    network: diego2
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.cell_z2.cloud_properties ))
+  - name: cell_z3
+    network: diego3
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.cell_z3.cloud_properties ))
+  - name: etcd_z1
+    network: diego1
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.etcd_z1.cloud_properties ))
+  - name: etcd_z2
+    network: diego2
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.etcd_z2.cloud_properties ))
+  - name: etcd_z3
+    network: diego3
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.etcd_z3.cloud_properties ))
+  - name: route_emitter_z1
+    network: diego1
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.route_emitter_z1.cloud_properties ))
+  - name: route_emitter_z2
+    network: diego2
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.route_emitter_z2.cloud_properties ))
+  - name: route_emitter_z3
+    network: diego3
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.route_emitter_z3.cloud_properties ))
+
+jobs:
+  - name: etcd_z1
+    templates:
+      - name: etcd
+        release: diego
+    instances: (( instance_count_overrides.etcd_z1.instances || 1 ))
+    persistent_disk: (( persistent_disk_overrides.etcd_z1 || 1024 ))
+    resource_pool: etcd_z1
+    networks:
+      - name: diego1
+        static_ips: (( static_ips(0) ))
+    update:
+      serial: true
+      max_in_flight: 1
+
+  - name: brain_z1
+    templates:
+      - name: consul_agent
+        release: cf
+      - name: auctioneer
+        release: diego
+      - name: converger
+        release: diego
+      - name: runtime_metrics_server
+        release: diego
+      - name: metron_agent
+        release: cf
+    instances: (( instance_count_overrides.brain_z1.instances || 1 ))
+    resource_pool: brain_z1
+    networks:
+      - name: diego1
+    update:
+      serial: true
+      max_in_flight: 1
+    properties:
+      metron_agent:
+        zone: z1
+
+  - name: cell_z1
+    templates:
+      - name: rep
+        release: diego
+      - name: consul_agent
+        release: cf
+      - name: executor
+        release: diego
+      - name: garden-linux
+        release: diego
+      - name: receptor
+        release: diego
+      - name: metron_agent
+        release: cf
+    instances: (( instance_count_overrides.cell_z1.instances || 1 ))
+    resource_pool: cell_z1
+    networks:
+      - name: diego1
+    update:
+      serial: false
+      max_in_flight: (( instance_count_overrides.cell_z1.max_in_flight || 1))
+    properties:
+      metron_agent:
+        zone: z1
+      diego:
+        rep:
+          zone: z1
+      consul:
+        agent:
+          services:
+            - receptor
+
+  - name: cc_bridge_z1
+    templates:
+      - name: stager
+        release: diego
+      - name: nsync
+        release: diego
+      - name: tps
+        release: diego
+      - name: file_server
+        release: diego
+      - name: consul_agent
+        release: cf
+      - name: metron_agent
+        release: cf
+    instances: (( instance_count_overrides.cc_bridge_z1.instances || 1 ))
+    resource_pool: cc_bridge_z1
+    networks:
+      - name: diego1
+    update:
+      serial: false
+      max_in_flight: (( instance_count_overrides.cc_bridge_z1.max_in_flight || 1))
+    properties:
+      metron_agent:
+        zone: z1
+      consul:
+        agent:
+          services:
+            - file_server
+            - nsync
+            - stager
+            - tps
+
+  - name: route_emitter_z1
+    templates:
+      - name: route_emitter
+        release: diego
+      - name: consul_agent
+        release: cf
+      - name: metron_agent
+        release: cf
+    instances: (( instance_count_overrides.route_emitter_z1.instances || 1 ))
+    resource_pool: route_emitter_z1
+    networks:
+      - name: diego1
+    update:
+      serial: false
+      max_in_flight: (( instance_count_overrides.route_emitter_z1.max_in_flight || 1))
+    properties:
+      metron_agent:
+        zone: z1
+
+  - name: etcd_z2
+    templates:
+      - name: etcd
+        release: diego
+    instances: (( instance_count_overrides.etcd_z2.instances || 1 ))
+    persistent_disk: (( persistent_disk_overrides.etcd_z2 || 1024 ))
+    resource_pool: etcd_z2
+    networks:
+      - name: diego2
+        static_ips: (( static_ips(0) ))
+    update:
+      serial: true
+      max_in_flight: 1
+
+  - name: brain_z2
+    templates:
+      - name: consul_agent
+        release: cf
+      - name: auctioneer
+        release: diego
+      - name: converger
+        release: diego
+      - name: runtime_metrics_server
+        release: diego
+      - name: metron_agent
+        release: cf
+    instances: (( instance_count_overrides.brain_z2.instances || 1 ))
+    resource_pool: brain_z2
+    networks:
+      - name: diego2
+    update:
+      serial: true
+      max_in_flight: 1
+    properties:
+      metron_agent:
+        zone: z2
+
+  - name: cell_z2
+    templates:
+      - name: rep
+        release: diego
+      - name: consul_agent
+        release: cf
+      - name: executor
+        release: diego
+      - name: garden-linux
+        release: diego
+      - name: receptor
+        release: diego
+      - name: metron_agent
+        release: cf
+    instances: (( instance_count_overrides.cell_z2.instances || 1 ))
+    resource_pool: cell_z2
+    networks:
+      - name: diego2
+    update:
+      serial: false
+      max_in_flight: (( instance_count_overrides.cell_z2.max_in_flight || 1 ))
+    properties:
+      metron_agent:
+        zone: z2
+      diego:
+        rep:
+          zone: z2
+      consul:
+        agent:
+          services:
+            - receptor
+
+  - name: cc_bridge_z2
+    templates:
+      - name: stager
+        release: diego
+      - name: nsync
+        release: diego
+      - name: tps
+        release: diego
+      - name: file_server
+        release: diego
+      - name: consul_agent
+        release: cf
+      - name: metron_agent
+        release: cf
+    instances: (( instance_count_overrides.cc_bridge_z2.instances || 1 ))
+    resource_pool: cc_bridge_z2
+    networks:
+      - name: diego2
+    update:
+      serial: false
+      max_in_flight: (( instance_count_overrides.cc_bridge_z2.max_in_flight || 1 ))
+    properties:
+      metron_agent:
+        zone: z2
+      consul:
+        agent:
+          services:
+            - file_server
+            - nsync
+            - stager
+            - tps
+
+  - name: route_emitter_z2
+    templates:
+      - name: route_emitter
+        release: diego
+      - name: consul_agent
+        release: cf
+      - name: metron_agent
+        release: cf
+    instances: (( instance_count_overrides.route_emitter_z2.instances || 1 ))
+    resource_pool: route_emitter_z2
+    networks:
+      - name: diego2
+    update:
+      serial: false
+      max_in_flight: (( instance_count_overrides.route_emitter_z2.max_in_flight || 1 ))
+    properties:
+      metron_agent:
+        zone: z2
+
+  - name: etcd_z3
+    templates:
+      - name: etcd
+        release: diego
+    instances: (( instance_count_overrides.etcd_z3.instances || 1 ))
+    persistent_disk: (( persistent_disk_overrides.etcd_z3 || 1024 ))
+    resource_pool: etcd_z3
+    networks:
+      - name: diego3
+        static_ips: (( static_ips(0) ))
+    update:
+      serial: true
+      max_in_flight: 1
+
+  - name: brain_z3
+    templates:
+      - name: consul_agent
+        release: cf
+      - name: auctioneer
+        release: diego
+      - name: converger
+        release: diego
+      - name: runtime_metrics_server
+        release: diego
+      - name: metron_agent
+        release: cf
+    instances: (( instance_count_overrides.brain_z3.instances || 0 ))
+    resource_pool: brain_z3
+    networks:
+      - name: diego3
+    update:
+      serial: true
+      max_in_flight: 1
+    properties:
+      metron_agent:
+        zone: z3
+
+  - name: cell_z3
+    templates:
+      - name: rep
+        release: diego
+      - name: consul_agent
+        release: cf
+      - name: executor
+        release: diego
+      - name: garden-linux
+        release: diego
+      - name: receptor
+        release: diego
+      - name: metron_agent
+        release: cf
+    instances: (( instance_count_overrides.cell_z3.instances || 0 ))
+    resource_pool: cell_z3
+    networks:
+      - name: diego3
+    update:
+      serial: false
+      max_in_flight: (( instance_count_overrides.cell_z3.max_in_flight || 1 ))
+    properties:
+      metron_agent:
+        zone: z3
+      diego:
+        rep:
+          zone: z3
+      consul:
+        agent:
+          services:
+            - receptor
+
+  - name: cc_bridge_z3
+    templates:
+      - name: stager
+        release: diego
+      - name: nsync
+        release: diego
+      - name: tps
+        release: diego
+      - name: file_server
+        release: diego
+      - name: consul_agent
+        release: cf
+      - name: metron_agent
+        release: cf
+    instances: (( instance_count_overrides.cc_bridge_z3.instances || 0 ))
+    resource_pool: cc_bridge_z3
+    networks:
+      - name: diego3
+    update:
+      serial: false
+      max_in_flight: (( instance_count_overrides.cc_bridge_z3.max_in_flight || 1 ))
+    properties:
+      metron_agent:
+        zone: z3
+      consul:
+        agent:
+          services:
+            - file_server
+            - nsync
+            - stager
+            - tps
+
+  - name: route_emitter_z3
+    templates:
+      - name: route_emitter
+        release: diego
+      - name: consul_agent
+        release: cf
+      - name: metron_agent
+        release: cf
+    instances: (( instance_count_overrides.route_emitter_z3.instances || 0 ))
+    resource_pool: route_emitter_z3
+    networks:
+      - name: diego3
+    update:
+      serial: false
+      max_in_flight: (( instance_count_overrides.route_emitter_z3.max_in_flight || 1 ))
+    properties:
+      metron_agent:
+        zone: z3
+
+properties:
+  # -- Properties below are used by the metron_agent job from cf-release --
+  nats: # For metron_agent to talk to collector
+    machines: (( config_from_cf.nats.machines ))
+    user: (( config_from_cf.nats.user ))
+    password: (( config_from_cf.nats.password ))
+    port: (( config_from_cf.nats.port ))
+  etcd: # For metron_agent to find loggregator
+    machines: (( config_from_cf.etcd.machines ))
+  loggregator_endpoint:
+    shared_secret: (( config_from_cf.loggregator_endpoint.shared_secret ))
+  syslog_daemon_config:
+    address: (( property_overrides.syslog_daemon_config.address || nil ))
+    port: (( property_overrides.syslog_daemon_config.port || nil ))
+
+  # -- Property below is used by the consul_agent job from cf-release --
+  consul:
+    agent:
+      servers:
+        lan: (( config_from_cf.consul.lan_servers ))
+
+  # -- Proerties below are used by jobs from diego-release --
+  diego:
+    # -- Global property --
+    ssl:
+      skip_cert_verify: (( property_overrides.skip_cert_verify || nil ))
+
+    # -- Job-specific properties --
+    auctioneer:
+      etcd:
+        machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+      log_level: (( property_overrides.auctioneer.log_level || nil ))
+    converger:
+      etcd:
+        machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+      log_level: (( property_overrides.converger.log_level || nil ))
+    executor:
+      drain_timeout_in_seconds: (( property_overrides.executor.drain_timeout_in_seconds || nil ))
+      garden:
+        network: (( property_overrides.executor.garden.network || nil ))
+        address: (( property_overrides.executor.garden.address || nil ))
+      log_level: (( property_overrides.executor.log_level || nil ))
+    etcd:
+      machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+    garden-linux:
+      kernel_network_tuning_enabled: (( property_overrides.garden-linux.kernel_network_tuning_enabled || nil ))
+      disk_quota_enabled: (( property_overrides.garden-linux.disk_quota_enabled || nil ))
+      listen_network: (( property_overrides.garden-linux.listen_network || nil ))
+      listen_address: (( property_overrides.garden-linux.listen_address || nil ))
+      allow_networks: (( property_overrides.garden-linux.allow_networks || nil ))
+    file_server:
+      cc:
+        base_url: (( config_from_cf.cc.srv_api_uri ))
+        basic_auth_password: (( config_from_cf.cc.internal_api_password ))
+        external_port: (( config_from_cf.cc.external_port ))
+        staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
+        staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
+      log_level: (( property_overrides.file_server.log_level || nil ))
+    nsync:
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+      cc:
+        base_url: (( config_from_cf.cc.srv_api_uri ))
+        basic_auth_password: (( config_from_cf.cc.internal_api_password ))
+        external_port: (( config_from_cf.cc.external_port ))
+        staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
+        staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
+      etcd:
+        machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+      log_level: (( property_overrides.nsync.log_level || nil ))
+    receptor:
+      etcd:
+        machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+      nats:
+        machines: (( config_from_cf.nats.machines ))
+        username: (( config_from_cf.nats.user ))
+        password: (( config_from_cf.nats.password ))
+        port: (( config_from_cf.nats.port ))
+      cors_enabled: (( property_overrides.receptor.cors_enabled || nil ))
+      username: (( property_overrides.receptor.username || "" ))
+      password: (( property_overrides.receptor.password || "" ))
+      register_with_router: (( property_overrides.receptor.register_with_router || nil ))
+      domain_names:  (( property_overrides.receptor.domain_names || nil ))
+      log_level: (( property_overrides.receptor.log_level || nil ))
+    rep:
+      etcd:
+        machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+      log_level: (( property_overrides.rep.log_level || nil ))
+    route_emitter:
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+      nats:
+        machines: (( config_from_cf.nats.machines ))
+        username: (( config_from_cf.nats.user ))
+        password: (( config_from_cf.nats.password ))
+        port: (( config_from_cf.nats.port ))
+      log_level: (( property_overrides.route_emitter.log_level || nil ))
+    runtime_metrics_server:
+      etcd:
+        machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+      nats:
+        machines: (( config_from_cf.nats.machines ))
+        username: (( config_from_cf.nats.user ))
+        password: (( config_from_cf.nats.password ))
+        port: (( config_from_cf.nats.port ))
+      log_level: (( property_overrides.runtime_metrics_server.log_level || nil ))
+    stager:
+      cc:
+        base_url: (( config_from_cf.cc.srv_api_uri ))
+        basic_auth_password: (( config_from_cf.cc.internal_api_password ))
+        external_port: (( config_from_cf.cc.external_port ))
+        staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
+        staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+      log_level: (( property_overrides.stager.log_level || nil ))
+    tps:
+      cc:
+        base_url: (( config_from_cf.cc.srv_api_uri ))
+        basic_auth_password: (( config_from_cf.cc.internal_api_password ))
+        external_port: (( config_from_cf.cc.external_port ))
+        staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
+        staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+      log_level: (( property_overrides.tps.log_level || nil ))
+
+config_from_cf: (( merge ))
+iaas_settings: (( merge ))
+instance_count_overrides: (( merge ))
+persistent_disk_overrides: (( merge ))
+property_overrides: (( merge ))

@@ -1,0 +1,115 @@
+iaas_settings:
+  stemcell:
+    name: bosh-warden-boshlite-ubuntu-trusty-go_agent
+    version: latest
+  subnet_configs:
+    - name: diego1
+      type: manual
+      subnets:
+      - cloud_properties: {}
+        range: 10.244.16.0/30
+        reserved:
+        - 10.244.16.1
+        static:
+        - 10.244.16.2
+      - cloud_properties: {}
+        range: 10.244.16.4/30
+        reserved:
+        - 10.244.16.5
+        static: []
+      - cloud_properties: {}
+        range: 10.244.16.8/30
+        reserved:
+        - 10.244.16.9
+        static: []
+      - cloud_properties: {}
+        range: 10.244.16.12/30
+        reserved:
+        - 10.244.16.13
+        static: []
+      - cloud_properties: {}
+        range: 10.244.16.16/30
+        reserved:
+        - 10.244.16.17
+        static: []
+      - cloud_properties: {}
+        range: 10.244.16.20/30
+        reserved:
+        - 10.244.16.21
+        static: []
+      - cloud_properties: {}
+        range: 10.244.16.24/30
+        reserved:
+        - 10.244.16.25
+        static: []
+      - cloud_properties: {}
+        range: 10.244.16.28/30
+        reserved:
+        - 10.244.16.29
+        static: []
+      - cloud_properties: {}
+        range: 10.244.16.32/30
+        reserved:
+        - 10.244.16.33
+        static: []
+      - cloud_properties: {}
+        range: 10.244.16.36/30
+        reserved:
+        - 10.244.16.37
+        static: []
+      - cloud_properties: {}
+        range: 10.244.16.40/30
+        reserved:
+        - 10.244.16.41
+        static: []
+    - name: diego2
+      type: manual
+      subnets:
+      - cloud_properties: {}
+        range: 10.244.18.0/30
+        reserved:
+        - 10.244.18.1
+        static:
+        - 10.244.18.2
+    - name: diego3
+      type: manual
+      subnets:
+      - cloud_properties: {}
+        range: 10.244.20.0/30
+        reserved:
+        - 10.244.20.1
+        static:
+        - 10.244.20.2
+  compilation_cloud_properties: {}
+  resource_pool_cloud_properties:
+    - name: brain_z1
+      cloud_properties: {}
+    - name: brain_z2
+      cloud_properties: {}
+    - name: brain_z3
+      cloud_properties: {}
+    - name: cc_bridge_z1
+      cloud_properties: {}
+    - name: cc_bridge_z2
+      cloud_properties: {}
+    - name: cc_bridge_z3
+      cloud_properties: {}
+    - name: cell_z1
+      cloud_properties: {}
+    - name: cell_z2
+      cloud_properties: {}
+    - name: cell_z3
+      cloud_properties: {}
+    - name: etcd_z1
+      cloud_properties: {}
+    - name: etcd_z2
+      cloud_properties: {}
+    - name: etcd_z3
+      cloud_properties: {}
+    - name: route_emitter_z1
+      cloud_properties: {}
+    - name: route_emitter_z2
+      cloud_properties: {}
+    - name: route_emitter_z3
+      cloud_properties: {}
+

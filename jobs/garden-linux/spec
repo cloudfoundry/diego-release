@@ -31,7 +31,8 @@ properties:
 
   diego.garden-linux.deny_networks:
     description: "List of CIDR blocks to which containers will be denied access."
-    default: []
+    default:
+      - 0.0.0.0/0
 
   diego.garden-linux.allow_networks:
     description: "List of CIDR blocks to which containers will be allowed access (applied after deny)."

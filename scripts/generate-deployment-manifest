@@ -2,52 +2,92 @@
 
 set -e
 
-templates=$(dirname $0)/../templates
-
-infrastructure=$1
-cf_release=$2
-
-shift
-shift
+manifest_generation=$(dirname $0)/../manifest-generation
 
 function usage() {
   echo "    Usage:
-    $0 <aws|bosh-lite> /path/to/cf-release [stubs...]
+    $0 /path/to/stub/director-uuid.yml \\
+       /path/to/stub/property-overrides.yml \\
+       /path/to/stub/instance-count-overrides.yml \\
+       /path/to/stub/persistent-disk-overrides.yml \\
+       /path/to/stub/iaas-settings.yml \\
+       /path/to/deployment-manifests
 
     Ex:
-    $0 aws \\
-      ~/workspace/cf-release \\
-      ~/workspace/deployments-aws/ketchup/cf-aws-stub.yml \\
-      ~/workspace/deployments-aws/ketchup/cf-shared-secrets.yml
+    $0 ~/deployments/bosh-lite/director.yml \\
+       manifest-generation/bosh-lite-stubs/property-overrides.yml \\
+       manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
+       manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \\
+       manifest-generation/bosh-lite-stubs/iaas-settings.yml \\
+       ~/deployments/bosh-lite
 "
   exit 1
 }
 
-if [ "$infrastructure" != "aws" ] && [ "$infrastructure" != "bosh-lite" ]; then
+director_uuid=$1
+property_overrides=$2
+instance_counts=$3
+persistent_disk=$4
+iaas_settings=$5
+deployments=$6
+
+if [ -z "${deployments}" ]; then
+  echo "Not enough arguments"
   usage
 fi
 
-if [ -z "$cf_release" ]; then
+if [ ! -z "$7" ]; then
+  echo "Too many arguments"
   usage
 fi
 
-shared_stub=/tmp/cf-diego-shared.yml
-cf_infrastructure=$infrastructure
-if [ "$infrastructure" == "bosh-lite" ]; then
-  cf_infrastructure="warden"
+if [ ! -f "${director_uuid}" ]; then
+  echo "Director UUID stub '${director_uuid}' is not a regular file"
+  usage
+fi
+
+if [ ! -f "${property_overrides}" ]; then
+  echo "Property Overrides stub '${property_overrides}' is not a regular file"
+  usage
+fi
+
+if [ ! -f "${instance_counts}" ]; then
+  echo "Instance Count Overrides stub '${instance_counts}' is not a regular file"
+  usage
+fi
+
+if [ ! -f "${persistent_disk}" ]; then
+  echo "Persistent Disk Overrides stub '${persistent_disk}' is not a regular file"
+  usage
+fi
+
+if [ ! -f "${iaas_settings}" ]; then
+  echo "IaaS Setting stub '${iaas_settings}' is not a regular file"
+  usage
+fi
+
+
+if [ ! -d "${deployments}" ]; then
+  echo "Deployments directory '${deployments}' is not a directory"
+  usage
 fi
 
 spiff merge \
-  $templates/cf-shared.yml \
-  $templates/diego-cf-stub.yml \
-  $cf_release/templates/cf-properties.yml \
-  $cf_release/templates/cf-infrastructure-${cf_infrastructure}.yml \
-  "$@" \
-  > $shared_stub
+  ${manifest_generation}/config-from-cf.yml \
+  ${manifest_generation}/config-from-cf-internal.yml \
+  ${deployments}/cf.yml \
+  > ${TMPDIR}/config-from-cf.yml
 
 spiff merge \
-  $templates/deployment.yml \
-  $templates/jobs.yml \
-  $templates/infrastructure-${infrastructure}.yml \
-  $shared_stub \
-  "$@"
+  ${manifest_generation}/diego.yml \
+  ${property_overrides} \
+  ${instance_counts} \
+  ${persistent_disk} \
+  ${iaas_settings} \
+  ${TMPDIR}/config-from-cf.yml \
+  > ${TMPDIR}/diego.yml
+
+spiff merge \
+  ${manifest_generation}/misc-templates/bosh.yml \
+  ${director_uuid} \
+  ${TMPDIR}/diego.yml

@@ -1,0 +1,39 @@
+config_from_cf:
+  cf_deployment_name: (( name ))
+  cc:
+    external_port: 9022
+    internal_api_password: (( properties.cc.internal_api_password ))
+    srv_api_uri: (( properties.cc.srv_api_uri ))
+    staging_upload_user: (( properties.cc.staging_upload_user ))
+    staging_upload_password: (( properties.cc.staging_upload_password ))
+  consul:
+    lan_servers: (( properties.consul.agent.servers.lan ))
+  etcd:
+    machines: (( properties.etcd.machines ))
+  loggregator_endpoint:
+    shared_secret: (( properties.loggregator_endpoint.shared_secret ))
+  nats:
+    user: (( properties.nats.user ))
+    password: (( properties.nats.password ))
+    port: 4222
+    machines: (( properties.nats.machines ))
+
+name: (( merge ))
+properties:
+  cc:
+    internal_api_password: (( merge ))
+    srv_api_uri: (( merge ))
+    staging_upload_user: (( merge ))
+    staging_upload_password: (( merge ))
+  consul:
+    agent:
+      servers:
+        lan: (( merge ))
+  etcd:
+    machines: (( merge ))
+  loggregator_endpoint:
+    shared_secret: (( merge ))
+  nats:
+    user: (( merge ))
+    password: (( merge ))
+    machines: (( merge ))

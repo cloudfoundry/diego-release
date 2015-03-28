@@ -3,9 +3,12 @@
 set -e
 
 ./scripts/generate-deployment-manifest \
-  bosh-lite                            \
-  ../cf-release                        \
   ~/deployments/bosh-lite/director.yml \
+  manifest-generation/bosh-lite-stubs/property-overrides.yml \
+  manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
+  manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \
+  manifest-generation/bosh-lite-stubs/iaas-settings.yml \
+  ~/deployments/bosh-lite \
   > ~/deployments/bosh-lite/diego.yml
 
 echo "WARNING: targeting BOSH-Lite director and setting Diego deployment manifest"

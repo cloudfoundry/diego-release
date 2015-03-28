@@ -17,7 +17,7 @@ bosh -n upload stemcell bosh-stemcell/*.tgz --skip-if-exists
 pushd cf-release
   bosh -n create release
   bosh -n upload release --rebase || true
-  ./generate_deployment_manifest ${INFRASTRUCTURE} ${stubs_path}/* > cf-deployment.yml
+  ./generate_deployment_manifest ${INFRASTRUCTURE} ${stubs_path}/*.yml > cf-deployment.yml
   bosh deployment cf-deployment.yml
 
   ../diego-release/scripts/ci/emit-datadog-deploy-event started cf-${DEPLOYMENT_NAME} cf

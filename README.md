@@ -20,7 +20,7 @@ When working on individual components of Diego, work out of the submodules under
 See [Initial Setup](#initial-setup).
 
 Run the individual component unit tests as you work on them using
-[ginkgo](https://github.com/onsi/ginkgo). To see if *everything* still works, run 
+[ginkgo](https://github.com/onsi/ginkgo). To see if *everything* still works, run
 `./scripts/run-unit-tests` in the root of the release.
 
 When you're ready to commit, run:
@@ -96,7 +96,7 @@ as you switch in and out of the directory.
 
 1. Install the `fly` CLI:
 
-        # cd to the concourse release repo, 
+        # cd to the concourse release repo,
         cd /path/to/concourse/repo
 
         # switch to using the concourse $GOPATH and $PATH setup temporarily
@@ -164,8 +164,8 @@ as you switch in and out of the directory.
         cd ~/workspace/cf-release
         ./generate_deployment_manifest warden \
             ~/deployments/bosh-lite/director.yml \
-            ~/workspace/diego-release/templates/enable_diego_docker_in_cc.yml > \
-            ~/deployments/bosh-lite/cf.yml
+            ~/workspace/diego-release/stubs-for-cf-release/enable_diego_docker_in_cc.yml \
+            > ~/deployments/bosh-lite/cf.yml
         bosh deployment ~/deployments/bosh-lite/cf.yml
 
 1. Do the BOSH dance:
@@ -178,9 +178,14 @@ as you switch in and out of the directory.
 1. Generate and target diego's manifest:
 
         cd ~/workspace/diego-release
-        ./scripts/generate-deployment-manifest bosh-lite ../cf-release \
-            ~/deployments/bosh-lite/director.yml > \
-            ~/deployments/bosh-lite/diego.yml
+        ./scripts/generate-deployment-manifest \
+            ~/deployments/bosh-lite/director.yml \
+            manifest-generation/bosh-lite-stubs/property-overrides.yml \
+            manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
+            manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \
+            manifest-generation/bosh-lite-stubs/iaas-settings.yml \
+            ~/deployments/bosh-lite \
+            > ~/deployments/bosh-lite/diego.yml
         bosh deployment ~/deployments/bosh-lite/diego.yml
 
 1. Dance some more:
@@ -194,35 +199,12 @@ Now you can either run the DATs or deploy your own app.
 ---
 ###<a name="smokes-and-dats"></a> Running Smoke Tests & DATs
 
-To deploy and run the smoke tests:
+You can test that your diego-release deployment is working and integrating with cf-release
+by running the lightweight `diego-smoke-tests` or the more thorough `diego-acceptance-tests`.
+Follow the READMEs in their respective repositories:
 
-1. Create a test Organization and Space for your smoke test applications:
-
-        cf api --skip-ssl-validation api.10.244.0.34.xip.io
-        cf auth admin admin
-        cf create-org smoke-tests
-        cf create-space smoke-tests -o smoke-tests
-
-1. Create a deployment manifest for the smoke test task (known as a BOSH errand).
-
-        spiff merge ~/workspace/diego-release/templates/smoke-tests-bosh-lite.yml \
-            ~/deployments/bosh-lite/director.yml \
-            > ~/deployments/bosh-lite/diego-smoke-tests.yml
-
-1. Deploy the task and run it.
-
-        bosh -d ~/deployments/bosh-lite/diego-smoke-tests.yml deploy
-        bosh -d ~/deployments/bosh-lite/diego-smoke-tests.yml run errand diego_smoke_tests
-
-To deploy and run the DATs:
-
-1. Create a deployment manifest for the DATs errand (you do not need to create an Org or Space for this):
-
-        spiff merge ~/workspace/diego-release/templates/acceptance-tests-bosh-lite.yml \
-            ~/deployments/bosh-lite/director.yml \
-            > ~/deployments/bosh-lite/diego-acceptance-tests.yml
-        bosh -d ~/deployments/bosh-lite/diego-acceptance-tests.yml deploy
-        bosh -d ~/deployments/bosh-lite/diego-acceptance-tests.yml run errand diego_acceptance_tests
+- `src/github.com/cloudfoundry-incubator/diego-smoke-tests`
+- `src/github.com/cloudfoundry-incubator/diego-acceptance-tests`
 
 ---
 ### Pushing an Application to Diego

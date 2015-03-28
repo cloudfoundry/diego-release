@@ -1,0 +1,16 @@
+property_overrides:
+  executor:
+    drain_timeout_in_seconds: 0
+    garden:
+      network: tcp
+      address: 127.0.0.1:7777
+  garden-linux:
+    kernel_network_tuning_enabled: false
+    disk_quota_enabled: false
+    listen_network: tcp
+    listen_address: 0.0.0.0:7777
+  receptor:
+    register_with_router: true
+    domain_names:
+     - receptor.10.244.0.34.xip.io
+  skip_cert_verify: true
