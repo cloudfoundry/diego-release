@@ -11,6 +11,7 @@ bosh -n cleanup
 bosh -n upload stemcell bosh-stemcell/*.tgz --skip-if-exists
 
 pushd diego-release
+  bosh --parallel $(nproc) sync blobs
   bosh -n create release
   bosh -n upload release --rebase || true
 
