@@ -11,7 +11,6 @@ set -e
 echo "WARNING: targeting BOSH-Lite director and setting Diego deployment manifest"
 bosh target lite
 bosh deployment ~/deployments/bosh-lite/diego.yml
-bosh --parallel 4 sync blobs
 bosh create release --force
 bosh -n upload release
 bosh -n deploy
