@@ -40,7 +40,8 @@ case $1 in
     /var/vcap/packages/rep/bin/rep \
       -etcdCluster=<%= p("diego.rep.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -debugAddr=<%= p("diego.rep.debug_addr") %> \
-      -stack=<%= p("diego.rep.stack") %> \
+      <%= p("diego.rep.preloaded_rootfses").map { |rootfs| "--preloadedRootFS #{rootfs}" }.join(" ") %> \
+      <%= p("diego.rep.rootfs_providers").map { |provider| "--rootFSProvider #{provider}" }.join(" ") %> \
       -executorURL=<%= p("diego.rep.executor.url") %> \
       -listenAddr=<%= p("diego.rep.listen_addr") %> \
       -cellID=<%= spec.job.name %>-<%= spec.index %> \

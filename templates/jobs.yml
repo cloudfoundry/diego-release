@@ -283,7 +283,9 @@ properties:
     machines: (( external_cf_services.etcd.machines ))
 
   lifecycle_bundles:
+    buildpack/cflinuxfs2: buildpack_app_lifecycle/buildpack_app_lifecycle.tgz
     buildpack/lucid64: buildpack_app_lifecycle/buildpack_app_lifecycle.tgz
+    buildpack/windows2012R2: windows_app_lifecycle/windows_app_lifecycle.tgz
     docker: docker_app_lifecycle/docker_app_lifecycle.tgz
 
   syslog_daemon_config: ~
@@ -342,7 +344,6 @@ properties:
       cc: (( cc_config ))
       etcd: (( etcd_config ))
       lifecycle_bundles: (( .properties.lifecycle_bundles ))
-      nats: (( nats_config ))
 
     receptor:
       cors_enabled: false
