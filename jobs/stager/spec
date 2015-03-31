@@ -35,6 +35,9 @@ properties:
   diego.stager.log_level:
     description: "Log level"
     default: "info"
+  diego.stager.docker_staging_stack:
+    description: "stack to use for staging Docker applications"
+    default: "cflinuxfs2"
 
   diego.file_server.file_server_url:
     description: URL of file server
