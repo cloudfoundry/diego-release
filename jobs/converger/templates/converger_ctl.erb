@@ -19,6 +19,7 @@ case $1 in
 
     exec /var/vcap/packages/converger/bin/converger \
       -etcdCluster=<%= p("diego.converger.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -consulCluster=http://127.0.0.1:8500 \
       -debugAddr=<%= p("diego.converger.debug_addr") %> \
       -convergeRepeatInterval=<%= "#{p("diego.converger.repeat_interval_in_seconds")}s" %> \
       -kickPendingTaskDuration=<%= "#{p("diego.converger.kick_pending_task_duration_in_seconds")}s" %> \

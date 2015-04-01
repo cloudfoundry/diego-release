@@ -39,6 +39,7 @@ case $1 in
 
     /var/vcap/packages/rep/bin/rep \
       -etcdCluster=<%= p("diego.rep.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -consulCluster=http://127.0.0.1:8500 \
       -debugAddr=<%= p("diego.rep.debug_addr") %> \
       <%= p("diego.rep.preloaded_rootfses").map { |rootfs| "--preloadedRootFS #{rootfs}" }.join(" ") %> \
       <%= p("diego.rep.rootfs_providers").map { |provider| "--rootFSProvider #{provider}" }.join(" ") %> \

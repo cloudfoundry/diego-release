@@ -361,7 +361,6 @@ properties:
 
     route_emitter:
       diego_api_url: (( .properties.diego.api_url ))
-      etcd: (( etcd_config ))
       nats: (( nats_config ))
       log_level: info
 

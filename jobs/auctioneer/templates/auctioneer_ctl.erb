@@ -22,6 +22,7 @@ case $1 in
 
     exec /var/vcap/packages/auctioneer/bin/auctioneer \
       -etcdCluster=<%= p("diego.auctioneer.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -consulCluster=http://127.0.0.1:8500 \
       -debugAddr=<%= p("diego.auctioneer.debug_addr") %> \
       -listenAddr=<%= p("diego.auctioneer.listen_addr") %> \
       -logLevel=<%= p("diego.auctioneer.log_level") %> \
