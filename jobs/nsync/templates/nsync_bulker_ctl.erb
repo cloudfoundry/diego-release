@@ -22,7 +22,7 @@ case $1 in
 
     exec /var/vcap/packages/nsync/bin/nsync-bulker \
       -diegoAPIURL=<%= p("diego.nsync.diego_api_url") %> \
-      -etcdCluster=<%= p("diego.nsync.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -consulCluster=http://127.0.0.1:8500 \
       -ccBaseURL=<%= Shellwords.shellescape(p("diego.nsync.cc.base_url")) %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.nsync.cc.basic_auth_username")) %> \
       -ccPassword=<%= Shellwords.shellescape(p("diego.nsync.cc.basic_auth_password")) %> \

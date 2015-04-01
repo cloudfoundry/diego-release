@@ -9,8 +9,6 @@ packages:
   - route_emitter
 
 properties:
-  diego.route_emitter.etcd.machines:
-    description: "IPs pointing to the ETCD cluster"
   diego.route_emitter.nats.username:
     description: "Username for server authentication."
   diego.route_emitter.nats.password:
