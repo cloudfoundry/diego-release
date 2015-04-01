@@ -1,5 +1,13 @@
 #!/bin/bash
 
+set -e
+
 cd $(dirname $0)/..
+
+pushd src/github.com/cloudfoundry-incubator/inigo
+  for pkg in `find . -type d ! -path . -maxdepth 1`; do
+    go test -c ./${pkg} > /dev/null
+  done
+popd
 
 fly -k -p -x -c scripts/ci/run_inigo.build.yml -- "$@"
