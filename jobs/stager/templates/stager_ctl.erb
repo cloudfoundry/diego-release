@@ -51,6 +51,7 @@ case $1 in
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       -debugAddr=<%= p("diego.stager.debug_addr") %> \
       -lifecycles=<%= Shellwords.shellescape(p("diego.stager.lifecycle_bundles").to_json) %> \
+      -dockerStagingStack=<%= p("diego.stager.docker_staging_stack") %> \
       -fileServerURL=<%= p("diego.file_server.file_server_url") %> \
       -consulAgentURL=<%= p("diego.stager.consul_agent_url") %> \
       <% if_p("diego.stager.docker_registry_url") do |registry| %>\
