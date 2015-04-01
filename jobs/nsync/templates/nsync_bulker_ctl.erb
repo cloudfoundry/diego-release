@@ -31,7 +31,7 @@ case $1 in
       -pollingInterval=<%= "#{p("diego.nsync.cc.polling_interval_in_seconds")}s" %> \
       -bulkBatchSize=<%= p("diego.nsync.cc.bulk_batch_size") %> \
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
-      -lifecycles=<%= Shellwords.shellescape(p("diego.nsync.lifecycle_bundles").to_json) %> \
+      <%= p("diego.nsync.lifecycle_bundles").map { |bundle| "-lifecycle #{bundle}" }.join(" ") %> \
       -fileServerURL=<%= p("diego.file_server.file_server_url") %> \
       -logLevel=<%= p("diego.nsync.log_level") %> \
       2>> $LOG_DIR/nsync_bulker.stderr.log \
