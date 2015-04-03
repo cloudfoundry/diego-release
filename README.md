@@ -79,7 +79,11 @@ as you switch in and out of the directory.
 
         go install github.com/coreos/etcd
 
-4. Run the unit test script
+4. Install consul
+
+        Download consul from https://www.consul.io/downloads.html and place it on your PATH
+
+5. Run the unit test script
 
         ./scripts/run-unit-tests
 
