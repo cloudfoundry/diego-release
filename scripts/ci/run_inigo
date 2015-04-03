@@ -30,6 +30,7 @@ export ROUTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry/gorouter/Godeps/
 export GARDEN_LINUX_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace:${GOPATH_ROOT}
 
 # install application dependencies
+echo "Installing go dependencies ..."
 for package in github.com/coreos/etcd github.com/apcera/gnatsd; do
   go install $package
 done
@@ -68,7 +69,9 @@ fi
 
 pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
   if [ "$GINKGO_PARALLEL" = "true" ]; then
-    ginkgo $color_flag $nodes_flag -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
+    ginkgo $color_flag $nodes_flag -r -skipPackage=docker -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
+    # always run docker tests serially
+    ginkgo $color_flag -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@" docker/
   else
     # always attempt to run executor in parallel
     ginkgo $color_flag -nodes=4 -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@" executor/

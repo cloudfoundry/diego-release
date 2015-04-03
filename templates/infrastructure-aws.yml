@@ -48,6 +48,7 @@ properties:
       allow_networks:
         - 10.10.0.2/32 # Amazon DNS
       disk_quota_enabled: ~
+      insecure_docker_registry_list: ~
 
 resource_pools:
   - name: small_z1

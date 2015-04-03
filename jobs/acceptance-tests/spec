@@ -27,3 +27,6 @@ properties:
   acceptance_tests.verbose:
     default: false
     description: Whether to pass the -v flag to cf-acceptance-tests
+  acceptance_tests.run_docker_registry_tests:
+    default: false
+    description: Whether to run the private Docker registry tests

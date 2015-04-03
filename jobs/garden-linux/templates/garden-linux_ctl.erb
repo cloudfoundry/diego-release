@@ -48,6 +48,9 @@ case $1 in
       -overlays=/var/vcap/data/garden-linux/overlays \
       -graph=/var/vcap/data/garden-linux/graph \
       -containerGraceTime=1h \
+      <% if_p("diego.garden-linux.insecure_docker_registry_list") do |list| %> \
+      -insecureDockerRegistryList=<%= list.join(',') %> \
+      <% end %> \
       1>>$LOG_DIR/garden-linux.stdout.log \
       2>>$LOG_DIR/garden-linux.stderr.log
 

@@ -53,6 +53,10 @@ case $1 in
       <%= p("diego.stager.lifecycle_bundles").map { |bundle| "-lifecycle #{bundle}" }.join(" ") %> \
       -dockerStagingStack=<%= p("diego.stager.docker_staging_stack") %> \
       -fileServerURL=<%= p("diego.file_server.file_server_url") %> \
+      -consulCluster=http://127.0.0.1:8500 \
+      <% if_p("diego.stager.docker_registry_url") do |registry| %>\
+      -dockerRegistryURL=<%= registry %> \
+      <% end %>\
       -logLevel=<%= p("diego.stager.log_level") %> \
       2>> $LOG_DIR/stager.stderr.log \
       1> >(tee -a $LOG_DIR/stager.stdout.log | logger -t vcap.stager)

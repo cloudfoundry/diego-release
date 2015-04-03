@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+
+./scripts/generate-deployment-manifest bosh-lite ../cf-release \
+     ~/deployments/bosh-lite/director.yml \
+     ~/workspace/docker-registry-release/templates/diego-docker-registry-stub.yml > \
+     ~/deployments/bosh-lite/diego.yml
+
+echo "WARNING: targeting BOSH-Lite director"
+bosh target lite
+bosh create release --force
+bosh -n upload release
+bosh -n -d  ~/deployments/bosh-lite/diego.yml deploy
+
+pushd ./src/github.com/cloudfoundry-incubator/diego-acceptance-tests/
+  export CONFIG=`pwd`/integration_config.json
+  ginkgo -r -nodes=3 "$@" docker/
+  unset CONFIG
+popd
