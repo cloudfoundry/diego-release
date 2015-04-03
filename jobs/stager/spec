@@ -44,6 +44,3 @@ properties:
     default: http://file-server.service.consul:8080
   diego.stager.docker_registry_url:
     description: "Private Docker Registry URL"
-  diego.stager.consul_agent_url:
-    description: "Consul Agent URL"
-    default: http://localhost:8500

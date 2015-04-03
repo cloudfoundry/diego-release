@@ -53,7 +53,7 @@ case $1 in
       -lifecycles=<%= Shellwords.shellescape(p("diego.stager.lifecycle_bundles").to_json) %> \
       -dockerStagingStack=<%= p("diego.stager.docker_staging_stack") %> \
       -fileServerURL=<%= p("diego.file_server.file_server_url") %> \
-      -consulAgentURL=<%= p("diego.stager.consul_agent_url") %> \
+      -consulCluster=http://127.0.0.1:8500 \
       <% if_p("diego.stager.docker_registry_url") do |registry| %>\
       -dockerRegistryURL=<%= registry %> \
       <% end %>\
