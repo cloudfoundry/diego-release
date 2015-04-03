@@ -1,0 +1,51 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/tps
+LOG_DIR=/var/vcap/sys/log/tps
+DATA_DIR=/var/vcap/data/tps
+CONF_DIR=/var/vcap/jobs/tps/config
+
+PIDFILE=$RUN_DIR/tps_watcher.pid
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "tps_watcher"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $DATA_DIR
+    mkdir -p $LOG_DIR
+
+    depot=$DATA_DIR/depot
+
+    mkdir -p $DATA_DIR/depot
+
+    echo $$ > $PIDFILE
+
+    exec /var/vcap/packages/tps/bin/tps-watcher \
+      -diegoAPIURL=<%= p("diego.tps.diego_api_url") %> \
+      -consulCluster=http://127.0.0.1:8500 \
+      -ccBaseURL=http://cloud-controller-ng.service.consul:<%= p("diego.tps.cc.external_port") %> \
+      -ccUsername=<%= Shellwords.shellescape(p("diego.tps.cc.basic_auth_username")) %> \
+      -ccPassword=<%= Shellwords.shellescape(p("diego.tps.cc.basic_auth_password")) %> \
+      -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
+      -debugAddr=<%= p("diego.tps.watcher.debug_addr") %> \
+      -logLevel=<%= p("diego.tps.log_level") %> \
+      2>> $LOG_DIR/tps.stderr.log \
+      1> >(tee -a $LOG_DIR/tps_watcher.stdout.log | logger -t vcap.tps)
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+
+    ;;
+
+esac

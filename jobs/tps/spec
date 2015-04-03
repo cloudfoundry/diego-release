@@ -2,7 +2,8 @@
 name: tps
 
 templates:
-  tps_ctl.erb: bin/tps_ctl
+  tps_listener_ctl.erb: bin/tps_listener_ctl
+  tps_watcher_ctl.erb: bin/tps_watcher_ctl
   dns_health_check.erb: bin/dns_health_check
 
 packages:
@@ -24,9 +25,12 @@ properties:
     default: "internal_user"
   diego.tps.cc.basic_auth_password:
     description: "Basic auth password for CC internal API"
-  diego.tps.debug_addr:
+  diego.tps.listener.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17012"
+  diego.tps.watcher.debug_addr:
+    description: "address at which to serve debug info"
+    default: "0.0.0.0:17013"
   diego.tps.max_in_flight_requests:
     description: "Maximum number of requests to handle at once."
     default: 200

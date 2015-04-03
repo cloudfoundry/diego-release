@@ -5,7 +5,7 @@ LOG_DIR=/var/vcap/sys/log/tps
 DATA_DIR=/var/vcap/data/tps
 CONF_DIR=/var/vcap/jobs/tps/config
 
-PIDFILE=$RUN_DIR/tps.pid
+PIDFILE=$RUN_DIR/tps_listener.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
@@ -34,7 +34,7 @@ source /var/vcap/packages/pid_utils/pid_utils.sh
 case $1 in
 
   start)
-    pid_guard $PIDFILE "tps"
+    pid_guard $PIDFILE "tps_listener"
 
     mkdir -p $RUN_DIR
     mkdir -p $DATA_DIR
@@ -46,18 +46,14 @@ case $1 in
 
     echo $$ > $PIDFILE
 
-    exec /var/vcap/packages/tps/bin/tps \
+    exec /var/vcap/packages/tps/bin/tps-listener \
       -diegoAPIURL=<%= p("diego.tps.diego_api_url") %> \
-      -ccBaseURL=http://cloud-controller-ng.service.consul:<%= p("diego.tps.cc.external_port") %> \
-      -ccUsername=<%= Shellwords.shellescape(p("diego.tps.cc.basic_auth_username")) %> \
-      -ccPassword=<%= Shellwords.shellescape(p("diego.tps.cc.basic_auth_password")) %> \
-      -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
-      -debugAddr=<%= p("diego.tps.debug_addr") %> \
+      -debugAddr=<%= p("diego.tps.listener.debug_addr") %> \
       -maxInFlightRequests=<%= p("diego.tps.max_in_flight_requests") %> \
       -listenAddr=<%= "#{my_ip}:1518" %> \
       -logLevel=<%= p("diego.tps.log_level") %> \
-      2>> $LOG_DIR/tps.stderr.log \
-      1> >(tee -a $LOG_DIR/tps.stdout.log | logger -t vcap.tps)
+      2>> $LOG_DIR/tps_listener.stderr.log \
+      1> >(tee -a $LOG_DIR/tps_listener.stdout.log | logger -t vcap.tps-listener)
 
     ;;
 
@@ -67,7 +63,7 @@ case $1 in
     ;;
 
   *)
-    echo "Usage: tps_ctl {start|stop}"
+    echo "Usage: $0 {start|stop}"
 
     ;;
 
