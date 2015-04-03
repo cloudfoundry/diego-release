@@ -22,7 +22,7 @@ properties:
     description: URL of nsync
     default: http://nsync.service.consul:8787
   diego.nsync.lifecycle_bundles:
-    description: 'Map of lifecycle bundles for different stacks in json format {"lifecycle/stack_name":"lifecycle_bundle_path"}'
+    description: "List of lifecycle bundles arguments for different stacks in form 'lifecycle-name:path/to/bundle'"
   diego.nsync.cc.base_url:
     description: base URL of the cloud controller
   diego.nsync.cc.basic_auth_username:

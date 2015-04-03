@@ -24,7 +24,7 @@ case $1 in
       -diegoAPIURL=<%= p("diego.nsync.diego_api_url") %> \
       -nsyncURL=<%= p("diego.nsync.nsync_url") %> \
       -debugAddr=<%= p("diego.nsync.listener_debug_addr") %> \
-      -lifecycles=<%= Shellwords.shellescape(p("diego.nsync.lifecycle_bundles").to_json) %> \
+      <%= p("diego.nsync.lifecycle_bundles").map { |bundle| "-lifecycle #{bundle}" }.join(" ") %> \
       -fileServerURL=<%= p("diego.file_server.file_server_url") %> \
       -logLevel=<%= p("diego.nsync.log_level") %> \
       2>> $LOG_DIR/nsync_listener.stderr.log \

@@ -50,7 +50,7 @@ case $1 in
       -ccPassword=<%= Shellwords.shellescape(p("diego.stager.cc.basic_auth_password")) %> \
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       -debugAddr=<%= p("diego.stager.debug_addr") %> \
-      -lifecycles=<%= Shellwords.shellescape(p("diego.stager.lifecycle_bundles").to_json) %> \
+      <%= p("diego.stager.lifecycle_bundles").map { |bundle| "-lifecycle #{bundle}" }.join(" ") %> \
       -dockerStagingStack=<%= p("diego.stager.docker_staging_stack") %> \
       -fileServerURL=<%= p("diego.file_server.file_server_url") %> \
       -consulCluster=http://127.0.0.1:8500 \
