@@ -25,6 +25,8 @@ properties:
     default: "internal_user"
   diego.tps.cc.basic_auth_password:
     description: "Basic auth password for CC internal API"
+  diego.tps.cc.internal_service_hostname:
+    description: "Internal CC host name"
   diego.tps.listener.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17012"

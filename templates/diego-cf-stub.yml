@@ -12,6 +12,7 @@ properties:
   loggregator_endpoint: (( merge ))
 
   consul:
+    domain: (( merge ))
     servers: (( jobs.consul_z1.networks.cf1.static_ips jobs.consul_z2.networks.cf2.static_ips ))
 
   cc:
@@ -21,6 +22,7 @@ properties:
     srv_api_uri: (( merge ))
     staging_upload_user: (( merge ))
     staging_upload_password: (( merge ))
+    internal_service_hostname: (( merge ))
 
   etcd:
     machines: (( jobs.etcd_z1.networks.cf1.static_ips jobs.etcd_z2.networks.cf2.static_ips ))

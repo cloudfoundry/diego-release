@@ -27,7 +27,7 @@ case $1 in
     exec /var/vcap/packages/tps/bin/tps-watcher \
       -diegoAPIURL=<%= p("diego.tps.diego_api_url") %> \
       -consulCluster=http://127.0.0.1:8500 \
-      -ccBaseURL=http://cloud-controller-ng.service.consul:<%= p("diego.tps.cc.external_port") %> \
+      -ccBaseURL=http://<%= p("diego.tps.cc.internal_service_hostname") %>:<%= p("diego.tps.cc.external_port") %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.tps.cc.basic_auth_username")) %> \
       -ccPassword=<%= Shellwords.shellescape(p("diego.tps.cc.basic_auth_password")) %> \
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \

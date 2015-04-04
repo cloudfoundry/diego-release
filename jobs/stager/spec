@@ -21,6 +21,8 @@ properties:
     default: "internal_user"
   diego.stager.cc.basic_auth_password:
     description: "Basic auth password for CC internal API"
+  diego.stager.cc.internal_service_hostname:
+    description: "Internal CC host name"
   diego.stager.lifecycle_bundles:
     description: "List of lifecycle bundles arguments for different stacks in form 'lifecycle-name:path/to/bundle'"
   diego.stager.stager_url:

@@ -292,7 +292,7 @@ properties:
 
   diego:
     # -- Global properties --
-    api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+    api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service." external_cf_services.consul.domain ":8888" ))
 
     ssl:
       skip_cert_verify: false
@@ -309,6 +309,7 @@ properties:
       external_port: (( external_cf_services.cc.external_port ))
       staging_upload_user: (( external_cf_services.cc.staging_upload_user ))
       staging_upload_password: (( external_cf_services.cc.staging_upload_password ))
+      internal_service_hostname: (( external_cf_services.cc.internal_service_hostname ))
 
     etcd_config:
       machines: (( etcd_cluster ))
@@ -323,10 +324,12 @@ properties:
     auctioneer:
       etcd: (( etcd_config ))
       log_level: info
+      receptor_task_handler_url: (( .properties.diego.receptor.task_handler_url ))
 
     converger:
       etcd: (( etcd_config ))
       log_level: info
+      receptor_task_handler_url: (( .properties.diego.receptor.task_handler_url ))
 
     executor:
       allow_privileged: ~
@@ -344,6 +347,8 @@ properties:
       cc: (( cc_config ))
       etcd: (( etcd_config ))
       lifecycle_bundles: (( .properties.lifecycle_bundles ))
+      port: "8787"
+      nsync_url: (( "http://nsync.service." external_cf_services.consul.domain ":" port ))
 
     receptor:
       cors_enabled: false
@@ -354,10 +359,12 @@ properties:
       password: ""
       register_with_router: false
       log_level: info
+      task_handler_url: (( "http://receptor.service." external_cf_services.consul.domain ":1169" ))
 
     rep:
       etcd: (( etcd_config ))
       log_level: info
+      receptor_task_handler_url: (( .properties.diego.receptor.task_handler_url ))
 
     route_emitter:
       diego_api_url: (( .properties.diego.api_url ))
@@ -374,6 +381,8 @@ properties:
       lifecycle_bundles: (( .properties.lifecycle_bundles ))
       log_level: info
       docker_registry_url: ~
+      port: "8888"
+      stager_url: (( "http://stager.service." external_cf_services.consul.domain ":" port ))
 
     tps:
       cc: (( cc_config ))
@@ -381,3 +390,6 @@ properties:
       log_level: info
 
     garden-linux: ~
+
+    consul:
+      domain: (( external_cf_services.consul.domain ))
