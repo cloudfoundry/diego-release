@@ -1,0 +1,20 @@
+---
+name: diego-sshd
+
+dependencies:
+  - golang_1.4
+
+files:
+  - github.com/cloudfoundry-incubator/diego-ssh/cmd/sshd/*.go # gosub
+  - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
+  - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
+  - github.com/cloudfoundry-incubator/diego-ssh/daemon/*.go # gosub
+  - github.com/cloudfoundry-incubator/diego-ssh/handlers/*.go # gosub
+  - github.com/cloudfoundry-incubator/diego-ssh/helpers/*.go # gosub
+  - github.com/cloudfoundry-incubator/diego-ssh/server/*.go # gosub
+  - github.com/pivotal-golang/lager/*.go # gosub
+  - github.com/tedsuo/ifrit/*.go # gosub
+  - github.com/tedsuo/ifrit/grouper/*.go # gosub
+  - github.com/tedsuo/ifrit/http_server/*.go # gosub
+  - github.com/tedsuo/ifrit/sigmon/*.go # gosub
+  - golang.org/x/crypto/ssh/*.go # gosub

@@ -1,0 +1,16 @@
+set -e
+
+mkdir -p ${BOSH_INSTALL_TARGET}/src
+cp -a . ${BOSH_INSTALL_TARGET}/src
+export GOPATH=$BOSH_INSTALL_TARGET
+
+export GOROOT=$(readlink -nf /var/vcap/packages/golang_1.4)
+export PATH=$GOROOT/bin:$PATH
+go build github.com/cloudfoundry-incubator/diego-ssh/cmd/sshd
+
+mv sshd diego-sshd
+
+tar -czf ${BOSH_INSTALL_TARGET}/diego-sshd.tgz diego-sshd
+
+# clean up source artifacts
+rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg
