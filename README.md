@@ -165,6 +165,7 @@ as you switch in and out of the directory.
         ./generate_deployment_manifest warden \
             ~/deployments/bosh-lite/director.yml \
             ~/workspace/diego-release/stubs-for-cf-release/enable_diego_docker_in_cc.yml \
+            ~/workspace/diego-release/stubs-for-cf-release/enable_consul_with_cf.yml \
             > ~/deployments/bosh-lite/cf.yml
         bosh deployment ~/deployments/bosh-lite/cf.yml
 
