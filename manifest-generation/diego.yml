@@ -485,10 +485,12 @@ properties:
       etcd:
         machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
       log_level: (( property_overrides.auctioneer.log_level || nil ))
+      receptor_task_handler_url: (( "http://receptor.service." config_from_cf.consul.domain ":1169" ))
     converger:
       etcd:
         machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
       log_level: (( property_overrides.converger.log_level || nil ))
+      receptor_task_handler_url: (( "http://receptor.service." config_from_cf.consul.domain ":1169" ))
     executor:
       drain_timeout_in_seconds: (( property_overrides.executor.drain_timeout_in_seconds || nil ))
       garden:
@@ -512,7 +514,7 @@ properties:
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       log_level: (( property_overrides.file_server.log_level || nil ))
     nsync:
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service." config_from_cf.consul.domain ":8888" ))
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
@@ -522,6 +524,7 @@ properties:
       etcd:
         machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
       log_level: (( property_overrides.nsync.log_level || nil ))
+      nsync_url: (( "http://nsync.service." config_from_cf.consul.domain ":8787" ))
     receptor:
       etcd:
         machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
@@ -530,6 +533,7 @@ properties:
         username: (( config_from_cf.nats.user ))
         password: (( config_from_cf.nats.password ))
         port: (( config_from_cf.nats.port ))
+      task_handler_url: (( "http://receptor.service." config_from_cf.consul.domain ":1169" ))
       cors_enabled: (( property_overrides.receptor.cors_enabled || nil ))
       username: (( property_overrides.receptor.username || "" ))
       password: (( property_overrides.receptor.password || "" ))
@@ -540,8 +544,9 @@ properties:
       etcd:
         machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
       log_level: (( property_overrides.rep.log_level || nil ))
+      receptor_task_handler_url: (( "http://receptor.service." config_from_cf.consul.domain ":1169" ))
     route_emitter:
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service." config_from_cf.consul.domain ":8888" ))
       nats:
         machines: (( config_from_cf.nats.machines ))
         username: (( config_from_cf.nats.user ))
@@ -565,8 +570,9 @@ properties:
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
         internal_service_hostname: (( config_from_cf.cc.service_name ".service." config_from_cf.consul.domain ))
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service." config_from_cf.consul.domain ":8888" ))
       log_level: (( property_overrides.stager.log_level || nil ))
+      stager_url: (( "http://stager.service." config_from_cf.consul.domain ":8888" ))
     tps:
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
@@ -575,7 +581,7 @@ properties:
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
         internal_service_hostname: (( config_from_cf.cc.service_name ".service." config_from_cf.consul.domain ))
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service." config_from_cf.consul.domain ":8888" ))
       log_level: (( property_overrides.tps.log_level || nil ))
 
 config_from_cf: (( merge ))
