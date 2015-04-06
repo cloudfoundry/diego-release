@@ -6,8 +6,10 @@ config_from_cf:
     srv_api_uri: (( properties.cc.srv_api_uri ))
     staging_upload_user: (( properties.cc.staging_upload_user ))
     staging_upload_password: (( properties.cc.staging_upload_password ))
+    service_name: (( properties.cc.service_name ))
   consul:
     lan_servers: (( properties.consul.agent.servers.lan ))
+    domain: (( properties.consul.domain ))
   etcd:
     machines: (( properties.etcd.machines ))
   loggregator_endpoint:
@@ -25,7 +27,9 @@ properties:
     srv_api_uri: (( merge ))
     staging_upload_user: (( merge ))
     staging_upload_password: (( merge ))
+    service_name: (( merge ))
   consul:
+    domain: (( merge ))
     agent:
       servers:
         lan: (( merge ))

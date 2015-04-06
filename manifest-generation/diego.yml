@@ -564,6 +564,7 @@ properties:
         external_port: (( config_from_cf.cc.external_port ))
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
+        internal_service_hostname: (( config_from_cf.cc.service_name ".service." config_from_cf.consul.domain ))
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
       log_level: (( property_overrides.stager.log_level || nil ))
     tps:
@@ -573,6 +574,7 @@ properties:
         external_port: (( config_from_cf.cc.external_port ))
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
+        internal_service_hostname: (( config_from_cf.cc.service_name ".service." config_from_cf.consul.domain ))
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
       log_level: (( property_overrides.tps.log_level || nil ))
 
