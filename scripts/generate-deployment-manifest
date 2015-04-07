@@ -5,7 +5,7 @@ set -e
 manifest_generation=$(dirname $0)/../manifest-generation
 
 function usage() {
-  echo "    Usage:
+  >&2 echo "    Usage:
     $0 /path/to/stub/director-uuid.yml \\
        /path/to/stub/property-overrides.yml \\
        /path/to/stub/instance-count-overrides.yml \\
@@ -32,43 +32,43 @@ iaas_settings=$5
 deployments=$6
 
 if [ -z "${deployments}" ]; then
-  echo "Not enough arguments"
+  >&2 echo "Not enough arguments"
   usage
 fi
 
 if [ ! -z "$7" ]; then
-  echo "Too many arguments"
+  >&2 echo "Too many arguments"
   usage
 fi
 
 if [ ! -f "${director_uuid}" ]; then
-  echo "Director UUID stub '${director_uuid}' is not a regular file"
+  >&2 echo "Director UUID stub '${director_uuid}' is not a regular file"
   usage
 fi
 
 if [ ! -f "${property_overrides}" ]; then
-  echo "Property Overrides stub '${property_overrides}' is not a regular file"
+  >&2 echo "Property Overrides stub '${property_overrides}' is not a regular file"
   usage
 fi
 
 if [ ! -f "${instance_counts}" ]; then
-  echo "Instance Count Overrides stub '${instance_counts}' is not a regular file"
+  >&2 echo "Instance Count Overrides stub '${instance_counts}' is not a regular file"
   usage
 fi
 
 if [ ! -f "${persistent_disk}" ]; then
-  echo "Persistent Disk Overrides stub '${persistent_disk}' is not a regular file"
+  >&2 echo "Persistent Disk Overrides stub '${persistent_disk}' is not a regular file"
   usage
 fi
 
 if [ ! -f "${iaas_settings}" ]; then
-  echo "IaaS Setting stub '${iaas_settings}' is not a regular file"
+  >&2 echo "IaaS Setting stub '${iaas_settings}' is not a regular file"
   usage
 fi
 
 
 if [ ! -d "${deployments}" ]; then
-  echo "Deployments directory '${deployments}' is not a directory"
+  >&2 echo "Deployments directory '${deployments}' is not a directory"
   usage
 fi
 
