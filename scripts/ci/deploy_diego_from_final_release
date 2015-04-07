@@ -4,6 +4,7 @@ set -e -x -u
 
 stubs_path="${PWD}/${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/${STUBS_DIR}"
 cf_deployment_name="cf-${DEPLOYMENT_NAME}"
+tmpdir=$(mktemp -d /tmp/deploy-diego-final.XXXXX)
 
 FINAL_RELEASE_VERSION=$(cat version/number)
 
@@ -18,21 +19,21 @@ pushd diego-release
   fi
   bosh -n upload release $latest_final_release --skip-if-exists || true
 
-  bosh download manifest ${cf_deployment_name} > ${TMPDIR}/cf.yml
+  bosh download manifest ${cf_deployment_name} > ${tmpdir}/cf.yml
   spiff merge \
     manifest-generation/misc-templates/iaas-settings.yml \
     ${stubs_path}/../misc-templates/iaas-settings-internal.yml \
-    ${TMPDIR}/cf.yml \
-    > ${TMPDIR}/iaas-settings.yml
+    ${tmpdir}/cf.yml \
+    > ${tmpdir}/iaas-settings.yml
   ./scripts/generate-deployment-manifest \
     ${stubs_path}/director-uuid.yml
     ${stubs_path}/diego/property-overrides.yml \
     ${stubs_path}/diego/instance-count-overrides.yml \
     ${stubs_path}/diego/persistent-disk-overrides.yml \
-    ${TMPDIR}/iaas-settings.yml \
-    ${TMPDIR} \
-    > ${TMPDIR}/diego-deployment.yml
-  bosh deployment ${TMPDIR}/diego-deployment.yml
+    ${tmpdir}/iaas-settings.yml \
+    ${tmpdir} \
+    > ${tmpdir}/diego-deployment.yml
+  bosh deployment ${tmpdir}/diego-deployment.yml
 
   ./scripts/ci/emit-datadog-deploy-event started ${cf_deployment_name} diego
   if bosh -n deploy; then

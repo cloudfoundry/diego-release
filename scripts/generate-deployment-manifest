@@ -72,11 +72,13 @@ if [ ! -d "${deployments}" ]; then
   usage
 fi
 
+tmpdir=$(mktemp -d /tmp/diego-manifest.XXXXX)
+
 spiff merge \
   ${manifest_generation}/config-from-cf.yml \
   ${manifest_generation}/config-from-cf-internal.yml \
   ${deployments}/cf.yml \
-  > ${TMPDIR}/config-from-cf.yml
+  > ${tmpdir}/config-from-cf.yml
 
 spiff merge \
   ${manifest_generation}/diego.yml \
@@ -84,10 +86,10 @@ spiff merge \
   ${instance_counts} \
   ${persistent_disk} \
   ${iaas_settings} \
-  ${TMPDIR}/config-from-cf.yml \
-  > ${TMPDIR}/diego.yml
+  ${tmpdir}/config-from-cf.yml \
+  > ${tmpdir}/diego.yml
 
 spiff merge \
   ${manifest_generation}/misc-templates/bosh.yml \
   ${director_uuid} \
-  ${TMPDIR}/diego.yml
+  ${tmpdir}/diego.yml
