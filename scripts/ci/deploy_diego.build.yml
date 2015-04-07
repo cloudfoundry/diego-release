@@ -5,7 +5,6 @@ image: docker:///cloudfoundry/diego-pipeline
 
 inputs:
   - name: bosh-stemcell
-  - name: cf-release
   - name: deployments-runtime
   - name: diego-release
 
