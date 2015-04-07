@@ -5,13 +5,13 @@ set -e -x -u
 stubs_path="${PWD}/${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/${STUBS_DIR}"
 cf_deployment_name="cf-${DEPLOYMENT_NAME}"
 
+./diego-release/scripts/ci/bosh_setup
+
+bosh -n cleanup
+
+bosh -n upload stemcell bosh-stemcell/*.tgz --skip-if-exists
+
 pushd diego-release
-  ./scripts/ci/bosh_setup
-
-  bosh -n cleanup
-
-  bosh -n upload stemcell bosh-stemcell/*.tgz --skip-if-exists
-
   bosh -n create release
   bosh -n upload release --rebase || true
 
