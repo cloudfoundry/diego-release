@@ -492,6 +492,7 @@ properties:
       log_level: (( property_overrides.converger.log_level || nil ))
       receptor_task_handler_url: (( "http://receptor.service." config_from_cf.consul.domain ":1169" ))
     executor:
+      allow_privileged: (( property_overrides.executor.allow_privileged || nil ))
       drain_timeout_in_seconds: (( property_overrides.executor.drain_timeout_in_seconds || nil ))
       garden:
         network: (( property_overrides.executor.garden.network || nil ))
@@ -505,6 +506,7 @@ properties:
       listen_network: (( property_overrides.garden-linux.listen_network || nil ))
       listen_address: (( property_overrides.garden-linux.listen_address || nil ))
       allow_networks: (( property_overrides.garden-linux.allow_networks || nil ))
+      insecure_docker_registry_list: (( property_overrides.garden-linux.insecure_docker_registry_list || nil ))
     file_server:
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
@@ -573,6 +575,7 @@ properties:
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service." config_from_cf.consul.domain ":8888" ))
       log_level: (( property_overrides.stager.log_level || nil ))
       stager_url: (( "http://stager.service." config_from_cf.consul.domain ":8888" ))
+      docker_registry_url: (( property_overrides.stager.docker_registry_url || nil ))
     tps:
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))

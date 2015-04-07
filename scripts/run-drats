@@ -2,10 +2,14 @@
 
 set -e
 
-./scripts/generate-deployment-manifest bosh-lite ../cf-release \
-     ~/deployments/bosh-lite/director.yml \
-     ~/workspace/docker-registry-release/templates/diego-docker-registry-stub.yml > \
-     ~/deployments/bosh-lite/diego.yml
+./scripts/generate-deployment-manifest \
+  ~/deployments/bosh-lite/director.yml \
+  ~/workspace/docker-registry-release/stubs-for-diego-release/bosh-lite-property-overrides.yml \
+  manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
+  manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \
+  manifest-generation/bosh-lite-stubs/iaas-settings.yml \
+  ~/deployments/bosh-lite \
+  > ~/deployments/bosh-lite/diego.yml
 
 echo "WARNING: targeting BOSH-Lite director"
 bosh target lite
