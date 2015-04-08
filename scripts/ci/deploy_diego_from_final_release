@@ -6,7 +6,7 @@ environment_path="${PWD}/${DEPLOYMENTS_DIR}/${ENVIRONMENT_NAME}"
 stubs_path="${environment_path}/stubs"
 templates_path="${environment_path}/templates"
 
-cf_deployment_name="cf-${DEPLOYMENT_NAME}"
+cf_deployment_name="cf-${ENVIRONMENT_NAME}"
 tmpdir=$(mktemp -d /tmp/deploy-diego-final.XXXXX)
 
 FINAL_RELEASE_VERSION=$(cat version/number)
