@@ -22,7 +22,7 @@ pushd diego-release
   spiff merge \
     manifest-generation/misc-templates/iaas-settings.yml \
     ${templates_path}/diego/iaas-settings-internal.yml \
-    ${stubs_dir}/aws-resources.yml \
+    ${stubs_path}/aws-resources.yml \
     > ${tmpdir}/iaas-settings.yml
   bosh download manifest ${cf_deployment_name} > ${tmpdir}/cf.yml
   ./scripts/generate-deployment-manifest \
