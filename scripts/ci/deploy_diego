@@ -19,12 +19,12 @@ pushd diego-release
   bosh -n create release
   bosh -n upload release --rebase || true
 
-  bosh download manifest ${cf_deployment_name} > ${tmpdir}/cf.yml
   spiff merge \
     manifest-generation/misc-templates/iaas-settings.yml \
     ${templates_path}/diego/iaas-settings-internal.yml \
-    ${tmpdir}/cf.yml \
+    ${stubs_dir}/aws-resources.yml \
     > ${tmpdir}/iaas-settings.yml
+  bosh download manifest ${cf_deployment_name} > ${tmpdir}/cf.yml
   ./scripts/generate-deployment-manifest \
     ${stubs_path}/director-uuid.yml \
     ${stubs_path}/diego/property-overrides.yml \
