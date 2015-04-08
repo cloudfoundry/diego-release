@@ -2,8 +2,11 @@
 
 set -e -x -u
 
-stubs_path="${PWD}/${DEPLOYMENTS_DIR}/${DEPLOYMENT_NAME}/${STUBS_DIR}"
-cf_deployment_name="cf-${DEPLOYMENT_NAME}"
+environment_path="${PWD}/${DEPLOYMENTS_DIR}/${ENVIRONMENT_NAME}"
+stubs_path="${environment_path}/stubs"
+templates_path="${environment_path}/templates"
+
+cf_deployment_name="cf-${ENVIRONMENT_NAME}"
 tmpdir=$(mktemp -d /tmp/deploy-diego.XXXXX)
 
 ./diego-release/scripts/ci/bosh_setup
@@ -19,7 +22,7 @@ pushd diego-release
   bosh download manifest ${cf_deployment_name} > ${tmpdir}/cf.yml
   spiff merge \
     manifest-generation/misc-templates/iaas-settings.yml \
-    ${stubs_path}/../misc-templates/iaas-settings-internal.yml \
+    ${templates_path}/diego/iaas-settings-internal.yml \
     ${tmpdir}/cf.yml \
     > ${tmpdir}/iaas-settings.yml
   ./scripts/generate-deployment-manifest \

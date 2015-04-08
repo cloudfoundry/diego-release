@@ -14,9 +14,7 @@ params:
   BOSH_USER: ~
   DATADOG_API_KEY: ~
   DEPLOYMENTS_DIR: ~
-  DEPLOYMENT_NAME: ~
-  INFRASTRUCTURE: ~
-  STUBS_DIR: ~
+  ENVIRONMENT_NAME: ~
 
 run:
   path: diego-release/scripts/ci/deploy_diego_from_final_release
