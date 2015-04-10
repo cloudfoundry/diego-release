@@ -11,6 +11,7 @@ function usage() {
        /path/to/stub/instance-count-overrides.yml \\
        /path/to/stub/persistent-disk-overrides.yml \\
        /path/to/stub/iaas-settings.yml \\
+       /path/to/stub/additional-jobs.yml \\
        /path/to/deployment-manifests
 
     Ex:
@@ -19,6 +20,7 @@ function usage() {
        manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
        manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \\
        manifest-generation/bosh-lite-stubs/iaas-settings.yml \\
+       manifest-generatino/bosh-lite-stubs/additional-jobs.yml \\
        ~/deployments/bosh-lite
 "
   exit 1
@@ -29,14 +31,15 @@ property_overrides=$2
 instance_counts=$3
 persistent_disk=$4
 iaas_settings=$5
-deployments=$6
+additional_jobs=$6
+deployments=$7
 
 if [ -z "${deployments}" ]; then
   >&2 echo "Not enough arguments"
   usage
 fi
 
-if [ ! -z "$7" ]; then
+if [ ! -z "$8" ]; then
   >&2 echo "Too many arguments"
   usage
 fi
@@ -66,6 +69,10 @@ if [ ! -f "${iaas_settings}" ]; then
   usage
 fi
 
+if [ ! -f "${additional_jobs}" ]; then
+  >&2 echo "Additional Jobs stub '${additional_jobs}' is not a regular file"
+  usage
+fi
 
 if [ ! -d "${deployments}" ]; then
   >&2 echo "Deployments directory '${deployments}' is not a directory"
@@ -86,6 +93,7 @@ spiff merge \
   ${instance_counts} \
   ${persistent_disk} \
   ${iaas_settings} \
+  ${additional_jobs} \
   ${tmpdir}/config-from-cf.yml \
   > ${tmpdir}/diego.yml
 

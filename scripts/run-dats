@@ -8,6 +8,7 @@ set -e
   manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
   manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \
   manifest-generation/bosh-lite-stubs/iaas-settings.yml \
+  manifest-generation/bosh-lite-stubs/additional-jobs.yml \
   ~/deployments/bosh-lite \
   > ~/deployments/bosh-lite/diego.yml
 

@@ -34,6 +34,7 @@ pushd diego-release
     ${stubs_path}/diego/instance-count-overrides.yml \
     ${stubs_path}/diego/persistent-disk-overrides.yml \
     ${tmpdir}/iaas-settings.yml \
+    ${stubs_path}/diego/additional-jobs.yml \
     ${tmpdir} \
     > ${tmpdir}/diego-deployment.yml
   bosh deployment ${tmpdir}/diego-deployment.yml

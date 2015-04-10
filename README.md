@@ -185,6 +185,7 @@ as you switch in and out of the directory.
             manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
             manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \
             manifest-generation/bosh-lite-stubs/iaas-settings.yml \
+            manifest-generation/bosh-lite-stubs/additional-jobs.yml \
             ~/deployments/bosh-lite \
             > ~/deployments/bosh-lite/diego.yml
         bosh deployment ~/deployments/bosh-lite/diego.yml

@@ -1,10 +1,6 @@
 name: (( config_from_cf.cf_deployment_name "-diego" ))
 
-releases:
-  - name: diego
-    version: latest
-  - name: cf
-    version: latest
+releases: (( base_releases additional_jobs.releases ))
 
 compilation:
   workers: 6
@@ -94,9 +90,7 @@ resource_pools:
 
 jobs:
   - name: etcd_z1
-    templates:
-      - name: etcd
-        release: diego
+    templates: (( base_job_templates.etcd additional_jobs.etcd ))
     instances: (( instance_count_overrides.etcd_z1.instances || 1 ))
     persistent_disk: (( persistent_disk_overrides.etcd_z1 || 1024 ))
     resource_pool: etcd_z1
@@ -108,17 +102,7 @@ jobs:
       max_in_flight: 1
 
   - name: brain_z1
-    templates:
-      - name: consul_agent
-        release: cf
-      - name: auctioneer
-        release: diego
-      - name: converger
-        release: diego
-      - name: runtime_metrics_server
-        release: diego
-      - name: metron_agent
-        release: cf
+    templates: (( base_job_templates.brain additional_jobs.brain ))
     instances: (( instance_count_overrides.brain_z1.instances || 1 ))
     resource_pool: brain_z1
     networks:
@@ -131,19 +115,7 @@ jobs:
         zone: z1
 
   - name: cell_z1
-    templates:
-      - name: rep
-        release: diego
-      - name: consul_agent
-        release: cf
-      - name: executor
-        release: diego
-      - name: garden-linux
-        release: diego
-      - name: receptor
-        release: diego
-      - name: metron_agent
-        release: cf
+    templates: (( base_job_templates.cell additional_jobs.cell ))
     instances: (( instance_count_overrides.cell_z1.instances || 1 ))
     resource_pool: cell_z1
     networks:
@@ -163,19 +135,7 @@ jobs:
             - receptor
 
   - name: cc_bridge_z1
-    templates:
-      - name: stager
-        release: diego
-      - name: nsync
-        release: diego
-      - name: tps
-        release: diego
-      - name: file_server
-        release: diego
-      - name: consul_agent
-        release: cf
-      - name: metron_agent
-        release: cf
+    templates: (( base_job_templates.cc_bridge additional_jobs.cc_bridge ))
     instances: (( instance_count_overrides.cc_bridge_z1.instances || 1 ))
     resource_pool: cc_bridge_z1
     networks:
@@ -195,13 +155,7 @@ jobs:
             - tps
 
   - name: route_emitter_z1
-    templates:
-      - name: route_emitter
-        release: diego
-      - name: consul_agent
-        release: cf
-      - name: metron_agent
-        release: cf
+    templates: (( base_job_templates.route_emitter additional_jobs.route_emitter ))
     instances: (( instance_count_overrides.route_emitter_z1.instances || 1 ))
     resource_pool: route_emitter_z1
     networks:
@@ -214,9 +168,7 @@ jobs:
         zone: z1
 
   - name: etcd_z2
-    templates:
-      - name: etcd
-        release: diego
+    templates: (( base_job_templates.etcd additional_jobs.etcd ))
     instances: (( instance_count_overrides.etcd_z2.instances || 1 ))
     persistent_disk: (( persistent_disk_overrides.etcd_z2 || 1024 ))
     resource_pool: etcd_z2
@@ -228,17 +180,7 @@ jobs:
       max_in_flight: 1
 
   - name: brain_z2
-    templates:
-      - name: consul_agent
-        release: cf
-      - name: auctioneer
-        release: diego
-      - name: converger
-        release: diego
-      - name: runtime_metrics_server
-        release: diego
-      - name: metron_agent
-        release: cf
+    templates: (( base_job_templates.brain additional_jobs.brain ))
     instances: (( instance_count_overrides.brain_z2.instances || 1 ))
     resource_pool: brain_z2
     networks:
@@ -251,19 +193,7 @@ jobs:
         zone: z2
 
   - name: cell_z2
-    templates:
-      - name: rep
-        release: diego
-      - name: consul_agent
-        release: cf
-      - name: executor
-        release: diego
-      - name: garden-linux
-        release: diego
-      - name: receptor
-        release: diego
-      - name: metron_agent
-        release: cf
+    templates: (( base_job_templates.cell additional_jobs.cell ))
     instances: (( instance_count_overrides.cell_z2.instances || 1 ))
     resource_pool: cell_z2
     networks:
@@ -283,19 +213,7 @@ jobs:
             - receptor
 
   - name: cc_bridge_z2
-    templates:
-      - name: stager
-        release: diego
-      - name: nsync
-        release: diego
-      - name: tps
-        release: diego
-      - name: file_server
-        release: diego
-      - name: consul_agent
-        release: cf
-      - name: metron_agent
-        release: cf
+    templates: (( base_job_templates.cc_bridge additional_jobs.cc_bridge ))
     instances: (( instance_count_overrides.cc_bridge_z2.instances || 1 ))
     resource_pool: cc_bridge_z2
     networks:
@@ -315,13 +233,7 @@ jobs:
             - tps
 
   - name: route_emitter_z2
-    templates:
-      - name: route_emitter
-        release: diego
-      - name: consul_agent
-        release: cf
-      - name: metron_agent
-        release: cf
+    templates: (( base_job_templates.route_emitter additional_jobs.route_emitter ))
     instances: (( instance_count_overrides.route_emitter_z2.instances || 1 ))
     resource_pool: route_emitter_z2
     networks:
@@ -334,9 +246,7 @@ jobs:
         zone: z2
 
   - name: etcd_z3
-    templates:
-      - name: etcd
-        release: diego
+    templates: (( base_job_templates.etcd additional_jobs.etcd ))
     instances: (( instance_count_overrides.etcd_z3.instances || 1 ))
     persistent_disk: (( persistent_disk_overrides.etcd_z3 || 1024 ))
     resource_pool: etcd_z3
@@ -348,17 +258,7 @@ jobs:
       max_in_flight: 1
 
   - name: brain_z3
-    templates:
-      - name: consul_agent
-        release: cf
-      - name: auctioneer
-        release: diego
-      - name: converger
-        release: diego
-      - name: runtime_metrics_server
-        release: diego
-      - name: metron_agent
-        release: cf
+    templates: (( base_job_templates.brain additional_jobs.brain ))
     instances: (( instance_count_overrides.brain_z3.instances || 0 ))
     resource_pool: brain_z3
     networks:
@@ -371,19 +271,7 @@ jobs:
         zone: z3
 
   - name: cell_z3
-    templates:
-      - name: rep
-        release: diego
-      - name: consul_agent
-        release: cf
-      - name: executor
-        release: diego
-      - name: garden-linux
-        release: diego
-      - name: receptor
-        release: diego
-      - name: metron_agent
-        release: cf
+    templates: (( base_job_templates.cell additional_jobs.cell ))
     instances: (( instance_count_overrides.cell_z3.instances || 0 ))
     resource_pool: cell_z3
     networks:
@@ -403,19 +291,7 @@ jobs:
             - receptor
 
   - name: cc_bridge_z3
-    templates:
-      - name: stager
-        release: diego
-      - name: nsync
-        release: diego
-      - name: tps
-        release: diego
-      - name: file_server
-        release: diego
-      - name: consul_agent
-        release: cf
-      - name: metron_agent
-        release: cf
+    templates: (( base_job_templates.cc_bridge additional_jobs.cc_bridge ))
     instances: (( instance_count_overrides.cc_bridge_z3.instances || 0 ))
     resource_pool: cc_bridge_z3
     networks:
@@ -435,13 +311,7 @@ jobs:
             - tps
 
   - name: route_emitter_z3
-    templates:
-      - name: route_emitter
-        release: diego
-      - name: consul_agent
-        release: cf
-      - name: metron_agent
-        release: cf
+    templates: (( base_job_templates.route_emitter additional_jobs.route_emitter ))
     instances: (( instance_count_overrides.route_emitter_z3.instances || 0 ))
     resource_pool: route_emitter_z3
     networks:
@@ -587,8 +457,69 @@ properties:
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service." config_from_cf.consul.domain ":8888" ))
       log_level: (( property_overrides.tps.log_level || nil ))
 
+# The keys below should not be included in the final stub
 config_from_cf: (( merge ))
 iaas_settings: (( merge ))
 instance_count_overrides: (( merge ))
 persistent_disk_overrides: (( merge ))
 property_overrides: (( merge ))
+additional_jobs:
+  releases: (( merge || [] ))
+  etcd: (( merge || [] ))
+  brain: (( merge || [] ))
+  cell: (( merge || [] ))
+  cc_bridge: (( merge || [] ))
+  route_emitter: (( merge || [] ))
+base_releases:
+  - name: diego
+    version: latest
+  - name: cf
+    version: latest
+base_job_templates:
+  brain:
+    - name: consul_agent
+      release: cf
+    - name: auctioneer
+      release: diego
+    - name: converger
+      release: diego
+    - name: runtime_metrics_server
+      release: diego
+    - name: metron_agent
+      release: cf
+  cell:
+    - name: rep
+      release: diego
+    - name: consul_agent
+      release: cf
+    - name: executor
+      release: diego
+    - name: garden-linux
+      release: diego
+    - name: receptor
+      release: diego
+    - name: metron_agent
+      release: cf
+  cc_bridge:
+    - name: stager
+      release: diego
+    - name: nsync
+      release: diego
+    - name: tps
+      release: diego
+    - name: file_server
+      release: diego
+    - name: consul_agent
+      release: cf
+    - name: metron_agent
+      release: cf
+  route_emitter:
+    - name: route_emitter
+      release: diego
+    - name: consul_agent
+      release: cf
+    - name: metron_agent
+      release: cf
+  etcd:
+    - name: etcd
+      release: diego
