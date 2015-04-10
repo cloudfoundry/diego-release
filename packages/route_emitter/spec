@@ -31,7 +31,7 @@ files:
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/shared/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/task_bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/cb/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/heartbeater/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/maintainer/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/routes/*.go # gosub
@@ -88,7 +88,6 @@ files:
   - github.com/tedsuo/ifrit/ginkgomon/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
   - github.com/tedsuo/ifrit/http_server/*.go # gosub
-  - github.com/tedsuo/ifrit/restart/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
   - github.com/vito/go-sse/sse/*.go # gosub
