@@ -24,8 +24,7 @@ go install github.com/vito/gosub
     -app github.com/cloudfoundry-incubator/tps/cmd/... \
     \
     -app github.com/apcera/gnatsd \
-    -app github.com/coreos/etcd \
-    -app github.com/kr/pty
+    -app github.com/coreos/etcd
 
   # separate these so gosub doesn't asplode
   gosub list -test github.com/cloudfoundry-incubator/auctioneer/...
