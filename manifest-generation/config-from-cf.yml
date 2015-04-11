@@ -6,10 +6,8 @@ config_from_cf:
     srv_api_uri: (( merge ))
     staging_upload_user: (( merge ))
     staging_upload_password: (( merge ))
-    service_name: (( merge ))
   consul:
     lan_servers: (( merge ))
-    domain: (( merge ))
   etcd:
     machines: (( merge ))
   loggregator_endpoint:

@@ -23,6 +23,7 @@ properties:
     description: "Basic auth password for CC internal API"
   diego.stager.cc.internal_service_hostname:
     description: "Internal CC host name"
+    default: cloud-controller-ng.service.consul
   diego.stager.lifecycle_bundles:
     description: "List of lifecycle bundles arguments for different stacks in form 'lifecycle-name:path/to/bundle'"
     default:
