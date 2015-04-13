@@ -429,6 +429,7 @@ properties:
         password: (( config_from_cf.nats.password ))
         port: (( config_from_cf.nats.port ))
       log_level: (( property_overrides.runtime_metrics_server.log_level || nil ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
     stager:
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))

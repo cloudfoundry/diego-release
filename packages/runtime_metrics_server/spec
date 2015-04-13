@@ -13,6 +13,7 @@ files:
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
   - github.com/cloudfoundry-incubator/consuladapter/*.go # gosub
+  - github.com/cloudfoundry-incubator/receptor/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-metrics-server/instruments/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-metrics-server/metrics/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/*.go # gosub
@@ -47,10 +48,6 @@ files:
   - github.com/cloudfoundry/gunk/urljoiner/*.go # gosub
   - github.com/cloudfoundry/gunk/workpool/*.go # gosub
   - github.com/cloudfoundry/storeadapter/*.go # gosub
-  - github.com/cloudfoundry/storeadapter/etcdstoreadapter/*.go # gosub
-  - github.com/coreos/etcd/etcdserver/etcdhttp/httptypes/*.go # gosub
-  - github.com/coreos/etcd/pkg/types/*.go # gosub
-  - github.com/coreos/go-etcd/etcd/*.go # gosub
   - github.com/hashicorp/consul/api/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/onsi/ginkgo/*.go # gosub
@@ -89,3 +86,4 @@ files:
   - github.com/tedsuo/ifrit/http_server/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
+  - github.com/vito/go-sse/sse/*.go # gosub

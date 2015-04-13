@@ -26,6 +26,7 @@ case $1 in
 
     exec /var/vcap/packages/runtime_metrics_server/bin/runtime-metrics-server \
       -etcdCluster=<%= p("diego.runtime_metrics_server.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -diegoAPIURL=<%= p("diego.runtime_metrics_server.diego_api_url")%> \
       -consulCluster=http://127.0.0.1:8500 \
       -debugAddr=<%= p("diego.runtime_metrics_server.debug_addr") %> \
       -logLevel=<%= p("diego.runtime_metrics_server.log_level") %> \
