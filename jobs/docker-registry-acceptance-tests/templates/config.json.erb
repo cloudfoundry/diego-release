@@ -1,0 +1,8 @@
+{
+  "api"                : "<%= properties.docker_registry_acceptance_tests.api %>",
+  "apps_domain"        : "<%= Array(properties.docker_registry_acceptance_tests.apps_domain).first %>",
+  "admin_user"         : "<%= properties.docker_registry_acceptance_tests.admin_user %>",
+  "admin_password"     : "<%= properties.docker_registry_acceptance_tests.admin_password %>",
+  "skip_ssl_validation": <%= properties.docker_registry_acceptance_tests.skip_ssl_validation %>,
+  "artifacts_directory": "/var/vcap/sys/log/docker_registry_acceptance_tests/"
+}

@@ -1,0 +1,32 @@
+#!/bin/bash -l
+
+set -e -x
+
+export GOROOT=$(readlink -nf /var/vcap/packages/golang_1.4)
+export PATH=${GOROOT}/bin:${PATH}
+
+export PATH=/var/vcap/packages/cf-cli/bin:${PATH} # put the cli on the path
+
+export GOPATH=/var/vcap/packages/docker-registry-acceptance-tests
+export PATH=${GOPATH}/bin:${PATH}
+
+export CF_COLOR=false
+export CONFIG=/var/vcap/jobs/docker-registry-acceptance-tests/bin/config.json
+
+mkdir -p /var/vcap/sys/log/docker-registry-acceptance-tests
+cd /var/vcap/packages/docker-registry-acceptance-tests/src/github.com/cloudfoundry-incubator/docker-registry-acceptance-tests
+
+EXITSTATUS=0
+nodes=<%= properties.docker_registry_acceptance_tests.nodes %>
+verbose=<%= properties.docker_registry_acceptance_tests.verbose ? "-v" : "" %>
+bin/test -randomizeAllSpecs $verbose -nodes=$nodes -keepGoing || EXITSTATUS=$?
+
+echo "Acceptance Tests Complete; exit status: $EXITSTATUS"
+
+for i in /var/vcap/sys/log/docker_registry_acceptance_tests/*.txt; do
+  if [ -e "$i" ]; then
+    mv $i $i.log # needed to make download-logs work
+  fi
+done
+
+exit $EXITSTATUS
