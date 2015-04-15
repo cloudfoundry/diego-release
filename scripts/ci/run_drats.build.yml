@@ -1,0 +1,17 @@
+---
+platform: linux
+
+image: docker:///cloudfoundry/diego-pipeline
+
+inputs:
+  - name: deployments-runtime
+  - name: diego-release
+
+params:
+  BOSH_USER: ~
+  BOSH_PASSWORD: ~
+  BOSH_TARGET: ~
+  DOCKER_REGISTRY_ACCEPTANCE_TESTS_MANIFEST: ~
+
+run:
+  path: diego-release/scripts/ci/run_drats

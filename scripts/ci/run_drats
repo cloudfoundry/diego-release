@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e -x -u
+
+acceptance_tests_manifest=${PWD}/${DOCKER_REGISTRY_ACCEPTANCE_TESTS_MANIFEST}
+
+./diego-release/scripts/ci/bosh_setup
+
+bosh deployment ${acceptance_tests_manifest}
+bosh -n deploy
+bosh run errand docker_registry_acceptance_tests --keep-alive
