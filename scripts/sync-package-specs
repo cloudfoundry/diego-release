@@ -59,10 +59,6 @@ sync_package acceptance-tests \
   -test github.com/cloudfoundry-incubator/diego-acceptance-tests/... \
   -app github.com/onsi/ginkgo/ginkgo &
 
-sync_package docker-registry-acceptance-tests \
-  -test github.com/cloudfoundry-incubator/docker-registry-acceptance-tests/... \
-  -app github.com/onsi/ginkgo/ginkgo &
-
 sync_package smoke-tests      -test github.com/cloudfoundry-incubator/diego-smoke-tests &
 
 wait
