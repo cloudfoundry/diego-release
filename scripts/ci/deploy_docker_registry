@@ -4,7 +4,7 @@ set -e -x -u
 
 docker_registry_manifest="${PWD}/${DOCKER_REGISTRY_MANIFEST}"
 
-./diego-release/scripts/ci/bosh-setup
+./diego-release/scripts/ci/bosh_setup
 
 pushd docker-registry-release
   bosh -n create release
