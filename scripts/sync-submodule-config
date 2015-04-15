@@ -47,7 +47,6 @@ go install github.com/vito/gosub
     -test github.com/cloudfoundry-incubator/inigo/... \
     -test github.com/cloudfoundry-incubator/diego-smoke-tests/... \
     -test github.com/cloudfoundry-incubator/diego-acceptance-tests/... \
-    -test github.com/cloudfoundry-incubator/docker-registry-acceptance-tests/... \
     -test github.com/cloudfoundry-incubator/diegocanaryapp/...
 
   # garden-linux uses godeps, so we should really only need its parent package
