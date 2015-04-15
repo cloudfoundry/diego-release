@@ -1,15 +1,8 @@
-FROM cloudfoundry/inigo-ci
-
-RUN \
-  wget -q https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.4/spiff_linux_amd64.zip -P /tmp/ && \
-  unzip /tmp/spiff_linux_amd64.zip -d /usr/local/bin && \
-  rm /tmp/spiff_linux_amd64.zip
+FROM cloudfoundry/golang-ci
 
 RUN \
   apt-get update && \
   apt-get -y --force-yes install \
-    build-essential \
-    curl \
     libmysqlclient-dev \
     libpq-dev \
     libreadline6-dev \
@@ -21,8 +14,14 @@ RUN \
     libxslt-dev \
     libyaml-dev \
     openssl/trusty \
+    zip \
     zlib1g-dev && \
   apt-get clean
+
+RUN \
+  wget -q https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.4/spiff_linux_amd64.zip -P /tmp/ && \
+  unzip /tmp/spiff_linux_amd64.zip -d /usr/local/bin && \
+  rm /tmp/spiff_linux_amd64.zip
 
 RUN \
   wget -qO- https://github.com/postmodern/ruby-install/archive/v0.5.0.tar.gz | tar -C /tmp -zxf - && \
@@ -32,7 +31,6 @@ RUN \
   rm -rf /usr/local/src/ruby-2.1.4 && \
   rm -rf /usr/local/share/ri && \
   rm -rf /tmp/ruby-install-0.5.0
-
 
 RUN \
   gem install --no-rdoc --no-ri \
