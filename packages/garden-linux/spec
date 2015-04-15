@@ -19,7 +19,6 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/integration/lifecycle/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/integration/measurements/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/integration/networking/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/integration/networking/netdog/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/integration/performance/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/integration/runner/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/iodaemon/*.go # gosub
@@ -64,6 +63,7 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/old/system_info/fake_system_info/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/uid_pool/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/uid_pool/fake_uid_pool/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/packer/rootfs/empty/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/process/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/process_tracker/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/process_tracker/fake_process_tracker/*.go # gosub
@@ -132,13 +132,14 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/libcontainer/label/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/libcontainer/netlink/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/docker/libtrust/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/gorilla/context/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/gorilla/mux/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/pivotal-golang/clock/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/pivotal-golang/lager/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/tchap/go-patricia/patricia/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/tedsuo/ifrit/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/tedsuo/ifrit/http_server/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/tedsuo/rata/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/cloudfoundry-incubator/garden/fakes/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/cloudfoundry-incubator/garden/client/*.go # gosub
@@ -172,6 +173,5 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/onsi/gomega/matchers/support/goraph/util/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/onsi/gomega/types/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/pivotal-golang/lager/lagertest/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/tedsuo/ifrit/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/tedsuo/ifrit/ginkgomon/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/kr/pty/*.go # gosub
