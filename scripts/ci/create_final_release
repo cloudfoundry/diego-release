@@ -5,23 +5,16 @@ set -e -x -u
 echo "----- Copy private blobstore credentials into diego-release"
 cp runtime-credentials/diego-ci/private.yml diego-release/config/private.yml
 
-echo "----- Configure git to use diego CI ssh key"
-mkdir -p diego-release/tmp
-cp runtime-credentials/diego-ci/ssh_keys/diego-release-push-pull diego-release/tmp/github
-chmod 600 diego-release/tmp/github
-
-export GIT_SSH=$(pwd)/diego-release/tmp/git_ssh.sh
-echo "ssh -o StrictHostKeyChecking=no -i $(pwd)/diego-release/tmp/github" '"$@"' > $GIT_SSH
-chmod +x $GIT_SSH
-
 FINAL_RELEASE_VERSION=$(cat version/number)
 
 pushd diego-release
-  echo "----- Create dev release" # to work around https://www.pivotaltracker.com/story/show/74823266
-  bosh -n create release
+  git fetch origin master
+  git merge --no-edit origin/master
 
   echo "----- Create final release"
-  bosh -n create release --final --version $FINAL_RELEASE_VERSION
+  bosh -n create release --final --with-tarball --version $FINAL_RELEASE_VERSION
+
+  mv releases/diego/*.tgz ../diego-$FINAL_RELEASE_VERSION.tgz
 
   echo "----- Set git identity"
   git config user.email "cf-diego@pivotal.io"
@@ -30,21 +23,7 @@ pushd diego-release
   echo "----- Update master and develop branches on origin"
   git add -A
   git commit -m "Create final release ${FINAL_RELEASE_VERSION}"
-  git config url.git@github.com:.pushinsteadof https://github.com/
 
   echo "----- DEBUG: show the commit we just created"
   git --no-pager show HEAD
-
-  echo "----- Merge final release commit into master"
-  git fetch origin master
-  git show-ref origin/master # DEBUG
-  git merge --no-edit origin/master
-  git push origin HEAD:master
-
-  echo "----- Merge final release commit from master back into develop"
-  git fetch origin develop
-  git show-ref origin/develop # DEBUG
-  git merge --no-edit origin/develop
-  git push origin HEAD:develop
 popd
-
