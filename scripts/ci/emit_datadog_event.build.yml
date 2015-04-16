@@ -1,0 +1,20 @@
+---
+platform: linux
+
+image: docker:///cloudfoundry/diego-pipeline
+
+params:
+  DATADOG_API_KEY:
+  STATE:
+  ENVIRONMENT:
+  DEPLOYMENT:
+
+input:
+    - name: diego-release
+
+run:
+  path: sh
+  args:
+    - -c
+    - |
+      diego-release/scripts/ci/emit-datadog-deploy-event $STATE $ENVIRONMENT $DEPLOYMENT
