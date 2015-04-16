@@ -3,6 +3,9 @@ platform: linux
 
 image: docker:///cloudfoundry/inigo-ci
 
+inputs:
+  - name: diego-release
+
 params:
   GINKGO_PARALLEL: true
   DEFAULT_EVENTUALLY_TIMEOUT:
