@@ -1,0 +1,48 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/ssh_proxy
+LOG_DIR=/var/vcap/sys/log/ssh_proxy
+CONF_DIR=/var/vcap/jobs/ssh_proxy/config
+
+PIDFILE=$RUN_DIR/ssh_proxy.pid
+
+HOST_KEY="<%= p("diego.ssh_proxy.host_key") %>"
+PRIVATE_KEY="<%= p("diego.ssh_proxy.private_key") %>"
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+<% require "shellwords" %>
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "ssh_proxy"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $LOG_DIR
+
+    echo $$ > $PIDFILE
+
+    exec /var/vcap/packages/ssh_proxy/bin/ssh-proxy \
+      -address=<%= p("diego.ssh_proxy.listen_addr") %> \
+      -hostKey="$HOST_KEY" \
+      -privateKey="$PRIVATE_KEY" \
+      -diegoAPIURL=<%= p("diego.ssh_proxy.diego_api_url") %> \
+      -debugAddr=<%= p("diego.ssh_proxy.debug_addr") %> \
+      -logLevel=<%= p("diego.ssh_proxy.log_level") %> \
+      2>> $LOG_DIR/ssh_proxy.stderr.log \
+      1> >(tee -a $LOG_DIR/ssh_proxy.stdout.log | logger -t vcap.ssh_proxy)
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+
+    ;;
+
+esac

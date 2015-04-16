@@ -430,6 +430,10 @@ properties:
         port: (( config_from_cf.nats.port ))
       log_level: (( property_overrides.runtime_metrics_server.log_level || nil ))
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+    ssh_proxy:
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+      host_key: (( property_overrides.ssh_proxy.host_key || "" ))
+      private_key: (( property_overrides.ssh_proxy.private_key || "" ))
     stager:
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
@@ -490,6 +494,8 @@ base_job_templates:
     - name: garden-linux
       release: diego
     - name: receptor
+      release: diego
+    - name: ssh_proxy
       release: diego
     - name: metron_agent
       release: cf

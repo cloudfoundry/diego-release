@@ -1,0 +1,27 @@
+---
+name: ssh_proxy
+
+templates:
+  ssh_proxy_ctl.erb: bin/ssh_proxy_ctl
+
+packages:
+  - pid_utils
+  - ssh_proxy
+
+properties:
+  diego.ssh_proxy.listen_addr:
+    description: "address for the proxy to listen on"
+    default: "0.0.0.0:2222"
+  diego.ssh_proxy.diego_api_url:
+    description: URL of diego API
+    default: http://receptor.service.dc1.consul:8888
+  diego.ssh_proxy.host_key:
+    description: "PEM encoded RSA private key used to identify host"
+  diego.ssh_proxy.private_key:
+    description: "PEM encoded RSA private key used to authenticate with target daemon"
+  diego.ssh_proxy.debug_addr:
+    description: "address at which to serve debug info"
+    default: "0.0.0.0:17015"
+  diego.ssh_proxy.log_level:
+    description: "Log level"
+    default: "info"
