@@ -8,6 +8,10 @@ cp runtime-credentials/diego-ci/private.yml diego-release/config/private.yml
 FINAL_RELEASE_VERSION=$(cat version/number)
 
 pushd diego-release
+  echo "----- Set git identity"
+  git config user.email "cf-diego@pivotal.io"
+  git config user.name "CI (Automated)"
+
   git fetch origin master
   git merge --no-edit origin/master
 
@@ -15,10 +19,6 @@ pushd diego-release
   bosh -n create release --final --with-tarball --version $FINAL_RELEASE_VERSION
 
   mv releases/diego/*.tgz ../diego-$FINAL_RELEASE_VERSION.tgz
-
-  echo "----- Set git identity"
-  git config user.email "cf-diego@pivotal.io"
-  git config user.name "CI (Automated)"
 
   echo "----- Update master and develop branches on origin"
   git add -A
