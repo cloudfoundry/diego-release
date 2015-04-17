@@ -6,7 +6,6 @@ image: docker:///cloudfoundry/diego-pipeline
 inputs:
   - name: deployments-runtime
   - name: diego-release
-  - name: version
 
 params:
   BOSH_PASSWORD: ~
