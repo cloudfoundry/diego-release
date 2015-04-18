@@ -6,9 +6,15 @@ export GOPATH=$BOSH_INSTALL_TARGET
 
 export GOROOT=$(readlink -nf /var/vcap/packages/golang_1.4)
 export PATH=$GOROOT/bin:$PATH
-go build github.com/cloudfoundry-incubator/buildpack_app_lifecycle/builder
-go build github.com/cloudfoundry-incubator/buildpack_app_lifecycle/launcher
-go build github.com/cloudfoundry-incubator/buildpack_app_lifecycle/healthcheck
+export CGO_ENABLED=0
+
+go build -a -installsuffix static -ldflags '-extldflags -static -w' github.com/cloudfoundry-incubator/buildpack_app_lifecycle/builder
+go build -a -installsuffix static -ldflags '-extldflags -static -w' github.com/cloudfoundry-incubator/buildpack_app_lifecycle/launcher
+go build -a -installsuffix static -ldflags '-extldflags -static -w' github.com/cloudfoundry-incubator/buildpack_app_lifecycle/healthcheck
+
+for binary in builder launcher healthcheck; do
+    ldd $binary && echo "$binary must be statically linked" && false
+done
 
 tar -czf ${BOSH_INSTALL_TARGET}/buildpack_app_lifecycle.tgz builder launcher healthcheck
 
