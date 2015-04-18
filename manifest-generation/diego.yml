@@ -325,6 +325,8 @@ jobs:
 
 properties:
   # -- Properties below are used by the metron_agent job from cf-release --
+  metron_agent:
+    deployment: (( name ))
   nats: # For metron_agent to talk to collector
     machines: (( config_from_cf.nats.machines ))
     user: (( config_from_cf.nats.user ))
