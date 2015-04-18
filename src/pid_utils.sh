@@ -5,6 +5,8 @@ mkdir -p /var/vcap/sys/log/monit
 exec 1>> /var/vcap/sys/log/monit/$SCRIPT.log
 exec 2>> /var/vcap/sys/log/monit/$SCRIPT.err.log
 
+echo "------------ `basename $0` $* at `date` --------------" | tee /dev/stderr
+
 pid_guard() {
   pidfile=$1
   name=$2
