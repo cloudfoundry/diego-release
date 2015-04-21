@@ -17,8 +17,6 @@ properties:
     default: http://receptor.service.dc1.consul:8888
   diego.ssh_proxy.host_key:
     description: "PEM encoded RSA private key used to identify host"
-  diego.ssh_proxy.private_key:
-    description: "PEM encoded RSA private key used to authenticate with target daemon"
   diego.ssh_proxy.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17016"
