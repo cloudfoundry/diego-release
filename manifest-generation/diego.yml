@@ -101,6 +101,30 @@ jobs:
       serial: true
       max_in_flight: 1
 
+  - name: etcd_z2
+    templates: (( base_job_templates.etcd additional_jobs.etcd ))
+    instances: (( instance_count_overrides.etcd_z2.instances || 1 ))
+    persistent_disk: (( persistent_disk_overrides.etcd_z2 || 1024 ))
+    resource_pool: etcd_z2
+    networks:
+      - name: diego2
+        static_ips: (( static_ips(0) ))
+    update:
+      serial: true
+      max_in_flight: 1
+
+  - name: etcd_z3
+    templates: (( base_job_templates.etcd additional_jobs.etcd ))
+    instances: (( instance_count_overrides.etcd_z3.instances || 1 ))
+    persistent_disk: (( persistent_disk_overrides.etcd_z3 || 1024 ))
+    resource_pool: etcd_z3
+    networks:
+      - name: diego3
+        static_ips: (( static_ips(0) ))
+    update:
+      serial: true
+      max_in_flight: 1
+
   - name: brain_z1
     templates: (( base_job_templates.brain additional_jobs.brain ))
     instances: (( instance_count_overrides.brain_z1.instances || 1 ))
@@ -167,18 +191,6 @@ jobs:
       metron_agent:
         zone: z1
 
-  - name: etcd_z2
-    templates: (( base_job_templates.etcd additional_jobs.etcd ))
-    instances: (( instance_count_overrides.etcd_z2.instances || 1 ))
-    persistent_disk: (( persistent_disk_overrides.etcd_z2 || 1024 ))
-    resource_pool: etcd_z2
-    networks:
-      - name: diego2
-        static_ips: (( static_ips(0) ))
-    update:
-      serial: true
-      max_in_flight: 1
-
   - name: brain_z2
     templates: (( base_job_templates.brain additional_jobs.brain ))
     instances: (( instance_count_overrides.brain_z2.instances || 1 ))
@@ -244,18 +256,6 @@ jobs:
     properties:
       metron_agent:
         zone: z2
-
-  - name: etcd_z3
-    templates: (( base_job_templates.etcd additional_jobs.etcd ))
-    instances: (( instance_count_overrides.etcd_z3.instances || 1 ))
-    persistent_disk: (( persistent_disk_overrides.etcd_z3 || 1024 ))
-    resource_pool: etcd_z3
-    networks:
-      - name: diego3
-        static_ips: (( static_ips(0) ))
-    update:
-      serial: true
-      max_in_flight: 1
 
   - name: brain_z3
     templates: (( base_job_templates.brain additional_jobs.brain ))
