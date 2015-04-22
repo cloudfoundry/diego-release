@@ -14,6 +14,9 @@ files:
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
   - github.com/cloudfoundry-incubator/consuladapter/*.go # gosub
+  - github.com/cloudfoundry-incubator/diego-ssh/helpers/*.go # gosub
+  - github.com/cloudfoundry-incubator/diego-ssh/keys/*.go # gosub
+  - github.com/cloudfoundry-incubator/diego-ssh/routes/*.go # gosub
   - github.com/cloudfoundry-incubator/nsync/bulk/*.go # gosub
   - github.com/cloudfoundry-incubator/nsync/recipebuilder/*.go # gosub
   - github.com/cloudfoundry-incubator/receptor/*.go # gosub
@@ -92,5 +95,6 @@ files:
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
   - github.com/vito/go-sse/sse/*.go # gosub
+  - golang.org/x/crypto/ssh/*.go # gosub
   - github.com/cloudfoundry-incubator/nsync/*.go # gosub
   - github.com/cloudfoundry-incubator/nsync/handlers/*.go # gosub
