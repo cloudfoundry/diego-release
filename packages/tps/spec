@@ -19,6 +19,8 @@ files:
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/*.go # gosub
+  - github.com/cloudfoundry-incubator/tps/handler/cc_conv/*.go # gosub
+  - github.com/cloudfoundry-incubator/tps/handler/lrpstats/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/lrpstatus/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
   - github.com/cloudfoundry/dropsonde/control/*.go # gosub
@@ -34,6 +36,11 @@ files:
   - github.com/cloudfoundry/dropsonde/runtime_stats/*.go # gosub
   - github.com/cloudfoundry/gosteno/*.go # gosub
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
+  - github.com/cloudfoundry/noaa/*.go # gosub
+  - github.com/cloudfoundry/noaa/errors/*.go # gosub
+  - github.com/cloudfoundry/noaa/events/*.go # gosub
+  - github.com/gogo/protobuf/proto/*.go # gosub
+  - github.com/gorilla/websocket/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/pivotal-golang/lager/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub

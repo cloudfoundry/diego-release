@@ -52,6 +52,8 @@ case $1 in
       -maxInFlightRequests=<%= p("diego.tps.max_in_flight_requests") %> \
       -listenAddr=<%= "#{my_ip}:1518" %> \
       -logLevel=<%= p("diego.tps.log_level") %> \
+      -trafficControllerURL=<%= p("diego.tps.traffic_controller_url") %> \
+      -skipSSLVerification=<%= p("diego.ssl.skip_cert_verify") %> \
       2>> $LOG_DIR/tps_listener.stderr.log \
       1> >(tee -a $LOG_DIR/tps_listener.stdout.log | logger -t vcap.tps-listener)
 

@@ -455,6 +455,7 @@ properties:
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
       log_level: (( property_overrides.tps.log_level || nil ))
+      traffic_controller_url: (( "wss://doppler." config_from_cf.system_domain ":443" ))
 
 # The keys below should not be included in the final stub
 config_from_cf: (( merge ))

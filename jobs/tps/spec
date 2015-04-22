@@ -40,3 +40,6 @@ properties:
   diego.tps.log_level:
     description: "Log level"
     default: "info"
+  diego.tps.traffic_controller_url:
+    description: URL of Traffic controller
+    default: ws://loggregator-trafficcontroller.service.consul:8081
