@@ -4,7 +4,8 @@ set -e -x -u
 
 deployments_file=$1
 releases_file=$2
-release_name=$3
+deployment_name=$3
+release_name=$4
 
 releases=$(cat ${deployments_file} \
           | grep "${release_name}/" \
@@ -22,9 +23,14 @@ fi
 release=${releases}
 
 sha=$(cat ${releases_file} \
-         | grep "${release}" \
-         | cut -d'|' -f 4 \
-         | tr -d ' *+' \
-       )
+     | grep "${release}" \
+     | cut -d'|' -f 4 \
+     | tr -d ' *+' \
+    )
 
-echo ${release},${sha}
+first_stemcell=$(cat ${deployments_file} \
+                | grep " ${deployment_name} " \
+                | cut -d'|' -f4 \
+                | tr -d ' ' \
+               )
+echo ${release},${sha},${first_stemcell}

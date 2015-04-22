@@ -6,19 +6,22 @@ set -e -x -u
 tmpdir=$(mktemp -d /tmp/compatibility.XXXXX)
 
 current_date=$(date)
+director_version=$(bosh status | grep Version | tr -s ' ' | cut -f3 -d' ')
 bosh deployments > ${tmpdir}/deployments
 bosh releases > ${tmpdir}/releases
 cf_data=$(./diego-release/scripts/ci/extract-release-and-sha \
           ${tmpdir}/deployments \
           ${tmpdir}/releases \
+          cf-${ENVIRONMENT_NAME} \
           cf \
         )
 diego_data=$(./diego-release/scripts/ci/extract-release-and-sha \
              ${tmpdir}/deployments \
              ${tmpdir}/releases \
+             cf-${ENVIRONMENT_NAME}-diego \
              diego \
            )
-new_row=${current_date},${RELEASE_STAGE},${cf_data},${diego_data}
+new_row=${current_date},${RELEASE_STAGE},${director_version},${cf_data},${diego_data}
 
 pushd diego-cf-compatibility
   git config user.email "cf-diego@pivotal.io"
