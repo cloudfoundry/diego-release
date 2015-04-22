@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e -x -u
+
+deployments_file=$1
+releases_file=$2
+release_name=$3
+
+releases=$(cat ${deployments_file} \
+          | grep "${release_name}/" \
+          | cut -d'|' -f3 \
+          | cut -d'/' -f2 \
+          | tr -d ' ' \
+          | uniq \
+         )
+
+num_releases=$(echo "${releases}" | wc -l | tr -d ' ')
+if [ "${num_releases}" != "1" ]; then
+  echo "Expected 1 unique occurrence of ${release_name} release amongst deployments, found ${num_releases}"
+  exit 1
+fi
+release=${releases}
+
+sha=$(cat ${releases_file} \
+         | grep "${release}" \
+         | cut -d'|' -f 4 \
+         | tr -d ' *+' \
+       )
+
+echo ${release},${sha}
