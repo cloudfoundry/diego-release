@@ -64,5 +64,6 @@ safe_teardown() {
     if [ ! -z "$my_id" ]; then
       member_remove ${my_id}
     fi
+    rm -rf ${DATA_DIR}/*
   fi
 }
