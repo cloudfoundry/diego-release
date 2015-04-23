@@ -12,7 +12,6 @@ pushd diego-release
   git config user.email "cf-diego@pivotal.io"
   git config user.name "CI (Automated)"
 
-  git fetch origin master
   git merge --no-edit origin/master
 
   echo "----- Create final release"
