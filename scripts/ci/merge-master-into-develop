@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e -x -u
+
+pushd diego-release
+  echo "----- Set git identity"
+  git config user.email "cf-diego@pivotal.io"
+  git config user.name "CI (Automated)"
+
+  git merge --no-edit origin/master
+popd
