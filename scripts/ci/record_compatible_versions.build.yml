@@ -4,6 +4,7 @@ image: docker:///cloudfoundry/diego-pipeline
 
 inputs:
   - name: diego-cf-compatibility
+  - name: diego-release
 
 params:
   BOSH_PASSWORD: ~
