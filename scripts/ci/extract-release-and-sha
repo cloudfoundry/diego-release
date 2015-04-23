@@ -8,10 +8,12 @@ deployment_name=$3
 release_name=$4
 
 releases=$(cat ${deployments_file} \
+          | grep -v tests \
           | grep "${release_name}/" \
           | cut -d'|' -f3 \
           | cut -d'/' -f2 \
           | tr -d ' ' \
+          | sort \
           | uniq \
          )
 
