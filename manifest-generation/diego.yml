@@ -445,7 +445,7 @@ properties:
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
       log_level: (( property_overrides.stager.log_level || nil ))
-      docker_registry_url: (( property_overrides.stager.docker_registry_url || nil ))
+      insecure_docker_registry: (( property_overrides.stager.insecure_docker_registry || false ))
     tps:
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))

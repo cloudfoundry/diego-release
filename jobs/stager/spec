@@ -50,5 +50,6 @@ properties:
   diego.file_server.file_server_url:
     description: URL of file server
     default: http://file-server.service.consul:8080
-  diego.stager.docker_registry_url:
-    description: "Private Docker Registry URL"
+  diego.stager.insecure_docker_registry:
+    description: "Allow insecure Private Docker Registry to be used"
+    default: false
