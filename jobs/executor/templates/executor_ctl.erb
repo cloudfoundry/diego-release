@@ -44,6 +44,9 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
+    # Enable maximum OS thread concurrency
+    export GOMAXPROCS=$(nproc)
+
     exec /var/vcap/packages/executor/bin/executor \
       -listenAddr=<%= p("diego.executor.listen_addr") %> \
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
