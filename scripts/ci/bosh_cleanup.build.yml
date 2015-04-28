@@ -1,0 +1,15 @@
+---
+platform: linux
+
+image: docker:///cloudfoundry/diego-pipeline
+
+inputs:
+  - name: diego-release
+
+params:
+  BOSH_PASSWORD: ~
+  BOSH_TARGET: ~
+  BOSH_USER: ~
+
+run:
+  path: diego-release/scripts/ci/bosh_cleanup
