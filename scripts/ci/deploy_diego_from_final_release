@@ -11,8 +11,6 @@ cf_deployment_name="cf-${ENVIRONMENT_NAME}"
 pushd diego-release
   ./scripts/ci/bosh_setup
 
-  bosh -n cleanup
-
   bosh download manifest ${cf_deployment_name} > /tmp/cf.yml
   spiff merge \
     manifest-generation/misc-templates/iaas-settings.yml \
