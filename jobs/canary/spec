@@ -34,6 +34,10 @@ properties:
   diego.canary.app_name:
     description: App name for the canary app
 
+  diego.canary.cf_stack:
+    description: Stack for the canary app
+    default: cflinuxfs2
+
   diego.canary.deployment_name:
     description: Deployment name for the canary app
 

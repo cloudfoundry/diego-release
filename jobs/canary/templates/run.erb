@@ -23,6 +23,7 @@ export DATADOG_API_KEY=<%= p("diego.canary.datadog_api_key") %>
 export DEPLOYMENT_NAME=<%= p("diego.canary.deployment_name") %>
 export DOMAIN=<%= p("diego.canary.app_domain") %>
 export INSTANCE_COUNT=<%= p("diego.canary.instance_count") %>
+export CF_STACK=<%= p("diego.canary.cf_stack") %>
 
 cd /var/vcap/packages/canary
 
