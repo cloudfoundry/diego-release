@@ -81,7 +81,10 @@ as you switch in and out of the directory.
 
 4. Install consul
 
-        Download consul from https://www.consul.io/downloads.html and place it on your PATH
+        if uname -a | grep Darwin; then os=darwin; else os=linux; fi
+        curl -L -o $TMPDIR/consul-0.5.0.zip "https://dl.bintray.com/mitchellh/consul/0.5.0_${os}_amd64.zip"
+        unzip $TMPDIR/consul-0.5.0.zip -d ~/workspace/diego-release/bin
+        rm $TMPDIR/consul-0.5.0.zip
 
 5. Run the unit test script
 
