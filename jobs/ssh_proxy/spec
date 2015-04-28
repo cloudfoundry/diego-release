@@ -23,3 +23,11 @@ properties:
   diego.ssh_proxy.log_level:
     description: "Log level"
     default: "info"
+  diego.ssh_proxy.cc.internal_service_hostname:
+    description: Internal service hostname of Cloud Controller Api
+    default: cloud-controller-ng.service.consul
+  diego.ssh_proxy.cc.external_port:
+    description: External port of the Cloud Controller API
+  diego.ssh_proxy.cf_only:
+    description: Only allow ssh access for cf applications.
+    default: false

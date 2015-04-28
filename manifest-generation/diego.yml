@@ -433,6 +433,8 @@ properties:
       log_level: (( property_overrides.runtime_metrics_server.log_level || nil ))
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
     ssh_proxy:
+      cc:
+        external_port: (( config_from_cf.cc.external_port ))
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
       host_key: (( property_overrides.ssh_proxy.host_key || "" ))
       private_key: (( property_overrides.ssh_proxy.private_key || "" ))

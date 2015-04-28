@@ -26,8 +26,10 @@ case $1 in
       -address=<%= p("diego.ssh_proxy.listen_addr") %> \
       -hostKey="$HOST_KEY" \
       -diegoAPIURL=<%= p("diego.ssh_proxy.diego_api_url") %> \
+      -ccAPIURL=http://<%= p("diego.ssh_proxy.cc.internal_service_hostname") %>:<%= p("diego.ssh_proxy.cc.external_port") %> \
       -debugAddr=<%= p("diego.ssh_proxy.debug_addr") %> \
       -logLevel=<%= p("diego.ssh_proxy.log_level") %> \
+      -cfOnly=<%= p("diego.ssh_proxy.cf_only") %> \
       2>> $LOG_DIR/ssh_proxy.stderr.log \
       1> >(tee -a $LOG_DIR/ssh_proxy.stdout.log | logger -t vcap.ssh_proxy)
 
