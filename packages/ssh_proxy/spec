@@ -7,6 +7,7 @@ dependencies:
 files:
   - github.com/cloudfoundry-incubator/diego-ssh/cmd/ssh-proxy/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/cmd/ssh-proxy/testrunner/*.go # gosub
+  - code.google.com/p/gogoprotobuf/proto/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
@@ -18,6 +19,21 @@ files:
   - github.com/cloudfoundry-incubator/diego-ssh/server/*.go # gosub
   - github.com/cloudfoundry-incubator/receptor/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/control/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/events/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/factories/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/instrumented_handler/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/instrumented_round_tripper/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/log_sender/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/logs/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/metrics/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/runtime_stats/*.go # gosub
+  - github.com/cloudfoundry/gosteno/*.go # gosub
+  - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
+  - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/pivotal-golang/lager/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
