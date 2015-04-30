@@ -7,6 +7,11 @@ export PATH=/var/vcap/packages/cf-cli/bin:${PATH}
 
 export HOME=$(mktemp -d /tmp/diego-smoke-tests.XXXXX)
 
+trace_output_dir=/var/vcap/sys/log/smoke_tests
+
+mkdir -p ${trace_output_dir}
+export CF_TRACE=${trace_output_dir}/CATS-TRACE-Diego-Smoke-Tests.txt
+
 cf api <%= p("diego.smoke_tests.api") %> \
   --skip-ssl-validation=<%= p("diego.ssl.skip_cert_verify").inspect %>
 
@@ -15,6 +20,8 @@ cf auth <%= p("diego.smoke_tests.user") %> <%= p("diego.smoke_tests.password") %
 # assume org exists, otherwise we have to be admin, which is a bad idea
 cf target -o <%= p("diego.smoke_tests.org") %>
 
+# delete and recreate the space each time to clear out old apps and routes
+cf delete-space -f <%= p("diego.smoke_tests.space") %> || true
 cf create-space <%= p("diego.smoke_tests.space") %>
 cf target -s <%= p("diego.smoke_tests.space") %>
 
@@ -23,4 +30,12 @@ export SMOKE_TESTS_APPS_DOMAIN=<%= p("diego.smoke_tests.apps_domain") %>
 cd /var/vcap/packages/smoke-tests
 
 # assumes dora asset lives in working directory
-./diego-smoke-tests.test
+./diego-smoke-tests.test || EXITSTATUS=$?
+
+for i in ${trace_output_dir}/*.txt; do
+  if [ -e "$i" ]; then
+    mv $i $i.log # needed to make downloading via 'bosh logs' work
+  fi
+done
+
+exit $EXITSTATUS
