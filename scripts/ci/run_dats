@@ -13,4 +13,4 @@ bosh releases
 
 bosh deployment ${acceptance_tests_manifest}
 bosh -n deploy
-bosh run errand diego_acceptance_tests --keep-alive
+bosh run errand diego_acceptance_tests --download-logs --keep-alive
