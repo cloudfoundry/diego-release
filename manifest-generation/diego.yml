@@ -157,6 +157,7 @@ jobs:
         agent:
           services:
             - receptor
+            - ssh_proxy
 
   - name: cc_bridge_z1
     templates: (( base_job_templates.cc_bridge additional_jobs.cc_bridge ))
@@ -223,6 +224,7 @@ jobs:
         agent:
           services:
             - receptor
+            - ssh_proxy
 
   - name: cc_bridge_z2
     templates: (( base_job_templates.cc_bridge additional_jobs.cc_bridge ))
