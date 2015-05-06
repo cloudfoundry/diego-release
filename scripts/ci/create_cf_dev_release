@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e -x -u
+pushd cf-release
+  echo "----- Create dev release"
+  bosh -n create release --version $(date "+%s") --with-tarball
+
+  mv dev_releases/cf/*.tgz ../cf-dev-release-$(date "+%s").tgz
+popd

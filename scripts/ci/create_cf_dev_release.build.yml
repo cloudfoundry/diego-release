@@ -1,0 +1,7 @@
+---
+platform: linux
+
+image: docker:///cloudfoundry/diego-pipeline
+
+run:
+  path: diego-release/scripts/ci/create_cf_dev_release
