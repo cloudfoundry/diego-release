@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e -x -u
+
+version=`cat version/number`
+
+pushd diego-release
+  bosh -n create release --with-tarball --version $version --force
+
+  mv dev_releases/diego/*.tgz ../
+popd
