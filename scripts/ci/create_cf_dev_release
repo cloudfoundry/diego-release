@@ -1,5 +1,9 @@
 #!/bin/bash
 set -e -x -u
+
+export GEM_HOME="${HOME}/.gem"
+mkdir -p "${GEM_HOME}"
+
 pushd cf-release
   echo "----- Create dev release"
   bosh -n create release --version $(date "+%s") --with-tarball
