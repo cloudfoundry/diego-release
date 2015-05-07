@@ -5,7 +5,6 @@ check process rep
   group vcap
   depends <%= spec['job']['templates'].inject([]) do | deps, template |
 		case template.name
-		when 'executor' then deps.unshift(template.name)
 		when 'garden-linux' then deps.push(template.name)
 		end
 		deps

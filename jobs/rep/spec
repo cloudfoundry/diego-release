@@ -15,9 +15,6 @@ properties:
   diego.rep.stack:
     description: "The stack for which to handle requests"
     default: "lucid64"
-  diego.rep.executor.url:
-    description: "URL of the executor to represent"
-    default: "http://127.0.0.1:1700"
   diego.rep.listen_addr:
     description: "address to serve auction and LRP stop requests on"
     default: "0.0.0.0:1800"
@@ -50,3 +47,47 @@ properties:
   diego.rep.receptor_task_handler_url:
     description: "URL for task completion call back"
     default: http://receptor.service.consul:1169
+
+  diego.ssl.skip_cert_verify:
+    description: "when connecting over https, ignore bad ssl certificates"
+    default: false
+
+  diego.executor.debug_addr:
+    description: "address at which to serve debug info"
+    default: "0.0.0.0:17004"
+  diego.executor.memory_capacity_mb:
+    description: "the memory capacity the executor should manage.  this should not be greater than the actual memory on the VM"
+    default: "auto"
+  diego.executor.disk_capacity_mb:
+    description: "the container disk capacity the executor should manage.  this should not be greater than the actual disk quota on the VM"
+    default: "auto"
+  diego.executor.container_max_cpu_shares:
+    description: "the maximum number of cpu shares for a container."
+    default: 1024
+  diego.executor.container_inode_limit:
+    description: "the inode limit enforced on each garden container."
+    default: 200000
+  diego.executor.cache_path:
+    description: "path to the executor's cache"
+    default: "/var/vcap/data/executor_cache"
+  diego.executor.max_cache_size_in_bytes:
+    description: "maximum size of the cache in bytes - this should leave a healthy overhead for temporary items, etc."
+    default: 10000000000
+  diego.executor.garden.address:
+    description: "Garden server listening address."
+    default: /var/vcap/data/garden-linux/garden-linux.sock
+  diego.executor.garden.network:
+    description: "Network type for the garden server connection (tcp or unix)."
+    default: unix
+  diego.executor.allow_privileged:
+    description: "Allow creation of privileged containers."
+    default: false
+  diego.executor.export_network_env_vars:
+    description: "Export network environment variables into container (e.g. CF_INSTANCE_IP, CF_INSTANCE_PORT)."
+    default: true
+  diego.executor.healthy_monitoring_interval_in_seconds:
+    description: "Interval to check healthy containers in seconds."
+    default: 30
+  diego.executor.unhealthy_monitoring_interval_in_seconds:
+    description: "Interval to check unhealthy containers in seconds."
+    default: 0.5

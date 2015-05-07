@@ -1,5 +1,0 @@
-check process executor
-  with pidfile /var/vcap/sys/run/executor/executor.pid
-  start program "/var/vcap/jobs/executor/bin/executor_ctl start"
-  stop program "/var/vcap/jobs/executor/bin/executor_ctl stop"
-  group vcap

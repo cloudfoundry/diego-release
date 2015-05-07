@@ -5,6 +5,9 @@ LOG_DIR=/var/vcap/sys/log/rep
 CONF_DIR=/var/vcap/jobs/rep/config
 PIDFILE=$RUN_DIR/rep.pid
 
+DATA_DIR=/var/vcap/data/executor
+TMP_DIR=$DATA_DIR/tmp
+
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
 case $1 in
@@ -14,6 +17,8 @@ case $1 in
 
     mkdir -p $RUN_DIR
     mkdir -p $LOG_DIR
+
+    mkdir -p $TMP_DIR
 
     if running_in_container; then
         echo "Not setting /proc/sys/net/ipv4 parameters, since I'm running inside a linux container"
@@ -37,6 +42,9 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
+    # Enable maximum OS thread concurrency
+    export GOMAXPROCS=$(nproc)
+
     /var/vcap/packages/rep/bin/rep \
       -etcdCluster=<%= p("diego.rep.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -consulCluster=http://127.0.0.1:8500 \
@@ -44,13 +52,27 @@ case $1 in
       -debugAddr=<%= p("diego.rep.debug_addr") %> \
       <%= p("diego.rep.preloaded_rootfses").map { |rootfs| "--preloadedRootFS #{rootfs}" }.join(" ") %> \
       <%= p("diego.rep.rootfs_providers").map { |provider| "--rootFSProvider #{provider}" }.join(" ") %> \
-      -executorURL=<%= p("diego.rep.executor.url") %> \
       -listenAddr=<%= p("diego.rep.listen_addr") %> \
       -cellID=<%= spec.job.name %>-<%= spec.index %> \
       -zone=<%= p("diego.rep.zone") %> \
       -pollingInterval=<%= "#{p("diego.rep.polling_interval_in_seconds")}s" %> \
       -evacuationPollingInterval=<%= "#{p("diego.rep.evacuation_polling_interval_in_seconds")}s" %> \
       -evacuationTimeout=<%= "#{p("diego.rep.evacuation_timeout_in_seconds")}s" %> \
+      -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
+      -debugAddr=<%= p("diego.executor.debug_addr") %> \
+      -gardenNetwork=<%= p("diego.executor.garden.network") %> \
+      -gardenAddr=<%= p("diego.executor.garden.address") %> \
+      -memoryMB=<%= p("diego.executor.memory_capacity_mb") %> \
+      -diskMB=<%= p("diego.executor.disk_capacity_mb") %> \
+      -containerInodeLimit=<%= p("diego.executor.container_inode_limit") %> \
+      -containerMaxCpuShares=<%= p("diego.executor.container_max_cpu_shares") %> \
+      -tempDir=$TMP_DIR \
+      -cachePath=<%= p("diego.executor.cache_path") %>\
+      -maxCacheSizeInBytes=<%= p("diego.executor.max_cache_size_in_bytes") %>\
+      -allowPrivileged=<%= p("diego.executor.allow_privileged") %>\
+      -exportNetworkEnvVars=<%= p("diego.executor.export_network_env_vars") %>\
+      -healthyMonitoringInterval=<%= "#{p("diego.executor.healthy_monitoring_interval_in_seconds")}s" %> \
+      -unhealthyMonitoringInterval=<%= "#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s" %> \
       -logLevel=<%= p("diego.rep.log_level") %> \
       2>> $LOG_DIR/rep.stderr.log \
       1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep) &
@@ -61,6 +83,7 @@ case $1 in
 
     address=<%= p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") %>
     start=`date +%s`
+    # wait up to 25 seconds (monit gives us 30 -- defined on the monit script)
     while [ $(( $(date +%s) - 25 )) -lt $start ]; do
       if curl --fail --silent http://$address/ping >/dev/null 2>&1
       then
