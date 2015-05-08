@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -e -x -u
+
+environment_path="${PWD}/${DEPLOYMENTS_DIR}/${ENVIRONMENT_NAME}"
+stubs_path="${environment_path}/stubs"
+templates_path="${environment_path}/templates"
+
+cf_deployment_name="cf-${ENVIRONMENT_NAME}"
+
+pushd cf-release
+  ./generate_deployment_manifest \
+    ${INFRASTRUCTURE} \
+    ${stubs_path}/director-uuid.yml \
+    ${stubs_path}/cf/*.yml \
+    > ../cf-deployment.yml
+popd
+
+pushd diego-release
+  spiff merge \
+    manifest-generation/misc-templates/iaas-settings.yml \
+    ${templates_path}/diego/iaas-settings-internal.yml \
+    ../cf-deployment.yml \
+    > /tmp/iaas-settings.yml
+
+  ./scripts/generate-deployment-manifest \
+    ${stubs_path}/director-uuid.yml \
+    ${stubs_path}/diego/property-overrides.yml \
+    ${stubs_path}/diego/instance-count-overrides.yml \
+    ${stubs_path}/diego/persistent-disk-overrides.yml \
+    /tmp/iaas-settings.yml \
+    ${stubs_path}/diego/additional-jobs.yml \
+    /tmp \
+    > ../diego-deployment.yml
+popd
