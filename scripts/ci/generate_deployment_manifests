@@ -13,7 +13,7 @@ pushd cf-release
     ${INFRASTRUCTURE} \
     ${stubs_path}/director-uuid.yml \
     ${stubs_path}/cf/*.yml \
-    > ../cf-deployment.yml
+    > /tmp/cf.yml
 popd
 
 pushd diego-release
@@ -21,7 +21,7 @@ pushd diego-release
     manifest-generation/misc-templates/iaas-settings.yml \
     ${templates_path}/diego/iaas-settings-internal.yml \
     ${stubs_path}/aws-resources.yml \
-    ../cf-deployment.yml \
+    /tmp/cf.yml \
     > /tmp/iaas-settings.yml
 
   ./scripts/generate-deployment-manifest \
