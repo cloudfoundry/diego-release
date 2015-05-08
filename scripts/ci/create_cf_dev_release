@@ -7,7 +7,7 @@ mkdir -p "${GEM_HOME}"
 pushd cf-release
   echo "----- Create dev release"
   version=$(date "+%s")
-  bosh -n create release --version ${version} --with-tarball
+  bosh --parallel 10 -n create release --version ${version} --with-tarball
 
   mv dev_releases/cf/*.tgz ../cf-dev-release-${version}.tgz
 popd
