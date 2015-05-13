@@ -10,6 +10,7 @@ release_name=$4
 releases=$(cat ${deployments_file} \
           | grep -v tests \
           | grep -v canary \
+          | grep -v "docker-registry" \
           | grep "${release_name}/" \
           | cut -d'|' -f3 \
           | cut -d'/' -f2 \
