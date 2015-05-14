@@ -1,0 +1,8 @@
+---
+properties:
+  app_ssh:
+    host_key_fingerprint: (( property_overrides.ssh_proxy.host_key_fingerprint ))
+  cc:
+    allow_app_ssh_access: true
+
+property_overrides: (( merge ))
