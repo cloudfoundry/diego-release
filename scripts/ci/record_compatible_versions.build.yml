@@ -4,14 +4,9 @@ image: docker:///cloudfoundry/diego-pipeline
 
 inputs:
   - name: diego-cf-compatibility
-  - name: diego-release
-
-params:
-  BOSH_PASSWORD: ~
-  BOSH_TARGET: ~
-  BOSH_USER: ~
-  RELEASE_STAGE: ~
-  ENVIRONEMNT_NAME: ~
+  - name: cf-dev-release
+  - name: diego-dev-release
+  - name: bosh-stemcell
 
 run:
   path: diego-release/scripts/ci/record_compatible_versions

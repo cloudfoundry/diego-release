@@ -3,25 +3,24 @@
 set -e -x -u
 
 ./diego-release/scripts/ci/bosh_setup
-tmpdir=$(mktemp -d /tmp/compatibility.XXXXX)
 
 current_date=$(date)
 director_version=$(bosh status | grep Version | tr -s ' ' | cut -f3 -d' ')
-bosh deployments > ${tmpdir}/deployments
-bosh releases > ${tmpdir}/releases
-cf_data=$(./diego-release/scripts/ci/extract-release-and-sha \
-          ${tmpdir}/deployments \
-          ${tmpdir}/releases \
-          cf-${ENVIRONMENT_NAME} \
-          cf \
-        )
-diego_data=$(./diego-release/scripts/ci/extract-release-and-sha \
-             ${tmpdir}/deployments \
-             ${tmpdir}/releases \
-             cf-${ENVIRONMENT_NAME}-diego \
-             diego \
-           )
-new_row=${current_date},${RELEASE_STAGE},${director_version},${cf_data},${diego_data}
+
+stemcell_manifest=$(tar zxvOf bosh-stemcell/stemcell.tgz stemcell.MF 2>/dev/null)
+stemcell_name=$(echo "${stemcell_manifest}" | grep ^name | cut -f2 -d: | tr -d ' ')
+stemcell_version=$(echo "${stemcell_manifest}" | grep ^version | cut -f2 -d: | tr -d "'" | tr -d ' ')
+stemcell="${stemcell_name}/${stemcell_version}"
+
+cf_release_manifest=$(tar zxvOf cf-dev-release/*.tgz ./release.MF 2>/dev/null)
+cf_release_version=$(echo "${cf_release_manifest}" | grep ^version | cut -f2 -d: | tr -d "'" | tr -d ' ')
+cf_release_sha=$(echo "${cf_release_manifest}" | grep ^commit_hash | cut -f2 -d: | tr -d "'" | tr -d ' ')
+
+diego_release_manifest=$(tar zxvOf diego-dev-release/*.tgz ./release.MF 2>/dev/null)
+diego_release_version=$(echo "${diego_release_manifest}" | grep ^version | cut -f2 -d: | tr -d "'" | tr -d ' ')
+diego_release_sha=$(echo "${diego_release_manifest}" | grep ^commit_hash | cut -f2 -d: | tr -d "'" | tr -d ' ')
+
+new_row=${current_date},${RELEASE_STAGE},${director_version},${cf_release_version},${cf_release_sha},${stemcell},${diego_release_version},${diego_release_sha},${stemcell}
 
 pushd diego-cf-compatibility
   git config user.email "cf-diego@pivotal.io"
