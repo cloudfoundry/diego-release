@@ -52,9 +52,6 @@ properties:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
 
-  diego.executor.debug_addr:
-    description: "address at which to serve debug info"
-    default: "0.0.0.0:17004"
   diego.executor.memory_capacity_mb:
     description: "the memory capacity the executor should manage.  this should not be greater than the actual memory on the VM"
     default: "auto"
@@ -91,3 +88,18 @@ properties:
   diego.executor.unhealthy_monitoring_interval_in_seconds:
     description: "Interval to check unhealthy containers in seconds."
     default: 0.5
+  diego.executor.create_work_pool_size:
+    description: "Maximum number of concurrent create container operations."
+    default: 32
+  diego.executor.delete_work_pool_size:
+    description: "Maximum number of concurrent delete container operations."
+    default: 32
+  diego.executor.read_work_pool_size:
+    description: "Maximum number of concurrent get container info operations."
+    default: 64
+  diego.executor.metrics_work_pool_size:
+    description: "Maximum number of concurrent get container metrics operations."
+    default: 8
+  diego.executor.healthcheck_work_pool_size:
+    description: "Maximum number of concurrent health check operations."
+    default: 64
