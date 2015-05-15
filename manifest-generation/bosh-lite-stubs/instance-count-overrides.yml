@@ -1,4 +1,8 @@
 instance_count_overrides:
+  - name: access_z2
+    instances: 1
+  - name: access_z3
+    instances: 0
   - name: brain_z2
     instances: 0
   - name: cc_bridge_z2
@@ -7,7 +11,7 @@ instance_count_overrides:
     instances: 0
   - name: etcd_z2
     instances: 0
-  - name: route_emitter_z2
-    instances: 0
   - name: etcd_z3
+    instances: 0
+  - name: route_emitter_z2
     instances: 0

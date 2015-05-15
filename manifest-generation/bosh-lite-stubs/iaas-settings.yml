@@ -62,6 +62,12 @@ iaas_settings:
         reserved:
         - 10.244.16.41
         static: []
+      - cloud_properties: {}
+        range: 10.244.16.44/30
+        reserved:
+        - 10.244.16.45
+        static:
+        - 10.244.16.46
     - name: diego2
       type: manual
       subnets:
@@ -71,6 +77,62 @@ iaas_settings:
         - 10.244.18.1
         static:
         - 10.244.18.2
+      - cloud_properties: {}
+        range: 10.244.18.4/30
+        reserved:
+        - 10.244.18.5
+        static: []
+      - cloud_properties: {}
+        range: 10.244.18.8/30
+        reserved:
+        - 10.244.18.9
+        static: []
+      - cloud_properties: {}
+        range: 10.244.18.12/30
+        reserved:
+        - 10.244.18.13
+        static: []
+      - cloud_properties: {}
+        range: 10.244.18.16/30
+        reserved:
+        - 10.244.18.17
+        static: []
+      - cloud_properties: {}
+        range: 10.244.18.20/30
+        reserved:
+        - 10.244.18.21
+        static: []
+      - cloud_properties: {}
+        range: 10.244.18.24/30
+        reserved:
+        - 10.244.18.25
+        static: []
+      - cloud_properties: {}
+        range: 10.244.18.28/30
+        reserved:
+        - 10.244.18.29
+        static: []
+      - cloud_properties: {}
+        range: 10.244.18.32/30
+        reserved:
+        - 10.244.18.33
+        static: []
+      - cloud_properties: {}
+        range: 10.244.18.36/30
+        reserved:
+        - 10.244.18.37
+        static: []
+      - cloud_properties: {}
+        range: 10.244.18.40/30
+        reserved:
+        - 10.244.18.41
+        static: []
+      - cloud_properties: {}
+        range: 10.244.18.44/30
+        reserved:
+        - 10.244.18.45
+        static:
+        - 10.244.18.46
     - name: diego3
       type: manual
       subnets:
@@ -80,8 +142,70 @@ iaas_settings:
         - 10.244.20.1
         static:
         - 10.244.20.2
+      - cloud_properties: {}
+        range: 10.244.20.4/30
+        reserved:
+        - 10.244.20.5
+        static: []
+      - cloud_properties: {}
+        range: 10.244.20.8/30
+        reserved:
+        - 10.244.20.9
+        static: []
+      - cloud_properties: {}
+        range: 10.244.20.12/30
+        reserved:
+        - 10.244.20.13
+        static: []
+      - cloud_properties: {}
+        range: 10.244.20.16/30
+        reserved:
+        - 10.244.20.17
+        static: []
+      - cloud_properties: {}
+        range: 10.244.20.20/30
+        reserved:
+        - 10.244.20.21
+        static: []
+      - cloud_properties: {}
+        range: 10.244.20.24/30
+        reserved:
+        - 10.244.20.25
+        static: []
+      - cloud_properties: {}
+        range: 10.244.20.28/30
+        reserved:
+        - 10.244.20.29
+        static: []
+      - cloud_properties: {}
+        range: 10.244.20.32/30
+        reserved:
+        - 10.244.20.33
+        static: []
+      - cloud_properties: {}
+        range: 10.244.20.36/30
+        reserved:
+        - 10.244.20.37
+        static: []
+      - cloud_properties: {}
+        range: 10.244.20.40/30
+        reserved:
+        - 10.244.20.41
+        static: []
+      - cloud_properties: {}
+        range: 10.244.20.44/30
+        reserved:
+        - 10.244.20.45
+        static:
+        - 10.244.20.46
   compilation_cloud_properties: {}
   resource_pool_cloud_properties:
+    - name: access_z1
+      cloud_properties: {}
+    - name: access_z2
+      cloud_properties: {}
+    - name: access_z3
+      cloud_properties: {}
     - name: brain_z1
       cloud_properties: {}
     - name: brain_z2
