@@ -17,6 +17,9 @@ case $1 in
 
     echo $$ > /var/vcap/sys/run/converger/converger.pid
 
+    # Enable maximum OS thread concurrency
+    export GOMAXPROCS=$(nproc)
+
     exec /var/vcap/packages/converger/bin/converger \
       -etcdCluster=<%= p("diego.converger.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -consulCluster=http://127.0.0.1:8500 \
