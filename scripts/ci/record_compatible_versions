@@ -16,7 +16,11 @@ cf_release_manifest=$(tar zxvOf cf-dev-release/*.tgz ./release.MF 2>/dev/null)
 cf_release_sha=$(echo "${cf_release_manifest}" | grep ^commit_hash | cut -f2 -d: | tr -d "'" | tr -d ' ')
 
 diego_release_manifest=$(tar zxvOf diego-dev-release/*.tgz ./release.MF 2>/dev/null)
-diego_release_version=$(echo "${diego_release_manifest}" | grep ^version | cut -f2 -d: | tr -d "'" | tr -d ' ')
+diego_release_version="N/A"
+if [ $ENVIRONMENT_NAME == "a1" ]
+then
+  diego_release_version=$(echo "${diego_release_manifest}" | grep ^version | cut -f2 -d: | tr -d "'" | tr -d ' ')
+fi
 diego_release_sha=$(echo "${diego_release_manifest}" | grep ^commit_hash | cut -f2 -d: | tr -d "'" | tr -d ' ')
 
 new_row=${current_date},${RELEASE_STAGE},${director_version},${cf_release_sha},${stemcell},${diego_release_version},${diego_release_sha},${stemcell}
