@@ -5,8 +5,9 @@ image: docker:///cloudfoundry/diego-pipeline
 inputs:
   - name: diego-cf-compatibility
   - name: cf-dev-release
+  - name: diego-release
   - name: diego-dev-release
   - name: bosh-stemcell
 
 run:
-  path: diego-dev-release/scripts/ci/record_compatible_versions
+  path: diego-release/scripts/ci/record_compatible_versions
