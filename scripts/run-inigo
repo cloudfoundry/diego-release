@@ -10,4 +10,4 @@ pushd src/github.com/cloudfoundry-incubator/inigo
   done
 popd
 
-fly -k -p -x -c scripts/ci/run_inigo.build.yml -- "$@"
+fly -k execute -p -x -c scripts/ci/run_inigo.build.yml -- "$@"
