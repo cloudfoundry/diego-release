@@ -20,6 +20,9 @@ case $1 in
 
     echo $$ > $PIDFILE
 
+    # Enable maximum OS thread concurrency
+    export GOMAXPROCS=$(nproc)
+
     exec /var/vcap/packages/nsync/bin/nsync-bulker \
       -diegoAPIURL=<%= p("diego.nsync.diego_api_url") %> \
       -consulCluster=http://127.0.0.1:8500 \
