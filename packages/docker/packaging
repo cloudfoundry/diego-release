@@ -1,5 +1,5 @@
 set -e
 
-cp docker/docker-1.5.0 ${BOSH_INSTALL_TARGET}/docker
+cp docker/docker-1.6.2 ${BOSH_INSTALL_TARGET}/docker
 
 chmod +x ${BOSH_INSTALL_TARGET}/docker
