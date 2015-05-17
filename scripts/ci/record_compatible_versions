@@ -30,6 +30,7 @@ pushd diego-cf-compatibility
   git config user.name "CI (Automated)"
 
   echo ${new_row} >> compatibility-v1.csv
-  git add compatibility.csv
+  git add compatibility.csv || true
+  git add compatibility-v1.csv || true
   git commit -m "Add CF-Diego compatibility record on ${current_date} at release stage ${RELEASE_STAGE}"
 popd
