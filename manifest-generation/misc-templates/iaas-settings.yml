@@ -11,6 +11,12 @@ iaas_settings:
       subnets: (( merge ))
   compilation_cloud_properties: (( merge ))
   resource_pool_cloud_properties:
+    - name: access_z1
+      cloud_properties: (( merge ))
+    - name: access_z2
+      cloud_properties: (( merge ))
+    - name: access_z3
+      cloud_properties: (( merge ))
     - name: brain_z1
       cloud_properties: (( merge ))
     - name: brain_z2
