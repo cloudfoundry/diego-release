@@ -13,6 +13,7 @@ pushd cf-release
     ${INFRASTRUCTURE} \
     ${stubs_path}/director-uuid.yml \
     ${stubs_path}/cf/*.yml \
+    ${stubs_path}/diego/property-overrides.yml \
     > ../cf-deployment.yml
 popd
 
