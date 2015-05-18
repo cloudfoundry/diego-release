@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e -x -u
+
+deployments_file=$1
+releases_file=$2
+deployment_name=$3
+release_name=$4
+
+releases=$(cat ${deployments_file} \
+          | grep -v tests \
+          | grep -v canary \
+          | grep -v "docker-registry" \
+          | grep "${release_name}/" \
+          | cut -d'|' -f3 \
+          | cut -d'/' -f2 \
+          | tr -d ' ' \
+          | sort \
+          | uniq \
+         )
+
+num_releases=$(echo "${releases}" | wc -l | tr -d ' ')
+if [ "${num_releases}" != "1" ]; then
+  echo "Expected 1 unique occurrence of ${release_name} release amongst deployments, found ${num_releases}"
+  exit 1
+fi
+release=${releases}
+
+sha=$(cat ${releases_file} \
+     | grep "${release}" \
+     | cut -d'|' -f 4 \
+     | tr -d ' *+' \
+    )
+
+first_stemcell=$(cat ${deployments_file} \
+                | grep " ${deployment_name} " \
+                | cut -d'|' -f4 \
+                | tr -d ' ' \
+               )
+echo ${release},${sha},${first_stemcell}
