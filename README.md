@@ -185,6 +185,18 @@ as you switch in and out of the directory.
             > ~/deployments/bosh-lite/cf.yml
         bosh deployment ~/deployments/bosh-lite/cf.yml
 
+1. If Windows cells are being run along side this deployment, instead generate 
+   and target cf-release manifest using:
+
+        cd ~/workspace/cf-release
+        ./generate_deployment_manifest warden \
+            ~/deployments/bosh-lite/director.yml \
+            ~/workspace/diego-release/stubs-for-cf-release/enable_diego_docker_in_cc.yml \
+            ~/workspace/diego-release/stubs-for-cf-release/enable_consul_with_cf.yml \
+            ~/workspace/diego-release/stubs-for-cf-release/enable_diego_windows_in_cc.yml \
+            > ~/deployments/bosh-lite/cf.yml
+        bosh deployment ~/deployments/bosh-lite/cf.yml
+
 1. Do the BOSH dance:
 
         cd ~/workspace/cf-release
