@@ -174,8 +174,7 @@ as you switch in and out of the directory.
             > ~/deployments/bosh-lite/cf.yml
         bosh deployment ~/deployments/bosh-lite/cf.yml
 
-1. If Windows cells are being run along side this deployment, instead generate 
-   and target cf-release manifest using:
+   **Or if you are running Windows cells** along side this deployment, instead generate cf-release manifest using:
 
         cd ~/workspace/cf-release
         ./generate_deployment_manifest warden \
