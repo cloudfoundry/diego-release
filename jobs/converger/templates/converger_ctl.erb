@@ -26,7 +26,7 @@ case $1 in
       -receptorTaskHandlerURL=<%= p("diego.converger.receptor_task_handler_url") %> \
       -debugAddr=<%= p("diego.converger.debug_addr") %> \
       -convergeRepeatInterval=<%= "#{p("diego.converger.repeat_interval_in_seconds")}s" %> \
-      -kickPendingTaskDuration=<%= "#{p("diego.converger.kick_pending_task_duration_in_seconds")}s" %> \
+      -kickTaskDuration=<%= "#{p("diego.converger.kick_task_duration_in_seconds")}s" %> \
       -expireCompletedTaskDuration=<%= "#{p("diego.converger.expire_completed_task_duration_in_seconds")}s" %> \
       -expirePendingTaskDuration=<%= "#{p("diego.converger.expire_pending_task_duration_in_seconds")}s" %> \
       -logLevel=<%= p("diego.converger.log_level") %> \

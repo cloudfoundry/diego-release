@@ -17,8 +17,8 @@ properties:
   diego.converger.repeat_interval_in_seconds:
     description: "the interval between runs of the converge process"
     default: 30
-  diego.converger.kick_pending_task_duration_in_seconds:
-    description: "the interval, in seconds, between kicks to pending tasks in seconds"
+  diego.converger.kick_task_duration_in_seconds:
+    description: "the interval, in seconds, between kicks to tasks in seconds"
     default: 30
   diego.converger.expire_completed_task_duration_in_seconds:
     description: "completed, unresolved tasks are deleted after this duration in seconds"
