@@ -17,6 +17,9 @@ case $1 in
 
     echo $$ > /var/vcap/sys/run/route_emitter/route_emitter.pid
 
+    # Enable maximum OS thread concurrency
+    export GOMAXPROCS=$(nproc)
+
     exec /var/vcap/packages/route_emitter/bin/route-emitter \
       -consulCluster=http://127.0.0.1:8500 \
       -natsAddresses=<%= p("diego.route_emitter.nats.machines").collect { |addr| "#{addr}:#{p("diego.route_emitter.nats.port")}" }.join(",") %> \
