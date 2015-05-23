@@ -30,8 +30,8 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/network/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/network/bridgemgr/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/network/bridgemgr/fake_bridge_manager/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/network/container-net/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/network/devices/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/network/devices/bridgetest/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/network/devices/fakedevices/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/network/fakes/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/network/iptables/*.go # gosub
@@ -56,18 +56,21 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/old/repository_fetcher/fake_repository_fetcher/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/repository_fetcher/fakes/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/rootfs_provider/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/rootfs_provider/fake_copier/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/rootfs_provider/fake_graph_driver/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/rootfs_provider/fake_mapper/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/old/rootfs_provider/fake_namespacer/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/rootfs_provider/fake_rootfs_provider/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/sysconfig/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/system_info/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/old/system_info/fake_system_info/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/old/uid_pool/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden-linux/old/uid_pool/fake_uid_pool/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/packer/rootfs/empty/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/process/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/process_tracker/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/process_tracker/fake_process_tracker/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/process_tracker/writer/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/scripts/amimgr/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/scripts/awsreaper/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/code.google.com/p/gogoprotobuf/proto/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/Sirupsen/logrus/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/bmizerany/pat/*.go # gosub
@@ -175,3 +178,15 @@ files:
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/pivotal-golang/lager/lagertest/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/tedsuo/ifrit/ginkgomon/*.go # gosub
   - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/kr/pty/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/awslabs/aws-sdk-go/aws/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/awslabs/aws-sdk-go/aws/awsutil/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/awslabs/aws-sdk-go/aws/credentials/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/awslabs/aws-sdk-go/internal/endpoints/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/awslabs/aws-sdk-go/internal/protocol/ec2query/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/awslabs/aws-sdk-go/internal/protocol/query/queryutil/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/awslabs/aws-sdk-go/internal/protocol/rest/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/awslabs/aws-sdk-go/internal/protocol/xml/xmlutil/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/awslabs/aws-sdk-go/internal/signer/v4/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/awslabs/aws-sdk-go/service/ec2/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/github.com/vaughan0/go-ini/*.go # gosub
+  - github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace/src/golang.org/x/crypto/ssh/*.go # gosub
