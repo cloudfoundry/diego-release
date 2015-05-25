@@ -138,7 +138,6 @@ as you switch in and out of the directory.
         cd ~/workspace
         git clone git@github.com:cloudfoundry/cf-release.git
         cd ~/workspace/cf-release
-        git checkout develop
         ./update
 
 1. Checkout diego-release (develop branch) from git
