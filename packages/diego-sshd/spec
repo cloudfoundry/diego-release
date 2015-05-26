@@ -7,7 +7,6 @@ dependencies:
 files:
   - github.com/cloudfoundry-incubator/diego-ssh/cmd/sshd/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/cmd/sshd/testrunner/*.go # gosub
-  - code.google.com/p/gogoprotobuf/proto/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
@@ -31,6 +30,7 @@ files:
   - github.com/cloudfoundry/gosteno/*.go # gosub
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
   - github.com/creack/termios/win/*.go # gosub
+  - github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/kr/pty/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/pivotal-golang/lager/*.go # gosub

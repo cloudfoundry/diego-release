@@ -1,9 +1,12 @@
 property_overrides:
+  converger:
+    log_level: debug
   executor:
     drain_timeout_in_seconds: 0
     garden:
       network: tcp
       address: 127.0.0.1:7777
+    log_level: debug
   garden-linux:
     kernel_network_tuning_enabled: false
     disk_quota_enabled: false
@@ -13,6 +16,13 @@ property_overrides:
     register_with_router: true
     domain_names:
      - receptor.10.244.0.34.xip.io
+    log_level: debug
+  rep:
+    log_level: debug
+  nsync:
+    log_level: debug
+  route_emitter:
+    log_level: debug
   skip_cert_verify: true
   ssh_proxy:
     host_key_fingerprint: a6:d1:08:0b:b0:cb:9b:5f:c4:ba:44:2a:97:26:19:8a

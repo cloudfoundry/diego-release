@@ -8,7 +8,6 @@ files:
   - github.com/cloudfoundry-incubator/tps/cmd/tps-listener/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/cmd/tps-watcher/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/cmd/tpsrunner/*.go # gosub
-  - code.google.com/p/gogoprotobuf/proto/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
@@ -32,6 +31,7 @@ files:
   - github.com/cloudfoundry/dropsonde/log_sender/*.go # gosub
   - github.com/cloudfoundry/dropsonde/logs/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/metricbatcher/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metrics/*.go # gosub
   - github.com/cloudfoundry/dropsonde/runtime_stats/*.go # gosub
   - github.com/cloudfoundry/gosteno/*.go # gosub

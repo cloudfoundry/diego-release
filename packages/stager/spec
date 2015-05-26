@@ -7,7 +7,6 @@ dependencies:
 files:
   - github.com/cloudfoundry-incubator/stager/cmd/stager/*.go # gosub
   - github.com/cloudfoundry-incubator/stager/cmd/stager/testrunner/*.go # gosub
-  - code.google.com/p/gogoprotobuf/proto/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/buildpack_app_lifecycle/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
@@ -36,11 +35,13 @@ files:
   - github.com/cloudfoundry/dropsonde/log_sender/*.go # gosub
   - github.com/cloudfoundry/dropsonde/logs/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/metricbatcher/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metrics/*.go # gosub
   - github.com/cloudfoundry/dropsonde/runtime_stats/*.go # gosub
   - github.com/cloudfoundry/gosteno/*.go # gosub
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
   - github.com/cloudfoundry/gunk/urljoiner/*.go # gosub
+  - github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/pivotal-golang/clock/*.go # gosub
   - github.com/pivotal-golang/lager/*.go # gosub
