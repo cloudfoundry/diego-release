@@ -14,7 +14,7 @@ properties:
     description: "IPs pointing to the ETCD cluster"
   diego.rep.stack:
     description: "The stack for which to handle requests"
-    default: "lucid64"
+    default: "cflinuxfs2"
   diego.rep.listen_addr:
     description: "address to serve auction and LRP stop requests on"
     default: "0.0.0.0:1800"
@@ -36,7 +36,6 @@ properties:
     description: "Array of name:absolute_path pairs representing root filesystems preloaded onto the underlying garden"
     default:
       - cflinuxfs2:/var/vcap/packages/rootfs_cflinuxfs2
-      - lucid64:/var/vcap/packages/rootfs_lucid64
   diego.rep.rootfs_providers:
     description: "Array of schemes for which the underlying garden can support arbitrary root filesystems"
     default:
