@@ -18,11 +18,14 @@ case $1 in
     pid_guard $PIDFILE "ssh_proxy"
 
     mkdir -p $RUN_DIR
+    chown -R vcap:vcap $RUN_DIR
+
     mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
 
     echo $$ > $PIDFILE
 
-    exec /var/vcap/packages/ssh_proxy/bin/ssh-proxy \
+    exec chpst -u vcap:vcap /var/vcap/packages/ssh_proxy/bin/ssh-proxy \
       -address=<%= p("diego.ssh_proxy.listen_addr") %> \
       -hostKey="$HOST_KEY" \
       -diegoAPIURL=<%= p("diego.ssh_proxy.diego_api_url") %> \

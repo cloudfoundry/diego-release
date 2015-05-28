@@ -37,10 +37,16 @@ case $1 in
     pid_guard $PIDFILE "receptor"
 
     mkdir -p $RUN_DIR
-    mkdir -p $DATA_DIR
+    chown -R vcap:vcap $RUN_DIR
+
     mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
+
+    mkdir -p $DATA_DIR
+    chown -R vcap:vcap $DATA_DIR
 
     mkdir -p $TMP_DIR
+    chown -R vcap:vcap $TMP_DIR
 
     echo $$ > $PIDFILE
 
@@ -66,7 +72,7 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec /var/vcap/packages/receptor/bin/receptor \
+    exec chpst -u vcap:vcap /var/vcap/packages/receptor/bin/receptor \
       -address=<%= p("diego.receptor.listen_addr") %> \
       -taskHandlerAddress=<%= "#{my_ip}:1169" %> \
       -debugAddr=<%= p("diego.receptor.debug_addr") %> \

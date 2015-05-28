@@ -15,8 +15,13 @@ case $1 in
     pid_guard $PIDFILE "stager"
 
     mkdir -p $RUN_DIR
-    mkdir -p $DATA_DIR
+    chown -R vcap:vcap $RUN_DIR
+
     mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
+
+    mkdir -p $DATA_DIR
+    chown -R vcap:vcap $DATA_DIR
 
     echo $$ > $PIDFILE
 
@@ -42,7 +47,7 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec /var/vcap/packages/stager/bin/stager \
+    exec chpst -u vcap:vcap /var/vcap/packages/stager/bin/stager \
       -diegoAPIURL=<%= p("diego.stager.diego_api_url") %> \
       -stagerURL=<%= p("diego.stager.stager_url") %> \
       -ccBaseURL=http://<%= p("diego.stager.cc.internal_service_hostname") %>:<%= p("diego.stager.cc.external_port") %> \

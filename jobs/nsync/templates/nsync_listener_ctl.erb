@@ -16,11 +16,14 @@ case $1 in
     pid_guard $PIDFILE "nsync_listener"
 
     mkdir -p $RUN_DIR
+    chown -R vcap:vcap $RUN_DIR
+
     mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
 
     echo $$ > $PIDFILE
 
-    exec /var/vcap/packages/nsync/bin/nsync-listener \
+    exec chpst -u vcap:vcap /var/vcap/packages/nsync/bin/nsync-listener \
       -diegoAPIURL=<%= p("diego.nsync.diego_api_url") %> \
       -nsyncURL=<%= p("diego.nsync.nsync_url") %> \
       -debugAddr=<%= p("diego.nsync.listener_debug_addr") %> \

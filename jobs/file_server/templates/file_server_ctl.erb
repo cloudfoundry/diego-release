@@ -14,7 +14,10 @@ case $1 in
     pid_guard $PIDFILE "file_server"
 
     mkdir -p $RUN_DIR
+    chown -R vcap:vcap $RUN_DIR
+
     mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
 
     echo $$ > $PIDFILE
 
@@ -40,7 +43,7 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec /var/vcap/packages/file_server/bin/file-server \
+    exec chpst -u vcap:vcap /var/vcap/packages/file_server/bin/file-server \
       -address=<%= p("diego.file_server.address") %> \
       -debugAddr=<%= p("diego.file_server.debug_addr") %> \
       -staticDirectory=<%= p("diego.file_server.static_directory") %> \

@@ -13,14 +13,17 @@ case $1 in
     pid_guard $PIDFILE "auctioneer"
 
     mkdir -p $RUN_DIR
+    chown -R vcap:vcap $RUN_DIR
+
     mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
 
     echo $$ > $PIDFILE
 
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec /var/vcap/packages/auctioneer/bin/auctioneer \
+    exec chpst -u vcap:vcap /var/vcap/packages/auctioneer/bin/auctioneer \
       -etcdCluster=<%= p("diego.auctioneer.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -consulCluster=http://127.0.0.1:8500 \
       -receptorTaskHandlerURL=<%= p("diego.auctioneer.receptor_task_handler_url") %> \

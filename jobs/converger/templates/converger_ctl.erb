@@ -13,14 +13,17 @@ case $1 in
     pid_guard $PIDFILE "converger"
 
     mkdir -p $RUN_DIR
+    chown -R vcap:vcap $RUN_DIR
+
     mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
 
     echo $$ > /var/vcap/sys/run/converger/converger.pid
 
     # Enable maximum OS thread concurrency
     export GOMAXPROCS=$(nproc)
 
-    exec /var/vcap/packages/converger/bin/converger \
+    exec chpst -u vcap:vcap /var/vcap/packages/converger/bin/converger \
       -etcdCluster=<%= p("diego.converger.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -consulCluster=http://127.0.0.1:8500 \
       -receptorTaskHandlerURL=<%= p("diego.converger.receptor_task_handler_url") %> \

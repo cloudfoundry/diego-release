@@ -15,8 +15,13 @@ case $1 in
     pid_guard $PIDFILE "runtime_metrics_server"
 
     mkdir -p $RUN_DIR
-    mkdir -p $DATA_DIR
+    chown -R vcap:vcap $RUN_DIR
+
     mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
+
+    mkdir -p $DATA_DIR
+    chown -R vcap:vcap $DATA_DIR
 
     depot=$DATA_DIR/depot
 
@@ -24,7 +29,7 @@ case $1 in
 
     echo $$ > /var/vcap/sys/run/runtime_metrics_server/runtime_metrics_server.pid
 
-    exec /var/vcap/packages/runtime_metrics_server/bin/runtime-metrics-server \
+    exec chpst -u vcap:vcap /var/vcap/packages/runtime_metrics_server/bin/runtime-metrics-server \
       -etcdCluster=<%= p("diego.runtime_metrics_server.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -diegoAPIURL=<%= p("diego.runtime_metrics_server.diego_api_url")%> \
       -consulCluster=http://127.0.0.1:8500 \

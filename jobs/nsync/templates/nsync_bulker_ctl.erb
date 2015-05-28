@@ -16,14 +16,17 @@ case $1 in
     pid_guard $PIDFILE "nsync_bulker"
 
     mkdir -p $RUN_DIR
+    chown -R vcap:vcap $RUN_DIR
+
     mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
 
     echo $$ > $PIDFILE
 
     # Enable maximum OS thread concurrency
     export GOMAXPROCS=$(nproc)
 
-    exec /var/vcap/packages/nsync/bin/nsync-bulker \
+    exec chpst -u vcap:vcap /var/vcap/packages/nsync/bin/nsync-bulker \
       -diegoAPIURL=<%= p("diego.nsync.diego_api_url") %> \
       -consulCluster=http://127.0.0.1:8500 \
       -ccBaseURL=<%= Shellwords.shellescape(p("diego.nsync.cc.base_url")) %> \

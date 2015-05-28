@@ -6,6 +6,7 @@ CONF_DIR=/var/vcap/jobs/rep/config
 PIDFILE=$RUN_DIR/rep.pid
 
 DATA_DIR=/var/vcap/data/executor
+CACHE_DIR=<%= p("diego.executor.cache_path") %>
 TMP_DIR=$DATA_DIR/tmp
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
@@ -16,9 +17,19 @@ case $1 in
     pid_guard $PIDFILE "rep"
 
     mkdir -p $RUN_DIR
+    chown -R vcap:vcap $RUN_DIR
+
     mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
+
+    mkdir -p $DATA_DIR
+    chown -R vcap:vcap $DATA_DIR
 
     mkdir -p $TMP_DIR
+    chown -R vcap:vcap $TMP_DIR
+
+    mkdir -p $CACHE_DIR
+    chown -R vcap:vcap $CACHE_DIR
 
     if running_in_container; then
         echo "Not setting /proc/sys/net/ipv4 parameters, since I'm running inside a linux container"
@@ -45,7 +56,7 @@ case $1 in
     # Enable maximum OS thread concurrency
     export GOMAXPROCS=$(nproc)
 
-    /var/vcap/packages/rep/bin/rep \
+    chpst -u vcap:vcap /var/vcap/packages/rep/bin/rep \
       -etcdCluster=<%= p("diego.rep.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
       -consulCluster=http://127.0.0.1:8500 \
       -receptorTaskHandlerURL=<%= p("diego.rep.receptor_task_handler_url") %> \
@@ -65,7 +76,7 @@ case $1 in
       -diskMB=<%= p("diego.executor.disk_capacity_mb") %> \
       -containerInodeLimit=<%= p("diego.executor.container_inode_limit") %> \
       -containerMaxCpuShares=<%= p("diego.executor.container_max_cpu_shares") %> \
-      -cachePath=<%= p("diego.executor.cache_path") %>\
+      -cachePath=$CACHE_DIR \
       -maxCacheSizeInBytes=<%= p("diego.executor.max_cache_size_in_bytes") %>\
       -allowPrivileged=<%= p("diego.executor.allow_privileged") %>\
       -exportNetworkEnvVars=<%= p("diego.executor.export_network_env_vars") %>\

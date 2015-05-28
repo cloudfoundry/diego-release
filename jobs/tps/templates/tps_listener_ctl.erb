@@ -37,8 +37,13 @@ case $1 in
     pid_guard $PIDFILE "tps_listener"
 
     mkdir -p $RUN_DIR
-    mkdir -p $DATA_DIR
+    chown -R vcap:vcap $RUN_DIR
+
     mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
+
+    mkdir -p $DATA_DIR
+    chown -R vcap:vcap $DATA_DIR
 
     depot=$DATA_DIR/depot
 
@@ -46,7 +51,7 @@ case $1 in
 
     echo $$ > $PIDFILE
 
-    exec /var/vcap/packages/tps/bin/tps-listener \
+    exec chpst -u vcap:vcap /var/vcap/packages/tps/bin/tps-listener \
       -diegoAPIURL=<%= p("diego.tps.diego_api_url") %> \
       -debugAddr=<%= p("diego.tps.listener.debug_addr") %> \
       -maxInFlightRequests=<%= p("diego.tps.max_in_flight_requests") %> \
