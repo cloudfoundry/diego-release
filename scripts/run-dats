@@ -18,6 +18,6 @@ bosh -t lite -d ~/deployments/bosh-lite/diego.yml -n deploy
 
 pushd ./src/github.com/cloudfoundry-incubator/diego-acceptance-tests/
   export CONFIG=`pwd`/integration_config.json
-  ginkgo -r -nodes=3 "$@" diego/
+  ginkgo -r -nodes=3 "$@" diego/ security_groups/
   unset CONFIG
 popd

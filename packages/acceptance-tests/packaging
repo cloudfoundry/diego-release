@@ -13,6 +13,7 @@ cd ${GOPATH}/src/github.com/cloudfoundry-incubator/diego-acceptance-tests
 go install github.com/onsi/ginkgo/ginkgo
 
 go test -c ./diego
+go test -c ./security_groups
 
 # clean up artifacts
 rm *.test

@@ -16,15 +16,14 @@ export PATH=${PWD}/Godeps/_workspace/bin:${PATH}
 export CF_COLOR=false
 export CONFIG=/var/vcap/jobs/acceptance-tests/bin/config.json
 
-export RUN_DRATS=<%= p("acceptance_tests.run_docker_registry_tests") %>
-
 mkdir -p /var/vcap/sys/log/acceptance_tests
 cd /var/vcap/packages/acceptance-tests/src/github.com/cloudfoundry-incubator/diego-acceptance-tests
 
 EXITSTATUS=0
 nodes=<%= properties.acceptance_tests.nodes %>
 verbose=<%= properties.acceptance_tests.verbose ? "-v" : "" %>
-bin/test -randomizeAllSpecs $verbose -nodes=$nodes -keepGoing || EXITSTATUS=$?
+packagesToSkip=<%= p("acceptance_tests.run_security_groups_tests") ? "" : "security_groups" %>
+bin/test -randomizeAllSpecs $verbose -skipPackage=$packagesToSkip -nodes=$nodes -keepGoing || EXITSTATUS=$?
 
 echo "Acceptance Tests Complete; exit status: $EXITSTATUS"
 
