@@ -9,10 +9,6 @@ else
     ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress
   popd
 
-  pushd ./src/github.com/pivotal-golang/cacheddownloader/
-    ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress
-  popd
-
   pushd src/github.com/cloudfoundry-incubator/
     ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress \
       -skipPackage="simulation,inigo,fezzik,garden,garden-linux,dropsonde,candiedyaml,diego-smoke-tests,diego-acceptance-tests,diegocanaryapp,cf-test-helpers,vizzini,veritas" "$@"
