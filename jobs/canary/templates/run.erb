@@ -12,7 +12,7 @@ cf api <%= p("diego.canary.api") %> \
 
 cf auth <%= p("diego.canary.user") %> <%= p("diego.canary.password") %>
 
-# assume org exists, otherwise we have to be admin, which is a bad idea
+cf create-org <%= p("diego.canary.org") %>
 cf target -o <%= p("diego.canary.org") %>
 
 cf create-space <%= p("diego.canary.space") %>
