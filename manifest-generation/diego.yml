@@ -400,6 +400,7 @@ properties:
   # -- Property below is used by the consul_agent job from cf-release --
   consul:
     agent:
+      log_level: (( config_from_cf.consul.log_level ))
       servers:
         lan: (( config_from_cf.consul.lan_servers ))
 

@@ -7,6 +7,7 @@ config_from_cf:
     staging_upload_user: (( properties.cc.staging_upload_user ))
     staging_upload_password: (( properties.cc.staging_upload_password ))
   consul:
+    log_level: (( properties.consul.agent.log_level ))
     lan_servers: (( properties.consul.agent.servers.lan ))
   etcd:
     machines: (( properties.etcd.machines ))
@@ -29,6 +30,7 @@ properties:
     staging_upload_password: (( merge ))
   consul:
     agent:
+      log_level: (( merge ))
       servers:
         lan: (( merge ))
   etcd:
