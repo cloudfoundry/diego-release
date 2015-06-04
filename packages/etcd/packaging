@@ -4,6 +4,10 @@ export GOROOT=$(readlink -nf /var/vcap/packages/golang_1.4)
 export PATH=$GOROOT/bin:$PATH
 
 pushd github.com/coreos/etcd
+git() {
+  echo "GitNotFound"
+}
+export -f git
 ./build
 cp ./bin/{etcd,etcdctl} ${BOSH_INSTALL_TARGET}
 popd
