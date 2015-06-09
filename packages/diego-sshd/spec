@@ -18,6 +18,8 @@ files:
   - github.com/cloudfoundry-incubator/diego-ssh/keys/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/proxy/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/routes/*.go # gosub
+  - github.com/cloudfoundry-incubator/diego-ssh/scp/*.go # gosub
+  - github.com/cloudfoundry-incubator/diego-ssh/scp/atime/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/server/*.go # gosub
   - github.com/cloudfoundry-incubator/receptor/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
@@ -31,8 +33,10 @@ files:
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
   - github.com/creack/termios/win/*.go # gosub
   - github.com/gogo/protobuf/proto/*.go # gosub
+  - github.com/google/shlex/*.go # gosub
   - github.com/kr/pty/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
+  - github.com/pborman/getopt/*.go # gosub
   - github.com/pivotal-golang/lager/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
