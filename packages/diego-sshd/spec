@@ -23,14 +23,14 @@ files:
   - github.com/cloudfoundry-incubator/diego-ssh/server/*.go # gosub
   - github.com/cloudfoundry-incubator/receptor/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
-  - github.com/cloudfoundry/dropsonde/control/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
-  - github.com/cloudfoundry/dropsonde/events/*.go # gosub
   - github.com/cloudfoundry/dropsonde/factories/*.go # gosub
   - github.com/cloudfoundry/dropsonde/log_sender/*.go # gosub
   - github.com/cloudfoundry/dropsonde/logs/*.go # gosub
   - github.com/cloudfoundry/gosteno/*.go # gosub
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
+  - github.com/cloudfoundry/sonde-go/control/*.go # gosub
+  - github.com/cloudfoundry/sonde-go/events/*.go # gosub
   - github.com/creack/termios/win/*.go # gosub
   - github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/google/shlex/*.go # gosub

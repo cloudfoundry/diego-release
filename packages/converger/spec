@@ -29,9 +29,7 @@ files:
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/routes/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
-  - github.com/cloudfoundry/dropsonde/control/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
-  - github.com/cloudfoundry/dropsonde/events/*.go # gosub
   - github.com/cloudfoundry/dropsonde/factories/*.go # gosub
   - github.com/cloudfoundry/dropsonde/instrumented_handler/*.go # gosub
   - github.com/cloudfoundry/dropsonde/instrumented_round_tripper/*.go # gosub
@@ -44,6 +42,8 @@ files:
   - github.com/cloudfoundry/gosteno/*.go # gosub
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
   - github.com/cloudfoundry/gunk/workpool/*.go # gosub
+  - github.com/cloudfoundry/sonde-go/control/*.go # gosub
+  - github.com/cloudfoundry/sonde-go/events/*.go # gosub
   - github.com/cloudfoundry/storeadapter/*.go # gosub
   - github.com/cloudfoundry/storeadapter/etcdstoreadapter/*.go # gosub
   - github.com/coreos/go-etcd/etcd/*.go # gosub
