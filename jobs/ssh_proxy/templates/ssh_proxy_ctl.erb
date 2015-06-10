@@ -32,7 +32,8 @@ case $1 in
       -ccAPIURL=http://<%= p("diego.ssh_proxy.cc.internal_service_hostname") %>:<%= p("diego.ssh_proxy.cc.external_port") %> \
       -debugAddr=<%= p("diego.ssh_proxy.debug_addr") %> \
       -logLevel=<%= p("diego.ssh_proxy.log_level") %> \
-      -cfOnly=<%= p("diego.ssh_proxy.cf_only") %> \
+      -enableCFAuth=<%= p("diego.ssh_proxy.enable_cf_auth") %> \
+      -enableDiegoAuth=<%= p("diego.ssh_proxy.enable_diego_auth") %> \
       2>> $LOG_DIR/ssh_proxy.stderr.log \
       1> >(tee -a $LOG_DIR/ssh_proxy.stdout.log | logger -t vcap.ssh_proxy)
 

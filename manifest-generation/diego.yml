@@ -496,6 +496,8 @@ properties:
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
       host_key: (( property_overrides.ssh_proxy.host_key || "" ))
       servers: (( jobs.access_z1.networks.diego1.static_ips jobs.access_z2.networks.diego2.static_ips jobs.access_z3.networks.diego3.static_ips ))
+      enable_cf_auth: (( property_overrides.ssh_proxy.enable_cf_auth || false ))
+      enable_diego_auth: (( property_overrides.ssh_proxy.enable_diego_auth || false ))
     stager:
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))

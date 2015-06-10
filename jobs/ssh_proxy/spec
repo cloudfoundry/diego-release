@@ -29,6 +29,9 @@ properties:
     default: cloud-controller-ng.service.consul
   diego.ssh_proxy.cc.external_port:
     description: External port of the Cloud Controller API
-  diego.ssh_proxy.cf_only:
-    description: Only allow ssh access for cf applications.
-    default: false
+  diego.ssh_proxy.enable_cf_auth:
+    description: Allow ssh access for cf applications
+    default: false 
+  diego.ssh_proxy.enable_diego_auth:
+    description: Allow ssh access for diego applications
+    default: false 
