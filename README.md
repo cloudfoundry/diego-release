@@ -224,6 +224,7 @@ by running the lightweight `diego-smoke-tests` or the more thorough `diego-accep
 Follow the READMEs in their respective repositories:
 
 [diego-smoke-tests] (https://github.com/cloudfoundry-incubator/diego-smoke-tests)
+
 [diego-acceptance-tests] (https://github.com/cloudfoundry-incubator/diego-acceptance-tests)
 
 ---
