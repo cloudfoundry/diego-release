@@ -57,6 +57,7 @@ GOPATH=$GOPATH/src/github.com/cloudfoundry-incubator/garden-linux/Godeps/_worksp
 
 sync_package acceptance-tests \
   -test github.com/cloudfoundry-incubator/diego-acceptance-tests/... \
+  -app github.com/cloudfoundry-incubator/diego-ssh/cf-plugin \
   -app github.com/onsi/ginkgo/ginkgo &
 
 sync_package smoke-tests      -test github.com/cloudfoundry-incubator/diego-smoke-tests &

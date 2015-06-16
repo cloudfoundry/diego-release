@@ -7,6 +7,11 @@ export PATH=${GOROOT}/bin:${PATH}
 
 export PATH=/var/vcap/packages/cf-cli/bin:${PATH} # put the cli on the path
 
+export CF_PLUGIN_HOME=$(mktemp -d -t diego-dats.XXXXX)
+/var/vcap/packages/cf-cli/bin/cf uninstall-plugin SSH || true
+/var/vcap/packages/cf-cli/bin/cf install-plugin /var/vcap/packages/acceptance-tests/bin/cf-plugin
+/var/vcap/packages/cf-cli/bin/cf plugins
+
 export GOPATH=/var/vcap/packages/acceptance-tests
 export PATH=${GOPATH}/bin:${PATH}
 
@@ -20,12 +25,18 @@ mkdir -p /var/vcap/sys/log/acceptance_tests
 cd /var/vcap/packages/acceptance-tests/src/github.com/cloudfoundry-incubator/diego-acceptance-tests
 
 EXITSTATUS=0
+packagesToSkip=""
+packagesToSkip+=<%= p("acceptance_tests.run_security_groups_tests") ? "" : "security_groups," %>
+packagesToSkip+=<%= p("acceptance_tests.run_ssh_tests") ? "" : "ssh," %>
+[[ $packagesToSkip == *, ]] && packagesToSkip=${packagesToSkip%?}
+
 nodes=<%= properties.acceptance_tests.nodes %>
 verbose=<%= properties.acceptance_tests.verbose ? "-v" : "" %>
-packagesToSkip=<%= p("acceptance_tests.run_security_groups_tests") ? "" : "security_groups" %>
 bin/test -randomizeAllSpecs $verbose -skipPackage=$packagesToSkip -nodes=$nodes -keepGoing || EXITSTATUS=$?
 
 echo "Acceptance Tests Complete; exit status: $EXITSTATUS"
+
+rm -rf ${CF_PLUGIN_HOME}
 
 for i in /var/vcap/sys/log/acceptance_tests/*.txt; do
   if [ -e "$i" ]; then

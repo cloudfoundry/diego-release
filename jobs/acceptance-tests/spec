@@ -21,7 +21,10 @@ properties:
     description: The number of parallel test executors to spawn. The larger the number the higher the stress on the system.
   acceptance_tests.run_security_groups_tests:
     default: true
-    description: Configures whether or not to run the security group acceptance test.
+    description: Configures whether or not to run the security group acceptance tests.
+  acceptance_tests.run_ssh_tests:
+    default: true
+    description: Configures whether or not to run the ssh acceptance tests.
   acceptance_tests.secure_address:
     description: Secure address for the security group test to access
   acceptance_tests.skip_ssl_validation:
