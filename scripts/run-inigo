@@ -10,4 +10,8 @@ pushd src/github.com/cloudfoundry-incubator/inigo
   done
 popd
 
-fly -k execute -p -x -c scripts/ci/run_inigo.build.yml -- "$@"
+if [ -n "${DIEGO_CI_TARGET}" ]; then
+  target="-t ${DIEGO_CI_TARGET}"
+fi
+
+fly -k ${target} execute -p -x -c scripts/ci/run_inigo.build.yml -- "$@"
