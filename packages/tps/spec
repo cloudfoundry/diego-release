@@ -12,10 +12,16 @@ files:
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
+  - github.com/cloudfoundry-incubator/diego-ssh/helpers/*.go # gosub
+  - github.com/cloudfoundry-incubator/diego-ssh/keys/*.go # gosub
+  - github.com/cloudfoundry-incubator/diego-ssh/routes/*.go # gosub
+  - github.com/cloudfoundry-incubator/nsync/recipebuilder/*.go # gosub
   - github.com/cloudfoundry-incubator/receptor/*.go # gosub
+  - github.com/cloudfoundry-incubator/route-emitter/cfroutes/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/cc_messages/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/diego_errors/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/routes/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/cc_conv/*.go # gosub
@@ -34,6 +40,7 @@ files:
   - github.com/cloudfoundry/dropsonde/runtime_stats/*.go # gosub
   - github.com/cloudfoundry/gosteno/*.go # gosub
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
+  - github.com/cloudfoundry/gunk/urljoiner/*.go # gosub
   - github.com/cloudfoundry/noaa/*.go # gosub
   - github.com/cloudfoundry/noaa/errors/*.go # gosub
   - github.com/cloudfoundry/sonde-go/control/*.go # gosub
@@ -48,6 +55,7 @@ files:
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
   - github.com/vito/go-sse/sse/*.go # gosub
+  - golang.org/x/crypto/ssh/*.go # gosub
   - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
   - github.com/cloudfoundry-incubator/consuladapter/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/*.go # gosub
@@ -62,10 +70,8 @@ files:
   - github.com/cloudfoundry-incubator/runtime-schema/cb/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/maintainer/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/routes/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/cc_client/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/watcher/*.go # gosub
-  - github.com/cloudfoundry/gunk/urljoiner/*.go # gosub
   - github.com/cloudfoundry/gunk/workpool/*.go # gosub
   - github.com/cloudfoundry/storeadapter/*.go # gosub
   - github.com/hashicorp/consul/api/*.go # gosub
