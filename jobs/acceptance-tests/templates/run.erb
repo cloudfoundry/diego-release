@@ -8,7 +8,7 @@ export PATH=${GOROOT}/bin:${PATH}
 export PATH=/var/vcap/packages/cf-cli/bin:${PATH} # put the cli on the path
 
 export CF_PLUGIN_HOME=$(mktemp -d -t diego-dats.XXXXX)
-/var/vcap/packages/cf-cli/bin/cf uninstall-plugin SSH || true
+/var/vcap/packages/cf-cli/bin/cf uninstall-plugin Diego-SSH || true
 /var/vcap/packages/cf-cli/bin/cf install-plugin /var/vcap/packages/acceptance-tests/bin/cf-plugin
 /var/vcap/packages/cf-cli/bin/cf plugins
 
