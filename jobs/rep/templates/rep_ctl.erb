@@ -89,8 +89,8 @@ case $1 in
       -healthCheckWorkPoolSize=<%= p("diego.executor.healthcheck_work_pool_size") %> \
       -tempDir=$TMP_DIR \
       -logLevel=<%= p("diego.rep.log_level") %> \
-      2>> $LOG_DIR/rep.stderr.log \
-      1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep) &
+      2> >(tee -a $LOG_DIR/rep.stderr.log | logger -p user.error -t vcap.rep) \
+      1> >(tee -a $LOG_DIR/rep.stdout.log | logger -p user.info -t vcap.rep) &
 
     pid=$!
 

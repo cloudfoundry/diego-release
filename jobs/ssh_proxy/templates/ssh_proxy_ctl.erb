@@ -34,8 +34,8 @@ case $1 in
       -logLevel=<%= p("diego.ssh_proxy.log_level") %> \
       -enableCFAuth=<%= p("diego.ssh_proxy.enable_cf_auth") %> \
       -enableDiegoAuth=<%= p("diego.ssh_proxy.enable_diego_auth") %> \
-      2>> $LOG_DIR/ssh_proxy.stderr.log \
-      1> >(tee -a $LOG_DIR/ssh_proxy.stdout.log | logger -t vcap.ssh_proxy)
+      2> >(tee -a $LOG_DIR/ssh_proxy.stderr.log | logger -p user.error -t vcap.ssh-proxy) \
+      1> >(tee -a $LOG_DIR/ssh_proxy.stdout.log | logger -p user.info -t vcap.ssh-proxy)
 
     ;;
 

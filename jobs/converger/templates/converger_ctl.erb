@@ -33,8 +33,8 @@ case $1 in
       -expireCompletedTaskDuration=<%= "#{p("diego.converger.expire_completed_task_duration_in_seconds")}s" %> \
       -expirePendingTaskDuration=<%= "#{p("diego.converger.expire_pending_task_duration_in_seconds")}s" %> \
       -logLevel=<%= p("diego.converger.log_level") %> \
-      2>> $LOG_DIR/converger.stderr.log \
-      1> >(tee -a $LOG_DIR/converger.stdout.log | logger -t vcap.converger)
+      2> >(tee -a $LOG_DIR/converger.stderr.log | logger -p user.error -t vcap.converger) \
+      1> >(tee -a $LOG_DIR/converger.stdout.log | logger -p user.info -t vcap.converger)
 
     ;;
 

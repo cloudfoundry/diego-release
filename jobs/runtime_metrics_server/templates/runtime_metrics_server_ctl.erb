@@ -35,8 +35,8 @@ case $1 in
       -consulCluster=http://127.0.0.1:8500 \
       -debugAddr=<%= p("diego.runtime_metrics_server.debug_addr") %> \
       -logLevel=<%= p("diego.runtime_metrics_server.log_level") %> \
-      2>> $LOG_DIR/runtime_metrics_server.stderr.log \
-      1> >(tee -a $LOG_DIR/runtime_metrics_server.stdout.log | logger -t vcap.runtime-metrics-server)
+      2> >(tee -a $LOG_DIR/runtime_metrics_server.stderr.log | logger -p user.error -t vcap.runtime-metrics-server) \
+      1> >(tee -a $LOG_DIR/runtime_metrics_server.stdout.log | logger -p user.info -t vcap.runtime-metrics-server)
 
 
     ;;

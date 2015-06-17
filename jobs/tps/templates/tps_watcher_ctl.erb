@@ -38,8 +38,8 @@ case $1 in
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       -debugAddr=<%= p("diego.tps.watcher.debug_addr") %> \
       -logLevel=<%= p("diego.tps.log_level") %> \
-      2>> $LOG_DIR/tps_watcher.stderr.log \
-      1> >(tee -a $LOG_DIR/tps_watcher.stdout.log | logger -t vcap.tps)
+      2> >(tee -a $LOG_DIR/tps_watcher.stderr.log | logger -p user.error -t vcap.tps-watcher) \
+      1> >(tee -a $LOG_DIR/tps_watcher.stdout.log | logger -p user.info -t vcap.tps-watcher)
 
     ;;
 

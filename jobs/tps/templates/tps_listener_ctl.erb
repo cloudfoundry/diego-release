@@ -59,8 +59,8 @@ case $1 in
       -logLevel=<%= p("diego.tps.log_level") %> \
       -trafficControllerURL=<%= p("diego.tps.traffic_controller_url") %> \
       -skipSSLVerification=<%= p("diego.ssl.skip_cert_verify") %> \
-      2>> $LOG_DIR/tps_listener.stderr.log \
-      1> >(tee -a $LOG_DIR/tps_listener.stdout.log | logger -t vcap.tps-listener)
+      2> >(tee -a $LOG_DIR/tps_listener.stderr.log | logger -p user.error -t vcap.tps-listener) \
+      1> >(tee -a $LOG_DIR/tps_listener.stdout.log | logger -p user.info -t vcap.tps-listener)
 
     ;;
 

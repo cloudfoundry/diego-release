@@ -40,8 +40,8 @@ case $1 in
       <%= p("diego.nsync.lifecycle_bundles").map { |bundle| "-lifecycle #{bundle}" }.join(" ") %> \
       -fileServerURL=<%= p("diego.file_server.file_server_url") %> \
       -logLevel=<%= p("diego.nsync.log_level") %> \
-      2>> $LOG_DIR/nsync_bulker.stderr.log \
-      1> >(tee -a $LOG_DIR/nsync_bulker.stdout.log | logger -t vcap.nsync-bulker)
+      2> >(tee -a $LOG_DIR/nsync_bulker.stderr.log | logger -p user.error -t vcap.nsync-bulker) \
+      1> >(tee -a $LOG_DIR/nsync_bulker.stdout.log | logger -p user.info -t vcap.nsync-bulker)
 
     ;;
 

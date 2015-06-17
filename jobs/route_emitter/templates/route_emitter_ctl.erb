@@ -32,8 +32,8 @@ case $1 in
       -debugAddr=<%= p("diego.route_emitter.debug_addr") %> \
       -syncInterval=<%= "#{p("diego.route_emitter.sync_interval_in_seconds")}s" %> \
       -logLevel=<%= p("diego.route_emitter.log_level") %> \
-      2>> $LOG_DIR/route_emitter.stderr.log \
-      1> >(tee -a $LOG_DIR/route_emitter.stdout.log | logger -t vcap.route-emitter)
+      2> >(tee -a $LOG_DIR/route_emitter.stderr.log | logger -p user.error -t vcap.route-emitter) \
+      1> >(tee -a $LOG_DIR/route_emitter.stdout.log | logger -p user.info -t vcap.route-emitter)
 
     ;;
 

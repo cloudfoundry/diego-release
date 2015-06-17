@@ -63,8 +63,8 @@ case $1 in
       -insecureDockerRegistry \
       <% end %>\
       -logLevel=<%= p("diego.stager.log_level") %> \
-      2>> $LOG_DIR/stager.stderr.log \
-      1> >(tee -a $LOG_DIR/stager.stdout.log | logger -t vcap.stager)
+      2> >(tee -a $LOG_DIR/stager.stderr.log | logger -p user.error -t vcap.stager) \
+      1> >(tee -a $LOG_DIR/stager.stdout.log | logger -p user.info -t vcap.stager)
 
 
     ;;

@@ -30,8 +30,8 @@ case $1 in
       -debugAddr=<%= p("diego.auctioneer.debug_addr") %> \
       -listenAddr=<%= p("diego.auctioneer.listen_addr") %> \
       -logLevel=<%= p("diego.auctioneer.log_level") %> \
-      2>> $LOG_DIR/auctioneer.stderr.log \
-      1> >(tee -a $LOG_DIR/auctioneer.stdout.log | logger -t vcap.auctioneer)
+      2> >(tee -a $LOG_DIR/auctioneer.stderr.log | logger -p user.error -t vcap.auctioneer) \
+      1> >(tee -a $LOG_DIR/auctioneer.stdout.log | logger -p user.info -t vcap.auctioneer)
 
     ;;
 
