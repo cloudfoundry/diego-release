@@ -84,6 +84,19 @@ files:
   - github.com/hashicorp/consul/api/*.go # gosub
   - github.com/hashicorp/go-multierror/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
+  - github.com/pivotal-golang/archiver/compressor/*.go # gosub
+  - github.com/pivotal-golang/archiver/extractor/*.go # gosub
+  - github.com/pivotal-golang/bytefmt/*.go # gosub
+  - github.com/pivotal-golang/clock/*.go # gosub
+  - github.com/pivotal-golang/eventhub/*.go # gosub
+  - github.com/pivotal-golang/lager/*.go # gosub
+  - github.com/pivotal-golang/localip/*.go # gosub
+  - github.com/pivotal-golang/operationq/*.go # gosub
+  - github.com/tedsuo/ifrit/*.go # gosub
+  - github.com/tedsuo/ifrit/grouper/*.go # gosub
+  - github.com/tedsuo/ifrit/http_server/*.go # gosub
+  - github.com/tedsuo/ifrit/sigmon/*.go # gosub
+  - github.com/tedsuo/rata/*.go # gosub
   - github.com/onsi/ginkgo/*.go # gosub
   - github.com/onsi/ginkgo/config/*.go # gosub
   - github.com/onsi/ginkgo/internal/codelocation/*.go # gosub
@@ -112,17 +125,3 @@ files:
   - github.com/onsi/gomega/matchers/support/goraph/node/*.go # gosub
   - github.com/onsi/gomega/matchers/support/goraph/util/*.go # gosub
   - github.com/onsi/gomega/types/*.go # gosub
-  - github.com/pivotal-golang/archiver/compressor/*.go # gosub
-  - github.com/pivotal-golang/archiver/extractor/*.go # gosub
-  - github.com/pivotal-golang/bytefmt/*.go # gosub
-  - github.com/pivotal-golang/clock/*.go # gosub
-  - github.com/pivotal-golang/eventhub/*.go # gosub
-  - github.com/pivotal-golang/lager/*.go # gosub
-  - github.com/pivotal-golang/localip/*.go # gosub
-  - github.com/pivotal-golang/operationq/*.go # gosub
-  - github.com/tedsuo/ifrit/*.go # gosub
-  - github.com/tedsuo/ifrit/ginkgomon/*.go # gosub
-  - github.com/tedsuo/ifrit/grouper/*.go # gosub
-  - github.com/tedsuo/ifrit/http_server/*.go # gosub
-  - github.com/tedsuo/ifrit/sigmon/*.go # gosub
-  - github.com/tedsuo/rata/*.go # gosub
