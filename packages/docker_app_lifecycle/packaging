@@ -17,7 +17,9 @@ for binary in builder launcher healthcheck; do
     ldd $binary && echo "$binary must be statically linked" && false
 done
 
-tar -czf ${BOSH_INSTALL_TARGET}/docker_app_lifecycle.tgz builder launcher healthcheck docker
+tar -xzf /var/vcap/packages/diego-sshd/diego-sshd.tgz
+
+tar -czf ${BOSH_INSTALL_TARGET}/docker_app_lifecycle.tgz builder launcher healthcheck docker diego-sshd
 
 # clean up source artifacts
 rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg

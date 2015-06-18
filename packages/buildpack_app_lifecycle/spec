@@ -3,6 +3,7 @@ name: buildpack_app_lifecycle
 
 dependencies:
   - golang_1.4
+  - diego-sshd
 
 files:
   - github.com/cloudfoundry-incubator/buildpack_app_lifecycle/*.go # gosub

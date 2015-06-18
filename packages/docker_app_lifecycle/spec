@@ -4,6 +4,7 @@ name: docker_app_lifecycle
 dependencies:
   - golang_1.4
   - docker
+  - diego-sshd
 
 files:
   - github.com/cloudfoundry-incubator/docker_app_lifecycle/*.go # gosub
