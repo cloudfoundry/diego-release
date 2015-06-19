@@ -167,7 +167,6 @@ as you switch in and out of the directory.
         cd ~/workspace/cf-release
         ./generate_deployment_manifest warden \
             ~/deployments/bosh-lite/director.yml \
-            ~/workspace/diego-release/stubs-for-cf-release/enable_diego_docker_in_cc.yml \
             ~/workspace/diego-release/stubs-for-cf-release/enable_consul_with_cf.yml \
             ~/workspace/diego-release/stubs-for-cf-release/enable_diego_ssh_in_cc.yml \
             ~/workspace/diego-release/manifest-generation/bosh-lite-stubs/property-overrides.yml \
@@ -179,7 +178,6 @@ as you switch in and out of the directory.
         cd ~/workspace/cf-release
         ./generate_deployment_manifest warden \
             ~/deployments/bosh-lite/director.yml \
-            ~/workspace/diego-release/stubs-for-cf-release/enable_diego_docker_in_cc.yml \
             ~/workspace/diego-release/stubs-for-cf-release/enable_consul_with_cf.yml \
             ~/workspace/diego-release/stubs-for-cf-release/enable_diego_windows_in_cc.yml \
             ~/workspace/diego-release/stubs-for-cf-release/enable_diego_ssh_in_cc.yml \
@@ -213,6 +211,10 @@ as you switch in and out of the directory.
         bosh create release --force
         bosh -n upload release
         bosh -n deploy
+
+1. Enable Docker support
+
+        cf enable-feature-flag diego_docker
 
 Now you can either run the DATs or deploy your own app.
 
