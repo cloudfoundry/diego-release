@@ -108,10 +108,14 @@ jobs:
     resource_pool: etcd_z1
     networks:
       - name: diego1
-        static_ips: (( static_ips(0) ))
     update:
       serial: true
       max_in_flight: 1
+    properties:
+      consul:
+        agent:
+          services:
+            etcd: {}
 
   - name: etcd_z2
     templates: (( base_job_templates.etcd additional_jobs.etcd ))
@@ -120,10 +124,14 @@ jobs:
     resource_pool: etcd_z2
     networks:
       - name: diego2
-        static_ips: (( static_ips(0) ))
     update:
       serial: true
       max_in_flight: 1
+    properties:
+      consul:
+        agent:
+          services:
+            etcd: {}
 
   - name: etcd_z3
     templates: (( base_job_templates.etcd additional_jobs.etcd ))
@@ -132,10 +140,14 @@ jobs:
     resource_pool: etcd_z3
     networks:
       - name: diego3
-        static_ips: (( static_ips(0) ))
     update:
       serial: true
       max_in_flight: 1
+    properties:
+      consul:
+        agent:
+          services:
+            etcd: {}
 
   - name: brain_z1
     templates: (( base_job_templates.brain additional_jobs.brain ))
@@ -181,10 +193,10 @@ jobs:
       consul:
         agent:
           services:
-            - file_server
-            - nsync
-            - stager
-            - tps
+            file_server: {}
+            nsync: {}
+            stager: {}
+            tps: {}
 
   - name: route_emitter_z1
     templates: (( base_job_templates.route_emitter additional_jobs.route_emitter ))
@@ -215,8 +227,8 @@ jobs:
       consul:
         agent:
           services:
-            - receptor
-            - ssh_proxy
+            receptor: {}
+            ssh_proxy: {}
 
   - name: brain_z2
     templates: (( base_job_templates.brain additional_jobs.brain ))
@@ -262,10 +274,10 @@ jobs:
       consul:
         agent:
           services:
-            - file_server
-            - nsync
-            - stager
-            - tps
+            file_server: {}
+            nsync: {}
+            stager: {}
+            tps: {}
 
   - name: route_emitter_z2
     templates: (( base_job_templates.route_emitter additional_jobs.route_emitter ))
@@ -296,8 +308,8 @@ jobs:
       consul:
         agent:
           services:
-            - receptor
-            - ssh_proxy
+            receptor: {}
+            ssh_proxy: {}
 
   - name: brain_z3
     templates: (( base_job_templates.brain additional_jobs.brain ))
@@ -343,10 +355,10 @@ jobs:
       consul:
         agent:
           services:
-            - file_server
-            - nsync
-            - stager
-            - tps
+            file_server: {}
+            nsync: {}
+            stager: {}
+            tps: {}
 
   - name: route_emitter_z3
     templates: (( base_job_templates.route_emitter additional_jobs.route_emitter ))
@@ -377,8 +389,8 @@ jobs:
       consul:
         agent:
           services:
-            - receptor
-            - ssh_proxy
+            receptor: {}
+            ssh_proxy: {}
 
 properties:
   # -- Properties below are used by the metron_agent job from cf-release --
@@ -413,14 +425,27 @@ properties:
     # -- Job-specific properties --
     auctioneer:
       etcd:
-        machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+        machines: ["etcd.service.consul"]
       log_level: (( property_overrides.auctioneer.log_level || nil ))
     converger:
       etcd:
-        machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+        machines: ["etcd.service.consul"]
       log_level: (( property_overrides.converger.log_level || nil ))
     etcd:
-      machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+      require_ssl: (( property_overrides.etcd.require_ssl || true ))
+      machines: ["etcd.service.consul"]
+      cluster:
+        - name: "etcd_z1"
+          instances: (( instance_count_overrides.etcd_z1.instances || 1 ))
+        - name: "etcd_z2"
+          instances: (( instance_count_overrides.etcd_z2.instances || 1 ))
+        - name: "etcd_z3"
+          instances: (( instance_count_overrides.etcd_z3.instances || 1 ))
+      ca_cert_pem: (( property_overrides.etcd.ca_cert_pem ))
+      server_cert_pem: (( property_overrides.etcd.server_cert_pem ))
+      server_key_pem: (( property_overrides.etcd.server_key_pem ))
+      client_cert_pem: (( property_overrides.etcd.client_cert_pem ))
+      client_key_pem: (( property_overrides.etcd.client_key_pem ))
     executor:
       allow_privileged: (( property_overrides.executor.allow_privileged || nil ))
       drain_timeout_in_seconds: (( property_overrides.executor.drain_timeout_in_seconds || nil ))
@@ -452,11 +477,11 @@ properties:
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       etcd:
-        machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+        machines: ["etcd.service.consul"]
       log_level: (( property_overrides.nsync.log_level || nil ))
     receptor:
       etcd:
-        machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+        machines: ["etcd.service.consul"]
       nats:
         machines: (( config_from_cf.nats.machines ))
         username: (( config_from_cf.nats.user ))
@@ -470,7 +495,7 @@ properties:
       log_level: (( property_overrides.receptor.log_level || nil ))
     rep:
       etcd:
-        machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+        machines: ["etcd.service.consul"]
       log_level: (( property_overrides.rep.log_level || nil ))
     route_emitter:
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
@@ -482,7 +507,7 @@ properties:
       log_level: (( property_overrides.route_emitter.log_level || nil ))
     runtime_metrics_server:
       etcd:
-        machines: (( jobs.etcd_z1.networks.diego1.static_ips jobs.etcd_z2.networks.diego2.static_ips jobs.etcd_z3.networks.diego3.static_ips ))
+        machines: ["etcd.service.consul"]
       nats:
         machines: (( config_from_cf.nats.machines ))
         username: (( config_from_cf.nats.user ))
@@ -591,3 +616,5 @@ base_job_templates:
   etcd:
     - name: etcd
       release: diego
+    - name: consul_agent
+      release: cf

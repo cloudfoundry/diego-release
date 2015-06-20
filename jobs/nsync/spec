@@ -49,8 +49,6 @@ properties:
   diego.nsync.bulker_debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17007"
-  diego.nsync.etcd.machines:
-    description: "IPs pointing to the ETCD cluster"
   diego.nsync.log_level:
     description: "Log level"
     default: "info"

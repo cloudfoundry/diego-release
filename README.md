@@ -250,3 +250,77 @@ Follow the READMEs in their respective repositories:
 
         cf start my-app
 
+
+### SSL Configuration
+
+Diego Release can be configured to require SSL for communication with etcd.
+To enable or disable SSL communication with etcd, the `properties.diego.etcd.require_ssl` property should be set to true or false.
+By default, Diego has `require_ssl` set to to true.
+When `require_ssl` is set to true, the operator must generate SSL certificates and keys for the etcd server and its clients.
+
+#### Generating SSL Certificates
+
+For generating SSL certificates, we recommend [certstrap](https://github.com/square/certstrap).
+An operator can follow the following steps to successfully generate the required certificates.
+
+1. Get certstrap
+```
+go get github.com/square/certstrap
+cd $GOPATH/src/github.com/square/certstrap
+./build
+cd bin
+```
+
+2. Initialize a new certificate authority.
+```
+$ ./certstrap init --common-name "diegoCA"
+Enter passphrase (empty for no passphrase): <hit enter for no password>
+
+Enter same passphrase again: <hit enter for no password>
+
+Created out/diegoCA.key
+Created out/diegoCA.crt
+```
+
+The manifest property `properties.diego.etcd.ca_cert_pem` should be set to the certificate in `out/diegoCA.crt`
+
+3. Create and sign a certificate for the etcd server.
+
+```
+$ ./certstrap request-cert --common-name "etcd.service.consul" --domain "*.etcd.service.consul,etcd.service.consul"
+Enter passphrase (empty for no passphrase): <hit enter for no password>
+
+Enter same passphrase again: <hit enter for no password>
+
+Created out/etcd.service.consul.key
+Created out/etcd.service.consul.csr
+
+$ ./certstrap sign etcd.service.consul --CA diegoCA
+Created out/etcd.service.consul.crt from out/etcd.service.consul.csr signed by out/diegoCA.key
+```
+
+The manifest property `properties.diego.etcd.server_cert_pem` should be set to the certificate in `out/etcd.service.consul.crt`
+The manifest property `properties.diego.etcd.server_cert_key` should be set to the certificate in `out/etcd.service.consul.key`
+
+4. Create and sign a certificate for etcd clients.
+
+```
+$ ./certstrap request-cert --common-name "clientName"
+Enter passphrase (empty for no passphrase): <hit enter for no password>
+
+Enter same passphrase again: <hit enter for no password>
+
+Created out/clientName.key
+Created out/clientName.csr
+
+$ ./certstrap sign clientName --CA diegoCA
+Created out/clientName.crt from out/clientName.csr signed by out/diegoCA.key
+```
+
+The manifest property `properties.diego.etcd.client_cert_pem` should be set to the certificate in `out/clientName.crt`
+The manifest property `properties.diego.etcd.client_cert_key` should be set to the certificate in `out/clientName.key`
+
+### Custom SSL Certificate Generation
+
+If you already have a CA, or wish to use your own names for clients and servers, please note that the common-names "diegoCA" and "clientName" are placeholders and can be renamed provided that all clients client certificate.
+The server certificate must have the common name `etcd.service.consul` and must specify `etcd.service.consul` and `*.etcd.service.consul` as Subject Alternative Names (SANs).

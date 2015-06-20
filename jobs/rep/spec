@@ -4,6 +4,9 @@ name: rep
 templates:
   rep_ctl.erb: bin/rep_ctl
   drain.erb: bin/drain
+  etcd_ca.crt.erb: config/certs/etcd/ca.crt
+  etcd_client.crt.erb: config/certs/etcd/client.crt
+  etcd_client.key.erb: config/certs/etcd/client.key
 
 packages:
   - pid_utils
@@ -102,3 +105,13 @@ properties:
   diego.executor.healthcheck_work_pool_size:
     description: "Maximum number of concurrent health check operations."
     default: 64
+
+  diego.etcd.require_ssl:
+    description: "enable ssl for all communication with etcd"
+    default: true
+  diego.etcd.ca_cert_pem:
+    description: "PEM-encoded CA certificate"
+  diego.etcd.client_cert_pem:
+    description: "PEM-encoded client certificate"
+  diego.etcd.client_key_pem:
+    description: "PEM-encoded client key"

@@ -9,7 +9,18 @@ DATA_DIR=/var/vcap/data/executor
 CACHE_DIR=<%= p("diego.executor.cache_path") %>
 TMP_DIR=$DATA_DIR/tmp
 
+CERTS_DIR=/var/vcap/jobs/rep/config/certs/
+
 source /var/vcap/packages/pid_utils/pid_utils.sh
+
+<% if p("diego.etcd.require_ssl") %>
+etcd_sec_flags=" \
+   -etcdCertFile=${CERTS_DIR}/etcd/client.crt \
+   -etcdKeyFile=${CERTS_DIR}/etcd/client.key \
+   -etcdCaFile=${CERTS_DIR}/etcd/ca.crt"
+<% else %>
+etcd_sec_flags=""
+<% end %>
 
 case $1 in
 
@@ -56,8 +67,8 @@ case $1 in
     # Enable maximum OS thread concurrency
     export GOMAXPROCS=$(nproc)
 
-    chpst -u vcap:vcap /var/vcap/packages/rep/bin/rep \
-      -etcdCluster=<%= p("diego.rep.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+    chpst -u vcap:vcap /var/vcap/packages/rep/bin/rep ${etcd_sec_flags} \
+      -etcdCluster=<%= p("diego.rep.etcd.machines").map{|addr| "\"#{p("diego.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -consulCluster=http://127.0.0.1:8500 \
       -receptorTaskHandlerURL=<%= p("diego.rep.receptor_task_handler_url") %> \
       -debugAddr=<%= p("diego.rep.debug_addr") %> \
@@ -89,8 +100,8 @@ case $1 in
       -healthCheckWorkPoolSize=<%= p("diego.executor.healthcheck_work_pool_size") %> \
       -tempDir=$TMP_DIR \
       -logLevel=<%= p("diego.rep.log_level") %> \
-      2> >(tee -a $LOG_DIR/rep.stderr.log | logger -p user.error -t vcap.rep) \
-      1> >(tee -a $LOG_DIR/rep.stdout.log | logger -p user.info -t vcap.rep) &
+      2>> $LOG_DIR/rep.stderr.log \
+      1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep) &
 
     pid=$!
 

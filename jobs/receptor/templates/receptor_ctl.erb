@@ -7,7 +7,18 @@ PIDFILE=$RUN_DIR/receptor.pid
 DATA_DIR=/var/vcap/data/receptor
 TMP_DIR=$DATA_DIR/tmp
 
+CERTS_DIR=/var/vcap/jobs/receptor/config/certs
+
 source /var/vcap/packages/pid_utils/pid_utils.sh
+
+<% if p("diego.etcd.require_ssl") %>
+etcd_sec_flags=" \
+   -etcdCertFile=${CERTS_DIR}/etcd/client.crt \
+   -etcdKeyFile=${CERTS_DIR}/etcd/client.key \
+   -etcdCaFile=${CERTS_DIR}/etcd/ca.crt"
+<% else %>
+etcd_sec_flags=""
+<% end %>
 
 <%
   def discover_external_ip
@@ -72,11 +83,11 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec chpst -u vcap:vcap /var/vcap/packages/receptor/bin/receptor \
+    exec chpst -u vcap:vcap /var/vcap/packages/receptor/bin/receptor ${etcd_sec_flags} \
       -address=<%= p("diego.receptor.listen_addr") %> \
       -taskHandlerAddress=<%= "#{my_ip}:1169" %> \
       -debugAddr=<%= p("diego.receptor.debug_addr") %> \
-      -etcdCluster=<%= p("diego.receptor.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+      -etcdCluster=<%= p("diego.receptor.etcd.machines").map{|addr| "\"#{p("diego.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -consulCluster=http://127.0.0.1:8500 \
       -username=<%= p("diego.receptor.username") %> \
       -password=<%= p("diego.receptor.password") %> \

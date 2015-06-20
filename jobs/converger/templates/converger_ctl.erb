@@ -5,7 +5,18 @@ LOG_DIR=/var/vcap/sys/log/converger
 CONF_DIR=/var/vcap/jobs/converger/config
 PIDFILE=$RUN_DIR/converger.pid
 
+CERTS_DIR=/var/vcap/jobs/converger/config/certs
+
 source /var/vcap/packages/pid_utils/pid_utils.sh
+
+<% if p("diego.etcd.require_ssl") %>
+etcd_sec_flags=" \
+   -etcdCertFile=${CERTS_DIR}/etcd/client.crt \
+   -etcdKeyFile=${CERTS_DIR}/etcd/client.key \
+   -etcdCaFile=${CERTS_DIR}/etcd/ca.crt"
+<% else %>
+etcd_sec_flags=""
+<% end %>
 
 case $1 in
 
@@ -23,8 +34,8 @@ case $1 in
     # Enable maximum OS thread concurrency
     export GOMAXPROCS=$(nproc)
 
-    exec chpst -u vcap:vcap /var/vcap/packages/converger/bin/converger \
-      -etcdCluster=<%= p("diego.converger.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+    exec chpst -u vcap:vcap /var/vcap/packages/converger/bin/converger ${etcd_sec_flags} \
+      -etcdCluster=<%= p("diego.converger.etcd.machines").map{|addr| "\"#{p("diego.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -consulCluster=http://127.0.0.1:8500 \
       -receptorTaskHandlerURL=<%= p("diego.converger.receptor_task_handler_url") %> \
       -debugAddr=<%= p("diego.converger.debug_addr") %> \

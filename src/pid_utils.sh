@@ -1,4 +1,3 @@
-
 SCRIPT=$(basename $0)
 mkdir -p /var/vcap/sys/log/monit
 

@@ -1,7 +1,10 @@
 LOG_DIR=/var/vcap/sys/log/etcd
 STORE_DIR=/var/vcap/store
 DATA_DIR=${STORE_DIR}/etcd
+CERT_DIR=/var/vcap/jobs/etcd/config/certs
 
+
+node_name="<%= name.gsub('_', '-') %>-<%= spec.index %>"
 <%
   def discover_external_ip
     networks = spec.networks.marshal_dump
@@ -21,27 +24,69 @@ DATA_DIR=${STORE_DIR}/etcd
     network.ip
   end
 
-  my_ip     = discover_external_ip
-  peers     = p("diego.etcd.machines").map { |m| "http://#{m}:4001" }.join(",")
+  protocol= p("diego.etcd.require_ssl") ? "https" : "http"
+
+  peers = p("diego.etcd.cluster").map do |zone|
+    result = []
+    for i in 0..zone["instances"]-1
+      result << "#{protocol}://#{zone["name"].gsub('_', '-')}-#{i}.etcd.service.consul:4001"
+    end
+    result
+  end.flatten.join(",")
 %>
 
-node_name="<%= name %>-<%= spec.index %>"
-listen_peer_url="http://0.0.0.0:7001"
-listen_client_url="http://0.0.0.0:4001"
-advertise_peer_url="http://<%= my_ip %>:7001"
-advertise_client_url="http://<%= my_ip %>:4001"
+protocol=<%= protocol %>
+listen_peer_url="${protocol}://0.0.0.0:7001"
+advertise_peer_url="${protocol}://${node_name}.etcd.service.consul:7001"
+listen_client_url="${protocol}://0.0.0.0:4001"
+advertise_client_url="${protocol}://${node_name}.etcd.service.consul:4001"
 this_node="${node_name}=${advertise_peer_url}"
 
+ca_cert_file=${CERT_DIR}/ca.crt
+server_cert_file=${CERT_DIR}/server.crt
+server_key_file=${CERT_DIR}/server.key
+client_cert_file=${CERT_DIR}/client.crt
+client_key_file=${CERT_DIR}/client.key
+
+<% if p("diego.etcd.require_ssl") %>
+etcdctl_sec_flags=" \
+  -ca-file=${ca_cert_file} \
+  -cert-file=${client_cert_file} \
+  -key-file=${client_key_file}"
+etcd_sec_flags=" \
+  --ca-file ${ca_cert_file} \
+  --cert-file ${server_cert_file} \
+  --key-file ${server_key_file} \
+  --peer-ca-file ${ca_cert_file} \
+  --peer-cert-file ${server_cert_file} \
+  --peer-key-file ${server_key_file}"
+<% else %>
+etcdctl_sec_flags=""
+etcd_sec_flags=""
+<% end %>
+
+create_cert_files() {
+  mkdir -p ${CERT_DIR}
+  echo -n '<%= p("diego.etcd.ca_cert_pem") %>' > ${ca_cert_file}
+  echo -n '<%= p("diego.etcd.server_cert_pem") %>' > ${server_cert_file}
+  echo -n '<%= p("diego.etcd.server_key_pem") %>' > ${server_key_file}
+  echo -n '<%= p("diego.etcd.client_cert_pem") %>' > ${client_cert_file}
+  echo -n '<%= p("diego.etcd.client_key_pem") %>' > ${client_key_file}
+
+  chown vcap:vcap ${CERT_DIR}/*.{crt,key}
+  chmod 640 ${CERT_DIR}/*.{crt,key}
+}
+
 member_list() {
-  /var/vcap/packages/etcd/etcdctl -C '<%= peers %>' member list || echo ""
+  /var/vcap/packages/etcd/etcdctl ${etcdctl_sec_flags} -C '<%= peers %>' member list || echo ""
 }
 
 member_remove() {
-  /var/vcap/packages/etcd/etcdctl -C '<%= peers %>' member remove $1
+  /var/vcap/packages/etcd/etcdctl ${etcdctl_sec_flags} -C '<%= peers %>' member remove $1
 }
 
 member_add() {
-  /var/vcap/packages/etcd/etcdctl -C '<%= peers %>' member add ${node_name} ${advertise_peer_url}
+  /var/vcap/packages/etcd/etcdctl ${etcdctl_sec_flags} -C '<%= peers %>' member add ${node_name} ${advertise_peer_url}
 }
 
 extract_cluster_from_member_list() {
@@ -51,11 +96,11 @@ extract_cluster_from_member_list() {
 }
 
 prior_cluster_had_other_nodes() {
-  [ "$( wc -l <<< "$1" )" -ne 1 ] || ! grep <%= my_ip %> <<< "$1"
+  [ "$( wc -l <<< "$1" )" -ne 1 ] || ! grep ${advertise_peer_url} <<< "$1"
 }
 
 extract_my_id() {
-  echo "$1" | grep <%= my_ip %> | sed 's/:.*//'
+  echo "$1" | grep ${advertise_peer_url} | sed 's/:.*//'
 }
 
 safe_teardown() {

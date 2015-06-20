@@ -5,7 +5,18 @@ LOG_DIR=/var/vcap/sys/log/auctioneer
 CONF_DIR=/var/vcap/jobs/auctioneer/config
 PIDFILE=$RUN_DIR/auctioneer.pid
 
+CERTS_DIR=/var/vcap/jobs/auctioneer/config/certs
+
 source /var/vcap/packages/pid_utils/pid_utils.sh
+
+<% if p("diego.etcd.require_ssl") %>
+etcd_sec_flags=" \
+   -etcdCertFile=${CERTS_DIR}/etcd/client.crt \
+   -etcdKeyFile=${CERTS_DIR}/etcd/client.key \
+   -etcdCaFile=${CERTS_DIR}/etcd/ca.crt"
+<% else %>
+etcd_sec_flags=""
+<% end %>
 
 case $1 in
 
@@ -23,8 +34,8 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec chpst -u vcap:vcap /var/vcap/packages/auctioneer/bin/auctioneer \
-      -etcdCluster=<%= p("diego.auctioneer.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+    exec chpst -u vcap:vcap /var/vcap/packages/auctioneer/bin/auctioneer ${etcd_sec_flags} \
+      -etcdCluster=<%= p("diego.auctioneer.etcd.machines").map{|addr| "\"#{p("diego.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -consulCluster=http://127.0.0.1:8500 \
       -receptorTaskHandlerURL=<%= p("diego.auctioneer.receptor_task_handler_url") %> \
       -debugAddr=<%= p("diego.auctioneer.debug_addr") %> \

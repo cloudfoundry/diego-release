@@ -1,9 +1,11 @@
 ---
 name: etcd
 templates:
+  dns_health_check.erb: bin/dns_health_check
+  drain: bin/drain
   etcd_bosh_utils.sh.erb: bin/etcd_bosh_utils.sh
   etcd_ctl.erb: bin/etcd_ctl
-  drain: bin/drain
+
 packages:
   - pid_utils
   - etcd
@@ -17,6 +19,21 @@ properties:
     default: 1000
   diego.etcd.machines:
     description: "IPs of etcd machines"
+  diego.etcd.cluster:
+    description: "Information about etcd cluster"
   diego.etcd.log_sync_timeout_in_seconds:
     description: "Time to wait for a joining node to finish syncing logs with the existing cluster in seconds"
     default: 30
+  diego.etcd.require_ssl:
+    description: "enable ssl for all communication with etcd"
+    default: true
+  diego.etcd.ca_cert_pem:
+    description: "PEM-encoded CA certificate"
+  diego.etcd.server_cert_pem:
+    description: "PEM-encoded server certificate"
+  diego.etcd.server_key_pem:
+    description: "PEM-encoded server key"
+  diego.etcd.client_cert_pem:
+    description: "PEM-encoded client certificate"
+  diego.etcd.client_key_pem:
+    description: "PEM-encoded client key"

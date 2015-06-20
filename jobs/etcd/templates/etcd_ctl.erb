@@ -11,7 +11,7 @@ source /var/vcap/jobs/etcd/bin/etcd_bosh_utils.sh
 
 wait_for_this_node_to_synchronize() {
   for i in $(seq <%= p("diego.etcd.log_sync_timeout_in_seconds") %>); do
-    if /var/vcap/packages/etcd/etcdctl -C ${advertise_client_url} ls; then
+    if /var/vcap/packages/etcd/etcdctl ${etcdctl_sec_flags} -C ${advertise_client_url} ls; then
       synced=true
       break
     fi
@@ -38,6 +38,8 @@ case $1 in
     chown -R vcap:vcap ${RUN_DIR}
     chown -R vcap:vcap ${LOG_DIR}
     chown -R vcap:vcap ${DATA_DIR}
+
+    create_cert_files
 
     # Allowed number of open file descriptors
     ulimit -n 100000
@@ -67,7 +69,7 @@ case $1 in
     # the server subsequently expects all peers to agree on the cluster members
     sleep 2
 
-    chpst -u vcap:vcap /var/vcap/packages/etcd/etcd                                             \
+    chpst -u vcap:vcap /var/vcap/packages/etcd/etcd ${etcd_sec_flags}                           \
         --name                        ${node_name}                                              \
         --data-dir                    ${DATA_DIR}                                               \
         --heartbeat-interval          <%= p("diego.etcd.heartbeat_interval_in_milliseconds") %> \
