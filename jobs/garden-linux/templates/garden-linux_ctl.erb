@@ -20,6 +20,8 @@ case $1 in
     mkdir -p $DATA_DIR
     mkdir -p $LOG_DIR
 
+    sysctl -w net.unix.max_dgram_qlen=8192
+
     <% if p("diego.garden-linux.kernel_network_tuning_enabled") == true %>
     # Use default local port range (higher ports are used for pooling)
     echo 32768 61000 > /proc/sys/net/ipv4/ip_local_port_range
