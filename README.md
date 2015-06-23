@@ -282,7 +282,7 @@ Created out/diegoCA.key
 Created out/diegoCA.crt
 ```
 
-The manifest property `properties.diego.etcd.ca_cert_pem` should be set to the certificate in `out/diegoCA.crt`
+The manifest property `properties.diego.etcd.ca_cert` should be set to the certificate in `out/diegoCA.crt`
 
 3. Create and sign a certificate for the etcd server.
 
@@ -299,8 +299,8 @@ $ ./certstrap sign etcd.service.consul --CA diegoCA
 Created out/etcd.service.consul.crt from out/etcd.service.consul.csr signed by out/diegoCA.key
 ```
 
-The manifest property `properties.diego.etcd.server_cert_pem` should be set to the certificate in `out/etcd.service.consul.crt`
-The manifest property `properties.diego.etcd.server_cert_key` should be set to the certificate in `out/etcd.service.consul.key`
+The manifest property `properties.diego.etcd.server_cert` should be set to the certificate in `out/etcd.service.consul.crt`
+The manifest property `properties.diego.etcd.server_key` should be set to the certificate in `out/etcd.service.consul.key`
 
 4. Create and sign a certificate for etcd clients.
 
@@ -317,8 +317,8 @@ $ ./certstrap sign clientName --CA diegoCA
 Created out/clientName.crt from out/clientName.csr signed by out/diegoCA.key
 ```
 
-The manifest property `properties.diego.etcd.client_cert_pem` should be set to the certificate in `out/clientName.crt`
-The manifest property `properties.diego.etcd.client_cert_key` should be set to the certificate in `out/clientName.key`
+The manifest property `properties.diego.etcd.client_cert` should be set to the certificate in `out/clientName.crt`
+The manifest property `properties.diego.etcd.client_key` should be set to the certificate in `out/clientName.key`
 
 ### Custom SSL Certificate Generation
 

@@ -67,11 +67,11 @@ etcd_sec_flags=""
 
 create_cert_files() {
   mkdir -p ${CERT_DIR}
-  echo -n '<%= p("diego.etcd.ca_cert_pem") %>' > ${ca_cert_file}
-  echo -n '<%= p("diego.etcd.server_cert_pem") %>' > ${server_cert_file}
-  echo -n '<%= p("diego.etcd.server_key_pem") %>' > ${server_key_file}
-  echo -n '<%= p("diego.etcd.client_cert_pem") %>' > ${client_cert_file}
-  echo -n '<%= p("diego.etcd.client_key_pem") %>' > ${client_key_file}
+  echo -n '<%= p("diego.etcd.ca_cert") %>' > ${ca_cert_file}
+  echo -n '<%= p("diego.etcd.server_cert") %>' > ${server_cert_file}
+  echo -n '<%= p("diego.etcd.server_key") %>' > ${server_key_file}
+  echo -n '<%= p("diego.etcd.client_cert") %>' > ${client_cert_file}
+  echo -n '<%= p("diego.etcd.client_key") %>' > ${client_key_file}
 
   chown vcap:vcap ${CERT_DIR}/*.{crt,key}
   chmod 640 ${CERT_DIR}/*.{crt,key}

@@ -441,11 +441,11 @@ properties:
           instances: (( instance_count_overrides.etcd_z2.instances || 1 ))
         - name: "etcd_z3"
           instances: (( instance_count_overrides.etcd_z3.instances || 1 ))
-      ca_cert_pem: (( property_overrides.etcd.ca_cert_pem ))
-      server_cert_pem: (( property_overrides.etcd.server_cert_pem ))
-      server_key_pem: (( property_overrides.etcd.server_key_pem ))
-      client_cert_pem: (( property_overrides.etcd.client_cert_pem ))
-      client_key_pem: (( property_overrides.etcd.client_key_pem ))
+      ca_cert: (( property_overrides.etcd.ca_cert ))
+      server_cert: (( property_overrides.etcd.server_cert ))
+      server_key: (( property_overrides.etcd.server_key ))
+      client_cert: (( property_overrides.etcd.client_cert ))
+      client_key: (( property_overrides.etcd.client_key ))
     executor:
       allow_privileged: (( property_overrides.executor.allow_privileged || nil ))
       drain_timeout_in_seconds: (( property_overrides.executor.drain_timeout_in_seconds || nil ))

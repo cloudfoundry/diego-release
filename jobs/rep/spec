@@ -109,9 +109,9 @@ properties:
   diego.etcd.require_ssl:
     description: "enable ssl for all communication with etcd"
     default: true
-  diego.etcd.ca_cert_pem:
+  diego.etcd.ca_cert:
     description: "PEM-encoded CA certificate"
-  diego.etcd.client_cert_pem:
+  diego.etcd.client_cert:
     description: "PEM-encoded client certificate"
-  diego.etcd.client_key_pem:
+  diego.etcd.client_key:
     description: "PEM-encoded client key"

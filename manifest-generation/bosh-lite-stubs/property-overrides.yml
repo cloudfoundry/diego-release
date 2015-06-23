@@ -3,7 +3,7 @@ property_overrides:
     log_level: debug
   etcd:
     require_ssl: false
-    ca_cert_pem: |
+    ca_cert: |
       -----BEGIN CERTIFICATE-----
       MIIFAzCCAu2gAwIBAgIBATALBgkqhkiG9w0BAQswEzERMA8GA1UEAxMIRGllZ28g
       Q0EwHhcNMTUwNjE3MjMzNTA4WhcNMjUwNjE3MjMzNTE1WjATMREwDwYDVQQDEwhE
@@ -33,7 +33,7 @@ property_overrides:
       HdGkcEa1aPnWwWN54//H75d4blKnZw14U7NIrheNlO92zpsHZIBCbQk4eeBkZh+0
       7qyaN9fHjkiDlMRZkKf0o4RalSgMaLY2CN/jW/xg8T/1GnGbQXMy
       -----END CERTIFICATE-----
-    server_cert_pem: |
+    server_cert: |
       -----BEGIN CERTIFICATE-----
       MIIEYTCCAkugAwIBAgIQRKGwElEY9j4KXG4T9bbMQDALBgkqhkiG9w0BAQswEzER
       MA8GA1UEAxMIRGllZ28gQ0EwHhcNMTUwNjE4MTkzODQ4WhcNMTcwNjE4MTkzODQ5
@@ -60,7 +60,7 @@ property_overrides:
       c0X/mGkqcEq6iZzvA2O2bvclm5wqt+qfrmAlRV/HMNDMf8fUZc7j+u2hbZFfufPz
       lhFZpCT/1A65eP+ycs2paTt917e+
       -----END CERTIFICATE-----
-    server_key_pem: |
+    server_key: |
       -----BEGIN RSA PRIVATE KEY-----
       MIIEowIBAAKCAQEAsYSpy58ZgTVvHlWTLWH67RriRL0Vc6PxL7L++AmKmnfqURN9
       4rJD3CopoPuoyVrMmyFGWdQIAHrgzXxsIuu1OED7qH5p4kR6XG2u65VEYFQ1cKV/
@@ -88,7 +88,7 @@ property_overrides:
       RDy2gfx+VK8G6Hg5ggNcuUUyqZGHagAN6T/pWEFbVm6eSBG3lXTf9WbyOKC1yzXQ
       r/qDXk9wKWMFR1YM9gPkzu22TY9t7VJ+/ZHneOU/qUmnl9ikNlMw
       -----END RSA PRIVATE KEY-----
-    client_cert_pem: |
+    client_cert: |
       -----BEGIN CERTIFICATE-----
       MIIEJjCCAhCgAwIBAgIQWvYy/xzeSPeLnpSPn0iVnzALBgkqhkiG9w0BAQswEzER
       MA8GA1UEAxMIRGllZ28gQ0EwHhcNMTUwNjE3MjMzNzM1WhcNMTcwNjE3MjMzNzM2
@@ -114,7 +114,7 @@ property_overrides:
       MiVdAGZ/RESF5KR2fUg9wRJq5P3w9Pw2r4m6avEl/zfV+zGOLTZl9jjP/p3DHIW0
       HEZJ2FIfSlsiUg==
       -----END CERTIFICATE-----
-    client_key_pem: |
+    client_key: |
       -----BEGIN RSA PRIVATE KEY-----
       MIIEowIBAAKCAQEAxZeGO4lBX8LwGyMwDYbz0IOC1rFS2msulPenPjjGB/DCg0RL
       zdlc7408Vn0WTE36/QcrdjcXTNQFpMFD2k412/TZU/1Ixii+wCjAnuYeO/YJknYL
