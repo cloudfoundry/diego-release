@@ -188,8 +188,8 @@ as you switch in and out of the directory.
 1. Do the BOSH dance:
 
         cd ~/workspace/cf-release
-        bosh create release --force
-        bosh -n upload release
+        bosh create release --force &&
+        bosh -n upload release &&
         bosh -n deploy
 
 1. Generate and target diego's manifest:
@@ -208,8 +208,8 @@ as you switch in and out of the directory.
 
 1. Dance some more:
 
-        bosh create release --force
-        bosh -n upload release
+        bosh create release --force &&
+        bosh -n upload release &&
         bosh -n deploy
 
 1. Enable Docker support
