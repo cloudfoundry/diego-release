@@ -33,3 +33,6 @@ properties:
   acceptance_tests.verbose:
     default: false
     description: Whether to pass the -v flag to cf-acceptance-tests
+  acceptance_tests.skip_internet_tests:
+    default: false
+    description: Skip tests that require internet connectivity

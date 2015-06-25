@@ -32,7 +32,8 @@ packagesToSkip+=<%= p("acceptance_tests.run_ssh_tests") ? "" : "ssh," %>
 
 nodes=<%= properties.acceptance_tests.nodes %>
 verbose=<%= properties.acceptance_tests.verbose ? "-v" : "" %>
-bin/test -randomizeAllSpecs $verbose -skipPackage=$packagesToSkip -nodes=$nodes -keepGoing || EXITSTATUS=$?
+tags=<%= properties.acceptance_tests.skip_internet_tests ? "-tags=noInternet" : "" %>
+bin/test -randomizeAllSpecs $verbose -skipPackage=$packagesToSkip $tags -nodes=$nodes -keepGoing || EXITSTATUS=$?
 
 echo "Acceptance Tests Complete; exit status: $EXITSTATUS"
 
