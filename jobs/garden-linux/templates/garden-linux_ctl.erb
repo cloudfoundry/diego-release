@@ -51,6 +51,7 @@ case $1 in
       -graph=/var/vcap/data/garden-linux/graph \
       -containerGraceTime=1h \
       -portPoolSize=4534 \
+      -mtu=<%= p("diego.garden-linux.mtu") %> \
       <% if_p("diego.garden-linux.insecure_docker_registry_list") do |list| %> \
       -insecureDockerRegistryList=<%= list.join(',') %> \
       <% end %> \

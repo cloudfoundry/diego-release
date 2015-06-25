@@ -44,3 +44,6 @@ properties:
   diego.garden-linux.insecure_docker_registry_list:
     description: "Comma-separated list of docker registries to allow connection to even if they are not secure"
 
+  diego.garden-linux.mtu:
+    description: "Interface MTU size"
+    default: 1500
