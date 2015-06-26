@@ -222,11 +222,8 @@ Now you can either run the DATs or deploy your own app.
 ###<a name="smokes-and-dats"></a> Running Smoke Tests & DATs
 
 You can test that your diego-release deployment is working and integrating with cf-release
-by running the lightweight `diego-smoke-tests` or the more thorough `diego-acceptance-tests`.
+by running the lightweight [diego-smoke-tests] (https://github.com/cloudfoundry-incubator/diego-smoke-tests) or the more thorough [diego-acceptance-tests] (https://github.com/cloudfoundry-incubator/diego-acceptance-tests).
 Follow the READMEs in their respective repositories:
-
-- `src/github.com/cloudfoundry-incubator/diego-smoke-tests`
-- `src/github.com/cloudfoundry-incubator/diego-acceptance-tests`
 
 ---
 ### Pushing an Application to Diego
