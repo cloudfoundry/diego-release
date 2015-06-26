@@ -40,6 +40,7 @@ sync_package docker_app_lifecycle    -app  github.com/cloudfoundry-incubator/doc
 sync_package file_server             -app  github.com/cloudfoundry-incubator/file-server/cmd/... &
 sync_package nsync                   -app  github.com/cloudfoundry-incubator/nsync/cmd/... &
 sync_package receptor                -app  github.com/cloudfoundry-incubator/receptor/cmd/... &
+sync_package bbs                     -app  github.com/cloudfoundry-incubator/bbs/cmd/... &
 sync_package rep                     -app  github.com/cloudfoundry-incubator/rep/cmd/... &
 sync_package route_emitter           -app  github.com/cloudfoundry-incubator/route-emitter/cmd/... &
 sync_package runtime_metrics_server  -app  github.com/cloudfoundry-incubator/runtime-metrics-server/cmd/... &

@@ -10,7 +10,7 @@ packages:
 
 properties:
   diego.runtime_metrics_server.etcd.machines:
-    description: "IPs pointing to the ETCD cluster"
+    description: "Addresses pointing to the ETCD cluster"
   diego.runtime_metrics_server.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17010"

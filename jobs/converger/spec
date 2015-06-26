@@ -13,7 +13,7 @@ packages:
 
 properties:
   diego.converger.etcd.machines:
-    description: "IPs pointing to the ETCD cluster"
+    description: "Addresses pointing to the ETCD cluster"
   diego.converger.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17002"

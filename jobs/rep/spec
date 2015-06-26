@@ -14,7 +14,7 @@ packages:
 
 properties:
   diego.rep.etcd.machines:
-    description: "IPs pointing to the ETCD cluster"
+    description: "Addresses pointing to the ETCD cluster"
   diego.rep.stack:
     description: "The stack for which to handle requests"
     default: "cflinuxfs2"

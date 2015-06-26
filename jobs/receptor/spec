@@ -14,7 +14,7 @@ packages:
 
 properties:
   diego.receptor.etcd.machines:
-    description: "IPs pointing to the ETCD cluster"
+    description: "Addresses pointing to the ETCD cluster"
 
   diego.receptor.listen_addr:
     description: "address at which to serve API requests"
@@ -62,3 +62,6 @@ properties:
     description: "PEM-encoded client certificate"
   diego.etcd.client_key:
     description: "PEM-encoded client key"
+
+  diego.bbs.api_url:
+    description: "Address to the BBS Server"

@@ -75,18 +75,18 @@ resource_pools:
     network: diego3
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.cell_z3.cloud_properties ))
-  - name: etcd_z1
+  - name: database_z1
     network: diego1
     stemcell: (( iaas_settings.stemcell ))
-    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.etcd_z1.cloud_properties ))
-  - name: etcd_z2
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.database_z1.cloud_properties ))
+  - name: database_z2
     network: diego2
     stemcell: (( iaas_settings.stemcell ))
-    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.etcd_z2.cloud_properties ))
-  - name: etcd_z3
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.database_z2.cloud_properties ))
+  - name: database_z3
     network: diego3
     stemcell: (( iaas_settings.stemcell ))
-    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.etcd_z3.cloud_properties ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.database_z3.cloud_properties ))
   - name: route_emitter_z1
     network: diego1
     stemcell: (( iaas_settings.stemcell ))
@@ -101,11 +101,11 @@ resource_pools:
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.route_emitter_z3.cloud_properties ))
 
 jobs:
-  - name: etcd_z1
+  - name: database_z1
     templates: (( base_job_templates.etcd additional_jobs.etcd ))
-    instances: (( instance_count_overrides.etcd_z1.instances || 1 ))
-    persistent_disk: (( persistent_disk_overrides.etcd_z1 || 1024 ))
-    resource_pool: etcd_z1
+    instances: (( instance_count_overrides.database_z1.instances || 1 ))
+    persistent_disk: (( persistent_disk_overrides.database_z1 || 1024 ))
+    resource_pool: database_z1
     networks:
       - name: diego1
     update:
@@ -116,12 +116,13 @@ jobs:
         agent:
           services:
             etcd: {}
+            bbs: {}
 
-  - name: etcd_z2
+  - name: database_z2
     templates: (( base_job_templates.etcd additional_jobs.etcd ))
-    instances: (( instance_count_overrides.etcd_z2.instances || 1 ))
-    persistent_disk: (( persistent_disk_overrides.etcd_z2 || 1024 ))
-    resource_pool: etcd_z2
+    instances: (( instance_count_overrides.database_z2.instances || 1 ))
+    persistent_disk: (( persistent_disk_overrides.database_z2 || 1024 ))
+    resource_pool: database_z2
     networks:
       - name: diego2
     update:
@@ -132,12 +133,13 @@ jobs:
         agent:
           services:
             etcd: {}
+            bbs: {}
 
-  - name: etcd_z3
+  - name: database_z3
     templates: (( base_job_templates.etcd additional_jobs.etcd ))
-    instances: (( instance_count_overrides.etcd_z3.instances || 1 ))
-    persistent_disk: (( persistent_disk_overrides.etcd_z3 || 1024 ))
-    resource_pool: etcd_z3
+    instances: (( instance_count_overrides.database_z3.instances || 1 ))
+    persistent_disk: (( persistent_disk_overrides.database_z3 || 1024 ))
+    resource_pool: database_z3
     networks:
       - name: diego3
     update:
@@ -148,6 +150,7 @@ jobs:
         agent:
           services:
             etcd: {}
+            bbs: {}
 
   - name: brain_z1
     templates: (( base_job_templates.brain additional_jobs.brain ))
@@ -427,6 +430,8 @@ properties:
       etcd:
         machines: ["etcd.service.consul"]
       log_level: (( property_overrides.auctioneer.log_level || nil ))
+    bbs:
+      api_url: (( "http://bbs.service.consul:8888" ))
     converger:
       etcd:
         machines: ["etcd.service.consul"]
@@ -435,12 +440,12 @@ properties:
       require_ssl: (( property_overrides.etcd.require_ssl || true ))
       machines: ["etcd.service.consul"]
       cluster:
-        - name: "etcd_z1"
-          instances: (( instance_count_overrides.etcd_z1.instances || 1 ))
-        - name: "etcd_z2"
-          instances: (( instance_count_overrides.etcd_z2.instances || 1 ))
-        - name: "etcd_z3"
-          instances: (( instance_count_overrides.etcd_z3.instances || 1 ))
+        - name: "database_z1"
+          instances: (( instance_count_overrides.database_z1.instances || 1 ))
+        - name: "database_z2"
+          instances: (( instance_count_overrides.database_z2.instances || 1 ))
+        - name: "database_z3"
+          instances: (( instance_count_overrides.database_z3.instances || 1 ))
       ca_cert: (( property_overrides.etcd.ca_cert ))
       server_cert: (( property_overrides.etcd.server_cert ))
       server_key: (( property_overrides.etcd.server_key ))
@@ -616,6 +621,8 @@ base_job_templates:
       release: diego
   etcd:
     - name: etcd
+      release: diego
+    - name: bbs
       release: diego
     - name: consul_agent
       release: cf

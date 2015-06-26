@@ -18,7 +18,7 @@ properties:
     description: "Time without recieving a heartbeat before peer should attempt to become leader in milliseconds. See https://coreos.com/docs/cluster-management/debugging/etcd-tuning"
     default: 1000
   diego.etcd.machines:
-    description: "IPs of etcd machines"
+    description: "Addresses of etcd machines"
   diego.etcd.cluster:
     description: "Information about etcd cluster"
   diego.etcd.log_sync_timeout_in_seconds:

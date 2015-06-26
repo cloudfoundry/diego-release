@@ -1,13 +1,13 @@
 #!/bin/bash -e
 
-RUN_DIR=/var/vcap/sys/run/receptor
-LOG_DIR=/var/vcap/sys/log/receptor
-CONF_DIR=/var/vcap/jobs/receptor/config
-PIDFILE=$RUN_DIR/receptor.pid
-DATA_DIR=/var/vcap/data/receptor
+RUN_DIR=/var/vcap/sys/run/bbs
+LOG_DIR=/var/vcap/sys/log/bbs
+CONF_DIR=/var/vcap/jobs/bbs/config
+PIDFILE=$RUN_DIR/bbs.pid
+DATA_DIR=/var/vcap/data/bbs
 TMP_DIR=$DATA_DIR/tmp
 
-CERTS_DIR=/var/vcap/jobs/receptor/config/certs
+CERTS_DIR=/var/vcap/jobs/bbs/config/certs
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
@@ -45,7 +45,7 @@ etcd_sec_flags=""
 case $1 in
 
   start)
-    pid_guard $PIDFILE "receptor"
+    pid_guard $PIDFILE "bbs"
 
     mkdir -p $RUN_DIR
     chown -R vcap:vcap $RUN_DIR
@@ -83,24 +83,13 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec chpst -u vcap:vcap /var/vcap/packages/receptor/bin/receptor ${etcd_sec_flags} \
-      -address=<%= p("diego.receptor.listen_addr") %> \
-      -bbsAddress=<%= p("diego.bbs.api_url") %> \
-      -taskHandlerAddress=<%= "#{my_ip}:1169" %> \
-      -debugAddr=<%= p("diego.receptor.debug_addr") %> \
-      -etcdCluster=<%= p("diego.receptor.etcd.machines").map{|addr| "\"#{p("diego.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
-      -consulCluster=http://127.0.0.1:8500 \
-      -username=<%= p("diego.receptor.username") %> \
-      -password=<%= p("diego.receptor.password") %> \
-      -registerWithRouter=<%= p("diego.receptor.register_with_router") %> \
-      -domainNames=<%= p("diego.receptor.domain_names").join(",") %> \
-      -natsAddresses=<%= p("diego.receptor.nats.machines").collect { |addr| "#{addr}:#{p("diego.receptor.nats.port")}" }.join(",") %> \
-      -natsUsername=<%= p("diego.receptor.nats.username") %> \
-      -natsPassword=<%= p("diego.receptor.nats.password") %> \
-      -corsEnabled=<%= p("diego.receptor.cors_enabled") %> \
-      -logLevel=<%= p("diego.receptor.log_level") %> \
-      2> >(tee -a $LOG_DIR/receptor.stderr.log | logger -p user.error -t vcap.receptor) \
-      1> >(tee -a $LOG_DIR/receptor.stdout.log | logger -p user.info -t vcap.receptor)
+    exec chpst -u vcap:vcap /var/vcap/packages/bbs/bin/bbs ${etcd_sec_flags} \
+      -address=<%= p("diego.bbs.listen_addr") %> \
+      -debugAddr=<%= p("diego.bbs.debug_addr") %> \
+      -etcdCluster=<%= p("diego.etcd.machines").map{|addr| "\"#{p("diego.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
+      -logLevel=<%= p("diego.bbs.log_level") %> \
+      2> >(tee -a $LOG_DIR/bbs.stderr.log | logger -p user.error -t vcap.bbs) \
+      1> >(tee -a $LOG_DIR/bbs.stdout.log | logger -p user.info -t vcap.bbs)
 
     ;;
 
@@ -110,7 +99,7 @@ case $1 in
     ;;
 
   *)
-    echo "Usage: receptor_ctl {start|stop}"
+    echo "Usage: bbs_ctl {start|stop}"
 
     ;;
 
