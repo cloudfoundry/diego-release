@@ -5,13 +5,22 @@ This repo is a [BOSH](https://github.com/cloudfoundry/bosh) release for deployin
 and associated tasks for testing a Diego deployment.  Diego builds out the new runtime
 architecture for Cloud Foundry, replacing the DEAs and Health Manager.
 
-This release relies on a separate deployment to provide
+This release relies on a separate deployment to provide [Consul](https://github.com/hashicorp/consul),
 [NATS](https://github.com/apcera/gnatsd) and
 [Loggregator](https://github.com/cloudfoundry/loggregator). In practice these
 come from [cf-release](https://github.com/cloudfoundry/cf-release).
 
-**Learn more about Diego and its components at
-[diego-design-notes](https://github.com/cloudfoundry-incubator/diego-design-notes).**
+Additional Diego resources:
+
+  - The [Diego Design Notes](https://github.com/cloudfoundry-incubator/diego-design-notes) present an overview of Diego, and links to the various Diego components.
+  - The [Receptor API Docs](https://github.com/cloudfoundry-incubator/receptor/tree/master/doc) describe the public API to  Diego, which clients such as CF's Cloud Controller and the Lattice CLI use to run workloads on Diego.
+  - The [Migration Guide](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/migrating-to-diego.md) describes how developers and operators can manage a transition from the DEAs to Diego.
+  - The [Docker Support Notes](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/docker-support.md) describe how Diego runs Docker-image-based apps in Cloud Foundry.
+  - The [SSH Access Notes](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/ssh-access-and-policy.md) describe how to use the Diego-SSH CLI plugin to connect to app instances running on Diego.
+  - The [Diego-CF Compatibility Log](https://github.com/cloudfoundry-incubator/diego-cf-compatibility) records which versions of cf-release and diego-release are compatible, according to the Diego team's [automated testing pipeline](https://concourse.diego-ci.cf-app.com/?groups=diego).
+  - [Diego's Pivotal Tracker project](https://www.pivotaltracker.com/n/projects/1003146) shows what we're working on these days.
+
+[Lattice](http://lattice.cf) is an easy-to-deploy distribution of Diego designed for experimentation with the next-generation core of Cloud Foundry.
 
 ----
 ## Developer Workflow
