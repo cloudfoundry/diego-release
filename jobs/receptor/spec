@@ -13,9 +13,6 @@ packages:
   - receptor
 
 properties:
-  diego.receptor.etcd.machines:
-    description: "Addresses pointing to the ETCD cluster"
-
   diego.receptor.listen_addr:
     description: "address at which to serve API requests"
     default: "0.0.0.0:8888"
@@ -53,15 +50,18 @@ properties:
     description: "Log level"
     default: "info"
 
-  diego.etcd.require_ssl:
+  diego.receptor.etcd.machines:
+    description: "Addresses pointing to the ETCD cluster"
+
+  diego.receptor.etcd.require_ssl:
     description: "enable ssl for all communication with etcd"
     default: true
-  diego.etcd.ca_cert:
+  diego.receptor.etcd.ca_cert:
     description: "PEM-encoded CA certificate"
-  diego.etcd.client_cert:
+  diego.receptor.etcd.client_cert:
     description: "PEM-encoded client certificate"
-  diego.etcd.client_key:
+  diego.receptor.etcd.client_key:
     description: "PEM-encoded client key"
 
-  diego.bbs.api_url:
+  diego.receptor.bbs.api_url:
     description: "Address to the BBS Server"

@@ -13,8 +13,6 @@ packages:
   - rep
 
 properties:
-  diego.rep.etcd.machines:
-    description: "Addresses pointing to the ETCD cluster"
   diego.rep.stack:
     description: "The stack for which to handle requests"
     default: "cflinuxfs2"
@@ -106,12 +104,15 @@ properties:
     description: "Maximum number of concurrent health check operations."
     default: 64
 
-  diego.etcd.require_ssl:
+  diego.rep.etcd.machines:
+    description: "Addresses pointing to the ETCD cluster"
+
+  diego.rep.etcd.require_ssl:
     description: "enable ssl for all communication with etcd"
     default: true
-  diego.etcd.ca_cert:
+  diego.rep.etcd.ca_cert:
     description: "PEM-encoded CA certificate"
-  diego.etcd.client_cert:
+  diego.rep.etcd.client_cert:
     description: "PEM-encoded client certificate"
-  diego.etcd.client_key:
+  diego.rep.etcd.client_key:
     description: "PEM-encoded client key"

@@ -13,7 +13,7 @@ CERTS_DIR=/var/vcap/jobs/rep/config/certs/
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-<% if p("diego.etcd.require_ssl") %>
+<% if p("diego.rep.etcd.require_ssl") %>
 etcd_sec_flags=" \
    -etcdCertFile=${CERTS_DIR}/etcd/client.crt \
    -etcdKeyFile=${CERTS_DIR}/etcd/client.key \
@@ -68,7 +68,7 @@ case $1 in
     export GOMAXPROCS=$(nproc)
 
     chpst -u vcap:vcap /var/vcap/packages/rep/bin/rep ${etcd_sec_flags} \
-      -etcdCluster=<%= p("diego.rep.etcd.machines").map{|addr| "\"#{p("diego.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
+      -etcdCluster=<%= p("diego.rep.etcd.machines").map{|addr| "\"#{p("diego.rep.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -consulCluster=http://127.0.0.1:8500 \
       -receptorTaskHandlerURL=<%= p("diego.rep.receptor_task_handler_url") %> \
       -debugAddr=<%= p("diego.rep.debug_addr") %> \

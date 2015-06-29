@@ -251,7 +251,7 @@ by running the lightweight [diego-smoke-tests](https://github.com/cloudfoundry-i
 ### SSL Configuration
 
 Diego Release can be configured to require SSL for communication with etcd.
-To enable or disable SSL communication with etcd, the `properties.diego.etcd.require_ssl` property should be set to true or false.
+To enable or disable SSL communication with etcd, the `properties.diego.etcd.require_ssl` and `properties.diego.<component>.etcd.require_ssl` properties should be set to true or false.
 By default, Diego has `require_ssl` set to to true.
 When `require_ssl` is set to true, the operator must generate SSL certificates and keys for the etcd server and its clients.
 

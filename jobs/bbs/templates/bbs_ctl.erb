@@ -11,7 +11,7 @@ CERTS_DIR=/var/vcap/jobs/bbs/config/certs
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-<% if p("diego.etcd.require_ssl") %>
+<% if p("diego.bbs.etcd.require_ssl") %>
 etcd_sec_flags=" \
    -etcdCertFile=${CERTS_DIR}/etcd/client.crt \
    -etcdKeyFile=${CERTS_DIR}/etcd/client.key \
@@ -86,7 +86,7 @@ case $1 in
     exec chpst -u vcap:vcap /var/vcap/packages/bbs/bin/bbs ${etcd_sec_flags} \
       -address=<%= p("diego.bbs.listen_addr") %> \
       -debugAddr=<%= p("diego.bbs.debug_addr") %> \
-      -etcdCluster=<%= p("diego.etcd.machines").map{|addr| "\"#{p("diego.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
+      -etcdCluster=<%= p("diego.bbs.etcd.machines").map{|addr| "\"#{p("diego.bbs.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -logLevel=<%= p("diego.bbs.log_level") %> \
       2> >(tee -a $LOG_DIR/bbs.stderr.log | logger -p user.error -t vcap.bbs) \
       1> >(tee -a $LOG_DIR/bbs.stdout.log | logger -p user.info -t vcap.bbs)

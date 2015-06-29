@@ -23,15 +23,15 @@ properties:
     description: "Log level"
     default: "info"
 
-  diego.etcd.machines:
+  diego.bbs.etcd.machines:
     description: "Addresses pointing to the ETCD cluster"
 
-  diego.etcd.require_ssl:
+  diego.bbs.etcd.require_ssl:
     description: "enable ssl for all communication with etcd"
     default: true
-  diego.etcd.ca_cert:
+  diego.bbs.etcd.ca_cert:
     description: "PEM-encoded CA certificate"
-  diego.etcd.client_cert:
+  diego.bbs.etcd.client_cert:
     description: "PEM-encoded client certificate"
-  diego.etcd.client_key:
+  diego.bbs.etcd.client_key:
     description: "PEM-encoded client key"

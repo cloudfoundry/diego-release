@@ -9,7 +9,7 @@ CERTS_DIR=/var/vcap/jobs/converger/config/certs
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-<% if p("diego.etcd.require_ssl") %>
+<% if p("diego.converger.etcd.require_ssl") %>
 etcd_sec_flags=" \
    -etcdCertFile=${CERTS_DIR}/etcd/client.crt \
    -etcdKeyFile=${CERTS_DIR}/etcd/client.key \
@@ -35,7 +35,7 @@ case $1 in
     export GOMAXPROCS=$(nproc)
 
     exec chpst -u vcap:vcap /var/vcap/packages/converger/bin/converger ${etcd_sec_flags} \
-      -etcdCluster=<%= p("diego.converger.etcd.machines").map{|addr| "\"#{p("diego.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
+      -etcdCluster=<%= p("diego.converger.etcd.machines").map{|addr| "\"#{p("diego.converger.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -consulCluster=http://127.0.0.1:8500 \
       -receptorTaskHandlerURL=<%= p("diego.converger.receptor_task_handler_url") %> \
       -debugAddr=<%= p("diego.converger.debug_addr") %> \

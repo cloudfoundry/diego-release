@@ -27,12 +27,12 @@ properties:
     description: "URL for task completion call back"
     default: http://receptor.service.consul:1169
 
-  diego.etcd.require_ssl:
+  diego.auctioneer.etcd.require_ssl:
     description: "enable ssl for all communication with etcd"
     default: true
-  diego.etcd.ca_cert:
+  diego.auctioneer.etcd.ca_cert:
     description: "PEM-encoded CA certificate"
-  diego.etcd.client_cert:
+  diego.auctioneer.etcd.client_cert:
     description: "PEM-encoded client certificate"
-  diego.etcd.client_key:
+  diego.auctioneer.etcd.client_key:
     description: "PEM-encoded client key"

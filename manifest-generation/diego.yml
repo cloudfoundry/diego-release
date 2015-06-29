@@ -429,12 +429,25 @@ properties:
     auctioneer:
       etcd:
         machines: ["etcd.service.consul"]
+        require_ssl: (( property_overrides.etcd.require_ssl || true ))
+        ca_cert: (( property_overrides.etcd.ca_cert ))
+        client_cert: (( property_overrides.etcd.client_cert ))
+        client_key: (( property_overrides.etcd.client_key ))
       log_level: (( property_overrides.auctioneer.log_level || nil ))
     bbs:
-      api_url: (( "http://bbs.service.consul:8888" ))
+      etcd:
+        machines: ["etcd.service.consul"]
+        require_ssl: (( property_overrides.etcd.require_ssl || true ))
+        ca_cert: (( property_overrides.etcd.ca_cert ))
+        client_cert: (( property_overrides.etcd.client_cert ))
+        client_key: (( property_overrides.etcd.client_key ))
     converger:
       etcd:
         machines: ["etcd.service.consul"]
+        require_ssl: (( property_overrides.etcd.require_ssl || true ))
+        ca_cert: (( property_overrides.etcd.ca_cert ))
+        client_cert: (( property_overrides.etcd.client_cert ))
+        client_key: (( property_overrides.etcd.client_key ))
       log_level: (( property_overrides.converger.log_level || nil ))
     etcd:
       require_ssl: (( property_overrides.etcd.require_ssl || true ))
@@ -482,12 +495,16 @@ properties:
         external_port: (( config_from_cf.cc.external_port ))
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
-      etcd:
-        machines: ["etcd.service.consul"]
       log_level: (( property_overrides.nsync.log_level || nil ))
     receptor:
+      bbs:
+        api_url: (( "http://bbs.service.consul:8888" ))
       etcd:
         machines: ["etcd.service.consul"]
+        require_ssl: (( property_overrides.etcd.require_ssl || true ))
+        ca_cert: (( property_overrides.etcd.ca_cert ))
+        client_cert: (( property_overrides.etcd.client_cert ))
+        client_key: (( property_overrides.etcd.client_key ))
       nats:
         machines: (( config_from_cf.nats.machines ))
         username: (( config_from_cf.nats.user ))
@@ -502,6 +519,10 @@ properties:
     rep:
       etcd:
         machines: ["etcd.service.consul"]
+        require_ssl: (( property_overrides.etcd.require_ssl || true ))
+        ca_cert: (( property_overrides.etcd.ca_cert ))
+        client_cert: (( property_overrides.etcd.client_cert ))
+        client_key: (( property_overrides.etcd.client_key ))
       log_level: (( property_overrides.rep.log_level || nil ))
     route_emitter:
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
@@ -514,6 +535,10 @@ properties:
     runtime_metrics_server:
       etcd:
         machines: ["etcd.service.consul"]
+        require_ssl: (( property_overrides.etcd.require_ssl || true ))
+        ca_cert: (( property_overrides.etcd.ca_cert ))
+        client_cert: (( property_overrides.etcd.client_cert ))
+        client_key: (( property_overrides.etcd.client_key ))
       nats:
         machines: (( config_from_cf.nats.machines ))
         username: (( config_from_cf.nats.user ))
