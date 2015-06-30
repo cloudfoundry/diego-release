@@ -9,6 +9,15 @@ PIDFILE=$RUN_DIR/runtime_metrics_server.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
+<% if p("diego.runtime_metrics_server.etcd.require_ssl") %>
+etcd_sec_flags=" \
+   -etcdCertFile=${CONF_DIR}/certs/etcd/client.crt \
+   -etcdKeyFile=${CONF_DIR}/certs/etcd/client.key \
+   -etcdCaFile=${CONF_DIR}/certs/etcd/ca.crt"
+<% else %>
+etcd_sec_flags=""
+<% end %>
+
 case $1 in
 
   start)
@@ -29,15 +38,14 @@ case $1 in
 
     echo $$ > /var/vcap/sys/run/runtime_metrics_server/runtime_metrics_server.pid
 
-    exec chpst -u vcap:vcap /var/vcap/packages/runtime_metrics_server/bin/runtime-metrics-server \
-      -etcdCluster=<%= p("diego.runtime_metrics_server.etcd.machines").map{|addr| "\"http://#{addr}:4001\""}.join(",")%> \
+    exec chpst -u vcap:vcap /var/vcap/packages/runtime_metrics_server/bin/runtime-metrics-server ${etcd_sec_flags} \
+      -etcdCluster=<%= p("diego.runtime_metrics_server.etcd.machines").map{|addr| "\"#{p("diego.runtime_metrics_server.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -diegoAPIURL=<%= p("diego.runtime_metrics_server.diego_api_url")%> \
       -consulCluster=http://127.0.0.1:8500 \
       -debugAddr=<%= p("diego.runtime_metrics_server.debug_addr") %> \
       -logLevel=<%= p("diego.runtime_metrics_server.log_level") %> \
       2> >(tee -a $LOG_DIR/runtime_metrics_server.stderr.log | logger -p user.error -t vcap.runtime-metrics-server) \
       1> >(tee -a $LOG_DIR/runtime_metrics_server.stdout.log | logger -p user.info -t vcap.runtime-metrics-server)
-
 
     ;;
 
