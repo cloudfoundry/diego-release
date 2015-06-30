@@ -1,0 +1,8 @@
+---
+name: healthcheck
+
+dependencies:
+  - golang_1.4
+
+files:
+  - github.com/cloudfoundry-incubator/healthcheck/cmd/healthcheck/*.go # gosub

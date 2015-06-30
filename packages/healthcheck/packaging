@@ -1,0 +1,19 @@
+set -e
+
+mkdir -p ${BOSH_INSTALL_TARGET}/src
+cp -a . ${BOSH_INSTALL_TARGET}/src
+export GOPATH=$BOSH_INSTALL_TARGET
+
+export GOROOT=$(readlink -nf /var/vcap/packages/golang_1.4)
+export PATH=$GOROOT/bin:$PATH
+
+CGO_ENABLED=0 go build -a -installsuffix static github.com/cloudfoundry-incubator/healthcheck/cmd/healthcheck
+
+for binary in healthcheck; do
+    ldd $binary && echo "$binary must be statically linked" && false
+done
+
+tar -czf ${BOSH_INSTALL_TARGET}/healthcheck.tgz healthcheck
+
+# clean up source artifacts
+rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg

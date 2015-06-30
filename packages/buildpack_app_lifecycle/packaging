@@ -9,13 +9,13 @@ export PATH=$GOROOT/bin:$PATH
 
 CGO_ENABLED=0 go build -a -installsuffix static github.com/cloudfoundry-incubator/buildpack_app_lifecycle/builder
 CGO_ENABLED=0 go build -a -installsuffix static github.com/cloudfoundry-incubator/buildpack_app_lifecycle/launcher
-CGO_ENABLED=0 go build -a -installsuffix static github.com/cloudfoundry-incubator/buildpack_app_lifecycle/healthcheck
 
-for binary in builder launcher healthcheck; do
+for binary in builder launcher; do
     ldd $binary && echo "$binary must be statically linked" && false
 done
 
 tar -xzf /var/vcap/packages/diego-sshd/diego-sshd.tgz
+tar -xzf /var/vcap/packages/healthcheck/healthcheck.tgz
 
 tar -czf ${BOSH_INSTALL_TARGET}/buildpack_app_lifecycle.tgz builder launcher healthcheck diego-sshd
 
