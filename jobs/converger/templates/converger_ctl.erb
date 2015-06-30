@@ -5,15 +5,13 @@ LOG_DIR=/var/vcap/sys/log/converger
 CONF_DIR=/var/vcap/jobs/converger/config
 PIDFILE=$RUN_DIR/converger.pid
 
-CERTS_DIR=/var/vcap/jobs/converger/config/certs
-
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
 <% if p("diego.converger.etcd.require_ssl") %>
 etcd_sec_flags=" \
-   -etcdCertFile=${CERTS_DIR}/etcd/client.crt \
-   -etcdKeyFile=${CERTS_DIR}/etcd/client.key \
-   -etcdCaFile=${CERTS_DIR}/etcd/ca.crt"
+   -etcdCertFile=${CONF_DIR}/certs/etcd/client.crt \
+   -etcdKeyFile=${CONF_DIR}/certs/etcd/client.key \
+   -etcdCaFile=${CONF_DIR}/certs/etcd/ca.crt"
 <% else %>
 etcd_sec_flags=""
 <% end %>

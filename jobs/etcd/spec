@@ -37,3 +37,12 @@ properties:
     description: "PEM-encoded client certificate"
   diego.etcd.client_key:
     description: "PEM-encoded client key"
+  diego.etcd.peer_require_ssl:
+    description: "enable ssl between etcd peers"
+    default: false
+  diego.etcd.peer_ca_cert:
+    description: "PEM-encoded peer CA certificate"
+  diego.etcd.peer_cert:
+    description: "PEM-encoded peer certificate"
+  diego.etcd.peer_key:
+    description: "PEM-encoded peer key"

@@ -266,6 +266,12 @@ and `diego.<component>.etcd.require_ssl` properties should be set to `true` or
 `require_ssl` is `true`, the operator must generate SSL certificates and keys
 for the etcd server and its clients.
 
+SSL can also be enabled between etcd peers. To enable this feature, the
+`diego.etcd.peer_require_ssl` property must be set to `true` and peer certificates
+and keys must be generated for the cluster. The CA, server certificate, and
+server key across may be shared between the client and peer configurations if
+desired.
+
 NOTE: SSL support is in development at this time. We do not recommend enabling
 TLS between etcd peers until we adopt etcd-2.1.x as etcd-2.0.x exhibits
 several issues in a TLS enabled cluster.

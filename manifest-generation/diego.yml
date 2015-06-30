@@ -464,6 +464,10 @@ properties:
       server_key: (( property_overrides.etcd.server_key || nil ))
       client_cert: (( property_overrides.etcd.client_cert || nil ))
       client_key: (( property_overrides.etcd.client_key || nil ))
+      peer_require_ssl: (( property_overrides.etcd.peer_require_ssl || false ))
+      peer_ca_cert: (( property_overrides.etcd.peer_ca_cert || nil ))
+      peer_cert: (( property_overrides.etcd.peer_cert || nil ))
+      peer_key: (( property_overrides.etcd.peer_key || nil ))
     executor:
       allow_privileged: (( property_overrides.executor.allow_privileged || nil ))
       drain_timeout_in_seconds: (( property_overrides.executor.drain_timeout_in_seconds || nil ))
