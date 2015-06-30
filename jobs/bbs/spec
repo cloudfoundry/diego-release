@@ -28,7 +28,7 @@ properties:
 
   diego.bbs.etcd.require_ssl:
     description: "enable ssl for all communication with etcd"
-    default: true
+    default: false
   diego.bbs.etcd.ca_cert:
     description: "PEM-encoded CA certificate"
   diego.bbs.etcd.client_cert:

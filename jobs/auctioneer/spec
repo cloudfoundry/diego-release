@@ -29,7 +29,7 @@ properties:
 
   diego.auctioneer.etcd.require_ssl:
     description: "enable ssl for all communication with etcd"
-    default: true
+    default: false
   diego.auctioneer.etcd.ca_cert:
     description: "PEM-encoded CA certificate"
   diego.auctioneer.etcd.client_cert:

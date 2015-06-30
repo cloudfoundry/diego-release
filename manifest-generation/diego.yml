@@ -429,7 +429,7 @@ properties:
     auctioneer:
       etcd:
         machines: ["etcd.service.consul"]
-        require_ssl: (( property_overrides.etcd.require_ssl || true ))
+        require_ssl: (( property_overrides.etcd.require_ssl || false ))
         ca_cert: (( property_overrides.etcd.ca_cert ))
         client_cert: (( property_overrides.etcd.client_cert ))
         client_key: (( property_overrides.etcd.client_key ))
@@ -437,20 +437,19 @@ properties:
     bbs:
       etcd:
         machines: ["etcd.service.consul"]
-        require_ssl: (( property_overrides.etcd.require_ssl || true ))
+        require_ssl: (( property_overrides.etcd.require_ssl || false ))
         ca_cert: (( property_overrides.etcd.ca_cert ))
         client_cert: (( property_overrides.etcd.client_cert ))
         client_key: (( property_overrides.etcd.client_key ))
     converger:
       etcd:
         machines: ["etcd.service.consul"]
-        require_ssl: (( property_overrides.etcd.require_ssl || true ))
+        require_ssl: (( property_overrides.etcd.require_ssl || false ))
         ca_cert: (( property_overrides.etcd.ca_cert ))
         client_cert: (( property_overrides.etcd.client_cert ))
         client_key: (( property_overrides.etcd.client_key ))
       log_level: (( property_overrides.converger.log_level || nil ))
     etcd:
-      require_ssl: (( property_overrides.etcd.require_ssl || true ))
       machines: ["etcd.service.consul"]
       cluster:
         - name: "database_z1"
@@ -459,11 +458,12 @@ properties:
           instances: (( instance_count_overrides.database_z2.instances || 1 ))
         - name: "database_z3"
           instances: (( instance_count_overrides.database_z3.instances || 1 ))
-      ca_cert: (( property_overrides.etcd.ca_cert ))
-      server_cert: (( property_overrides.etcd.server_cert ))
-      server_key: (( property_overrides.etcd.server_key ))
-      client_cert: (( property_overrides.etcd.client_cert ))
-      client_key: (( property_overrides.etcd.client_key ))
+      require_ssl: (( property_overrides.etcd.require_ssl || false ))
+      ca_cert: (( property_overrides.etcd.ca_cert || nil ))
+      server_cert: (( property_overrides.etcd.server_cert || nil ))
+      server_key: (( property_overrides.etcd.server_key || nil ))
+      client_cert: (( property_overrides.etcd.client_cert || nil ))
+      client_key: (( property_overrides.etcd.client_key || nil ))
     executor:
       allow_privileged: (( property_overrides.executor.allow_privileged || nil ))
       drain_timeout_in_seconds: (( property_overrides.executor.drain_timeout_in_seconds || nil ))
@@ -501,7 +501,7 @@ properties:
         api_url: (( "http://bbs.service.consul:8888" ))
       etcd:
         machines: ["etcd.service.consul"]
-        require_ssl: (( property_overrides.etcd.require_ssl || true ))
+        require_ssl: (( property_overrides.etcd.require_ssl || false ))
         ca_cert: (( property_overrides.etcd.ca_cert ))
         client_cert: (( property_overrides.etcd.client_cert ))
         client_key: (( property_overrides.etcd.client_key ))
@@ -519,7 +519,7 @@ properties:
     rep:
       etcd:
         machines: ["etcd.service.consul"]
-        require_ssl: (( property_overrides.etcd.require_ssl || true ))
+        require_ssl: (( property_overrides.etcd.require_ssl || false ))
         ca_cert: (( property_overrides.etcd.ca_cert ))
         client_cert: (( property_overrides.etcd.client_cert ))
         client_key: (( property_overrides.etcd.client_key ))
@@ -535,7 +535,7 @@ properties:
     runtime_metrics_server:
       etcd:
         machines: ["etcd.service.consul"]
-        require_ssl: (( property_overrides.etcd.require_ssl || true ))
+        require_ssl: (( property_overrides.etcd.require_ssl || false ))
         ca_cert: (( property_overrides.etcd.ca_cert ))
         client_cert: (( property_overrides.etcd.client_cert ))
         client_key: (( property_overrides.etcd.client_key ))

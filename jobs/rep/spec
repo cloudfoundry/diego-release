@@ -109,7 +109,7 @@ properties:
 
   diego.rep.etcd.require_ssl:
     description: "enable ssl for all communication with etcd"
-    default: true
+    default: false
   diego.rep.etcd.ca_cert:
     description: "PEM-encoded CA certificate"
   diego.rep.etcd.client_cert:

@@ -260,9 +260,15 @@ by running the lightweight [diego-smoke-tests](https://github.com/cloudfoundry-i
 ### SSL Configuration
 
 Diego Release can be configured to require SSL for communication with etcd.
-To enable or disable SSL communication with etcd, the `properties.diego.etcd.require_ssl` and `properties.diego.<component>.etcd.require_ssl` properties should be set to true or false.
-By default, Diego has `require_ssl` set to to true.
-When `require_ssl` is set to true, the operator must generate SSL certificates and keys for the etcd server and its clients.
+To enable or disable SSL communication with etcd, the `diego.etcd.require_ssl`
+and `diego.<component>.etcd.require_ssl` properties should be set to `true` or
+`false`.  By default, Diego has `require_ssl` set to `false`.  When
+`require_ssl` is `true`, the operator must generate SSL certificates and keys
+for the etcd server and its clients.
+
+NOTE: SSL support is in development at this time. We do not recommend enabling
+TLS between etcd peers until we adopt etcd-2.1.x as etcd-2.0.x exhibits
+several issues in a TLS enabled cluster.
 
 #### Generating SSL Certificates
 
@@ -328,5 +334,9 @@ The manifest property `properties.diego.etcd.client_key` should be set to the ce
 
 ### Custom SSL Certificate Generation
 
-If you already have a CA, or wish to use your own names for clients and servers, please note that the common-names "diegoCA" and "clientName" are placeholders and can be renamed provided that all clients client certificate.
-The server certificate must have the common name `etcd.service.consul` and must specify `etcd.service.consul` and `*.etcd.service.consul` as Subject Alternative Names (SANs).
+If you already have a CA, or wish to use your own names for clients and
+servers, please note that the common-names "diegoCA" and "clientName" are
+placeholders and can be renamed provided that all clients client certificate.
+The server certificate must have the common name `etcd.service.consul` and
+must specify `etcd.service.consul` and `*.etcd.service.consul` as Subject
+Alternative Names (SANs).

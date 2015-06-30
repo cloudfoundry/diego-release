@@ -55,7 +55,7 @@ properties:
 
   diego.receptor.etcd.require_ssl:
     description: "enable ssl for all communication with etcd"
-    default: true
+    default: false
   diego.receptor.etcd.ca_cert:
     description: "PEM-encoded CA certificate"
   diego.receptor.etcd.client_cert:
