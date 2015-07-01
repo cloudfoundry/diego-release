@@ -346,3 +346,23 @@ placeholders and can be renamed provided that all clients client certificate.
 The server certificate must have the common name `etcd.service.consul` and
 must specify `etcd.service.consul` and `*.etcd.service.consul` as Subject
 Alternative Names (SANs).
+
+### Recommended Instance Types
+
+If you are deploying to AWS, you can use our recommended instance types by spiff merging
+your `iaas-settings.yml` with our provided `manifest-generation/misc-templates/aws-iaas-settings.yml`:
+
+  spiff merge \
+    manifest-generation/misc-templates/aws-iaas-settings.yml \
+    /path/to/iaas-settings.yml \
+    > /tmp/iaas-settings.yml
+
+You can then use the template generated as the `iaas-settings.yml` for the `scripts/generate-deployment-manifest` tool.
+The cell jobs currently use `r3.xlarge` as their `instance_type`.
+For production deployments, we recommend that you increase the `ephemeral_disk` size.
+This can be done by specifying the following in your `iaas-settings.yml` under the cell resource pool definitions:
+```
+ephemeral_disk:
+  size: 174_080
+  type: gp2
+```

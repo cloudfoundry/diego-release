@@ -1,0 +1,85 @@
+iaas_settings:
+  stemcell:
+    name: (( merge ))
+    version: (( merge ))
+  subnet_configs:
+    - name: diego1
+      subnets: (( merge ))
+    - name: diego2
+      subnets: (( merge ))
+    - name: diego3
+      subnets: (( merge ))
+  compilation_cloud_properties: (( merge ))
+  resource_pool_cloud_properties:
+    - name: access_z1
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: m3.medium
+    - name: access_z2
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: m3.medium
+    - name: access_z3
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: m3.medium
+    - name: brain_z1
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: m3.medium
+    - name: brain_z2
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: m3.medium
+    - name: brain_z3
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: m3.medium
+    - name: cc_bridge_z1
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: m3.medium
+    - name: cc_bridge_z2
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: m3.medium
+    - name: cc_bridge_z3
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: m3.medium
+    - name: cell_z1
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: r3.xlarge
+    - name: cell_z2
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: r3.xlarge
+    - name: cell_z3
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: r3.xlarge
+    - name: database_z1
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: m3.medium
+    - name: database_z2
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: m3.medium
+    - name: database_z3
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: m3.medium
+    - name: route_emitter_z1
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: m3.medium
+    - name: route_emitter_z2
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: m3.medium
+    - name: route_emitter_z3
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: m3.medium
