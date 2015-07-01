@@ -36,3 +36,6 @@ properties:
   acceptance_tests.skip_internet_tests:
     default: false
     description: Skip tests that require internet connectivity
+  acceptance_tests.skip_docker_tests:
+    default: false
+    description: Skip tests that exercise docker support
