@@ -92,7 +92,7 @@ spiff merge \
   ${property_overrides} \
   ${instance_counts} \
   ${persistent_disk} \
-  ${tmpdir}/iaas-settings.yml \
+  ${iaas_settings} \
   ${additional_jobs} \
   ${tmpdir}/config-from-cf.yml \
   > ${tmpdir}/diego.yml
