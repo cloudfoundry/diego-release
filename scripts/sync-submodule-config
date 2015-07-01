@@ -9,13 +9,14 @@ go install github.com/vito/gosub
 {
   gosub list \
     -app github.com/cloudfoundry-incubator/auctioneer/cmd/... \
-    -app github.com/cloudfoundry-incubator/converger/cmd/... \
-    -app github.com/cloudfoundry-incubator/docker_app_lifecycle/... \
-    -app github.com/cloudfoundry-incubator/diego-ssh/... \
-    -app github.com/cloudfoundry-incubator/file-server/cmd/... \
-    -app github.com/cloudfoundry-incubator/buildpack_app_lifecycle/... \
-    -app github.com/cloudfoundry-incubator/nsync/cmd/... \
     -app github.com/cloudfoundry-incubator/bbs/cmd/bbs \
+    -app github.com/cloudfoundry-incubator/buildpack_app_lifecycle/... \
+    -app github.com/cloudfoundry-incubator/converger/cmd/... \
+    -app github.com/cloudfoundry-incubator/diego-ssh/... \
+    -app github.com/cloudfoundry-incubator/docker_app_lifecycle/... \
+    -app github.com/cloudfoundry-incubator/file-server/cmd/... \
+    -app github.com/cloudfoundry-incubator/healthcheck/cmd/... \
+    -app github.com/cloudfoundry-incubator/nsync/cmd/... \
     -app github.com/cloudfoundry-incubator/receptor/cmd/receptor \
     -app github.com/cloudfoundry-incubator/rep/cmd/... \
     -app github.com/cloudfoundry-incubator/route-emitter/cmd/... \
