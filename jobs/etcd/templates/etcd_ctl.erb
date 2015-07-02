@@ -31,6 +31,8 @@ case $1 in
       exit 1
     fi
 
+    export GOMAXPROCS=$(nproc)
+
     mkdir -p ${RUN_DIR}
     mkdir -p ${LOG_DIR}
     mkdir -p ${DATA_DIR}

@@ -47,7 +47,6 @@ this_node="${node_name}=${advertise_peer_url}"
 CERT_DIR=/var/vcap/jobs/etcd/config/certs
 <% else %>
 etcdctl_sec_flags=""
-etcd_client_sec_flags=""
 etcd_sec_flags=""
 <% end %>
 
@@ -62,12 +61,11 @@ etcdctl_sec_flags=" \
   -ca-file=${ca_cert_file} \
   -cert-file=${client_cert_file} \
   -key-file=${client_key_file}"
-etcd_client_sec_flags=" \
+etcd_sec_flags=" \
+  --client-cert-auth \
+  --trusted-ca-file ${ca_cert_file} \
   --cert-file ${server_cert_file} \
   --key-file ${server_key_file}"
-etcd_sec_flags=" \
-  --ca-file ${ca_cert_file} \
-  ${etcd_client_sec_flags}"
 <% end %>
 
 <% if p("diego.etcd.peer_require_ssl") %>
@@ -76,7 +74,8 @@ peer_cert_file=${CERT_DIR}/peer.crt
 peer_key_file=${CERT_DIR}/peer.key
 
 etcd_peer_sec_flags=" \
-  --peer-ca-file ${peer_ca_cert_file} \
+  --peer-client-cert-auth \
+  --peer-trusted-ca-file ${peer_ca_cert_file} \
   --peer-cert-file ${peer_cert_file} \
   --peer-key-file ${peer_key_file}"
 
@@ -123,7 +122,7 @@ member_add() {
 }
 
 extract_cluster_from_member_list() {
-  members_with_names=$(echo "$1" | grep -v 'name= ')
+  members_with_names=$(echo "$1" | grep -v 'name= ' | sed 's/\[.*\]//')
   name_peerURL_pairs=$(echo "$members_with_names" | sed 's/.*name=//' | sed 's/ clientURLs.*//' | sed 's/ peerURLs//')
   echo "$name_peerURL_pairs" | tr -s "\n" "," | sed 's/,$//'
 }
@@ -133,7 +132,7 @@ prior_cluster_had_other_nodes() {
 }
 
 extract_my_id() {
-  echo "$1" | grep ${advertise_peer_url} | sed 's/:.*//'
+  echo "$1" | grep ${advertise_peer_url} | sed 's/:.*//' | sed 's/\[.*\]//'
 }
 
 safe_teardown() {
