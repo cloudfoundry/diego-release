@@ -2,12 +2,51 @@ iaas_settings:
   stemcell:
     name: bosh-warden-boshlite-ubuntu-trusty-go_agent
     version: latest
+  compilation_cloud_properties: {}
+  resource_pool_cloud_properties:
+    - name: access_z1
+      cloud_properties: {}
+    - name: access_z2
+      cloud_properties: {}
+    - name: access_z3
+      cloud_properties: {}
+    - name: brain_z1
+      cloud_properties: {}
+    - name: brain_z2
+      cloud_properties: {}
+    - name: brain_z3
+      cloud_properties: {}
+    - name: cc_bridge_z1
+      cloud_properties: {}
+    - name: cc_bridge_z2
+      cloud_properties: {}
+    - name: cc_bridge_z3
+      cloud_properties: {}
+    - name: cell_z1
+      cloud_properties: {}
+    - name: cell_z2
+      cloud_properties: {}
+    - name: cell_z3
+      cloud_properties: {}
+    - name: database_z1
+      cloud_properties: {}
+    - name: database_z2
+      cloud_properties: {}
+    - name: database_z3
+      cloud_properties: {}
+    - name: route_emitter_z1
+      cloud_properties: {}
+    - name: route_emitter_z2
+      cloud_properties: {}
+    - name: route_emitter_z3
+      cloud_properties: {}
+
   subnet_configs:
     # Generated:
     #   scripts/generate-bosh-lite-networks.rb \
-    #   -ndiego1 -c10.244.16.0/30 -s64 -i32 \
-    #   -ndiego2 -c10.244.18.0/30 -s64 -i32 \
-    #   -ndiego3 -c10.244.20.0/30 -s64 -i32`
+    #     -ndiego1 -c10.244.16.0/30 -s64 -i32 \
+    #     -ndiego2 -c10.244.18.0/30 -s64 -i32 \
+    #     -ndiego3 -c10.244.20.0/30 -s64 -i32`
     - name: diego1
       type: manual
       subnets:
@@ -1073,42 +1112,3 @@ iaas_settings:
         - 10.244.20.253
         static: []
         cloud_properties: {}
-  compilation_cloud_properties: {}
-  resource_pool_cloud_properties:
-    - name: access_z1
-      cloud_properties: {}
-    - name: access_z2
-      cloud_properties: {}
-    - name: access_z3
-      cloud_properties: {}
-    - name: brain_z1
-      cloud_properties: {}
-    - name: brain_z2
-      cloud_properties: {}
-    - name: brain_z3
-      cloud_properties: {}
-    - name: cc_bridge_z1
-      cloud_properties: {}
-    - name: cc_bridge_z2
-      cloud_properties: {}
-    - name: cc_bridge_z3
-      cloud_properties: {}
-    - name: cell_z1
-      cloud_properties: {}
-    - name: cell_z2
-      cloud_properties: {}
-    - name: cell_z3
-      cloud_properties: {}
-    - name: database_z1
-      cloud_properties: {}
-    - name: database_z2
-      cloud_properties: {}
-    - name: database_z3
-      cloud_properties: {}
-    - name: route_emitter_z1
-      cloud_properties: {}
-    - name: route_emitter_z2
-      cloud_properties: {}
-    - name: route_emitter_z3
-      cloud_properties: {}
-
