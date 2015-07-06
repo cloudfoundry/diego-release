@@ -521,6 +521,8 @@ properties:
       domain_names:  (( property_overrides.receptor.domain_names || nil ))
       log_level: (( property_overrides.receptor.log_level || nil ))
     rep:
+      bbs:
+        api_url: (( "http://bbs.service.consul:8888" ))
       etcd:
         machines: ["etcd.service.consul"]
         require_ssl: (( property_overrides.etcd.require_ssl || false ))

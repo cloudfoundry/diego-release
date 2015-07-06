@@ -67,6 +67,7 @@ case $1 in
 
     chpst -u vcap:vcap /var/vcap/packages/rep/bin/rep ${etcd_sec_flags} \
       -etcdCluster=<%= p("diego.rep.etcd.machines").map{|addr| "\"#{p("diego.rep.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
+      -bbsAddress=<%= p("diego.rep.bbs.api_url") %> \
       -consulCluster=http://127.0.0.1:8500 \
       -receptorTaskHandlerURL=<%= p("diego.rep.receptor_task_handler_url") %> \
       -debugAddr=<%= p("diego.rep.debug_addr") %> \
