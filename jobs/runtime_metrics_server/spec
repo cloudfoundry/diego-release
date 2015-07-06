@@ -23,7 +23,7 @@ properties:
 
   diego.runtime_metrics_server.etcd.require_ssl:
     description: "enable ssl for all communication with etcd"
-    default: false
+    default: true
   diego.runtime_metrics_server.etcd.ca_cert:
     description: "PEM-encoded CA certificate"
   diego.runtime_metrics_server.etcd.client_cert:

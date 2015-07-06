@@ -26,7 +26,7 @@ properties:
     default: 30
   diego.etcd.require_ssl:
     description: "enable ssl for all communication with etcd"
-    default: false
+    default: true
   diego.etcd.ca_cert:
     description: "PEM-encoded CA certificate"
   diego.etcd.server_cert:
@@ -39,7 +39,7 @@ properties:
     description: "PEM-encoded client key"
   diego.etcd.peer_require_ssl:
     description: "enable ssl between etcd peers"
-    default: false
+    default: true
   diego.etcd.peer_ca_cert:
     description: "PEM-encoded peer CA certificate"
   diego.etcd.peer_cert:
