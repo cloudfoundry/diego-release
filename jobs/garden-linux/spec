@@ -10,6 +10,7 @@ packages:
   - garden-linux
   - rootfs_cflinuxfs2
   - shadow
+  - btrfs-progs
 
 properties:
   diego.garden-linux.kernel_network_tuning_enabled:
@@ -47,3 +48,10 @@ properties:
   diego.garden-linux.mtu:
     description: "Interface MTU size"
     default: 1500
+  diego.garden-linux.mount_btrfs_loopback:
+    description: "If true, garden should create a btrfs-formatted loopback device for graph storage"
+    default: true
+
+  diego.garden-linux.btrfs_store_size_mb:
+    description: "Size in MB of the BTRFS backing store for graph storage"
+    default: 3000

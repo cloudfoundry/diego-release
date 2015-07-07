@@ -239,6 +239,7 @@ property_overrides:
     disk_quota_enabled: false
     listen_network: tcp
     listen_address: 0.0.0.0:7777
+    mount_btrfs_loopback: false
   nsync:
     log_level: debug
   receptor:
