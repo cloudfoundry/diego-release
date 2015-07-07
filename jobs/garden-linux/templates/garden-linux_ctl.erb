@@ -37,6 +37,36 @@ case $1 in
 
     export PATH=/var/vcap/packages/shadow/sbin:$PATH
     export PATH=/var/vcap/packages/iptables/sbin:$PATH
+    export PATH=/var/vcap/packages/btrfs-progs/bin:$PATH
+
+    graph_path=$DATA_DIR/graph
+
+    <% if p("diego.garden-linux.mount_btrfs_loopback") %>
+      backing_store=$DATA_DIR/garden_graph_backing_store
+      loopback_device=/dev/garden_graph_root
+      mount_point=$graph_path
+
+      if [ ! -f $backing_store ]
+      then
+        echo "no backing store found at ${backing_store}: creating"
+        dd if=/dev/zero of=$backing_store bs=1M count=<%= p('diego.garden-linux.btrfs_store_size_mb') %>
+        rm -f $loopback_device
+        mknod $loopback_device b 7 200
+        losetup $loopback_device $backing_store
+        mkfs.btrfs $backing_store
+      else
+        echo "backing store already exists, skipping creation"
+      fi
+
+      if cat /proc/mounts | grep $mount_point
+      then
+        echo "btrfs already mounted at $mount_point"
+      else
+        echo "mounting btrfs volume"
+        mkdir -p $mount_point
+        mount -t btrfs $loopback_device $mount_point
+      fi
+    <% end %>
 
     exec /var/vcap/packages/garden-linux/bin/garden-linux \
       -disableQuotas=<%= !p("diego.garden-linux.disk_quota_enabled") %> \
@@ -47,8 +77,7 @@ case $1 in
       -debugAddr=<%= p("diego.garden-linux.debug_addr") %> \
       -bin=/var/vcap/packages/garden-linux/garden-bin \
       -depot=$DATA_DIR/depot \
-      -overlays=$DATA_DIR/overlays \
-      -graph=$DATA_DIR/graph \
+      -graph=$graph_path \
       -containerGraceTime=1h \
       -portPoolSize=4534 \
       -mtu=<%= p("diego.garden-linux.mtu") %> \
