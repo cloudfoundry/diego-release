@@ -39,10 +39,10 @@ case $1 in
     export PATH=/var/vcap/packages/iptables/sbin:$PATH
     export PATH=/var/vcap/packages/btrfs-progs/bin:$PATH
 
-    graph_path=/var/vcap/data/garden/graph
+    graph_path=$DATA_DIR/graph
 
     <% if p("diego.garden-linux.mount_btrfs_loopback") %>
-      backing_store=/var/vcap/data/garden/garden_graph_backing_store
+      backing_store=$DATA_DIR/garden_graph_backing_store
       loopback_device=/dev/garden_graph_root
       mount_point=$graph_path
 
@@ -76,7 +76,7 @@ case $1 in
       -allowNetworks=<%= p("diego.garden-linux.allow_networks").join(",") %> \
       -debugAddr=<%= p("diego.garden-linux.debug_addr") %> \
       -bin=/var/vcap/packages/garden-linux/garden-bin \
-      -depot=/var/vcap/data/garden-linux/depot \
+      -depot=$DATA_DIR/depot \
       -graph=$graph_path \
       -containerGraceTime=1h \
       -portPoolSize=4534 \
