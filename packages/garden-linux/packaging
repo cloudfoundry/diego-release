@@ -8,12 +8,9 @@ export GOPATH=${BOSH_INSTALL_TARGET}/src/github.com/cloudfoundry-incubator/garde
 export GOROOT=$(readlink -nf /var/vcap/packages/golang_1.4)
 export PATH=$GOROOT/bin:$PATH
 
-export LIBRARY_PATH=/var/vcap/packages/btrfs-progs/include:$LIBRARY_PATH
-export C_INCLUDE_PATH=/var/vcap/packages/btrfs-progs/include:$C_INCLUDE_PATH
-
 go install -tags daemon github.com/cloudfoundry-incubator/garden-linux
 
-cd ${BOSH_INSTALL_TARGET}/src/github.com/cloudfoundry-incubator/garden-linux
+cd ${BOSH_INSTALL_TARGET}/src/github.com/cloudfoundry-incubator/garden-linux/old
 
 make
 
