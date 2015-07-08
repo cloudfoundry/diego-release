@@ -279,6 +279,8 @@ if desired.
 For generating SSL certificates, we recommend [certstrap](https://github.com/square/certstrap).
 An operator can follow the following steps to successfully generate the required certificates.
 
+> Most of these commands can be found in [scripts/generate-etcd-certs](scripts/generate-etcd-certs)
+
 1. Get certstrap
    ```
    go get github.com/square/certstrap
@@ -364,8 +366,6 @@ An operator can follow the following steps to successfully generate the required
    The manifest property `properties.diego.etcd.peer_cert` should be set to the certificate in `peer/etcd.service.consul.crt`
    The manifest property `properties.diego.etcd.peer_key` should be set to the certificate in `peer/etcd.service.consul.key`
 
-> Most of these commands can be found in scripts/generate-etcd-certs
-
 ### Custom SSL Certificate Generation
 
 If you already have a CA, or wish to use your own names for clients and
@@ -380,10 +380,12 @@ Alternative Names (SANs).
 If you are deploying to AWS, you can use our recommended instance types by spiff merging
 your `iaas-settings.yml` with our provided `manifest-generation/misc-templates/aws-iaas-settings.yml`:
 
+```
   spiff merge \
     manifest-generation/misc-templates/aws-iaas-settings.yml \
     /path/to/iaas-settings.yml \
     > /tmp/iaas-settings.yml
+```
 
 You can then use the template generated as the `iaas-settings.yml` for the `scripts/generate-deployment-manifest` tool.
 The cell jobs currently use `r3.xlarge` as their `instance_type`.
