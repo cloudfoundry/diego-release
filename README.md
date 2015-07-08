@@ -262,19 +262,17 @@ by running the lightweight [diego-smoke-tests](https://github.com/cloudfoundry-i
 Diego Release can be configured to require SSL for communication with etcd.
 To enable or disable SSL communication with etcd, the `diego.etcd.require_ssl`
 and `diego.<component>.etcd.require_ssl` properties should be set to `true` or
-`false`.  By default, Diego has `require_ssl` set to `false`.  When
+`false`.  By default, Diego has `require_ssl` set to `true`.  When
 `require_ssl` is `true`, the operator must generate SSL certificates and keys
 for the etcd server and its clients.
 
-SSL can also be enabled between etcd peers. To enable this feature, the
-`diego.etcd.peer_require_ssl` property must be set to `true` and peer certificates
-and keys must be generated for the cluster. The CA, server certificate, and
-server key across may be shared between the client and peer configurations if
-desired.
-
-NOTE: SSL support is in development at this time. We do not recommend enabling
-TLS between etcd peers until we adopt etcd-2.1.x as etcd-2.0.x exhibits
-several issues in a TLS enabled cluster.
+SSL and mutual authentication can also be enabled between etcd peers. To
+enable or disable this, the `diego.etcd.peer_require_ssl` property should be
+set to `true` or `false`. By default, Diego has `peer_require_ssl` set to
+`true`.  When `peer_require_ssl` is set to `true`, the operator must provide
+SSL certificates and keys for the cluster members. The CA, server certificate,
+and server key across may be shared between the client and peer configurations
+if desired.
 
 #### Generating SSL Certificates
 
@@ -282,61 +280,91 @@ For generating SSL certificates, we recommend [certstrap](https://github.com/squ
 An operator can follow the following steps to successfully generate the required certificates.
 
 1. Get certstrap
-```
-go get github.com/square/certstrap
-cd $GOPATH/src/github.com/square/certstrap
-./build
-cd bin
-```
+   ```
+   go get github.com/square/certstrap
+   cd $GOPATH/src/github.com/square/certstrap
+   ./build
+   cd bin
+   ```
 
 2. Initialize a new certificate authority.
-```
-$ ./certstrap init --common-name "diegoCA"
-Enter passphrase (empty for no passphrase): <hit enter for no password>
+   ```
+   $ ./certstrap init --common-name "diegoCA"
+   Enter passphrase (empty for no passphrase): <hit enter for no password>
 
-Enter same passphrase again: <hit enter for no password>
+   Enter same passphrase again: <hit enter for no password>
 
-Created out/diegoCA.key
-Created out/diegoCA.crt
-```
+   Created out/diegoCA.key
+   Created out/diegoCA.crt
+   ```
 
-The manifest property `properties.diego.etcd.ca_cert` should be set to the certificate in `out/diegoCA.crt`
+   The manifest property `properties.diego.etcd.ca_cert` should be set to the certificate in `out/diegoCA.crt`
 
 3. Create and sign a certificate for the etcd server.
+   ```
+   $ ./certstrap request-cert --common-name "etcd.service.consul" --domain "*.etcd.service.consul,etcd.service.consul"
+   Enter passphrase (empty for no passphrase): <hit enter for no password>
 
-```
-$ ./certstrap request-cert --common-name "etcd.service.consul" --domain "*.etcd.service.consul,etcd.service.consul"
-Enter passphrase (empty for no passphrase): <hit enter for no password>
+   Enter same passphrase again: <hit enter for no password>
 
-Enter same passphrase again: <hit enter for no password>
+   Created out/etcd.service.consul.key
+   Created out/etcd.service.consul.csr
 
-Created out/etcd.service.consul.key
-Created out/etcd.service.consul.csr
+   $ ./certstrap sign etcd.service.consul --CA diegoCA
+   Created out/etcd.service.consul.crt from out/etcd.service.consul.csr signed by out/diegoCA.key
+   ```
 
-$ ./certstrap sign etcd.service.consul --CA diegoCA
-Created out/etcd.service.consul.crt from out/etcd.service.consul.csr signed by out/diegoCA.key
-```
-
-The manifest property `properties.diego.etcd.server_cert` should be set to the certificate in `out/etcd.service.consul.crt`
-The manifest property `properties.diego.etcd.server_key` should be set to the certificate in `out/etcd.service.consul.key`
+   The manifest property `properties.diego.etcd.server_cert` should be set to the certificate in `out/etcd.service.consul.crt`
+   The manifest property `properties.diego.etcd.server_key` should be set to the certificate in `out/etcd.service.consul.key`
 
 4. Create and sign a certificate for etcd clients.
+   ```
+   $ ./certstrap request-cert --common-name "clientName"
+   Enter passphrase (empty for no passphrase): <hit enter for no password>
 
-```
-$ ./certstrap request-cert --common-name "clientName"
-Enter passphrase (empty for no passphrase): <hit enter for no password>
+   Enter same passphrase again: <hit enter for no password>
 
-Enter same passphrase again: <hit enter for no password>
+   Created out/clientName.key
+   Created out/clientName.csr
 
-Created out/clientName.key
-Created out/clientName.csr
+   $ ./certstrap sign clientName --CA diegoCA
+   Created out/clientName.crt from out/clientName.csr signed by out/diegoCA.key
+   ```
 
-$ ./certstrap sign clientName --CA diegoCA
-Created out/clientName.crt from out/clientName.csr signed by out/diegoCA.key
-```
+   The manifest property `properties.diego.etcd.client_cert` should be set to the certificate in `out/clientName.crt`
+   The manifest property `properties.diego.etcd.client_key` should be set to the certificate in `out/clientName.key`
 
-The manifest property `properties.diego.etcd.client_cert` should be set to the certificate in `out/clientName.crt`
-The manifest property `properties.diego.etcd.client_key` should be set to the certificate in `out/clientName.key`
+5. Initialize a new peer certificate authority. [optional]
+   ```
+   $ ./certstrap --depot-path peer init --common-name "peerCA"
+   Enter passphrase (empty for no passphrase): <hit enter for no password>
+
+   Enter same passphrase again: <hit enter for no password>
+
+   Created peer/peerCA.key
+   Created peer/peerCA.crt
+   ```
+
+   The manifest property `properties.diego.etcd.peer_ca_cert` should be set to the certificate in `peer/peerCA.crt`
+
+6. Create and sign a certificate for the etcd peers. [optional]
+   ```
+   $ ./certstrap --depot-path peer request-cert --common-name "etcd.service.consul" --domain "*.etcd.service.consul,etcd.service.consul"
+   Enter passphrase (empty for no passphrase): <hit enter for no password>
+
+   Enter same passphrase again: <hit enter for no password>
+
+   Created peer/etcd.service.consul.key
+   Created peer/etcd.service.consul.csr
+
+   $ ./certstrap --depot-path peer sign etcd.service.consul --CA diegoCA
+   Created peer/etcd.service.consul.crt from peer/etcd.service.consul.csr signed by peer/peerCA.key
+   ```
+
+   The manifest property `properties.diego.etcd.peer_cert` should be set to the certificate in `peer/etcd.service.consul.crt`
+   The manifest property `properties.diego.etcd.peer_key` should be set to the certificate in `peer/etcd.service.consul.key`
+
+> Most of these commands can be found in scripts/generate-etcd-certs
 
 ### Custom SSL Certificate Generation
 
