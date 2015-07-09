@@ -38,7 +38,7 @@ done
 
 cd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
 
-pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/garden-linux/old
+pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/garden-linux
   make # compile wshd/etc.
   export GARDEN_BINPATH=$PWD/linux_backend/bin
 popd
@@ -47,16 +47,75 @@ go install github.com/onsi/ginkgo/ginkgo
 
 export GARDEN_ROOTFS=/tmp/opt/inigo/rootfs
 mkdir -p $GARDEN_ROOTFS
-mount -t tmpfs tmpfs $GARDEN_ROOTFS
+# mount -t tmpfs tmpfs $GARDEN_ROOTFS
 cp -rp /opt/inigo/rootfs/* $GARDEN_ROOTFS
 
 # used for routing to apps; same logic that Garden uses.
 export EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\s/\1/;tx;d;:x')
 
 # GARDEN_GRAPH_PATH is the root of the docker image filesystem
-export GARDEN_GRAPH_PATH=/tmp/garden-tmp
-mkdir -p $GARDEN_GRAPH_PATH
-mount -t tmpfs tmpfs $GARDEN_GRAPH_PATH
+export GARDEN_GRAPH_PATH=/tmp/btrfs/garden
+
+# copied from https://github.com/concourse/concourse/blob/master/jobs/baggageclaim/templates/baggageclaim_ctl.erb#L54
+# break out of bosh-lite device limitations
+function permit_device_control() {
+  local devices_mount_info=$(cat /proc/self/cgroup | grep devices)
+
+  if [ -z "$devices_mount_info" ]; then
+    # cgroups not set up; must not be in a container
+    return
+  fi
+
+  local devices_subsytems=$(echo $devices_mount_info | cut -d: -f2)
+  local devices_subdir=$(echo $devices_mount_info | cut -d: -f3)
+
+  if [ "$devices_subdir" = "/" ]; then
+    # we're in the root devices cgroup; must not be in a container
+    return
+  fi
+
+  if [ ! -e /tmp/devices-cgroup ]; then
+    # mount our container's devices subsystem somewhere
+    mkdir /tmp/devices-cgroup
+    mount -t cgroup -o $devices_subsytems none /tmp/devices-cgroup
+  fi
+
+  # permit our cgroup to do everything with all devices
+  echo 'b 7:* rwm' > /tmp/devices-cgroup${devices_subdir}/devices.allow
+}
+
+backing_store=/tmp/garden_graph_backing_store
+mount_point=$GARDEN_GRAPH_PATH
+
+if [ ! -f $backing_store ]
+then
+  permit_device_control
+  for i in $(seq 0 64); do
+    if ! mknod -m 0660 /dev/loop$i b 7 $i; then
+      break
+    fi
+  done
+
+  echo "no backing store found at ${backing_store}: creating"
+  touch $backing_store
+  truncate -s 5G $backing_store
+
+  loopback_device=$(losetup -f --show $backing_store)
+  mkfs.btrfs --nodiscard $loopback_device
+
+  trap "losetup -d $loopback_device" EXIT
+else
+  echo "backing store already exists, skipping creation"
+fi
+
+if cat /proc/mounts | grep $mount_point
+then
+  echo "btrfs already mounted at $mount_point"
+else
+  echo "mounting btrfs volume"
+  mkdir -p $mount_point
+  mount -t btrfs $loopback_device $mount_point
+fi
 
 color_flag=""
 if [ -n "$GO_PIPELINE_COUNTER" ]; then
