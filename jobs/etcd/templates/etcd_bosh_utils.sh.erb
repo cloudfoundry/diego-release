@@ -45,9 +45,6 @@ this_node="${node_name}=${advertise_peer_url}"
 
 <% if p("diego.etcd.require_ssl") || p("diego.etcd.peer_require_ssl") %>
 CERT_DIR=/var/vcap/jobs/etcd/config/certs
-<% else %>
-etcdctl_sec_flags=""
-etcd_sec_flags=""
 <% end %>
 
 <% if p("diego.etcd.require_ssl") %>
@@ -66,6 +63,9 @@ etcd_sec_flags=" \
   --trusted-ca-file ${ca_cert_file} \
   --cert-file ${server_cert_file} \
   --key-file ${server_key_file}"
+<% else %>
+etcdctl_sec_flags=""
+etcd_sec_flags=""
 <% end %>
 
 <% if p("diego.etcd.peer_require_ssl") %>
