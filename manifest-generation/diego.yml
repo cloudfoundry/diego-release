@@ -491,8 +491,6 @@ properties:
       allow_networks: (( property_overrides.garden-linux.allow_networks || nil ))
       insecure_docker_registry_list: (( property_overrides.garden-linux.insecure_docker_registry_list || nil ))
       mtu: (( property_overrides.garden-linux.mtu || nil ))
-      mount_btrfs_loopback: (( property_overrides.garden-linux.mount_btrfs_loopback || nil ))
-      btrfs_store_size_mb: (( property_overrides.garden-linux.btrfs_store_size_mb || nil ))
     nsync:
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
       cc:
