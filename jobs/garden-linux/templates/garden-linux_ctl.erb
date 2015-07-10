@@ -68,7 +68,7 @@ case $1 in
     export PATH=/var/vcap/packages/iptables/sbin:$PATH
     export PATH=/var/vcap/packages/btrfs-progs/bin:$PATH
 
-    graph_path=$DATA_DIR/graph
+    graph_path=$DATA_DIR/btrfs_graph
 
     <% if p("diego.garden-linux.mount_btrfs_loopback") %>
     backing_store=$DATA_DIR/garden_graph_backing_store
