@@ -71,7 +71,7 @@ case $1 in
     graph_path=$DATA_DIR/graph
 
     <% if p("diego.garden-linux.mount_btrfs_loopback") %>
-    backing_store=/var/vcap/data/garden/garden_graph_backing_store
+    backing_store=$DATA_DIR/garden_graph_backing_store
     mount_point=$graph_path
 
     if [ ! -f $backing_store ]
