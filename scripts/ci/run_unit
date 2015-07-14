@@ -3,16 +3,6 @@
 
 set -e
 
-export GOROOT=/usr/local/go
-export PATH=$GOROOT/bin:$PATH
+chown -R diego diego-release/
 
-cd diego-release/
-
-export GOPATH=$PWD
-export PATH=$PWD/bin:$PATH
-
-go install github.com/apcera/gnatsd
-go install github.com/coreos/etcd
-go install github.com/onsi/ginkgo/ginkgo
-
-./scripts/run-unit-tests -race "$@"
+su diego -c ./diego-release/scripts/ci/run_unit_internal

@@ -1,0 +1,18 @@
+#!/bin/bash
+# vim: set ft=sh
+
+set -e
+
+cd diego-release/
+
+export GOROOT=/usr/local/go
+export PATH=$GOROOT/bin:$PATH
+
+export GOPATH=$PWD
+export PATH=$PWD/bin:$PATH
+
+go install github.com/apcera/gnatsd
+go install github.com/coreos/etcd
+go install github.com/onsi/ginkgo/ginkgo
+
+./scripts/run-unit-tests -race "$@"
