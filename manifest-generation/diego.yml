@@ -511,7 +511,7 @@ properties:
         client_key: (( property_overrides.etcd.client_key ))
       nats:
         machines: (( config_from_cf.nats.machines ))
-        username: (( config_from_cf.nats.user ))
+        user: (( config_from_cf.nats.user ))
         password: (( config_from_cf.nats.password ))
         port: (( config_from_cf.nats.port ))
       cors_enabled: (( property_overrides.receptor.cors_enabled || nil ))
@@ -534,7 +534,7 @@ properties:
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
       nats:
         machines: (( config_from_cf.nats.machines ))
-        username: (( config_from_cf.nats.user ))
+        user: (( config_from_cf.nats.user ))
         password: (( config_from_cf.nats.password ))
         port: (( config_from_cf.nats.port ))
       log_level: (( property_overrides.route_emitter.log_level || nil ))
@@ -545,11 +545,6 @@ properties:
         ca_cert: (( property_overrides.etcd.ca_cert ))
         client_cert: (( property_overrides.etcd.client_cert ))
         client_key: (( property_overrides.etcd.client_key ))
-      nats:
-        machines: (( config_from_cf.nats.machines ))
-        username: (( config_from_cf.nats.user ))
-        password: (( config_from_cf.nats.password ))
-        port: (( config_from_cf.nats.port ))
       log_level: (( property_overrides.runtime_metrics_server.log_level || nil ))
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
     ssh_proxy:

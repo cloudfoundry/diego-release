@@ -93,7 +93,7 @@ case $1 in
       -registerWithRouter=<%= p("diego.receptor.register_with_router") %> \
       -domainNames=<%= p("diego.receptor.domain_names").join(",") %> \
       -natsAddresses=<%= p("diego.receptor.nats.machines").collect { |addr| "#{addr}:#{p("diego.receptor.nats.port")}" }.join(",") %> \
-      -natsUsername=<%= p("diego.receptor.nats.username") %> \
+      -natsUsername=<%= p("diego.receptor.nats.user") %> \
       -natsPassword=<%= p("diego.receptor.nats.password") %> \
       -corsEnabled=<%= p("diego.receptor.cors_enabled") %> \
       -logLevel=<%= p("diego.receptor.log_level") %> \
