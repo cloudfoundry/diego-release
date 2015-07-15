@@ -20,6 +20,7 @@ properties:
     default: http://receptor.service.consul:8888
   diego.tps.cc.external_port:
     description: "External port to access the Cloud Controller"
+    default: 9022
   diego.tps.cc.basic_auth_username:
     description: "Basic auth username for CC internal API"
     default: "internal_user"

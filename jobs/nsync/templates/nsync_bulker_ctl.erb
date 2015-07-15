@@ -38,7 +38,7 @@ case $1 in
       -bulkBatchSize=<%= p("diego.nsync.cc.bulk_batch_size") %> \
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       <%= p("diego.nsync.lifecycle_bundles").map { |bundle| "-lifecycle #{bundle}" }.join(" ") %> \
-      -fileServerURL=<%= p("diego.file_server.file_server_url") %> \
+      -fileServerURL=<%= p("diego.nsync.file_server_url") %> \
       -logLevel=<%= p("diego.nsync.log_level") %> \
       2> >(tee -a $LOG_DIR/nsync_bulker.stderr.log | logger -p user.error -t vcap.nsync-bulker) \
       1> >(tee -a $LOG_DIR/nsync_bulker.stdout.log | logger -p user.info -t vcap.nsync-bulker)

@@ -1,7 +1,6 @@
 config_from_cf:
   cf_deployment_name: (( name ))
   cc:
-    external_port: 9022
     internal_api_password: (( properties.cc.internal_api_password ))
     srv_api_uri: (( properties.cc.srv_api_uri ))
     staging_upload_user: (( properties.cc.staging_upload_user ))

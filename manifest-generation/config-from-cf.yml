@@ -1,7 +1,6 @@
 config_from_cf:
   cf_deployment_name: (( merge ))
   cc:
-    external_port: (( merge ))
     internal_api_password: (( merge ))
     srv_api_uri: (( merge ))
     staging_upload_user: (( merge ))

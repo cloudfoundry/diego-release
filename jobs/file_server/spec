@@ -31,3 +31,7 @@ properties:
   diego.file_server.log_level:
     description: "Log level"
     default: "info"
+
+  diego.file_server.cc.external_port:
+    description: "External Cloud Controller port"
+    default: 9022

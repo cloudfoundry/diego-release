@@ -479,7 +479,6 @@ properties:
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
-        external_port: (( config_from_cf.cc.external_port ))
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       log_level: (( property_overrides.file_server.log_level || nil ))
@@ -498,7 +497,6 @@ properties:
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
-        external_port: (( config_from_cf.cc.external_port ))
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       log_level: (( property_overrides.nsync.log_level || nil ))
@@ -555,8 +553,6 @@ properties:
       log_level: (( property_overrides.runtime_metrics_server.log_level || nil ))
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
     ssh_proxy:
-      cc:
-        external_port: (( config_from_cf.cc.external_port ))
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
       host_key: (( property_overrides.ssh_proxy.host_key || "" ))
       servers: (( jobs.access_z1.networks.diego1.static_ips jobs.access_z2.networks.diego2.static_ips jobs.access_z3.networks.diego3.static_ips ))
@@ -566,7 +562,6 @@ properties:
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
-        external_port: (( config_from_cf.cc.external_port ))
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
@@ -576,7 +571,6 @@ properties:
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
-        external_port: (( config_from_cf.cc.external_port ))
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))

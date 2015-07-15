@@ -16,6 +16,7 @@ properties:
 
   diego.stager.cc.external_port:
     description: "External port to access the Cloud Controller"
+    default: 9022
   diego.stager.cc.basic_auth_username:
     description: "Basic auth username for CC internal API"
     default: "internal_user"
@@ -46,7 +47,7 @@ properties:
     description: "stack to use for staging Docker applications"
     default: "cflinuxfs2"
 
-  diego.file_server.file_server_url:
+  diego.stager.file_server_url:
     description: URL of file server
     default: http://file-server.service.consul:8080
   diego.stager.insecure_docker_registry:
