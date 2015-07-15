@@ -24,6 +24,7 @@ files:
   - github.com/cloudfoundry-incubator/runtime-schema/routes/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/*.go # gosub
+  - github.com/cloudfoundry-incubator/tps/handler/bulklrpstatus/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/cc_conv/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/lrpstats/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/lrpstatus/*.go # gosub
@@ -41,6 +42,7 @@ files:
   - github.com/cloudfoundry/gosteno/*.go # gosub
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
   - github.com/cloudfoundry/gunk/urljoiner/*.go # gosub
+  - github.com/cloudfoundry/gunk/workpool/*.go # gosub
   - github.com/cloudfoundry/noaa/*.go # gosub
   - github.com/cloudfoundry/noaa/errors/*.go # gosub
   - github.com/cloudfoundry/sonde-go/control/*.go # gosub
@@ -72,7 +74,6 @@ files:
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/cc_client/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/watcher/*.go # gosub
-  - github.com/cloudfoundry/gunk/workpool/*.go # gosub
   - github.com/cloudfoundry/storeadapter/*.go # gosub
   - github.com/hashicorp/consul/api/*.go # gosub
   - github.com/onsi/ginkgo/*.go # gosub
