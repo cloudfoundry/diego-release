@@ -17,7 +17,7 @@ properties:
 
   diego.tps.diego_api_url:
     description: URL of diego API
-    default: http://receptor.service.consul:8888
+    default: http://receptor.service.cf.internal:8888
   diego.tps.cc.external_port:
     description: "External port to access the Cloud Controller"
     default: 9022
@@ -28,7 +28,7 @@ properties:
     description: "Basic auth password for CC internal API"
   diego.tps.cc.internal_service_hostname:
     description: "Internal CC host name"
-    default: cloud-controller-ng.service.consul
+    default: cloud-controller-ng.service.cf.internal
   diego.tps.listener.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17012"
@@ -43,4 +43,4 @@ properties:
     default: "info"
   diego.tps.traffic_controller_url:
     description: URL of Traffic controller
-    default: ws://loggregator-trafficcontroller.service.consul:8081
+    default: ws://loggregator-trafficcontroller.service.cf.internal:8081

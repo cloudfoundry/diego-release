@@ -17,10 +17,10 @@ properties:
 
   diego.nsync.diego_api_url:
     description: URL of diego API
-    default: http://receptor.service.consul:8888
+    default: http://receptor.service.cf.internal:8888
   diego.nsync.nsync_url:
     description: URL of nsync
-    default: http://nsync.service.consul:8787
+    default: http://nsync.service.cf.internal:8787
   diego.nsync.lifecycle_bundles:
     description: "List of lifecycle bundles arguments for different stacks in form 'lifecycle-name:path/to/bundle'"
     default:
@@ -55,7 +55,7 @@ properties:
 
   diego.nsync.file_server_url:
     description: URL of file server
-    default: http://file-server.service.consul:8080
+    default: http://file-server.service.cf.internal:8080
 
   diego.nsync.cc.external_port:
     description: "External Cloud Controller port"

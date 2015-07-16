@@ -15,7 +15,7 @@ properties:
     default: "0.0.0.0:2222"
   diego.ssh_proxy.diego_api_url:
     description: URL of diego API
-    default: http://receptor.service.dc1.consul:8888
+    default: http://receptor.service.dc1.cf.internal:8888
   diego.ssh_proxy.host_key:
     description: "PEM encoded RSA private key used to identify host"
   diego.ssh_proxy.debug_addr:
@@ -26,7 +26,7 @@ properties:
     default: "info"
   diego.ssh_proxy.cc.internal_service_hostname:
     description: Internal service hostname of Cloud Controller Api
-    default: cloud-controller-ng.service.consul
+    default: cloud-controller-ng.service.cf.internal
   diego.ssh_proxy.cc.external_port:
     description: External port of the Cloud Controller API
     default: 9022
