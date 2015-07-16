@@ -304,20 +304,20 @@ An operator can follow the following steps to successfully generate the required
 
 3. Create and sign a certificate for the etcd server.
    ```
-   $ ./certstrap request-cert --common-name "etcd.service.cf.internal" --domain "*.etcd.service.cf.internal,etcd.service.cf.internal"
+   $ ./certstrap request-cert --common-name "etcd.service.consul" --domain "*.etcd.service.consul,etcd.service.consul"
    Enter passphrase (empty for no passphrase): <hit enter for no password>
 
    Enter same passphrase again: <hit enter for no password>
 
-   Created out/etcd.service.cf.internal.key
-   Created out/etcd.service.cf.internal.csr
+   Created out/etcd.service.consul.key
+   Created out/etcd.service.consul.csr
 
-   $ ./certstrap sign etcd.service.cf.internal --CA diegoCA
-   Created out/etcd.service.cf.internal.crt from out/etcd.service.cf.internal.csr signed by out/diegoCA.key
+   $ ./certstrap sign etcd.service.consul --CA diegoCA
+   Created out/etcd.service.consul.crt from out/etcd.service.consul.csr signed by out/diegoCA.key
    ```
 
-   The manifest property `properties.diego.etcd.server_cert` should be set to the certificate in `out/etcd.service.cf.internal.crt`
-   The manifest property `properties.diego.etcd.server_key` should be set to the certificate in `out/etcd.service.cf.internal.key`
+   The manifest property `properties.diego.etcd.server_cert` should be set to the certificate in `out/etcd.service.consul.crt`
+   The manifest property `properties.diego.etcd.server_key` should be set to the certificate in `out/etcd.service.consul.key`
 
 4. Create and sign a certificate for etcd clients.
    ```
@@ -351,28 +351,28 @@ An operator can follow the following steps to successfully generate the required
 
 6. Create and sign a certificate for the etcd peers. [optional]
    ```
-   $ ./certstrap --depot-path peer request-cert --common-name "etcd.service.cf.internal" --domain "*.etcd.service.cf.internal,etcd.service.cf.internal"
+   $ ./certstrap --depot-path peer request-cert --common-name "etcd.service.consul" --domain "*.etcd.service.consul,etcd.service.consul"
    Enter passphrase (empty for no passphrase): <hit enter for no password>
 
    Enter same passphrase again: <hit enter for no password>
 
-   Created peer/etcd.service.cf.internal.key
-   Created peer/etcd.service.cf.internal.csr
+   Created peer/etcd.service.consul.key
+   Created peer/etcd.service.consul.csr
 
-   $ ./certstrap --depot-path peer sign etcd.service.cf.internal --CA diegoCA
-   Created peer/etcd.service.cf.internal.crt from peer/etcd.service.cf.internal.csr signed by peer/peerCA.key
+   $ ./certstrap --depot-path peer sign etcd.service.consul --CA diegoCA
+   Created peer/etcd.service.consul.crt from peer/etcd.service.consul.csr signed by peer/peerCA.key
    ```
 
-   The manifest property `properties.diego.etcd.peer_cert` should be set to the certificate in `peer/etcd.service.cf.internal.crt`
-   The manifest property `properties.diego.etcd.peer_key` should be set to the certificate in `peer/etcd.service.cf.internal.key`
+   The manifest property `properties.diego.etcd.peer_cert` should be set to the certificate in `peer/etcd.service.consul.crt`
+   The manifest property `properties.diego.etcd.peer_key` should be set to the certificate in `peer/etcd.service.consul.key`
 
 ### Custom SSL Certificate Generation
 
 If you already have a CA, or wish to use your own names for clients and
 servers, please note that the common-names "diegoCA" and "clientName" are
 placeholders and can be renamed provided that all clients client certificate.
-The server certificate must have the common name `etcd.service.cf.internal` and
-must specify `etcd.service.cf.internal` and `*.etcd.service.cf.internal` as Subject
+The server certificate must have the common name `etcd.service.consul` and
+must specify `etcd.service.consul` and `*.etcd.service.consul` as Subject
 Alternative Names (SANs).
 
 ### Recommended Instance Types

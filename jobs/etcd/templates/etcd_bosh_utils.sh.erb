@@ -28,7 +28,7 @@ node_name="<%= name.gsub('_', '-') %>-<%= spec.index %>"
   cluster_members = p("diego.etcd.cluster").map do |zone|
     result = []
     for i in 0..zone["instances"]-1
-      result << "#{client_protocol}://#{zone["name"].gsub('_', '-')}-#{i}.etcd.service.cf.internal:4001"
+      result << "#{client_protocol}://#{zone["name"].gsub('_', '-')}-#{i}.etcd.service.consul:4001"
     end
     result
   end.flatten.join(",")
@@ -36,11 +36,11 @@ node_name="<%= name.gsub('_', '-') %>-<%= spec.index %>"
 
 peer_protocol=<%= peer_protocol %>
 listen_peer_url="${peer_protocol}://0.0.0.0:7001"
-advertise_peer_url="${peer_protocol}://${node_name}.etcd.service.cf.internal:7001"
+advertise_peer_url="${peer_protocol}://${node_name}.etcd.service.consul:7001"
 
 client_protocol=<%= client_protocol %>
 listen_client_url="${client_protocol}://0.0.0.0:4001"
-advertise_client_url="${client_protocol}://${node_name}.etcd.service.cf.internal:4001"
+advertise_client_url="${client_protocol}://${node_name}.etcd.service.consul:4001"
 this_node="${node_name}=${advertise_peer_url}"
 
 <% if p("diego.etcd.require_ssl") || p("diego.etcd.peer_require_ssl") %>
