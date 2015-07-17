@@ -46,7 +46,7 @@ properties:
     default: "info"
   diego.rep.receptor_task_handler_url:
     description: "URL for task completion call back"
-    default: http://receptor.service.consul:1169
+    default: http://receptor.service.cf.internal:1169
 
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"

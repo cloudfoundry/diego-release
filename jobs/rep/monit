@@ -3,7 +3,7 @@ check process rep
   start program "/var/vcap/jobs/rep/bin/rep_ctl start"
   stop program "/var/vcap/jobs/rep/bin/rep_ctl stop"
   group vcap
-  depends <%= spec['job']['templates'].inject([]) do | deps, template |
+  depends on <%= spec['job']['templates'].inject([]) do | deps, template |
 		case template.name
 		when 'garden-linux' then deps.push(template.name)
 		end

@@ -428,7 +428,7 @@ properties:
     # -- Job-specific properties --
     auctioneer:
       etcd:
-        machines: ["etcd.service.consul"]
+        machines: ["etcd.service.cf.internal"]
         require_ssl: (( property_overrides.etcd.require_ssl || nil ))
         ca_cert: (( property_overrides.etcd.ca_cert ))
         client_cert: (( property_overrides.etcd.client_cert ))
@@ -436,21 +436,21 @@ properties:
       log_level: (( property_overrides.auctioneer.log_level || nil ))
     bbs:
       etcd:
-        machines: ["etcd.service.consul"]
+        machines: ["etcd.service.cf.internal"]
         require_ssl: (( property_overrides.etcd.require_ssl || nil ))
         ca_cert: (( property_overrides.etcd.ca_cert ))
         client_cert: (( property_overrides.etcd.client_cert ))
         client_key: (( property_overrides.etcd.client_key ))
     converger:
       etcd:
-        machines: ["etcd.service.consul"]
+        machines: ["etcd.service.cf.internal"]
         require_ssl: (( property_overrides.etcd.require_ssl || nil ))
         ca_cert: (( property_overrides.etcd.ca_cert ))
         client_cert: (( property_overrides.etcd.client_cert ))
         client_key: (( property_overrides.etcd.client_key ))
       log_level: (( property_overrides.converger.log_level || nil ))
     etcd:
-      machines: ["etcd.service.consul"]
+      machines: ["etcd.service.cf.internal"]
       cluster:
         - name: "database_z1"
           instances: (( instance_count_overrides.database_z1.instances || 1 ))
@@ -493,7 +493,7 @@ properties:
       mount_btrfs_loopback: (( property_overrides.garden-linux.mount_btrfs_loopback || nil ))
       btrfs_store_size_mb: (( property_overrides.garden-linux.btrfs_store_size_mb || nil ))
     nsync:
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8888" ))
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
@@ -502,9 +502,9 @@ properties:
       log_level: (( property_overrides.nsync.log_level || nil ))
     receptor:
       bbs:
-        api_url: (( "http://bbs.service.consul:8889" ))
+        api_url: (( "http://bbs.service.cf.internal:8889" ))
       etcd:
-        machines: ["etcd.service.consul"]
+        machines: ["etcd.service.cf.internal"]
         require_ssl: (( property_overrides.etcd.require_ssl || nil ))
         ca_cert: (( property_overrides.etcd.ca_cert ))
         client_cert: (( property_overrides.etcd.client_cert ))
@@ -522,16 +522,16 @@ properties:
       log_level: (( property_overrides.receptor.log_level || nil ))
     rep:
       bbs:
-        api_url: (( "http://bbs.service.consul:8889" ))
+        api_url: (( "http://bbs.service.cf.internal:8889" ))
       etcd:
-        machines: ["etcd.service.consul"]
+        machines: ["etcd.service.cf.internal"]
         require_ssl: (( property_overrides.etcd.require_ssl || nil ))
         ca_cert: (( property_overrides.etcd.ca_cert ))
         client_cert: (( property_overrides.etcd.client_cert ))
         client_key: (( property_overrides.etcd.client_key ))
       log_level: (( property_overrides.rep.log_level || nil ))
     route_emitter:
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8888" ))
       nats:
         machines: (( config_from_cf.nats.machines ))
         user: (( config_from_cf.nats.user ))
@@ -540,15 +540,15 @@ properties:
       log_level: (( property_overrides.route_emitter.log_level || nil ))
     runtime_metrics_server:
       etcd:
-        machines: ["etcd.service.consul"]
+        machines: ["etcd.service.cf.internal"]
         require_ssl: (( property_overrides.etcd.require_ssl || nil ))
         ca_cert: (( property_overrides.etcd.ca_cert ))
         client_cert: (( property_overrides.etcd.client_cert ))
         client_key: (( property_overrides.etcd.client_key ))
       log_level: (( property_overrides.runtime_metrics_server.log_level || nil ))
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8888" ))
     ssh_proxy:
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8888" ))
       host_key: (( property_overrides.ssh_proxy.host_key || "" ))
       servers: (( jobs.access_z1.networks.diego1.static_ips jobs.access_z2.networks.diego2.static_ips jobs.access_z3.networks.diego3.static_ips ))
       enable_cf_auth: (( property_overrides.ssh_proxy.enable_cf_auth || false ))
@@ -559,7 +559,7 @@ properties:
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8888" ))
       log_level: (( property_overrides.stager.log_level || nil ))
       insecure_docker_registry: (( property_overrides.stager.insecure_docker_registry || false ))
     tps:
@@ -568,7 +568,7 @@ properties:
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.consul:8888" ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8888" ))
       log_level: (( property_overrides.tps.log_level || nil ))
       traffic_controller_url: (( "wss://doppler." config_from_cf.system_domain ":443" ))
 
