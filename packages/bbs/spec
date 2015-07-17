@@ -11,8 +11,10 @@ files:
   - github.com/cloudfoundry-incubator/bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/db/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/db/etcd/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/events/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/handlers/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/models/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/watcher/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
@@ -36,12 +38,14 @@ files:
   - github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/gogo/protobuf/sortkeys/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
+  - github.com/pivotal-golang/clock/*.go # gosub
   - github.com/pivotal-golang/lager/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
   - github.com/tedsuo/ifrit/http_server/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
+  - github.com/vito/go-sse/sse/*.go # gosub
   - github.com/onsi/ginkgo/*.go # gosub
   - github.com/onsi/ginkgo/config/*.go # gosub
   - github.com/onsi/ginkgo/internal/codelocation/*.go # gosub

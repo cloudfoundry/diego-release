@@ -13,6 +13,7 @@ files:
   - github.com/cloudfoundry-incubator/auction/communication/http/routes/*.go # gosub
   - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/events/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/models/*.go # gosub
   - github.com/cloudfoundry-incubator/cacheddownloader/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
@@ -99,6 +100,7 @@ files:
   - github.com/tedsuo/ifrit/http_server/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
+  - github.com/vito/go-sse/sse/*.go # gosub
   - github.com/onsi/ginkgo/*.go # gosub
   - github.com/onsi/ginkgo/config/*.go # gosub
   - github.com/onsi/ginkgo/internal/codelocation/*.go # gosub
