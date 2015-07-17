@@ -502,7 +502,7 @@ properties:
       log_level: (( property_overrides.nsync.log_level || nil ))
     receptor:
       bbs:
-        api_url: (( "http://bbs.service.consul:8888" ))
+        api_url: (( "http://bbs.service.consul:8889" ))
       etcd:
         machines: ["etcd.service.consul"]
         require_ssl: (( property_overrides.etcd.require_ssl || nil ))
@@ -522,7 +522,7 @@ properties:
       log_level: (( property_overrides.receptor.log_level || nil ))
     rep:
       bbs:
-        api_url: (( "http://bbs.service.consul:8888" ))
+        api_url: (( "http://bbs.service.consul:8889" ))
       etcd:
         machines: ["etcd.service.consul"]
         require_ssl: (( property_overrides.etcd.require_ssl || nil ))
