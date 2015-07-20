@@ -248,6 +248,7 @@ property_overrides:
      - receptor.10.244.0.34.xip.io
     log_level: debug
   rep:
+    evacuation_timeout_in_seconds: 60
     log_level: debug
   route_emitter:
     log_level: debug
