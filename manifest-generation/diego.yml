@@ -102,7 +102,7 @@ resource_pools:
 
 jobs:
   - name: database_z1
-    templates: (( base_job_templates.etcd additional_jobs.etcd ))
+    templates: (( base_job_templates.database additional_jobs.database ))
     instances: (( instance_count_overrides.database_z1.instances || 1 ))
     persistent_disk: (( persistent_disk_overrides.database_z1 || 1024 ))
     resource_pool: database_z1
@@ -117,9 +117,11 @@ jobs:
           services:
             etcd: {}
             bbs: {}
+      metron_agent:
+        zone: z1
 
   - name: database_z2
-    templates: (( base_job_templates.etcd additional_jobs.etcd ))
+    templates: (( base_job_templates.database additional_jobs.database ))
     instances: (( instance_count_overrides.database_z2.instances || 1 ))
     persistent_disk: (( persistent_disk_overrides.database_z2 || 1024 ))
     resource_pool: database_z2
@@ -134,9 +136,11 @@ jobs:
           services:
             etcd: {}
             bbs: {}
+      metron_agent:
+        zone: z2
 
   - name: database_z3
-    templates: (( base_job_templates.etcd additional_jobs.etcd ))
+    templates: (( base_job_templates.database additional_jobs.database ))
     instances: (( instance_count_overrides.database_z3.instances || 1 ))
     persistent_disk: (( persistent_disk_overrides.database_z3 || 1024 ))
     resource_pool: database_z3
@@ -151,6 +155,8 @@ jobs:
           services:
             etcd: {}
             bbs: {}
+      metron_agent:
+        zone: z3
 
   - name: brain_z1
     templates: (( base_job_templates.brain additional_jobs.brain ))
@@ -583,7 +589,7 @@ additional_jobs:
   brain: (( merge || [] ))
   cell: (( merge || [] ))
   cc_bridge: (( merge || [] ))
-  etcd: (( merge || [] ))
+  database: (( merge || [] ))
   releases: (( merge || [] ))
   route_emitter: (( merge || [] ))
 base_releases:
@@ -641,10 +647,12 @@ base_job_templates:
       release: cf
     - name: receptor
       release: diego
-  etcd:
+  database:
     - name: etcd
       release: diego
     - name: bbs
       release: diego
     - name: consul_agent
+      release: cf
+    - name: metron_agent
       release: cf
