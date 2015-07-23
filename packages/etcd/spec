@@ -12,9 +12,12 @@ files:
   - github.com/coreos/etcd/tools/etcd-dump-logs/*.go # gosub
   - github.com/coreos/etcd/Godeps/_workspace/src/bitbucket.org/ww/goautoneg/*.go # gosub
   - github.com/coreos/etcd/Godeps/_workspace/src/github.com/beorn7/perks/quantile/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/github.com/bradfitz/http2/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/github.com/bradfitz/http2/hpack/*.go # gosub
   - github.com/coreos/etcd/Godeps/_workspace/src/github.com/coreos/go-semver/semver/*.go # gosub
   - github.com/coreos/etcd/Godeps/_workspace/src/github.com/coreos/pkg/capnslog/*.go # gosub
   - github.com/coreos/etcd/Godeps/_workspace/src/github.com/gogo/protobuf/proto/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/github.com/golang/glog/*.go # gosub
   - github.com/coreos/etcd/Godeps/_workspace/src/github.com/golang/protobuf/proto/*.go # gosub
   - github.com/coreos/etcd/Godeps/_workspace/src/github.com/jonboulle/clockwork/*.go # gosub
   - github.com/coreos/etcd/Godeps/_workspace/src/github.com/matttproud/golang_protobuf_extensions/pbutil/*.go # gosub
@@ -26,6 +29,19 @@ files:
   - github.com/coreos/etcd/Godeps/_workspace/src/golang.org/x/crypto/bcrypt/*.go # gosub
   - github.com/coreos/etcd/Godeps/_workspace/src/golang.org/x/crypto/blowfish/*.go # gosub
   - github.com/coreos/etcd/Godeps/_workspace/src/golang.org/x/net/context/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/golang.org/x/oauth2/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/golang.org/x/oauth2/google/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/golang.org/x/oauth2/internal/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/golang.org/x/oauth2/jws/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/golang.org/x/oauth2/jwt/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/google.golang.org/cloud/compute/metadata/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/google.golang.org/cloud/internal/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/google.golang.org/grpc/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/google.golang.org/grpc/codes/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/google.golang.org/grpc/credentials/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/google.golang.org/grpc/grpclog/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/google.golang.org/grpc/metadata/*.go # gosub
+  - github.com/coreos/etcd/Godeps/_workspace/src/google.golang.org/grpc/transport/*.go # gosub
   - github.com/coreos/etcd/client/*.go # gosub
   - github.com/coreos/etcd/discovery/*.go # gosub
   - github.com/coreos/etcd/error/*.go # gosub
@@ -58,6 +74,7 @@ files:
   - github.com/coreos/etcd/rafthttp/*.go # gosub
   - github.com/coreos/etcd/snap/*.go # gosub
   - github.com/coreos/etcd/snap/snappb/*.go # gosub
+  - github.com/coreos/etcd/storage/storagepb/*.go # gosub
   - github.com/coreos/etcd/store/*.go # gosub
   - github.com/coreos/etcd/version/*.go # gosub
   - github.com/coreos/etcd/wal/*.go # gosub
