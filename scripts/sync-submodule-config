@@ -51,8 +51,6 @@ go install github.com/vito/gosub
     -test github.com/cloudfoundry-incubator/diego-acceptance-tests/... \
     -test github.com/cloudfoundry-incubator/diegocanaryapp/...
 
-  # garden-linux uses godeps, so we should really only need its parent package
-  echo github.com/cloudfoundry-incubator/garden-linux
 } > /tmp/packages
 
-cat /tmp/packages | xargs gosub sync
+cat /tmp/packages | grep -v github.com/cloudfoundry-incubator/garden | xargs gosub sync -i src/garden-linux-release

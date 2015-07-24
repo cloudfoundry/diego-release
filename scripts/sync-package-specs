@@ -54,8 +54,6 @@ sync_package etcd \
   -app github.com/coreos/etcd/tools/etcd-migrate \
   -app github.com/coreos/etcd/tools/etcd-dump-logs &
 
-GOPATH=$GOPATH/src/github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace:$GOPATH sync_package garden-linux -app  github.com/cloudfoundry-incubator/garden-linux/... &
-
 sync_package acceptance-tests \
   -test github.com/cloudfoundry-incubator/diego-acceptance-tests/... \
   -app github.com/cloudfoundry-incubator/diego-ssh/cf-plugin \

@@ -3,7 +3,7 @@ set -e
 mkdir -p ${BOSH_INSTALL_TARGET}/src
 cp -a . ${BOSH_INSTALL_TARGET}/src
 
-export GOPATH=${BOSH_INSTALL_TARGET}/src/github.com/cloudfoundry-incubator/garden-linux/Godeps/_workspace:${BOSH_INSTALL_TARGET}
+export GOPATH=${BOSH_INSTALL_TARGET}/src/garden-linux-release
 
 export GOROOT=$(readlink -nf /var/vcap/packages/golang_1.4)
 export PATH=$GOROOT/bin:$PATH
@@ -13,10 +13,11 @@ export C_INCLUDE_PATH=/var/vcap/packages/btrfs-progs/include:$C_INCLUDE_PATH
 
 go install -tags daemon github.com/cloudfoundry-incubator/garden-linux
 
-cd ${BOSH_INSTALL_TARGET}/src/github.com/cloudfoundry-incubator/garden-linux
+cd ${GOPATH}/src/github.com/cloudfoundry-incubator/garden-linux
 
 make
 
+cp -a out ${BOSH_INSTALL_TARGET}/bin
 cp -a linux_backend/bin ${BOSH_INSTALL_TARGET}/garden-bin
 cp -a linux_backend/skeleton ${BOSH_INSTALL_TARGET}/skeleton
 
