@@ -158,12 +158,9 @@ as you switch in and out of the directory.
         git checkout develop
         ./scripts/update
 
-1. Install spiff, a tool for generating BOSH manifests. spiff is required for
-   running the scripts in later steps. The following installation method
-   assumes that go is installed. For other ways of installing `spiff`, see
-   [the spiff README](https://github.com/cloudfoundry-incubator/spiff).
-
-        go get github.com/cloudfoundry-incubator/spiff
+1. Install `spiff`, a tool for generating BOSH manifests. `spiff` is required
+   for running the scripts in later steps. For instructions on installing 
+   `spiff`, see its [README](https://github.com/cloudfoundry-incubator/spiff).
 
 1. Generate a deployment stub with the BOSH director UUID
 
