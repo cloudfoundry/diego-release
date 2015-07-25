@@ -33,6 +33,7 @@ case $1 in
     ulimit -n 100000
 
     exec chpst -u vcap:vcap /var/vcap/packages/auctioneer/bin/auctioneer ${etcd_sec_flags} \
+      -bbsAddress=<%= p("diego.auctioneer.bbs.api_url") %> \
       -etcdCluster=<%= p("diego.auctioneer.etcd.machines").map{|addr| "\"#{p("diego.auctioneer.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -consulCluster=http://127.0.0.1:8500 \
       -receptorTaskHandlerURL=<%= p("diego.auctioneer.receptor_task_handler_url") %> \

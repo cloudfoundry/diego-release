@@ -433,6 +433,8 @@ properties:
 
     # -- Job-specific properties --
     auctioneer:
+      bbs:
+        api_url: (( "http://bbs.service.cf.internal:8889" ))
       etcd:
         machines: ["etcd.service.cf.internal"]
         require_ssl: (( property_overrides.etcd.require_ssl || nil ))
