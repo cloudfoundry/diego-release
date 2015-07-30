@@ -83,6 +83,7 @@ case $1 in
 
     exec chpst -u vcap:vcap /var/vcap/packages/bbs/bin/bbs ${etcd_sec_flags} \
       -address=<%= p("diego.bbs.listen_addr") %> \
+      -auctioneerAddress=<%= p("diego.bbs.auctioneer.api_url") %> \
       -debugAddr=<%= p("diego.bbs.debug_addr") %> \
       -etcdCluster=<%= p("diego.bbs.etcd.machines").map{|addr| "\"#{p("diego.bbs.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -logLevel=<%= p("diego.bbs.log_level") %> \

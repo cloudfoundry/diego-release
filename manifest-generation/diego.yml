@@ -168,6 +168,10 @@ jobs:
       serial: true
       max_in_flight: 1
     properties:
+      consul:
+        agent:
+          services:
+            auctioneer: {}
       metron_agent:
         zone: z1
 
@@ -249,6 +253,10 @@ jobs:
       serial: true
       max_in_flight: 1
     properties:
+      consul:
+        agent:
+          services:
+            auctioneer: {}
       metron_agent:
         zone: z2
 
@@ -330,6 +338,10 @@ jobs:
       serial: true
       max_in_flight: 1
     properties:
+      consul:
+        agent:
+          services:
+            auctioneer: {}
       metron_agent:
         zone: z3
 
@@ -443,6 +455,8 @@ properties:
         client_key: (( property_overrides.etcd.client_key ))
       log_level: (( property_overrides.auctioneer.log_level || nil ))
     bbs:
+      auctioneer:
+        api_url: (( "http://auctioneer.service.cf.internal:9016" ))
       etcd:
         machines: ["etcd.service.cf.internal"]
         require_ssl: (( property_overrides.etcd.require_ssl || nil ))

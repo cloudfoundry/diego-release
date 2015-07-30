@@ -23,6 +23,9 @@ properties:
     description: "Log level"
     default: "info"
 
+  diego.bbs.auctioneer.api_url:
+    description: "Address of the auctioneer API"
+
   diego.bbs.etcd.machines:
     description: "Addresses pointing to the ETCD cluster"
 
