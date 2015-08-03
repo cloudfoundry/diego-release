@@ -85,6 +85,7 @@ case $1 in
       -address=<%= p("diego.bbs.listen_addr") %> \
       -auctioneerAddress=<%= p("diego.bbs.auctioneer.api_url") %> \
       -debugAddr=<%= p("diego.bbs.debug_addr") %> \
+      -consulCluster=http://127.0.0.1:8500 \
       -etcdCluster=<%= p("diego.bbs.etcd.machines").map{|addr| "\"#{p("diego.bbs.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -logLevel=<%= p("diego.bbs.log_level") %> \
       2> >(tee -a $LOG_DIR/bbs.stderr.log | logger -p user.error -t vcap.bbs) \

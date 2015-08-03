@@ -11,6 +11,7 @@ files:
   - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/db/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/db/consul/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/db/etcd/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/events/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/handlers/*.go # gosub
@@ -19,6 +20,9 @@ files:
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
+  - github.com/cloudfoundry-incubator/consuladapter/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/*.go # gosub
+  - github.com/cloudfoundry-incubator/rep/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
@@ -40,6 +44,7 @@ files:
   - github.com/coreos/go-etcd/etcd/*.go # gosub
   - github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/gogo/protobuf/sortkeys/*.go # gosub
+  - github.com/hashicorp/consul/api/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/pivotal-golang/clock/*.go # gosub
   - github.com/pivotal-golang/lager/*.go # gosub
