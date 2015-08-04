@@ -9,19 +9,25 @@ files:
   - github.com/cloudfoundry-incubator/receptor/cmd/receptor/testrunner/*.go # gosub
   - github.com/apcera/nats/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
-  - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
+  - github.com/cloudfoundry-incubator/auction/auctiontypes/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/auctionhandlers/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/cellhandlers/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/events/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/models/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
   - github.com/cloudfoundry-incubator/consuladapter/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/*.go # gosub
   - github.com/cloudfoundry-incubator/natbeat/*.go # gosub
   - github.com/cloudfoundry-incubator/receptor/*.go # gosub
   - github.com/cloudfoundry-incubator/receptor/handlers/*.go # gosub
   - github.com/cloudfoundry-incubator/receptor/serialization/*.go # gosub
   - github.com/cloudfoundry-incubator/receptor/task_handler/*.go # gosub
+  - github.com/cloudfoundry-incubator/rep/*.go # gosub
+  - github.com/cloudfoundry-incubator/rep/evacuation/evacuation_context/*.go # gosub
+  - github.com/cloudfoundry-incubator/rep/lrp_stopper/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/bbserrors/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/lock_bbs/*.go # gosub
@@ -31,6 +37,7 @@ files:
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/shared/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/task_bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/cb/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/diego_errors/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/maintainer/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub

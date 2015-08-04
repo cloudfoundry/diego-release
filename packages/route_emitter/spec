@@ -8,13 +8,19 @@ files:
   - github.com/cloudfoundry-incubator/route-emitter/cmd/route-emitter/*.go # gosub
   - github.com/apcera/nats/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
-  - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
+  - github.com/cloudfoundry-incubator/auction/auctiontypes/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/auctionhandlers/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/cellhandlers/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/models/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
   - github.com/cloudfoundry-incubator/consuladapter/*.go # gosub
+  - github.com/cloudfoundry-incubator/executor/*.go # gosub
   - github.com/cloudfoundry-incubator/receptor/*.go # gosub
+  - github.com/cloudfoundry-incubator/rep/*.go # gosub
+  - github.com/cloudfoundry-incubator/rep/evacuation/evacuation_context/*.go # gosub
+  - github.com/cloudfoundry-incubator/rep/lrp_stopper/*.go # gosub
   - github.com/cloudfoundry-incubator/route-emitter/cfroutes/*.go # gosub
   - github.com/cloudfoundry-incubator/route-emitter/nats_emitter/*.go # gosub
   - github.com/cloudfoundry-incubator/route-emitter/routing_table/*.go # gosub
@@ -29,6 +35,7 @@ files:
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/shared/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/task_bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/cb/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/diego_errors/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/maintainer/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
