@@ -67,6 +67,9 @@ if [ "$GINKGO_PARALLEL" = "true" ]; then
   nodes_flag="-nodes=4"
 fi
 
+# workaround until Concourse's garden sets this up for us
+mountpoint -q /sys || mount -t sysfs sysfs /sys
+
 pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
   if [ "$GINKGO_PARALLEL" = "true" ]; then
     ginkgo $color_flag $nodes_flag -r -skipPackage=docker -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
