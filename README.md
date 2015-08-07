@@ -173,6 +173,7 @@ as you switch in and out of the directory.
         cd ~/workspace/cf-release
         ./generate_deployment_manifest warden \
             ~/deployments/bosh-lite/director.yml \
+            ~/workspace/cf-release/bosh-lite/cf-stub-spiff.yml
             ~/workspace/diego-release/stubs-for-cf-release/enable_consul_with_cf.yml \
             ~/workspace/diego-release/stubs-for-cf-release/enable_diego_ssh_in_cc.yml \
             > ~/deployments/bosh-lite/cf.yml
