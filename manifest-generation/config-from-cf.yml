@@ -8,6 +8,13 @@ config_from_cf:
   consul:
     log_level: (( merge ))
     lan_servers: (( merge ))
+    ca_cert: (( merge ))
+    agent_cert: (( merge ))
+    agent_key: (( merge ))
+    encrypt_key: (( merge ))
+    require_ssl: (( merge ))
+    server_cert: (( merge ))
+    server_key: (( merge ))
   etcd:
     machines: (( merge ))
   loggregator_endpoint:
