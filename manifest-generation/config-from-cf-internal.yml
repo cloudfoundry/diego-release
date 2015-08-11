@@ -39,13 +39,13 @@ properties:
       log_level: (( merge ))
       servers:
         lan: (( merge ))
-    ca_cert: (( merge ))
-    agent_cert: (( merge ))
-    agent_key: (( merge ))
-    encrypt_key: (( merge ))
-    require_ssl: (( merge ))
-    server_cert: (( merge ))
-    server_key: (( merge ))
+    ca_cert:
+    agent_cert:
+    agent_key:
+    encrypt_key:
+    require_ssl:
+    server_cert:
+    server_key:
   etcd:
     machines: (( merge ))
   loggregator_endpoint:
