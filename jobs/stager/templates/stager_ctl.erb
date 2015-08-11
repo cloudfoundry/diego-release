@@ -59,6 +59,7 @@ case $1 in
       -dockerStagingStack=<%= p("diego.stager.docker_staging_stack") %> \
       -fileServerURL=<%= p("diego.stager.file_server_url") %> \
       -consulCluster=http://127.0.0.1:8500 \
+      -dockerRegistryAddress=<%= p("diego.stager.docker_registry_address") %> \
       <% if p("diego.stager.insecure_docker_registry") == true %>\
       -insecureDockerRegistry \
       <% end %>\
