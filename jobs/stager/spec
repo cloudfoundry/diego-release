@@ -48,7 +48,7 @@ properties:
     default: "cflinuxfs2"
 
   diego.stager.file_server_url:
-  description: "URL of file server"
+    description: "URL of file server"
     default: http://file-server.service.cf.internal:8080
   diego.stager.insecure_docker_registry:
     description: "Allow insecure Private Docker Registry to be used"
