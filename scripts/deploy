@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+./scripts/generate-deployment-manifest \
+  ~/deployments/bosh-lite/director.yml \
+  manifest-generation/bosh-lite-stubs/property-overrides.yml \
+  manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
+  manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \
+  manifest-generation/bosh-lite-stubs/iaas-settings.yml \
+  manifest-generation/bosh-lite-stubs/additional-jobs.yml \
+  ~/deployments/bosh-lite \
+  > ~/deployments/bosh-lite/diego.yml
+
+bosh create release --force
+bosh -t lite -n upload release
+bosh -t lite -d ~/deployments/bosh-lite/diego.yml -n deploy
