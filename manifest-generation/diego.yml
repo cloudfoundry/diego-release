@@ -527,7 +527,7 @@ properties:
       mount_btrfs_loopback: (( property_overrides.garden-linux.mount_btrfs_loopback || nil ))
       btrfs_store_size_mb: (( property_overrides.garden-linux.btrfs_store_size_mb || nil ))
     nsync:
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8888" ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8887" ))
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
@@ -565,7 +565,7 @@ properties:
         client_key: (( property_overrides.etcd.client_key ))
       log_level: (( property_overrides.rep.log_level || nil ))
     route_emitter:
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8888" ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8887" ))
       nats:
         machines: (( config_from_cf.nats.machines ))
         user: (( config_from_cf.nats.user ))
@@ -580,9 +580,9 @@ properties:
         client_cert: (( property_overrides.etcd.client_cert ))
         client_key: (( property_overrides.etcd.client_key ))
       log_level: (( property_overrides.runtime_metrics_server.log_level || nil ))
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8888" ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8887" ))
     ssh_proxy:
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8888" ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8887" ))
       host_key: (( property_overrides.ssh_proxy.host_key || "" ))
       servers: (( jobs.access_z1.networks.diego1.static_ips jobs.access_z2.networks.diego2.static_ips jobs.access_z3.networks.diego3.static_ips ))
       enable_cf_auth: (( property_overrides.ssh_proxy.enable_cf_auth || false ))
@@ -593,7 +593,7 @@ properties:
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8888" ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8887" ))
       log_level: (( property_overrides.stager.log_level || nil ))
       insecure_docker_registry: (( property_overrides.stager.insecure_docker_registry || false ))
     tps:
@@ -602,7 +602,7 @@ properties:
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8888" ))
+      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8887" ))
       log_level: (( property_overrides.tps.log_level || nil ))
       traffic_controller_url: (( "wss://doppler." config_from_cf.system_domain ":443" ))
 
@@ -615,8 +615,8 @@ property_overrides: (( merge ))
 additional_jobs:
   access: (( merge || [] ))
   brain: (( merge || [] ))
-  cell: (( merge || [] ))
   cc_bridge: (( merge || [] ))
+  cell: (( merge || [] ))
   database: (( merge || [] ))
   releases: (( merge || [] ))
   route_emitter: (( merge || [] ))
