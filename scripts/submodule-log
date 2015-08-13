@@ -10,7 +10,7 @@ echo
 
 if [ "$#" != "0" ]; then
   for id in "$@"; do
-    echo "[delivers #${id}]"
+    echo "[finishes #${id}]"
   done
 
   echo
