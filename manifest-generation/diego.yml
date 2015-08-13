@@ -99,6 +99,18 @@ resource_pools:
     network: diego3
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.route_emitter_z3.cloud_properties ))
+  - name: colocated_z1
+    network: diego1
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.colocated_z1.cloud_properties ))
+  - name: colocated_z2
+    network: diego2
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.colocated_z2.cloud_properties ))
+  - name: colocated_z3
+    network: diego3
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.colocated_z3.cloud_properties ))
 
 jobs:
   - name: database_z1
@@ -416,6 +428,99 @@ jobs:
             receptor: {}
             ssh_proxy: {}
 
+  - name: colocated_z1
+    templates: (( base_job_templates.colocated additional_jobs.colocated ))
+    instances: (( instance_count_overrides.colocated_z1.instances || 0 ))
+    persistent_disk: (( persistent_disk_overrides.colocated_z1 || 1024 ))
+    resource_pool: colocated_z1
+    networks:
+      - name: diego1
+        static_ips: (( static_ips(11,12,13,14,15,16,17,18,19,20) ))
+    update:
+      serial: true
+      max_in_flight: 1
+    properties:
+      consul:
+        agent:
+          services:
+            auctioneer: {}
+            bbs: {}
+            cc_uploader: {}
+            etcd: {}
+            file_server: {}
+            nsync: {}
+            receptor: {}
+            ssh_proxy: {}
+            stager: {}
+            tps: {}
+      diego:
+        rep:
+          zone: z1
+      metron_agent:
+        zone: z1
+
+  - name: colocated_z2
+    templates: (( base_job_templates.colocated additional_jobs.colocated ))
+    instances: (( instance_count_overrides.colocated_z2.instances || 0 ))
+    persistent_disk: (( persistent_disk_overrides.colocated_z2 || 1024 ))
+    resource_pool: colocated_z2
+    networks:
+      - name: diego2
+        static_ips: (( static_ips(11,12,13,14,15,16,17,18,19,20) ))
+    update:
+      serial: true
+      max_in_flight: 1
+    properties:
+      consul:
+        agent:
+          services:
+            auctioneer: {}
+            bbs: {}
+            cc_uploader: {}
+            etcd: {}
+            file_server: {}
+            nsync: {}
+            receptor: {}
+            ssh_proxy: {}
+            stager: {}
+            tps: {}
+      diego:
+        rep:
+          zone: z2
+      metron_agent:
+        zone: z2
+
+  - name: colocated_z3
+    templates: (( base_job_templates.colocated additional_jobs.colocated ))
+    instances: (( instance_count_overrides.colocated_z3.instances || 0 ))
+    persistent_disk: (( persistent_disk_overrides.colocated_z3 || 1024 ))
+    resource_pool: colocated_z3
+    networks:
+      - name: diego3
+        static_ips: (( static_ips(11,12,13,14,15,16,17,18,19,20) ))
+    update:
+      serial: true
+      max_in_flight: 1
+    properties:
+      consul:
+        agent:
+          services:
+            auctioneer: {}
+            bbs: {}
+            cc_uploader: {}
+            etcd: {}
+            file_server: {}
+            nsync: {}
+            receptor: {}
+            ssh_proxy: {}
+            stager: {}
+            tps: {}
+      diego:
+        rep:
+          zone: z2
+      metron_agent:
+        zone: z3
+
 properties:
   # -- Properties below are used by the metron_agent job from cf-release --
   metron_agent:
@@ -490,6 +595,12 @@ properties:
           instances: (( instance_count_overrides.database_z2.instances || 1 ))
         - name: "database_z3"
           instances: (( instance_count_overrides.database_z3.instances || 1 ))
+        - name: "colocated_z1"
+          instances: (( instance_count_overrides.colocated_z1.instances || 0 ))
+        - name: "colocated_z2"
+          instances: (( instance_count_overrides.colocated_z2.instances || 0 ))
+        - name: "colocated_z2"
+          instances: (( instance_count_overrides.colocated_z2.instances || 0 ))
       require_ssl: (( property_overrides.etcd.require_ssl || nil ))
       ca_cert: (( property_overrides.etcd.ca_cert || nil ))
       server_cert: (( property_overrides.etcd.server_cert || nil ))
@@ -584,7 +695,7 @@ properties:
     ssh_proxy:
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8887" ))
       host_key: (( property_overrides.ssh_proxy.host_key || "" ))
-      servers: (( jobs.access_z1.networks.diego1.static_ips jobs.access_z2.networks.diego2.static_ips jobs.access_z3.networks.diego3.static_ips ))
+      servers: (( jobs.access_z1.networks.diego1.static_ips jobs.access_z2.networks.diego2.static_ips jobs.access_z3.networks.diego3.static_ips jobs.colocated_z1.networks.diego1.static_ips jobs.colocated_z2.networks.diego2.static_ips jobs.colocated_z3.networks.diego3.static_ips ))
       enable_cf_auth: (( property_overrides.ssh_proxy.enable_cf_auth || false ))
       enable_diego_auth: (( property_overrides.ssh_proxy.enable_diego_auth || false ))
     stager:
@@ -617,6 +728,7 @@ additional_jobs:
   brain: (( merge || [] ))
   cc_bridge: (( merge || [] ))
   cell: (( merge || [] ))
+  colocated: (( merge || [] ))
   database: (( merge || [] ))
   releases: (( merge || [] ))
   route_emitter: (( merge || [] ))
@@ -686,3 +798,38 @@ base_job_templates:
       release: cf
     - name: metron_agent
       release: cf
+  colocated:
+    - name: auctioneer
+      release: diego
+    - name: bbs
+      release: diego
+    - name: cc_uploader
+      release: diego
+    - name: converger
+      release: diego
+    - name: consul_agent
+      release: cf
+    - name: etcd
+      release: diego
+    - name: file_server
+      release: diego
+    - name: garden-linux
+      release: diego
+    - name: metron_agent
+      release: cf
+    - name: nsync
+      release: diego
+    - name: receptor
+      release: diego
+    - name: rep
+      release: diego
+    - name: route_emitter
+      release: diego
+    - name: runtime_metrics_server
+      release: diego
+    - name: ssh_proxy
+      release: diego
+    - name: stager
+      release: diego
+    - name: tps
+      release: diego

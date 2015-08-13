@@ -35,6 +35,12 @@ iaas_settings:
       cloud_properties: (( merge ))
     - name: cell_z3
       cloud_properties: (( merge ))
+    - name: colocated_z1
+      cloud_properties: (( merge ))
+    - name: colocated_z2
+      cloud_properties: (( merge ))
+    - name: colocated_z3
+      cloud_properties: (( merge ))
     - name: database_z1
       cloud_properties: (( merge ))
     - name: database_z2
