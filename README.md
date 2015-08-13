@@ -223,6 +223,11 @@ as you switch in and out of the directory.
 
 Now you can either run the DATs or deploy your own app.
 
+> If you wish to run all of the diego jobs on a single VM, you can replace the
+> `manifest-generation/bosh-lite-stubs/instance-count-overrides.yml` stub with
+> the `manifest-generation/bosh-lite-stubs/colocated-instance-count-overrides.yml`
+> stub.
+
 ---
 ###<a name="smokes-and-dats"></a> Running Smoke Tests & DATs
 
@@ -361,7 +366,7 @@ An operator can follow the following steps to successfully generate the required
    The manifest property `properties.diego.etcd.peer_cert` should be set to the certificate in `peer/etcd.service.cf.internal.crt`
    The manifest property `properties.diego.etcd.peer_key` should be set to the certificate in `peer/etcd.service.cf.internal.key`
 
-### Custom SSL Certificate Generation
+#### Custom SSL Certificate Generation
 
 If you already have a CA, or wish to use your own names for clients and
 servers, please note that the common-names "diegoCA" and "clientName" are
@@ -370,6 +375,7 @@ The server certificate must have the common name `etcd.service.cf.internal` and
 must specify `etcd.service.cf.internal` and `*.etcd.service.cf.internal` as Subject
 Alternative Names (SANs).
 
+---
 ### Recommended Instance Types
 
 If you are deploying to AWS, you can use our recommended instance types by spiff merging
