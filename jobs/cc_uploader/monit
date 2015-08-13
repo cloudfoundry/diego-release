@@ -1,0 +1,5 @@
+check process cc_uploader
+  with pidfile /var/vcap/sys/run/cc_uploader/cc_uploader.pid
+  start program "/var/vcap/jobs/cc_uploader/bin/cc_uploader_ctl start"
+  stop program "/var/vcap/jobs/cc_uploader/bin/cc_uploader_ctl stop"
+  group vcap

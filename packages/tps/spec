@@ -16,13 +16,13 @@ files:
   - github.com/cloudfoundry-incubator/diego-ssh/helpers/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/keys/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/routes/*.go # gosub
+  - github.com/cloudfoundry-incubator/file-server/*.go # gosub
   - github.com/cloudfoundry-incubator/nsync/recipebuilder/*.go # gosub
   - github.com/cloudfoundry-incubator/receptor/*.go # gosub
   - github.com/cloudfoundry-incubator/route-emitter/cfroutes/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/cc_messages/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/diego_errors/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/routes/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/bulklrpstatus/*.go # gosub
@@ -80,6 +80,7 @@ files:
   - github.com/cloudfoundry-incubator/runtime-schema/cb/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/maintainer/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/routes/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/cc_client/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/watcher/*.go # gosub
   - github.com/cloudfoundry/storeadapter/*.go # gosub

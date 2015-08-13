@@ -1,17 +1,17 @@
 #!/bin/bash -e
 
-RUN_DIR=/var/vcap/sys/run/file_server
-LOG_DIR=/var/vcap/sys/log/file_server
-CONF_DIR=/var/vcap/jobs/file_server/config
+RUN_DIR=/var/vcap/sys/run/cc_uploader
+LOG_DIR=/var/vcap/sys/log/cc_uploader
+CONF_DIR=/var/vcap/jobs/cc_uploader/config
 
-PIDFILE=$RUN_DIR/file_server.pid
+PIDFILE=$RUN_DIR/cc_uploader.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
 case $1 in
 
   start)
-    pid_guard $PIDFILE "file_server"
+    pid_guard $PIDFILE "cc_uploader"
 
     mkdir -p $RUN_DIR
     chown -R vcap:vcap $RUN_DIR
@@ -43,14 +43,16 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec chpst -u vcap:vcap /var/vcap/packages/file_server/bin/file-server \
-      -address=<%= p("diego.file_server.address") %> \
-      -debugAddr=<%= p("diego.file_server.debug_addr") %> \
-      -staticDirectory=<%= p("diego.file_server.static_directory") %> \
+    exec chpst -u vcap:vcap /var/vcap/packages/cc_uploader/bin/cc-uploader \
+      -address=<%= p("diego.cc_uploader.address") %> \
+      -debugAddr=<%= p("diego.cc_uploader.debug_addr") %> \
+      <% if_p("diego.cc_uploader.cc.job_polling_interval_in_seconds") do |interval| %>\
+        -ccJobPollingInterval=<%= "#{interval}s" %> \
+      <% end %>\
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
-      -logLevel=<%= p("diego.file_server.log_level") %> \
-      2> >(tee -a $LOG_DIR/file_server.stderr.log | logger -p user.error -t vcap.file-server) \
-      1> >(tee -a $LOG_DIR/file_server.stdout.log | logger -p user.info -t vcap.file-server)
+      -logLevel=<%= p("diego.cc_uploader.log_level") %> \
+      2> >(tee -a $LOG_DIR/cc_uploader.stderr.log | logger -p user.error -t vcap.cc-uploader) \
+      1> >(tee -a $LOG_DIR/cc_uploader.stdout.log | logger -p user.info -t vcap.cc-uploader)
 
     ;;
 
@@ -60,7 +62,7 @@ case $1 in
     ;;
 
   *)
-    echo "Usage: file_server_ctl {start|stop}"
+    echo "Usage: cc_uploader_ctl {start|stop}"
 
     ;;
 

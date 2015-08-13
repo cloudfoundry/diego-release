@@ -206,7 +206,7 @@ jobs:
       consul:
         agent:
           services:
-            file_server: {}
+            cc_uploader: {}
             nsync: {}
             stager: {}
             tps: {}
@@ -240,6 +240,7 @@ jobs:
       consul:
         agent:
           services:
+            file_server: {}
             receptor: {}
             ssh_proxy: {}
 
@@ -291,7 +292,7 @@ jobs:
       consul:
         agent:
           services:
-            file_server: {}
+            cc_uploader: {}
             nsync: {}
             stager: {}
             tps: {}
@@ -325,6 +326,7 @@ jobs:
       consul:
         agent:
           services:
+            file_server: {}
             receptor: {}
             ssh_proxy: {}
 
@@ -376,7 +378,7 @@ jobs:
       consul:
         agent:
           services:
-            file_server: {}
+            cc_uploader: {}
             nsync: {}
             stager: {}
             tps: {}
@@ -410,6 +412,7 @@ jobs:
       consul:
         agent:
           services:
+            file_server: {}
             receptor: {}
             ssh_proxy: {}
 
@@ -505,12 +508,14 @@ properties:
         address: (( property_overrides.executor.garden.address || nil ))
       log_level: (( property_overrides.executor.log_level || nil ))
     file_server:
+      log_level: (( property_overrides.file_server.log_level || nil ))
+    cc_uploader:
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
-      log_level: (( property_overrides.file_server.log_level || nil ))
+      log_level: (( property_overrides.cc_uploader.log_level || nil ))
     garden-linux:
       kernel_network_tuning_enabled: (( property_overrides.garden-linux.kernel_network_tuning_enabled || nil ))
       disk_quota_enabled: (( property_overrides.garden-linux.disk_quota_enabled || nil ))
@@ -648,7 +653,7 @@ base_job_templates:
       release: diego
     - name: tps
       release: diego
-    - name: file_server
+    - name: cc_uploader
       release: diego
     - name: consul_agent
       release: cf
@@ -669,6 +674,8 @@ base_job_templates:
     - name: metron_agent
       release: cf
     - name: receptor
+      release: diego
+    - name: file_server
       release: diego
   database:
     - name: etcd

@@ -1,13 +1,13 @@
 ---
-name: file_server
+name: cc_uploader
 
 templates:
-  file_server_ctl.erb: bin/file_server_ctl
+  cc_uploader_ctl.erb: bin/cc_uploader_ctl
   dns_health_check.erb: bin/dns_health_check
 
 packages:
   - pid_utils
-  - file_server
+  - cc_uploader
   - buildpack_app_lifecycle
   - docker_app_lifecycle
   - windows_app_lifecycle
@@ -17,19 +17,18 @@ properties:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
 
-  diego.file_server.address:
+  diego.cc_uploader.address:
     description: "Address of interface on which to serve files"
-    default: "0.0.0.0:8080"
-  diego.file_server.static_directory:
-    default: "/var/vcap/jobs/file_server/packages/"
-    description: "Fully-qualified path to the doc root for the file server's static files"
-  diego.file_server.debug_addr:
+    default: "0.0.0.0:9090"
+  diego.cc_uploader.debug_addr:
     description: "address at which to serve debug info"
-    default: "0.0.0.0:17005"
-  diego.file_server.log_level:
+    default: "0.0.0.0:17018"
+  diego.cc_uploader.cc.job_polling_interval_in_seconds:
+    description: "the interval between job polling requests"
+  diego.cc_uploader.log_level:
     description: "Log level"
     default: "info"
 
-  diego.file_server.cc.external_port:
+  diego.cc_uploader.cc.external_port:
     description: "External Cloud Controller port"
     default: 9022
