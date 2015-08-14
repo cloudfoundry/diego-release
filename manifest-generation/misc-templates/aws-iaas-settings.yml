@@ -59,6 +59,18 @@ iaas_settings:
       cloud_properties:
         <<: (( merge ))
         instance_type: r3.xlarge
+    - name: colocated_z1
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: r3.xlarge
+    - name: colocated_z2
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: r3.xlarge
+    - name: colocated_z3
+      cloud_properties:
+        <<: (( merge ))
+        instance_type: r3.xlarge
     - name: database_z1
       cloud_properties:
         <<: (( merge ))
