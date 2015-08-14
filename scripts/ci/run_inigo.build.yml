@@ -4,7 +4,8 @@ platform: linux
 image: docker:///cloudfoundry/inigo-ci
 
 inputs:
-  - name: diego-release
+- name: diego-release
+- name: garden-linux-release
 
 params:
   GINKGO_PARALLEL: true

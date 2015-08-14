@@ -627,16 +627,6 @@ properties:
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       log_level: (( property_overrides.cc_uploader.log_level || nil ))
-    garden-linux:
-      kernel_network_tuning_enabled: (( property_overrides.garden-linux.kernel_network_tuning_enabled || nil ))
-      disk_quota_enabled: (( property_overrides.garden-linux.disk_quota_enabled || nil ))
-      listen_network: (( property_overrides.garden-linux.listen_network || nil ))
-      listen_address: (( property_overrides.garden-linux.listen_address || nil ))
-      allow_networks: (( property_overrides.garden-linux.allow_networks || nil ))
-      insecure_docker_registry_list: (( property_overrides.garden-linux.insecure_docker_registry_list || nil ))
-      mtu: (( property_overrides.garden-linux.mtu || nil ))
-      mount_btrfs_loopback: (( property_overrides.garden-linux.mount_btrfs_loopback || nil ))
-      btrfs_store_size_mb: (( property_overrides.garden-linux.btrfs_store_size_mb || nil ))
     nsync:
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8887" ))
       cc:
@@ -717,6 +707,16 @@ properties:
       log_level: (( property_overrides.tps.log_level || nil ))
       traffic_controller_url: (( "wss://doppler." config_from_cf.system_domain ":443" ))
 
+  # -- Proerties below are used by jobs from garden-linux-release --
+  garden:
+    listen_network: (( property_overrides.garden.listen_network || nil ))
+    listen_address: (( property_overrides.garden.listen_address || nil ))
+    deny_networks: (( property_overrides.garden.deny_networks || ["0.0.0.0/0"] ))
+    allow_networks: (( property_overrides.garden.allow_networks || nil ))
+    insecure_docker_registry_list: (( property_overrides.garden.insecure_docker_registry_list || nil ))
+    network_mtu: (( property_overrides.garden.mtu || nil ))
+
+
 # The keys below should not be included in the final stub
 config_from_cf: (( merge ))
 iaas_settings: (( merge ))
@@ -737,6 +737,8 @@ base_releases:
     version: latest
   - name: cf
     version: latest
+  - name: garden-linux
+    version: latest
 base_job_templates:
   brain:
     - name: consul_agent
@@ -754,7 +756,9 @@ base_job_templates:
       release: diego
     - name: consul_agent
       release: cf
-    - name: garden-linux
+    - name: garden
+      release: garden-linux
+    - name: rootfses
       release: diego
     - name: metron_agent
       release: cf
@@ -813,8 +817,8 @@ base_job_templates:
       release: diego
     - name: file_server
       release: diego
-    - name: garden-linux
-      release: diego
+    - name: garden
+      release: garden-linux
     - name: metron_agent
       release: cf
     - name: nsync

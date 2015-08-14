@@ -5,6 +5,8 @@ set -e -x
 export GOROOT=/usr/local/go
 export PATH=${GOROOT}/bin:${PATH}
 
+export GARDEN_LINUX_GOPATH=$PWD/garden-linux-release
+
 cd diego-release/
 
 export GOPATH_ROOT=$PWD
@@ -29,7 +31,6 @@ export TPS_GOPATH=${GOPATH_ROOT}
 
 # These components vendor their own dependencies
 export ROUTER_GOPATH=${GOPATH_ROOT}/src/github.com/cloudfoundry/gorouter/Godeps/_workspace:${GOPATH_ROOT}
-export GARDEN_LINUX_GOPATH=${GOPATH_ROOT}/src/garden-linux-release
 
 # install application dependencies
 echo "Installing go dependencies ..."
@@ -58,11 +59,6 @@ export EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\s/\1/;tx;d
 export GARDEN_GRAPH_PATH=/tmp/btrfs/garden
 mkdir -p $GARDEN_GRAPH_PATH
 
-color_flag=""
-if [ -n "$GO_PIPELINE_COUNTER" ]; then
-  color_flag="-noColor"
-fi
-
 nodes_flag=""
 if [ "$GINKGO_PARALLEL" = "true" ]; then
   nodes_flag="-nodes=4"
@@ -73,14 +69,14 @@ mountpoint -q /sys || mount -t sysfs sysfs /sys
 
 pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
   if [ "$GINKGO_PARALLEL" = "true" ]; then
-    ginkgo $color_flag $nodes_flag -r -skipPackage=docker -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
+    ginkgo $nodes_flag -r -skipPackage=docker -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
     # always run docker tests serially
-    ginkgo $color_flag -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@" docker/
+    ginkgo -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@" docker/
   else
     # always attempt to run executor in parallel
-    ginkgo $color_flag -nodes=4 -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@" executor/
+    ginkgo -nodes=4 -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@" executor/
 
     # run everything but executor with normal rules
-    ginkgo $color_flag $nodes_flag -r -skipPackage=executor -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
+    ginkgo $nodes_flag -r -skipPackage=executor -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
   fi
 popd
