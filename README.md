@@ -57,6 +57,11 @@ you if you have [direnv](http://direnv.net) installed.
     # fetch release repo
     mkdir -p ~/workspace
     cd ~/workspace
+
+    # fetch garden-linux-release
+    git clone https://github.com/cloudfoundry-incubator/garden-linux-release.git
+    (cd garden-linux-release/ && git checkout master && git submodule update --init --recursive)
+
     git clone https://github.com/cloudfoundry-incubator/diego-release.git
     cd diego-release/
 
@@ -145,7 +150,7 @@ as you switch in and out of the directory.
 1. Checkout cf-release (develop branch) from git
 
         cd ~/workspace
-        git clone git@github.com:cloudfoundry/cf-release.git
+        git clone https://github.com/cloudfoundry/cf-release.git
         cd ~/workspace/cf-release
         git checkout develop
         ./update
@@ -153,10 +158,18 @@ as you switch in and out of the directory.
 1. Checkout diego-release (develop branch) from git
 
         cd ~/workspace
-        git clone git@github.com:cloudfoundry-incubator/diego-release.git
+        git clone https://github.com/cloudfoundry-incubator/diego-release.git
         cd ~/workspace/diego-release
         git checkout develop
         ./scripts/update
+
+1. Checkout garden-linux-release (master branch) from git
+
+        cd ~/workspace
+        git clone https://github.com/cloudfoundry-incubator/garden-linux-release.git
+        cd ~/workspace/garden-linux-release
+        git checkout master
+        git submodule update --init --recursive
 
 1. Install `spiff`, a tool for generating BOSH manifests. `spiff` is required
    for running the scripts in later steps. For instructions on installing 
@@ -209,6 +222,10 @@ as you switch in and out of the directory.
             ~/deployments/bosh-lite \
             > ~/deployments/bosh-lite/diego.yml
         bosh deployment ~/deployments/bosh-lite/diego.yml
+
+1. Upload the garden-linux-release
+
+        bosh upload release http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-linux-release
 
 1. Dance some more:
 
