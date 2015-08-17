@@ -225,7 +225,7 @@ as you switch in and out of the directory.
 
 1. Upload the garden-linux-release
 
-        bosh upload release http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-linux-release
+        bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
 
 1. Dance some more:
 
