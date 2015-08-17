@@ -163,14 +163,6 @@ as you switch in and out of the directory.
         git checkout develop
         ./scripts/update
 
-1. Checkout garden-linux-release (master branch) from git
-
-        cd ~/workspace
-        git clone https://github.com/cloudfoundry-incubator/garden-linux-release.git
-        cd ~/workspace/garden-linux-release
-        git checkout master
-        git submodule update --init --recursive
-
 1. Install `spiff`, a tool for generating BOSH manifests. `spiff` is required
    for running the scripts in later steps. For instructions on installing 
    `spiff`, see its [README](https://github.com/cloudfoundry-incubator/spiff).
