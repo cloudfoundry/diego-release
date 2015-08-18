@@ -713,6 +713,7 @@ properties:
     listen_address: (( property_overrides.garden.listen_address || nil ))
     deny_networks: (( property_overrides.garden.deny_networks || ["0.0.0.0/0"] ))
     allow_networks: (( property_overrides.garden.allow_networks || nil ))
+    allow_host_access: (( property_overrides.garden.allow_host_access || nil ))
     insecure_docker_registry_list: (( property_overrides.garden.insecure_docker_registry_list || nil ))
     network_mtu: (( property_overrides.garden.mtu || nil ))
 
