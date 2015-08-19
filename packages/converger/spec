@@ -8,8 +8,10 @@ files:
   - github.com/cloudfoundry-incubator/converger/cmd/converger/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/auction/auctiontypes/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/auctionhandlers/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/cellhandlers/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/events/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/models/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
@@ -65,3 +67,4 @@ files:
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
   - github.com/ugorji/go/codec/*.go # gosub
+  - github.com/vito/go-sse/sse/*.go # gosub
