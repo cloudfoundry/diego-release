@@ -88,7 +88,6 @@ case $1 in
       -containerMaxCpuShares=<%= p("diego.executor.container_max_cpu_shares") %> \
       -cachePath=$CACHE_DIR \
       -maxCacheSizeInBytes=<%= p("diego.executor.max_cache_size_in_bytes") %>\
-      -allowPrivileged=<%= p("diego.executor.allow_privileged") %>\
       -exportNetworkEnvVars=<%= p("diego.executor.export_network_env_vars") %>\
       -healthyMonitoringInterval=<%= "#{p("diego.executor.healthy_monitoring_interval_in_seconds")}s" %> \
       -unhealthyMonitoringInterval=<%= "#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s" %> \

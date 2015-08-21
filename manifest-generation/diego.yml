@@ -614,7 +614,6 @@ properties:
       peer_cert: (( property_overrides.etcd.peer_cert || nil ))
       peer_key: (( property_overrides.etcd.peer_key || nil ))
     executor:
-      allow_privileged: (( property_overrides.executor.allow_privileged || nil ))
       drain_timeout_in_seconds: (( property_overrides.executor.drain_timeout_in_seconds || nil ))
       garden:
         network: (( property_overrides.executor.garden.network || nil ))
