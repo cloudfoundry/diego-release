@@ -666,6 +666,7 @@ properties:
         ca_cert: (( property_overrides.etcd.ca_cert ))
         client_cert: (( property_overrides.etcd.client_cert ))
         client_key: (( property_overrides.etcd.client_key ))
+      evacuation_timeout_in_seconds: (( property_overrides.rep.evacuation_timeout_in_seconds || nil ))
       log_level: (( property_overrides.rep.log_level || nil ))
     route_emitter:
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8887" ))
