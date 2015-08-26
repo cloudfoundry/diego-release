@@ -36,7 +36,6 @@ case $1 in
       -bbsAddress=<%= p("diego.auctioneer.bbs.api_url") %> \
       -etcdCluster=<%= p("diego.auctioneer.etcd.machines").map{|addr| "\"#{p("diego.auctioneer.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -consulCluster=http://127.0.0.1:8500 \
-      -receptorTaskHandlerURL=<%= p("diego.auctioneer.receptor_task_handler_url") %> \
       -debugAddr=<%= p("diego.auctioneer.debug_addr") %> \
       -listenAddr=<%= p("diego.auctioneer.listen_addr") %> \
       -logLevel=<%= p("diego.auctioneer.log_level") %> \

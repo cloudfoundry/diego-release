@@ -84,7 +84,6 @@ case $1 in
     exec chpst -u vcap:vcap /var/vcap/packages/receptor/bin/receptor ${etcd_sec_flags} \
       -address=<%= p("diego.receptor.listen_addr") %> \
       -bbsAddress=<%= p("diego.receptor.bbs.api_url") %> \
-      -taskHandlerAddress=<%= "#{my_ip}:1169" %> \
       -debugAddr=<%= p("diego.receptor.debug_addr") %> \
       -etcdCluster=<%= p("diego.receptor.etcd.machines").map{|addr| "\"#{p("diego.receptor.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -consulCluster=http://127.0.0.1:8500 \

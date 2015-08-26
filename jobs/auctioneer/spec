@@ -24,9 +24,6 @@ properties:
   diego.auctioneer.log_level:
     description: "Log level"
     default: "info"
-  diego.auctioneer.receptor_task_handler_url:
-    description: "URL for task completion call back"
-    default: http://receptor.service.cf.internal:1169
 
   diego.auctioneer.etcd.require_ssl:
     description: "enable ssl for all communication with etcd"

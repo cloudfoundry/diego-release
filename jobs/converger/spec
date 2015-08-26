@@ -30,9 +30,6 @@ properties:
   diego.converger.log_level:
     description: "Log level"
     default: "info"
-  diego.converger.receptor_task_handler_url:
-    description: "URL for task completion call back"
-    default: http://receptor.service.cf.internal:1169
 
   diego.converger.etcd.machines:
     description: "Addresses pointing to the ETCD cluster"
