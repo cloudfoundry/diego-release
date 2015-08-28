@@ -11,7 +11,7 @@ config_from_cf:
     ca_cert: (( properties.consul.ca_cert ))
     agent_cert: (( properties.consul.agent_cert ))
     agent_key: (( properties.consul.agent_key ))
-    encrypt_keys: (( properties.consul.encrypt_key ))
+    encrypt_keys: (( properties.consul.encrypt_keys ))
     require_ssl: (( properties.consul.require_ssl ))
     server_cert: (( properties.consul.server_cert ))
     server_key: (( properties.consul.server_key ))
