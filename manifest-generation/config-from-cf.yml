@@ -11,7 +11,7 @@ config_from_cf:
     ca_cert: (( merge ))
     agent_cert: (( merge ))
     agent_key: (( merge ))
-    encrypt_key: (( merge ))
+    encrypt_keys: (( merge ))
     require_ssl: (( merge ))
     server_cert: (( merge ))
     server_key: (( merge ))
