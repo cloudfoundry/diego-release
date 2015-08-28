@@ -84,6 +84,7 @@ case $1 in
     exec chpst -u vcap:vcap /var/vcap/packages/bbs/bin/bbs ${etcd_sec_flags} \
       -address=<%= p("diego.bbs.listen_addr") %> \
       -auctioneerAddress=<%= p("diego.bbs.auctioneer.api_url") %> \
+      -serializationFormat=<%= p("diego.bbs.serialization_format") %> \
       -debugAddr=<%= p("diego.bbs.debug_addr") %> \
       -consulCluster=http://127.0.0.1:8500 \
       -etcdCluster=<%= p("diego.bbs.etcd.machines").map{|addr| "\"#{p("diego.bbs.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \

@@ -23,6 +23,10 @@ properties:
     description: "Log level"
     default: "info"
 
+  diego.bbs.serialization_format:
+    description: "Sets serialization, encoding, and metadata options: json_no_envelope, json, or proto"
+    default: "json_no_envelope"
+
   diego.bbs.auctioneer.api_url:
     description: "Address of the auctioneer API"
 
