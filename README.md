@@ -176,7 +176,7 @@ as you switch in and out of the directory.
 1. Generate and target cf-release manifest:
 
         cd ~/workspace/cf-release
-        ./generate_deployment_manifest warden \
+        ./scripts/generate_deployment_manifest warden \
             ~/deployments/bosh-lite/director.yml \
             ~/workspace/diego-release/stubs-for-cf-release/enable_consul_with_cf.yml \
             ~/workspace/diego-release/stubs-for-cf-release/enable_diego_ssh_in_cc.yml \
@@ -186,7 +186,7 @@ as you switch in and out of the directory.
    **Or if you are running Windows cells** along side this deployment, instead generate cf-release manifest using:
 
         cd ~/workspace/cf-release
-        ./generate_deployment_manifest warden \
+        ./scripts/generate_deployment_manifest warden \
             ~/deployments/bosh-lite/director.yml \
             ~/workspace/diego-release/stubs-for-cf-release/enable_consul_with_cf.yml \
             ~/workspace/diego-release/stubs-for-cf-release/enable_diego_windows_in_cc.yml \
