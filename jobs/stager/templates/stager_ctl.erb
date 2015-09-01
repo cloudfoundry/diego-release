@@ -48,7 +48,7 @@ case $1 in
     ulimit -n 100000
 
     exec chpst -u vcap:vcap /var/vcap/packages/stager/bin/stager \
-      -diegoAPIURL=<%= p("diego.stager.diego_api_url") %> \
+      -bbsAddress=<%= p("diego.stager.bbs.api_url") %> \
       -stagerURL=<%= p("diego.stager.stager_url") %> \
       -ccBaseURL=http://<%= p("diego.stager.cc.internal_service_hostname") %>:<%= p("diego.stager.cc.external_port") %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.stager.cc.basic_auth_username")) %> \

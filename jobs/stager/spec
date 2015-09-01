@@ -34,9 +34,9 @@ properties:
   diego.stager.stager_url:
     description: URL of stager, used for completion callbacks from receptor API
     default: http://stager.service.cf.internal:8888
-  diego.stager.diego_api_url:
-    description: URL of diego API
-    default: http://receptor.service.cf.internal:8887
+  diego.stager.bbs.api_url:
+    description: "Address to the BBS Server"
+    default: http://bbs.service.cf.internal:8889
   diego.stager.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17011"
