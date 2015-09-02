@@ -24,9 +24,8 @@ properties:
   diego.route_emitter.sync_interval_in_seconds:
     description: "Interval to sync routes to the router in seconds."
     default: 60
-  diego.route_emitter.diego_api_url:
-    description: URL of diego API
-    default: http://receptor.service.cf.internal:8887
   diego.route_emitter.log_level:
     description: "Log level"
     default: "info"
+  diego.route_emitter.bbs.api_url:
+    description: "Address to the BBS Server"

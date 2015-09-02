@@ -668,7 +668,8 @@ properties:
       evacuation_timeout_in_seconds: (( property_overrides.rep.evacuation_timeout_in_seconds || nil ))
       log_level: (( property_overrides.rep.log_level || nil ))
     route_emitter:
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8887" ))
+      bbs:
+        api_url: (( "http://bbs.service.cf.internal:8889" ))
       nats:
         machines: (( config_from_cf.nats.machines ))
         user: (( config_from_cf.nats.user ))
