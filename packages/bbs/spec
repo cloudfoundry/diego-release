@@ -29,8 +29,13 @@ files:
   - github.com/cloudfoundry-incubator/rep/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/evacuation/evacuation_context/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/lrp_stopper/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/bbs/bbserrors/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/bbs/lock_bbs/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/bbs/shared/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/diego_errors/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/maintainer/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
   - github.com/cloudfoundry/dropsonde/factories/*.go # gosub
@@ -47,6 +52,7 @@ files:
   - github.com/cloudfoundry/gunk/workpool/*.go # gosub
   - github.com/cloudfoundry/sonde-go/control/*.go # gosub
   - github.com/cloudfoundry/sonde-go/events/*.go # gosub
+  - github.com/cloudfoundry/storeadapter/*.go # gosub
   - github.com/coreos/go-etcd/etcd/*.go # gosub
   - github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/gogo/protobuf/sortkeys/*.go # gosub
