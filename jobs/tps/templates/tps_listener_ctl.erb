@@ -52,7 +52,7 @@ case $1 in
     echo $$ > $PIDFILE
 
     exec chpst -u vcap:vcap /var/vcap/packages/tps/bin/tps-listener \
-      -diegoAPIURL=<%= p("diego.tps.diego_api_url") %> \
+      -bbsAddress=<%= p("diego.tps.bbs.api_url") %> \
       -debugAddr=<%= p("diego.tps.listener.debug_addr") %> \
       -maxInFlightRequests=<%= p("diego.tps.max_in_flight_requests") %> \
       -listenAddr=<%= "#{my_ip}:1518" %> \
