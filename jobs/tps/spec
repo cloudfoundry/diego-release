@@ -18,9 +18,6 @@ properties:
   diego.tps.bbs.api_url:
     description: "Address to the BBS Server"
     default: http://bbs.service.cf.internal:8889
-  diego.tps.diego_api_url:
-    description: URL of diego API
-    default: http://receptor.service.cf.internal:8887
   diego.tps.cc.external_port:
     description: "External port to access the Cloud Controller"
     default: 9022

@@ -30,7 +30,7 @@ case $1 in
     echo $$ > $PIDFILE
 
     exec chpst -u vcap:vcap /var/vcap/packages/tps/bin/tps-watcher \
-      -diegoAPIURL=<%= p("diego.tps.diego_api_url") %> \
+      -bbsAddress=<%= p("diego.tps.bbs.api_url") %> \
       -consulCluster=http://127.0.0.1:8500 \
       -ccBaseURL=http://<%= p("diego.tps.cc.internal_service_hostname") %>:<%= p("diego.tps.cc.external_port") %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.tps.cc.basic_auth_username")) %> \

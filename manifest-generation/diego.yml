@@ -706,7 +706,6 @@ properties:
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8887" ))
       bbs:
         api_url: (( "http://bbs.service.cf.internal:8889" ))
       log_level: (( property_overrides.tps.log_level || nil ))
