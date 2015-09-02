@@ -12,7 +12,7 @@ function has_upstream() {
   git rev-parse @{u} > /dev/null 2>&1
 }
 
-set -x
+set -x -e
 
 $(dirname $0)/install-git-hooks
 
