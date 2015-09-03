@@ -24,7 +24,7 @@ case $1 in
     echo $$ > $PIDFILE
 
     exec chpst -u vcap:vcap /var/vcap/packages/nsync/bin/nsync-listener \
-      -diegoAPIURL=<%= p("diego.nsync.diego_api_url") %> \
+      -bbsAddress=<%= p("diego.nsync.bbs.api_url") %> \
       -nsyncURL=<%= p("diego.nsync.nsync_url") %> \
       -debugAddr=<%= p("diego.nsync.listener_debug_addr") %> \
       <%= p("diego.nsync.lifecycle_bundles").map { |bundle| "-lifecycle #{bundle}" }.join(" ") %> \

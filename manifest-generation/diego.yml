@@ -629,7 +629,8 @@ properties:
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       log_level: (( property_overrides.cc_uploader.log_level || nil ))
     nsync:
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8887" ))
+      bbs:
+        api_url: (( "http://bbs.service.cf.internal:8889" ))
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))

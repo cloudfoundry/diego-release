@@ -27,7 +27,7 @@ case $1 in
     export GOMAXPROCS=$(nproc)
 
     exec chpst -u vcap:vcap /var/vcap/packages/nsync/bin/nsync-bulker \
-      -diegoAPIURL=<%= p("diego.nsync.diego_api_url") %> \
+      -bbsAddress=<%= p("diego.nsync.bbs.api_url") %> \
       -consulCluster=http://127.0.0.1:8500 \
       -ccBaseURL=<%= Shellwords.shellescape(p("diego.nsync.cc.base_url")) %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.nsync.cc.basic_auth_username")) %> \

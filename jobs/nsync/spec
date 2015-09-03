@@ -15,9 +15,9 @@ properties:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
 
-  diego.nsync.diego_api_url:
-    description: URL of diego API
-    default: http://receptor.service.cf.internal:8887
+  diego.nsync.bbs.api_url:
+    description: "Address to the BBS Server"
+    default: http://bbs.service.cf.internal:8889
   diego.nsync.nsync_url:
     description: URL of nsync
     default: http://nsync.service.cf.internal:8787
