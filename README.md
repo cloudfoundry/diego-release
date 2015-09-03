@@ -153,7 +153,7 @@ as you switch in and out of the directory.
         git clone https://github.com/cloudfoundry/cf-release.git
         cd ~/workspace/cf-release
         git checkout develop
-        ./update
+        ./scripts/update
 
 1. Checkout diego-release (develop branch) from git
 
