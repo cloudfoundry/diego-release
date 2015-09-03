@@ -686,13 +686,15 @@ properties:
       log_level: (( property_overrides.runtime_metrics_server.log_level || nil ))
       diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8887" ))
     ssh_proxy:
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8887" ))
+      bbs:
+        api_url: (( "http://bbs.service.cf.internal:8889" ))
       host_key: (( property_overrides.ssh_proxy.host_key || "" ))
       servers: (( jobs.access_z1.networks.diego1.static_ips jobs.access_z2.networks.diego2.static_ips jobs.access_z3.networks.diego3.static_ips jobs.colocated_z1.networks.diego1.static_ips jobs.colocated_z2.networks.diego2.static_ips jobs.colocated_z3.networks.diego3.static_ips ))
       enable_cf_auth: (( property_overrides.ssh_proxy.enable_cf_auth || false ))
       enable_diego_auth: (( property_overrides.ssh_proxy.enable_diego_auth || false ))
       uaa_secret: (( config_from_cf.uaa.clients.ssh-proxy.secret || nil ))
       uaa_url: (( config_from_cf.uaa.url || nil ))
+      diego_credentials: (( property_overrides.ssh_proxy.diego_credentials || "" ))
     stager:
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))

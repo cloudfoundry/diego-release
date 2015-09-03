@@ -16,9 +16,8 @@ properties:
   diego.ssh_proxy.listen_addr:
     description: "address for the proxy to listen on"
     default: "0.0.0.0:2222"
-  diego.ssh_proxy.diego_api_url:
-    description: URL of diego API
-    default: http://receptor.service.dc1.cf.internal:8887
+  diego.ssh_proxy.bbs.api_url:
+    description: "Address to the BBS Server"
   diego.ssh_proxy.host_key:
     description: "PEM encoded RSA private key used to identify host"
   diego.ssh_proxy.debug_addr:
@@ -39,6 +38,8 @@ properties:
   diego.ssh_proxy.enable_diego_auth:
     description: Allow ssh access for diego applications
     default: false
+  diego.ssh_proxy.diego_credentials:
+    description: Diego Credentials to be used with the Diego authenitcation method
   diego.ssh_proxy.uaa_secret:
     description: The oauth client secret used to authenticate the ssh-proxy with the uaa
   diego.ssh_proxy.uaa_url:

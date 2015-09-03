@@ -8,6 +8,8 @@ files:
   - github.com/cloudfoundry-incubator/diego-ssh/cmd/ssh-proxy/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/cmd/ssh-proxy/testrunner/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/events/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/format/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/models/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
@@ -18,7 +20,6 @@ files:
   - github.com/cloudfoundry-incubator/diego-ssh/proxy/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/routes/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/server/*.go # gosub
-  - github.com/cloudfoundry-incubator/receptor/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
   - github.com/cloudfoundry/dropsonde/factories/*.go # gosub

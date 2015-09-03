@@ -28,7 +28,7 @@ case $1 in
     exec chpst -u vcap:vcap /var/vcap/packages/ssh_proxy/bin/ssh-proxy \
       -address=<%= p("diego.ssh_proxy.listen_addr") %> \
       -hostKey="$HOST_KEY" \
-      -diegoAPIURL=<%= p("diego.ssh_proxy.diego_api_url") %> \
+      -bbsAddress=<%= p("diego.ssh_proxy.bbs.api_url") %> \
       -ccAPIURL=http://<%= p("diego.ssh_proxy.cc.internal_service_hostname") %>:<%= p("diego.ssh_proxy.cc.external_port") %> \
       <% if_p("diego.ssh_proxy.uaa_url", "diego.ssh_proxy.uaa_secret") do |url, secret| %>\
       -uaaURL=<%= url.gsub('://', "://ssh-proxy:#{secret}@") %> \
@@ -38,6 +38,7 @@ case $1 in
       -logLevel=<%= p("diego.ssh_proxy.log_level") %> \
       -enableCFAuth=<%= p("diego.ssh_proxy.enable_cf_auth") %> \
       -enableDiegoAuth=<%= p("diego.ssh_proxy.enable_diego_auth") %> \
+      -diegoCredentials=<%= p("diego.ssh_proxy.diego_credentials") %> \
       2> >(tee -a $LOG_DIR/ssh_proxy.stderr.log | logger -p user.error -t vcap.ssh-proxy) \
       1> >(tee -a $LOG_DIR/ssh_proxy.stdout.log | logger -p user.info -t vcap.ssh-proxy)
 
