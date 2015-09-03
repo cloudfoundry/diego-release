@@ -25,3 +25,8 @@ config_from_cf:
     port: (( merge ))
     machines: (( merge ))
   system_domain: (( merge ))
+  uaa:
+    clients:
+      ssh-proxy:
+        secret: (( merge ))
+    url: (( merge || nil ))
