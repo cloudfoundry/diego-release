@@ -32,7 +32,7 @@ properties:
       - "buildpack/windows2012R2:windows_app_lifecycle/windows_app_lifecycle.tgz"
       - "docker:docker_app_lifecycle/docker_app_lifecycle.tgz"
   diego.stager.stager_url:
-    description: URL of stager, used for completion callbacks from receptor API
+    description: URL of stager, used for completion callbacks from the BBS
     default: http://stager.service.cf.internal:8888
   diego.stager.bbs.api_url:
     description: "Address to the BBS Server"
