@@ -25,6 +25,11 @@ config_from_cf:
     port: 4222
     machines: (( properties.nats.machines ))
   system_domain: (( properties.system_domain ))
+  uaa:
+    url: (( properties.uaa.url ))
+    clients:
+      ssh-proxy:
+        secret: (( properties.uaa.clients.ssh-proxy.secret ))
 
 # The keys below should not be included in the final stub
 name: (( merge ))
@@ -55,3 +60,8 @@ properties:
     password: (( merge ))
     machines: (( merge ))
   system_domain: (( merge ))
+  uaa:
+    clients:
+      ssh-proxy:
+        secret: (( merge || nil ))
+    url: (( merge || nil ))
