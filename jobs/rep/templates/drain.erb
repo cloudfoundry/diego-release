@@ -41,6 +41,6 @@ if evacuate; then
   echo 0 >&3
   exit 0
 else
-  echo "$(date): rep exited"
-  echo 0 >&3
+  echo "$(date): evacuation failed"
+  exit 1
 fi
