@@ -6,6 +6,7 @@ dependencies:
 
 files:
   - github.com/cloudfoundry-incubator/bbs/cmd/bbs/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/cmd/bbs/fixtures/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/cmd/bbs/testrunner/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/auction/auctiontypes/*.go # gosub
@@ -15,9 +16,11 @@ files:
   - github.com/cloudfoundry-incubator/bbs/db/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/db/consul/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/db/etcd/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/db/migrations/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/events/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/format/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/handlers/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/migration/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/models/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/taskworkpool/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/watcher/*.go # gosub

@@ -65,7 +65,6 @@ case $1 in
       -listenAddress=<%= p("diego.bbs.listen_addr") %> \
       -advertiseURL=<%= "http://#{name.gsub('_', '-')}-#{spec.index}.bbs.service.cf.internal:#{p("diego.bbs.listen_addr").split(':')[1]}" %> \
       -auctioneerAddress=<%= p("diego.bbs.auctioneer.api_url") %> \
-      -serializationFormat=<%= p("diego.bbs.serialization_format") %> \
       -debugAddr=<%= p("diego.bbs.debug_addr") %> \
       -consulCluster=http://127.0.0.1:8500 \
       -etcdCluster=<%= p("diego.bbs.etcd.machines").map{|addr| "\"#{p("diego.bbs.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
