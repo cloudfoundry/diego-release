@@ -74,15 +74,15 @@ iaas_settings:
     - name: database_z1
       cloud_properties:
         <<: (( merge ))
-        instance_type: m3.medium
+        instance_type: m3.large
     - name: database_z2
       cloud_properties:
         <<: (( merge ))
-        instance_type: m3.medium
+        instance_type: m3.large
     - name: database_z3
       cloud_properties:
         <<: (( merge ))
-        instance_type: m3.medium
+        instance_type: m3.large
     - name: route_emitter_z1
       cloud_properties:
         <<: (( merge ))
