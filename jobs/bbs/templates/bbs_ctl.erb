@@ -35,6 +35,8 @@ case $1 in
     mkdir -p $TMP_DIR
     chown -R vcap:vcap $TMP_DIR
 
+    export GOMAXPROCS=$(nproc)
+
     echo $$ > $PIDFILE
 
     if running_in_container; then
