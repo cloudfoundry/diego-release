@@ -677,15 +677,6 @@ properties:
         password: (( config_from_cf.nats.password ))
         port: (( config_from_cf.nats.port ))
       log_level: (( property_overrides.route_emitter.log_level || nil ))
-    runtime_metrics_server:
-      etcd:
-        machines: ["etcd.service.cf.internal"]
-        require_ssl: (( property_overrides.etcd.require_ssl || nil ))
-        ca_cert: (( property_overrides.etcd.ca_cert ))
-        client_cert: (( property_overrides.etcd.client_cert ))
-        client_key: (( property_overrides.etcd.client_key ))
-      log_level: (( property_overrides.runtime_metrics_server.log_level || nil ))
-      diego_api_url: (( "http://" receptor.username ":" receptor.password "@receptor.service.cf.internal:8887" ))
     ssh_proxy:
       bbs:
         api_url: (( "http://bbs.service.cf.internal:8889" ))
@@ -757,8 +748,6 @@ base_job_templates:
     - name: auctioneer
       release: diego
     - name: converger
-      release: diego
-    - name: runtime_metrics_server
       release: diego
     - name: metron_agent
       release: cf
@@ -839,8 +828,6 @@ base_job_templates:
     - name: rep
       release: diego
     - name: route_emitter
-      release: diego
-    - name: runtime_metrics_server
       release: diego
     - name: ssh_proxy
       release: diego
