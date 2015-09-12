@@ -2,8 +2,8 @@ property_overrides:
   converger:
     log_level: debug
   etcd:
-    require_ssl: false
-    peer_require_ssl: false
+    require_ssl: true
+    peer_require_ssl: true
     ca_cert: |
       -----BEGIN CERTIFICATE-----
       MIIFATCCAuugAwIBAgIBATALBgkqhkiG9w0BAQswEjEQMA4GA1UEAxMHZGllZ29D
