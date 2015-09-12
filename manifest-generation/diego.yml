@@ -523,6 +523,7 @@ jobs:
 
 properties:
   # -- Properties below are used by the metron_agent job from cf-release --
+  <<: (( merge ))
   metron_agent:
     deployment: (( name ))
   nats: # For metron_agent to talk to collector
