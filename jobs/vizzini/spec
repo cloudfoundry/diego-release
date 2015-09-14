@@ -1,0 +1,19 @@
+---
+name: vizzini
+packages:
+  - golang_1.4
+  - vizzini
+templates:
+  run.erb: bin/run
+properties:
+  vizzini.receptor_address:
+    description: The address of the Receptor
+  vizzini.routable_domain_suffix:
+    description: The deployment's routable domain name
+  vizzini.nodes:
+    description: The number of nodes to run the tests with
+    default: 4
+  vizzini.verbose:
+    description: Run tests in verbose mode
+    default: false
+

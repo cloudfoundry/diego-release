@@ -1,0 +1,40 @@
+#!/bin/bash -l
+
+set -e -x
+
+export GOROOT=$(readlink -nf /var/vcap/packages/golang_1.4)
+export PATH=${GOROOT}/bin:${PATH}
+
+export GOPATH=/var/vcap/packages/vizzini
+export PATH=${GOPATH}/bin:${PATH}
+
+export CF_COLOR=false
+
+cd /var/vcap/packages/vizzini/src/github.com/cloudfoundry-incubator/vizzini
+
+EXITSTATUS=0
+
+nodes=<%= properties.vizzini.nodes %>
+verbose=<%= properties.vizzini.verbose %>
+routable_domain_suffix=<%= properties.vizzini.routable_domain_suffix %>
+receptor_address=<%= properties.vizzini.receptor_address %>
+
+go get -t -d -v ./...
+
+go install github.com/onsi/ginkgo/ginkgo
+
+ginkgo \
+  -nodes=${nodes} \
+  -v=${verbose} \
+  '-skip={LOCAL}' \
+  -randomizeAllSpecs \
+  -progress \
+  -trace \
+  -keepGoing \
+  -- \
+  --receptor-address=${receptor_address} \
+  --routable-domain-suffix=${routable_domain_suffix}
+
+echo "Vizzini Complete; exit status: $EXITSTATUS"
+
+exit $EXITSTATUS
