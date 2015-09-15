@@ -37,6 +37,8 @@ files:
   - github.com/cloudfoundry-incubator/garden/client/connection/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/routes/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/transport/*.go # gosub
+  - github.com/cloudfoundry-incubator/locket/*.go # gosub
+  - github.com/cloudfoundry-incubator/locket/maintainer/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/auction_cell_rep/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/evacuation/*.go # gosub
@@ -49,13 +51,11 @@ files:
   - github.com/cloudfoundry-incubator/rep/maintain/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/bbserrors/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/bbs/lock_bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/lrp_bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/lrp_bbs/internal/actuallrprepository/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/services_bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/bbs/shared/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/cb/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/maintainer/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub

@@ -8,7 +8,6 @@ files:
   - github.com/cloudfoundry-incubator/nsync/cmd/nsync-bulker/*.go # gosub
   - github.com/cloudfoundry-incubator/nsync/cmd/nsync-listener/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
-  - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/events/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/format/*.go # gosub
@@ -20,24 +19,15 @@ files:
   - github.com/cloudfoundry-incubator/diego-ssh/helpers/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/keys/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/routes/*.go # gosub
-  - github.com/cloudfoundry-incubator/executor/*.go # gosub
   - github.com/cloudfoundry-incubator/file-server/*.go # gosub
+  - github.com/cloudfoundry-incubator/locket/*.go # gosub
+  - github.com/cloudfoundry-incubator/locket/maintainer/*.go # gosub
   - github.com/cloudfoundry-incubator/nsync/bulk/*.go # gosub
   - github.com/cloudfoundry-incubator/nsync/recipebuilder/*.go # gosub
   - github.com/cloudfoundry-incubator/receptor/*.go # gosub
-  - github.com/cloudfoundry-incubator/rep/*.go # gosub
   - github.com/cloudfoundry-incubator/route-emitter/cfroutes/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/bbs/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/bbs/bbserrors/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/bbs/lock_bbs/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/bbs/lrp_bbs/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/bbs/lrp_bbs/internal/actuallrprepository/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/bbs/services_bbs/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/bbs/shared/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/cb/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/cc_messages/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/cc_messages/flags/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/maintainer/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
@@ -57,7 +47,6 @@ files:
   - github.com/cloudfoundry/gunk/workpool/*.go # gosub
   - github.com/cloudfoundry/sonde-go/control/*.go # gosub
   - github.com/cloudfoundry/sonde-go/events/*.go # gosub
-  - github.com/cloudfoundry/storeadapter/*.go # gosub
   - github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/gogo/protobuf/sortkeys/*.go # gosub
   - github.com/hashicorp/consul/api/*.go # gosub
