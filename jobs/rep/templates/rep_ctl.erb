@@ -11,15 +11,6 @@ TMP_DIR=$DATA_DIR/tmp
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-<% if p("diego.rep.etcd.require_ssl") %>
-etcd_sec_flags=" \
-   -etcdCertFile=${CONF_DIR}/certs/etcd/client.crt \
-   -etcdKeyFile=${CONF_DIR}/certs/etcd/client.key \
-   -etcdCaFile=${CONF_DIR}/certs/etcd/ca.crt"
-<% else %>
-etcd_sec_flags=""
-<% end %>
-
 case $1 in
 
   start)
@@ -65,8 +56,7 @@ case $1 in
     # Enable maximum OS thread concurrency
     export GOMAXPROCS=$(nproc)
 
-    chpst -u vcap:vcap /var/vcap/packages/rep/bin/rep ${etcd_sec_flags} \
-      -etcdCluster=<%= p("diego.rep.etcd.machines").map{|addr| "\"#{p("diego.rep.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
+    chpst -u vcap:vcap /var/vcap/packages/rep/bin/rep \
       -bbsAddress=<%= p("diego.rep.bbs.api_url") %> \
       -consulCluster=http://127.0.0.1:8500 \
       -debugAddr=<%= p("diego.rep.debug_addr") %> \

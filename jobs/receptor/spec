@@ -4,9 +4,6 @@ name: receptor
 templates:
   receptor_ctl.erb: bin/receptor_ctl
   dns_health_check.erb: bin/dns_health_check
-  etcd_ca.crt.erb: config/certs/etcd/ca.crt
-  etcd_client.crt.erb: config/certs/etcd/client.crt
-  etcd_client.key.erb: config/certs/etcd/client.key
 
 packages:
   - pid_utils
@@ -49,19 +46,6 @@ properties:
   diego.receptor.log_level:
     description: "Log level"
     default: "info"
-
-  diego.receptor.etcd.machines:
-    description: "Addresses pointing to the ETCD cluster"
-
-  diego.receptor.etcd.require_ssl:
-    description: "enable ssl for all communication with etcd"
-    default: true
-  diego.receptor.etcd.ca_cert:
-    description: "PEM-encoded CA certificate"
-  diego.receptor.etcd.client_cert:
-    description: "PEM-encoded client certificate"
-  diego.receptor.etcd.client_key:
-    description: "PEM-encoded client key"
 
   diego.receptor.bbs.api_url:
     description: "Address to the BBS Server"

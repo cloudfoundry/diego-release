@@ -562,12 +562,6 @@ properties:
     auctioneer:
       bbs:
         api_url: (( "http://bbs.service.cf.internal:8889" ))
-      etcd:
-        machines: ["etcd.service.cf.internal"]
-        require_ssl: (( property_overrides.etcd.require_ssl || nil ))
-        ca_cert: (( property_overrides.etcd.ca_cert ))
-        client_cert: (( property_overrides.etcd.client_cert ))
-        client_key: (( property_overrides.etcd.client_key ))
       log_level: (( property_overrides.auctioneer.log_level || nil ))
     bbs:
       auctioneer:
@@ -581,12 +575,6 @@ properties:
     converger:
       bbs:
         api_url: (( "http://bbs.service.cf.internal:8889" ))
-      etcd:
-        machines: ["etcd.service.cf.internal"]
-        require_ssl: (( property_overrides.etcd.require_ssl || nil ))
-        ca_cert: (( property_overrides.etcd.ca_cert ))
-        client_cert: (( property_overrides.etcd.client_cert ))
-        client_key: (( property_overrides.etcd.client_key ))
       log_level: (( property_overrides.converger.log_level || nil ))
     etcd:
       machines: ["etcd.service.cf.internal"]
@@ -640,12 +628,6 @@ properties:
     receptor:
       bbs:
         api_url: (( "http://bbs.service.cf.internal:8889" ))
-      etcd:
-        machines: ["etcd.service.cf.internal"]
-        require_ssl: (( property_overrides.etcd.require_ssl || nil ))
-        ca_cert: (( property_overrides.etcd.ca_cert ))
-        client_cert: (( property_overrides.etcd.client_cert ))
-        client_key: (( property_overrides.etcd.client_key ))
       nats:
         machines: (( config_from_cf.nats.machines ))
         user: (( config_from_cf.nats.user ))
@@ -660,12 +642,6 @@ properties:
     rep:
       bbs:
         api_url: (( "http://bbs.service.cf.internal:8889" ))
-      etcd:
-        machines: ["etcd.service.cf.internal"]
-        require_ssl: (( property_overrides.etcd.require_ssl || nil ))
-        ca_cert: (( property_overrides.etcd.ca_cert ))
-        client_cert: (( property_overrides.etcd.client_cert ))
-        client_key: (( property_overrides.etcd.client_key ))
       evacuation_timeout_in_seconds: (( property_overrides.rep.evacuation_timeout_in_seconds || nil ))
       log_level: (( property_overrides.rep.log_level || nil ))
     route_emitter:

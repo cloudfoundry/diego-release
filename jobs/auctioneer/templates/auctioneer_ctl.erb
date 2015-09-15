@@ -7,15 +7,6 @@ PIDFILE=$RUN_DIR/auctioneer.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-<% if p("diego.auctioneer.etcd.require_ssl") %>
-etcd_sec_flags=" \
-   -etcdCertFile=${CONF_DIR}/certs/etcd/client.crt \
-   -etcdKeyFile=${CONF_DIR}/certs/etcd/client.key \
-   -etcdCaFile=${CONF_DIR}/certs/etcd/ca.crt"
-<% else %>
-etcd_sec_flags=""
-<% end %>
-
 case $1 in
 
   start)
@@ -32,9 +23,8 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec chpst -u vcap:vcap /var/vcap/packages/auctioneer/bin/auctioneer ${etcd_sec_flags} \
+    exec chpst -u vcap:vcap /var/vcap/packages/auctioneer/bin/auctioneer \
       -bbsAddress=<%= p("diego.auctioneer.bbs.api_url") %> \
-      -etcdCluster=<%= p("diego.auctioneer.etcd.machines").map{|addr| "\"#{p("diego.auctioneer.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -consulCluster=http://127.0.0.1:8500 \
       -debugAddr=<%= p("diego.auctioneer.debug_addr") %> \
       -listenAddr=<%= p("diego.auctioneer.listen_addr") %> \

@@ -4,17 +4,12 @@ name: auctioneer
 templates:
   auctioneer_ctl.erb: bin/auctioneer_ctl
   dns_health_check.erb: bin/dns_health_check
-  etcd_ca.crt.erb: config/certs/etcd/ca.crt
-  etcd_client.crt.erb: config/certs/etcd/client.crt
-  etcd_client.key.erb: config/certs/etcd/client.key
 
 packages:
   - pid_utils
   - auctioneer
 
 properties:
-  diego.auctioneer.etcd.machines:
-    description: "Addresses pointing to the ETCD cluster"
   diego.auctioneer.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17001"
@@ -24,16 +19,6 @@ properties:
   diego.auctioneer.log_level:
     description: "Log level"
     default: "info"
-
-  diego.auctioneer.etcd.require_ssl:
-    description: "enable ssl for all communication with etcd"
-    default: true
-  diego.auctioneer.etcd.ca_cert:
-    description: "PEM-encoded CA certificate"
-  diego.auctioneer.etcd.client_cert:
-    description: "PEM-encoded client certificate"
-  diego.auctioneer.etcd.client_key:
-    description: "PEM-encoded client key"
 
   diego.auctioneer.bbs.api_url:
     description: "Address to the BBS Server"

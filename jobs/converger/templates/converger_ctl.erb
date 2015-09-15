@@ -7,15 +7,6 @@ PIDFILE=$RUN_DIR/converger.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-<% if p("diego.converger.etcd.require_ssl") %>
-etcd_sec_flags=" \
-   -etcdCertFile=${CONF_DIR}/certs/etcd/client.crt \
-   -etcdKeyFile=${CONF_DIR}/certs/etcd/client.key \
-   -etcdCaFile=${CONF_DIR}/certs/etcd/ca.crt"
-<% else %>
-etcd_sec_flags=""
-<% end %>
-
 case $1 in
 
   start)
@@ -32,8 +23,7 @@ case $1 in
     # Enable maximum OS thread concurrency
     export GOMAXPROCS=$(nproc)
 
-    exec chpst -u vcap:vcap /var/vcap/packages/converger/bin/converger ${etcd_sec_flags} \
-      -etcdCluster=<%= p("diego.converger.etcd.machines").map{|addr| "\"#{p("diego.converger.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
+    exec chpst -u vcap:vcap /var/vcap/packages/converger/bin/converger \
       -bbsAddress=<%= p("diego.converger.bbs.api_url") %> \
       -consulCluster=http://127.0.0.1:8500 \
       -debugAddr=<%= p("diego.converger.debug_addr") %> \

@@ -9,15 +9,6 @@ TMP_DIR=$DATA_DIR/tmp
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-<% if p("diego.receptor.etcd.require_ssl") %>
-etcd_sec_flags=" \
-   -etcdCertFile=${CONF_DIR}/certs/etcd/client.crt \
-   -etcdKeyFile=${CONF_DIR}/certs/etcd/client.key \
-   -etcdCaFile=${CONF_DIR}/certs/etcd/ca.crt"
-<% else %>
-etcd_sec_flags=""
-<% end %>
-
 <%
   def discover_external_ip
     networks = spec.networks.marshal_dump
@@ -81,11 +72,10 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec chpst -u vcap:vcap /var/vcap/packages/receptor/bin/receptor ${etcd_sec_flags} \
+    exec chpst -u vcap:vcap /var/vcap/packages/receptor/bin/receptor \
       -address=<%= p("diego.receptor.listen_addr") %> \
       -bbsAddress=<%= p("diego.receptor.bbs.api_url") %> \
       -debugAddr=<%= p("diego.receptor.debug_addr") %> \
-      -etcdCluster=<%= p("diego.receptor.etcd.machines").map{|addr| "\"#{p("diego.receptor.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -consulCluster=http://127.0.0.1:8500 \
       -username=<%= p("diego.receptor.username") %> \
       -password=<%= p("diego.receptor.password") %> \
