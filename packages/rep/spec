@@ -38,6 +38,7 @@ files:
   - github.com/cloudfoundry-incubator/garden/transport/*.go # gosub
   - github.com/cloudfoundry-incubator/locket/*.go # gosub
   - github.com/cloudfoundry-incubator/locket/maintainer/*.go # gosub
+  - github.com/cloudfoundry-incubator/locket/presence/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/auction_cell_rep/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/evacuation/*.go # gosub
@@ -49,7 +50,6 @@ files:
   - github.com/cloudfoundry-incubator/rep/lrp_stopper/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/maintain/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
   - github.com/cloudfoundry/dropsonde/factories/*.go # gosub
