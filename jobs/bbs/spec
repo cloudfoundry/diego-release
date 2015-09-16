@@ -38,3 +38,9 @@ properties:
     description: "PEM-encoded client certificate"
   diego.bbs.etcd.client_key:
     description: "PEM-encoded client key"
+
+  diego.bbs.active_key_label:
+    description: "Label of the encryption key to be used when writing to the database"
+  diego.bbs.encryption_keys:
+    description: "List of encryption keys to be used"
+    default: []

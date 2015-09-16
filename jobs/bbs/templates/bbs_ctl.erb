@@ -62,12 +62,16 @@ case $1 in
     ulimit -n 100000
 
     exec chpst -u vcap:vcap /var/vcap/packages/bbs/bin/bbs ${etcd_sec_flags} \
-      -listenAddress=<%= p("diego.bbs.listen_addr") %> \
+      -activeKeyLabel='<%= p("diego.bbs.active_key_label") %>' \
       -advertiseURL=<%= "http://#{name.gsub('_', '-')}-#{spec.index}.bbs.service.cf.internal:#{p("diego.bbs.listen_addr").split(':')[1]}" %> \
       -auctioneerAddress=<%= p("diego.bbs.auctioneer.api_url") %> \
-      -debugAddr=<%= p("diego.bbs.debug_addr") %> \
       -consulCluster=http://127.0.0.1:8500 \
+      -debugAddr=<%= p("diego.bbs.debug_addr") %> \
+      <% p("diego.bbs.encryption_keys").each do |encryption_key| %> \
+        -encryptionKey='<%= "#{encryption_key["label"]}:#{encryption_key["passphrase"]}" %>' \
+      <% end %> \
       -etcdCluster=<%= p("diego.bbs.etcd.machines").map{|addr| "\"#{p("diego.bbs.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
+      -listenAddress=<%= p("diego.bbs.listen_addr") %> \
       -logLevel=<%= p("diego.bbs.log_level") %> \
       2> >(tee -a $LOG_DIR/bbs.stderr.log | logger -p user.error -t vcap.bbs) \
       1> >(tee -a $LOG_DIR/bbs.stdout.log | logger -p user.info -t vcap.bbs)

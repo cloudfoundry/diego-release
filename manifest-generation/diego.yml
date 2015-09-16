@@ -564,6 +564,8 @@ properties:
         api_url: (( "http://bbs.service.cf.internal:8889" ))
       log_level: (( property_overrides.auctioneer.log_level || nil ))
     bbs:
+      active_key_label: (( property_overrides.bbs.active_key_label ))
+      encryption_keys: (( property_overrides.bbs.encryption_keys ))
       auctioneer:
         api_url: (( "http://auctioneer.service.cf.internal:9016" ))
       etcd:

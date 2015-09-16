@@ -1,4 +1,9 @@
 property_overrides:
+  bbs:
+    active_key_label: key1
+    encryption_keys:
+      - label: key1
+        passphrase: "a secure passphrase"
   converger:
     log_level: debug
   etcd:
