@@ -693,6 +693,8 @@ properties:
     allow_host_access: (( property_overrides.garden.allow_host_access || nil ))
     insecure_docker_registry_list: (( property_overrides.garden.insecure_docker_registry_list || nil ))
     network_mtu: (( property_overrides.garden.mtu || nil ))
+    mount_btrfs_loopback: (( property_overrides.garden.mount_btrfs_loopback || nil ))
+    disk_quota_enabled: (( property_overrides.garden.disk_quota_enabled || nil ))
 
 
 # The keys below should not be included in the final stub
