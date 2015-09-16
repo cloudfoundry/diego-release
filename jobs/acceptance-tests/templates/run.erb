@@ -33,6 +33,7 @@ packagesToSkip+=<%= p("acceptance_tests.run_ssh_tests") ? "" : "ssh," %>
 tags=""
 tags+=<%= p("acceptance_tests.skip_internet_tests") ? "noInternet," : "" %>
 tags+=<%= p("acceptance_tests.skip_docker_tests") ? "noDocker," : "" %>
+tags+=<%= p("acceptance_tests.skip_ssh_without_plugin_tests") ? "sshPluginOnly," : "" %>
 tags=${tags//,/ }
 
 nodes=<%= properties.acceptance_tests.nodes %>

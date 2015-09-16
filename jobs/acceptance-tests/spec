@@ -39,3 +39,6 @@ properties:
   acceptance_tests.skip_docker_tests:
     default: false
     description: Skip tests that exercise docker support
+  acceptance_tests.skip_ssh_without_plugin_tests:
+    default: false
+    description: Skip ssh tests that do not use the CF SSH Plugin
