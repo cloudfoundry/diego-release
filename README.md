@@ -266,6 +266,45 @@ by running the lightweight [diego-smoke-tests](https://github.com/cloudfoundry-i
         cf start my-app
 
 
+### Database Encryption
+
+Diego Release must be configured with a set of encryption keys to be used when
+encrypting data at rest in the ETCD database. To configure encryption the
+`diego.bbs.encryption_keys` and `diego.bbs.active_key_label` properties should
+be set.
+
+Diego will automatically (re-)encrypt all of the data stored in ETCD using the
+active key upon boot. This ensures an operator can rotate a key out without
+having to manually rewrite all of the records.
+
+#### Configuring Encryption Keys
+
+Diego uses multiple keys for decryption while allowing only one for encryption.
+This allows an operator to rotate encryption keys in a downtime-less way.
+
+For example:
+
+```yaml
+properties:
+  diego:
+    bbs:
+      active_key_label: key-2015-09
+      encryption_keys:
+        - label: 'key-2015-09'
+          passphrase: 'my september passphrase'
+        - label: 'key-2015-08'
+          passphrase: 'my august passphrase'
+```
+
+In the above, the operator is configuring two encryption, and selecting one to
+be the active. The active key is the one used for encryption while all the
+other can be used for decryption.
+
+The key labels must be no longer than 127 characters, while the passphrases
+have no enforced limit. In addtion to that, the key label must not contain a
+`:` (colon) character, due the way we build command line flags using `:` as a
+separator.
+
 ### SSL Configuration
 
 Diego Release can be configured to require SSL for communication with etcd.
