@@ -11,8 +11,12 @@ files:
   - github.com/cloudfoundry-incubator/vizzini/blackbox/*.go # gosub
   - github.com/cloudfoundry-incubator/vizzini/matchers/*.go # gosub
   - github.com/cloudfoundry-incubator/vizzini/one-offs/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/events/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/models/*.go # gosub
-  - github.com/cloudfoundry-incubator/receptor/*.go # gosub
+  - github.com/cloudfoundry-incubator/consuladapter/*.go # gosub
+  - github.com/cloudfoundry-incubator/locket/*.go # gosub
+  - github.com/cloudfoundry-incubator/locket/presence/*.go # gosub
   - github.com/cloudfoundry-incubator/route-emitter/cfroutes/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/models/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
@@ -22,6 +26,8 @@ files:
   - github.com/onsi/gomega/gexec/*.go # gosub
   - github.com/onsi/gomega/ghttp/*.go # gosub
   - github.com/onsi/say/*.go # gosub
+  - github.com/pivotal-golang/clock/*.go # gosub
+  - github.com/pivotal-golang/lager/lagertest/*.go # gosub
   - github.com/onsi/ginkgo/internal/codelocation/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/client/*.go # gosub
@@ -55,14 +61,18 @@ files:
   - github.com/onsi/gomega/matchers/support/goraph/node/*.go # gosub
   - github.com/onsi/gomega/matchers/support/goraph/util/*.go # gosub
   - github.com/onsi/gomega/types/*.go # gosub
-  - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/encryption/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/format/*.go # gosub
-  - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
   - github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/gogo/protobuf/sortkeys/*.go # gosub
   - github.com/pivotal-golang/lager/*.go # gosub
+  - github.com/bmizerany/pat/*.go # gosub
+  - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
   - github.com/vito/go-sse/sse/*.go # gosub
+  - github.com/hashicorp/consul/api/*.go # gosub
+  - github.com/cloudfoundry-incubator/locket/maintainer/*.go # gosub
+  - github.com/tedsuo/ifrit/*.go # gosub
+  - github.com/cloudfoundry-incubator/receptor/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/routes/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/transport/*.go # gosub
