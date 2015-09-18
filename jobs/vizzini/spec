@@ -3,11 +3,27 @@ name: vizzini
 packages:
   - golang_1.4
   - vizzini
+
 templates:
   run.erb: bin/run
+  dns_health_check.erb: bin/dns_health_check
+  bbs_ca.crt.erb: config/certs/bbs/ca.crt
+  bbs_client.crt.erb: config/certs/bbs/client.crt
+  bbs_client.key.erb: config/certs/bbs/client.key
+
 properties:
-  vizzini.bbs.api_url:
+  vizzini.bbs.api_location:
     description: The address of the BBS
+  vizzini.bbs.ca_cert:
+    description: "PEM-encoded CA certificate"
+  vizzini.bbs.client_cert:
+    description: "PEM-encoded client certificate"
+  vizzini.bbs.client_key:
+    description: "PEM-encoded client key"
+  vizzini.bbs.require_ssl:
+    description: "enable ssl for all communication with the bbs"
+    default: true
+
   vizzini.routable_domain_suffix:
     description: The deployment's routable domain name
   vizzini.nodes:
