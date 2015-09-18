@@ -85,7 +85,7 @@ case $1 in
       -etcdCluster=<%= p("diego.bbs.etcd.machines").map{|addr| "\"#{p("diego.bbs.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -listenAddress=<%= p("diego.bbs.listen_addr") %> \
       -logLevel=<%= p("diego.bbs.log_level") %> \
-      -requireSSL=<%= p("diego.bbs.etcd.require_ssl") %> \
+      -requireSSL=<%= p("diego.bbs.require_ssl") %> \
       2> >(tee -a $LOG_DIR/bbs.stderr.log | logger -p user.error -t vcap.bbs) \
       1> >(tee -a $LOG_DIR/bbs.stdout.log | logger -p user.info -t vcap.bbs)
 
