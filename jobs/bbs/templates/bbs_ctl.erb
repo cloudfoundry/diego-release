@@ -18,6 +18,18 @@ etcd_sec_flags=" \
 etcd_sec_flags=""
 <% end %>
 
+<% if p("diego.bbs.require_ssl") %>
+  ad_url_scheme="https"
+  bbs_sec_flags=" \
+   -certFile=${CONF_DIR}/certs/server.crt \
+   -keyFile=${CONF_DIR}/certs/server.key \
+   -caFile=${CONF_DIR}/certs/ca.crt"
+<% else %>
+  ad_url_scheme="http"
+  bbs_sec_flags=""
+<% end %>
+
+
 case $1 in
 
   start)
@@ -61,9 +73,9 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec chpst -u vcap:vcap /var/vcap/packages/bbs/bin/bbs ${etcd_sec_flags} \
+    exec chpst -u vcap:vcap /var/vcap/packages/bbs/bin/bbs ${etcd_sec_flags} ${bbs_sec_flags} \
       -activeKeyLabel='<%= p("diego.bbs.active_key_label") %>' \
-      -advertiseURL=<%= "http://#{name.gsub('_', '-')}-#{spec.index}.bbs.service.cf.internal:#{p("diego.bbs.listen_addr").split(':')[1]}" %> \
+      -advertiseURL=${ad_url_scheme}<%="://#{name.gsub('_', '-')}-#{spec.index}.bbs.service.cf.internal:#{p("diego.bbs.listen_addr").split(':')[1]}" %> \
       -auctioneerAddress=<%= p("diego.bbs.auctioneer.api_url") %> \
       -consulCluster=http://127.0.0.1:8500 \
       -debugAddr=<%= p("diego.bbs.debug_addr") %> \
@@ -73,6 +85,7 @@ case $1 in
       -etcdCluster=<%= p("diego.bbs.etcd.machines").map{|addr| "\"#{p("diego.bbs.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
       -listenAddress=<%= p("diego.bbs.listen_addr") %> \
       -logLevel=<%= p("diego.bbs.log_level") %> \
+      -requireSSL=<%= p("diego.bbs.etcd.require_ssl") %> \
       2> >(tee -a $LOG_DIR/bbs.stderr.log | logger -p user.error -t vcap.bbs) \
       1> >(tee -a $LOG_DIR/bbs.stdout.log | logger -p user.info -t vcap.bbs)
 

@@ -1,0 +1,31 @@
+#!/bin/sh
+
+set -e -x
+
+# Install certstrap
+go get -v github.com/square/certstrap
+
+# Place keys and certificates here
+depot_path="bbs-certs"
+mkdir -p ${depot_path}
+
+# CA to distribute to bbs clients and servers
+certstrap --depot-path ${depot_path} init --passphrase '' --common-name bbsCA
+mv -f ${depot_path}/bbsCA.crt ${depot_path}/server-ca.crt
+mv -f ${depot_path}/bbsCA.key ${depot_path}/server-ca.key
+
+# Server certificate to share across the bbs cluster
+server_cn=bbs.service.cf.internal
+server_domain='*.bbs.service.cf.internal,bbs.service.cf.internal'
+certstrap --depot-path ${depot_path} request-cert --passphrase '' --common-name $server_cn --domain $server_domain
+certstrap --depot-path ${depot_path} sign $server_cn --CA server-ca
+mv -f ${depot_path}/$server_cn.key ${depot_path}/server.key
+mv -f ${depot_path}/$server_cn.csr ${depot_path}/server.csr
+mv -f ${depot_path}/$server_cn.crt ${depot_path}/server.crt
+
+# Client certificate to distribute to jobs that access bbs
+certstrap --depot-path ${depot_path} request-cert --passphrase '' --common-name 'bbs client'
+certstrap --depot-path ${depot_path} sign bbs_client --CA server-ca
+mv -f ${depot_path}/bbs_client.key ${depot_path}/client.key
+mv -f ${depot_path}/bbs_client.csr ${depot_path}/client.csr
+mv -f ${depot_path}/bbs_client.crt ${depot_path}/client.crt

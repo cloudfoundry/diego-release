@@ -4,6 +4,9 @@ name: rep
 templates:
   rep_ctl.erb: bin/rep_ctl
   drain.erb: bin/drain
+  bbs_ca.crt.erb: config/certs/bbs/ca.crt
+  bbs_client.crt.erb: config/certs/bbs/client.crt
+  bbs_client.key.erb: config/certs/bbs/client.key
 
 packages:
   - pid_utils
@@ -97,3 +100,10 @@ properties:
 
   diego.rep.bbs.api_url:
     description: "Address to the BBS Server"
+
+  diego.rep.bbs.ca_cert:
+    description: "PEM-encoded CA certificate"
+  diego.rep.bbs.client_cert:
+    description: "PEM-encoded client certificate"
+  diego.rep.bbs.client_key:
+    description: "PEM-encoded client key"

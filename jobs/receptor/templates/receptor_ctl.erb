@@ -9,6 +9,16 @@ TMP_DIR=$DATA_DIR/tmp
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
+<% require 'uri' %>
+<% if URI(p("diego.receptor.bbs.api_url")).scheme == "https" %>
+  bbs_sec_flags=" \
+   -bbsClientCert=${CONF_DIR}/certs/bbs/client.crt \
+   -bbsClientKey=${CONF_DIR}/certs/bbs/client.key \
+   -bbsCACert=${CONF_DIR}/certs/bbs/ca.crt"
+<% else %>
+  bbs_sec_flags=""
+<% end %>
+
 <%
   def discover_external_ip
     networks = spec.networks.marshal_dump
@@ -72,7 +82,7 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec chpst -u vcap:vcap /var/vcap/packages/receptor/bin/receptor \
+    exec chpst -u vcap:vcap /var/vcap/packages/receptor/bin/receptor ${bbs_sec_flags} \
       -address=<%= p("diego.receptor.listen_addr") %> \
       -bbsAddress=<%= p("diego.receptor.bbs.api_url") %> \
       -debugAddr=<%= p("diego.receptor.debug_addr") %> \

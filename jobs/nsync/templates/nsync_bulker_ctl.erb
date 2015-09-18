@@ -10,6 +10,17 @@ source /var/vcap/packages/pid_utils/pid_utils.sh
 
 <% require "shellwords" %>
 
+<% require 'uri' %>
+<% if URI(p("diego.nsync.bbs.api_url")).scheme == "https" %>
+  bbs_sec_flags=" \
+   -bbsClientCert=${CONF_DIR}/certs/bbs/client.crt \
+   -bbsClientKey=${CONF_DIR}/certs/bbs/client.key \
+   -bbsCACert=${CONF_DIR}/certs/bbs/ca.crt"
+<% else %>
+  bbs_sec_flags=""
+<% end %>
+
+
 case $1 in
 
   start)
@@ -26,7 +37,7 @@ case $1 in
     # Enable maximum OS thread concurrency
     export GOMAXPROCS=$(nproc)
 
-    exec chpst -u vcap:vcap /var/vcap/packages/nsync/bin/nsync-bulker \
+    exec chpst -u vcap:vcap /var/vcap/packages/nsync/bin/nsync-bulker ${bbs_sec_flags} \
       -bbsAddress=<%= p("diego.nsync.bbs.api_url") %> \
       -consulCluster=http://127.0.0.1:8500 \
       -ccBaseURL=<%= Shellwords.shellescape(p("diego.nsync.cc.base_url")) %> \

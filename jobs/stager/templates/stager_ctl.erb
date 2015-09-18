@@ -9,6 +9,16 @@ PIDFILE=$RUN_DIR/stager.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
+<% require 'uri' %>
+<% if URI(p("diego.stager.bbs.api_url")).scheme == "https" %>
+  bbs_sec_flags=" \
+   -bbsClientCert=${CONF_DIR}/certs/bbs/client.crt \
+   -bbsClientKey=${CONF_DIR}/certs/bbs/client.key \
+   -bbsCACert=${CONF_DIR}/certs/bbs/ca.crt"
+<% else %>
+  bbs_sec_flags=""
+<% end %>
+
 case $1 in
 
   start)
@@ -47,7 +57,7 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec chpst -u vcap:vcap /var/vcap/packages/stager/bin/stager \
+    exec chpst -u vcap:vcap /var/vcap/packages/stager/bin/stager ${bbs_sec_flags} \
       -bbsAddress=<%= p("diego.stager.bbs.api_url") %> \
       -stagerURL=<%= p("diego.stager.stager_url") %> \
       -ccBaseURL=http://<%= p("diego.stager.cc.internal_service_hostname") %>:<%= p("diego.stager.cc.external_port") %> \

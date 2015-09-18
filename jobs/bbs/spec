@@ -7,6 +7,9 @@ templates:
   etcd_ca.crt.erb: config/certs/etcd/ca.crt
   etcd_client.crt.erb: config/certs/etcd/client.crt
   etcd_client.key.erb: config/certs/etcd/client.key
+  bbs_ca.crt.erb: config/certs/ca.crt
+  bbs_server.crt.erb: config/certs/server.crt
+  bbs_server.key.erb: config/certs/server.key
 
 packages:
   - pid_utils
@@ -44,3 +47,13 @@ properties:
   diego.bbs.encryption_keys:
     description: "List of encryption keys to be used"
     default: []
+
+  diego.bbs.require_ssl:
+    description: "require ssl for all communication the bbs"
+    default: true
+  diego.bbs.ca_cert:
+    description: "PEM-encoded CA certificate"
+  diego.bbs.server_cert:
+    description: "PEM-encoded client certificate"
+  diego.bbs.server_key:
+    description: "PEM-encoded client key"

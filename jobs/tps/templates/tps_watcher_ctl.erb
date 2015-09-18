@@ -9,6 +9,17 @@ PIDFILE=$RUN_DIR/tps_watcher.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
+<% require 'uri' %>
+<% if URI(p("diego.tps.bbs.api_url")).scheme == "https" %>
+  bbs_sec_flags=" \
+   -bbsClientCert=${CONF_DIR}/certs/bbs/client.crt \
+   -bbsClientKey=${CONF_DIR}/certs/bbs/client.key \
+   -bbsCACert=${CONF_DIR}/certs/bbs/ca.crt"
+<% else %>
+  bbs_sec_flags=""
+<% end %>
+
+
 case $1 in
 
   start)
@@ -29,7 +40,7 @@ case $1 in
 
     echo $$ > $PIDFILE
 
-    exec chpst -u vcap:vcap /var/vcap/packages/tps/bin/tps-watcher \
+    exec chpst -u vcap:vcap /var/vcap/packages/tps/bin/tps-watcher ${bbs_sec_flags} \
       -bbsAddress=<%= p("diego.tps.bbs.api_url") %> \
       -consulCluster=http://127.0.0.1:8500 \
       -ccBaseURL=http://<%= p("diego.tps.cc.internal_service_hostname") %>:<%= p("diego.tps.cc.external_port") %> \

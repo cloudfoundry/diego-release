@@ -3,6 +3,9 @@ name: route_emitter
 
 templates:
   route_emitter_ctl.erb: bin/route_emitter_ctl
+  bbs_ca.crt.erb: config/certs/bbs/ca.crt
+  bbs_client.crt.erb: config/certs/bbs/client.crt
+  bbs_client.key.erb: config/certs/bbs/client.key
 
 packages:
   - pid_utils
@@ -27,5 +30,13 @@ properties:
   diego.route_emitter.log_level:
     description: "Log level"
     default: "info"
+
   diego.route_emitter.bbs.api_url:
     description: "Address to the BBS Server"
+
+  diego.route_emitter.bbs.ca_cert:
+    description: "PEM-encoded CA certificate"
+  diego.route_emitter.bbs.client_cert:
+    description: "PEM-encoded client certificate"
+  diego.route_emitter.bbs.client_key:
+    description: "PEM-encoded client key"

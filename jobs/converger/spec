@@ -3,6 +3,9 @@ name: converger
 
 templates:
   converger_ctl.erb: bin/converger_ctl
+  bbs_ca.crt.erb: config/certs/bbs/ca.crt
+  bbs_client.crt.erb: config/certs/bbs/client.crt
+  bbs_client.key.erb: config/certs/bbs/client.key
 
 packages:
   - pid_utils
@@ -30,3 +33,10 @@ properties:
 
   diego.converger.bbs.api_url:
     description: "Address to the BBS Server"
+
+  diego.converger.bbs.ca_cert:
+    description: "PEM-encoded CA certificate"
+  diego.converger.bbs.client_cert:
+    description: "PEM-encoded client certificate"
+  diego.converger.bbs.client_key:
+    description: "PEM-encoded client key"

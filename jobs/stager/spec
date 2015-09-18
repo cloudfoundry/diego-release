@@ -4,6 +4,9 @@ name: stager
 templates:
   stager_ctl.erb: bin/stager_ctl
   dns_health_check.erb: bin/dns_health_check
+  bbs_ca.crt.erb: config/certs/bbs/ca.crt
+  bbs_client.crt.erb: config/certs/bbs/client.crt
+  bbs_client.key.erb: config/certs/bbs/client.key
 
 packages:
   - pid_utils
@@ -59,3 +62,10 @@ properties:
   diego.stager.docker_registry_address:
     description: "Address of the Docker Registry used for image caching"
     default: docker-registry.service.cf.internal:8080
+
+  diego.stager.bbs.ca_cert:
+    description: "PEM-encoded CA certificate"
+  diego.stager.bbs.client_cert:
+    description: "PEM-encoded client certificate"
+  diego.stager.bbs.client_key:
+    description: "PEM-encoded client key"
