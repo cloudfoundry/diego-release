@@ -19,7 +19,7 @@ properties:
   diego.ssh_proxy.listen_addr:
     description: "address for the proxy to listen on"
     default: "0.0.0.0:2222"
-  diego.ssh_proxy.bbs.api_url:
+  diego.ssh_proxy.bbs.api_location:
     description: "Address to the BBS Server"
   diego.ssh_proxy.host_key:
     description: "PEM encoded RSA private key used to identify host"
@@ -50,3 +50,6 @@ properties:
     description: "PEM-encoded client certificate"
   diego.ssh_proxy.bbs.client_key:
     description: "PEM-encoded client key"
+  diego.ssh_proxy.bbs.require_ssl:
+    description: "enable ssl for all communication with the bbs"
+    default: true

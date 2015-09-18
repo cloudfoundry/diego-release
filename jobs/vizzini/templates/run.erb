@@ -17,7 +17,7 @@ EXITSTATUS=0
 nodes=<%= properties.vizzini.nodes %>
 verbose=<%= properties.vizzini.verbose %>
 routable_domain_suffix=<%= properties.vizzini.routable_domain_suffix %>
-bbs_address=<%= properties.vizzini.bbs.api_url %>
+bbs_address=<%= properties.vizzini.bbs.api_location %>
 consul_address=http://127.0.0.1:8500 
 
 go get -t -d -v ./...

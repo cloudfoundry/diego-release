@@ -9,14 +9,16 @@ PIDFILE=$RUN_DIR/stager.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-<% require 'uri' %>
-<% if URI(p("diego.stager.bbs.api_url")).scheme == "https" %>
+<% if p("diego.stager.bbs.require_ssl") %>
   bbs_sec_flags=" \
    -bbsClientCert=${CONF_DIR}/certs/bbs/client.crt \
    -bbsClientKey=${CONF_DIR}/certs/bbs/client.key \
    -bbsCACert=${CONF_DIR}/certs/bbs/ca.crt"
+
+  bbs_api_url="<%= "https://" + p("diego.stager.bbs.api_location") %>"
 <% else %>
   bbs_sec_flags=""
+  bbs_api_url="<%= "http://" + p("diego.stager.bbs.api_location") %>"
 <% end %>
 
 case $1 in
@@ -58,7 +60,7 @@ case $1 in
     ulimit -n 100000
 
     exec chpst -u vcap:vcap /var/vcap/packages/stager/bin/stager ${bbs_sec_flags} \
-      -bbsAddress=<%= p("diego.stager.bbs.api_url") %> \
+      -bbsAddress=${bbs_api_url} \
       -stagerURL=<%= p("diego.stager.stager_url") %> \
       -ccBaseURL=http://<%= p("diego.stager.cc.internal_service_hostname") %>:<%= p("diego.stager.cc.external_port") %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.stager.cc.basic_auth_username")) %> \

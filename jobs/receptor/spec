@@ -50,7 +50,7 @@ properties:
     description: "Log level"
     default: "info"
 
-  diego.receptor.bbs.api_url:
+  diego.receptor.bbs.api_location:
     description: "Address to the BBS Server"
 
   diego.receptor.bbs.ca_cert:
@@ -59,4 +59,6 @@ properties:
     description: "PEM-encoded client certificate"
   diego.receptor.bbs.client_key:
     description: "PEM-encoded client key"
-
+  diego.receptor.bbs.require_ssl:
+    description: "enable ssl for all communication with the bbs"
+    default: true

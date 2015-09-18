@@ -7,14 +7,16 @@ PIDFILE=$RUN_DIR/route_emitter.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-<% require 'uri' %>
-<% if URI(p("diego.route_emitter.bbs.api_url")).scheme == "https" %>
+<% if p("diego.route_emitter.bbs.require_ssl") %>
   bbs_sec_flags=" \
    -bbsClientCert=${CONF_DIR}/certs/bbs/client.crt \
    -bbsClientKey=${CONF_DIR}/certs/bbs/client.key \
    -bbsCACert=${CONF_DIR}/certs/bbs/ca.crt"
+
+  bbs_api_url="<%= "https://" + p("diego.route_emitter.bbs.api_location") %>"
 <% else %>
   bbs_sec_flags=""
+  bbs_api_url="<%= "http://" + p("diego.route_emitter.bbs.api_location") %>"
 <% end %>
 
 case $1 in
@@ -38,7 +40,7 @@ case $1 in
       -natsAddresses=<%= p("diego.route_emitter.nats.machines").collect { |addr| "#{addr}:#{p("diego.route_emitter.nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("diego.route_emitter.nats.user") %> \
       -natsPassword=<%= p("diego.route_emitter.nats.password") %> \
-      -bbsAddress=<%= p("diego.route_emitter.bbs.api_url") %> \
+      -bbsAddress=${bbs_api_url} \
       -debugAddr=<%= p("diego.route_emitter.debug_addr") %> \
       -syncInterval=<%= "#{p("diego.route_emitter.sync_interval_in_seconds")}s" %> \
       -logLevel=<%= p("diego.route_emitter.log_level") %> \

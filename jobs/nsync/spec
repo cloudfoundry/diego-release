@@ -18,9 +18,8 @@ properties:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
 
-  diego.nsync.bbs.api_url:
+  diego.nsync.bbs.api_location:
     description: "Address to the BBS Server"
-    default: http://bbs.service.cf.internal:8889
 
   diego.nsync.bbs.ca_cert:
     description: "PEM-encoded CA certificate"
@@ -28,6 +27,9 @@ properties:
     description: "PEM-encoded client certificate"
   diego.nsync.bbs.client_key:
     description: "PEM-encoded client key"
+  diego.nsync.bbs.require_ssl:
+    description: "enable ssl for all communication with the bbs"
+    default: true
 
   diego.nsync.nsync_url:
     description: URL of nsync

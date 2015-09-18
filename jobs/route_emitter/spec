@@ -31,7 +31,7 @@ properties:
     description: "Log level"
     default: "info"
 
-  diego.route_emitter.bbs.api_url:
+  diego.route_emitter.bbs.api_location:
     description: "Address to the BBS Server"
 
   diego.route_emitter.bbs.ca_cert:
@@ -40,3 +40,6 @@ properties:
     description: "PEM-encoded client certificate"
   diego.route_emitter.bbs.client_key:
     description: "PEM-encoded client key"
+  diego.route_emitter.bbs.require_ssl:
+    description: "enable ssl for all communication with the bbs"
+    default: true

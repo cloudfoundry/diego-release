@@ -7,15 +7,16 @@ PIDFILE=$RUN_DIR/auctioneer.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-<% require 'uri' %>
-
-<% if URI(p("diego.auctioneer.bbs.api_url")).scheme == "https" %>
+<% if p("diego.auctioneer.bbs.require_ssl") %>
   bbs_sec_flags=" \
    -bbsClientCert=${CONF_DIR}/certs/bbs/client.crt \
    -bbsClientKey=${CONF_DIR}/certs/bbs/client.key \
    -bbsCACert=${CONF_DIR}/certs/bbs/ca.crt"
+
+  bbs_api_url="<%= "https://" + p("diego.auctioneer.bbs.api_location") %>"
 <% else %>
   bbs_sec_flags=""
+  bbs_api_url="<%= "http://" + p("diego.auctioneer.bbs.api_location") %>"
 <% end %>
 
 case $1 in
@@ -35,7 +36,7 @@ case $1 in
     ulimit -n 100000
 
     exec chpst -u vcap:vcap /var/vcap/packages/auctioneer/bin/auctioneer ${bbs_sec_flags} \
-      -bbsAddress=<%= p("diego.auctioneer.bbs.api_url") %> \
+      -bbsAddress=${bbs_api_url} \
       -consulCluster=http://127.0.0.1:8500 \
       -debugAddr=<%= p("diego.auctioneer.debug_addr") %> \
       -listenAddr=<%= p("diego.auctioneer.listen_addr") %> \

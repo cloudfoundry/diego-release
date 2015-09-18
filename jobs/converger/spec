@@ -31,7 +31,7 @@ properties:
     description: "Log level"
     default: "info"
 
-  diego.converger.bbs.api_url:
+  diego.converger.bbs.api_location:
     description: "Address to the BBS Server"
 
   diego.converger.bbs.ca_cert:
@@ -40,3 +40,6 @@ properties:
     description: "PEM-encoded client certificate"
   diego.converger.bbs.client_key:
     description: "PEM-encoded client key"
+  diego.converger.bbs.require_ssl:
+    description: "enable ssl for all communication with the bbs"
+    default: true

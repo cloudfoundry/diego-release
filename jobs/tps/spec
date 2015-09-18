@@ -18,7 +18,7 @@ properties:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
 
-  diego.tps.bbs.api_url:
+  diego.tps.bbs.api_location:
     description: "Address to the BBS Server"
     default: http://bbs.service.cf.internal:8889
 
@@ -28,6 +28,9 @@ properties:
     description: "PEM-encoded client certificate"
   diego.tps.bbs.client_key:
     description: "PEM-encoded client key"
+  diego.tps.bbs.require_ssl:
+    description: "enable ssl for all communication with the bbs"
+    default: true
 
   diego.tps.cc.external_port:
     description: "External port to access the Cloud Controller"

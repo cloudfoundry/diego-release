@@ -10,14 +10,16 @@ source /var/vcap/packages/pid_utils/pid_utils.sh
 
 <% require "shellwords" %>
 
-<% require 'uri' %>
-<% if URI(p("diego.nsync.bbs.api_url")).scheme == "https" %>
+<% if p("diego.nsync.bbs.require_ssl") %>
   bbs_sec_flags=" \
    -bbsClientCert=${CONF_DIR}/certs/bbs/client.crt \
    -bbsClientKey=${CONF_DIR}/certs/bbs/client.key \
    -bbsCACert=${CONF_DIR}/certs/bbs/ca.crt"
+
+  bbs_api_url="<%= "https://" + p("diego.nsync.bbs.api_location") %>"
 <% else %>
   bbs_sec_flags=""
+  bbs_api_url="<%= "http://" + p("diego.nsync.bbs.api_location") %>"
 <% end %>
 
 
@@ -35,7 +37,7 @@ case $1 in
     echo $$ > $PIDFILE
 
     exec chpst -u vcap:vcap /var/vcap/packages/nsync/bin/nsync-listener ${bbs_sec_flags} \
-      -bbsAddress=<%= p("diego.nsync.bbs.api_url") %> \
+      -bbsAddress=${bbs_api_url} \
       -nsyncURL=<%= p("diego.nsync.nsync_url") %> \
       -debugAddr=<%= p("diego.nsync.listener_debug_addr") %> \
       <%= p("diego.nsync.lifecycle_bundles").map { |bundle| "-lifecycle #{bundle}" }.join(" ") %> \

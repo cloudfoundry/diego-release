@@ -561,15 +561,16 @@ properties:
     # -- Job-specific properties --
     auctioneer:
       bbs:
-        api_url: (( "https://bbs.service.cf.internal:8889" ))
+        api_location: (( "bbs.service.cf.internal:8889" ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
+        require_ssl: (( property_overrides.bbs.require_ssl || nil ))
       log_level: (( property_overrides.auctioneer.log_level || nil ))
     bbs:
       active_key_label: (( property_overrides.bbs.active_key_label ))
       encryption_keys: (( property_overrides.bbs.encryption_keys ))
-      require_ssl: (( property_overrides.bbs.require_ssl ))
+      require_ssl: (( property_overrides.bbs.require_ssl || nil ))
       ca_cert: (( property_overrides.bbs.ca_cert ))
       server_cert: (( property_overrides.bbs.server_cert ))
       server_key: (( property_overrides.bbs.server_key ))
@@ -583,10 +584,11 @@ properties:
         client_key: (( property_overrides.etcd.client_key ))
     converger:
       bbs:
-        api_url: (( "https://bbs.service.cf.internal:8889" ))
+        api_location: (( "bbs.service.cf.internal:8889" ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
+      require_ssl: (( property_overrides.bbs.require_ssl || nil ))
       log_level: (( property_overrides.converger.log_level || nil ))
     etcd:
       machines: ["etcd.service.cf.internal"]
@@ -630,10 +632,11 @@ properties:
       log_level: (( property_overrides.cc_uploader.log_level || nil ))
     nsync:
       bbs:
-        api_url: (( "https://bbs.service.cf.internal:8889" ))
+        api_location: (( "bbs.service.cf.internal:8889" ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
+        require_ssl: (( property_overrides.bbs.require_ssl || nil ))
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
@@ -642,10 +645,11 @@ properties:
       log_level: (( property_overrides.nsync.log_level || nil ))
     receptor:
       bbs:
-        api_url: (( "https://bbs.service.cf.internal:8889" ))
+        api_location: (( "bbs.service.cf.internal:8889" ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
+        require_ssl: (( property_overrides.bbs.require_ssl || nil ))
       nats:
         machines: (( config_from_cf.nats.machines ))
         user: (( config_from_cf.nats.user ))
@@ -659,18 +663,20 @@ properties:
       log_level: (( property_overrides.receptor.log_level || nil ))
     rep:
       bbs:
-        api_url: (( "https://bbs.service.cf.internal:8889" ))
+        api_location: (( "bbs.service.cf.internal:8889" ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
+        require_ssl: (( property_overrides.bbs.require_ssl || nil ))
       evacuation_timeout_in_seconds: (( property_overrides.rep.evacuation_timeout_in_seconds || nil ))
       log_level: (( property_overrides.rep.log_level || nil ))
     route_emitter:
       bbs:
-        api_url: (( "https://bbs.service.cf.internal:8889" ))
+        api_location: (( "bbs.service.cf.internal:8889" ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
+        require_ssl: (( property_overrides.bbs.require_ssl || nil ))
       nats:
         machines: (( config_from_cf.nats.machines ))
         user: (( config_from_cf.nats.user ))
@@ -679,10 +685,11 @@ properties:
       log_level: (( property_overrides.route_emitter.log_level || nil ))
     ssh_proxy:
       bbs:
-        api_url: (( "https://bbs.service.cf.internal:8889" ))
+        api_location: (( "bbs.service.cf.internal:8889" ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
+        require_ssl: (( property_overrides.bbs.require_ssl || nil ))
       host_key: (( property_overrides.ssh_proxy.host_key || "" ))
       servers: (( jobs.access_z1.networks.diego1.static_ips jobs.access_z2.networks.diego2.static_ips jobs.access_z3.networks.diego3.static_ips jobs.colocated_z1.networks.diego1.static_ips jobs.colocated_z2.networks.diego2.static_ips jobs.colocated_z3.networks.diego3.static_ips ))
       enable_cf_auth: (( property_overrides.ssh_proxy.enable_cf_auth || false ))
@@ -697,10 +704,11 @@ properties:
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       bbs:
-        api_url: (( "https://bbs.service.cf.internal:8889" ))
+        api_location: (( "bbs.service.cf.internal:8889" ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
+        require_ssl: (( property_overrides.bbs.require_ssl || nil ))
       log_level: (( property_overrides.stager.log_level || nil ))
       insecure_docker_registry: (( property_overrides.stager.insecure_docker_registry || false ))
     tps:
@@ -710,10 +718,11 @@ properties:
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       bbs:
-        api_url: (( "https://bbs.service.cf.internal:8889" ))
+        api_location: (( "bbs.service.cf.internal:8889" ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
+        require_ssl: (( property_overrides.bbs.require_ssl || nil ))
       log_level: (( property_overrides.tps.log_level || nil ))
       traffic_controller_url: (( "wss://doppler." config_from_cf.system_domain ":443" ))
 

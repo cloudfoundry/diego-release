@@ -37,7 +37,7 @@ properties:
   diego.stager.stager_url:
     description: URL of stager, used for completion callbacks from the BBS
     default: http://stager.service.cf.internal:8888
-  diego.stager.bbs.api_url:
+  diego.stager.bbs.api_location:
     description: "Address to the BBS Server"
     default: http://bbs.service.cf.internal:8889
   diego.stager.debug_addr:
@@ -69,3 +69,6 @@ properties:
     description: "PEM-encoded client certificate"
   diego.stager.bbs.client_key:
     description: "PEM-encoded client key"
+  diego.stager.bbs.require_ssl:
+    description: "enable ssl for all communication with the bbs"
+    default: true

@@ -23,7 +23,7 @@ properties:
     description: "Log level"
     default: "info"
 
-  diego.auctioneer.bbs.api_url:
+  diego.auctioneer.bbs.api_location:
     description: "Address to the BBS Server"
 
   diego.auctioneer.bbs.ca_cert:
@@ -32,3 +32,6 @@ properties:
     description: "PEM-encoded client certificate"
   diego.auctioneer.bbs.client_key:
     description: "PEM-encoded client key"
+  diego.auctioneer.bbs.require_ssl:
+    description: "enable ssl for all communication with the bbs"
+    default: true

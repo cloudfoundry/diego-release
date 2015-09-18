@@ -12,14 +12,16 @@ source /var/vcap/packages/pid_utils/pid_utils.sh
 
 <% require "shellwords" %>
 
-<% require 'uri' %>
-<% if URI(p("diego.ssh_proxy.bbs.api_url")).scheme == "https" %>
+<% if p("diego.ssh_proxy.bbs.require_ssl") %>
   bbs_sec_flags=" \
    -bbsClientCert=${CONF_DIR}/certs/bbs/client.crt \
    -bbsClientKey=${CONF_DIR}/certs/bbs/client.key \
    -bbsCACert=${CONF_DIR}/certs/bbs/ca.crt"
+
+  bbs_api_url="<%= "https://" + p("diego.ssh_proxy.bbs.api_location") %>"
 <% else %>
   bbs_sec_flags=""
+  bbs_api_url="<%= "http://" + p("diego.ssh_proxy.bbs.api_location") %>"
 <% end %>
 
 case $1 in
@@ -38,7 +40,7 @@ case $1 in
     exec chpst -u vcap:vcap /var/vcap/packages/ssh_proxy/bin/ssh-proxy ${bbs_sec_flags} \
       -address=<%= p("diego.ssh_proxy.listen_addr") %> \
       -hostKey="$HOST_KEY" \
-      -bbsAddress=<%= p("diego.ssh_proxy.bbs.api_url") %> \
+      -bbsAddress=${bbs_api_url} \
       -ccAPIURL=http://<%= p("diego.ssh_proxy.cc.internal_service_hostname") %>:<%= p("diego.ssh_proxy.cc.external_port") %> \
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       -debugAddr=<%= p("diego.ssh_proxy.debug_addr") %> \

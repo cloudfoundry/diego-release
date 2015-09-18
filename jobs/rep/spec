@@ -98,7 +98,7 @@ properties:
     description: "Maximum number of concurrent health check operations."
     default: 64
 
-  diego.rep.bbs.api_url:
+  diego.rep.bbs.api_location:
     description: "Address to the BBS Server"
 
   diego.rep.bbs.ca_cert:
@@ -107,3 +107,6 @@ properties:
     description: "PEM-encoded client certificate"
   diego.rep.bbs.client_key:
     description: "PEM-encoded client key"
+  diego.rep.bbs.require_ssl:
+    description: "enable ssl for all communication with the bbs"
+    default: true
