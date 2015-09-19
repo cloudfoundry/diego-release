@@ -248,7 +248,7 @@ by running the lightweight [diego-smoke-tests](https://github.com/cloudfoundry-i
 
 1. Create new CF Org & Space:
 
-        cf api --skip-ssl-validation api.10.244.0.34.xip.io
+        cf api --skip-ssl-validation api.bosh-lite.com
         cf auth admin admin
         cf create-org diego
         cf target -o diego
