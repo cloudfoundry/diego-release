@@ -227,7 +227,7 @@ as you switch in and out of the directory.
 
 1. Login to CF and enable Docker support
 
-        cf login -a api.10.244.0.34.xip.io -u admin -p admin --skip-ssl-validation &&
+        cf login -a api.bosh-lite.com -u admin -p admin --skip-ssl-validation &&
         cf enable-feature-flag diego_docker
 
 Now you can either run the DATs or deploy your own app.
