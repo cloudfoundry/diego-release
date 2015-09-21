@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e -x
+
+pushd `dirname "$0"`/..
+  scripts/generate-diego-ca-certs
+  scripts/generate-bbs-certs diego-ca diego-certs
+  scripts/generate-etcd-certs etcd-peer-ca diego-certs diego-ca diego-certs
+popd
+
+echo "Outputed certs to diego-certs"

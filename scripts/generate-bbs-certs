@@ -2,30 +2,48 @@
 
 set -e -x
 
+function usage() {
+  >&2 echo "    Usage:
+    $0 DIEGO_CA_NAME DIEGO_CA_CERT_DIRECTORY
+
+    Ex:
+    $0 diegoCA ~/workspace/diego-release/diego-certs/
+"
+  exit 1
+}
+
+ca_name=$1
+ca_cert_directory=$2
+
+if [ -z "${ca_name}" ]; then
+  >&2 echo "Specify a CA"
+  usage
+fi
+
+if [ ! -d "${ca_cert_directory}" ]; then
+  >&2 echo "Specify location of CA cert and key"
+  usage
+fi
+
 # Install certstrap
 go get -v github.com/square/certstrap
 
 # Place keys and certificates here
-depot_path="bbs-certs"
-mkdir -p ${depot_path}
-
-# CA to distribute to bbs clients and servers
-certstrap --depot-path ${depot_path} init --passphrase '' --common-name bbsCA
-mv -f ${depot_path}/bbsCA.crt ${depot_path}/server-ca.crt
-mv -f ${depot_path}/bbsCA.key ${depot_path}/server-ca.key
+output_path="diego-certs/bbs-certs"
+mkdir -p ${output_path}
 
 # Server certificate to share across the bbs cluster
 server_cn=bbs.service.cf.internal
 server_domain='*.bbs.service.cf.internal,bbs.service.cf.internal'
-certstrap --depot-path ${depot_path} request-cert --passphrase '' --common-name $server_cn --domain $server_domain
-certstrap --depot-path ${depot_path} sign $server_cn --CA server-ca
-mv -f ${depot_path}/$server_cn.key ${depot_path}/server.key
-mv -f ${depot_path}/$server_cn.csr ${depot_path}/server.csr
-mv -f ${depot_path}/$server_cn.crt ${depot_path}/server.crt
+certstrap --depot-path ${ca_cert_directory} request-cert --passphrase '' --common-name $server_cn --domain $server_domain
+certstrap --depot-path ${ca_cert_directory} sign $server_cn --CA $ca_name
+mv -f ${ca_cert_directory}/$server_cn.key ${output_path}/server.key
+mv -f ${ca_cert_directory}/$server_cn.csr ${output_path}/server.csr
+mv -f ${ca_cert_directory}/$server_cn.crt ${output_path}/server.crt
 
 # Client certificate to distribute to jobs that access bbs
-certstrap --depot-path ${depot_path} request-cert --passphrase '' --common-name 'bbs client'
-certstrap --depot-path ${depot_path} sign bbs_client --CA server-ca
-mv -f ${depot_path}/bbs_client.key ${depot_path}/client.key
-mv -f ${depot_path}/bbs_client.csr ${depot_path}/client.csr
-mv -f ${depot_path}/bbs_client.crt ${depot_path}/client.crt
+certstrap --depot-path ${ca_cert_directory} request-cert --passphrase '' --common-name 'bbs client'
+certstrap --depot-path ${ca_cert_directory} sign bbs_client --CA $ca_name
+mv -f ${ca_cert_directory}/bbs_client.key ${output_path}/client.key
+mv -f ${ca_cert_directory}/bbs_client.csr ${output_path}/client.csr
+mv -f ${ca_cert_directory}/bbs_client.crt ${output_path}/client.crt

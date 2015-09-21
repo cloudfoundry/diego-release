@@ -327,7 +327,11 @@ if desired.
 For generating SSL certificates, we recommend [certstrap](https://github.com/square/certstrap).
 An operator can follow the following steps to successfully generate the required certificates.
 
-> Most of these commands can be found in [scripts/generate-etcd-certs](scripts/generate-etcd-certs)
+> Most of these commands can be found in
+> [scripts/generate-diego-ca-certs](scripts/generate-diego-ca-certs),
+> [scripts/generate-etcd-certs](scripts/generate-etcd-certs), and
+> [scripts/generate-bbs-certs](scripts/generate-bbs-certs)
+
 
 1. Get certstrap
    ```
@@ -384,7 +388,42 @@ An operator can follow the following steps to successfully generate the required
    The manifest property `properties.diego.etcd.client_cert` should be set to the certificate in `out/clientName.crt`
    The manifest property `properties.diego.etcd.client_key` should be set to the certificate in `out/clientName.key`
 
-5. Initialize a new peer certificate authority. [optional]
+5. Create and sign a certificate for the bbs server.
+   ```
+   $ ./certstrap request-cert --common-name "bbs.service.cf.internal" --domain "*.bbs.service.cf.internal,bbs.service.cf.internal"
+   Enter passphrase (empty for no passphrase): <hit enter for no password>
+
+   Enter same passphrase again: <hit enter for no password>
+
+   Created out/bbs.service.cf.internal.key
+   Created out/bbs.service.cf.internal.csr
+
+   $ ./certstrap sign bbs.service.cf.internal --CA diegoCA
+   Created out/bbs.service.cf.internal.crt from out/bbs.service.cf.internal.csr signed by out/diegoCA.key
+   ```
+
+   The manifest property `properties.diego.bbs.server_cert` should be set to the certificate in `out/bbs.service.cf.internal.crt`
+   The manifest property `properties.diego.bbs.server_key` should be set to the certificate in `out/bbs.service.cf.internal.key`
+
+6. Create and sign a certificate for bbs clients.
+   ```
+   $ ./certstrap request-cert --common-name "clientName"
+   Enter passphrase (empty for no passphrase): <hit enter for no password>
+
+   Enter same passphrase again: <hit enter for no password>
+
+   Created out/clientName.key
+   Created out/clientName.csr
+
+   $ ./certstrap sign clientName --CA diegoCA
+   Created out/clientName.crt from out/clientName.csr signed by out/diegoCA.key
+   ```
+
+   The manifest property `properties.diego.CLIENT.bbs.client_cert` should be set to the certificate in `out/clientName.crt`
+   The manifest property `properties.diego.CLIENT.bbs.client_key` should be set to the certificate in `out/clientName.key`
+   Where `CLIENT` is each of the diego components.
+
+7. Initialize a new peer certificate authority. [optional]
    ```
    $ ./certstrap --depot-path peer init --common-name "peerCA"
    Enter passphrase (empty for no passphrase): <hit enter for no password>
@@ -397,7 +436,7 @@ An operator can follow the following steps to successfully generate the required
 
    The manifest property `properties.diego.etcd.peer_ca_cert` should be set to the certificate in `peer/peerCA.crt`
 
-6. Create and sign a certificate for the etcd peers. [optional]
+8. Create and sign a certificate for the etcd peers. [optional]
    ```
    $ ./certstrap --depot-path peer request-cert --common-name "etcd.service.cf.internal" --domain "*.etcd.service.cf.internal,etcd.service.cf.internal"
    Enter passphrase (empty for no passphrase): <hit enter for no password>

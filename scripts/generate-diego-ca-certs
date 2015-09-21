@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e -x
+
+# Install certstrap
+go get -v github.com/square/certstrap
+
+depot_path="diego-certs"
+mkdir -p ${depot_path}
+
+# CA to distribute to bbs clients and servers
+certstrap --depot-path ${depot_path} init --passphrase '' --common-name diegoCA
+mv -f ${depot_path}/diegoCA.crt ${depot_path}/diego-ca.crt
+mv -f ${depot_path}/diegoCA.key ${depot_path}/diego-ca.key
+
+certstrap --depot-path ${depot_path} init --passphrase '' --common-name etcdPeerCA
+mv -f ${depot_path}/etcdPeerCA.crt ${depot_path}/etcd-peer-ca.crt
+mv -f ${depot_path}/etcdPeerCA.key ${depot_path}/etcd-peer-ca.key
