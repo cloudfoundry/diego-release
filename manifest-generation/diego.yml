@@ -588,7 +588,7 @@ properties:
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
-      require_ssl: (( property_overrides.bbs.require_ssl || nil ))
+        require_ssl: (( property_overrides.bbs.require_ssl || nil ))
       log_level: (( property_overrides.converger.log_level || nil ))
     etcd:
       machines: ["etcd.service.cf.internal"]
