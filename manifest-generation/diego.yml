@@ -253,7 +253,6 @@ jobs:
         agent:
           services:
             file_server: {}
-            receptor: {}
             ssh_proxy: {}
 
   - name: brain_z2
@@ -339,7 +338,6 @@ jobs:
         agent:
           services:
             file_server: {}
-            receptor: {}
             ssh_proxy: {}
 
   - name: brain_z3
@@ -425,7 +423,6 @@ jobs:
         agent:
           services:
             file_server: {}
-            receptor: {}
             ssh_proxy: {}
 
   - name: colocated_z1
@@ -449,7 +446,6 @@ jobs:
             etcd: {}
             file_server: {}
             nsync: {}
-            receptor: {}
             ssh_proxy: {}
             stager: {}
             tps: {}
@@ -480,7 +476,6 @@ jobs:
             etcd: {}
             file_server: {}
             nsync: {}
-            receptor: {}
             ssh_proxy: {}
             stager: {}
             tps: {}
@@ -511,7 +506,6 @@ jobs:
             etcd: {}
             file_server: {}
             nsync: {}
-            receptor: {}
             ssh_proxy: {}
             stager: {}
             tps: {}
@@ -643,24 +637,6 @@ properties:
         staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       log_level: (( property_overrides.nsync.log_level || nil ))
-    receptor:
-      bbs:
-        api_location: (( "bbs.service.cf.internal:8889" ))
-        ca_cert: (( property_overrides.bbs.ca_cert ))
-        client_cert: (( property_overrides.bbs.client_cert ))
-        client_key: (( property_overrides.bbs.client_key ))
-        require_ssl: (( property_overrides.bbs.require_ssl || nil ))
-      nats:
-        machines: (( config_from_cf.nats.machines ))
-        user: (( config_from_cf.nats.user ))
-        password: (( config_from_cf.nats.password ))
-        port: (( config_from_cf.nats.port ))
-      cors_enabled: (( property_overrides.receptor.cors_enabled || nil ))
-      username: (( property_overrides.receptor.username || "" ))
-      password: (( property_overrides.receptor.password || "" ))
-      register_with_router: (( property_overrides.receptor.register_with_router || nil ))
-      domain_names:  (( property_overrides.receptor.domain_names || nil ))
-      log_level: (( property_overrides.receptor.log_level || nil ))
     rep:
       bbs:
         api_location: (( "bbs.service.cf.internal:8889" ))
@@ -809,8 +785,6 @@ base_job_templates:
       release: cf
     - name: metron_agent
       release: cf
-    - name: receptor
-      release: diego
     - name: file_server
       release: diego
   database:
@@ -842,8 +816,6 @@ base_job_templates:
     - name: metron_agent
       release: cf
     - name: nsync
-      release: diego
-    - name: receptor
       release: diego
     - name: rep
       release: diego

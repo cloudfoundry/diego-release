@@ -386,11 +386,6 @@ property_overrides:
     disk_quota_enabled: false
   nsync:
     log_level: debug
-  receptor:
-    register_with_router: true
-    domain_names:
-     - receptor.bosh-lite.com
-    log_level: debug
   rep:
     evacuation_timeout_in_seconds: 60
     log_level: debug

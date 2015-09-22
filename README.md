@@ -13,7 +13,6 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 Additional Diego resources:
 
   - The [Diego Design Notes](https://github.com/cloudfoundry-incubator/diego-design-notes) present an overview of Diego, and links to the various Diego components.
-  - The [Receptor API Docs](https://github.com/cloudfoundry-incubator/receptor/tree/master/doc) describe the public API to  Diego, which clients such as CF's Cloud Controller and the Lattice CLI use to run workloads on Diego.
   - The [Migration Guide](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/migrating-to-diego.md) describes how developers and operators can manage a transition from the DEAs to Diego.
   - The [Docker Support Notes](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/docker-support.md) describe how Diego runs Docker-image-based apps in Cloud Foundry.
   - The [SSH Access Notes](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/ssh-access-and-policy.md) describe how to use the Diego-SSH CLI plugin to connect to app instances running on Diego.
