@@ -16,6 +16,7 @@ go install github.com/onsi/ginkgo/ginkgo
 
 go test -c ./diego
 go test -c ./security_groups
+go test -c ./ssh
 
 # clean up artifacts
 rm *.test
