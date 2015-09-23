@@ -713,6 +713,7 @@ properties:
     network_mtu: (( property_overrides.garden.mtu || nil ))
     mount_btrfs_loopback: (( property_overrides.garden.mount_btrfs_loopback || nil ))
     disk_quota_enabled: (( property_overrides.garden.disk_quota_enabled || nil ))
+    persistent_image_list: (( property_overrides.garden.persistent_image_list || ["/var/vcap/packages/rootfs_cflinuxfs2/rootfs"] ))
 
 
 # The keys below should not be included in the final stub
