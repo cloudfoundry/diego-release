@@ -31,6 +31,10 @@ properties:
   diego.tps.bbs.require_ssl:
     description: "enable ssl for all communication with the bbs"
     default: true
+  diego.tps.bbs.client_session_cache_size:
+    description: "capacity of the tls client cache"
+  diego.tps.bbs.max_idle_conns_per_host:
+    description: "maximum number of idle http connections"
 
   diego.tps.cc.external_port:
     description: "External port to access the Cloud Controller"

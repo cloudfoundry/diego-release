@@ -44,6 +44,12 @@ case $1 in
 
     exec chpst -u vcap:vcap /var/vcap/packages/tps/bin/tps-watcher ${bbs_sec_flags} \
       -bbsAddress=${bbs_api_url} \
+      <% if_p("diego.auctioneer.bbs.client_session_cache_size") do |value| %> \
+        -bbsClientSessionCacheSize=<%= value %> \
+      <% end %> \
+      <% if_p("diego.auctioneer.bbs.max_idle_conns_per_host") do |value| %> \
+        -bbsMaxIdleConnsPerHost=<%= value %> \
+      <% end %> \
       -consulCluster=http://127.0.0.1:8500 \
       -ccBaseURL=http://<%= p("diego.tps.cc.internal_service_hostname") %>:<%= p("diego.tps.cc.external_port") %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.tps.cc.basic_auth_username")) %> \

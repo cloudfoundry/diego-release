@@ -30,6 +30,10 @@ properties:
   diego.nsync.bbs.require_ssl:
     description: "enable ssl for all communication with the bbs"
     default: true
+  diego.nsync.bbs.client_session_cache_size:
+    description: "capacity of the tls client cache"
+  diego.nsync.bbs.max_idle_conns_per_host:
+    description: "maximum number of idle http connections"
 
   diego.nsync.nsync_url:
     description: URL of nsync

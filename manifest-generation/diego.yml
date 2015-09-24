@@ -560,6 +560,8 @@ properties:
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
         require_ssl: (( property_overrides.bbs.require_ssl || nil ))
+        client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
+        max_idle_conns_per_hos: (( property_overrides.bbs.max_idle_conns_per_hos || nil ))
       log_level: (( property_overrides.auctioneer.log_level || nil ))
     bbs:
       active_key_label: (( property_overrides.bbs.active_key_label ))
@@ -583,6 +585,8 @@ properties:
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
         require_ssl: (( property_overrides.bbs.require_ssl || nil ))
+        client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
+        max_idle_conns_per_hos: (( property_overrides.bbs.max_idle_conns_per_hos || nil ))
       log_level: (( property_overrides.converger.log_level || nil ))
     etcd:
       machines: ["etcd.service.cf.internal"]
@@ -631,6 +635,8 @@ properties:
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
         require_ssl: (( property_overrides.bbs.require_ssl || nil ))
+        client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
+        max_idle_conns_per_hos: (( property_overrides.bbs.max_idle_conns_per_hos || nil ))
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
@@ -644,6 +650,8 @@ properties:
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
         require_ssl: (( property_overrides.bbs.require_ssl || nil ))
+        client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
+        max_idle_conns_per_hos: (( property_overrides.bbs.max_idle_conns_per_hos || nil ))
       evacuation_timeout_in_seconds: (( property_overrides.rep.evacuation_timeout_in_seconds || nil ))
       log_level: (( property_overrides.rep.log_level || nil ))
     route_emitter:
@@ -653,6 +661,8 @@ properties:
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
         require_ssl: (( property_overrides.bbs.require_ssl || nil ))
+        client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
+        max_idle_conns_per_hos: (( property_overrides.bbs.max_idle_conns_per_hos || nil ))
       nats:
         machines: (( config_from_cf.nats.machines ))
         user: (( config_from_cf.nats.user ))
@@ -666,6 +676,8 @@ properties:
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
         require_ssl: (( property_overrides.bbs.require_ssl || nil ))
+        client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
+        max_idle_conns_per_hos: (( property_overrides.bbs.max_idle_conns_per_hos || nil ))
       host_key: (( property_overrides.ssh_proxy.host_key || "" ))
       servers: (( jobs.access_z1.networks.diego1.static_ips jobs.access_z2.networks.diego2.static_ips jobs.access_z3.networks.diego3.static_ips jobs.colocated_z1.networks.diego1.static_ips jobs.colocated_z2.networks.diego2.static_ips jobs.colocated_z3.networks.diego3.static_ips ))
       enable_cf_auth: (( property_overrides.ssh_proxy.enable_cf_auth || false ))
@@ -685,6 +697,8 @@ properties:
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
         require_ssl: (( property_overrides.bbs.require_ssl || nil ))
+        client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
+        max_idle_conns_per_hos: (( property_overrides.bbs.max_idle_conns_per_hos || nil ))
       log_level: (( property_overrides.stager.log_level || nil ))
       insecure_docker_registry: (( property_overrides.stager.insecure_docker_registry || false ))
     tps:
@@ -699,6 +713,8 @@ properties:
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
         require_ssl: (( property_overrides.bbs.require_ssl || nil ))
+        client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
+        max_idle_conns_per_hos: (( property_overrides.bbs.max_idle_conns_per_hos || nil ))
       log_level: (( property_overrides.tps.log_level || nil ))
       traffic_controller_url: (( "wss://doppler." config_from_cf.system_domain ":443" ))
 

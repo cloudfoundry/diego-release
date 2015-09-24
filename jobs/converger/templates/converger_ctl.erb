@@ -37,6 +37,12 @@ case $1 in
 
     exec chpst -u vcap:vcap /var/vcap/packages/converger/bin/converger ${bbs_sec_flags} \
       -bbsAddress=${bbs_api_url} \
+      <% if_p("diego.auctioneer.bbs.client_session_cache_size") do |value| %> \
+        -bbsClientSessionCacheSize=<%= value %> \
+      <% end %> \
+      <% if_p("diego.auctioneer.bbs.max_idle_conns_per_host") do |value| %> \
+        -bbsMaxIdleConnsPerHost=<%= value %> \
+      <% end %> \
       -consulCluster=http://127.0.0.1:8500 \
       -debugAddr=<%= p("diego.converger.debug_addr") %> \
       -convergeRepeatInterval=<%= "#{p("diego.converger.repeat_interval_in_seconds")}s" %> \

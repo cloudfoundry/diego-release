@@ -41,6 +41,12 @@ case $1 in
       -natsUsername=<%= p("diego.route_emitter.nats.user") %> \
       -natsPassword=<%= p("diego.route_emitter.nats.password") %> \
       -bbsAddress=${bbs_api_url} \
+      <% if_p("diego.auctioneer.bbs.client_session_cache_size") do |value| %> \
+        -bbsClientSessionCacheSize=<%= value %> \
+      <% end %> \
+      <% if_p("diego.auctioneer.bbs.max_idle_conns_per_host") do |value| %> \
+        -bbsMaxIdleConnsPerHost=<%= value %> \
+      <% end %> \
       -debugAddr=<%= p("diego.route_emitter.debug_addr") %> \
       -syncInterval=<%= "#{p("diego.route_emitter.sync_interval_in_seconds")}s" %> \
       -logLevel=<%= p("diego.route_emitter.log_level") %> \

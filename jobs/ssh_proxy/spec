@@ -56,3 +56,7 @@ properties:
   diego.ssh_proxy.bbs.require_ssl:
     description: "enable ssl for all communication with the bbs"
     default: true
+  diego.ssh_proxy.bbs.client_session_cache_size:
+    description: "capacity of the tls client cache"
+  diego.ssh_proxy.bbs.max_idle_conns_per_host:
+    description: "maximum number of idle http connections"

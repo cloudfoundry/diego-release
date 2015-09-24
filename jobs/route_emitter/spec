@@ -43,3 +43,7 @@ properties:
   diego.route_emitter.bbs.require_ssl:
     description: "enable ssl for all communication with the bbs"
     default: true
+  diego.route_emitter.bbs.client_session_cache_size:
+    description: "capacity of the tls client cache"
+  diego.route_emitter.bbs.max_idle_conns_per_host:
+    description: "maximum number of idle http connections"

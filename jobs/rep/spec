@@ -110,3 +110,7 @@ properties:
   diego.rep.bbs.require_ssl:
     description: "enable ssl for all communication with the bbs"
     default: true
+  diego.rep.bbs.client_session_cache_size:
+    description: "capacity of the tls client cache"
+  diego.rep.bbs.max_idle_conns_per_host:
+    description: "maximum number of idle http connections"
