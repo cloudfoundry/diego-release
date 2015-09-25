@@ -41,6 +41,10 @@ properties:
     description: "PEM-encoded client certificate"
   diego.bbs.etcd.client_key:
     description: "PEM-encoded client key"
+  diego.bbs.etcd.client_session_cache_size:
+    description: "capacity of the tls client cache"
+  diego.bbs.etcd.max_idle_conns_per_host:
+    description: "maximum number of idle http connections"
 
   diego.bbs.active_key_label:
     description: "Label of the encryption key to be used when writing to the database"
