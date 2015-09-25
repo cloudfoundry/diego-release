@@ -2,9 +2,10 @@
 
 set -e
 
-cd $(dirname $0)/..
+scripts_path=./$(dirname $0)
+eval $($scripts_path/get_paths.sh)
 
-pushd src/github.com/cloudfoundry-incubator/inigo
+pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/inigo
   for pkg in `find . -type d ! -path . -maxdepth 1`; do
     go test -c ./${pkg} > /dev/null
   done
@@ -14,4 +15,4 @@ if [ -n "${DIEGO_CI_TARGET}" ]; then
   target="-t ${DIEGO_CI_TARGET}"
 fi
 
-fly -k ${target} execute -p -x -c scripts/ci/run_inigo.build.yml -i diego-release=$PWD -i garden-linux-release=$HOME/workspace/garden-linux-release -- "$@"
+fly -k ${target} execute -p -x -c $DIEGO_RELEASE_DIR/scripts/ci/run_inigo.build.yml -i diego-release=$PWD -i garden-linux-release=$HOME/workspace/garden-linux-release -- "$@"

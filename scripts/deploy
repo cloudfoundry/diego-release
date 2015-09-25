@@ -2,16 +2,11 @@
 
 set -e
 
-./scripts/generate-deployment-manifest \
-  ~/deployments/bosh-lite/director.yml \
-  manifest-generation/bosh-lite-stubs/property-overrides.yml \
-  manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
-  manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \
-  manifest-generation/bosh-lite-stubs/iaas-settings.yml \
-  manifest-generation/bosh-lite-stubs/additional-jobs.yml \
-  ~/deployments/bosh-lite \
-  > ~/deployments/bosh-lite/diego.yml
+scripts_path=./$(dirname $0)
+eval $($scripts_path/get_paths.sh)
+
+./$scripts_path/generate-bosh-lite-manifests
 
 bosh create release --force
-bosh -t lite -n upload release
-bosh -t lite -d ~/deployments/bosh-lite/diego.yml -n deploy
+bosh -t 192.168.50.4 -n upload release
+bosh -t 192.168.50.4 -d $MANIFESTS_DIR/diego.yml -n deploy

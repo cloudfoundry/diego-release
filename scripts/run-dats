@@ -2,7 +2,10 @@
 
 set -e
 
-pushd ./src/github.com/cloudfoundry-incubator/diego-acceptance-tests/
+scripts_path=./$(dirname $0)
+eval $($scripts_path/get_paths.sh)
+
+pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/diego-acceptance-tests/
   export CONFIG=`pwd`/integration_config.json
   ginkgo -r -nodes=3 "$@" diego/ security_groups/
   unset CONFIG

@@ -1,11 +1,13 @@
 # Cloud Foundry Diego [BOSH release]
 
 ----
-This repo is a [BOSH](https://github.com/cloudfoundry/bosh) release for deploying Diego
-and associated tasks for testing a Diego deployment.  Diego builds out the new runtime
-architecture for Cloud Foundry, replacing the DEAs and Health Manager.
+This repo is a [BOSH](https://github.com/cloudfoundry/bosh) release for
+deploying Diego and associated tasks for testing a Diego deployment.  Diego
+builds out the new runtime architecture for Cloud Foundry, replacing the DEAs
+and Health Manager.
 
-This release relies on a separate deployment to provide [Consul](https://github.com/hashicorp/consul),
+This release relies on a separate deployment to provide
+[Consul](https://github.com/hashicorp/consul),
 [NATS](https://github.com/apcera/gnatsd) and
 [Loggregator](https://github.com/cloudfoundry/loggregator). In practice these
 come from [cf-release](https://github.com/cloudfoundry/cf-release).
@@ -37,11 +39,11 @@ When you're ready to commit, run:
 
 This will synchronize submodules, update the BOSH package specs, run all unit
 tests, all integration tests, and make a commit, bringing up a commit edit
-dialogue.  The story IDs correspond to stories in our
-[Pivotal Tracker backlog](https://www.pivotaltracker.com/n/projects/1003146).
-You should simultaneously also build the release and deploy it to a local
-[BOSH-Lite](https://github.com/cloudfoundry/bosh-lite) environment, and run the acceptance
-tests.  See [Running Smoke Tests & DATs](#smokes-and-dats).
+dialogue.  The story IDs correspond to stories in our [Pivotal Tracker
+backlog](https://www.pivotaltracker.com/n/projects/1003146).  You should
+simultaneously also build the release and deploy it to a local
+[BOSH-Lite](https://github.com/cloudfoundry/bosh-lite) environment, and run the
+acceptance tests.  See [Running Smoke Tests & DATs](#smokes-and-dats).
 
 If you're introducing a new component (e.g. a new job/errand) or changing the main path
 for an existing component, make sure to update `./scripts/sync-package-specs` and
@@ -166,23 +168,12 @@ as you switch in and out of the directory.
    for running the scripts in later steps. For instructions on installing 
    `spiff`, see its [README](https://github.com/cloudfoundry-incubator/spiff).
 
-1. Generate a deployment stub with the BOSH director UUID
+1. Generate deployment manifests 
 
-        mkdir -p ~/deployments/bosh-lite
         cd ~/workspace/diego-release
-        ./scripts/print-director-stub > ~/deployments/bosh-lite/director.yml
+        ./scripts/generate-bosh-lite-manifests
 
-1. Generate and target cf-release manifest:
-
-        cd ~/workspace/cf-release
-        ./scripts/generate_deployment_manifest warden \
-            ~/deployments/bosh-lite/director.yml \
-            ~/workspace/diego-release/stubs-for-cf-release/enable_consul_with_cf.yml \
-            ~/workspace/diego-release/stubs-for-cf-release/enable_diego_ssh_in_cf.yml \
-            > ~/deployments/bosh-lite/cf.yml
-        bosh deployment ~/deployments/bosh-lite/cf.yml
-
-   **Or if you are running Windows cells** along side this deployment, instead generate cf-release manifest using:
+   **And if you are running Windows cells** along side this deployment, instead generate cf-release manifest using:
 
         cd ~/workspace/cf-release
         ./scripts/generate_deployment_manifest warden \
@@ -195,24 +186,11 @@ as you switch in and out of the directory.
 
 1. Do the BOSH dance:
 
+        bosh deployment ~/workspace/diego-release/bosh-lite-manifests/cf.yml
         cd ~/workspace/cf-release
         bosh create release --force &&
         bosh -n upload release &&
         bosh -n deploy
-
-1. Generate and target diego's manifest:
-
-        cd ~/workspace/diego-release
-        ./scripts/generate-deployment-manifest \
-            ~/deployments/bosh-lite/director.yml \
-            manifest-generation/bosh-lite-stubs/property-overrides.yml \
-            manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
-            manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \
-            manifest-generation/bosh-lite-stubs/iaas-settings.yml \
-            manifest-generation/bosh-lite-stubs/additional-jobs.yml \
-            ~/deployments/bosh-lite \
-            > ~/deployments/bosh-lite/diego.yml
-        bosh deployment ~/deployments/bosh-lite/diego.yml
 
 1. Upload the garden-linux-release
 
@@ -220,9 +198,8 @@ as you switch in and out of the directory.
 
 1. Dance some more:
 
-        bosh create release --force &&
-        bosh -n upload release &&
-        bosh -n deploy
+        cd ~/workspace/diego-release
+        ./scripts/deploy
 
 1. Login to CF and enable Docker support
 
@@ -239,8 +216,11 @@ Now you can either run the DATs or deploy your own app.
 ---
 ###<a name="smokes-and-dats"></a> Running Smoke Tests & DATs
 
-You can test that your diego-release deployment is working and integrating with cf-release
-by running the lightweight [diego-smoke-tests](https://github.com/cloudfoundry-incubator/diego-smoke-tests) or the more thorough [diego-acceptance-tests](https://github.com/cloudfoundry-incubator/diego-acceptance-tests).
+You can test that your diego-release deployment is working and integrating with
+cf-release by running the lightweight
+[diego-smoke-tests](https://github.com/cloudfoundry-incubator/diego-smoke-tests)
+or the more thorough
+[diego-acceptance-tests](https://github.com/cloudfoundry-incubator/diego-acceptance-tests).
 
 ---
 ### Pushing an Application to Diego
@@ -329,8 +309,9 @@ for the BBS server and its clients (other components in the Diego deployment).
 
 #### Generating SSL Certificates
 
-For generating SSL certificates, we recommend [certstrap](https://github.com/square/certstrap).
-An operator can follow the following steps to successfully generate the required certificates.
+For generating SSL certificates, we recommend
+[certstrap](https://github.com/square/certstrap).  An operator can follow the
+following steps to successfully generate the required certificates.
 
 > Most of these commands can be found in
 > [scripts/generate-diego-ca-certs](scripts/generate-diego-ca-certs),
@@ -357,7 +338,9 @@ An operator can follow the following steps to successfully generate the required
    Created out/diegoCA.crt
    ```
 
-   The manifest properties `properties.diego.etcd.ca_cert` and `properties.diego.bbs.ca_cert` should be set to the certificate in `out/diegoCA.crt`.
+   The manifest properties `properties.diego.etcd.ca_cert` and
+   `properties.diego.bbs.ca_cert` should be set to the certificate in
+   `out/diegoCA.crt`.
 
 3. Create and sign a certificate for the etcd server.
    ```
@@ -465,8 +448,8 @@ If you already have a CA, or wish to use your own names for clients and
 servers, please note that the common-names "diegoCA" and "clientName" are
 placeholders and can be renamed provided that all clients client certificate.
 The server certificate must have the common name `etcd.service.cf.internal` and
-must specify `etcd.service.cf.internal` and `*.etcd.service.cf.internal` as Subject
-Alternative Names (SANs).
+must specify `etcd.service.cf.internal` and `*.etcd.service.cf.internal` as
+Subject Alternative Names (SANs).
 
 ---
 ### Recommended Instance Types
@@ -485,6 +468,7 @@ You can then use the template generated as the `iaas-settings.yml` for the `scri
 The cell jobs currently use `r3.xlarge` as their `instance_type`.
 For production deployments, we recommend that you increase the `ephemeral_disk` size.
 This can be done by specifying the following in your `iaas-settings.yml` under the cell resource pool definitions:
+
 ```
 ephemeral_disk:
   size: 174_080

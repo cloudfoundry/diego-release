@@ -2,44 +2,33 @@
 
 set -e
 
-realpath() {
-    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
-}
+scripts_path=./$(dirname $0)
+eval $($scripts_path/get_paths.sh)
 
-realpath "$0"
-
-MANIFEST_DIR=${MANIFEST_DIR:-bosh-lite-manifests/}
-CF_RELEASE_DIR=${CF_RELEASE_DIR:-~/workspace/cf-release}
-DIEGO_RELEASE_DIR=${DIEGO_RELEASE_DIR:-~/workspace/diego-release}
-
-MANIFEST_DIR=`realpath ${MANIFEST_DIR}`
-CF_RELEASE_DIR=`realpath ${CF_RELEASE_DIR}`
-DIEGO_RELEASE_DIR=`realpath ${DIEGO_RELEASE_DIR}`
-
-mkdir -p ${MANIFEST_DIR}
+mkdir -p ${MANIFESTS_DIR}
 pushd ${DIEGO_RELEASE_DIR}
-./scripts/print-director-stub > ${MANIFEST_DIR}/director.yml
+$scripts_path/print-director-stub > ${MANIFESTS_DIR}/director.yml
 popd
 
 pushd ${CF_RELEASE_DIR}
-./scripts/generate_deployment_manifest warden \
-    ${MANIFEST_DIR}/director.yml \
+$scripts_path/generate_deployment_manifest warden \
+    ${MANIFESTS_DIR}/director.yml \
     ${DIEGO_RELEASE_DIR}/stubs-for-cf-release/enable_consul_with_cf.yml \
     ${DIEGO_RELEASE_DIR}/stubs-for-cf-release/enable_diego_ssh_in_cf.yml \
-    > ${MANIFEST_DIR}/cf.yml
+    > ${MANIFESTS_DIR}/cf.yml
 popd
 
 pushd ${DIEGO_RELEASE_DIR}
-./scripts/generate-deployment-manifest \
-    ${MANIFEST_DIR}/director.yml \
+$scripts_path/generate-deployment-manifest \
+    ${MANIFESTS_DIR}/director.yml \
     manifest-generation/bosh-lite-stubs/property-overrides.yml \
     manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
     manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \
     manifest-generation/bosh-lite-stubs/iaas-settings.yml \
     manifest-generation/bosh-lite-stubs/additional-jobs.yml \
-    ${MANIFEST_DIR} \
-    > ${MANIFEST_DIR}/diego.yml
+    ${MANIFESTS_DIR} \
+    > ${MANIFESTS_DIR}/diego.yml
 popd
 
-echo "CF Release Manifest at ${MANIFEST_DIR}/cf.yml"
-echo "Diego Release Manifest at ${MANIFEST_DIR}/diego.yml"
+echo "CF Release Manifest at ${MANIFESTS_DIR}/cf.yml"
+echo "Diego Release Manifest at ${MANIFESTS_DIR}/diego.yml"
