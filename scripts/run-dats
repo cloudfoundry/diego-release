@@ -2,8 +2,6 @@
 
 set -e
 
-./scripts/deploy
-
 pushd ./src/github.com/cloudfoundry-incubator/diego-acceptance-tests/
   export CONFIG=`pwd`/integration_config.json
   ginkgo -r -nodes=3 "$@" diego/ security_groups/
