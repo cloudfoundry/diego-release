@@ -41,10 +41,10 @@ case $1 in
 
     exec chpst -u vcap:vcap /var/vcap/packages/nsync/bin/nsync-bulker ${bbs_sec_flags} \
       -bbsAddress=${bbs_api_url} \
-      <% if_p("diego.auctioneer.bbs.client_session_cache_size") do |value| %> \
+      <% if_p("diego.nsync.bbs.client_session_cache_size") do |value| %> \
         -bbsClientSessionCacheSize=<%= value %> \
       <% end %> \
-      <% if_p("diego.auctioneer.bbs.max_idle_conns_per_host") do |value| %> \
+      <% if_p("diego.nsync.bbs.max_idle_conns_per_host") do |value| %> \
         -bbsMaxIdleConnsPerHost=<%= value %> \
       <% end %> \
       -consulCluster=http://127.0.0.1:8500 \
