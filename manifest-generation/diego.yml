@@ -580,6 +580,7 @@ properties:
         client_key: (( property_overrides.etcd.client_key ))
         client_session_cache_size: (( property_overrides.etcd.client_session_cache_size || nil ))
         max_idle_conns_per_host: (( property_overrides.etcd.max_idle_conns_per_host || nil ))
+      log_level: (( property_overrides.bbs.log_level || nil ))
     converger:
       bbs:
         api_location: (( "bbs.service.cf.internal:8889" ))
