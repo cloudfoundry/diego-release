@@ -734,6 +734,7 @@ properties:
     disk_quota_enabled: (( property_overrides.garden.disk_quota_enabled || nil ))
     persistent_image_list: (( property_overrides.garden.persistent_image_list || ["/var/vcap/packages/rootfs_cflinuxfs2/rootfs"] ))
     enable_graph_cleanup: (( property_overrides.garden.enable_graph_cleanup || true ))
+    log_level: (( property_overrides.garden.log_level || nil ))
 
 
 # The keys below should not be included in the final stub
