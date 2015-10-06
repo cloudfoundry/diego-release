@@ -6,21 +6,14 @@ scripts_path=./$(dirname $0)
 eval $($scripts_path/get_paths.sh)
 
 mkdir -p ${MANIFESTS_DIR}
-pushd ${DIEGO_RELEASE_DIR}
-$scripts_path/print-director-stub > ${MANIFESTS_DIR}/director.yml
-popd
 
 pushd ${CF_RELEASE_DIR}
-$scripts_path/generate_deployment_manifest warden \
-    ${MANIFESTS_DIR}/director.yml \
-    ${DIEGO_RELEASE_DIR}/stubs-for-cf-release/enable_consul_with_cf.yml \
-    ${DIEGO_RELEASE_DIR}/stubs-for-cf-release/enable_diego_ssh_in_cf.yml \
-    > ${MANIFESTS_DIR}/cf.yml
+scripts/generate-bosh-lite-dev-manifest
+cp bosh-lite/deployments/cf.yml ${MANIFESTS_DIR}/cf.yml
 popd
 
 pushd ${DIEGO_RELEASE_DIR}
 $scripts_path/generate-deployment-manifest \
-    ${MANIFESTS_DIR}/director.yml \
     manifest-generation/bosh-lite-stubs/property-overrides.yml \
     manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
     manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \

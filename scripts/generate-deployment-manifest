@@ -6,8 +6,7 @@ manifest_generation=$(dirname $0)/../manifest-generation
 
 function usage() {
   >&2 echo "    Usage:
-    $0 /path/to/stub/director-uuid.yml \\
-       /path/to/stub/property-overrides.yml \\
+    $0 /path/to/stub/property-overrides.yml \\
        /path/to/stub/instance-count-overrides.yml \\
        /path/to/stub/persistent-disk-overrides.yml \\
        /path/to/stub/iaas-settings.yml \\
@@ -15,8 +14,7 @@ function usage() {
        /path/to/deployment-manifests
 
     Ex:
-    $0 ~/deployments/bosh-lite/director.yml \\
-       manifest-generation/bosh-lite-stubs/property-overrides.yml \\
+    $0 manifest-generation/bosh-lite-stubs/property-overrides.yml \\
        manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
        manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \\
        manifest-generation/bosh-lite-stubs/iaas-settings.yml \\
@@ -26,26 +24,24 @@ function usage() {
   exit 1
 }
 
-director_uuid=$1
-property_overrides=$2
-instance_counts=$3
-persistent_disk=$4
-iaas_settings=$5
-additional_jobs=$6
-deployments=$7
-
-if [ -z "${deployments}" ]; then
-  >&2 echo "Not enough arguments"
-  usage
-fi
-
-if [ ! -z "$8" ]; then
-  >&2 echo "Too many arguments"
-  usage
-fi
-
-if [ ! -f "${director_uuid}" ]; then
-  >&2 echo "Director UUID stub '${director_uuid}' is not a regular file"
+if [ "$#" -eq 6 ]; then
+  property_overrides=$1
+  instance_counts=$2
+  persistent_disk=$3
+  iaas_settings=$4
+  additional_jobs=$5
+  deployments=$6
+elif [ "$#" -eq 7 ]; then
+  >&2 echo "DEPRECATED usage. director_uuid.yml should no longer be provided."
+  director_uuid=$1
+  property_overrides=$2
+  instance_counts=$3
+  persistent_disk=$4
+  iaas_settings=$5
+  additional_jobs=$6
+  deployments=$7
+else
+  >&2 echo "Incorrect number of arguments"
   usage
 fi
 
@@ -97,7 +93,13 @@ spiff merge \
   ${tmpdir}/config-from-cf.yml \
   > ${tmpdir}/diego.yml
 
-spiff merge \
-  ${manifest_generation}/misc-templates/bosh.yml \
-  ${director_uuid} \
-  ${tmpdir}/diego.yml
+if [ -n "${director_uuid}" ]; then
+  spiff merge \
+    ${manifest_generation}/misc-templates/bosh.yml \
+    ${director_uuid} \
+    ${tmpdir}/diego.yml
+else
+  spiff merge \
+    ${manifest_generation}/misc-templates/bosh.yml \
+    ${tmpdir}/diego.yml
+fi

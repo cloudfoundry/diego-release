@@ -2,6 +2,8 @@ name: (( config_from_cf.cf_deployment_name "-diego" ))
 
 releases: (( base_releases additional_jobs.releases ))
 
+director_uuid: (( config_from_cf.cf_director_uuid ))
+
 compilation:
   workers: 6
   network: diego1

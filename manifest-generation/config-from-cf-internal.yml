@@ -1,4 +1,5 @@
 config_from_cf:
+  cf_director_uuid: (( director_uuid ))
   cf_deployment_name: (( name ))
   cc:
     internal_api_password: (( properties.cc.internal_api_password ))
@@ -32,6 +33,7 @@ config_from_cf:
         secret: (( properties.uaa.clients.ssh-proxy.secret ))
 
 # The keys below should not be included in the final stub
+director_uuid: (( merge ))
 name: (( merge ))
 properties:
   cc:
