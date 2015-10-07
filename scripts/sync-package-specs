@@ -50,12 +50,6 @@ sync_package ssh_proxy               -app  github.com/cloudfoundry-incubator/die
 sync_package stager                  -app  github.com/cloudfoundry-incubator/stager/cmd/... &
 sync_package tps                     -app  github.com/cloudfoundry-incubator/tps/cmd/... &
 
-sync_package etcd \
-  -app github.com/coreos/etcd \
-  -app github.com/coreos/etcd/etcdctl \
-  -app github.com/coreos/etcd/tools/etcd-migrate \
-  -app github.com/coreos/etcd/tools/etcd-dump-logs &
-
 sync_package acceptance-tests \
   -test github.com/cloudfoundry-incubator/diego-acceptance-tests/... \
   -app github.com/cloudfoundry-incubator/diego-ssh/cf-plugin \

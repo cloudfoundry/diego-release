@@ -196,6 +196,10 @@ as you switch in and out of the directory.
 
         bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
 
+1. Upload the etcd-release
+
+        bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release
+
 1. Dance some more:
 
         cd ~/workspace/diego-release

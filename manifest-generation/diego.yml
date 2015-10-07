@@ -526,8 +526,9 @@ properties:
     user: (( config_from_cf.nats.user ))
     password: (( config_from_cf.nats.password ))
     port: (( config_from_cf.nats.port ))
-  etcd: # For metron_agent to find loggregator
-    machines: (( config_from_cf.etcd.machines ))
+  loggregator:
+    etcd:
+      machines: (( config_from_cf.loggregator.etcd.machines ))
   loggregator_endpoint:
     shared_secret: (( config_from_cf.loggregator_endpoint.shared_secret ))
   syslog_daemon_config:
@@ -549,6 +550,31 @@ properties:
     server_key: (( config_from_cf.consul.server_key ))
 
   # -- Proerties below are used by jobs from diego-release --
+  etcd:
+    machines: ["etcd.service.cf.internal"]
+    cluster:
+      - name: "database_z1"
+        instances: (( instance_count_overrides.database_z1.instances || 1 ))
+      - name: "database_z2"
+        instances: (( instance_count_overrides.database_z2.instances || 1 ))
+      - name: "database_z3"
+        instances: (( instance_count_overrides.database_z3.instances || 1 ))
+      - name: "colocated_z1"
+        instances: (( instance_count_overrides.colocated_z1.instances || 0 ))
+      - name: "colocated_z2"
+        instances: (( instance_count_overrides.colocated_z2.instances || 0 ))
+      - name: "colocated_z2"
+        instances: (( instance_count_overrides.colocated_z2.instances || 0 ))
+    require_ssl: (( property_overrides.etcd.require_ssl || nil ))
+    ca_cert: (( property_overrides.etcd.ca_cert || nil ))
+    server_cert: (( property_overrides.etcd.server_cert || nil ))
+    server_key: (( property_overrides.etcd.server_key || nil ))
+    client_cert: (( property_overrides.etcd.client_cert || nil ))
+    client_key: (( property_overrides.etcd.client_key || nil ))
+    peer_require_ssl: (( property_overrides.etcd.peer_require_ssl || nil ))
+    peer_ca_cert: (( property_overrides.etcd.peer_ca_cert || nil ))
+    peer_cert: (( property_overrides.etcd.peer_cert || nil ))
+    peer_key: (( property_overrides.etcd.peer_key || nil ))
   diego:
     # -- Global property --
     ssl:
@@ -593,31 +619,6 @@ properties:
         client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
       log_level: (( property_overrides.converger.log_level || nil ))
-    etcd:
-      machines: ["etcd.service.cf.internal"]
-      cluster:
-        - name: "database_z1"
-          instances: (( instance_count_overrides.database_z1.instances || 1 ))
-        - name: "database_z2"
-          instances: (( instance_count_overrides.database_z2.instances || 1 ))
-        - name: "database_z3"
-          instances: (( instance_count_overrides.database_z3.instances || 1 ))
-        - name: "colocated_z1"
-          instances: (( instance_count_overrides.colocated_z1.instances || 0 ))
-        - name: "colocated_z2"
-          instances: (( instance_count_overrides.colocated_z2.instances || 0 ))
-        - name: "colocated_z2"
-          instances: (( instance_count_overrides.colocated_z2.instances || 0 ))
-      require_ssl: (( property_overrides.etcd.require_ssl || nil ))
-      ca_cert: (( property_overrides.etcd.ca_cert || nil ))
-      server_cert: (( property_overrides.etcd.server_cert || nil ))
-      server_key: (( property_overrides.etcd.server_key || nil ))
-      client_cert: (( property_overrides.etcd.client_cert || nil ))
-      client_key: (( property_overrides.etcd.client_key || nil ))
-      peer_require_ssl: (( property_overrides.etcd.peer_require_ssl || nil ))
-      peer_ca_cert: (( property_overrides.etcd.peer_ca_cert || nil ))
-      peer_cert: (( property_overrides.etcd.peer_cert || nil ))
-      peer_key: (( property_overrides.etcd.peer_key || nil ))
     executor:
       drain_timeout_in_seconds: (( property_overrides.executor.drain_timeout_in_seconds || nil ))
       garden:
@@ -761,6 +762,8 @@ base_releases:
     version: latest
   - name: garden-linux
     version: latest
+  - name: etcd
+    version: latest
 base_job_templates:
   brain:
     - name: consul_agent
@@ -813,7 +816,7 @@ base_job_templates:
       release: diego
   database:
     - name: etcd
-      release: diego
+      release: etcd
     - name: bbs
       release: diego
     - name: consul_agent
@@ -832,7 +835,7 @@ base_job_templates:
     - name: consul_agent
       release: cf
     - name: etcd
-      release: diego
+      release: etcd
     - name: file_server
       release: diego
     - name: garden

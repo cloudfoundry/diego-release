@@ -18,6 +18,9 @@ config_from_cf:
     server_key: (( merge ))
   etcd:
     machines: (( merge ))
+  loggregator:
+    etcd:
+      machines: (( merge ))
   loggregator_endpoint:
     shared_secret: (( merge ))
   nats:

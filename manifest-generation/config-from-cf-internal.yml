@@ -18,6 +18,9 @@ config_from_cf:
     server_key: (( properties.consul.server_key ))
   etcd:
     machines: (( properties.etcd.machines ))
+  loggregator:
+    etcd:
+      machines: (( properties.loggregator.etcd.machines ))
   loggregator_endpoint:
     shared_secret: (( properties.loggregator_endpoint.shared_secret ))
   nats:
@@ -55,6 +58,9 @@ properties:
     server_key:
   etcd:
     machines: (( merge ))
+  loggregator:
+    etcd:
+      machines: (( merge ))
   loggregator_endpoint:
     shared_secret: (( merge ))
   nats:
