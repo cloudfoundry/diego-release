@@ -706,7 +706,7 @@ properties:
         client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
       log_level: (( property_overrides.stager.log_level || nil ))
-      insecure_docker_registry: (( property_overrides.stager.insecure_docker_registry || false ))
+      insecure_docker_registry_list: (( property_overrides.stager.insecure_docker_registry_list || nil ))
     tps:
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))

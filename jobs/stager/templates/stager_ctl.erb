@@ -79,9 +79,9 @@ case $1 in
       -ccUploaderURL=<%= p("diego.stager.cc_uploader_url") %> \
       -consulCluster=http://127.0.0.1:8500 \
       -dockerRegistryAddress=<%= p("diego.stager.docker_registry_address") %> \
-      <% if p("diego.stager.insecure_docker_registry") == true %>\
-      -insecureDockerRegistry \
-      <% end %>\
+      <% p("diego.stager.insecure_docker_registry_list").each do |url| %> \
+        -insecureDockerRegistry=<%= url %> \
+      <% end %> \
       -logLevel=<%= p("diego.stager.log_level") %> \
       2> >(tee -a $LOG_DIR/stager.stderr.log | logger -p user.error -t vcap.stager) \
       1> >(tee -a $LOG_DIR/stager.stdout.log | logger -p user.info -t vcap.stager)
