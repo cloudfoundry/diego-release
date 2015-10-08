@@ -8,12 +8,9 @@ dependencies:
   - diego-sshd
 
 files:
-  - github.com/cloudfoundry-incubator/docker_app_lifecycle/*.go # gosub
   - github.com/cloudfoundry-incubator/docker_app_lifecycle/builder/*.go # gosub
-  - github.com/cloudfoundry-incubator/docker_app_lifecycle/helpers/*.go # gosub
   - github.com/cloudfoundry-incubator/docker_app_lifecycle/launcher/*.go # gosub
-  - github.com/cloudfoundry-incubator/docker_app_lifecycle/protocol/*.go # gosub
-  - github.com/cloudfoundry-incubator/docker_app_lifecycle/unix_transport/*.go # gosub
+  - github.com/cloudfoundry-incubator/docker_app_lifecycle/*.go # gosub
   - github.com/cloudfoundry-incubator/docker_app_lifecycle/Godeps/_workspace/src/github.com/Sirupsen/logrus/*.go # gosub
   - github.com/cloudfoundry-incubator/docker_app_lifecycle/Godeps/_workspace/src/github.com/docker/docker/api/*.go # gosub
   - github.com/cloudfoundry-incubator/docker_app_lifecycle/Godeps/_workspace/src/github.com/docker/docker/daemon/graphdriver/*.go # gosub
@@ -51,3 +48,6 @@ files:
   - github.com/cloudfoundry-incubator/docker_app_lifecycle/Godeps/_workspace/src/github.com/tedsuo/ifrit/*.go # gosub
   - github.com/cloudfoundry-incubator/docker_app_lifecycle/Godeps/_workspace/src/github.com/tedsuo/ifrit/grouper/*.go # gosub
   - github.com/cloudfoundry-incubator/docker_app_lifecycle/Godeps/_workspace/src/github.com/tedsuo/ifrit/sigmon/*.go # gosub
+  - github.com/cloudfoundry-incubator/docker_app_lifecycle/helpers/*.go # gosub
+  - github.com/cloudfoundry-incubator/docker_app_lifecycle/protocol/*.go # gosub
+  - github.com/cloudfoundry-incubator/docker_app_lifecycle/unix_transport/*.go # gosub
