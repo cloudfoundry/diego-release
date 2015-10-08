@@ -21,6 +21,26 @@ $scripts_path/generate-deployment-manifest \
     manifest-generation/bosh-lite-stubs/additional-jobs.yml \
     ${MANIFESTS_DIR} \
     > ${MANIFESTS_DIR}/diego.yml
+
+    tmpdir=$(mktemp -d /tmp/diego-manifest.XXXXX)
+
+    spiff merge \
+      manifest-generation/config-from-cf.yml \
+      manifest-generation/config-from-cf-internal.yml \
+      ${MANIFESTS_DIR}/cf.yml \
+      > ${tmpdir}/config-from-cf.yml
+
+    spiff merge \
+      manifest-generation/bosh-lite-stubs/diego-acceptance-tests.yml \
+      manifest-generation/bosh-lite-stubs/iaas-settings.yml \
+      ${tmpdir}/config-from-cf.yml \
+      > ${MANIFESTS_DIR}/diego-acceptance-tests.yml
+
+    spiff merge \
+      manifest-generation/bosh-lite-stubs/diego-smoke-tests.yml \
+      manifest-generation/bosh-lite-stubs/iaas-settings.yml \
+      ${tmpdir}/config-from-cf.yml \
+      > ${MANIFESTS_DIR}/diego-smoke-tests.yml
 popd
 
 echo "CF Release Manifest at ${MANIFESTS_DIR}/cf.yml"

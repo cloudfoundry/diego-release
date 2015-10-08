@@ -1,0 +1,51 @@
+---
+director_uuid: (( config_from_cf.cf_director_uuid ))
+
+name: (( config_from_cf.cf_deployment_name "-diego-smoke-tests" ))
+
+releases:
+- name: diego
+  version: latest 
+networks:
+- name: diego-smoke-tests
+  type: manual
+  subnets: (( iaas_settings.subnet_configs.diego-smoke-tests.subnets ))
+resource_pools:
+- name: errand
+  network: diego-smoke-tests
+  stemcell: (( iaas_settings.stemcell ))
+  cloud_properties: (( iaas_settings.resource_pool_cloud_properties.errand.cloud_properties ))
+compilation:
+  network: diego-smoke-tests
+  reuse_compilation_vms: true
+  workers: 1
+  cloud_properties: (( iaas_settings.compilation_cloud_properties ))
+update:
+  canaries: 1
+  canary_watch_time: 5000-120000
+  update_watch_time: 5000-120000
+  max_in_flight: 1
+  serial: false
+jobs:
+- name: diego_smoke_tests
+  templates:
+  - name: smoke-tests
+    release: diego
+  lifecycle: errand
+  instances: 1
+  networks:
+  - name: diego-smoke-tests
+  resource_pool: errand
+properties:
+  diego:
+    ssl:
+      skip_cert_verify: true
+    smoke_tests:
+      admin_password: admin
+      admin_user: admin
+      api: api.bosh-lite.com
+      apps_domain: bosh-lite.com
+
+# The keys below should not be included in the final stub
+config_from_cf: (( merge ))
+iaas_settings: (( merge ))

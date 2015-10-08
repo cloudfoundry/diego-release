@@ -46,6 +46,8 @@ iaas_settings:
       cloud_properties: {}
     - name: route_emitter_z3
       cloud_properties: {}
+    - name: errand
+      cloud_properties: {}
 
   subnet_configs:
     # Generated:
@@ -1116,5 +1118,21 @@ iaas_settings:
       - range: 10.244.20.252/30
         reserved:
         - 10.244.20.253
+        static: []
+        cloud_properties: {}
+    - name: diego-acceptance-tests
+      type: manual
+      subnets:
+      - range: 10.244.22.0/30
+        reserved:
+        - 10.244.22.1
+        static: []
+        cloud_properties: {}
+    - name: diego-smoke-tests
+      type: manual
+      subnets:
+      - range: 10.244.24.0/30
+        reserved:
+        - 10.244.24.1
         static: []
         cloud_properties: {}
