@@ -68,6 +68,10 @@ case $1 in
     # Enable maximum OS thread concurrency
     export GOMAXPROCS=$(nproc)
 
+    # NF_CONNTRACK_MAX
+    # Default value is 65536. We set it to a larger number to avoid running out of connections.
+    echo 262144 > /proc/sys/net/netfilter/nf_conntrack_max
+
     chpst -u vcap:vcap /var/vcap/packages/rep/bin/rep ${bbs_sec_flags} \
       -bbsAddress=${bbs_api_url} \
       <% if_p("diego.rep.bbs.client_session_cache_size") do |value| %> \
