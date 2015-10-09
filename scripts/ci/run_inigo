@@ -5,7 +5,7 @@ set -e -x
 export GOROOT=/usr/local/go
 export PATH=${GOROOT}/bin:${PATH}
 
-export GARDEN_LINUX_GOPATH=$PWD/garden-linux-release
+export GARDEN_LINUX_GOPATH=$PWD/garden-linux-release/garden-linux-release-master
 
 cd diego-release/
 
