@@ -67,6 +67,10 @@ sync_package vizzini \
   -test github.com/cloudfoundry-incubator/vizzini/... \
   -app github.com/onsi/ginkgo/ginkgo &
 
+sync_package benchmark-bbs \
+  -test github.com/cloudfoundry-incubator/benchmark-bbs/... \
+  -app github.com/onsi/ginkgo/ginkgo &
+
 sync_package smoke-tests      -test github.com/cloudfoundry-incubator/diego-smoke-tests &
 
 wait

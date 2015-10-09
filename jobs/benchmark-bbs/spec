@@ -1,0 +1,80 @@
+---
+name: benchmark-bbs 
+packages:
+  - golang_1.4
+  - benchmark-bbs
+
+templates:
+  run.erb: bin/run
+  dns_health_check.erb: bin/dns_health_check
+  etcd_ca.crt.erb: config/certs/etcd/ca.crt
+  etcd_client.crt.erb: config/certs/etcd/client.crt
+  etcd_client.key.erb: config/certs/etcd/client.key
+  bbs_client.crt.erb: config/certs/bbs/client.crt
+  bbs_client.key.erb: config/certs/bbs/client.key
+
+properties:
+  benchmark-bbs.desired_lrps:
+    description: "the number of single instance desired lrps to generate and fetch"
+  benchmark-bbs.num_trials:
+    description: "the number of trials of each benchmark to average across"
+  benchmark-bbs.num_populate_workers:
+    description: "the number of workers generating desired LRPs during setup"
+
+  benchmark-bbs.bbs.api_location:
+    description: "the address of the BBS"
+  benchmark-bbs.bbs.client_cert:
+    description: "PEM-encoded client certificate"
+  benchmark-bbs.bbs.client_key:
+    description: "PEM-encoded client key"
+  benchmark-bbs.client_timeout:
+    description: "the http timeout for bbs client requests"
+  benchmark-bbs.bbs.require_ssl:
+    description: "enable ssl for all communication with the bbs (false unsupported)"
+    default: true
+
+  benchmark-bbs.etcd.machines:
+    description: "Addresses pointing to the ETCD cluster"
+  benchmark-bbs.etcd.require_ssl:
+    description: "boolean to configure ssl connections with the etcd cluster"
+    default: true
+  benchmark-bbs.etcd.client_cert:
+    description: "PEM-encoded client certificate"
+  benchmark-bbs.etcd.client_key:
+    description: "PEM-encoded client key"
+  benchmark-bbs.etcd.ca_cert:
+    description: "PEM-encoded root CA certificate"
+  benchmark-bbs.etcd.client_session_cache_size:
+    description: "capacity of the etcd client tls client cache"
+  benchmark-bbs.bbs.etcd.max_idle_conns_per_host:
+    description: "maximum number of etcd client idle http connections"
+
+  benchmark-bbs.active_key_label:
+    description: "the active key for encryption"
+  benchmark-bbs.encryption_keys:
+    description: "the key(s) to use for encryption at rest"
+    default: []
+
+  benchmark-bbs.datadog_api_key:
+    description: "the api key for emmitting datadog metrics"
+    default: ""
+  benchmark-bbs.datadog_app_key:
+    description: "the application key for datadog metrics"
+    default: ""
+  benchmark-bbs.datadog_metric_prefix:
+    description: "the datadog metric prefix"
+    default: ""
+
+  benchmark-bbs.aws_access_key_id:
+    description: "the aws access key for uploading metrics to s3"
+    default: ""
+  benchmark-bbs.aws_secret_access_key:
+    description: "the aws secret key for uploading metrics to s3"
+    default: ""
+  benchmark-bbs.aws_bucket_name:
+    description: "the S3 bucket to upload metrics to"
+    default: ""
+  benchmark-bbs.aws_region:
+    description: "the aws region where the S3 bucket lives"
+    default: ""
+

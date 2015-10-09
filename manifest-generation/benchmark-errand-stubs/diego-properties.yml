@@ -1,0 +1,21 @@
+---
+director_uuid: 
+
+networks:
+
+properties:
+  diego: 
+    auctioneer:
+      bbs: (( merge ))
+    bbs:
+      etcd: (( merge ))
+      active_key_label: (( merge ))
+      encryption_keys: (( merge ))
+  benchmark-bbs:
+    bbs: (( diego.auctioneer.bbs ))
+    etcd: (( diego.bbs.etcd ))
+    active_key_label: (( diego.bbs.active_key_label ))
+    encryption_keys: (( diego.bbs.encryption_keys ))
+  consul:
+
+diego_z1_network_cloud_properties: (( networks.[0].subnets.[0].cloud_properties ))

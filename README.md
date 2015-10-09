@@ -12,7 +12,7 @@ This release relies on a separate deployment to provide
 [Loggregator](https://github.com/cloudfoundry/loggregator). In practice these
 come from [cf-release](https://github.com/cloudfoundry/cf-release).
 
-Additional Diego resources:
+### Additional Diego Resources
 
   - The [Diego Design Notes](https://github.com/cloudfoundry-incubator/diego-design-notes) present an overview of Diego, and links to the various Diego components.
   - The [Migration Guide](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/migrating-to-diego.md) describes how developers and operators can manage a transition from the DEAs to Diego.
@@ -22,6 +22,23 @@ Additional Diego resources:
   - [Diego's Pivotal Tracker project](https://www.pivotaltracker.com/n/projects/1003146) shows what we're working on these days.
 
 [Lattice](http://lattice.cf) is an easy-to-deploy distribution of Diego designed for experimentation with the next-generation core of Cloud Foundry.
+
+### Table of Contents
+1. [Developer Workflow](#developer-workflow)
+1. [Initial Setup](#initial-setup)
+1. [Deploying Diego to BOSH-Lite](#deploying-diego-to-bosh-lite)
+1. [Pushing to Diego](#pushing-to-diego)
+1. [Testing Diego](#testing-diego)
+  1. [Running Unit Tests](#running-unit-tests)
+  1. [Running Integration Tests](#running-integration-tests)
+  1. [Running Benchmark Tests](#running-benchmark-tests)
+  1. [Running Smoke Tests & DATs](#smokes-and-dats)
+1. [Database Encryption](#database-encryption)
+  1. [Configuring Encryption Keys](#configuring-encryption-keys)
+1. [TLS Configuration](#tls-configuration)
+  1. [Generating TLS Certificates](#generating-tls-certificates)
+  1. [Custom TLS Certificate Generation](#custom-tls-certificate-generation)
+1. [Recommended Instance Types](#recommended-instance-types)
 
 ----
 ## Developer Workflow
@@ -50,7 +67,7 @@ for an existing component, make sure to update `./scripts/sync-package-specs` an
 `./scripts/sync-submodule-config`.
 
 ---
-##<a name="initial-setup"></a> Initial Setup
+##Initial Setup
 
 This BOSH release doubles as a `$GOPATH`. It will automatically be set up for
 you if you have [direnv](http://direnv.net) installed.
@@ -80,63 +97,7 @@ of the release repo.  You may manually need to update your `$GOPATH` and `$PATH`
 as you switch in and out of the directory.
 
 ---
-## Running Unit Tests
-
-1. Install ginkgo
-
-        go install github.com/onsi/ginkgo/ginkgo
-
-2. Install gnatsd
-
-        go install github.com/apcera/gnatsd
-
-3. Install etcd
-
-        go install github.com/coreos/etcd
-
-4. Install consul
-
-        if uname -a | grep Darwin; then os=darwin; else os=linux; fi
-        curl -L -o $TMPDIR/consul-0.5.2.zip "https://dl.bintray.com/mitchellh/consul/0.5.2_${os}_amd64.zip"
-        unzip $TMPDIR/consul-0.5.2.zip -d ~/workspace/diego-release/bin
-        rm $TMPDIR/consul-0.5.2.zip
-
-5. Run the unit test script
-
-        ./scripts/run-unit-tests
-
-
----
-## Running Integration Tests
-
-1. Install and start [Concourse](http://concourse.ci), following its
-   [README](https://github.com/concourse/concourse/blob/master/README.md).
-
-1. Install the `fly` CLI:
-
-        # cd to the concourse release repo,
-        cd /path/to/concourse/repo
-
-        # switch to using the concourse $GOPATH and $PATH setup temporarily
-        direnv allow
-
-        # install the version of fly from Concourse's release
-        go install github.com/concourse/fly
-
-        # add the concourse release repo's bin/ directory to your $PATH
-        export PATH=$PWD/bin:$PATH
-
-1. Run [Inigo](https://github.com/cloudfoundry-incubator/inigo).
-
-        # cd back to the diego-release release repo
-        cd diego-release/
-
-        # run the tests
-        ./scripts/run-inigo
-
----
-
-## Deploying Diego to a local BOSH-Lite instance
+## Deploying Diego to BOSH-Lite
 
 1. Install and start [BOSH-Lite](https://github.com/cloudfoundry/bosh-lite),
    following its
@@ -217,17 +178,9 @@ Now you can either run the DATs or deploy your own app.
 > the `manifest-generation/bosh-lite-stubs/colocated-instance-count-overrides.yml`
 > stub.
 
----
-###<a name="smokes-and-dats"></a> Running Smoke Tests & DATs
-
-You can test that your diego-release deployment is working and integrating with
-cf-release by running the lightweight
-[diego-smoke-tests](https://github.com/cloudfoundry-incubator/diego-smoke-tests)
-or the more thorough
-[diego-acceptance-tests](https://github.com/cloudfoundry-incubator/diego-acceptance-tests).
 
 ---
-### Pushing an Application to Diego
+## Pushing to Diego
 
 1. Create new CF Org & Space:
 
@@ -249,7 +202,92 @@ or the more thorough
         cf start my-app
 
 
-### Database Encryption
+---
+## Testing Diego
+
+### Running Unit Tests
+
+1. Install ginkgo
+
+        go install github.com/onsi/ginkgo/ginkgo
+
+2. Install gnatsd
+
+        go install github.com/apcera/gnatsd
+
+3. Install etcd
+
+        go install github.com/coreos/etcd
+
+4. Install consul
+
+        if uname -a | grep Darwin; then os=darwin; else os=linux; fi
+        curl -L -o $TMPDIR/consul-0.5.2.zip "https://dl.bintray.com/mitchellh/consul/0.5.2_${os}_amd64.zip"
+        unzip $TMPDIR/consul-0.5.2.zip -d ~/workspace/diego-release/bin
+        rm $TMPDIR/consul-0.5.2.zip
+
+5. Run the unit test script
+
+        ./scripts/run-unit-tests
+
+
+### Running Integration Tests
+
+1. Install and start [Concourse](http://concourse.ci), following its
+   [README](https://github.com/concourse/concourse/blob/master/README.md).
+
+1. Install the `fly` CLI:
+
+        # cd to the concourse release repo,
+        cd /path/to/concourse/repo
+
+        # switch to using the concourse $GOPATH and $PATH setup temporarily
+        direnv allow
+
+        # install the version of fly from Concourse's release
+        go install github.com/concourse/fly
+
+        # add the concourse release repo's bin/ directory to your $PATH
+        export PATH=$PWD/bin:$PATH
+
+1. Run [Inigo](https://github.com/cloudfoundry-incubator/inigo).
+
+        # cd back to the diego-release release repo
+        cd diego-release/
+
+        # run the tests
+        ./scripts/run-inigo
+
+### Running Benchmark Tests
+
+WARNING: Benchmark tests drop the database.
+
+1. Deploy diego-release to an environment (use instance-count-overrides to turn 
+   off all components except the database for a cleaner test)
+
+1. Depending on whether you're deploying to AWS or bosh-lite, copy either 
+   `manifest-generation/benchmark-errand-stubs/defaut_aws_benchmark_properties.yml` or 
+   `manifest-generation/benchmark-errand-stubs/defaut_bosh_lite_benchmark_properties.yml` 
+   to your local deployments or stubs folder and fill it in.
+
+1. Generate a benchmark deployment manifest using 
+   `./scripts/generate-benchmarks-manifest /path/to/diego.yml /path/to/benchmark-properties.yml > benchmark.yml`
+
+1. Deploy and run the tests using 
+   `bosh -d benchmark.yml -n deploy && bosh -d benchmark.yml -n run errand benchmark-bbs`
+
+
+###<a name="smokes-and-dats"></a> Running Smoke Tests & DATs
+
+You can test that your diego-release deployment is working and integrating with
+cf-release by running the lightweight
+[diego-smoke-tests](https://github.com/cloudfoundry-incubator/diego-smoke-tests)
+or the more thorough
+[diego-acceptance-tests](https://github.com/cloudfoundry-incubator/diego-acceptance-tests).
+
+
+---
+## Database Encryption
 
 Diego Release must be configured with a set of encryption keys to be used when
 encrypting data at rest in the ETCD database. To configure encryption the
@@ -260,7 +298,7 @@ Diego will automatically (re-)encrypt all of the data stored in ETCD using the
 active key upon boot. This ensures an operator can rotate a key out without
 having to manually rewrite all of the records.
 
-#### Configuring Encryption Keys
+### Configuring Encryption Keys
 
 Diego uses multiple keys for decryption while allowing only one for encryption.
 This allows an operator to rotate encryption keys in a downtime-less way.
@@ -288,32 +326,33 @@ have no enforced limit. In addtion to that, the key label must not contain a
 `:` (colon) character, due the way we build command line flags using `:` as a
 separator.
 
-### SSL Configuration
+---
+## TLS Configuration
 
-Diego Release can be configured to require SSL for communication with etcd.
-To enable or disable SSL communication with etcd, the `diego.etcd.require_ssl`
+Diego Release can be configured to require TLS for communication with etcd.
+To enable or disable TLS communication with etcd, the `diego.etcd.require_ssl`
 and `diego.<component>.etcd.require_ssl` properties should be set to `true` or
 `false`.  By default, Diego has `require_ssl` set to `true`.  When
-`require_ssl` is `true`, the operator must generate SSL certificates and keys
+`require_ssl` is `true`, the operator must generate TLS certificates and keys
 for the etcd server and its clients.
 
-SSL and mutual authentication can also be enabled between etcd peers. To
+TLS and mutual authentication can also be enabled between etcd peers. To
 enable or disable this, the `diego.etcd.peer_require_ssl` property should be
 set to `true` or `false`. By default, Diego has `peer_require_ssl` set to
 `true`.  When `peer_require_ssl` is set to `true`, the operator must provide
-SSL certificates and keys for the cluster members. The CA, server certificate,
+TLS certificates and keys for the cluster members. The CA, server certificate,
 and server key across may be shared between the client and peer configurations
 if desired.
 
-Similarly, SSL with mutual authentication can be enabled for communication to
+Similarly, TLS with mutual authentication can be enabled for communication to
 the BBS server, via the `diego.bbs.require_ssl` BOSH property, which defaults
-to `true`. When enabled, the operator must provide SSL certificates and keys
+to `true`. When enabled, the operator must provide TLS certificates and keys
 for the BBS server and its clients (other components in the Diego deployment).
 
 
-#### Generating SSL Certificates
+### Generating TLS Certificates
 
-For generating SSL certificates, we recommend
+For generating TLS certificates, we recommend
 [certstrap](https://github.com/square/certstrap).  An operator can follow the
 following steps to successfully generate the required certificates.
 
@@ -446,7 +485,7 @@ following steps to successfully generate the required certificates.
    The manifest property `properties.diego.etcd.peer_key` should be set to the certificate in `peer/etcd.service.cf.internal.key`.
 
 
-#### Custom SSL Certificate Generation
+### Custom TLS Certificate Generation
 
 If you already have a CA, or wish to use your own names for clients and
 servers, please note that the common-names "diegoCA" and "clientName" are
@@ -456,7 +495,7 @@ must specify `etcd.service.cf.internal` and `*.etcd.service.cf.internal` as
 Subject Alternative Names (SANs).
 
 ---
-### Recommended Instance Types
+## Recommended Instance Types
 
 If you are deploying to AWS, you can use our recommended instance types by spiff merging
 your `iaas-settings.yml` with our provided `manifest-generation/misc-templates/aws-iaas-settings.yml`:

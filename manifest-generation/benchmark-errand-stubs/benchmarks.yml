@@ -1,0 +1,64 @@
+---
+director_uuid: 
+
+name: "diego-benchmarks" 
+
+releases:
+- name: diego
+  version: latest
+- name: cf
+  version: latest
+
+diego_z1_network_cloud_properties: (( merge ))
+
+networks: 
+- name: benchmarks1
+  type: dynamic 
+  cloud_properties: (( diego_z1_network_cloud_properties ))
+
+resource_pools:
+
+compilation:
+  network: benchmarks1 
+  reuse_compilation_vms: true
+  workers: 2
+  cloud_properties: (( resource_pools.[0].cloud_properties ))
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  canary_watch_time: 30000-600000
+  update_watch_time: 5000-600000
+
+jobs:
+- name: benchmark-bbs
+  templates:
+  - name: benchmark-bbs
+    release: diego
+  - name: consul_agent
+    release: cf
+  lifecycle: errand
+  instances: 1
+  networks:
+    - name: benchmarks1 
+  resource_pool: benchmarks_z1 
+
+properties:
+  consul: (( merge ))
+  benchmark-bbs:
+    bbs: (( merge )) 
+    etcd: (( merge ))
+    client_timeout: (( merge ))
+    active_key_label: (( merge ))
+    encryption_keys: (( merge ))
+    desired_lrps: (( merge )) 
+    num_trials: (( merge )) 
+    num_populate_workers: (( merge )) 
+    aws_access_key_id: (( merge || nil )) 
+    aws_secret_access_key: (( merge || nil )) 
+    aws_bucket_name: (( merge || nil )) 
+    aws_region: (( merge || nil )) 
+    datadog_api_key: (( merge || nil )) 
+    datadog_app_key: (( merge || nil )) 
+    datadog_metric_prefix: (( merge || nil )) 
+

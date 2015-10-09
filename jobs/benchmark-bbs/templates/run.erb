@@ -1,0 +1,70 @@
+#!/bin/bash -l
+
+CONF_DIR=/var/vcap/jobs/benchmark-bbs/config
+
+set -e -x
+
+export GOROOT=$(readlink -nf /var/vcap/packages/golang_1.4)
+export PATH=${GOROOT}/bin:${PATH}
+
+export GOPATH=/var/vcap/packages/benchmark-bbs
+export PATH=${GOPATH}/bin:${PATH}
+
+export CF_COLOR=false
+
+LOG_DIR=/var/vcap/sys/log/benchmark-bbs
+mkdir -p $LOG_DIR
+chown -R vcap:vcap $LOG_DIR
+
+cd /var/vcap/packages/benchmark-bbs/src/github.com/cloudfoundry-incubator/benchmark-bbs
+
+EXITSTATUS=0
+
+<% if p("benchmark-bbs.etcd.require_ssl") %>
+etcd_sec_flags=" \
+   -etcdCertFile=${CONF_DIR}/certs/etcd/client.crt \
+   -etcdKeyFile=${CONF_DIR}/certs/etcd/client.key \
+   -etcdCaFile=${CONF_DIR}/certs/etcd/ca.crt "
+<% else %>
+etcd_sec_flags=""
+<% end %>
+
+<% if p("benchmark-bbs.bbs.require_ssl") %>
+  bbs_sec_flags=" \
+   -bbsClientCert=${CONF_DIR}/certs/bbs/client.crt \
+   -bbsClientKey=${CONF_DIR}/certs/bbs/client.key "
+   bbs_api_url="<%= "https://" + p("benchmark-bbs.bbs.api_location") %>"
+<% else %>
+  bbs_sec_flags=""
+  bbs_api_url="<%= "http://" + p("benchmark-bbs.bbs.api_location") %>"
+<% end %>
+
+ginkgo -- ${bbs_sec_flags} ${etcd_sec_flags} \
+  -desiredLRPs=<%= p("benchmark-bbs.desired_lrps") %> \
+  -numTrials=<%= p("benchmark-bbs.num_trials") %> \
+  -numPopulateWorkers=<%= p("benchmark-bbs.num_populate_workers") %> \
+  -bbsAddress=${bbs_api_url} \
+  <% p("benchmark-bbs.encryption_keys").each do |encryption_key| %> \
+    -encryptionKey='<%= "#{encryption_key["label"]}:#{encryption_key["passphrase"]}" %>' \
+  <% end %> \
+  -etcdCluster=<%= p("benchmark-bbs.etcd.machines").map{|addr| "\"#{p("benchmark-bbs.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
+  <% if_p("benchmark-bbs.etcd.client_session_cache_size") do |value| %> \
+    -etcdSessionCacheSize=<%= value %> \
+  <% end %> \
+  <% if_p("benchmark-bbs.etcd.max_idle_conns_per_host") do |value| %> \
+    -etcdMaxIdleConnsPerHost=<%= value %> \
+  <% end %> \
+  -activeKeyLabel='<%= p("benchmark-bbs.active_key_label") %>' \
+  -dataDogAPIKey=<%= p("benchmark-bbs.datadog_api_key") %> \
+  -dataDogAppKey=<%= p("benchmark-bbs.datadog_app_key") %> \
+  -metricPrefix=<%= p("benchmark-bbs.datadog_metric_prefix") %> \
+  -awsAccessKeyID=<%= p("benchmark-bbs.aws_access_key_id") %> \
+  -awsSecretAccessKey=<%= p("benchmark-bbs.aws_secret_access_key") %> \
+  -awsBucketName=<%= p("benchmark-bbs.aws_bucket_name") %> \
+  -bbsClientHTTPTimeout=<%= p("benchmark-bbs.client_timeout") %>  \ 
+  2> >(tee -a $LOG_DIR/benchmark-bbs.stderr.log) \
+  1> >(tee -a $LOG_DIR/benchmark-bbs.stdout.log)
+
+echo "BBS Benchmarks Complete; exit status: $EXITSTATUS"
+
+exit $EXITSTATUS

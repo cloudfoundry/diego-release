@@ -1,0 +1,15 @@
+---
+resource_pools: 
+- name: benchmarks_z1
+  network: benchmarks1
+  stemcell:
+    name: bosh-warden-boshlite-ubuntu-trusty-go_agent
+    version: latest
+  cloud_properties: {}
+
+properties:
+  benchmark-bbs:
+    desired_lrps: 10000
+    num_trials: 10
+    num_populate_workers: 50
+    client_timeout: "30s"
