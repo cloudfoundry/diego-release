@@ -153,11 +153,11 @@ as you switch in and out of the directory.
         bosh -n upload release
         bosh -n deploy
 
-1. Upload the garden-linux-release
+1. Upload the latest garden-linux-release:
 
         bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
 
-1. Upload the etcd-release
+1. Upload the latest etcd-release:
 
         bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release
 
