@@ -129,28 +129,28 @@ as you switch in and out of the directory.
    for running the scripts in later steps. For instructions on installing 
    `spiff`, see its [README](https://github.com/cloudfoundry-incubator/spiff).
 
-1. Generate deployment manifests 
+1. Generate cf-release manifest
+
+        cd ~/workspace/cf-release
+        ./scripts/generate-bosh-lite-dev-manifest
+
+   **Or if you are running Windows cells** along side this deployment, instead generate cf-release manifest using:
+
+        cd ~/workspace/cf-release
+        ./scripts/generate-bosh-lite-dev-manifest \
+          ~/workspace/diego-release/stubs-for-cf-release/enable_diego_windows_in_cc.yml
+
+1. Generate diego-release manifests
 
         cd ~/workspace/diego-release
         ./scripts/generate-bosh-lite-manifests
 
-   **And if you are running Windows cells** along side this deployment, instead generate cf-release manifest using:
-
-        cd ~/workspace/cf-release
-        ./scripts/generate_deployment_manifest warden \
-            ~/deployments/bosh-lite/director.yml \
-            ~/workspace/diego-release/stubs-for-cf-release/enable_consul_with_cf.yml \
-            ~/workspace/diego-release/stubs-for-cf-release/enable_diego_windows_in_cc.yml \
-            ~/workspace/diego-release/stubs-for-cf-release/enable_diego_ssh_in_cf.yml \
-            > ~/deployments/bosh-lite/cf.yml
-        bosh deployment ~/deployments/bosh-lite/cf.yml
-
 1. Do the BOSH dance:
 
-        bosh deployment ~/workspace/diego-release/bosh-lite-manifests/cf.yml
         cd ~/workspace/cf-release
-        bosh create release --force &&
-        bosh -n upload release &&
+        bosh deployment bosh-lite/deployments/cf.yml
+        bosh create release --force
+        bosh -n upload release
         bosh -n deploy
 
 1. Upload the garden-linux-release
@@ -164,7 +164,10 @@ as you switch in and out of the directory.
 1. Dance some more:
 
         cd ~/workspace/diego-release
-        ./scripts/deploy
+        bosh deployment bosh-lite/deployments/diego.yml
+        bosh create release --force
+        bosh -n upload release
+        bosh -n deploy
 
 1. Login to CF and enable Docker support
 

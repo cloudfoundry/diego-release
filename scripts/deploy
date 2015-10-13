@@ -9,4 +9,4 @@ eval $($scripts_path/get_paths.sh)
 
 bosh create release --force
 bosh -t 192.168.50.4 -n upload release
-bosh -t 192.168.50.4 -d $MANIFESTS_DIR/diego.yml -n deploy
+bosh -t 192.168.50.4 -d $DIEGO_MANIFESTS_DIR/diego.yml -n deploy

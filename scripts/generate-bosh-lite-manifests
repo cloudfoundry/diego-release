@@ -5,12 +5,7 @@ set -e
 scripts_path=./$(dirname $0)
 eval $($scripts_path/get_paths.sh)
 
-mkdir -p ${MANIFESTS_DIR}
-
-pushd ${CF_RELEASE_DIR}
-scripts/generate-bosh-lite-dev-manifest
-cp bosh-lite/deployments/cf.yml ${MANIFESTS_DIR}/cf.yml
-popd
+mkdir -p ${DIEGO_MANIFESTS_DIR}
 
 pushd ${DIEGO_RELEASE_DIR}
 $scripts_path/generate-deployment-manifest \
@@ -19,29 +14,29 @@ $scripts_path/generate-deployment-manifest \
     manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \
     manifest-generation/bosh-lite-stubs/iaas-settings.yml \
     manifest-generation/bosh-lite-stubs/additional-jobs.yml \
-    ${MANIFESTS_DIR} \
-    > ${MANIFESTS_DIR}/diego.yml
+    ${CF_MANIFESTS_DIR} \
+    > ${DIEGO_MANIFESTS_DIR}/diego.yml
 
     tmpdir=$(mktemp -d /tmp/diego-manifest.XXXXX)
 
     spiff merge \
       manifest-generation/config-from-cf.yml \
       manifest-generation/config-from-cf-internal.yml \
-      ${MANIFESTS_DIR}/cf.yml \
+      ${CF_MANIFESTS_DIR}/cf.yml \
       > ${tmpdir}/config-from-cf.yml
 
     spiff merge \
       manifest-generation/bosh-lite-stubs/diego-acceptance-tests.yml \
       manifest-generation/bosh-lite-stubs/iaas-settings.yml \
       ${tmpdir}/config-from-cf.yml \
-      > ${MANIFESTS_DIR}/diego-acceptance-tests.yml
+      > ${DIEGO_MANIFESTS_DIR}/diego-acceptance-tests.yml
 
     spiff merge \
       manifest-generation/bosh-lite-stubs/diego-smoke-tests.yml \
       manifest-generation/bosh-lite-stubs/iaas-settings.yml \
       ${tmpdir}/config-from-cf.yml \
-      > ${MANIFESTS_DIR}/diego-smoke-tests.yml
+      > ${DIEGO_MANIFESTS_DIR}/diego-smoke-tests.yml
 popd
 
-echo "CF Release Manifest at ${MANIFESTS_DIR}/cf.yml"
-echo "Diego Release Manifest at ${MANIFESTS_DIR}/diego.yml"
+echo "CF Release Manifest at ${CF_MANIFESTS_DIR}/cf.yml"
+echo "Diego Release Manifest at ${DIEGO_MANIFESTS_DIR}/diego.yml"
