@@ -103,13 +103,13 @@ as you switch in and out of the directory.
    following its
    [README](https://github.com/cloudfoundry/bosh-lite/blob/master/README.md).
 
-1. Download the latest Warden Trusty Go-Agent stemcell and upload it to BOSH-lite
+1. Download the latest Warden Trusty Go-Agent stemcell and upload it to BOSH-lite:
 
         bosh public stemcells
         bosh download public stemcell (name)
         bosh upload stemcell (downloaded filename)
 
-1. Checkout cf-release (develop branch) from git
+1. Check out cf-release (develop branch) from git:
 
         cd ~/workspace
         git clone https://github.com/cloudfoundry/cf-release.git
@@ -117,7 +117,7 @@ as you switch in and out of the directory.
         git checkout develop
         ./scripts/update
 
-1. Checkout diego-release (develop branch) from git
+1. Check out diego-release (develop branch) from git:
 
         cd ~/workspace
         git clone https://github.com/cloudfoundry-incubator/diego-release.git
@@ -125,32 +125,31 @@ as you switch in and out of the directory.
         git checkout develop
         ./scripts/update
 
-1. Install `spiff`, a tool for generating BOSH manifests. `spiff` is required
-   for running the scripts in later steps. For instructions on installing 
-   `spiff`, see its [README](https://github.com/cloudfoundry-incubator/spiff).
+1. Install `spiff` according to its [README](https://github.com/cloudfoundry-incubator/spiff).
+   `spiff` is a tool for generating BOSH manifests that is required in some of the scripts used below.
 
-1. Generate cf-release manifest
+1. Generate the CF manifest:
 
         cd ~/workspace/cf-release
         ./scripts/generate-bosh-lite-dev-manifest
 
-   **Or if you are running Windows cells** along side this deployment, instead generate cf-release manifest using:
+   **Or if you are running Windows cells** along side this deployment, instead generate the CF manifest as follows:
 
         cd ~/workspace/cf-release
         ./scripts/generate-bosh-lite-dev-manifest \
           ~/workspace/diego-release/stubs-for-cf-release/enable_diego_windows_in_cc.yml
 
-1. Generate diego-release manifests
+1. Generate the Diego manifests:
 
         cd ~/workspace/diego-release
         ./scripts/generate-bosh-lite-manifests
 
-1. Do the BOSH dance:
+1. Create, upload, and deploy the CF release:
 
         cd ~/workspace/cf-release
         bosh deployment bosh-lite/deployments/cf.yml
-        bosh create release --force
-        bosh -n upload release
+        bosh create release --force &&
+        bosh -n upload release &&
         bosh -n deploy
 
 1. Upload the latest garden-linux-release:
@@ -161,20 +160,23 @@ as you switch in and out of the directory.
 
         bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release
 
-1. Dance some more:
+1. Create, upload, and deploy the Diego release:
 
         cd ~/workspace/diego-release
         bosh deployment bosh-lite/deployments/diego.yml
         bosh create release --force
-        bosh -n upload release
-        bosh -n deploy
+        bosh -n upload release &&
+        bosh -n deploy &&
 
-1. Login to CF and enable Docker support
+1. Login to CF and enable Docker support:
 
         cf login -a api.bosh-lite.com -u admin -p admin --skip-ssl-validation &&
         cf enable-feature-flag diego_docker
 
-Now you can either run the DATs or deploy your own app.
+Now you are configured to push an app to the BOSH-Lite deployment, or to run the
+[Diego Smoke Tests](https://github.com/cloudfoundry-incubator/diego-smoke-tests)
+or the
+[Diego Acceptance Tests](https://github.com/cloudfoundry-incubator/diego-acceptance-tests).
 
 > If you wish to run all of the diego jobs on a single VM, you can replace the
 > `manifest-generation/bosh-lite-stubs/instance-count-overrides.yml` stub with
