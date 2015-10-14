@@ -164,9 +164,9 @@ as you switch in and out of the directory.
 
         cd ~/workspace/diego-release
         bosh deployment bosh-lite/deployments/diego.yml
-        bosh create release --force
+        bosh create release --force &&
         bosh -n upload release &&
-        bosh -n deploy &&
+        bosh -n deploy
 
 1. Login to CF and enable Docker support:
 
