@@ -36,6 +36,11 @@ $scripts_path/generate-deployment-manifest \
       manifest-generation/bosh-lite-stubs/iaas-settings.yml \
       ${tmpdir}/config-from-cf.yml \
       > ${DIEGO_MANIFESTS_DIR}/diego-smoke-tests.yml
+
+    $scripts_path/generate-benchmarks-manifest \
+      ${DIEGO_MANIFESTS_DIR}/diego.yml \
+      manifest-generation/benchmark-errand-stubs/default_bosh_lite_benchmark_properties.yml \
+      > ${DIEGO_MANIFESTS_DIR}/diego-benchmarks.yml
 popd
 
 echo "CF Release Manifest at ${CF_MANIFESTS_DIR}/cf.yml"

@@ -13,7 +13,7 @@ Copy one of the default_benchmark_properties files from manifest-generation/benc
 
     Ex:
     $0 ~/workspace/diego-release/bosh-lite-manifests/diego.yml \\
-       manifest-generation/benchmark-errand-stubs/default_benchmark_properties.yml \\
+       manifest-generation/benchmark-errand-stubs/default_bosh_lite_benchmark_properties.yml \\
        > ~/workspace/diego-release/bosh-lite-manifests/benchmarks.yml
 "
   exit 1

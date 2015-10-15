@@ -271,8 +271,8 @@ WARNING: Benchmark tests drop the database.
    off all components except the database for a cleaner test)
 
 1. Depending on whether you're deploying to AWS or bosh-lite, copy either 
-   `manifest-generation/benchmark-errand-stubs/defaut_aws_benchmark_properties.yml` or 
-   `manifest-generation/benchmark-errand-stubs/defaut_bosh_lite_benchmark_properties.yml` 
+   `manifest-generation/benchmark-errand-stubs/default_aws_benchmark_properties.yml` or 
+   `manifest-generation/benchmark-errand-stubs/default_bosh_lite_benchmark_properties.yml` 
    to your local deployments or stubs folder and fill it in.
 
 1. Generate a benchmark deployment manifest using 
