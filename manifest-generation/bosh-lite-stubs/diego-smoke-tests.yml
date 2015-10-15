@@ -41,9 +41,11 @@ properties:
     ssl:
       skip_cert_verify: true
     smoke_tests:
-      admin_password: admin
-      admin_user: admin
       api: api.bosh-lite.com
+      org: smoke-tests
+      password: admin
+      space: tests
+      user: admin
       apps_domain: bosh-lite.com
 
 # The keys below should not be included in the final stub

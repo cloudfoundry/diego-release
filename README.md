@@ -290,6 +290,25 @@ cf-release by running the lightweight
 or the more thorough
 [diego-acceptance-tests](https://github.com/cloudfoundry-incubator/diego-acceptance-tests).
 
+Note: If you are attempting to run these test suites on a bosh-lite environment, then you have the option
+to easily run these tests as errands provided you ran `scripts/generate-bosh-lite-manifests` previously.
+
+To run the diego-acceptance-tests you can deploy an errand release and run the tests:
+
+        bosh -n -d bosh-lite/deployments/diego-acceptance-tests.yml deploy
+        bosh -d bosh-lite/deployments/diego-acceptance-tests.yml run errand diego_acceptance_tests
+
+To run the diego-smoke-tests you can deploy an errand release and run the tests, but you must make sure
+that the proper smoke org already exists:
+
+        # create the org for bosh lite
+        cf login -a api.bosh-lite.com -u admin -p admin --skip-ssl-validation
+        cf create-org smoke-tests
+
+        # deploy the errand for smoke tests
+        bosh -n -d bosh-lite/deployments/diego-smoke-tests.yml deploy
+        bosh -d bosh-lite/deployments/diego-smoke-tests.yml run errand diego_smoke_tests
+
 
 ---
 ## Database Encryption
