@@ -44,16 +44,16 @@ ginkgo -- ${bbs_sec_flags} ${etcd_sec_flags} \
   -numTrials=<%= p("benchmark-bbs.num_trials") %> \
   -numPopulateWorkers=<%= p("benchmark-bbs.num_populate_workers") %> \
   -bbsAddress=${bbs_api_url} \
-  <% p("benchmark-bbs.encryption_keys").each do |encryption_key| %>
+  <% p("benchmark-bbs.encryption_keys").each do |encryption_key| %> \
     -encryptionKey='<%= "#{encryption_key["label"]}:#{encryption_key["passphrase"]}" %>' \
-  <% end %>
+  <% end %> \
   -etcdCluster=<%= p("benchmark-bbs.etcd.machines").map{|addr| "\"#{p("benchmark-bbs.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
-  <% if_p("benchmark-bbs.etcd.client_session_cache_size") do |value| %>
+  <% if_p("benchmark-bbs.etcd.client_session_cache_size") do |value| %> \
     -etcdSessionCacheSize=<%= value %> \
-  <% end %>
-  <% if_p("benchmark-bbs.etcd.max_idle_conns_per_host") do |value| %>
+  <% end %> \
+  <% if_p("benchmark-bbs.etcd.max_idle_conns_per_host") do |value| %> \
     -etcdMaxIdleConnsPerHost=<%= value %> \
-  <% end %>
+  <% end %> \
   -activeKeyLabel='<%= p("benchmark-bbs.active_key_label") %>' \
   -dataDogAPIKey=<%= p("benchmark-bbs.datadog_api_key") %> \
   -dataDogAppKey=<%= p("benchmark-bbs.datadog_app_key") %> \
