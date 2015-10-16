@@ -61,4 +61,5 @@ properties:
     datadog_api_key: (( merge || nil )) 
     datadog_app_key: (( merge || nil )) 
     datadog_metric_prefix: (( merge || nil )) 
+    log_level: (( merge || nil ))
 
