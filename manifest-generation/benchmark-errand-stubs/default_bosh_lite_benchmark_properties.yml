@@ -13,4 +13,5 @@ properties:
     num_trials: 10
     num_populate_workers: 50
     client_timeout: "30s"
-    log_level: "error" # We can't return more than 1MB of output from a bosh errand, so restrict this
+    log_level: "info"
+    log_file: "benchmark-bbs.log"
