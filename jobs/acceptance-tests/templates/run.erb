@@ -30,6 +30,8 @@ packagesToSkip+=<%= p("acceptance_tests.run_security_groups_tests") ? "" : "secu
 packagesToSkip+=<%= p("acceptance_tests.run_ssh_tests") ? "" : "ssh," %>
 [[ $packagesToSkip == *, ]] && packagesToSkip=${packagesToSkip%?}
 
+skips=<%= p("acceptance_tests.skip_regex") ? %Q[-skip="#{properties.acceptance_tests.skip_regex.join("|")}"] : "" %>
+
 tags=""
 tags+=<%= p("acceptance_tests.skip_internet_tests") ? "noInternet," : "" %>
 tags+=<%= p("acceptance_tests.skip_docker_tests") ? "noDocker," : "" %>
@@ -38,7 +40,7 @@ tags=${tags//,/ }
 
 nodes=<%= properties.acceptance_tests.nodes %>
 verbose=<%= properties.acceptance_tests.verbose ? "-v" : "" %>
-bin/test -randomizeAllSpecs $verbose -skipPackage=$packagesToSkip -tags="${tags}" -nodes=$nodes -keepGoing || EXITSTATUS=$?
+bin/test -randomizeAllSpecs $verbose -skipPackage=$packagesToSkip $skips -tags="${tags}" -nodes=$nodes -keepGoing || EXITSTATUS=$?
 
 echo "Acceptance Tests Complete; exit status: $EXITSTATUS"
 
