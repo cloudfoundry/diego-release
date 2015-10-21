@@ -14,6 +14,7 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 
 ### Additional Diego Resources
 
+  - The [Contribution Guidelines](CONTRIBUTING.md) describes the developer workflow for making changes to Diego.
   - The [Diego Design Notes](https://github.com/cloudfoundry-incubator/diego-design-notes) present an overview of Diego, and links to the various Diego components.
   - The [Migration Guide](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/migrating-to-diego.md) describes how developers and operators can manage a transition from the DEAs to Diego.
   - The [Docker Support Notes](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/docker-support.md) describe how Diego runs Docker-image-based apps in Cloud Foundry.
@@ -24,15 +25,8 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 [Lattice](http://lattice.cf) is an easy-to-deploy distribution of Diego designed for experimentation with the next-generation core of Cloud Foundry.
 
 ### Table of Contents
-1. [Developer Workflow](#developer-workflow)
-1. [Initial Setup](#initial-setup)
 1. [Deploying Diego to BOSH-Lite](#deploying-diego-to-bosh-lite)
 1. [Pushing to Diego](#pushing-to-diego)
-1. [Testing Diego](#testing-diego)
-  1. [Running Unit Tests](#running-unit-tests)
-  1. [Running Integration Tests](#running-integration-tests)
-  1. [Running Benchmark Tests](#running-benchmark-tests)
-  1. [Running Smoke Tests & DATs](#smokes-and-dats)
 1. [Database Encryption](#database-encryption)
   1. [Configuring Encryption Keys](#configuring-encryption-keys)
 1. [TLS Configuration](#tls-configuration)
@@ -40,64 +34,8 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   1. [Custom TLS Certificate Generation](#custom-tls-certificate-generation)
 1. [Recommended Instance Types](#recommended-instance-types)
 
-----
-## Developer Workflow
-
-When working on individual components of Diego, work out of the submodules under `src/`.
-See [Initial Setup](#initial-setup).
-
-Run the individual component unit tests as you work on them using
-[ginkgo](https://github.com/onsi/ginkgo). To see if *everything* still works, run
-`./scripts/run-unit-tests` in the root of the release.
-
-When you're ready to commit, run:
-
-    ./scripts/prepare-to-diego <story-id> <another-story-id>...
-
-This will synchronize submodules, update the BOSH package specs, run all unit
-tests, all integration tests, and make a commit, bringing up a commit edit
-dialogue.  The story IDs correspond to stories in our [Pivotal Tracker
-backlog](https://www.pivotaltracker.com/n/projects/1003146).  You should
-simultaneously also build the release and deploy it to a local
-[BOSH-Lite](https://github.com/cloudfoundry/bosh-lite) environment, and run the
-acceptance tests.  See [Running Smoke Tests & DATs](#smokes-and-dats).
-
-If you're introducing a new component (e.g. a new job/errand) or changing the main path
-for an existing component, make sure to update `./scripts/sync-package-specs` and
-`./scripts/sync-submodule-config`.
-
 ---
-##Initial Setup
-
-This BOSH release doubles as a `$GOPATH`. It will automatically be set up for
-you if you have [direnv](http://direnv.net) installed.
-
-    # fetch release repo
-    mkdir -p ~/workspace
-    cd ~/workspace
-
-    # fetch garden-linux-release
-    git clone https://github.com/cloudfoundry-incubator/garden-linux-release.git
-    (cd garden-linux-release/ && git checkout master && git submodule update --init --recursive)
-
-    git clone https://github.com/cloudfoundry-incubator/diego-release.git
-    cd diego-release/
-
-    # automate $GOPATH and $PATH setup
-    direnv allow
-
-    # switch to develop branch (not master!)
-    git checkout develop
-
-    # initialize and sync submodules
-    ./scripts/update
-
-If you do not wish to use direnv, you can simply `source` the `.envrc` file in the root
-of the release repo.  You may manually need to update your `$GOPATH` and `$PATH` variables
-as you switch in and out of the directory.
-
----
-## Deploying Diego to BOSH-Lite
+## <a name="deploy-bosh-lite"></a> Deploying Diego to BOSH-Lite
 
 1. Install and start [BOSH-Lite](https://github.com/cloudfoundry/bosh-lite),
    following its
@@ -205,110 +143,6 @@ or the
 1. Start your application:
 
         cf start my-app
-
-
----
-## Testing Diego
-
-### Running Unit Tests
-
-1. Install ginkgo
-
-        go install github.com/onsi/ginkgo/ginkgo
-
-2. Install gnatsd
-
-        go install github.com/apcera/gnatsd
-
-3. Install etcd
-
-        go install github.com/coreos/etcd
-
-4. Install consul
-
-        if uname -a | grep Darwin; then os=darwin; else os=linux; fi
-        curl -L -o $TMPDIR/consul-0.5.2.zip "https://dl.bintray.com/mitchellh/consul/0.5.2_${os}_amd64.zip"
-        unzip $TMPDIR/consul-0.5.2.zip -d ~/workspace/diego-release/bin
-        rm $TMPDIR/consul-0.5.2.zip
-
-5. Run the unit test script
-
-        ./scripts/run-unit-tests
-
-
-### Running Integration Tests
-
-1. Install and start [Concourse](http://concourse.ci), following its
-   [README](https://github.com/concourse/concourse/blob/master/README.md).
-
-1. Install the `fly` CLI:
-
-        # cd to the concourse release repo,
-        cd /path/to/concourse/repo
-
-        # switch to using the concourse $GOPATH and $PATH setup temporarily
-        direnv allow
-
-        # install the version of fly from Concourse's release
-        go install github.com/concourse/fly
-
-        # add the concourse release repo's bin/ directory to your $PATH
-        export PATH=$PWD/bin:$PATH
-
-1. Run [Inigo](https://github.com/cloudfoundry-incubator/inigo).
-
-        # cd back to the diego-release release repo
-        cd diego-release/
-
-        # run the tests
-        ./scripts/run-inigo
-
-### Running Benchmark Tests
-
-WARNING: Benchmark tests drop the database.
-
-1. Deploy diego-release to an environment (use instance-count-overrides to turn 
-   off all components except the database for a cleaner test)
-
-1. Depending on whether you're deploying to AWS or bosh-lite, copy either 
-   `manifest-generation/benchmark-errand-stubs/default_aws_benchmark_properties.yml` or 
-   `manifest-generation/benchmark-errand-stubs/default_bosh_lite_benchmark_properties.yml` 
-   to your local deployments or stubs folder and fill it in.
-
-1. Generate a benchmark deployment manifest using 
-   `./scripts/generate-benchmarks-manifest /path/to/diego.yml /path/to/benchmark-properties.yml > benchmark.yml`
-
-1. Deploy and run the tests using 
-   `bosh -d benchmark.yml -n deploy && bosh -d benchmark.yml -n run errand benchmark-bbs`
-
-
-###<a name="smokes-and-dats"></a> Running Smoke Tests & DATs
-
-You can test that your diego-release deployment is working and integrating with
-cf-release by running the lightweight
-[diego-smoke-tests](https://github.com/cloudfoundry-incubator/diego-smoke-tests)
-or the more thorough
-[diego-acceptance-tests](https://github.com/cloudfoundry-incubator/diego-acceptance-tests).
-
-Note: If you are attempting to run these test suites on a bosh-lite environment, then you have the option
-to easily run these tests as errands provided you ran `scripts/generate-bosh-lite-manifests` previously.
-
-To run the diego-acceptance-tests you can deploy an errand release and run the tests:
-
-        bosh -n -d bosh-lite/deployments/diego-acceptance-tests.yml deploy
-        bosh -d bosh-lite/deployments/diego-acceptance-tests.yml run errand diego_acceptance_tests
-
-To run the diego-smoke-tests you can deploy an errand release and run the tests, but you must make sure
-that the proper smoke org already exists:
-
-        # create the org for bosh lite
-        cf login -a api.bosh-lite.com -u admin -p admin --skip-ssl-validation
-        cf create-org smoke-tests
-
-        # deploy the errand for smoke tests
-        bosh -n -d bosh-lite/deployments/diego-smoke-tests.yml deploy
-        bosh -d bosh-lite/deployments/diego-smoke-tests.yml run errand diego_smoke_tests
-
 
 ---
 ## Database Encryption
