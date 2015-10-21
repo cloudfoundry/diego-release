@@ -69,7 +69,3 @@ ginkgo -- ${bbs_sec_flags} ${etcd_sec_flags} \
     -logFilename=$LOG_DIR/<%= value %> \
   <% end %> \
   1> >(tee -a $LOG_DIR/benchmark-bbs.stdout.log)
-
-echo "BBS Benchmarks Complete; exit status: $EXITSTATUS"
-
-exit $EXITSTATUS
