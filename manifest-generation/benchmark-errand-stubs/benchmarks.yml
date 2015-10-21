@@ -9,17 +9,15 @@ releases:
 - name: cf
   version: latest
 
-diego_z1_network_cloud_properties: (( merge ))
-
-networks: 
-- name: benchmarks1
-  type: dynamic 
-  cloud_properties: (( diego_z1_network_cloud_properties ))
+networks:
+- name: diego-benchmarks
+  type: manual
+  subnets: (( iaas_settings.subnet_configs.diego-benchmarks.subnets ))
 
 resource_pools:
 
 compilation:
-  network: benchmarks1 
+  network: diego-benchmarks 
   reuse_compilation_vms: true
   workers: 2
   cloud_properties: (( resource_pools.[0].cloud_properties ))
@@ -40,7 +38,7 @@ jobs:
   lifecycle: errand
   instances: 1
   networks:
-    - name: benchmarks1 
+    - name: diego-benchmarks
   resource_pool: benchmarks_z1 
 
 properties:
@@ -64,3 +62,4 @@ properties:
     log_level: (( merge || nil ))
     log_file: (( merge || nil ))
 
+iaas_settings: (( merge ))

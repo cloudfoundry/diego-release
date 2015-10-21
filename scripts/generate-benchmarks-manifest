@@ -9,11 +9,12 @@ Benchmark Errand Manifest Generator
 Copy one of the default_benchmark_properties files from manifest-generation/benchmark-errand-stubs and fill it in with your aws info and datadog keys if desired.
 
     Usage:
-    $0 /path/to/diego.yml /path/to/benchmark-properties.yml
+    $0 /path/to/diego.yml /path/to/benchmark-properties.yml /path/to/iaas_settings.yml
 
     Ex:
     $0 ~/workspace/diego-release/bosh-lite-manifests/diego.yml \\
        manifest-generation/benchmark-errand-stubs/default_bosh_lite_benchmark_properties.yml \\
+       manifest-generation/bosh-lite-stubs/iaas-settings.yml \\
        > ~/workspace/diego-release/bosh-lite-manifests/benchmarks.yml
 "
   exit 1
@@ -24,6 +25,8 @@ diego_properties=$(dirname $0)/../manifest-generation/benchmark-errand-stubs/die
 tmpdir=$(mktemp -d /tmp/benchmark-manifest.XXXXX)
 diego_yml=$1
 benchmark_properties=$2
+iaas_settings=$3
+
 
 if [ ! -f "${diego_yml}" ]; then
   >&2 echo "Error: Diego deployment manifest '${diego_yml}' is not a regular file"
@@ -35,5 +38,10 @@ if [ ! -f "${benchmark_properties}" ]; then
   usage
 fi
 
+if [ ! -f "${iaas_settings}" ]; then
+  >&2 echo "Error: IaaS Settings stub '${iaas_settings}' is not a regular file"
+  usage
+fi
+
 spiff merge ${diego_properties} ${diego_yml} > ${tmpdir}/diego_properties.yml 
-spiff merge ${benchmark_stub} ${tmpdir}/diego_properties.yml ${benchmark_properties}
+spiff merge ${benchmark_stub} ${tmpdir}/diego_properties.yml ${benchmark_properties} ${iaas_settings}

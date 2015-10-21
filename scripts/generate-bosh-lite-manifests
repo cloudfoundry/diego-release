@@ -40,6 +40,7 @@ $scripts_path/generate-deployment-manifest \
     $scripts_path/generate-benchmarks-manifest \
       ${DIEGO_MANIFESTS_DIR}/diego.yml \
       manifest-generation/benchmark-errand-stubs/default_bosh_lite_benchmark_properties.yml \
+      manifest-generation/bosh-lite-stubs/iaas-settings.yml \
       > ${DIEGO_MANIFESTS_DIR}/diego-benchmarks.yml
 popd
 
