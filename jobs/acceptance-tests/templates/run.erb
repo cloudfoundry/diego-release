@@ -30,7 +30,7 @@ packagesToSkip+=<%= p("acceptance_tests.run_security_groups_tests") ? "" : "secu
 packagesToSkip+=<%= p("acceptance_tests.run_ssh_tests") ? "" : "ssh," %>
 [[ $packagesToSkip == *, ]] && packagesToSkip=${packagesToSkip%?}
 
-skips=<%= p("acceptance_tests.skip_regex") ? %Q[-skip="#{properties.acceptance_tests.skip_regex.join("|")}"] : "" %>
+skips=<%= p("acceptance_tests.skip_regex") ? %Q[-skip="#{p("acceptance_tests.skip_regex")}"] : "" %>
 
 tags=""
 tags+=<%= p("acceptance_tests.skip_internet_tests") ? "noInternet," : "" %>
