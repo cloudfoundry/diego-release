@@ -30,6 +30,8 @@ case $1 in
     mkdir -p $LOG_DIR
     chown -R vcap:vcap $LOG_DIR
 
+    export GOMAXPROCS=$(nproc)
+
     echo $$ > $PIDFILE
 
     # Allowed number of open file descriptors
