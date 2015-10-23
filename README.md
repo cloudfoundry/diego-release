@@ -33,6 +33,7 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   1. [Generating TLS Certificates](#generating-tls-certificates)
   1. [Custom TLS Certificate Generation](#custom-tls-certificate-generation)
 1. [Recommended Instance Types](#recommended-instance-types)
+1. [Dicovering CF, Garden, and ETCD Compatibility](#compatibility)
 
 ---
 ## <a name="deploy-bosh-lite"></a> Deploying Diego to BOSH-Lite
@@ -375,3 +376,49 @@ ephemeral_disk:
   size: 174_080
   type: gp2
 ```
+
+---
+## Compatibility
+
+Diego releases are tested against Cloud Foundry, Garden, and ETCD. Compatible versions 
+of Garden and ETCD are listed with Diego on the [Github releases page](/cloudfoundry-incubator/diego-release/releases).
+
+### Checking out a release of Diego
+
+The Diego git repository is tagged with every release. To move the git repository 
+to match a release, do the following: 
+
+```bash
+cd diego-release/
+#checking out release v0.1437.0
+git checkout v0.1437.0
+./scripts/update
+git clean -ffd
+```
+
+### From a Diego Release
+Look up the release number for your Diego Release in `diego-cf-compatibility/compatibility-v2.csv`.  
+There will be a set of rows with corresponing CF release candidate SHAs in the `CF_RELEASE_COMMIT_SHA` 
+column. However, not all release candidates become releases. To determine which 
+CF Release to use, grep for each SHA in the `commit_hash` line of a release in 
+`cf-release/releases`. Sorry.
+
+Example: Let's say you want to deploy Diego Release `0.1437.0`. Finding `0.1437.0` 
+in `diego-cf-compatibility/compatibility-v2.csv` reveals the CF release SHAs `74a48acb`, 
+`53014242`, `060a1000`, etc.  Looking in cf-release, `grep 53014242 releases/*.yml` 
+reveals `releases/cf-222.yml` contains the commit hash. So CF Release 222 is safe to deploy.
+
+### From a CF Release
+On the CF Release [Github Releases](/cloudfoundry/cf-release/releases) page, recommended 
+versions of Diego, Garden, and ETCD are listed with each CF Release.  This is the 
+easiest way to correlate releases.
+
+To use the compatibility table, look up the the release candidate SHA for your CF 
+release. This is listed as the `commit_hash` in the release yaml file. Find the 
+SHA in the diego-cf-compatibility/compatibility-v2.csv to look up tested versions 
+of Diego Release, Garden, and ETCD. 
+
+Example: Let's say you want to deploy CF Release `222`.  Looking in `cf-release/releases/diego-222.yml` 
+you find the line `commit_hash: 53014242`. Finding `53014242` in `diego-cf-compatibility/compatibility-v2.csv` 
+reveals Diego 0.1437.0, Garden 0.308.0, and ETCD 16 are tested.
+
