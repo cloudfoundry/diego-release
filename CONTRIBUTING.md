@@ -25,8 +25,7 @@ Follow these steps to make a contribution to any of our open source repositories
   git config --global user.email "your_email@example.com"
   ```
 
-1. All contributions should be sent using GitHub "Pull Requests", which is the only way the project will accept them
-  and creates a nice audit trail and structured approach.
+1. All contributions must be sent using GitHub pull requests as they create a nice audit trail and structured approach.
 
 The originating github user has to either have a github id on-file with the list of approved users that have signed
 the CLA or they can be a public "member" of a GitHub organization for a group that has signed the corporate CLA.
@@ -56,16 +55,22 @@ This BOSH release doubles as a `$GOPATH`. It will automatically be set up for yo
     # clone cf-release
     git clone https://github.com/cloudfoundry/cf-release.git
     pushd cf-release/
-    git checkout develop
+
+    # if you're making changes to diego-release,
+    git checkout release-candidate
+
+    ## or, if you're making changes to cf-release,
+    # git checkout develop
+
     ./scripts/update
     popd
-    
+
     # clone garden-linux-release
     git clone https://github.com/cloudfoundry-incubator/garden-linux-release.git
     pushd garden-linux-release
     git checkout master && git submodule update --init --recursive
     popd
-    
+
     # clone diego-release
     git clone https://github.com/cloudfoundry-incubator/diego-release.git
     pushd diego-release/
@@ -73,8 +78,11 @@ This BOSH release doubles as a `$GOPATH`. It will automatically be set up for yo
     # automate $GOPATH and $PATH setup
     direnv allow
 
-    # switch to develop branch (not master!)
+    # switch to develop branch to make changes to diego-release,
     git checkout develop
+
+    ## or, if you're only making changes to cf-release,
+    # git checkout master
 
     # initialize and sync submodules
     ./scripts/update
@@ -101,6 +109,86 @@ To be able to run unit tests, you'll also need to install the following binaries
 
 To be able to run the integration test suite ("inigo"), you'll need to have a local [Concourse](http://concourse.ci) VM. Follow the instructions on the Concourse [README](https://github.com/concourse/concourse/blob/master/README.md) to set it up locally using [vagrant](https://www.vagrantup.com/). Download the fly CLI as instructed and move it somewhere visible to your `$PATH`.
 
+## <a name="deploy-bosh-lite"></a> Deploying Diego to BOSH-Lite
+
+1. Install and start [BOSH-Lite](https://github.com/cloudfoundry/bosh-lite),
+   following its
+   [README](https://github.com/cloudfoundry/bosh-lite/blob/master/README.md).
+
+1. Download the latest Warden Trusty Go-Agent stemcell and upload it to BOSH-lite:
+
+        bosh public stemcells
+        bosh download public stemcell (name)
+        bosh upload stemcell (downloaded filename)
+
+1. Check out cf-release (runtime-passed branch) from git:
+
+        cd ~/workspace
+        git clone https://github.com/cloudfoundry/cf-release.git
+        cd ~/workspace/cf-release
+        git checkout runtime-passed
+        ./scripts/update
+
+1. Check out diego-release (develop branch) from git:
+
+        cd ~/workspace
+        git clone https://github.com/cloudfoundry-incubator/diego-release.git
+        cd ~/workspace/diego-release
+        git checkout develop
+        ./scripts/update
+
+1. Install `spiff` according to its [README](https://github.com/cloudfoundry-incubator/spiff).
+   `spiff` is a tool for generating BOSH manifests that is required in some of the scripts used below.
+
+1. Generate the CF manifest:
+
+        cd ~/workspace/cf-release
+        ./scripts/generate-bosh-lite-dev-manifest
+
+   **Or if you are running Windows cells** along side this deployment, instead generate the CF manifest as follows:
+
+        cd ~/workspace/cf-release
+        ./scripts/generate-bosh-lite-dev-manifest \
+          ~/workspace/diego-release/stubs-for-cf-release/enable_diego_windows_in_cc.yml
+
+1. Generate the Diego manifests:
+
+        cd ~/workspace/diego-release
+        ./scripts/generate-bosh-lite-manifests
+
+1. Create, upload, and deploy the CF release:
+
+        cd ~/workspace/cf-release
+        bosh deployment bosh-lite/deployments/cf.yml
+        bosh create release --force &&
+        bosh -n upload release &&
+        bosh -n deploy
+
+1. Upload the latest garden-linux-release:
+
+        bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
+
+1. Upload the latest etcd-release:
+
+        bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release
+
+1. Create, upload, and deploy the Diego release:
+
+        cd ~/workspace/diego-release
+        bosh deployment bosh-lite/deployments/diego.yml
+        bosh create release --force &&
+        bosh -n upload release &&
+        bosh -n deploy
+
+1. Login to CF and enable Docker support:
+
+        cf login -a api.bosh-lite.com -u admin -p admin --skip-ssl-validation &&
+        cf enable-feature-flag diego_docker
+
+Now you are configured to push an app to the BOSH-Lite deployment, or to run the
+[Diego Smoke Tests](https://github.com/cloudfoundry-incubator/diego-smoke-tests)
+or the
+[Diego Acceptance Tests](https://github.com/cloudfoundry-incubator/diego-acceptance-tests).
 
 ----
 ## Developer Workflow
@@ -158,22 +246,22 @@ Running the benchmark tests isn't usually needed for most changes. However, for 
 
 **WARNING**: Benchmark tests drop the database.
 
-1. Deploy diego-release to an environment (use instance-count-overrides to turn 
+1. Deploy diego-release to an environment (use instance-count-overrides to turn
    off all components except the database for a cleaner test)
 
-1. Depending on whether you're deploying to AWS or bosh-lite, copy either 
-   `manifest-generation/benchmark-errand-stubs/default_aws_benchmark_properties.yml` or 
-   `manifest-generation/benchmark-errand-stubs/default_bosh_lite_benchmark_properties.yml` 
+1. Depending on whether you're deploying to AWS or bosh-lite, copy either
+   `manifest-generation/benchmark-errand-stubs/default_aws_benchmark_properties.yml` or
+   `manifest-generation/benchmark-errand-stubs/default_bosh_lite_benchmark_properties.yml`
    to your local deployments or stubs folder and fill it in.
 
 1. Generate a benchmark deployment manifest using:
- 
+
         ./scripts/generate-benchmarks-manifest \
           /path/to/diego.yml \
           /path/to/benchmark-properties.yml \
           > benchmark.yml
 
 1. Deploy and run the tests using:
- 
+
         bosh -d benchmark.yml -n deploy && bosh -d benchmark.yml -n run errand benchmark-bbs
 
