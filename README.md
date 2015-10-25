@@ -55,22 +55,27 @@ git checkout v0.1437.0
 git clean -ffd
 ```
 
-### From a CF Release
-On the CF Release [Github Releases](/cloudfoundry/cf-release/releases) page,
+### From a final release of CF
+
+On the CF Release [GitHub Releases](/cloudfoundry/cf-release/releases) page,
 recommended versions of Diego, Garden, and ETCD are listed with each CF Release.
 This is the easiest way to correlate releases.
 
-Alternatively, you can use the diego compatibility table. First look up the the
-release candidate SHA for your CF release. This is listed as the `commit_hash`
-in the release yaml file. Find the SHA in the [diego-cf-compatibility/compatibility-v2.csv](https://github.com/cloudfoundry-incubator/diego-cf-compatibility/blob/master/compatibility-v2.csv)
+Alternatively, you can use records of CF and Diego compatibility captured from
+automated testing. First look up the release candidate SHA for your CF release.
+This is listed as the `commit_hash` in the release yaml file. Find the SHA in
+[diego-cf-compatibility/compatibility-v2.csv](https://github.com/cloudfoundry-incubator/diego-cf-compatibility/blob/master/compatibility-v2.csv)
 to look up tested versions of Diego Release, Garden, and ETCD.
 
-Example: Let's say you want to deploy CF Release `222`.
-Looking in `cf-release/releases/diego-222.yml` you find the line `commit_hash: 53014242`.
+Example: Let's say you want to deploy Diego alongside CF final release `222`. The release file
+[`releases/cf-222.yml`](https://github.com/cloudfoundry/cf-release/blob/master/releases/cf-222.yml)
+in the cf-release repository contains the line `commit_hash: 53014242`.
 Finding `53014242` in `diego-cf-compatibility/compatibility-v2.csv` reveals Diego
-0.1437.0, Garden 0.308.0, and ETCD 16 are tested.
+0.1437.0, Garden 0.308.0, and ETCD 16 have been verified to be compatible.
+
 
 ### From a specific CF Release commit SHA
+
 Not every cf-release commit will appear in the diego-cf compatibility table,
 but many will work with some version of Diego.
 
@@ -138,9 +143,13 @@ and then look up that commit's SHA in the diego-cf compatibility table.
 
         bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
 
+If you wish to upload a specific version of garden-linux-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-linux-release).
+
 1. Upload the latest etcd-release:
 
         bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release
+
+If you wish to upload a specific version of etcd-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/etcd-release).
 
 1. Create, upload, and deploy the Diego release:
 
