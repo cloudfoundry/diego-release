@@ -40,7 +40,7 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 ## <a name="compatibility"></a>Release Compatibility
 
 Diego releases are tested against Cloud Foundry, Garden, and ETCD. Compatible versions
-of Garden and ETCD are listed with Diego on the [Github releases page](/cloudfoundry-incubator/diego-release/releases).
+of Garden and ETCD are listed with Diego on the [Github releases page](https://github.com/cloudfoundry-incubator/diego-release/releases).
 
 ### Checking out a release of Diego
 
@@ -57,7 +57,7 @@ git clean -ffd
 
 ### From a final release of CF
 
-On the CF Release [GitHub Releases](/cloudfoundry/cf-release/releases) page,
+On the CF Release [GitHub Releases](https://github.com/cloudfoundry-incubator/diego-release/releases) page,
 recommended versions of Diego, Garden, and ETCD are listed with each CF Release.
 This is the easiest way to correlate releases.
 
