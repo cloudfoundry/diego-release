@@ -15,6 +15,7 @@ RUN \
     libyaml-dev \
     openssl/trusty \
     zip \
+    python-pip \
     zlib1g-dev && \
   apt-get clean
 
@@ -37,6 +38,15 @@ RUN \
     bundler \
     bosh_cli \
     debugger-ruby_core_source
+
+RUN \
+  bash -l -c "pip install awscli==1.6.6"
+
+RUN \
+  wget https://dl.bintray.com/mitchellh/vagrant/vagrant_1.6.5_x86_64.deb -P /tmp && \
+  dpkg --install /tmp/vagrant_1.6.5_x86_64.deb && \
+  vagrant plugin install vagrant-aws && \
+  rm -rf /tmp/*
 
 RUN \
   curl -sL http://go-cli.s3-website-us-east-1.amazonaws.com/releases/latest/cf-linux-amd64.tgz | tar zxf - -C /usr/bin
