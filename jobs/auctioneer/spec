@@ -22,6 +22,9 @@ properties:
   diego.auctioneer.log_level:
     description: "Log level"
     default: "info"
+  diego.auctioneer.cell_state_timeout:
+    description: "Timeout applied to HTTP requests to the Cell State endpoint."
+    default: "1s"
 
   diego.auctioneer.bbs.api_location:
     description: "Address to the BBS Server"

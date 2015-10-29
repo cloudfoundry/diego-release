@@ -592,6 +592,7 @@ properties:
         require_ssl: (( property_overrides.bbs.require_ssl || nil ))
         client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
+      cell_state_timeout: (( property_overrides.auctioneer.cell_state_timeout || nil ))
       log_level: (( property_overrides.auctioneer.log_level || nil ))
     bbs:
       active_key_label: (( property_overrides.bbs.active_key_label ))
