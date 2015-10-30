@@ -36,7 +36,7 @@ RUN \
 RUN \
   gem install --no-rdoc --no-ri \
     bundler \
-    bosh_cli \
+    bosh_cli:1.2862.0 \
     debugger-ruby_core_source
 
 RUN \
