@@ -55,6 +55,9 @@ properties:
   diego.executor.disk_capacity_mb:
     description: "the container disk capacity the executor should manage.  this should not be greater than the actual disk quota on the VM"
     default: "auto"
+  diego.executor.max_concurrent_downloads:
+    description: "the max concurrent download steps that can be active"
+    default: 5
   diego.executor.container_max_cpu_shares:
     description: "the maximum number of cpu shares for a container."
     default: 1024

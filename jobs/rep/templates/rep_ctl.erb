@@ -107,6 +107,7 @@ case $1 in
       -readWorkPoolSize=<%= p("diego.executor.read_work_pool_size") %> \
       -metricsWorkPoolSize=<%= p("diego.executor.metrics_work_pool_size") %> \
       -healthCheckWorkPoolSize=<%= p("diego.executor.healthcheck_work_pool_size") %> \
+      -maxConcurrentDownloads=<%= p("diego.executor.max_concurrent_downloads") %> \
       -tempDir=$TMP_DIR \
       -logLevel=<%= p("diego.rep.log_level") %> \
       2>> $LOG_DIR/rep.stderr.log \
