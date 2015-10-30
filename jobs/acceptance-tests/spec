@@ -20,7 +20,7 @@ properties:
     default: 4
     description: The number of parallel test executors to spawn. The larger the number the higher the stress on the system.
   acceptance_tests.run_security_groups_tests:
-    default: true
+    default: false
     description: Configures whether or not to run the security group acceptance tests.
   acceptance_tests.run_ssh_tests:
     default: true
