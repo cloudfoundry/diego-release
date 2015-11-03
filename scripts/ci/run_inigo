@@ -48,23 +48,30 @@ go install github.com/onsi/ginkgo/ginkgo
 
 export GARDEN_ROOTFS=/tmp/opt/inigo/rootfs
 mkdir -p $GARDEN_ROOTFS
-# mount -t tmpfs tmpfs $GARDEN_ROOTFS
+mount -t tmpfs tmpfs $GARDEN_ROOTFS
 cp -rp /opt/inigo/rootfs/* $GARDEN_ROOTFS
 
 # used for routing to apps; same logic that Garden uses.
 export EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\s/\1/;tx;d;:x')
 
 # GARDEN_GRAPH_PATH is the root of the docker image filesystem
-export GARDEN_GRAPH_PATH=/tmp/btrfs/garden
+export GARDEN_GRAPH_PATH=/tmp/garden/graph
 mkdir -p $GARDEN_GRAPH_PATH
+mount -t tmpfs tmpfs $GARDEN_GRAPH_PATH
+
+# workaround until Concourse's garden sets this up for us
+if ! grep -qs '/sys' /proc/mounts; then
+  mount -t sysfs sysfs /sys
+fi
+
+source $GARDEN_LINUX_GOPATH/ci/scripts/aufs
+permit_device_control
+create_loop_devices 256
 
 nodes_flag=""
 if [ "$GINKGO_PARALLEL" = "true" ]; then
   nodes_flag="-nodes=4"
 fi
-
-# workaround until Concourse's garden sets this up for us
-mountpoint -q /sys || mount -t sysfs sysfs /sys
 
 pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
   if [ "$GINKGO_PARALLEL" = "true" ]; then
