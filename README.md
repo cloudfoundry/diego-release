@@ -143,13 +143,13 @@ and then look up that commit's SHA in the diego-cf compatibility table.
 
         bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
 
-If you wish to upload a specific version of garden-linux-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-linux-release).
+  If you wish to upload a specific version of garden-linux-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-linux-release).
 
 1. Upload the latest etcd-release:
 
         bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release
 
-If you wish to upload a specific version of etcd-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/etcd-release).
+  If you wish to upload a specific version of etcd-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/etcd-release).
 
 1. Create, upload, and deploy the Diego release:
 
