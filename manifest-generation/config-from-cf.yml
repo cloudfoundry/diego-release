@@ -34,3 +34,4 @@ config_from_cf:
       ssh-proxy:
         secret: (( merge ))
     url: (( merge || nil ))
+  cf_releases: (( merge ))

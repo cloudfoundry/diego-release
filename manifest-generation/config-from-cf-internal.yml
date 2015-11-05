@@ -34,6 +34,7 @@ config_from_cf:
     clients:
       ssh-proxy:
         secret: (( properties.uaa.clients.ssh-proxy.secret ))
+  cf_releases: (( releases ))
 
 # The keys below should not be included in the final stub
 director_uuid: (( merge ))
@@ -73,3 +74,4 @@ properties:
       ssh-proxy:
         secret: (( merge || nil ))
     url: (( merge || nil ))
+releases: (( merge ))

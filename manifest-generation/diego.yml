@@ -1,6 +1,6 @@
 name: (( config_from_cf.cf_deployment_name "-diego" ))
 
-releases: (( base_releases additional_jobs.releases ))
+releases: (( base_releases additional_jobs.releases config_from_cf.cf_releases ))
 
 director_uuid: (( config_from_cf.cf_director_uuid ))
 
@@ -760,8 +760,6 @@ additional_jobs:
   route_emitter: (( merge || [] ))
 base_releases:
   - name: diego
-    version: latest
-  - name: cf
     version: latest
   - name: garden-linux
     version: latest
