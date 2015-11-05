@@ -24,6 +24,15 @@ source /var/vcap/packages/pid_utils/pid_utils.sh
   bbs_api_url="<%= "http://" + p("diego.ssh_proxy.bbs.api_location") %>"
 <% end %>
 
+<% if p("diego.ssh_proxy.enable_diego_auth") %>
+  diego_ssh_flags="\
+   -enableDiegoAuth=true \
+   -diegoCredentials=<%= p("diego.ssh_proxy.diego_credentials") %>"
+<% else %>
+  diego_ssh_flags="\
+   -enableDiegoAuth=false"
+ <% end %>
+
 case $1 in
 
   start)
@@ -38,6 +47,7 @@ case $1 in
     echo $$ > $PIDFILE
 
     exec chpst -u vcap:vcap /var/vcap/packages/ssh_proxy/bin/ssh-proxy ${bbs_sec_flags} \
+      ${diego_ssh_flags} \
       -address=<%= p("diego.ssh_proxy.listen_addr") %> \
       -hostKey="$HOST_KEY" \
       -bbsAddress=${bbs_api_url} \
@@ -55,8 +65,6 @@ case $1 in
       -debugAddr=<%= p("diego.ssh_proxy.debug_addr") %> \
       -logLevel=<%= p("diego.ssh_proxy.log_level") %> \
       -enableCFAuth=<%= p("diego.ssh_proxy.enable_cf_auth") %> \
-      -enableDiegoAuth=<%= p("diego.ssh_proxy.enable_diego_auth") %> \
-      -diegoCredentials=<%= p("diego.ssh_proxy.diego_credentials") %> \
       2> >(tee -a $LOG_DIR/ssh_proxy.stderr.log | logger -p user.error -t vcap.ssh-proxy) \
       1> >(tee -a $LOG_DIR/ssh_proxy.stdout.log | logger -p user.info -t vcap.ssh-proxy)
 

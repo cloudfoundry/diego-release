@@ -693,7 +693,7 @@ properties:
       enable_diego_auth: (( property_overrides.ssh_proxy.enable_diego_auth || false ))
       uaa_secret: (( config_from_cf.uaa.clients.ssh-proxy.secret || nil ))
       uaa_token_url: (( config_from_cf.uaa.url "/oauth/token" || nil ))
-      diego_credentials: (( property_overrides.ssh_proxy.diego_credentials || "" ))
+      diego_credentials: (( property_overrides.ssh_proxy.diego_credentials || nil ))
     stager:
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
