@@ -31,15 +31,6 @@ if [ "$#" -eq 6 ]; then
   iaas_settings=$4
   additional_jobs=$5
   deployments=$6
-elif [ "$#" -eq 7 ]; then
-  >&2 echo "DEPRECATED usage. director_uuid.yml should no longer be provided."
-  director_uuid=$1
-  property_overrides=$2
-  instance_counts=$3
-  persistent_disk=$4
-  iaas_settings=$5
-  additional_jobs=$6
-  deployments=$7
 else
   >&2 echo "Incorrect number of arguments"
   usage
@@ -93,13 +84,6 @@ spiff merge \
   ${tmpdir}/config-from-cf.yml \
   > ${tmpdir}/diego.yml
 
-if [ -n "${director_uuid}" ]; then
-  spiff merge \
-    ${manifest_generation}/misc-templates/bosh.yml \
-    ${director_uuid} \
-    ${tmpdir}/diego.yml
-else
-  spiff merge \
-    ${manifest_generation}/misc-templates/bosh.yml \
-    ${tmpdir}/diego.yml
-fi
+spiff merge \
+  ${manifest_generation}/misc-templates/bosh.yml \
+  ${tmpdir}/diego.yml
