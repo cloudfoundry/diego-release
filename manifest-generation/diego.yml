@@ -758,13 +758,14 @@ additional_jobs:
   database: (( merge || [] ))
   releases: (( merge || [] ))
   route_emitter: (( merge || [] ))
+release_versions: (( merge || nil ))
 base_releases:
   - name: diego
-    version: latest
+    version: (( release_versions.diego || "latest" ))
   - name: garden-linux
-    version: latest
+    version: (( release_versions.garden-linux || "latest" ))
   - name: etcd
-    version: latest
+    version: (( release_versions.etcd || "latest" ))
 base_job_templates:
   brain:
     - name: consul_agent

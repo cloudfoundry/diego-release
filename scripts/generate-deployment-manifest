@@ -11,6 +11,7 @@ function usage() {
        /path/to/stub/persistent-disk-overrides.yml \\
        /path/to/stub/iaas-settings.yml \\
        /path/to/stub/additional-jobs.yml \\
+       /path/to/stub/release-versions.yml \\
        /path/to/deployment-manifests
 
     Ex:
@@ -19,18 +20,20 @@ function usage() {
        manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \\
        manifest-generation/bosh-lite-stubs/iaas-settings.yml \\
        manifest-generation/bosh-lite-stubs/additional-jobs.yml \\
+       manifest-generation/bosh-lite-stubs/release-versions.yml \\
        ~/deployments/bosh-lite
 "
   exit 1
 }
 
-if [ "$#" -eq 6 ]; then
+if [ "$#" -eq 7 ]; then
   property_overrides=$1
   instance_counts=$2
   persistent_disk=$3
   iaas_settings=$4
   additional_jobs=$5
-  deployments=$6
+  release_versions=$6
+  deployments=$7
 else
   >&2 echo "Incorrect number of arguments"
   usage
@@ -61,6 +64,11 @@ if [ ! -f "${additional_jobs}" ]; then
   usage
 fi
 
+if [ ! -f "${release_versions}" ]; then
+  >&2 echo "Release versions stub '${release_versions}' is not a regular file"
+  usage
+fi
+
 if [ ! -d "${deployments}" ]; then
   >&2 echo "Deployments directory '${deployments}' is not a directory"
   usage
@@ -81,6 +89,7 @@ spiff merge \
   ${persistent_disk} \
   ${iaas_settings} \
   ${additional_jobs} \
+  ${release_versions} \
   ${tmpdir}/config-from-cf.yml \
   > ${tmpdir}/diego.yml
 

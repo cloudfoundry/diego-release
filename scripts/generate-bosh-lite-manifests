@@ -14,6 +14,7 @@ $scripts_path/generate-deployment-manifest \
     manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \
     manifest-generation/bosh-lite-stubs/iaas-settings.yml \
     manifest-generation/bosh-lite-stubs/additional-jobs.yml \
+    manifest-generation/bosh-lite-stubs/release-versions.yml \
     ${CF_MANIFESTS_DIR} \
     > ${DIEGO_MANIFESTS_DIR}/diego.yml
 
