@@ -21,8 +21,14 @@ config_from_cf:
   loggregator:
     etcd:
       machines: (( properties.loggregator.etcd.machines ))
-  loggregator_endpoint:
-    shared_secret: (( properties.loggregator_endpoint.shared_secret ))
+    tls:
+      ca: (( properties.loggregator.tls.ca ))
+  metron_agent:
+    shared_secret: (( properties.metron_agent.shared_secret ))
+    preferred_protocol: (( properties.metron_agent.preferred_protocol ))
+    tls_client:
+      cert: (( properties.metron_agent.tls_client.cert ))
+      key: (( properties.metron_agent.tls_client.key ))
   nats:
     user: (( properties.nats.user ))
     password: (( properties.nats.password ))
@@ -62,8 +68,14 @@ properties:
   loggregator:
     etcd:
       machines: (( merge ))
-  loggregator_endpoint:
+    tls:
+      ca: (( merge ))
+  metron_agent:
     shared_secret: (( merge ))
+    preferred_protocol: (( merge ))
+    tls_client:
+      cert: (( merge ))
+      key: (( merge ))
   nats:
     user: (( merge ))
     password: (( merge ))

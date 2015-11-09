@@ -521,6 +521,12 @@ properties:
   # -- Properties below are used by the metron_agent job from cf-release --
   metron_agent:
     deployment: (( name ))
+    shared_secret: (( config_from_cf.metron_agent.shared_secret ))
+    preferred_protocol: (( config_from_cf.metron_agent.preferred_protocol ))
+    tls_client:
+      cert: (( config_from_cf.metron_agent.tls_client.cert ))
+      key: (( config_from_cf.metron_agent.tls_client.key ))
+
   nats: # For metron_agent to talk to collector
     machines: (( config_from_cf.nats.machines ))
     user: (( config_from_cf.nats.user ))
@@ -529,8 +535,9 @@ properties:
   loggregator:
     etcd:
       machines: (( config_from_cf.loggregator.etcd.machines ))
-  loggregator_endpoint:
-    shared_secret: (( config_from_cf.loggregator_endpoint.shared_secret ))
+    tls:
+      ca: (( config_from_cf.loggregator.tls.ca ))
+
   syslog_daemon_config:
     address: (( property_overrides.syslog_daemon_config.address || nil ))
     port: (( property_overrides.syslog_daemon_config.port || nil ))

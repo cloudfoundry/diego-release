@@ -21,8 +21,14 @@ config_from_cf:
   loggregator:
     etcd:
       machines: (( merge ))
-  loggregator_endpoint:
+    tls:
+      ca: (( merge ))
+  metron_agent:
     shared_secret: (( merge ))
+    preferred_protocol: (( merge ))
+    tls_client:
+      cert: (( merge ))
+      key: (( merge ))
   nats:
     user: (( merge ))
     password: (( merge ))
