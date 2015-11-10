@@ -60,7 +60,6 @@ sync_package tps                     -app  github.com/cloudfoundry-incubator/tps
 
 sync_package acceptance-tests \
   -test github.com/cloudfoundry-incubator/diego-acceptance-tests/... \
-  -app github.com/cloudfoundry-incubator/diego-ssh/cf-plugin \
   -app github.com/onsi/ginkgo/ginkgo &
 
 sync_package vizzini \

@@ -7,6 +7,6 @@ eval $($scripts_path/get_paths.sh)
 
 pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/diego-acceptance-tests/
   export CONFIG=`pwd`/integration_config.json
-  ginkgo -r -nodes=3 "$@" diego/ security_groups/
+  ginkgo -r -nodes=3 "$@"
   unset CONFIG
 popd
