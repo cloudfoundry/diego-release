@@ -1,12 +1,14 @@
 config_from_cf:
-  cf_director_uuid: (( merge ))
   cf_deployment_name: (( merge ))
+  cf_director_uuid: (( merge ))
+  cf_releases: (( merge ))
   cc:
     internal_api_password: (( merge ))
     srv_api_uri: (( merge ))
     staging_upload_user: (( merge ))
     staging_upload_password: (( merge ))
   consul:
+    datacenter: (( merge ))
     log_level: (( merge ))
     lan_servers: (( merge ))
     ca_cert: (( merge ))
@@ -16,22 +18,15 @@ config_from_cf:
     require_ssl: (( merge ))
     server_cert: (( merge ))
     server_key: (( merge ))
-  etcd:
-    machines: (( merge ))
   loggregator:
-    etcd:
-      machines: (( merge ))
-  loggregator_endpoint:
+    etcd_machines: (( merge ))
     shared_secret: (( merge ))
+    traffic_controller_url: (( merge ))
   nats:
     user: (( merge ))
     password: (( merge ))
     port: (( merge ))
     machines: (( merge ))
-  system_domain: (( merge ))
   uaa:
-    clients:
-      ssh-proxy:
-        secret: (( merge ))
-    url: (( merge || nil ))
-  cf_releases: (( merge ))
+    ssh_proxy_client_secret: (( merge ))
+    token_url: (( merge ))
