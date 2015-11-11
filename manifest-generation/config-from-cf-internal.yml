@@ -8,7 +8,7 @@ config_from_cf:
     staging_upload_user: (( properties.cc.staging_upload_user ))
     staging_upload_password: (( properties.cc.staging_upload_password ))
   consul:
-    datacenter: (( properties.consul.datacenter ))
+    datacenter: (( properties.consul.agent.datacenter ))
     log_level: (( properties.consul.agent.log_level ))
     lan_servers: (( properties.consul.agent.servers.lan ))
     ca_cert: (( properties.consul.ca_cert ))
@@ -42,10 +42,9 @@ properties:
     staging_upload_user: (( merge ))
     staging_upload_password: (( merge ))
   consul:
-    datacenter: (( merge || nil ))
     agent:
       log_level: (( merge ))
-      datacenter: (( merge ))
+      datacenter: (( merge || nil ))
       servers:
         lan: (( merge ))
     ca_cert: (( merge || nil ))

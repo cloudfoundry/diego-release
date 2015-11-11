@@ -537,7 +537,6 @@ properties:
 
   # -- Property below is used by the consul_agent job from cf-release --
   consul:
-    datacenter: (( config_from_cf.consul.datacenter ))
     agent:
       datacenter: (( config_from_cf.consul.datacenter ))
       log_level: (( config_from_cf.consul.log_level ))
