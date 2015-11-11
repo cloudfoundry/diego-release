@@ -1,12 +1,14 @@
 config_from_cf:
-  cf_director_uuid: (( director_uuid ))
   cf_deployment_name: (( name ))
+  cf_director_uuid: (( director_uuid ))
+  cf_releases: (( releases ))
   cc:
     internal_api_password: (( properties.cc.internal_api_password ))
     srv_api_uri: (( properties.cc.srv_api_uri ))
     staging_upload_user: (( properties.cc.staging_upload_user ))
     staging_upload_password: (( properties.cc.staging_upload_password ))
   consul:
+    datacenter: (( properties.consul.datacenter ))
     log_level: (( properties.consul.agent.log_level ))
     lan_servers: (( properties.consul.agent.servers.lan ))
     ca_cert: (( properties.consul.ca_cert ))
@@ -16,29 +18,23 @@ config_from_cf:
     require_ssl: (( properties.consul.require_ssl ))
     server_cert: (( properties.consul.server_cert ))
     server_key: (( properties.consul.server_key ))
-  etcd:
-    machines: (( properties.etcd.machines ))
   loggregator:
-    etcd:
-      machines: (( properties.loggregator.etcd.machines ))
-  loggregator_endpoint:
+    etcd_machines: (( properties.loggregator.etcd.machines ))
     shared_secret: (( properties.loggregator_endpoint.shared_secret ))
+    traffic_controller_url: (( "wss://doppler." properties.system_domain ":443" ))
   nats:
     user: (( properties.nats.user ))
     password: (( properties.nats.password ))
-    port: 4222
+    port: (( properties.nats.port ))
     machines: (( properties.nats.machines ))
-  system_domain: (( properties.system_domain ))
   uaa:
-    url: (( properties.uaa.url ))
-    clients:
-      ssh-proxy:
-        secret: (( properties.uaa.clients.ssh-proxy.secret ))
-  cf_releases: (( releases ))
+    ssh_proxy_client_secret: (( properties.uaa.clients.ssh-proxy.secret ))
+    token_url: (( properties.uaa.url "/oauth/token" ))
 
 # The keys below should not be included in the final stub
-director_uuid: (( merge ))
 name: (( merge ))
+director_uuid: (( merge ))
+releases: (( merge ))
 properties:
   cc:
     internal_api_password: (( merge ))
@@ -46,19 +42,18 @@ properties:
     staging_upload_user: (( merge ))
     staging_upload_password: (( merge ))
   consul:
+    datacenter: (( merge || nil ))
     agent:
       log_level: (( merge ))
       servers:
         lan: (( merge ))
-    ca_cert:
-    agent_cert:
-    agent_key:
-    encrypt_keys:
-    require_ssl:
-    server_cert:
-    server_key:
-  etcd:
-    machines: (( merge ))
+    ca_cert: (( merge || nil ))
+    agent_cert: (( merge || nil ))
+    agent_key: (( merge || nil ))
+    encrypt_keys: (( merge || nil ))
+    require_ssl: (( merge || nil ))
+    server_cert: (( merge || nil ))
+    server_key: (( merge || nil ))
   loggregator:
     etcd:
       machines: (( merge ))
@@ -68,10 +63,10 @@ properties:
     user: (( merge ))
     password: (( merge ))
     machines: (( merge ))
+    port: (( merge ))
   system_domain: (( merge ))
   uaa:
     clients:
       ssh-proxy:
         secret: (( merge || nil ))
-    url: (( merge || nil ))
-releases: (( merge ))
+    url: (( merge ))
