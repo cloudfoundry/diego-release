@@ -624,6 +624,8 @@ properties:
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
       log_level: (( property_overrides.converger.log_level || nil ))
     executor:
+      disk_capacity_mb: (( property_overrides.executor.disk_capacity_mb || nil ))
+      memory_capacity_mb: (( property_overrides.executor.memory_capacity_mb || nil ))
       drain_timeout_in_seconds: (( property_overrides.executor.drain_timeout_in_seconds || nil ))
       garden:
         network: (( property_overrides.executor.garden.network || nil ))
