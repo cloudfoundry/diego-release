@@ -1,6 +1,6 @@
 #!/bin/bash
 
-nc -z 127.0.0.1 <%= URI.parse(p("diego.stager.stager_url")).port %>
+nc -z 127.0.0.1 <%= p("diego.stager.listen_addr").split(':')[1] %>
 
 # http://www.consul.io/docs/agent/checks.html
 if [ $? -ne 0 ]; then

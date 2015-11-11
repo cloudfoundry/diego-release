@@ -67,7 +67,8 @@ case $1 in
       <% if_p("diego.stager.bbs.max_idle_conns_per_host") do |value| %> \
         -bbsMaxIdleConnsPerHost=<%= value %> \
       <% end %> \
-      -stagerURL=<%= p("diego.stager.stager_url") %> \
+      -listenAddress=<%= p("diego.stager.listen_addr") %> \
+      -stagingTaskCallbackURL=<%= p("diego.stager.staging_task_callback_url") %> \
       -ccBaseURL=http://<%= p("diego.stager.cc.internal_service_hostname") %>:<%= p("diego.stager.cc.external_port") %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.stager.cc.basic_auth_username")) %> \
       -ccPassword=<%= Shellwords.shellescape(p("diego.stager.cc.basic_auth_password")) %> \

@@ -47,12 +47,18 @@ properties:
   diego.tps.cc.internal_service_hostname:
     description: "Internal CC host name"
     default: cloud-controller-ng.service.cf.internal
+
+  diego.tps.listener.listen_addr:
+    description: "address at which to serve API requests"
+    default: "0.0.0.0:1518"
   diego.tps.listener.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17012"
+
   diego.tps.watcher.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17013"
+
   diego.tps.max_in_flight_requests:
     description: "Maximum number of requests to handle at once."
     default: 200

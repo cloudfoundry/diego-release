@@ -17,7 +17,7 @@ properties:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
 
-  diego.cc_uploader.address:
+  diego.cc_uploader.listen_addr:
     description: "Address of interface on which to serve files"
     default: "0.0.0.0:9090"
   diego.cc_uploader.debug_addr:

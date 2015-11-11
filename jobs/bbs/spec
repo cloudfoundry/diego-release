@@ -16,12 +16,12 @@ packages:
   - bbs
 
 properties:
-  diego.bbs.listen_addr:
-    description: "address at which to serve API requests"
-    default: "0.0.0.0:8889"
   diego.bbs.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17017"
+  diego.bbs.listen_addr:
+    description: "address at which to serve API requests"
+    default: "0.0.0.0:8889"
   diego.bbs.log_level:
     description: "Log level"
     default: "info"

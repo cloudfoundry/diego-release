@@ -17,7 +17,7 @@ properties:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
 
-  diego.file_server.address:
+  diego.file_server.listen_addr:
     description: "Address of interface on which to serve files"
     default: "0.0.0.0:8080"
   diego.file_server.static_directory:

@@ -35,9 +35,9 @@ properties:
   diego.nsync.bbs.max_idle_conns_per_host:
     description: "maximum number of idle http connections"
 
-  diego.nsync.nsync_url:
-    description: URL of nsync
-    default: http://nsync.service.cf.internal:8787
+  diego.nsync.listen_addr:
+    description: Address from which NSYNC serves requests
+    default: "0.0.0.0:8787"
   diego.nsync.lifecycle_bundles:
     description: "List of lifecycle bundles arguments for different stacks in form 'lifecycle-name:path/to/bundle'"
     default:

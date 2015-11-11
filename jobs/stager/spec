@@ -17,6 +17,29 @@ properties:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
 
+  diego.stager.bbs.api_location:
+    description: "Address to the BBS Server"
+    default: http://bbs.service.cf.internal:8889
+  diego.stager.bbs.ca_cert:
+    description: "PEM-encoded CA certificate"
+  diego.stager.bbs.client_cert:
+    description: "PEM-encoded client certificate"
+  diego.stager.bbs.client_key:
+    description: "PEM-encoded client key"
+  diego.stager.bbs.require_ssl:
+    description: "enable ssl for all communication with the bbs"
+    default: true
+  diego.stager.bbs.client_session_cache_size:
+    description: "capacity of the tls client cache"
+  diego.stager.bbs.max_idle_conns_per_host:
+    description: "maximum number of idle http connections"
+
+  diego.stager.listen_addr:
+    description: Address from which the Stager serves requests
+    default: "0.0.0.0:8888"
+  diego.stager.staging_task_callback_url:
+    description: URL for staging task callbacks
+    default: "http://stager.service.cf.internal:8888"
   diego.stager.cc.external_port:
     description: "External port to access the Cloud Controller"
     default: 9022
@@ -34,12 +57,6 @@ properties:
       - "buildpack/cflinuxfs2:buildpack_app_lifecycle/buildpack_app_lifecycle.tgz"
       - "buildpack/windows2012R2:windows_app_lifecycle/windows_app_lifecycle.tgz"
       - "docker:docker_app_lifecycle/docker_app_lifecycle.tgz"
-  diego.stager.stager_url:
-    description: URL of stager, used for completion callbacks from the BBS
-    default: http://stager.service.cf.internal:8888
-  diego.stager.bbs.api_location:
-    description: "Address to the BBS Server"
-    default: http://bbs.service.cf.internal:8889
   diego.stager.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17011"
@@ -49,7 +66,6 @@ properties:
   diego.stager.docker_staging_stack:
     description: "stack to use for staging Docker applications"
     default: "cflinuxfs2"
-
   diego.stager.file_server_url:
     description: "URL of file server"
     default: http://file-server.service.cf.internal:8080
@@ -62,17 +78,3 @@ properties:
   diego.stager.docker_registry_address:
     description: "Address of the Docker Registry used for image caching"
     default: docker-registry.service.cf.internal:8080
-
-  diego.stager.bbs.ca_cert:
-    description: "PEM-encoded CA certificate"
-  diego.stager.bbs.client_cert:
-    description: "PEM-encoded client certificate"
-  diego.stager.bbs.client_key:
-    description: "PEM-encoded client key"
-  diego.stager.bbs.require_ssl:
-    description: "enable ssl for all communication with the bbs"
-    default: true
-  diego.stager.bbs.client_session_cache_size:
-    description: "capacity of the tls client cache"
-  diego.stager.bbs.max_idle_conns_per_host:
-    description: "maximum number of idle http connections"
