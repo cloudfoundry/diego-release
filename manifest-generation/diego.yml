@@ -528,15 +528,16 @@ properties:
     port: (( config_from_cf.nats.port ))
   loggregator:
     etcd:
-      machines: (( config_from_cf.loggregator.etcd.machines ))
+      machines: (( config_from_cf.loggregator.etcd_machines ))
   loggregator_endpoint:
-    shared_secret: (( config_from_cf.loggregator_endpoint.shared_secret ))
+    shared_secret: (( config_from_cf.loggregator.shared_secret ))
   syslog_daemon_config:
     address: (( property_overrides.syslog_daemon_config.address || nil ))
     port: (( property_overrides.syslog_daemon_config.port || nil ))
 
   # -- Property below is used by the consul_agent job from cf-release --
   consul:
+    datacenter: (( config_from_cf.consul.datacenter ))
     agent:
       datacenter: (( config_from_cf.consul.datacenter ))
       log_level: (( config_from_cf.consul.log_level ))
@@ -692,8 +693,8 @@ properties:
       servers: (( jobs.access_z1.networks.diego1.static_ips jobs.access_z2.networks.diego2.static_ips jobs.access_z3.networks.diego3.static_ips jobs.colocated_z1.networks.diego1.static_ips jobs.colocated_z2.networks.diego2.static_ips jobs.colocated_z3.networks.diego3.static_ips ))
       enable_cf_auth: (( property_overrides.ssh_proxy.enable_cf_auth || false ))
       enable_diego_auth: (( property_overrides.ssh_proxy.enable_diego_auth || false ))
-      uaa_secret: (( config_from_cf.uaa.clients.ssh-proxy.secret || nil ))
-      uaa_token_url: (( config_from_cf.uaa.url "/oauth/token" || nil ))
+      uaa_secret: (( config_from_cf.uaa.ssh_proxy_client_secret ))
+      uaa_token_url: (( config_from_cf.uaa.token_url ))
       diego_credentials: (( property_overrides.ssh_proxy.diego_credentials || nil ))
     stager:
       cc:
@@ -726,7 +727,7 @@ properties:
         client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
       log_level: (( property_overrides.tps.log_level || nil ))
-      traffic_controller_url: (( "wss://doppler." config_from_cf.system_domain ":443" ))
+      traffic_controller_url: (( config_from_cf.loggregator.traffic_controller_url ))
 
   # -- Proerties below are used by jobs from garden-linux-release --
   garden:
