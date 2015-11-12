@@ -120,6 +120,11 @@ and then look up that commit's SHA in the diego-cf compatibility table.
         cd ~/workspace/cf-release
         ./scripts/generate-bosh-lite-dev-manifest
 
+  **If you want to enable ssh** along side this deployment, instead generate the CF manifest as follows:
+
+        cd ~/workspace/cf-release
+        ./scripts/generate-bosh-lite-dev-manifest \
+          ~/workspace/diego-release/stubs-for-cf-release/enable_diego_ssh_in_cf.yml
    **Or if you are running Windows cells** along side this deployment, instead generate the CF manifest as follows:
 
         cd ~/workspace/cf-release
