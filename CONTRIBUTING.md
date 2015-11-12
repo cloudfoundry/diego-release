@@ -4,15 +4,18 @@
 
 The Diego team uses GitHub and accepts contributions via [pull request](https://help.github.com/articles/using-pull-requests).
 
-The `diego-release` repository is a [BOSH](https://github.com/cloudfoundry/bosh) release for Diego. The root of this repository doubles as a [`$GOPATH`](https://golang.org/doc/code.html#GOPATH). For more information about configuring your go environment and automatically setting your `$GOPATH`, see the [instructions below](#initial-setup).
+The `diego-release` repository is a [BOSH](https://github.com/cloudfoundry/bosh) release for Diego. The root of this repository doubles as a Golang [`GOPATH`](https://golang.org/doc/code.html#GOPATH). For more information about configuring your Golang environment and automatically setting your `GOPATH` to the release directory, see the [instructions below](#initial-setup).
 
-All Diego components are submodules in diego-release and can be found in the [`src/github.com/cloudfoundry-incubator`](https://github.com/cloudfoundry-incubator/diego-release/tree/master/src/github.com/cloudfoundry-incubator) and [`src/github.com/cloudfoundry`](https://github.com/cloudfoundry-incubator/diego-release/tree/master/src/github.com/cloudfoundry) directories.
+All Diego components are submodules in diego-release and can be found in the [`src/github.com/cloudfoundry-incubator`](https://github.com/cloudfoundry-incubator/diego-release/tree/master/src/github.com/cloudfoundry-incubator) and [`src/github.com/cloudfoundry`](https://github.com/cloudfoundry-incubator/diego-release/tree/master/src/github.com/cloudfoundry) directories of this repository.
 
-If you wish to make a change to any of the components, submit a pull request to the master branches of those repositories directly. Once accepted, those changes should make their way into `diego-release`.  If you wish to make a change to diego-release directly, please submit a pull request to the develop branch.
+If you wish to make a change to an individual Diego component, submit a pull request to the master branches of its repository. Once accepted, those changes should make their way into `diego-release`.
+
+If you wish to make a change to **diego-release** directly, please base your pull request on the **develop** branch, and not the master branch. The master branch of diego-release is reserved for the latest final BOSH release of Diego, and the only updates to that branch should be through our automated release-creation process.
 
 To verify your changes before submitting a pull request, run unit tests, the inigo test suite, and the Diego Acceptance Tests (DATs). See the [testing](#testing-diego) section for more detail.
 
 ---
+
 ## Contributor License Agreement
 
 Follow these steps to make a contribution to any of our open source repositories:
