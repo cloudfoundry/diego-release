@@ -17,7 +17,16 @@ cf api <%= p("diego.smoke_tests.api") %> \
 
 cf auth <%= p("diego.smoke_tests.user") %> <%= p("diego.smoke_tests.password") %>
 
-# assume org exists, otherwise we have to be admin, which is a bad idea
+# if the given org does not already exist, try to create it.
+# this only works in environments where we're using admin creds (generally not a
+# good idea)
+if ! cf org <%= p("diego.smoke_tests.org") %>; then
+  cf create-org <%= p("diego.smoke_tests.org") %>
+
+  # if we created an org for this test, clean it up at the end of the test
+  delete_org=1
+fi
+
 cf target -o <%= p("diego.smoke_tests.org") %>
 
 # delete and recreate the space each time to clear out old apps and routes
@@ -31,6 +40,10 @@ cd /var/vcap/packages/smoke-tests
 
 # assumes dora asset lives in working directory
 ./diego-smoke-tests.test || EXITSTATUS=$?
+
+if [ ${delete_org} -eq 1 ]; then
+  cf delete-org <%= p("diego.smoke_tests.org") %> -f
+fi
 
 for i in ${trace_output_dir}/*.txt; do
   if [ -e "$i" ]; then
