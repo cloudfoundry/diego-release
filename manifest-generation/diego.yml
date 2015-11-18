@@ -531,6 +531,8 @@ properties:
       machines: (( config_from_cf.loggregator.etcd_machines ))
   loggregator_endpoint:
     shared_secret: (( config_from_cf.loggregator.shared_secret ))
+  metron_endpoint:
+    shared_secret: (( config_from_cf.metron_endpoint.shared_secret ))
   syslog_daemon_config:
     address: (( property_overrides.syslog_daemon_config.address || nil ))
     port: (( property_overrides.syslog_daemon_config.port || nil ))

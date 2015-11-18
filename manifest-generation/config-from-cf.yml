@@ -22,6 +22,8 @@ config_from_cf:
     etcd_machines: (( merge ))
     shared_secret: (( merge ))
     traffic_controller_url: (( merge ))
+  metron_endpoint:
+    shared_secret: (( merge ))
   nats:
     user: (( merge ))
     password: (( merge ))
