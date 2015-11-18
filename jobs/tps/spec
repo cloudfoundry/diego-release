@@ -53,11 +53,11 @@ properties:
     default: "0.0.0.0:1518"
   diego.tps.listener.debug_addr:
     description: "address at which to serve debug info"
-    default: "0.0.0.0:17012"
+    default: "0.0.0.0:17014"
 
   diego.tps.watcher.debug_addr:
     description: "address at which to serve debug info"
-    default: "0.0.0.0:17013"
+    default: "0.0.0.0:17015"
 
   diego.tps.max_in_flight_requests:
     description: "Maximum number of requests to handle at once."

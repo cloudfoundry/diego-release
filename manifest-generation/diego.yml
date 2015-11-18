@@ -831,6 +831,8 @@ base_job_templates:
     - name: metron_agent
       release: cf
   colocated:
+    - name: rep
+      release: diego
     - name: auctioneer
       release: diego
     - name: bbs
@@ -851,7 +853,7 @@ base_job_templates:
       release: cf
     - name: nsync
       release: diego
-    - name: rep
+    - name: rootfses
       release: diego
     - name: route_emitter
       release: diego
