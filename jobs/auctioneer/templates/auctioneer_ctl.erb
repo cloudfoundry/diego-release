@@ -48,6 +48,7 @@ case $1 in
       -consulCluster=http://127.0.0.1:8500 \
       -debugAddr=<%= p("diego.auctioneer.debug_addr") %> \
       -listenAddr=<%= p("diego.auctioneer.listen_addr") %> \
+      -dropsondePort=<%= p("diego.auctioneer.dropsonde_port") %> \
       -cellStateTimeout=<%= p("diego.auctioneer.cell_state_timeout") %> \
       -logLevel=<%= p("diego.auctioneer.log_level") %> \
       2> >(tee -a $LOG_DIR/auctioneer.stderr.log | logger -p user.error -t vcap.auctioneer) \
