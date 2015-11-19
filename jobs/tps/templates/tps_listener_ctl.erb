@@ -49,6 +49,7 @@ case $1 in
       <% if_p("diego.tps.bbs.max_idle_conns_per_host") do |value| %> \
         -bbsMaxIdleConnsPerHost=<%= value %> \
       <% end %> \
+      -dropsondePort=<%= p("diego.tps.dropsonde_port") %> \
       -debugAddr=<%= p("diego.tps.listener.debug_addr") %> \
       -maxInFlightRequests=<%= p("diego.tps.max_in_flight_requests") %> \
       -listenAddr=<%= p("diego.tps.listener.listen_addr") %> \

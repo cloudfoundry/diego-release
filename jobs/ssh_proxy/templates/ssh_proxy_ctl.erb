@@ -61,6 +61,7 @@ case $1 in
       <% if_p("diego.ssh_proxy.uaa_token_url", "diego.ssh_proxy.uaa_secret") do |url, secret| %>\
       -uaaTokenURL=<%= url.gsub('://', "://ssh-proxy:#{secret}@") %> \
       <% end %>\
+      -dropsondePort=<%= p("diego.ssh_proxy.dropsonde_port") %> \
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       -debugAddr=<%= p("diego.ssh_proxy.debug_addr") %> \
       -logLevel=<%= p("diego.ssh_proxy.log_level") %> \

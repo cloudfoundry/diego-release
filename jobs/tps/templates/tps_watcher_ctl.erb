@@ -50,6 +50,7 @@ case $1 in
       <% if_p("diego.tps.bbs.max_idle_conns_per_host") do |value| %> \
         -bbsMaxIdleConnsPerHost=<%= value %> \
       <% end %> \
+      -dropsondePort=<%= p("diego.tps.dropsonde_port") %> \
       -consulCluster=http://127.0.0.1:8500 \
       -ccBaseURL=http://<%= p("diego.tps.cc.internal_service_hostname") %>:<%= p("diego.tps.cc.external_port") %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.tps.cc.basic_auth_username")) %> \

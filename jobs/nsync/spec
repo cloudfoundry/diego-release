@@ -34,6 +34,9 @@ properties:
     description: "capacity of the tls client cache"
   diego.nsync.bbs.max_idle_conns_per_host:
     description: "maximum number of idle http connections"
+  diego.nsync.dropsonde_port:
+    description: "local metron agent's port"
+    default: 3457
 
   diego.nsync.listen_addr:
     description: Address from which NSYNC serves requests

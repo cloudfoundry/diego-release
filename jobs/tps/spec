@@ -17,11 +17,22 @@ properties:
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
+  diego.tps.dropsonde_port:
+    description: "local metron agent's port"
+    default: 3457
+  diego.tps.max_in_flight_requests:
+    description: "Maximum number of requests to handle at once."
+    default: 200
+  diego.tps.log_level:
+    description: "Log level"
+    default: "info"
+  diego.tps.traffic_controller_url:
+    description: URL of Traffic controller
+    default: ws://loggregator-trafficcontroller.service.cf.internal:8081
 
   diego.tps.bbs.api_location:
     description: "Address to the BBS Server"
     default: http://bbs.service.cf.internal:8889
-
   diego.tps.bbs.ca_cert:
     description: "PEM-encoded CA certificate"
   diego.tps.bbs.client_cert:
@@ -58,13 +69,3 @@ properties:
   diego.tps.watcher.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17015"
-
-  diego.tps.max_in_flight_requests:
-    description: "Maximum number of requests to handle at once."
-    default: 200
-  diego.tps.log_level:
-    description: "Log level"
-    default: "info"
-  diego.tps.traffic_controller_url:
-    description: URL of Traffic controller
-    default: ws://loggregator-trafficcontroller.service.cf.internal:8081

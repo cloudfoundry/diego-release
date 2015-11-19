@@ -521,6 +521,7 @@ properties:
   # -- Properties below are used by the metron_agent job from cf-release --
   metron_agent:
     deployment: (( name ))
+    dropsonde_incoming_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
   nats: # For metron_agent to talk to collector
     machines: (( config_from_cf.nats.machines ))
     user: (( config_from_cf.nats.user ))
@@ -596,6 +597,7 @@ properties:
         client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
       cell_state_timeout: (( property_overrides.auctioneer.cell_state_timeout || nil ))
+      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       log_level: (( property_overrides.auctioneer.log_level || nil ))
     bbs:
       active_key_label: (( property_overrides.bbs.active_key_label ))
@@ -604,6 +606,7 @@ properties:
       ca_cert: (( property_overrides.bbs.ca_cert ))
       server_cert: (( property_overrides.bbs.server_cert ))
       server_key: (( property_overrides.bbs.server_key ))
+      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       auctioneer:
         api_url: (( "http://auctioneer.service.cf.internal:9016" ))
       etcd:
@@ -616,6 +619,7 @@ properties:
         max_idle_conns_per_host: (( property_overrides.etcd.max_idle_conns_per_host || nil ))
       log_level: (( property_overrides.bbs.log_level || nil ))
     converger:
+      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       bbs:
         api_location: (( "bbs.service.cf.internal:8889" ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
@@ -634,8 +638,10 @@ properties:
         address: (( property_overrides.executor.garden.address || nil ))
       log_level: (( property_overrides.executor.log_level || nil ))
     file_server:
+      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       log_level: (( property_overrides.file_server.log_level || nil ))
     cc_uploader:
+      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
@@ -643,6 +649,7 @@ properties:
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       log_level: (( property_overrides.cc_uploader.log_level || nil ))
     nsync:
+      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       bbs:
         api_location: (( "bbs.service.cf.internal:8889" ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
@@ -658,6 +665,7 @@ properties:
         staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       log_level: (( property_overrides.nsync.log_level || nil ))
     rep:
+      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       bbs:
         api_location: (( "bbs.service.cf.internal:8889" ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
@@ -669,6 +677,7 @@ properties:
       evacuation_timeout_in_seconds: (( property_overrides.rep.evacuation_timeout_in_seconds || nil ))
       log_level: (( property_overrides.rep.log_level || nil ))
     route_emitter:
+      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       bbs:
         api_location: (( "bbs.service.cf.internal:8889" ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
@@ -684,6 +693,7 @@ properties:
         port: (( config_from_cf.nats.port ))
       log_level: (( property_overrides.route_emitter.log_level || nil ))
     ssh_proxy:
+      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       bbs:
         api_location: (( "bbs.service.cf.internal:8889" ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
@@ -700,6 +710,7 @@ properties:
       uaa_token_url: (( config_from_cf.uaa.token_url ))
       diego_credentials: (( property_overrides.ssh_proxy.diego_credentials || nil ))
     stager:
+      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
@@ -716,6 +727,7 @@ properties:
       log_level: (( property_overrides.stager.log_level || nil ))
       insecure_docker_registry_list: (( property_overrides.stager.insecure_docker_registry_list || nil ))
     tps:
+      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       cc:
         base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))

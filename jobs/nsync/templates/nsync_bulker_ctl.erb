@@ -47,6 +47,7 @@ case $1 in
       <% if_p("diego.nsync.bbs.max_idle_conns_per_host") do |value| %> \
         -bbsMaxIdleConnsPerHost=<%= value %> \
       <% end %> \
+      -dropsondePort=<%= p("diego.nsync.dropsonde_port") %> \
       -consulCluster=http://127.0.0.1:8500 \
       -ccBaseURL=<%= Shellwords.shellescape(p("diego.nsync.cc.base_url")) %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.nsync.cc.basic_auth_username")) %> \

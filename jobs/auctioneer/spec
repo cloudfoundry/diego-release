@@ -25,6 +25,9 @@ properties:
   diego.auctioneer.cell_state_timeout:
     description: "Timeout applied to HTTP requests to the Cell State endpoint."
     default: "1s"
+  diego.auctioneer.dropsonde_port:
+    description: "local metron agent's port"
+    default: 3457
 
   diego.auctioneer.bbs.api_location:
     description: "Address to the BBS Server"

@@ -17,6 +17,10 @@ properties:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
 
+  diego.stager.dropsonde_port:
+    description: "local metron agent's port"
+    default: 3457
+
   diego.stager.bbs.api_location:
     description: "Address to the BBS Server"
     default: http://bbs.service.cf.internal:8889

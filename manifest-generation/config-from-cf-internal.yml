@@ -24,6 +24,8 @@ config_from_cf:
     traffic_controller_url: (( "wss://doppler." properties.system_domain ":443" ))
   metron_endpoint:
     shared_secret: (( properties.metron_endpoint.shared_secret ))
+  metron_agent:
+    dropsonde_incoming_port: (( properties.metron_agent.dropsonde_incoming_port ))
   nats:
     user: (( properties.nats.user ))
     password: (( properties.nats.password ))
@@ -63,6 +65,8 @@ properties:
     shared_secret: (( merge ))
   metron_endpoint:
     shared_secret: (( merge ))
+  metron_agent:
+    dropsonde_incoming_port: (( merge || nil ))
   nats:
     user: (( merge ))
     password: (( merge ))

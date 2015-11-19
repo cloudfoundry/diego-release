@@ -29,12 +29,9 @@ properties:
   diego.ssh_proxy.log_level:
     description: "Log level"
     default: "info"
-  diego.ssh_proxy.cc.internal_service_hostname:
-    description: Internal service hostname of Cloud Controller Api
-    default: cloud-controller-ng.service.cf.internal
-  diego.ssh_proxy.cc.external_port:
-    description: External port of the Cloud Controller API
-    default: 9022
+  diego.ssh_proxy.dropsonde_port:
+    description: "local metron agent's port"
+    default: 3457
   diego.ssh_proxy.enable_cf_auth:
     description: Allow ssh access for cf applications
     default: false
@@ -47,6 +44,14 @@ properties:
     description: URL of the UAA token endpoint
   diego.ssh_proxy.uaa_secret:
     description: The oauth client secret used to authenticate the ssh-proxy with the uaa
+
+  diego.ssh_proxy.cc.internal_service_hostname:
+    description: Internal service hostname of Cloud Controller Api
+    default: cloud-controller-ng.service.cf.internal
+  diego.ssh_proxy.cc.external_port:
+    description: External port of the Cloud Controller API
+    default: 9022
+
   diego.ssh_proxy.bbs.ca_cert:
     description: "PEM-encoded CA certificate"
   diego.ssh_proxy.bbs.client_cert:
@@ -60,3 +65,5 @@ properties:
     description: "capacity of the tls client cache"
   diego.ssh_proxy.bbs.max_idle_conns_per_host:
     description: "maximum number of idle http connections"
+
+

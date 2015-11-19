@@ -25,13 +25,28 @@ properties:
   diego.bbs.log_level:
     description: "Log level"
     default: "info"
-
+  diego.bbs.dropsonde_port:
+    description: "local metron agent's port"
+    default: 3457
   diego.bbs.auctioneer.api_url:
     description: "Address of the auctioneer API"
+  diego.bbs.active_key_label:
+    description: "Label of the encryption key to be used when writing to the database"
+  diego.bbs.encryption_keys:
+    description: "List of encryption keys to be used"
+    default: []
+  diego.bbs.require_ssl:
+    description: "require ssl for all communication the bbs"
+    default: true
+  diego.bbs.ca_cert:
+    description: "PEM-encoded CA certificate"
+  diego.bbs.server_cert:
+    description: "PEM-encoded client certificate"
+  diego.bbs.server_key:
+    description: "PEM-encoded client key"
 
   diego.bbs.etcd.machines:
     description: "Addresses pointing to the ETCD cluster"
-
   diego.bbs.etcd.require_ssl:
     description: "enable ssl for all communication with etcd"
     default: true
@@ -46,18 +61,3 @@ properties:
   diego.bbs.etcd.max_idle_conns_per_host:
     description: "maximum number of idle http connections"
 
-  diego.bbs.active_key_label:
-    description: "Label of the encryption key to be used when writing to the database"
-  diego.bbs.encryption_keys:
-    description: "List of encryption keys to be used"
-    default: []
-
-  diego.bbs.require_ssl:
-    description: "require ssl for all communication the bbs"
-    default: true
-  diego.bbs.ca_cert:
-    description: "PEM-encoded CA certificate"
-  diego.bbs.server_cert:
-    description: "PEM-encoded client certificate"
-  diego.bbs.server_key:
-    description: "PEM-encoded client key"

@@ -28,6 +28,9 @@ properties:
   diego.cc_uploader.log_level:
     description: "Log level"
     default: "info"
+  diego.cc_uploader.dropsonde_port:
+    description: "local metron agent's port"
+    default: 3457
 
   diego.cc_uploader.cc.external_port:
     description: "External Cloud Controller port"

@@ -89,6 +89,7 @@ case $1 in
       <% if_p("diego.bbs.etcd.max_idle_conns_per_host") do |value| %> \
         -etcdMaxIdleConnsPerHost=<%= value %> \
       <% end %> \
+      -dropsondePort=<%= p("diego.bbs.dropsonde_port") %> \
       -listenAddress=<%= p("diego.bbs.listen_addr") %> \
       -logLevel=<%= p("diego.bbs.log_level") %> \
       -requireSSL=<%= p("diego.bbs.require_ssl") %> \

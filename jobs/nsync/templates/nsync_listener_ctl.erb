@@ -44,6 +44,7 @@ case $1 in
       <% if_p("diego.nsync.bbs.max_idle_conns_per_host") do |value| %> \
         -bbsMaxIdleConnsPerHost=<%= value %> \
       <% end %> \
+      -dropsondePort=<%= p("diego.nsync.dropsonde_port") %> \
       -listenAddress=<%= p("diego.nsync.listen_addr") %> \
       -debugAddr=<%= p("diego.nsync.listener_debug_addr") %> \
       <%= p("diego.nsync.lifecycle_bundles").map { |bundle| "-lifecycle #{bundle}" }.join(" ") %> \

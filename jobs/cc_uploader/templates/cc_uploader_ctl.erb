@@ -49,6 +49,7 @@ case $1 in
       <% if_p("diego.cc_uploader.cc.job_polling_interval_in_seconds") do |interval| %>\
         -ccJobPollingInterval=<%= "#{interval}s" %> \
       <% end %>\
+      -dropsondePort=<%= p("diego.cc_uploader.dropsonde_port") %> \
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       -logLevel=<%= p("diego.cc_uploader.log_level") %> \
       2> >(tee -a $LOG_DIR/cc_uploader.stderr.log | logger -p user.error -t vcap.cc-uploader) \

@@ -47,6 +47,7 @@ case $1 in
       <% if_p("diego.route_emitter.bbs.max_idle_conns_per_host") do |value| %> \
         -bbsMaxIdleConnsPerHost=<%= value %> \
       <% end %> \
+      -dropsondePort=<%= p("diego.route_emitter.dropsonde_port") %> \
       -debugAddr=<%= p("diego.route_emitter.debug_addr") %> \
       -syncInterval=<%= "#{p("diego.route_emitter.sync_interval_in_seconds")}s" %> \
       -logLevel=<%= p("diego.route_emitter.log_level") %> \
