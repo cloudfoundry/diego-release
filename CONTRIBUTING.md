@@ -204,7 +204,7 @@ When you're ready to commit, run:
 
     ./scripts/prepare-to-diego <story-id> <another-story-id>...
 
-This will synchronize submodules, update the BOSH package specs, run all unit tests, all integration tests, and make a commit, bringing up a commit edit dialogue.  The story IDs correspond to stories in our [Pivotal Tracker backlog](https://www.pivotaltracker.com/n/projects/1003146).  You should simultaneously also build the release and deploy it to a local [BOSH-Lite](https://github.com/cloudfoundry/bosh-lite) environment, and run the acceptance tests.  See [Running Smoke Tests & DATs](#smokes-and-dats).
+This will synchronize submodules, update the BOSH package specs, run all unit tests, all integration tests, and make a commit, bringing up a commit edit dialogue.  The story IDs correspond to stories in our [Pivotal Tracker backlog](https://www.pivotaltracker.com/n/projects/1003146).  You should simultaneously also build the release and deploy it to a local [BOSH-Lite](https://github.com/cloudfoundry/bosh-lite) environment, and run the acceptance tests.  See [Running Smoke Tests & DATs](#smokes-and-ats).
 
 If you're introducing a new component (e.g. a new job/errand) or changing the main path for an existing component, make sure to update `./scripts/sync-package-specs` and `./scripts/sync-submodule-config`.
 
@@ -223,11 +223,15 @@ If your local concourse VM is up and running, you have the `fly` CLI visible on 
     ./scripts/run-inigo
 from the root of diego-release to run the integration tests.
 
-###<a name="smokes-and-dats"></a> Running Smoke Tests & DATs
+###<a name="smokes-and-ats"></a> Running Smoke Tests, DATs, and CATs
 
 You can test that your diego-release deployment is working and integrating with cf-release by running the lightweight [diego-smoke-tests](https://github.com/cloudfoundry-incubator/diego-smoke-tests) or the more thorough [diego-acceptance-tests](https://github.com/cloudfoundry-incubator/diego-acceptance-tests). These test suites assume you have a BOSH environment to deploy cf and diego to. For local development, bosh-lite is an easy way to have a single-VM deployment. To deploy diego to bosh-lite, follow the instructions on [deploying diego to bosh-lite](README.md#deploy-bosh-lite).
 
 The instructions below assume you're using bosh-lite and have generated the manifests with the `scripts/generate-bosh-lite-manifests` script. This script will also generate manifests for the errands that run these test suites. If you did not run that script or are running tests in a different environment, substitute the relevant manifest files in the `bosh deploy` commands below.
+
+To run the cf-acceptance-tests against a Diego deployed to bosh-lite, run:
+
+    ./scripts/run-cats-bosh-lite
 
 To run the diego-acceptance-tests, deploy and run the diego-acceptance-tests errand:
 
