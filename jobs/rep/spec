@@ -104,6 +104,29 @@ properties:
     description: "Maximum number of concurrent health check operations."
     default: 64
 
+  diego.executor.garden_healthcheck.interval:
+    description: "Frequency for healtchecking garden"
+    default: "10m"
+  diego.executor.garden_healthcheck.timeout:
+    description: "Maximum allowed time for garden healthcheck"
+    default: "10m"
+  diego.executor.garden_healthcheck.command_retry_pause:
+    description: "Time to wait between retrying garden commands"
+    default: "5s"
+  diego.executor.garden_healthcheck.process.path:
+    description: "Path of the command to run to perform a container healthcheck"
+    default: "/bin/sh"
+  diego.executor.garden_healthcheck.process.args:
+    description: "List of command line args to pass to the garden health check process"
+    default: "-c, ls > /tmp/test"
+  diego.executor.garden_healthcheck.process.user:
+    description: "User to use while performing a container healthcheck"
+    default: "vcap"
+  diego.executor.garden_healthcheck.process.dir:
+    description: "Directory to run the healthcheck process from"
+  diego.executor.garden_healthcheck.process.env:
+    description: "Environment variables to use when running the garden health check"
+
   diego.rep.bbs.api_location:
     description: "Address to the BBS Server"
 

@@ -636,6 +636,16 @@ properties:
       garden:
         network: (( property_overrides.executor.garden.network || nil ))
         address: (( property_overrides.executor.garden.address || nil ))
+      garden_healthcheck:
+        interval: (( property_overrides.executor.garden_healthcheck.interval || nil ))
+        timeout: (( property_overrides.executor.garden_healthcheck.timeout || nil ))
+        command_retry_pause: (( property_overrides.executor.garden_healthcheck.command_retry_pause || nil ))
+        process:
+          path: (( property_overrides.executor.garden_healthcheck.process.path || nil ))
+          user: (( property_overrides.executor.garden_healthcheck.process.user || nil ))
+          dir: (( property_overrides.executor.garden_healthcheck.process.dir || nil ))
+          args: (( property_overrides.executor.garden_healthcheck.process.args || nil ))
+          env: (( property_overrides.executor.garden_healthcheck.process.env || nil ))
       log_level: (( property_overrides.executor.log_level || nil ))
     file_server:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))

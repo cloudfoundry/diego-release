@@ -111,6 +111,20 @@ case $1 in
       -maxConcurrentDownloads=<%= p("diego.executor.max_concurrent_downloads") %> \
       -tempDir=$TMP_DIR \
       -logLevel=<%= p("diego.rep.log_level") %> \
+      -gardenHealthcheckInterval=<%= p("diego.executor.garden_healthcheck.interval") %> \
+      -gardenHealthcheckTimeout=<%= p("diego.executor.garden_healthcheck.timeout") %> \
+      -gardenHealthcheckCommandRetryPause=<%= p("diego.executor.garden_healthcheck.command_retry_pause") %> \
+      -gardenHealthcheckProcessPath=<%= p("diego.executor.garden_healthcheck.process.path") %> \
+      -gardenHealthcheckProcessUser=<%= p("diego.executor.garden_healthcheck.process.user") %> \
+      <% if_p("diego.executor.garden_healthcheck.process.dir") do |value| %> \
+        -gardenHealthcheckProcessDir=<%= value %> \
+      <% end %> \
+      <% if_p("diego.executor.garden_healthcheck.process.args") do |value| %> \
+        -gardenHealthcheckProcessArgs=<%= Shellwords.shellescape(value) %> \
+      <% end %> \
+      <% if_p("diego.executor.garden_healthcheck.process.env") do |value| %> \
+        -gardenHealthcheckProcessEnv=<%= Shellwords.shellescape(value) %> \
+      <% end %> \
       2>> $LOG_DIR/rep.stderr.log \
       1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep) &
 
