@@ -6,36 +6,66 @@ manifest_generation=$(dirname $0)/../manifest-generation
 
 function usage() {
   >&2 echo "    Usage:
-    $0 /path/to/stub/property-overrides.yml \\
-       /path/to/stub/instance-count-overrides.yml \\
-       /path/to/stub/persistent-disk-overrides.yml \\
-       /path/to/stub/iaas-settings.yml \\
-       /path/to/stub/additional-jobs.yml \\
-       /path/to/stub/release-versions.yml \\
-       /path/to/deployment-manifests
+    $0 <MANDATORY ARGUMENTS> [OPTIONAL ARGUMENTS]
+    Mandatory arguments:
+       -c CF manifest file
+       -i IaaS-settings stub file 
+       -p property-overrides stub file 
+    Optional arguments:
+       -n instance-count-overrides stub file 
+       -k persistent-disk overrides stub file 
+       -v release-versions stub file 
 
-    Ex:
-    $0 manifest-generation/bosh-lite-stubs/property-overrides.yml \\
-       manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
-       manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \\
-       manifest-generation/bosh-lite-stubs/iaas-settings.yml \\
-       manifest-generation/bosh-lite-stubs/additional-jobs.yml \\
-       manifest-generation/bosh-lite-stubs/release-versions.yml \\
-       ~/deployments/bosh-lite
+    Example:
+    $0 -c ~/deployments/cf.yml \\
+       -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \\
+       -p manifest-generation/bosh-lite-stubs/property-overrides.yml \\
+       -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
+       -k manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \\
+       -v manifest-generation/bosh-lite-stubs/release-versions.yml
 "
   exit 1
 }
 
-if [ "$#" -eq 7 ]; then
-  property_overrides=$1
-  instance_counts=$2
-  persistent_disk=$3
-  iaas_settings=$4
-  additional_jobs=$5
-  release_versions=$6
-  deployments=$7
-else
-  >&2 echo "Incorrect number of arguments"
+while getopts "c:i:p:n:k:v:" opt; do
+  case $opt in
+    c)
+      deployments=$OPTARG
+      ;;
+    i)
+      iaas_settings=$OPTARG
+      ;;
+    p)
+      property_overrides=$OPTARG
+      ;;
+    n)
+      instance_counts=$OPTARG
+      ;;
+    k)
+      persistent_disk=$OPTARG
+      ;;
+    v)
+      release_versions=$OPTARG
+      ;;
+    *)
+      echo "Unknown arguments"
+      usage
+      ;;
+  esac
+done
+
+if [ -z ${deployments} ]; then
+  >&2 echo "CF manifest file is missing"
+  usage
+fi
+
+if [ -z ${iaas_settings} ]; then
+  >&2 echo "IaaS-settings stub file is missing"
+  usage
+fi
+
+if [ -z ${property_overrides} ]; then
+  >&2 echo "property-overrides stub file is missing"
   usage
 fi
 
@@ -44,12 +74,12 @@ if [ ! -f "${property_overrides}" ]; then
   usage
 fi
 
-if [ ! -f "${instance_counts}" ]; then
+if [[ ! -z "${instance_counts}" && ! -f "${instance_counts}" ]]; then
   >&2 echo "Instance Count Overrides stub '${instance_counts}' is not a regular file"
   usage
 fi
 
-if [ ! -f "${persistent_disk}" ]; then
+if [[ ! -z "${persistent_disk}" && ! -f "${persistent_disk}" ]]; then
   >&2 echo "Persistent Disk Overrides stub '${persistent_disk}' is not a regular file"
   usage
 fi
@@ -59,18 +89,13 @@ if [ ! -f "${iaas_settings}" ]; then
   usage
 fi
 
-if [ ! -f "${additional_jobs}" ]; then
-  >&2 echo "Additional Jobs stub '${additional_jobs}' is not a regular file"
-  usage
-fi
-
-if [ ! -f "${release_versions}" ]; then
+if [[ ! -z "${release_versions}" && ! -f "${release_versions}" ]]; then
   >&2 echo "Release versions stub '${release_versions}' is not a regular file"
   usage
 fi
 
-if [ ! -d "${deployments}" ]; then
-  >&2 echo "Deployments directory '${deployments}' is not a directory"
+if [ ! -f "${deployments}" ]; then
+  >&2 echo "CF manifest '${deployments}' is not a regular file"
   usage
 fi
 
@@ -79,7 +104,7 @@ tmpdir=$(mktemp -d /tmp/diego-manifest.XXXXX)
 spiff merge \
   ${manifest_generation}/config-from-cf.yml \
   ${manifest_generation}/config-from-cf-internal.yml \
-  ${deployments}/cf.yml \
+  ${deployments} \
   > ${tmpdir}/config-from-cf.yml
 
 spiff merge \
@@ -88,7 +113,6 @@ spiff merge \
   ${instance_counts} \
   ${persistent_disk} \
   ${iaas_settings} \
-  ${additional_jobs} \
   ${release_versions} \
   ${tmpdir}/config-from-cf.yml \
   > ${tmpdir}/diego.yml
