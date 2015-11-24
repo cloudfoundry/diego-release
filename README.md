@@ -90,11 +90,16 @@ and then look up that commit's SHA in the diego-cf compatibility table.
    following its
    [README](https://github.com/cloudfoundry/bosh-lite/blob/master/README.md).
 
-1. Download the latest Warden Trusty Go-Agent stemcell and upload it to BOSH-lite:
+1. Upload version 2776 of the Warden BOSH-Lite stemcell directly to BOSH-Lite:
 
-        bosh public stemcells
-        bosh download public stemcell (name)
-        bosh upload stemcell (downloaded filename)
+        bosh upload stemcell https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent?v=2776
+
+    Alternately, download the stemcell locally first and then upload it to BOSH-Lite:
+
+        curl -L -o bosh-lite-stemcell-2776.tgz https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent?v=2776
+        bosh upload stemcell bosh-lite-stemcell-2776.tgz
+
+    Please note that the consul_agent job does not set up DNS correctly on version 3126 of the BOSH-Lite Warden stemcell, so we do not currently recommend the use of that stemcell version.
 
 1. Check out cf-release (runtime-passed branch or tagged release) from git:
 
