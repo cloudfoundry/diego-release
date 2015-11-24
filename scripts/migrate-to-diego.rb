@@ -85,16 +85,25 @@ end
 
 
 def migrate_app(app_guid, reverse)
-  puts "migrating #{app_guid}"
+  initial_state = app_state(app_guid)
   cf_output= `cf curl /v2/apps/#{app_guid} -X PUT -d '{"diego":#{(!reverse).to_s}}'`
   output = JSON.parse(cf_output)
   unless output["error_code"].nil?
     puts "ERROR: Failed to set diego to true for app #{app_guid}\n#{cf_output}"
     return false
   end
-  puts "completed #{app_guid}"
+  final_state = app_state(app_guid)
+  changed = (initial_state == final_state) ? '' : " -- CHANGED --"
+  puts "completed #{app_guid}: initial_state: #{initial_state}, final_state:#{final_state} #{changed}"
   true
 end
+
+def app_state(app_guid)
+  raw = `cf curl /v2/apps/#{app_guid}`
+  parsed = JSON.parse(raw)
+  parsed['entity']['state']
+end
+
 
 def migrate_in_parallel(queue, max_in_flight, reverse)
   thread_pool = []
