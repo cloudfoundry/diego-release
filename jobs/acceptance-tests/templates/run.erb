@@ -32,9 +32,11 @@ tags+=<%= p("acceptance_tests.skip_internet_tests") ? "noInternet," : "" %>
 tags+=<%= p("acceptance_tests.skip_docker_tests") ? "noDocker," : "" %>
 tags=${tags//,/ }
 
+failfast=<%= p("acceptance_tests.failfast") ? "-failFast" : "" %>
+
 nodes=<%= properties.acceptance_tests.nodes %>
 verbose=<%= properties.acceptance_tests.verbose ? "-v" : "" %>
-bin/test -randomizeAllSpecs $verbose -skipPackage=$packagesToSkip $skips -tags="${tags}" -nodes=$nodes -keepGoing || EXITSTATUS=$?
+bin/test -randomizeAllSpecs $failfast $verbose -skipPackage=$packagesToSkip $skips -tags="${tags}" -nodes=$nodes -keepGoing || EXITSTATUS=$?
 
 echo "Acceptance Tests Complete; exit status: $EXITSTATUS"
 
