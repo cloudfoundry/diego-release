@@ -43,3 +43,4 @@ config_from_cf:
   uaa:
     ssh_proxy_client_secret: (( merge ))
     token_url: (( merge ))
+  app_domains: (( merge ))

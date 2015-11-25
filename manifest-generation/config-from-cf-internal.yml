@@ -41,6 +41,7 @@ config_from_cf:
   uaa:
     ssh_proxy_client_secret: (( properties.uaa.clients.ssh-proxy.secret ))
     token_url: (( properties.uaa.url "/oauth/token" ))
+  app_domains: (( properties.app_domains ))
 
 # The keys below should not be included in the final stub
 name: (( merge ))
@@ -87,6 +88,7 @@ properties:
     machines: (( merge ))
     port: (( merge ))
   system_domain: (( merge ))
+  app_domains: (( merge ))
   uaa:
     clients:
       ssh-proxy:

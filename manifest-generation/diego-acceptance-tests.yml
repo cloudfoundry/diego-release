@@ -38,8 +38,8 @@ jobs:
   resource_pool: errand
 properties:
   acceptance_tests:
-    api: (( acceptance_tests_properties.api ))
-    apps_domain: (( acceptance_tests_properties.apps_domain ))
+    api: (( acceptance_tests_properties.api || config_from_cf.cc.srv_api_uri ))
+    apps_domain: (( acceptance_tests_properties.apps_domain || config_from_cf.app_domains.[0] ))
     admin_user: (( acceptance_tests_properties.admin_user ))
     admin_password: (( acceptance_tests_properties.admin_password ))
     secure_address: (( acceptance_tests_properties.secure_address ))
