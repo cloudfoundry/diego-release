@@ -27,15 +27,27 @@ $scripts_path/generate-deployment-manifest \
       > ${tmpdir}/config-from-cf.yml
 
     spiff merge \
-      manifest-generation/bosh-lite-stubs/diego-acceptance-tests.yml \
+      manifest-generation/diego-acceptance-tests.yml \
       manifest-generation/bosh-lite-stubs/iaas-settings.yml \
       ${tmpdir}/config-from-cf.yml \
+      manifest-generation/bosh-lite-stubs/acceptance-tests-properties.yml \
+      > ${tmpdir}/diego-acceptance-tests.yml
+
+    spiff merge \
+      manifest-generation/misc-templates/bosh.yml \
+      ${tmpdir}/diego-acceptance-tests.yml \
       > ${DIEGO_MANIFESTS_DIR}/diego-acceptance-tests.yml
 
     spiff merge \
-      manifest-generation/bosh-lite-stubs/diego-smoke-tests.yml \
+      manifest-generation/diego-smoke-tests.yml \
       manifest-generation/bosh-lite-stubs/iaas-settings.yml \
       ${tmpdir}/config-from-cf.yml \
+      manifest-generation/bosh-lite-stubs/smoke-tests-properties.yml \
+      > ${tmpdir}/diego-smoke-tests.yml
+
+    spiff merge \
+      manifest-generation/misc-templates/bosh.yml \
+      ${tmpdir}/diego-smoke-tests.yml \
       > ${DIEGO_MANIFESTS_DIR}/diego-smoke-tests.yml
 
     $scripts_path/generate-benchmarks-manifest \
