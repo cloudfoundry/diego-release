@@ -49,6 +49,7 @@ go install github.com/vito/gosub
     -test github.com/cloudfoundry-incubator/inigo/... \
     -test github.com/cloudfoundry-incubator/diego-smoke-tests/... \
     -test github.com/cloudfoundry-incubator/diego-acceptance-tests/... \
+    -test github.com/cloudfoundry-incubator/diego-upgrade-stability-tests/... \
     -test github.com/cloudfoundry-incubator/diegocanaryapp/...
 
 } > /tmp/packages
