@@ -1,0 +1,131 @@
+iaas_settings:
+  stemcell:
+    name: bosh-openstack-kvm-ubuntu-trusty-go_agent
+    version: latest
+  compilation_cloud_properties:
+    instance_type: m1.small
+  resource_pool_cloud_properties:
+    - name: access_z1
+      cloud_properties:
+        instance_type: m1.small
+    - name: access_z2
+      cloud_properties:
+        instance_type: m1.small
+    - name: access_z3
+      cloud_properties:
+        instance_type: m1.small
+    - name: brain_z1
+      cloud_properties:
+        instance_type: m1.small
+    - name: brain_z2
+      cloud_properties:
+        instance_type: m1.small
+    - name: brain_z3
+      cloud_properties:
+        instance_type: m1.small
+    - name: cc_bridge_z1
+      cloud_properties:
+        instance_type: m1.small
+    - name: cc_bridge_z2
+      cloud_properties:
+        instance_type: m1.small
+    - name: cc_bridge_z3
+      cloud_properties:
+        instance_type: m1.small
+    - name: cell_z1
+      cloud_properties:
+        instance_type: m1.large
+    - name: cell_z2
+      cloud_properties:
+        instance_type: m1.large
+    - name: cell_z3
+      cloud_properties:
+        instance_type: m1.large
+    - name: colocated_z1
+      cloud_properties:
+        instance_type: m1.large
+    - name: colocated_z2
+      cloud_properties:
+        instance_type: m1.large
+    - name: colocated_z3
+      cloud_properties:
+        instance_type: m1.large
+    - name: database_z1
+      cloud_properties:
+        instance_type: m1.small
+    - name: database_z2
+      cloud_properties:
+        instance_type: m1.small
+    - name: database_z3
+      cloud_properties:
+        instance_type: m1.small
+    - name: route_emitter_z1
+      cloud_properties:
+        instance_type: m1.small
+    - name: route_emitter_z2
+      cloud_properties:
+        instance_type: m1.small
+    - name: route_emitter_z3
+      cloud_properties:
+        instance_type: m1.small
+    - name: errand
+      cloud_properties:
+        instance_type: m1.small
+
+  subnet_configs:
+    - name: diego1
+      type: manual
+      subnets:
+      - range: 10.0.1.0/24
+        gateway: 10.0.1.1
+        static:
+        - 10.0.1.20 - 10.0.1.49
+        cloud_properties:
+          net_id: DIEGO_1_NET_ID
+          security_groups:
+          - bosh
+          - cf-private
+    - name: diego2
+      type: manual
+      subnets:
+      - range: 10.0.2.0/24
+        gateway: 10.0.2.1
+        static:
+        - 10.0.2.20 - 10.0.2.49
+        cloud_properties:
+          net_id: DIEGO_2_NET_ID
+          security_groups:
+          - bosh
+          - cf-private
+    - name: diego3
+      type: manual
+      subnets:
+      - range: 10.0.3.0/24
+        gateway: 10.0.3.1
+        static:
+        - 10.0.3.20 - 10.0.3.49
+        cloud_properties:
+          net_id: DIEGO_3_NET_ID
+          security_groups:
+          - bosh
+          - cf-private
+    - name: diego-acceptance-tests
+      type: manual
+      subnets:
+      - range: 10.0.4.0/24
+        gateway: 10.0.4.1
+        cloud_properties:
+          net_id: DIEGO_ACCEPTANCE_TESTS_NET_ID
+          security_groups:
+          - bosh
+          - cf-private
+    - name: diego-smoke-tests
+      type: manual
+      subnets:
+      - range: 10.0.5.0/24
+        gateway: 10.0.5.1
+        cloud_properties:
+          net_id: DIEGO_SMOKE_TESTS_NET_ID
+          security_groups:
+          - bosh
+          - cf-private
