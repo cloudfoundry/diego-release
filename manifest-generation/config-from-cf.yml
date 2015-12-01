@@ -22,8 +22,16 @@ config_from_cf:
     etcd_machines: (( merge ))
     shared_secret: (( merge ))
     traffic_controller_url: (( merge ))
+    tls:
+      ca: (( merge ))
+
   metron_agent:
     dropsonde_incoming_port: (( merge ))
+    preferred_protocol: (( merge ))
+    tls_client:
+      cert: (( merge ))
+      key: (( merge ))
+
   metron_endpoint:
     shared_secret: (( merge ))
   nats:
