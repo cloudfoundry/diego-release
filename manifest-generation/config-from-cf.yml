@@ -22,6 +22,7 @@ config_from_cf:
     etcd_machines: (( merge ))
     shared_secret: (( merge ))
     traffic_controller_url: (( merge ))
+    dropsonde_incoming_port: (( merge ))
   metron_agent:
     dropsonde_incoming_port: (( merge ))
   metron_endpoint:

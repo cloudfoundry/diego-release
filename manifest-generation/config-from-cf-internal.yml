@@ -22,6 +22,7 @@ config_from_cf:
     etcd_machines: (( properties.loggregator.etcd.machines ))
     shared_secret: (( properties.loggregator_endpoint.shared_secret ))
     traffic_controller_url: (( "wss://doppler." properties.system_domain ":443" ))
+    dropsonde_incoming_port: (( properties.loggregator.dropsonde_incoming_port ))
   metron_endpoint:
     shared_secret: (( properties.metron_endpoint.shared_secret ))
   metron_agent:
@@ -61,6 +62,7 @@ properties:
   loggregator:
     etcd:
       machines: (( merge ))
+    dropsonde_incoming_port: (( merge || nil ))
   loggregator_endpoint:
     shared_secret: (( merge ))
   metron_endpoint:

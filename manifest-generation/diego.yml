@@ -530,6 +530,7 @@ properties:
   loggregator:
     etcd:
       machines: (( config_from_cf.loggregator.etcd_machines ))
+    dropsonde_incoming_port: (( config_from_cf.loggregator.dropsonde_incoming_port ))
   loggregator_endpoint:
     shared_secret: (( config_from_cf.loggregator.shared_secret ))
   metron_endpoint:
