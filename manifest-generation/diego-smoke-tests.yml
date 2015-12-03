@@ -38,16 +38,17 @@ jobs:
   resource_pool: errand
 properties:
   diego:
-    ssl:
-      skip_cert_verify: true
     smoke_tests:
-      api: api.bosh-lite.com
-      org: smoke-tests
-      password: admin
-      space: tests
-      user: admin
-      apps_domain: bosh-lite.com
+      api: (( smoke_tests_properties.api ))
+      apps_domain: (( smoke_tests_properties.apps_domain ))
+      org: (( smoke_tests_properties.org ))
+      space: (( smoke_tests_properties.space ))
+      user: (( smoke_tests_properties.user ))
+      password: (( smoke_tests_properties.password ))
+    ssl:
+      skip_cert_verify: (( smoke_tests_properties.skip_cert_verify ))
 
 # The keys below should not be included in the final stub
 config_from_cf: (( merge ))
 iaas_settings: (( merge ))
+smoke_tests_properties: (( merge ))
