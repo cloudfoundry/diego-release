@@ -38,13 +38,14 @@ jobs:
   resource_pool: errand
 properties:
   acceptance_tests:
-    admin_password: admin
-    admin_user: admin
-    api: api.bosh-lite.com
-    apps_domain: bosh-lite.com
-    secure_address: 10.244.0.42:4001
-    skip_ssl_validation: true
+    api: (( acceptance_tests_properties.api ))
+    apps_domain: (( acceptance_tests_properties.apps_domain ))
+    admin_user: (( acceptance_tests_properties.admin_user ))
+    admin_password: (( acceptance_tests_properties.admin_password ))
+    secure_address: (( acceptance_tests_properties.secure_address ))
+    skip_ssl_validation: (( acceptance_tests_properties.skip_cert_verify ))
 
 # The keys below should not be included in the final stub
 config_from_cf: (( merge ))
 iaas_settings: (( merge ))
+acceptance_tests_properties: (( merge ))

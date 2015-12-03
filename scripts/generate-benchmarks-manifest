@@ -20,7 +20,8 @@ Copy one of the default_benchmark_properties files from manifest-generation/benc
   exit 1
 }
 
-benchmark_stub=$(dirname $0)/../manifest-generation/benchmark-errand-stubs/benchmarks.yml
+benchmark_template=$(dirname $0)/../manifest-generation/diego-benchmarks.yml
+bosh_template=$(dirname $0)/../manifest-generation/misc-templates/bosh.yml
 diego_properties=$(dirname $0)/../manifest-generation/benchmark-errand-stubs/diego-properties.yml
 tmpdir=$(mktemp -d /tmp/benchmark-manifest.XXXXX)
 diego_yml=$1
@@ -43,5 +44,17 @@ if [ ! -f "${iaas_settings}" ]; then
   usage
 fi
 
-spiff merge ${diego_properties} ${diego_yml} > ${tmpdir}/diego_properties.yml 
-spiff merge ${benchmark_stub} ${tmpdir}/diego_properties.yml ${benchmark_properties} ${iaas_settings}
+spiff merge \
+  ${diego_properties} \
+  ${diego_yml} \
+  > ${tmpdir}/diego_properties.yml 
+spiff merge \
+  ${benchmark_template} \
+  ${tmpdir}/diego_properties.yml \
+  ${benchmark_properties} \
+  ${iaas_settings} \
+  > ${tmpdir}/diego-benchmarks.yml
+spiff merge \
+  ${bosh_template} \
+  ${tmpdir}/diego-benchmarks.yml
+  
