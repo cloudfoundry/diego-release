@@ -44,6 +44,8 @@ properties:
     description: "PEM-encoded client certificate"
   diego.bbs.server_key:
     description: "PEM-encoded client key"
+  diego.bbs.desired_lrp_creation_timeout:
+    description: "expected maximum time to create all components of a desired LRP"
 
   diego.bbs.etcd.machines:
     description: "Addresses pointing to the ETCD cluster"
