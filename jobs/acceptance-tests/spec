@@ -39,6 +39,9 @@ properties:
   acceptance_tests.skip_docker_tests:
     default: false
     description: Skip tests that exercise docker support
+  acceptance_tests.failfast:
+    description: Skip all of the rest, if one of tests fails
+    default: true
   acceptance_tests.skip_regex:
     default: ""
     description: Regex for tests that should be skipped
