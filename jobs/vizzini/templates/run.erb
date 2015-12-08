@@ -38,8 +38,8 @@ go get -t -d -v ./...
 go install github.com/onsi/ginkgo/ginkgo
 
 
-<% if p("vizzini.eventually_timeout") %>
-  export DEFAULT_EVENTUALLY_TIMEOUT=<%= p("vizzini.eventually_timeout") %>
+<% if_p("vizzini.eventually_timeout") do |eventually_timeout| %>
+  export DEFAULT_EVENTUALLY_TIMEOUT=<%= eventually_timeout %>
 <% end %>
 
 ginkgo \
