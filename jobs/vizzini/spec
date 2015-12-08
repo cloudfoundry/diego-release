@@ -26,6 +26,7 @@ properties:
 
   vizzini.eventually_timeout:
     description: "default timeout for ginkgo assertions"
+    default: null
 
   vizzini.routable_domain_suffix:
     description: The deployment's routable domain name
