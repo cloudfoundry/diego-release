@@ -46,6 +46,9 @@ popd
 
 go install github.com/onsi/ginkgo/ginkgo
 
+# use the 1.28 version of tar that's installed in the inigo-ci docker image
+ln -s /usr/local/bin/tar ${GARDEN_BINPATH}
+
 export GARDEN_ROOTFS=/tmp/opt/inigo/rootfs
 mkdir -p $GARDEN_ROOTFS
 mount -t tmpfs tmpfs $GARDEN_ROOTFS
