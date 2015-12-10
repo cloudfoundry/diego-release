@@ -44,6 +44,7 @@ properties:
     admin_password: (( acceptance_tests_properties.admin_password ))
     secure_address: (( acceptance_tests_properties.secure_address ))
     skip_ssl_validation: (( acceptance_tests_properties.skip_cert_verify ))
+    skip_dea_validation: (( acceptance_tests_properties.skip_dea_compatibility ))
 
 # The keys below should not be included in the final stub
 config_from_cf: (( merge ))
