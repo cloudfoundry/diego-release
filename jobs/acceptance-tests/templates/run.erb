@@ -23,6 +23,7 @@ EXITSTATUS=0
 packagesToSkip=""
 packagesToSkip+=<%= p("acceptance_tests.run_security_groups_tests") ? "" : "security_groups," %>
 packagesToSkip+=<%= p("acceptance_tests.run_ssh_tests") ? "" : "ssh," %>
+packagesToSkip+=<%= p("acceptance_tests.skip_dea_compatibility? "" : "dea," %>
 [[ $packagesToSkip == *, ]] && packagesToSkip=${packagesToSkip%?}
 
 skips=<%= p("acceptance_tests.skip_regex") ? %Q[-skip="#{p("acceptance_tests.skip_regex")}"] : "" %>
