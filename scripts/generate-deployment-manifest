@@ -9,12 +9,12 @@ function usage() {
     $0 <MANDATORY ARGUMENTS> [OPTIONAL ARGUMENTS]
     Mandatory arguments:
        -c CF manifest file
-       -i IaaS-settings stub file 
-       -p property-overrides stub file 
+       -i IaaS-settings stub file
+       -p property-overrides stub file
     Optional arguments:
-       -n instance-count-overrides stub file 
-       -k persistent-disk overrides stub file 
-       -v release-versions stub file 
+       -n instance-count-overrides stub file
+       -k persistent-disk overrides stub file
+       -v release-versions stub file
 
     Example:
     $0 -c ~/deployments/cf.yml \\
@@ -30,7 +30,7 @@ function usage() {
 while getopts "c:i:p:n:k:v:" opt; do
   case $opt in
     c)
-      deployments=$OPTARG
+      cf_deployment_manifest=$OPTARG
       ;;
     i)
       iaas_settings=$OPTARG
@@ -54,7 +54,7 @@ while getopts "c:i:p:n:k:v:" opt; do
   esac
 done
 
-if [ -z ${deployments} ]; then
+if [ -z ${cf_deployment_manifest} ]; then
   >&2 echo "CF manifest file is missing"
   usage
 fi
@@ -94,8 +94,8 @@ if [[ ! -z "${release_versions}" && ! -f "${release_versions}" ]]; then
   usage
 fi
 
-if [ ! -f "${deployments}" ]; then
-  >&2 echo "CF manifest '${deployments}' is not a regular file"
+if [ ! -f "${cf_deployment_manifest}" ]; then
+  >&2 echo "CF manifest '${cf_deployment_manifest}' is not a regular file"
   usage
 fi
 
@@ -104,7 +104,7 @@ tmpdir=$(mktemp -d /tmp/diego-manifest.XXXXX)
 spiff merge \
   ${manifest_generation}/config-from-cf.yml \
   ${manifest_generation}/config-from-cf-internal.yml \
-  ${deployments} \
+  ${cf_deployment_manifest} \
   > ${tmpdir}/config-from-cf.yml
 
 spiff merge \
