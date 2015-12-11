@@ -1,6 +1,6 @@
 name: (( config_from_cf.cf_deployment_name "-diego" ))
 
-releases: (( base_releases additional_jobs.releases config_from_cf.cf_releases ))
+releases: (( base_releases config_from_cf.cf_releases ))
 
 director_uuid: (( config_from_cf.cf_director_uuid ))
 
@@ -116,7 +116,7 @@ resource_pools:
 
 jobs:
   - name: database_z1
-    templates: (( base_job_templates.database additional_jobs.database ))
+    templates: (( base_job_templates.database ))
     instances: (( instance_count_overrides.database_z1.instances || 1 ))
     persistent_disk: (( persistent_disk_overrides.database_z1 || 1024 ))
     resource_pool: database_z1
@@ -135,7 +135,7 @@ jobs:
         zone: z1
 
   - name: database_z2
-    templates: (( base_job_templates.database additional_jobs.database ))
+    templates: (( base_job_templates.database ))
     instances: (( instance_count_overrides.database_z2.instances || 1 ))
     persistent_disk: (( persistent_disk_overrides.database_z2 || 1024 ))
     resource_pool: database_z2
@@ -154,7 +154,7 @@ jobs:
         zone: z2
 
   - name: database_z3
-    templates: (( base_job_templates.database additional_jobs.database ))
+    templates: (( base_job_templates.database ))
     instances: (( instance_count_overrides.database_z3.instances || 1 ))
     persistent_disk: (( persistent_disk_overrides.database_z3 || 1024 ))
     resource_pool: database_z3
@@ -173,7 +173,7 @@ jobs:
         zone: z3
 
   - name: brain_z1
-    templates: (( base_job_templates.brain additional_jobs.brain ))
+    templates: (( base_job_templates.brain ))
     instances: (( instance_count_overrides.brain_z1.instances || 1 ))
     resource_pool: brain_z1
     networks:
@@ -190,7 +190,7 @@ jobs:
         zone: z1
 
   - name: cell_z1
-    templates: (( base_job_templates.cell additional_jobs.cell ))
+    templates: (( base_job_templates.cell ))
     instances: (( instance_count_overrides.cell_z1.instances || 1 ))
     resource_pool: cell_z1
     networks:
@@ -206,7 +206,7 @@ jobs:
           zone: z1
 
   - name: cc_bridge_z1
-    templates: (( base_job_templates.cc_bridge additional_jobs.cc_bridge ))
+    templates: (( base_job_templates.cc_bridge ))
     instances: (( instance_count_overrides.cc_bridge_z1.instances || 1 ))
     resource_pool: cc_bridge_z1
     networks:
@@ -226,7 +226,7 @@ jobs:
             tps: {}
 
   - name: route_emitter_z1
-    templates: (( base_job_templates.route_emitter additional_jobs.route_emitter ))
+    templates: (( base_job_templates.route_emitter ))
     instances: (( instance_count_overrides.route_emitter_z1.instances || 1 ))
     resource_pool: route_emitter_z1
     networks:
@@ -239,7 +239,7 @@ jobs:
         zone: z1
 
   - name: access_z1
-    templates: (( base_job_templates.access additional_jobs.access))
+    templates: (( base_job_templates.access ))
     instances: (( instance_count_overrides.access_z1.instances || 1 ))
     resource_pool: access_z1
     networks:
@@ -258,7 +258,7 @@ jobs:
             ssh_proxy: {}
 
   - name: brain_z2
-    templates: (( base_job_templates.brain additional_jobs.brain ))
+    templates: (( base_job_templates.brain ))
     instances: (( instance_count_overrides.brain_z2.instances || 1 ))
     resource_pool: brain_z2
     networks:
@@ -275,7 +275,7 @@ jobs:
         zone: z2
 
   - name: cell_z2
-    templates: (( base_job_templates.cell additional_jobs.cell ))
+    templates: (( base_job_templates.cell ))
     instances: (( instance_count_overrides.cell_z2.instances || 1 ))
     resource_pool: cell_z2
     networks:
@@ -291,7 +291,7 @@ jobs:
           zone: z2
 
   - name: cc_bridge_z2
-    templates: (( base_job_templates.cc_bridge additional_jobs.cc_bridge ))
+    templates: (( base_job_templates.cc_bridge ))
     instances: (( instance_count_overrides.cc_bridge_z2.instances || 1 ))
     resource_pool: cc_bridge_z2
     networks:
@@ -311,7 +311,7 @@ jobs:
             tps: {}
 
   - name: route_emitter_z2
-    templates: (( base_job_templates.route_emitter additional_jobs.route_emitter ))
+    templates: (( base_job_templates.route_emitter ))
     instances: (( instance_count_overrides.route_emitter_z2.instances || 1 ))
     resource_pool: route_emitter_z2
     networks:
@@ -324,7 +324,7 @@ jobs:
         zone: z2
 
   - name: access_z2
-    templates: (( base_job_templates.access additional_jobs.access))
+    templates: (( base_job_templates.access ))
     instances: (( instance_count_overrides.access_z2.instances || 1 ))
     resource_pool: access_z2
     networks:
@@ -343,7 +343,7 @@ jobs:
             ssh_proxy: {}
 
   - name: brain_z3
-    templates: (( base_job_templates.brain additional_jobs.brain ))
+    templates: (( base_job_templates.brain ))
     instances: (( instance_count_overrides.brain_z3.instances || 0 ))
     resource_pool: brain_z3
     networks:
@@ -360,7 +360,7 @@ jobs:
         zone: z3
 
   - name: cell_z3
-    templates: (( base_job_templates.cell additional_jobs.cell ))
+    templates: (( base_job_templates.cell ))
     instances: (( instance_count_overrides.cell_z3.instances || 0 ))
     resource_pool: cell_z3
     networks:
@@ -376,7 +376,7 @@ jobs:
           zone: z3
 
   - name: cc_bridge_z3
-    templates: (( base_job_templates.cc_bridge additional_jobs.cc_bridge ))
+    templates: (( base_job_templates.cc_bridge ))
     instances: (( instance_count_overrides.cc_bridge_z3.instances || 0 ))
     resource_pool: cc_bridge_z3
     networks:
@@ -396,7 +396,7 @@ jobs:
             tps: {}
 
   - name: route_emitter_z3
-    templates: (( base_job_templates.route_emitter additional_jobs.route_emitter ))
+    templates: (( base_job_templates.route_emitter ))
     instances: (( instance_count_overrides.route_emitter_z3.instances || 0 ))
     resource_pool: route_emitter_z3
     networks:
@@ -409,7 +409,7 @@ jobs:
         zone: z3
 
   - name: access_z3
-    templates: (( base_job_templates.access additional_jobs.access))
+    templates: (( base_job_templates.access ))
     instances: (( instance_count_overrides.access_z3.instances || 0 ))
     resource_pool: access_z3
     networks:
@@ -428,7 +428,7 @@ jobs:
             ssh_proxy: {}
 
   - name: colocated_z1
-    templates: (( base_job_templates.colocated additional_jobs.colocated ))
+    templates: (( base_job_templates.colocated ))
     instances: (( instance_count_overrides.colocated_z1.instances || 0 ))
     persistent_disk: (( persistent_disk_overrides.colocated_z1 || 1024 ))
     resource_pool: colocated_z1
@@ -458,7 +458,7 @@ jobs:
         zone: z1
 
   - name: colocated_z2
-    templates: (( base_job_templates.colocated additional_jobs.colocated ))
+    templates: (( base_job_templates.colocated ))
     instances: (( instance_count_overrides.colocated_z2.instances || 0 ))
     persistent_disk: (( persistent_disk_overrides.colocated_z2 || 1024 ))
     resource_pool: colocated_z2
@@ -488,7 +488,7 @@ jobs:
         zone: z2
 
   - name: colocated_z3
-    templates: (( base_job_templates.colocated additional_jobs.colocated ))
+    templates: (( base_job_templates.colocated ))
     instances: (( instance_count_overrides.colocated_z3.instances || 0 ))
     persistent_disk: (( persistent_disk_overrides.colocated_z3 || 1024 ))
     resource_pool: colocated_z3
@@ -780,18 +780,9 @@ properties:
 # The keys below should not be included in the final stub
 config_from_cf: (( merge ))
 iaas_settings: (( merge ))
-instance_count_overrides: (( merge ))
-persistent_disk_overrides: (( merge ))
+instance_count_overrides: (( merge || nil ))
+persistent_disk_overrides: (( merge || nil ))
 property_overrides: (( merge ))
-additional_jobs:
-  access: (( merge || [] ))
-  brain: (( merge || [] ))
-  cc_bridge: (( merge || [] ))
-  cell: (( merge || [] ))
-  colocated: (( merge || [] ))
-  database: (( merge || [] ))
-  releases: (( merge || [] ))
-  route_emitter: (( merge || [] ))
 release_versions: (( merge || nil ))
 base_releases:
   - name: diego
