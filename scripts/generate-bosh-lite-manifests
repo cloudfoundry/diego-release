@@ -9,13 +9,12 @@ mkdir -p ${DIEGO_MANIFESTS_DIR}
 
 pushd ${DIEGO_RELEASE_DIR}
 $scripts_path/generate-deployment-manifest \
-    manifest-generation/bosh-lite-stubs/property-overrides.yml \
-    manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
-    manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \
-    manifest-generation/bosh-lite-stubs/iaas-settings.yml \
-    manifest-generation/bosh-lite-stubs/additional-jobs.yml \
-    manifest-generation/bosh-lite-stubs/release-versions.yml \
-    ${CF_MANIFESTS_DIR} \
+    -c ${CF_MANIFESTS_DIR}/cf.yml \
+    -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \
+    -p manifest-generation/bosh-lite-stubs/property-overrides.yml \
+    -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
+    -k manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \
+    -v manifest-generation/bosh-lite-stubs/release-versions.yml \
     > ${DIEGO_MANIFESTS_DIR}/diego.yml
 
     tmpdir=$(mktemp -d /tmp/diego-manifest.XXXXX)
