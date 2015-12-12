@@ -21,6 +21,8 @@ heartbeat() {
   curl --fail --silent http://$ADDRESS/ping >/dev/null 2>&1
 }
 
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
 if [ ! -f $PIDFILE ]; then
   echo "$(date): PIDFILE does not exist"
   echo 0 >&3
@@ -37,6 +39,7 @@ if evacuate; then
     echo "$(date): waiting"
   done
 
+  kill_and_wait $PIDFILE
   echo "$(date): rep exited"
   echo 0 >&3
   exit 0
