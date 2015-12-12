@@ -39,11 +39,11 @@ RUN \
 RUN \
   gem install --no-rdoc --no-ri \
     bundler \
-    bosh_cli:1.3048.0 \
+    bosh_cli \
     debugger-ruby_core_source
 
 RUN \
-  bash -l -c "pip install awscli==1.6.6"
+  bash -l -c "pip install awscli"
 
 RUN \
   wget https://dl.bintray.com/mitchellh/vagrant/vagrant_1.6.5_x86_64.deb -P /tmp && \
