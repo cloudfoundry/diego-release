@@ -36,10 +36,11 @@ RUN \
   rm -rf /usr/local/share/ri && \
   rm -rf /tmp/ruby-install-0.5.0
 
+# bosh cli locked until we can reliably upgrade our director or CI
 RUN \
   gem install --no-rdoc --no-ri \
     bundler \
-    bosh_cli \
+    bosh_cli:1.3048.0 \
     debugger-ruby_core_source
 
 RUN \
