@@ -54,48 +54,55 @@ while getopts "c:i:p:n:k:v:" opt; do
   esac
 done
 
+argument_error=false
+
 if [ -z ${cf_deployment_manifest} ]; then
   >&2 echo "CF manifest file is missing"
-  usage
+  argument_error=true
+else
+  if [ ! -f "${cf_deployment_manifest}" ]; then
+    >&2 echo "CF manifest '${cf_deployment_manifest}' is not a regular file"
+    argument_error=true
+  fi
 fi
 
 if [ -z ${iaas_settings} ]; then
   >&2 echo "IaaS-settings stub file is missing"
-  usage
+  argument_error=true
+else
+  if [ ! -f "${iaas_settings}" ]; then
+    >&2 echo "IaaS Setting stub '${iaas_settings}' is not a regular file"
+    argument_error=true
+  fi
 fi
 
 if [ -z ${property_overrides} ]; then
   >&2 echo "property-overrides stub file is missing"
-  usage
-fi
+  argument_error=true
 
-if [ ! -f "${property_overrides}" ]; then
-  >&2 echo "Property Overrides stub '${property_overrides}' is not a regular file"
-  usage
+else
+  if [ ! -f "${property_overrides}" ]; then
+    >&2 echo "Property Overrides stub '${property_overrides}' is not a regular file"
+    argument_error=true
+  fi
 fi
 
 if [[ ! -z "${instance_counts}" && ! -f "${instance_counts}" ]]; then
   >&2 echo "Instance Count Overrides stub '${instance_counts}' is not a regular file"
-  usage
+  argument_error=true
 fi
 
 if [[ ! -z "${persistent_disk}" && ! -f "${persistent_disk}" ]]; then
   >&2 echo "Persistent Disk Overrides stub '${persistent_disk}' is not a regular file"
-  usage
-fi
-
-if [ ! -f "${iaas_settings}" ]; then
-  >&2 echo "IaaS Setting stub '${iaas_settings}' is not a regular file"
-  usage
+  argument_error=true
 fi
 
 if [[ ! -z "${release_versions}" && ! -f "${release_versions}" ]]; then
   >&2 echo "Release versions stub '${release_versions}' is not a regular file"
-  usage
+  argument_error=true
 fi
 
-if [ ! -f "${cf_deployment_manifest}" ]; then
-  >&2 echo "CF manifest '${cf_deployment_manifest}' is not a regular file"
+if [ $argument_error ]; then
   usage
 fi
 
