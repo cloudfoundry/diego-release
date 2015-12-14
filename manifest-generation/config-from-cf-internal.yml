@@ -80,8 +80,8 @@ properties:
   metron_agent:
     dropsonde_incoming_port: (( merge || nil ))
     preferred_protocol: (( merge ))
-    enable_buffer: (( merge ))
-    buffer_size: (( merge ))
+    enable_buffer: (( merge || nil ))
+    buffer_size: (( merge || nil ))
     tls_client:
       cert: (( merge ))
       key: (( merge ))
