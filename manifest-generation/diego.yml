@@ -522,6 +522,8 @@ properties:
   metron_agent:
     deployment: (( name ))
     preferred_protocol: (( config_from_cf.metron_agent.preferred_protocol ))
+    enable_buffer: (( config_from_cf.metron_agent.enable_buffer ))
+    buffer_size: (( config_from_cf.metron_agent.buffer_size ))
     tls_client:
       cert: (( config_from_cf.metron_agent.tls_client.cert ))
       key: (( config_from_cf.metron_agent.tls_client.key ))
