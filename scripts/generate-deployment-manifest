@@ -54,8 +54,6 @@ while getopts "c:i:p:n:k:v:" opt; do
   esac
 done
 
-argument_error=false
-
 if [ -z ${cf_deployment_manifest} ]; then
   >&2 echo "CF manifest file is missing"
   argument_error=true
@@ -102,7 +100,7 @@ if [[ ! -z "${release_versions}" && ! -f "${release_versions}" ]]; then
   argument_error=true
 fi
 
-if [ $argument_error ]; then
+if [ ! -z $argument_error ]; then
   usage
 fi
 
