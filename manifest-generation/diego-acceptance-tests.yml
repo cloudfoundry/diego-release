@@ -3,6 +3,8 @@ director_uuid: (( config_from_cf.cf_director_uuid ))
 
 name: (( config_from_cf.cf_deployment_name "-diego-acceptance-tests" ))
 
+disk_pools:
+
 releases:
 - name: diego
   version: latest 

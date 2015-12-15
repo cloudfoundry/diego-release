@@ -28,6 +28,11 @@ networks:
     type: manual
     subnets: (( iaas_settings.subnet_configs.diego3.subnets ))
 
+disk_pools:
+  - name: database_disks
+    disk_size: (( iaas_settings.disk_pools.database_disks.disk_size || 1024 ))
+    cloud_properties: (( iaas_settings.disk_pools.database_disks.cloud_properties ))
+
 resource_pools:
   - name: access_z1
     network: diego1
@@ -118,7 +123,7 @@ jobs:
   - name: database_z1
     templates: (( base_job_templates.database ))
     instances: (( instance_count_overrides.database_z1.instances || 1 ))
-    persistent_disk: (( persistent_disk_overrides.database_z1 || 1024 ))
+    persistent_disk_pool: database_disks
     resource_pool: database_z1
     networks:
       - name: diego1
@@ -137,7 +142,7 @@ jobs:
   - name: database_z2
     templates: (( base_job_templates.database ))
     instances: (( instance_count_overrides.database_z2.instances || 1 ))
-    persistent_disk: (( persistent_disk_overrides.database_z2 || 1024 ))
+    persistent_disk_pool: database_disks
     resource_pool: database_z2
     networks:
       - name: diego2
@@ -156,7 +161,7 @@ jobs:
   - name: database_z3
     templates: (( base_job_templates.database ))
     instances: (( instance_count_overrides.database_z3.instances || 1 ))
-    persistent_disk: (( persistent_disk_overrides.database_z3 || 1024 ))
+    persistent_disk_pool: database_disks
     resource_pool: database_z3
     networks:
       - name: diego3
@@ -430,7 +435,7 @@ jobs:
   - name: colocated_z1
     templates: (( base_job_templates.colocated ))
     instances: (( instance_count_overrides.colocated_z1.instances || 0 ))
-    persistent_disk: (( persistent_disk_overrides.colocated_z1 || 1024 ))
+    persistent_disk_pool: database_disks
     resource_pool: colocated_z1
     networks:
       - name: diego1
@@ -460,7 +465,7 @@ jobs:
   - name: colocated_z2
     templates: (( base_job_templates.colocated ))
     instances: (( instance_count_overrides.colocated_z2.instances || 0 ))
-    persistent_disk: (( persistent_disk_overrides.colocated_z2 || 1024 ))
+    persistent_disk_pool: database_disks
     resource_pool: colocated_z2
     networks:
       - name: diego2
@@ -490,7 +495,7 @@ jobs:
   - name: colocated_z3
     templates: (( base_job_templates.colocated ))
     instances: (( instance_count_overrides.colocated_z3.instances || 0 ))
-    persistent_disk: (( persistent_disk_overrides.colocated_z3 || 1024 ))
+    persistent_disk_pool: database_disks
     resource_pool: colocated_z3
     networks:
       - name: diego3
@@ -783,7 +788,6 @@ properties:
 config_from_cf: (( merge ))
 iaas_settings: (( merge ))
 instance_count_overrides: (( merge || nil ))
-persistent_disk_overrides: (( merge || nil ))
 property_overrides: (( merge ))
 release_versions: (( merge || nil ))
 base_releases:

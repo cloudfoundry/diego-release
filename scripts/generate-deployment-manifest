@@ -13,7 +13,6 @@ function usage() {
        -p property-overrides stub file
     Optional arguments:
        -n instance-count-overrides stub file
-       -k persistent-disk overrides stub file
        -v release-versions stub file
 
     Example:
@@ -21,7 +20,6 @@ function usage() {
        -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \\
        -p manifest-generation/bosh-lite-stubs/property-overrides.yml \\
        -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
-       -k manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \\
        -v manifest-generation/bosh-lite-stubs/release-versions.yml
 "
   exit 1
@@ -42,7 +40,7 @@ while getopts "c:i:p:n:k:v:" opt; do
       instance_counts=$OPTARG
       ;;
     k)
-      persistent_disk=$OPTARG
+      >&2 echo "DEPRECATED: Persistent disk configuration moved to iaas_settings"
       ;;
     v)
       release_versions=$OPTARG
@@ -90,11 +88,6 @@ if [[ ! -z "${instance_counts}" && ! -f "${instance_counts}" ]]; then
   argument_error=true
 fi
 
-if [[ ! -z "${persistent_disk}" && ! -f "${persistent_disk}" ]]; then
-  >&2 echo "Persistent Disk Overrides stub '${persistent_disk}' is not a regular file"
-  argument_error=true
-fi
-
 if [[ ! -z "${release_versions}" && ! -f "${release_versions}" ]]; then
   >&2 echo "Release versions stub '${release_versions}' is not a regular file"
   argument_error=true
@@ -116,7 +109,6 @@ spiff merge \
   ${manifest_generation}/diego.yml \
   ${property_overrides} \
   ${instance_counts} \
-  ${persistent_disk} \
   ${iaas_settings} \
   ${release_versions} \
   ${tmpdir}/config-from-cf.yml \

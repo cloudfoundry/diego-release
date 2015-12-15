@@ -17,7 +17,6 @@ $scripts_path/generate-deployment-manifest \
     -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \
     -p manifest-generation/bosh-lite-stubs/property-overrides.yml \
     -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
-    -k manifest-generation/bosh-lite-stubs/persistent-disk-overrides.yml \
     -v manifest-generation/bosh-lite-stubs/release-versions.yml \
     > ${DIEGO_MANIFESTS_DIR}/diego.yml
 
