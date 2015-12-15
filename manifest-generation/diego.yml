@@ -30,7 +30,7 @@ networks:
 
 disk_pools:
   - name: database_disks
-    disk_size: (( iaas_settings.disk_pools.database_disks.disk_size || 1024 ))
+    disk_size: (( iaas_settings.disk_pools.database_disks.disk_size ))
     cloud_properties: (( iaas_settings.disk_pools.database_disks.cloud_properties ))
 
 resource_pools:

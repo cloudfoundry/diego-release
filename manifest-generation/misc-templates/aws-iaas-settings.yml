@@ -1,8 +1,10 @@
 iaas_settings:
-  disk_pools: 
+  disk_pools:
     - name: database_disks
-      disk_size: (( merge ))
-      cloud_properties: (( merge ))
+      disk_size: (( merge || nil ))
+      cloud_properties:
+        <<: (( merge ))
+        type: gp2
   stemcell:
     name: (( merge ))
     version: (( merge ))
