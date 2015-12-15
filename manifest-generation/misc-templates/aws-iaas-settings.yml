@@ -1,7 +1,7 @@
 iaas_settings:
   disk_pools:
     - name: database_disks
-      disk_size: (( merge || nil ))
+      disk_size: (( merge || 1024 ))
       cloud_properties:
         <<: (( merge ))
         type: gp2

@@ -1,7 +1,7 @@
 iaas_settings:
   disk_pools:
     - name: database_disks
-      disk_size: 1024
+      disk_size: (( merge ))
       cloud_properties:
         <<: (( merge ))
   stemcell:
