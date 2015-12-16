@@ -30,8 +30,8 @@ networks:
 
 disk_pools:
   - name: database_disks
-    disk_size: (( iaas_settings.disk_pools.database_disks.disk_size ))
-    cloud_properties: (( iaas_settings.disk_pools.database_disks.cloud_properties ))
+    disk_size: (( iaas_settings.disk_pools.database_disks.disk_size || 1024 ))
+    cloud_properties: (( iaas_settings.disk_pools.database_disks.cloud_properties || empty_hash ))
 
 resource_pools:
   - name: access_z1
@@ -790,6 +790,7 @@ iaas_settings: (( merge ))
 instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
 release_versions: (( merge || nil ))
+empty_hash: {}
 base_releases:
   - name: diego
     version: (( release_versions.diego || "latest" ))
