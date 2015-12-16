@@ -29,9 +29,12 @@ files:
   - github.com/cloudfoundry-incubator/diego-ssh/signals/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/termcodes/*.go # gosub
   - github.com/cloudfoundry-incubator/locket/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
   - github.com/cloudfoundry/dropsonde/log_sender/*.go # gosub
   - github.com/cloudfoundry/dropsonde/logs/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/metrics/*.go # gosub
   - github.com/cloudfoundry/gosteno/*.go # gosub
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
   - github.com/cloudfoundry/sonde-go/events/*.go # gosub

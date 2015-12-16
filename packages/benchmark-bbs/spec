@@ -49,7 +49,12 @@ files:
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/events/*.go # gosub
   - github.com/cloudfoundry-incubator/locket/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/metrics/*.go # gosub
   - github.com/cloudfoundry/gunk/workpool/*.go # gosub
+  - github.com/cloudfoundry/sonde-go/events/*.go # gosub
   - github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/gogo/protobuf/sortkeys/*.go # gosub
   - github.com/hashicorp/consul/api/*.go # gosub
@@ -78,12 +83,7 @@ files:
   - github.com/cloudfoundry-incubator/bbs/taskworkpool/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
-  - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
-  - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
-  - github.com/cloudfoundry/dropsonde/metrics/*.go # gosub
   - github.com/cloudfoundry/gunk/urljoiner/*.go # gosub
-  - github.com/cloudfoundry/sonde-go/events/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/ugorji/go/codec/*.go # gosub
   - github.com/onsi/ginkgo/internal/codelocation/*.go # gosub
