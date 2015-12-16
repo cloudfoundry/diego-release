@@ -60,6 +60,10 @@ case $1 in
         # Default value is 0 (disabled). It is generally a safer alternative to tcp_tw_recycle
 
         echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse
+
+        # NF_CONNTRACK_MAX
+        # Default value is 65536. We set it to a larger number to avoid running out of connections.
+        echo 262144 > /proc/sys/net/netfilter/nf_conntrack_max
     fi
 
     # Allowed number of open file descriptors
@@ -68,9 +72,6 @@ case $1 in
     # Enable maximum OS thread concurrency
     export GOMAXPROCS=$(nproc)
 
-    # NF_CONNTRACK_MAX
-    # Default value is 65536. We set it to a larger number to avoid running out of connections.
-    echo 262144 > /proc/sys/net/netfilter/nf_conntrack_max
 
     chpst -u vcap:vcap /var/vcap/packages/rep/bin/rep ${bbs_sec_flags} \
       -bbsAddress=${bbs_api_url} \
