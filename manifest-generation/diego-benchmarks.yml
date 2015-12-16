@@ -1,7 +1,7 @@
 ---
-director_uuid: 
+director_uuid:
 
-name: "diego-benchmarks" 
+name: "diego-benchmarks"
 
 releases:
 - name: diego
@@ -14,12 +14,10 @@ networks:
   type: manual
   subnets: (( iaas_settings.subnet_configs.diego-benchmarks.subnets ))
 
-disk_pools:
-
 resource_pools:
 
 compilation:
-  network: diego-benchmarks 
+  network: diego-benchmarks
   reuse_compilation_vms: true
   workers: 2
   cloud_properties: (( resource_pools.[0].cloud_properties ))
@@ -41,26 +39,26 @@ jobs:
   instances: 1
   networks:
     - name: diego-benchmarks
-  resource_pool: benchmarks_z1 
+  resource_pool: benchmarks_z1
 
 properties:
   consul: (( merge ))
   benchmark-bbs:
-    bbs: (( merge )) 
+    bbs: (( merge ))
     etcd: (( merge ))
     client_timeout: (( merge ))
     active_key_label: (( merge ))
     encryption_keys: (( merge ))
-    desired_lrps: (( merge )) 
-    num_trials: (( merge )) 
-    num_populate_workers: (( merge )) 
-    aws_access_key_id: (( merge || nil )) 
-    aws_secret_access_key: (( merge || nil )) 
-    aws_bucket_name: (( merge || nil )) 
-    aws_region: (( merge || nil )) 
-    datadog_api_key: (( merge || nil )) 
-    datadog_app_key: (( merge || nil )) 
-    datadog_metric_prefix: (( merge || nil )) 
+    desired_lrps: (( merge ))
+    num_trials: (( merge ))
+    num_populate_workers: (( merge ))
+    aws_access_key_id: (( merge || nil ))
+    aws_secret_access_key: (( merge || nil ))
+    aws_bucket_name: (( merge || nil ))
+    aws_region: (( merge || nil ))
+    datadog_api_key: (( merge || nil ))
+    datadog_app_key: (( merge || nil ))
+    datadog_metric_prefix: (( merge || nil ))
     log_level: (( merge || nil ))
     log_file: (( merge || nil ))
 

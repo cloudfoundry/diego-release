@@ -10,7 +10,7 @@ update: (( merge ))
 
 networks: (( merge ))
 
-disk_pools: (( merge ))
+disk_pools: (( merge || [] ))
 
 resource_pools: (( merge ))
 
