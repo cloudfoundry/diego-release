@@ -14,7 +14,7 @@ networks:
   type: manual
   subnets: (( iaas_settings.subnet_configs.diego-benchmarks.subnets ))
 
-disk_pools:
+disk_pools: (( iaas_settings.disk_pools ))
 
 resource_pools:
 
