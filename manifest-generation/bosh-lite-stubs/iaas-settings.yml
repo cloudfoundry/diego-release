@@ -1,7 +1,7 @@
 iaas_settings:
   disk_pools:
     - name: database_disks
-      disk_size: null
+      disk_size: 1024
   stemcell:
     name: bosh-warden-boshlite-ubuntu-trusty-go_agent
     version: latest
