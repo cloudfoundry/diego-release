@@ -249,7 +249,6 @@ jobs:
     resource_pool: access_z1
     networks:
       - name: diego1
-        static_ips: (( static_ips(1,2,3,4,5,6,7,8,9,10) ))
     update:
       serial: false
       max_in_flight: (( instance_count_overrides.access_z1.max_in_flight || 1 ))
@@ -334,7 +333,6 @@ jobs:
     resource_pool: access_z2
     networks:
       - name: diego2
-        static_ips: (( static_ips(1,2,3,4,5,6,7,8,9,10) ))
     update:
       serial: false
       max_in_flight: (( instance_count_overrides.access_z2.max_in_flight || 1))
@@ -419,7 +417,6 @@ jobs:
     resource_pool: access_z3
     networks:
       - name: diego3
-        static_ips: (( static_ips(1,2,3,4,5,6,7,8,9,10) ))
     update:
       serial: false
       max_in_flight: (( instance_count_overrides.access_z3.max_in_flight || 1))
@@ -439,7 +436,6 @@ jobs:
     resource_pool: colocated_z1
     networks:
       - name: diego1
-        static_ips: (( static_ips(11,12,13,14,15,16,17,18,19,20) ))
     update:
       serial: true
       max_in_flight: 1
@@ -469,7 +465,6 @@ jobs:
     resource_pool: colocated_z2
     networks:
       - name: diego2
-        static_ips: (( static_ips(11,12,13,14,15,16,17,18,19,20) ))
     update:
       serial: true
       max_in_flight: 1
@@ -499,7 +494,6 @@ jobs:
     resource_pool: colocated_z3
     networks:
       - name: diego3
-        static_ips: (( static_ips(11,12,13,14,15,16,17,18,19,20) ))
     update:
       serial: true
       max_in_flight: 1
@@ -727,7 +721,6 @@ properties:
         client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
       host_key: (( property_overrides.ssh_proxy.host_key || "" ))
-      servers: (( jobs.access_z1.networks.diego1.static_ips jobs.access_z2.networks.diego2.static_ips jobs.access_z3.networks.diego3.static_ips jobs.colocated_z1.networks.diego1.static_ips jobs.colocated_z2.networks.diego2.static_ips jobs.colocated_z3.networks.diego3.static_ips ))
       enable_cf_auth: (( property_overrides.ssh_proxy.enable_cf_auth || false ))
       enable_diego_auth: (( property_overrides.ssh_proxy.enable_diego_auth || false ))
       uaa_secret: (( config_from_cf.uaa.ssh_proxy_client_secret ))
