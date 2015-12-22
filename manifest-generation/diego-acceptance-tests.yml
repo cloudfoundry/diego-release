@@ -39,13 +39,13 @@ jobs:
 properties:
   acceptance_tests:
     api: (( acceptance_tests_properties.api || config_from_cf.cc.srv_api_uri ))
-    apps_domain: (( acceptance_tests_properties.apps_domain || config_from_cf.app_domains.[0] ))
-    admin_user: (( acceptance_tests_properties.admin_user ))
-    admin_password: (( acceptance_tests_properties.admin_password ))
-    secure_address: (( acceptance_tests_properties.secure_address ))
-    skip_ssl_validation: (( acceptance_tests_properties.skip_cert_verify ))
+    apps_domain: (( property_overrides.acceptance_tests.apps_domain || config_from_cf.app_domains.[0] ))
+    admin_user: (( property_overrides.acceptance_tests.admin_user ))
+    admin_password: (( property_overrides.acceptance_tests.admin_password ))
+    secure_address: (( property_overrides.acceptance_tests.secure_address ))
+    skip_ssl_validation: (( property_overrides.acceptance_tests.skip_cert_verify ))
 
 # The keys below should not be included in the final stub
 config_from_cf: (( merge ))
 iaas_settings: (( merge ))
-acceptance_tests_properties: (( merge ))
+property_overrides: (( merge ))

@@ -39,16 +39,16 @@ jobs:
 properties:
   diego:
     smoke_tests:
-      api: (( smoke_tests_properties.api || config_from_cf.cc.srv_api_uri ))
-      apps_domain: (( smoke_tests_properties.apps_domain || config_from_cf.app_domains.[0] ))
-      org: (( smoke_tests_properties.org ))
-      space: (( smoke_tests_properties.space ))
-      user: (( smoke_tests_properties.user ))
-      password: (( smoke_tests_properties.password ))
+      api: (( property_overrides.smoke_tests.api || config_from_cf.cc.srv_api_uri ))
+      apps_domain: (( property_overrides.smoke_tests.apps_domain || config_from_cf.app_domains.[0] ))
+      org: (( property_overrides.smoke_tests.org ))
+      space: (( property_overrides.smoke_tests.space ))
+      user: (( property_overrides.smoke_tests.user ))
+      password: (( property_overrides.smoke_tests.password ))
     ssl:
-      skip_cert_verify: (( smoke_tests_properties.skip_cert_verify ))
+      skip_cert_verify: (( property_overrides.smoke_tests.skip_cert_verify ))
 
 # The keys below should not be included in the final stub
 config_from_cf: (( merge ))
 iaas_settings: (( merge ))
-smoke_tests_properties: (( merge ))
+property_overrides: (( merge ))
