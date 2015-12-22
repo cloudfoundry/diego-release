@@ -39,8 +39,8 @@ jobs:
 properties:
   diego:
     smoke_tests:
-      api: (( smoke_tests_properties.api ))
-      apps_domain: (( smoke_tests_properties.apps_domain ))
+      api: (( smoke_tests_properties.api || config_from_cf.cc.srv_api_uri ))
+      apps_domain: (( smoke_tests_properties.apps_domain || config_from_cf.app_domains.[0] ))
       org: (( smoke_tests_properties.org ))
       space: (( smoke_tests_properties.space ))
       user: (( smoke_tests_properties.user ))
