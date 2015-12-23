@@ -7,15 +7,12 @@ packages:
 templates:
   run.erb: bin/run
   dns_health_check.erb: bin/dns_health_check
-  bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
 
 properties:
   vizzini.bbs.api_location:
     description: The address of the BBS
-  vizzini.bbs.ca_cert:
-    description: "PEM-encoded CA certificate"
   vizzini.bbs.client_cert:
     description: "PEM-encoded client certificate"
   vizzini.bbs.client_key:

@@ -19,8 +19,7 @@ EXITSTATUS=0
 <% if p("vizzini.bbs.require_ssl") %>
   bbs_sec_flags=" \
    --bbs-client-cert=${CONF_DIR}/certs/bbs/client.crt \
-   --bbs-client-key=${CONF_DIR}/certs/bbs/client.key \
-   --bbs-ca=${CONF_DIR}/certs/bbs/ca.crt"
+   --bbs-client-key=${CONF_DIR}/certs/bbs/client.key"
 
   bbs_api_url="<%= "https://" + p("vizzini.bbs.api_location") %>"
 <% else %>
