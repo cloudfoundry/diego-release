@@ -14,7 +14,6 @@ files:
   - github.com/cloudfoundry-incubator/bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/events/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/models/*.go # gosub
-  - github.com/cloudfoundry-incubator/consuladapter/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/routes/*.go # gosub
   - github.com/cloudfoundry-incubator/routing-info/cfroutes/*.go # gosub
   - github.com/kr/pty/*.go # gosub
@@ -25,7 +24,6 @@ files:
   - github.com/onsi/gomega/gexec/*.go # gosub
   - github.com/onsi/gomega/ghttp/*.go # gosub
   - github.com/onsi/say/*.go # gosub
-  - github.com/pivotal-golang/clock/*.go # gosub
   - github.com/pivotal-golang/lager/*.go # gosub
   - github.com/pivotal-golang/lager/lagertest/*.go # gosub
   - github.com/onsi/ginkgo/internal/codelocation/*.go # gosub
@@ -68,6 +66,7 @@ files:
   - github.com/gogo/protobuf/sortkeys/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
+  - github.com/cloudfoundry-incubator/consuladapter/*.go # gosub
   - github.com/cloudfoundry-incubator/locket/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
@@ -75,6 +74,7 @@ files:
   - github.com/cloudfoundry/dropsonde/metrics/*.go # gosub
   - github.com/cloudfoundry/sonde-go/events/*.go # gosub
   - github.com/hashicorp/consul/api/*.go # gosub
+  - github.com/pivotal-golang/clock/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
   - github.com/vito/go-sse/sse/*.go # gosub
