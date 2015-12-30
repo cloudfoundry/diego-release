@@ -1,4 +1,4 @@
-# Cloud Foundry Diego [BOSH release]
+# Cloud Foundry Diego [BOSH release] [![slack.cloudfoundry.org](https://slack.cloudfoundry.org/badge.svg)](https://slack.cloudfoundry.org)
 
 ----
 This repo is a [BOSH](https://github.com/cloudfoundry/bosh) release for
