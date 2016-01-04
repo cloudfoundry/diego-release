@@ -57,7 +57,7 @@ git clean -ffd
 
 ### From a final release of CF
 
-On the CF Release [GitHub Releases](https://github.com/cloudfoundry-incubator/diego-release/releases) page,
+On the CF Release [GitHub Releases](https://github.com/cloudfoundry/cf-release/releases) page,
 recommended versions of Diego, Garden, and ETCD are listed with each CF Release.
 This is the easiest way to correlate releases.
 
