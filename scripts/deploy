@@ -7,6 +7,7 @@ eval $($scripts_path/get_paths.sh)
 
 ./$scripts_path/generate-bosh-lite-manifests
 
+bosh --parallel 10 sync blobs
 bosh create release --force
 bosh -t 192.168.50.4 -n upload release
 bosh -t 192.168.50.4 -d $DIEGO_MANIFESTS_DIR/diego.yml -n deploy
