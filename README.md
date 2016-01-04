@@ -181,9 +181,9 @@ or the
 
 
 ---
-## Pushing to Diego
+## Pushing a CF Application to the Diego backend
 
-1. Create new CF Org & Space:
+1. Create and target a CF org and space:
 
         cf api --skip-ssl-validation api.bosh-lite.com
         cf auth admin admin
@@ -192,8 +192,9 @@ or the
         cf create-space diego
         cf target -s diego
 
-1. Push your application without starting it:
+1. Change into your application directory and push your application without starting it:
 
+        cd <app-directory>
         cf push my-app --no-start
 
 1. [Enable Diego](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/migrating-to-diego.md#targeting-diego) for your application.
