@@ -5,5 +5,11 @@
   "admin_password"     : "<%= properties.acceptance_tests.admin_password %>",
   "skip_ssl_validation": <%= properties.acceptance_tests.skip_ssl_validation %>,
   "artifacts_directory": "/var/vcap/sys/log/acceptance_tests/",
+  <% if properties.acceptance_tests.cf_push_timeout_in_seconds %>
+  "cf_push_timeout": <%= properties.acceptance_tests.cf_push_timeout_in_seconds %>,
+  <% end %>
+  <% if properties.acceptance_tests.long_curl_timeout_in_seconds %>
+  "long_curl_timeout": <%= properties.acceptance_tests.long_curl_timeout_in_seconds %>,
+  <% end %>
   "secure_address"     : "<%= properties.acceptance_tests.secure_address %>"
 }

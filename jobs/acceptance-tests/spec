@@ -45,3 +45,7 @@ properties:
   acceptance_tests.skip_regex:
     default: ""
     description: Regex for tests that should be skipped
+  acceptance_tests.cf_push_timeout_in_seconds:
+    description: Timeout for cf push in seconds
+  acceptance_tests.long_curl_timeout_in_seconds:
+    description: Timeout for long curls in seconds
