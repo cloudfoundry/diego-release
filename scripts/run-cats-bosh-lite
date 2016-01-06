@@ -13,14 +13,12 @@ cat > /tmp/diego_cats_integration_config.json <<EOF
   "apps_domain": "bosh-lite.com",
   "skip_ssl_validation": true,
   "use_http": true,
-  "use_diego": true
+  "backend": "diego"
 }
 EOF
 
 pushd ${CF_RELEASE_DIR}/src/github.com/cloudfoundry/cf-acceptance-tests/
-  export CONFIG=/tmp/diego_cats_integration_config.json
-  ./bin/test -r -skip=NO_DIEGO_SUPPORT -nodes=3 "$@"
-  unset CONFIG
+  CONFIG=/tmp/diego_cats_integration_config.json ./bin/test -r -skip=NO_DIEGO_SUPPORT -nodes=3 "$@"
 popd
 
 
