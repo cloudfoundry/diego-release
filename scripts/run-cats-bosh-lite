@@ -18,7 +18,7 @@ cat > /tmp/diego_cats_integration_config.json <<EOF
 EOF
 
 pushd ${CF_RELEASE_DIR}/src/github.com/cloudfoundry/cf-acceptance-tests/
-  CONFIG=/tmp/diego_cats_integration_config.json ./bin/test -r -skip=NO_DIEGO_SUPPORT -nodes=3 "$@"
+  CONFIG=/tmp/diego_cats_integration_config.json ./bin/test_default -skip=NO_DIEGO_SUPPORT -nodes=3 "$@"
 popd
 
 
