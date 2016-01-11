@@ -152,7 +152,7 @@ To be able to run the integration test suite ("inigo"), you'll need to have a lo
 
         cd ~/workspace/cf-release
         ./scripts/generate-bosh-lite-dev-manifest \
-          ~/workspace/diego-release/stubs-for-cf-release/enable_diego_windows_in_cc.yml
+          ~/workspace/diego-release/manifest-generation/stubs-for-cf-release/enable_diego_windows_in_cc.yml
 
 1. Generate the Diego manifests:
 
