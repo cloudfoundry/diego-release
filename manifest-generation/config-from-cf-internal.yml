@@ -3,6 +3,7 @@ config_from_cf:
   cf_director_uuid: (( director_uuid ))
   cf_releases: (( releases ))
   cc:
+    internal_api_user: (( properties.cc.internal_api_user ))
     internal_api_password: (( properties.cc.internal_api_password ))
     srv_api_uri: (( properties.cc.srv_api_uri ))
     staging_upload_user: (( properties.cc.staging_upload_user ))
@@ -51,6 +52,7 @@ director_uuid: (( merge ))
 releases: (( merge ))
 properties:
   cc:
+    internal_api_user: (( merge ))
     internal_api_password: (( merge ))
     srv_api_uri: (( merge ))
     staging_upload_user: (( merge ))
