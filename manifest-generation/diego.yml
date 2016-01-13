@@ -1,6 +1,6 @@
 name: (( config_from_cf.cf_deployment_name "-diego" ))
 
-releases: (( base_releases config_from_cf.cf_releases ))
+releases: (( base_releases [config_from_cf.cf_release] ))
 
 director_uuid: (( config_from_cf.cf_director_uuid ))
 
