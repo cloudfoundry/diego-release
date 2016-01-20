@@ -771,6 +771,7 @@ properties:
   garden:
     listen_network: (( property_overrides.garden.listen_network || nil ))
     listen_address: (( property_overrides.garden.listen_address || nil ))
+    default_container_grace_time: (( property_overrides.garden.default_container_grace_time || 0 ))
     deny_networks: (( property_overrides.garden.deny_networks || ["0.0.0.0/0"] ))
     allow_networks: (( property_overrides.garden.allow_networks || nil ))
     allow_host_access: (( property_overrides.garden.allow_host_access || nil ))
