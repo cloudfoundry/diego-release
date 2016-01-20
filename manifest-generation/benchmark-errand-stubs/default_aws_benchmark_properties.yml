@@ -13,6 +13,7 @@ properties:
   benchmark-bbs:
     desired_lrps: 10000
     num_trials: 10
+    num_reps: 10
     num_populate_workers: 50
     client_timeout: "30s"
     log_level: "info"

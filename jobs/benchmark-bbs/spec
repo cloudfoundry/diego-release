@@ -17,6 +17,8 @@ properties:
     description: "the number of single instance desired lrps to generate and fetch"
   benchmark-bbs.num_trials:
     description: "the number of trials of each benchmark to average across"
+  benchmark-bbs.num_reps:
+    description: "the number of rep processes to simulate in test"
   benchmark-bbs.num_populate_workers:
     description: "the number of workers generating desired LRPs during setup"
 
