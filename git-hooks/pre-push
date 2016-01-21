@@ -1,0 +1,31 @@
+#!/bin/bash
+
+protected_repos=("diego-release" "diego-release.git")
+current_repo=$(git config --get remote.origin.url | sed -e 's,.*/\(.*\),\1,')
+
+protected_branch='master'
+current_branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
+
+containsElement () {
+    local e
+    for e in "${@:2}"
+    do
+        [[ "$e" == "$1" ]] && return 0
+    done
+    return 1
+}
+containsElement $current_repo "${protected_repos[@]}"
+repo_is_protected=$?
+
+if [ $repo_is_protected -eq 0 ] && [ $protected_branch = $current_branch ]
+then
+    read -p "You're about to push master, is that what you intended? [y|n] " -n 1 -r < /dev/tty
+    echo
+    if echo $REPLY | grep -E '^[Yy]$' > /dev/null
+    then
+        exit 0 # push will execute
+    fi
+    exit 1 # push will not execute
+else
+    exit 0 # push will execute
+fi
