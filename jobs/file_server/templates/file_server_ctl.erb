@@ -43,6 +43,9 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
+    # Work around for GOLANG 1.5.3 DNS bug
+    export GODEBUG=netdns=cgo
+
     exec chpst -u vcap:vcap /var/vcap/packages/file_server/bin/file-server \
       -address=<%= p("diego.file_server.listen_addr") %> \
       -debugAddr=<%= p("diego.file_server.debug_addr") %> \

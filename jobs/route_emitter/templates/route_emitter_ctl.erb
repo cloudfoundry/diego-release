@@ -35,6 +35,9 @@ case $1 in
     # Enable maximum OS thread concurrency
     export GOMAXPROCS=$(nproc)
 
+    # Work around for GOLANG 1.5.3 DNS bug
+    export GODEBUG=netdns=cgo
+
     exec chpst -u vcap:vcap /var/vcap/packages/route_emitter/bin/route-emitter ${bbs_sec_flags} \
       -consulCluster=http://127.0.0.1:8500 \
       -natsAddresses=<%= p("diego.route_emitter.nats.machines").collect { |addr| "#{addr}:#{p("diego.route_emitter.nats.port")}" }.join(",") %> \

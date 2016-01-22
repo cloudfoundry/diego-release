@@ -48,6 +48,9 @@ case $1 in
     chown -R vcap:vcap $TMP_DIR
 
     export GOMAXPROCS=$(nproc)
+   
+    # Work around for GOLANG 1.5.3 DNS bug
+    export GODEBUG=netdns=cgo
 
     echo $$ > $PIDFILE
 

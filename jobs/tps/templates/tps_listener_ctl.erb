@@ -41,6 +41,9 @@ case $1 in
 
     echo $$ > $PIDFILE
 
+    # Work around for GOLANG 1.5.3 DNS bug
+    export GODEBUG=netdns=cgo
+
     exec chpst -u vcap:vcap /var/vcap/packages/tps/bin/tps-listener ${bbs_sec_flags} \
       -bbsAddress=${bbs_api_url} \
       <% if_p("diego.tps.bbs.client_session_cache_size") do |value| %> \

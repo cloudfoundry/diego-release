@@ -46,6 +46,9 @@ case $1 in
 
     echo $$ > $PIDFILE
 
+    # Work around for GOLANG 1.5.3 DNS bug
+    export GODEBUG=netdns=cgo
+
     exec chpst -u vcap:vcap /var/vcap/packages/ssh_proxy/bin/ssh-proxy ${bbs_sec_flags} \
       ${diego_ssh_flags} \
       -address=<%= p("diego.ssh_proxy.listen_addr") %> \
