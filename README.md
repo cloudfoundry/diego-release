@@ -89,6 +89,8 @@ and then look up that commit's SHA in the diego-cf compatibility table.
 1. Install and start [BOSH-Lite](https://github.com/cloudfoundry/bosh-lite),
    following its
    [README](https://github.com/cloudfoundry/bosh-lite/blob/master/README.md).
+   For garden-linux to function properly in the Diego deployment,
+   we recommend using version 9000.69.0 or later of the BOSH-Lite Vagrant box image.
 
 1. Upload the latest version of the Warden BOSH-Lite stemcell directly to BOSH-Lite:
 
