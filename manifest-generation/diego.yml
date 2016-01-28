@@ -605,6 +605,7 @@ properties:
         client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
       cell_state_timeout: (( property_overrides.auctioneer.cell_state_timeout || nil ))
+      starting_container_weight: (( property_overrides.auctioneer.starting_container_weight || nil ))
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       log_level: (( property_overrides.auctioneer.log_level || nil ))
     bbs:
