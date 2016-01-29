@@ -39,7 +39,7 @@ etcd_sec_flags=""
   bbs_api_url="<%= "http://" + p("benchmark-bbs.bbs.api_location") %>"
 <% end %>
 
-ginkgo -p -- ${bbs_sec_flags} ${etcd_sec_flags} \
+ginkgo -- ${bbs_sec_flags} ${etcd_sec_flags} \
   -desiredLRPs=<%= p("benchmark-bbs.desired_lrps") %> \
   -numTrials=<%= p("benchmark-bbs.num_trials") %> \
   -numReps=<%= p("benchmark-bbs.num_reps") %> \
