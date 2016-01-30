@@ -539,7 +539,7 @@ properties:
     address: (( property_overrides.syslog_daemon_config.address || nil ))
     port: (( property_overrides.syslog_daemon_config.port || nil ))
 
-  # -- Property below is used by the consul_agent job from cf-release --
+  # -- Properties below are used by the consul_agent job from cf-release --
   consul:
     agent:
       datacenter: (( config_from_cf.consul.datacenter ))
@@ -554,7 +554,7 @@ properties:
     server_cert: (( config_from_cf.consul.server_cert ))
     server_key: (( config_from_cf.consul.server_key ))
 
-  # -- Proerties below are used by jobs from diego-release --
+  # -- Properties below are used by the etcd from etcd-release --
   etcd:
     machines: ["etcd.service.cf.internal"]
     cluster:
@@ -582,6 +582,8 @@ properties:
     peer_key: (( property_overrides.etcd.peer_key || nil ))
     heartbeat_interval_in_milliseconds: (( property_overrides.etcd.heartbeat_interval_in_milliseconds || nil ))
     election_timeout_in_milliseconds: (( property_overrides.etcd.election_timeout_in_milliseconds || nil ))
+
+  # -- Properties below are used by the jobs from diego-release --
   diego:
     # -- Global property --
     ssl:
