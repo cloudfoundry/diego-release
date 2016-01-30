@@ -527,19 +527,12 @@ properties:
       cert: (( config_from_cf.metron_agent.tls_client.cert ))
       key: (( config_from_cf.metron_agent.tls_client.key ))
     dropsonde_incoming_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
-  nats: # For metron_agent to talk to collector
-    machines: (( config_from_cf.nats.machines ))
-    user: (( config_from_cf.nats.user ))
-    password: (( config_from_cf.nats.password ))
-    port: (( config_from_cf.nats.port ))
   loggregator:
     etcd:
       machines: (( config_from_cf.loggregator.etcd_machines ))
     dropsonde_incoming_port: (( config_from_cf.loggregator.dropsonde_incoming_port ))
     tls:
       ca: (( config_from_cf.loggregator.tls.ca ))
-  loggregator_endpoint:
-    shared_secret: (( config_from_cf.loggregator.shared_secret ))
   metron_endpoint:
     shared_secret: (( config_from_cf.metron_endpoint.shared_secret ))
   syslog_daemon_config:
