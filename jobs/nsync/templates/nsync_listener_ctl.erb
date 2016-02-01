@@ -53,6 +53,7 @@ case $1 in
       <%= p("diego.nsync.lifecycle_bundles").map { |bundle| "-lifecycle #{bundle}" }.join(" ") %> \
       -fileServerURL=<%= p("diego.nsync.file_server_url") %> \
       -logLevel=<%= p("diego.nsync.log_level") %> \
+      -consulCluster=http://127.0.0.1:8500 \
       2> >(tee -a $LOG_DIR/nsync_listener.stderr.log | logger -p user.error -t vcap.nsync-listener) \
       1> >(tee -a $LOG_DIR/nsync_listener.stdout.log | logger -p user.info -t vcap.nsync-listener)
 

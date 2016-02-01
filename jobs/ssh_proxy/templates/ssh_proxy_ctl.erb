@@ -64,6 +64,7 @@ case $1 in
       ${diego_auth_flags} \
       ${uaa_flags} \
       -address=<%= p("diego.ssh_proxy.listen_addr") %> \
+      -consulCluster=http://127.0.0.1:8500 \
       -hostKey="$HOST_KEY" \
       -bbsAddress=${bbs_api_url} \
       <% if_p("diego.ssh_proxy.bbs.client_session_cache_size") do |value| %> \

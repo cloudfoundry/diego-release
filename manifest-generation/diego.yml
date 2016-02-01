@@ -135,7 +135,6 @@ jobs:
         agent:
           services:
             etcd: {}
-            bbs: {}
       metron_agent:
         zone: z1
 
@@ -154,7 +153,6 @@ jobs:
         agent:
           services:
             etcd: {}
-            bbs: {}
       metron_agent:
         zone: z2
 
@@ -173,7 +171,6 @@ jobs:
         agent:
           services:
             etcd: {}
-            bbs: {}
       metron_agent:
         zone: z3
 
@@ -187,10 +184,6 @@ jobs:
       serial: true
       max_in_flight: 1
     properties:
-      consul:
-        agent:
-          services:
-            auctioneer: {}
       metron_agent:
         zone: z1
 
@@ -222,13 +215,6 @@ jobs:
     properties:
       metron_agent:
         zone: z1
-      consul:
-        agent:
-          services:
-            cc_uploader: {}
-            nsync: {}
-            stager: {}
-            tps: {}
 
   - name: route_emitter_z1
     templates: (( base_job_templates.route_emitter ))
@@ -255,11 +241,6 @@ jobs:
     properties:
       metron_agent:
         zone: z1
-      consul:
-        agent:
-          services:
-            file_server: {}
-            ssh_proxy: {}
 
   - name: brain_z2
     templates: (( base_job_templates.brain ))
@@ -271,10 +252,6 @@ jobs:
       serial: true
       max_in_flight: 1
     properties:
-      consul:
-        agent:
-          services:
-            auctioneer: {}
       metron_agent:
         zone: z2
 
@@ -306,13 +283,6 @@ jobs:
     properties:
       metron_agent:
         zone: z2
-      consul:
-        agent:
-          services:
-            cc_uploader: {}
-            nsync: {}
-            stager: {}
-            tps: {}
 
   - name: route_emitter_z2
     templates: (( base_job_templates.route_emitter ))
@@ -339,11 +309,6 @@ jobs:
     properties:
       metron_agent:
         zone: z2
-      consul:
-        agent:
-          services:
-            file_server: {}
-            ssh_proxy: {}
 
   - name: brain_z3
     templates: (( base_job_templates.brain ))
@@ -355,10 +320,6 @@ jobs:
       serial: true
       max_in_flight: 1
     properties:
-      consul:
-        agent:
-          services:
-            auctioneer: {}
       metron_agent:
         zone: z3
 
@@ -390,13 +351,6 @@ jobs:
     properties:
       metron_agent:
         zone: z3
-      consul:
-        agent:
-          services:
-            cc_uploader: {}
-            nsync: {}
-            stager: {}
-            tps: {}
 
   - name: route_emitter_z3
     templates: (( base_job_templates.route_emitter ))
@@ -423,11 +377,6 @@ jobs:
     properties:
       metron_agent:
         zone: z3
-      consul:
-        agent:
-          services:
-            file_server: {}
-            ssh_proxy: {}
 
   - name: colocated_z1
     templates: (( base_job_templates.colocated ))
@@ -443,15 +392,7 @@ jobs:
       consul:
         agent:
           services:
-            auctioneer: {}
-            bbs: {}
-            cc_uploader: {}
             etcd: {}
-            file_server: {}
-            nsync: {}
-            ssh_proxy: {}
-            stager: {}
-            tps: {}
       diego:
         rep:
           zone: z1
@@ -472,15 +413,7 @@ jobs:
       consul:
         agent:
           services:
-            auctioneer: {}
-            bbs: {}
-            cc_uploader: {}
             etcd: {}
-            file_server: {}
-            nsync: {}
-            ssh_proxy: {}
-            stager: {}
-            tps: {}
       diego:
         rep:
           zone: z2
@@ -501,15 +434,7 @@ jobs:
       consul:
         agent:
           services:
-            auctioneer: {}
-            bbs: {}
-            cc_uploader: {}
             etcd: {}
-            file_server: {}
-            nsync: {}
-            ssh_proxy: {}
-            stager: {}
-            tps: {}
       diego:
         rep:
           zone: z3
@@ -815,6 +740,8 @@ base_job_templates:
     - name: metron_agent
       release: cf
   cc_bridge:
+    - name: consul_agent
+      release: cf
     - name: stager
       release: diego
     - name: nsync
@@ -823,8 +750,6 @@ base_job_templates:
       release: diego
     - name: cc_uploader
       release: diego
-    - name: consul_agent
-      release: cf
     - name: metron_agent
       release: cf
   route_emitter:

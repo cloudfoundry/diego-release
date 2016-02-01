@@ -10,9 +10,12 @@ files:
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
+  - github.com/cloudfoundry-incubator/consuladapter/*.go # gosub
   - github.com/cloudfoundry-incubator/file-server/*.go # gosub
   - github.com/cloudfoundry-incubator/file-server/handlers/*.go # gosub
   - github.com/cloudfoundry-incubator/file-server/handlers/static/*.go # gosub
+  - github.com/cloudfoundry-incubator/locket/*.go # gosub
+  - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
   - github.com/cloudfoundry/dropsonde/factories/*.go # gosub
@@ -28,7 +31,9 @@ files:
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
   - github.com/cloudfoundry/sonde-go/events/*.go # gosub
   - github.com/gogo/protobuf/proto/*.go # gosub
+  - github.com/hashicorp/consul/api/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
+  - github.com/pivotal-golang/clock/*.go # gosub
   - github.com/pivotal-golang/lager/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub

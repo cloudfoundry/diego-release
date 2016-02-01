@@ -27,7 +27,6 @@ files:
   - github.com/zorkian/go-datadog-api/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/cmd/bbs/testrunner/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/db/etcd/test/etcd_helpers/*.go # gosub
-  - github.com/cloudfoundry-incubator/consuladapter/*.go # gosub
   - github.com/cloudfoundry-incubator/consuladapter/consulrunner/*.go # gosub
   - github.com/cloudfoundry/storeadapter/storerunner/etcdstorerunner/*.go # gosub
   - github.com/onsi/ginkgo/config/*.go # gosub
@@ -48,6 +47,7 @@ files:
   - github.com/onsi/ginkgo/types/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/events/*.go # gosub
+  - github.com/cloudfoundry-incubator/consuladapter/*.go # gosub
   - github.com/cloudfoundry-incubator/locket/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
@@ -58,6 +58,7 @@ files:
   - github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/gogo/protobuf/sortkeys/*.go # gosub
   - github.com/hashicorp/consul/api/*.go # gosub
+  - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
   - github.com/vito/go-sse/sse/*.go # gosub
   - github.com/aws/aws-sdk-go/aws/awserr/*.go # gosub
@@ -84,7 +85,6 @@ files:
   - github.com/cloudfoundry-incubator/executor/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/*.go # gosub
   - github.com/cloudfoundry/gunk/urljoiner/*.go # gosub
-  - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/ugorji/go/codec/*.go # gosub
   - github.com/onsi/ginkgo/internal/codelocation/*.go # gosub
   - github.com/onsi/ginkgo/internal/containernode/*.go # gosub
