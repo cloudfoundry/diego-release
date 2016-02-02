@@ -583,12 +583,6 @@ properties:
       log_level: (( property_overrides.file_server.log_level || nil ))
     cc_uploader:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
-      cc:
-        base_url: (( config_from_cf.cc.srv_api_uri ))
-        basic_auth_username: (( config_from_cf.cc.internal_api_user ))
-        basic_auth_password: (( config_from_cf.cc.internal_api_password ))
-        staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
-        staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       log_level: (( property_overrides.cc_uploader.log_level || nil ))
     nsync:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
@@ -604,8 +598,6 @@ properties:
         base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_username: (( config_from_cf.cc.internal_api_user ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
-        staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
-        staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       log_level: (( property_overrides.nsync.log_level || nil ))
     rep:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
@@ -654,11 +646,8 @@ properties:
     stager:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       cc:
-        base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_username: (( config_from_cf.cc.internal_api_user ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
-        staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
-        staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       bbs:
         api_location: (( "bbs.service.cf.internal:8889" ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
@@ -672,11 +661,8 @@ properties:
     tps:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       cc:
-        base_url: (( config_from_cf.cc.srv_api_uri ))
         basic_auth_username: (( config_from_cf.cc.internal_api_user ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
-        staging_upload_user: (( config_from_cf.cc.staging_upload_user ))
-        staging_upload_password: (( config_from_cf.cc.staging_upload_password ))
       bbs:
         api_location: (( "bbs.service.cf.internal:8889" ))
         ca_cert: (( property_overrides.bbs.ca_cert ))

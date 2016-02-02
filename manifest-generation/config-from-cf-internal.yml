@@ -6,8 +6,6 @@ config_from_cf:
     internal_api_user: (( properties.cc.internal_api_user ))
     internal_api_password: (( properties.cc.internal_api_password ))
     srv_api_uri: (( properties.cc.srv_api_uri ))
-    staging_upload_user: (( properties.cc.staging_upload_user ))
-    staging_upload_password: (( properties.cc.staging_upload_password ))
   consul:
     datacenter: (( properties.consul.agent.datacenter ))
     log_level: (( properties.consul.agent.log_level ))
@@ -55,8 +53,6 @@ properties:
     internal_api_user: (( merge ))
     internal_api_password: (( merge ))
     srv_api_uri: (( merge ))
-    staging_upload_user: (( merge ))
-    staging_upload_password: (( merge ))
   consul:
     agent:
       log_level: (( merge ))
