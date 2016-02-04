@@ -6,14 +6,12 @@ dependencies:
 
 files:
   - github.com/cloudfoundry-incubator/diego-smoke-tests/dora/**/*
-  - github.com/cloudfoundry-incubator/diego-smoke-tests/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-test-helpers/cf/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-test-helpers/generator/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-test-helpers/runner/*.go # gosub
+  - github.com/cloudfoundry-incubator/diego-smoke-tests/*.go # gosub
+  - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/onsi/ginkgo/*.go # gosub
-  - github.com/onsi/gomega/*.go # gosub
-  - github.com/onsi/gomega/gbytes/*.go # gosub
-  - github.com/onsi/gomega/gexec/*.go # gosub
   - github.com/onsi/ginkgo/config/*.go # gosub
   - github.com/onsi/ginkgo/internal/codelocation/*.go # gosub
   - github.com/onsi/ginkgo/internal/containernode/*.go # gosub
@@ -28,7 +26,10 @@ files:
   - github.com/onsi/ginkgo/reporters/*.go # gosub
   - github.com/onsi/ginkgo/reporters/stenographer/*.go # gosub
   - github.com/onsi/ginkgo/types/*.go # gosub
+  - github.com/onsi/gomega/*.go # gosub
   - github.com/onsi/gomega/format/*.go # gosub
+  - github.com/onsi/gomega/gbytes/*.go # gosub
+  - github.com/onsi/gomega/gexec/*.go # gosub
   - github.com/onsi/gomega/internal/assertion/*.go # gosub
   - github.com/onsi/gomega/internal/asyncassertion/*.go # gosub
   - github.com/onsi/gomega/internal/oraclematcher/*.go # gosub
@@ -39,4 +40,3 @@ files:
   - github.com/onsi/gomega/matchers/support/goraph/node/*.go # gosub
   - github.com/onsi/gomega/matchers/support/goraph/util/*.go # gosub
   - github.com/onsi/gomega/types/*.go # gosub
-  - github.com/nu7hatch/gouuid/*.go # gosub
