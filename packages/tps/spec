@@ -5,6 +5,8 @@ dependencies:
   - golang_1.4
 
 files:
+  - github.com/cloudfoundry-incubator/tps/cmd/tps-listener/*.go # gosub
+  - github.com/cloudfoundry-incubator/tps/cmd/tps-watcher/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/encryption/*.go # gosub
@@ -27,15 +29,11 @@ files:
   - github.com/cloudfoundry-incubator/runtime-schema/cc_messages/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/*.go # gosub
-  - github.com/cloudfoundry-incubator/tps/cc_client/*.go # gosub
-  - github.com/cloudfoundry-incubator/tps/cmd/tps-listener/*.go # gosub
-  - github.com/cloudfoundry-incubator/tps/cmd/tps-watcher/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/bulklrpstatus/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/cc_conv/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/lrpstats/*.go # gosub
   - github.com/cloudfoundry-incubator/tps/handler/lrpstatus/*.go # gosub
-  - github.com/cloudfoundry-incubator/tps/watcher/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
   - github.com/cloudfoundry/dropsonde/factories/*.go # gosub
@@ -70,3 +68,5 @@ files:
   - golang.org/x/crypto/curve25519/*.go # gosub
   - golang.org/x/crypto/curve25519/*.s # gosub
   - golang.org/x/crypto/ssh/*.go # gosub
+  - github.com/cloudfoundry-incubator/tps/cc_client/*.go # gosub
+  - github.com/cloudfoundry-incubator/tps/watcher/*.go # gosub

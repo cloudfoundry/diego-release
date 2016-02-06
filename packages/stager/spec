@@ -5,6 +5,7 @@ dependencies:
   - golang_1.4
 
 files:
+  - github.com/cloudfoundry-incubator/stager/cmd/stager/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/encryption/*.go # gosub
@@ -25,7 +26,6 @@ files:
   - github.com/cloudfoundry-incubator/stager/*.go # gosub
   - github.com/cloudfoundry-incubator/stager/backend/*.go # gosub
   - github.com/cloudfoundry-incubator/stager/cc_client/*.go # gosub
-  - github.com/cloudfoundry-incubator/stager/cmd/stager/*.go # gosub
   - github.com/cloudfoundry-incubator/stager/diego_errors/*.go # gosub
   - github.com/cloudfoundry-incubator/stager/handlers/*.go # gosub
   - github.com/cloudfoundry-incubator/stager/vars/*.go # gosub

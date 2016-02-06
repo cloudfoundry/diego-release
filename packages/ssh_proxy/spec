@@ -5,6 +5,7 @@ dependencies:
   - golang_1.4
 
 files:
+  - github.com/cloudfoundry-incubator/diego-ssh/cmd/ssh-proxy/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/encryption/*.go # gosub
@@ -16,7 +17,6 @@ files:
   - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
   - github.com/cloudfoundry-incubator/consuladapter/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/authenticators/*.go # gosub
-  - github.com/cloudfoundry-incubator/diego-ssh/cmd/ssh-proxy/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/helpers/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/proxy/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/routes/*.go # gosub
