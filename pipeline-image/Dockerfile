@@ -46,7 +46,7 @@ RUN \
   bash -l -c "pip install awscli"
 
 RUN \
-  wget https://dl.bintray.com/mitchellh/vagrant/vagrant_1.6.5_x86_64.deb -P /tmp && \
+  wget https://releases.hashicorp.com/vagrant/1.6.5/vagrant_1.6.5_x86_64.deb -P /tmp && \
   dpkg --install /tmp/vagrant_1.6.5_x86_64.deb && \
   vagrant plugin install vagrant-aws && \
   rm -rf /tmp/*
