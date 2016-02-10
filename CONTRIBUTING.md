@@ -106,7 +106,7 @@ To be able to run unit tests, you'll also need to install the following binaries
 
     # Install consul
     if uname -a | grep Darwin; then os=darwin; else os=linux; fi
-    curl -L -o $TMPDIR/consul-0.5.2.zip "https://dl.bintray.com/mitchellh/consul/0.5.2_${os}_amd64.zip"
+    curl -L -o $TMPDIR/consul-0.5.2.zip "https://releases.hashicorp.com/consul/0.5.2/consul_0.5.2_${os}_amd64.zip"
     unzip $TMPDIR/consul-0.5.2.zip -d $GOPATH/bin
     rm $TMPDIR/consul-0.5.2.zip
 
