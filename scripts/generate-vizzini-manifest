@@ -1,0 +1,72 @@
+#!/bin/bash
+
+set -e
+
+manifest_generation=$(dirname $0)/../manifest-generation
+
+function usage() {
+  >&2 echo "
+Vizzini Errand Manifest Generator
+
+Copy one of the default_vizzini_properties files from manifest-generation/vizzini-errand-stubs and fill it in with your aws info and datadog keys if desired.
+
+    Usage:
+    $0 -c /path/to/cf.yml -p /path/to/vizzini-properties.yml -i /path/to/iaas-settings.yml
+
+    Ex:
+    $0 -c ~/workspace/cf-release/bosh-lite/deployments/cf.yml \\
+       -p manifest-generation/bosh-lite-stubs/vizzini-properties.yml \\
+       -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \\
+       > ~/workspace/diego-release/bosh-lite/deployments/vizzini.yml
+"
+  exit 1
+}
+
+while getopts "c:i:p:" opt; do
+  case $opt in
+    c)
+      cf_yml=$OPTARG
+      ;;
+    i)
+      iaas_settings=$OPTARG
+      ;;
+    p)
+      vizzini_properties=$OPTARG
+      ;;
+    *)
+      ERR_MSG="${S}Unknown arguments\n"
+      ;;
+  esac
+done
+
+vizzini_template=${manifest_generation}/diego-vizzini.yml
+tmpdir=$(mktemp -d /tmp/vizzini-manifest.XXXXX)
+
+
+if [ ! -f "${cf_yml}" ]; then
+  >&2 echo "Error: CF deployment manifest '${cf_yml}' is not a regular file"
+  usage
+fi
+
+if [ ! -f "${vizzini_properties}" ]; then
+  >&2 echo "Error: Vizzini properties stub '${vizzini_properties}' is not a regular file"
+  usage
+fi
+
+if [ ! -f "${iaas_settings}" ]; then
+  >&2 echo "Error: IaaS Settings stub '${iaas_settings}' is not a regular file"
+  usage
+fi
+
+spiff merge \
+  ${manifest_generation}/config-from-cf.yml \
+  ${manifest_generation}/config-from-cf-internal.yml \
+  ${cf_yml} \
+  > ${tmpdir}/config-from-cf.yml
+
+spiff merge \
+  ${manifest_generation}/misc-templates/bosh.yml \
+  ${vizzini_template} \
+  ${tmpdir}/config-from-cf.yml \
+  ${iaas_settings} \
+  ${vizzini_properties}

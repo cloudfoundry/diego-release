@@ -45,7 +45,18 @@ $scripts_path/generate-smoke-tests-manifest \
       manifest-generation/benchmark-errand-stubs/default_bosh_lite_benchmark_properties.yml \
       manifest-generation/bosh-lite-stubs/iaas-settings.yml \
       > ${DIEGO_MANIFESTS_DIR}/diego-benchmarks.yml
+
+$scripts_path/generate-vizzini-manifest \
+    -c ${CF_MANIFESTS_DIR}/cf.yml \
+    -p manifest-generation/bosh-lite-stubs/vizzini-properties.yml \
+    -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \
+    > ${DIEGO_MANIFESTS_DIR}/vizzini.yml
+
 popd
 
 echo "CF Release Manifest at ${CF_MANIFESTS_DIR}/cf.yml"
 echo "Diego Release Manifest at ${DIEGO_MANIFESTS_DIR}/diego.yml"
+echo "Diego Acceptance Tests Errand Manifest at ${DIEGO_MANIFESTS_DIR}/diego-acceptance-tests .yml"
+echo "Diego Smoke Tests Errand Manifest at ${DIEGO_MANIFESTS_DIR}/diego-smoke-tests.yml"
+echo "Benchmark-BBS Errand Manifest at ${DIEGO_MANIFESTS_DIR}/diego-benchmarks.yml"
+echo "Vizzini Errand Manifest at ${DIEGO_MANIFESTS_DIR}/vizzini.yml"

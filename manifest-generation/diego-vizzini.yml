@@ -1,0 +1,70 @@
+---
+director_uuid: (( config_from_cf.cf_director_uuid ))
+
+name: (( config_from_cf.cf_deployment_name "-diego-vizzini" ))
+
+releases:
+- name: diego
+  version: latest
+- name: cf
+  version: latest
+
+networks:
+- name: diego-vizzini
+  type: manual
+  subnets: (( iaas_settings.subnet_configs.diego-vizzini.subnets ))
+
+resource_pools:
+- name: errand
+  network: diego-vizzini
+  stemcell: (( iaas_settings.stemcell ))
+  cloud_properties: (( iaas_settings.resource_pool_cloud_properties.errand.cloud_properties ))
+
+compilation:
+  network: diego-vizzini
+  reuse_compilation_vms: true
+  workers: 6
+  cloud_properties: (( iaas_settings.compilation_cloud_properties ))
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  canary_watch_time: 5000-120000
+  update_watch_time: 5000-120000
+
+jobs:
+- name: vizzini
+  templates:
+  - name: vizzini
+    release: diego
+  - name: consul_agent
+    release: cf
+  lifecycle: errand
+  instances: 1
+  networks:
+  - name: diego-vizzini
+  resource_pool: errand
+
+properties:
+  consul:
+    agent:
+      datacenter: (( config_from_cf.consul.datacenter ))
+      log_level: (( config_from_cf.consul.log_level ))
+      servers:
+        lan: (( config_from_cf.consul.lan_servers ))
+    ca_cert: (( config_from_cf.consul.ca_cert ))
+    agent_cert: (( config_from_cf.consul.agent_cert ))
+    agent_key: (( config_from_cf.consul.agent_key ))
+    encrypt_keys: (( config_from_cf.consul.encrypt_keys ))
+    require_ssl: (( config_from_cf.consul.require_ssl ))
+    server_cert: (( config_from_cf.consul.server_cert ))
+    server_key: (( config_from_cf.consul.server_key ))
+  vizzini:
+    routable_domain_suffix: (( merge ))
+    bbs: (( merge ))
+    nodes: 8
+    ssh: (( merge ))
+
+# The keys below should not be included in the final stub
+config_from_cf: (( merge ))
+iaas_settings: (( merge ))

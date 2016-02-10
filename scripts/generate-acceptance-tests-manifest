@@ -79,6 +79,6 @@ spiff merge \
   ${manifest_generation}/diego-acceptance-tests.yml  \
   ${properties} \
   ${tmpdir}/config-from-cf.yml \
-  ${iaas_settings} 
+  ${iaas_settings}
 
 rm -rf $tmpdir

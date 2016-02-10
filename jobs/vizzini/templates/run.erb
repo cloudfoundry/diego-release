@@ -31,7 +31,10 @@ nodes=<%= properties.vizzini.nodes %>
 verbose=<%= properties.vizzini.verbose %>
 routable_domain_suffix=<%= properties.vizzini.routable_domain_suffix %>
 ssh_proxy_address=<%= properties.vizzini.ssh.proxy_address  %>
-ssh_proxy_secret=<%= properties.vizzini.ssh.proxy_secret  %>
+<% if_p("vizzini.ssh.proxy_secret") do |proxy_secret| %>
+  ssh_proxy_secret_flag=" \
+    ssh_proxy_secret=<%= proxy_secret %>"
+<% end %>
 
 go install github.com/onsi/ginkgo/ginkgo
 
@@ -52,7 +55,7 @@ ginkgo \
   ${bbs_sec_flags} \
   --bbs-address=${bbs_api_url} \
   --ssh-address=${ssh_proxy_address} \
-  --ssh-password=${ssh_proxy_secret} \
+  ${ssh_proxy_secret_flag} \
   --routable-domain-suffix=${routable_domain_suffix}
 
 echo "Vizzini Complete; exit status: $EXITSTATUS"
