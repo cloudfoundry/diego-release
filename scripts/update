@@ -14,7 +14,10 @@ function has_upstream() {
 
 set -x -e
 
-$(dirname $0)/install-git-hooks
+scripts_dir="$(dirname $(readlink -f $0))"
+if [ -d "$(dirname $scripts_dir)/.git" ] ; then
+  $scripts_dir/install-git-hooks
+fi
 
 has_upstream && git pull
 
