@@ -12,6 +12,8 @@ iaas_settings:
       subnets: (( merge ))
     - name: diego3
       subnets: (( merge ))
+    - name: diego-vizzini
+      subnets: (( merge || nil ))
   compilation_cloud_properties: (( merge ))
   resource_pool_cloud_properties:
     - name: access_z1
@@ -56,3 +58,5 @@ iaas_settings:
       cloud_properties: (( merge ))
     - name: route_emitter_z3
       cloud_properties: (( merge ))
+    - name: errand
+      cloud_properties: (( merge || nil ))
