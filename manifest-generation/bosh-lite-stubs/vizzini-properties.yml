@@ -13,6 +13,7 @@ properties:
     routable_domain_suffix: bosh-lite.com
     ssh:
       proxy_address: "ssh-proxy.service.cf.internal:2222"
+      proxy_secret: "bosh-lite-ssh-secret"
     bbs:
       api_location: "10.244.16.2:8889"
       require_ssl: true

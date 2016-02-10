@@ -32,8 +32,7 @@ verbose=<%= properties.vizzini.verbose %>
 routable_domain_suffix=<%= properties.vizzini.routable_domain_suffix %>
 ssh_proxy_address=<%= properties.vizzini.ssh.proxy_address  %>
 <% if_p("vizzini.ssh.proxy_secret") do |proxy_secret| %>
-  ssh_proxy_secret_flag=" \
-    ssh_proxy_secret=<%= proxy_secret %>"
+  ssh_proxy_secret_flag="--ssh-password=<%= proxy_secret %>"
 <% end %>
 
 go install github.com/onsi/ginkgo/ginkgo

@@ -1051,3 +1051,13 @@ iaas_settings:
     - name: diego-vizzini
       type: manual
       subnets:
+      - range: 10.244.28.0/30
+        reserved:
+        - 10.244.28.1
+        static: []
+        cloud_properties: {}
+      - range: 10.244.28.4/30
+        reserved:
+        - 10.244.28.5
+        static: []
+        cloud_properties: {}

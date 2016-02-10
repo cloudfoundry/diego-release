@@ -23,7 +23,7 @@ resource_pools:
 compilation:
   network: diego-vizzini
   reuse_compilation_vms: true
-  workers: 6
+  workers: 1
   cloud_properties: (( iaas_settings.compilation_cloud_properties ))
 
 update:
