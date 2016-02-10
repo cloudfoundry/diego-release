@@ -5,13 +5,13 @@ dependencies:
   - golang_1.4
 
 files:
-  - github.com/cloudfoundry-incubator/auctioneer/cmd/auctioneer/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/auction/auctionrunner/*.go # gosub
   - github.com/cloudfoundry-incubator/auction/auctiontypes/*.go # gosub
   - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
   - github.com/cloudfoundry-incubator/auctioneer/auctionmetricemitterdelegate/*.go # gosub
   - github.com/cloudfoundry-incubator/auctioneer/auctionrunnerdelegate/*.go # gosub
+  - github.com/cloudfoundry-incubator/auctioneer/cmd/auctioneer/*.go # gosub
   - github.com/cloudfoundry-incubator/auctioneer/handlers/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/encryption/*.go # gosub

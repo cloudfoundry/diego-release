@@ -5,13 +5,13 @@ dependencies:
   - golang_1.4
 
 files:
-  - github.com/cloudfoundry-incubator/cc-uploader/cmd/cc-uploader/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/encryption/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/format/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/models/*.go # gosub
   - github.com/cloudfoundry-incubator/cc-uploader/*.go # gosub
   - github.com/cloudfoundry-incubator/cc-uploader/ccclient/*.go # gosub
+  - github.com/cloudfoundry-incubator/cc-uploader/cmd/cc-uploader/*.go # gosub
   - github.com/cloudfoundry-incubator/cc-uploader/handlers/*.go # gosub
   - github.com/cloudfoundry-incubator/cc-uploader/handlers/upload_build_artifacts/*.go # gosub
   - github.com/cloudfoundry-incubator/cc-uploader/handlers/upload_droplet/*.go # gosub

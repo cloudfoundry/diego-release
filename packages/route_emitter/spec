@@ -5,7 +5,6 @@ dependencies:
   - golang_1.4
 
 files:
-  - github.com/cloudfoundry-incubator/route-emitter/cmd/route-emitter/*.go # gosub
   - github.com/apcera/nats/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/*.go # gosub
@@ -19,6 +18,7 @@ files:
   - github.com/cloudfoundry-incubator/consuladapter/*.go # gosub
   - github.com/cloudfoundry-incubator/locket/*.go # gosub
   - github.com/cloudfoundry-incubator/route-emitter/*.go # gosub
+  - github.com/cloudfoundry-incubator/route-emitter/cmd/route-emitter/*.go # gosub
   - github.com/cloudfoundry-incubator/route-emitter/nats_emitter/*.go # gosub
   - github.com/cloudfoundry-incubator/route-emitter/routing_table/*.go # gosub
   - github.com/cloudfoundry-incubator/route-emitter/syncer/*.go # gosub
