@@ -23,7 +23,7 @@ config_from_cf:
     traffic_controller_url: (( "wss://doppler." properties.system_domain ":443" ))
     dropsonde_incoming_port: (( properties.loggregator.dropsonde_incoming_port ))
     tls:
-      ca: (( properties.loggregator.tls.ca ))
+      ca_cert: (( properties.loggregator.tls.ca_cert ))
   metron_endpoint:
     shared_secret: (( properties.metron_endpoint.shared_secret ))
   metron_agent:
@@ -31,9 +31,9 @@ config_from_cf:
     preferred_protocol: (( properties.metron_agent.preferred_protocol ))
     enable_buffer: (( properties.metron_agent.enable_buffer ))
     buffer_size: (( properties.metron_agent.buffer_size ))
-    tls_client:
-      cert: (( properties.metron_agent.tls_client.cert ))
-      key: (( properties.metron_agent.tls_client.key ))
+    tls:
+      client_cert: (( properties.metron_agent.tls.client_cert ))
+      client_key: (( properties.metron_agent.tls.client_key ))
   nats:
     user: (( properties.nats.user ))
     password: (( properties.nats.password ))
@@ -71,7 +71,7 @@ properties:
       machines: (( merge ))
     dropsonde_incoming_port: (( merge || nil ))
     tls:
-      ca: (( merge ))
+      ca_cert: (( merge ))
   loggregator_endpoint:
     shared_secret: (( merge ))
   metron_endpoint:
@@ -81,9 +81,9 @@ properties:
     preferred_protocol: (( merge ))
     enable_buffer: (( merge || nil ))
     buffer_size: (( merge || nil ))
-    tls_client:
-      cert: (( merge ))
-      key: (( merge ))
+    tls:
+      client_cert: (( merge ))
+      client_key: (( merge ))
   nats:
     user: (( merge ))
     password: (( merge ))
