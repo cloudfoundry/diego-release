@@ -33,6 +33,7 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 1. [TLS Configuration](#tls-configuration)
   1. [Generating TLS Certificates](#generating-tls-certificates)
   1. [Custom TLS Certificate Generation](#custom-tls-certificate-generation)
+1. [BOSH Dependencies](#bosh-dependencies)
 1. [Recommended Instance Types](#recommended-instance-types)
 
 ---
@@ -412,6 +413,14 @@ placeholders and can be renamed provided that all clients client certificate.
 The server certificate must have the common name `etcd.service.cf.internal` and
 must specify `etcd.service.cf.internal` and `*.etcd.service.cf.internal` as
 Subject Alternative Names (SANs).
+
+---
+## BOSH Dependencies
+
+When deplying diego-release to a BOSH director you should have at least:
+
+* BOSH Release v206+ (1.3072.0)
+* BOSH Stemcell 3125+
 
 ---
 ## Recommended Instance Types

@@ -6,7 +6,6 @@ check process rep
   depends on <%= spec['job']['templates'].inject([]) do | deps, template |
 		case template.name
 		when 'garden' then deps.push(template.name)
-		when 'rootfses' then deps.push(template.name)
 		end
 		deps
 	end.join(',')

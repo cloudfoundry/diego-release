@@ -1,6 +1,0 @@
-check process rootfses
-  with pidfile /var/vcap/sys/run/rootfses/rootfses.pid
-  start program "/var/vcap/jobs/rootfses/bin/rootfses_ctl start"
-  stop program "/var/vcap/jobs/rootfses/bin/rootfses_ctl stop"
-  group vcap
-  
