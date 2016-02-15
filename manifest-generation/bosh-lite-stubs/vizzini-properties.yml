@@ -1,13 +1,5 @@
 ---
-resource_pools:
-- name: vizzini_z1
-  network: diego-vizzini
-  stemcell:
-    name: bosh-warden-boshlite-ubuntu-trusty-go_agent
-    version: latest
-  cloud_properties: {}
-
-properties:
+property_overrides:
   vizzini:
     nodes: 1
     routable_domain_suffix: bosh-lite.com

@@ -49,7 +49,7 @@ if [ ! -f "${cf_yml}" ]; then
 fi
 
 if [ ! -f "${vizzini_properties}" ]; then
-  >&2 echo "Error: Vizzini properties stub '${vizzini_properties}' is not a regular file"
+  >&2 echo "Error: Vizzini properties overrides stub '${vizzini_properties}' is not a regular file"
   usage
 fi
 
@@ -67,6 +67,6 @@ spiff merge \
 spiff merge \
   ${manifest_generation}/misc-templates/bosh.yml \
   ${vizzini_template} \
+  ${vizzini_properties} \
   ${tmpdir}/config-from-cf.yml \
-  ${iaas_settings} \
-  ${vizzini_properties}
+  ${iaas_settings}

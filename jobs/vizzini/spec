@@ -12,6 +12,7 @@ templates:
 properties:
   vizzini.bbs.api_location:
     description: The address of the BBS
+    default: bbs.service.cf.internal:8889
   vizzini.bbs.client_cert:
     description: "PEM-encoded client certificate"
   vizzini.bbs.client_key:
