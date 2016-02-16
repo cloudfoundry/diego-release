@@ -9,11 +9,11 @@ if [ -n "$PACKAGE" ]; then
   ginkgo -r -p "$@" "./src/${PACKAGE}"
 else
   pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry/gunk/diegonats/
-    ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress
+    ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress --race
   popd
 
   pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/
-    ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress \
+    ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress --race \
       -skipPackage="bbs/measurements,benchmark-bbs,simulation,inigo,fezzik,./garden,garden-linux,dropsonde,candiedyaml,diego-smoke-tests,diego-acceptance-tests,diegocanaryapp,cf-test-helpers,vizzini,veritas,benchmark-bbs,upgrade-stability" "$@"
   popd
 fi
