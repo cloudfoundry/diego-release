@@ -417,7 +417,7 @@ Subject Alternative Names (SANs).
 ---
 ## BOSH Dependencies
 
-When deplying diego-release to a BOSH director you should have at least:
+When deploying diego-release to a BOSH director you should have at least:
 
 * BOSH Release v206+ (1.3072.0)
 * BOSH Stemcell 3125+

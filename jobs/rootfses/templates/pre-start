@@ -1,8 +1,6 @@
 #!/bin/bash -ex
 # vim: set ft=sh
 
-whoami
-
 CONF_DIR=/var/vcap/jobs/rootfses/config
 ROOTFS_PACKAGE=/var/vcap/packages/rootfs_cflinuxfs2
 ROOTFS_DIR=$ROOTFS_PACKAGE/rootfs
@@ -13,7 +11,14 @@ if [ ! -d $ROOTFS_DIR ]; then
 fi
 
 rm -f $ROOTFS_DIR/usr/local/share/ca-certificates/*
-cp $CONF_DIR/certs/trusted_ca.crt $ROOTFS_DIR/usr/local/share/ca-certificates/
+
+# Split files on '----END CERTIFICATE-----' and increment our file counter by 1
+pushd $ROOTFS_DIR
+  awk '
+    split_after == 1 {n++;split_after=0}
+    /-----END CERTIFICATE-----/ {split_after=1}
+    {print > "usr/local/share/ca-certificates/trusted_ca_" n ".crt"}' < $CONF_DIR/certs/trusted_ca.crt
+popd
 
 # have to set TMPDIR so we can mktemp inside the chrooted subshell
 TMPDIR=/tmp timeout --signal=KILL 10s chroot $ROOTFS_DIR /usr/sbin/update-ca-certificates -f
