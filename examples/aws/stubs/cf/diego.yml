@@ -1,0 +1,38 @@
+jobs:
+  - name: acceptance_tests
+    instances: 0
+  - name: hm9000_z1
+    instances: 0
+  - name: hm9000_z2
+    instances: 0
+  - name: hm9000_z3
+    instances: 0
+  - name: runner_z1
+    instances: 0
+  - name: runner_z2
+    instances: 0
+  - name: runner_z3
+    instances: 0
+  - name: smoke_tests
+    instances: 0
+  - name: consul_z1
+    instances: 2
+  - name: consul_z2
+    instances: 1
+
+properties:
+  app_ssh:
+    oauth_client_id: ssh-proxy
+  cc:
+    default_to_diego_backend: true
+    allow_app_ssh_access: true
+  uaa:
+    clients:
+      <<: (( merge ))
+      ssh-proxy:
+        authorized-grant-types: authorization_code
+        autoapprove: true
+        override: true
+        redirect-uri: /login
+        scope: openid,cloud_controller.read,cloud_controller.write
+        secret: ssh-proxy-secret

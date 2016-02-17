@@ -1,0 +1,157 @@
+#!/bin/bash
+
+set -e
+
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+
+function usage() {
+  >&2 echo "    Usage:
+    $0 <create|update|skip> <cloud_foundry_release_dir> <deployment_dir>
+    cloud_foundry_release_dir:
+      Location where the cf-release repository has been download to.
+    deployment_dir:
+      Private deployment directory containg your keys.
+"
+  exit 1
+}
+
+if [ "$1" == "create" ]; then
+  UPDATE_OR_CREATE=create-stack
+elif [ "$1" == "update" ]; then
+  UPDATE_OR_CREATE=update-stack
+elif [ "$1" == "skip" ]; then
+  UPDATE_OR_CREATE="skip"
+else
+  usage
+  exit 1
+fi
+
+cf_release_dir=$2
+deployment_dir=$3
+
+if [ -z ${deployment_dir} ]; then
+  usage
+fi
+
+command -v aws >/dev/null || { echo "aws is required"; exit 1; }
+command -v jq >/dev/null || { echo "jq is required"; exit 1; }
+command -v spiff >/dev/null || { echo "spiff is required"; exit 1; }
+command -v bosh-init >/dev/null || { echo "bosh-init is required"; exit 1; }
+
+set -x
+
+pushd ${deployment_dir}
+
+mkdir -p stubs/cf
+mkdir -p stubs/infrastructure
+mkdir -p deployments/bosh-init
+mkdir -p certs/consul
+
+source bootstrap_environment
+
+# install certs for ELB
+if ! aws iam get-server-certificate --server-certificate-name cfrouter; then
+  aws iam upload-server-certificate                   \
+    --server-certificate-name cfrouter                \
+    --private-key file://certs/elb-cfrouter.key       \
+    --certificate-body file://certs/elb-cfrouter.pem
+fi
+
+# generate stub to be fed into template for cloudformation
+cat > stubs/infrastructure/certificates.yml <<EOF
+# GENERATED, NO TOUCHING
+EOF
+
+aws iam get-server-certificate --server-certificate-name cfrouter \
+  >> stubs/infrastructure/certificates.yml
+
+# generate cloudformation template
+spiff merge \
+  $SCRIPT_DIR/templates/infrastructure/boosh.yml \
+  $SCRIPT_DIR/templates/infrastructure/boosh-internal.yml \
+  stubs/domain.yml \
+  stubs/infrastructure/certificates.yml \
+  stubs/infrastructure/availability_zones.yml \
+  | boosh generate | jq -c -S . \
+  > stubs/infrastructure/cloudformation.json
+
+# deploy infrastructure
+if [ $UPDATE_OR_CREATE != "skip" ]; then
+  aws cloudformation $UPDATE_OR_CREATE \
+    --stack-name cf-diego-stack \
+    --template-body file://stubs/infrastructure/cloudformation.json
+
+  # ensure that create or update was successful to aws
+  boosh watch --name cf-diego-stack
+fi
+
+# generate AWS resources stub for shared purposes
+cat > stubs/aws-resources.yml <<EOF
+# GENERATED, NO TOUCHING
+EOF
+
+boosh resources --name cf-diego-stack >> stubs/aws-resources.yml
+
+cat > deployments/bosh-init/bosh-init.yml <<EOF
+# GENERATED, NO TOUCHING
+EOF
+
+spiff merge \
+  $SCRIPT_DIR/templates/bosh-init/bosh-init.yml \
+  $SCRIPT_DIR/templates/bosh-init/bosh-init-internal.yml \
+  stubs/aws-resources.yml \
+  stubs/bosh-init/*.yml \
+  >> deployments/bosh-init/bosh-init.yml
+
+bosh-init deploy deployments/bosh-init/bosh-init.yml
+bosh -n target `cat stubs/aws-resources.yml | grep BoshInit | awk '{ gsub(/"/, "", $NF); print $NF }'`
+
+# generate director uuid stub for template to create deployment stub
+cat > stubs/director-uuid.yml <<EOF
+# GENERATED, NO TOUCHING
+---
+director_uuid: $(bosh status --uuid | tr -d '\n')
+EOF
+
+touch stubs/cf/domain.yml
+
+cat > stubs/cf/domain.yml <<EOF
+# GENERATED, NO TOUCHING
+EOF
+
+spiff merge $SCRIPT_DIR/templates/cf/domain.yml \
+  $SCRIPT_DIR/templates/cf/domain-internal.yml \
+  stubs/domain.yml >> stubs/cf/domain.yml
+
+# generate deployment stub
+touch stubs/cf/stub.yml
+
+cat > stubs/cf/stub.yml <<EOF
+# GENERATED, NO TOUCHING
+EOF
+
+spiff merge \
+  $SCRIPT_DIR/templates/cf/stub.yml \
+  $SCRIPT_DIR/templates/cf/stub-internal.yml \
+  stubs/aws-resources.yml \
+  stubs/cf/domain.yml \
+  stubs/director-uuid.yml \
+  >> stubs/cf/stub.yml
+
+if [ ! -f stubs/cf/properties.yml ]; then
+  cp $SCRIPT_DIR/stubs/cf/properties.yml stubs/cf/properties.yml
+fi
+
+mkdir -p stubs/diego
+
+if [ ! -f stubs/diego/property-overrides.yml ]; then
+  cp $SCRIPT_DIR/stubs/diego/property-overrides.yml stubs/diego/property-overrides.yml
+fi
+
+spiff merge \
+  $SCRIPT_DIR/../../manifest-generation/misc-templates/aws-iaas-settings.yml \
+  $SCRIPT_DIR/templates/diego/iaas-settings-internal.yml \
+  stubs/aws-resources.yml \
+  > stubs/diego/iaas-settings.yml
+
+popd

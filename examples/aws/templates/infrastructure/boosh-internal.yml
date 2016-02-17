@@ -1,0 +1,97 @@
+---
+meta:
+  vpc:
+    base: "10.10"
+
+  availability_zones: (( merge ))
+
+vpc:
+  cidr: (( meta.vpc.base ".0.0/16" ))
+
+dns:
+  - (( meta.vpc.base ".0.2" ))
+  - (( meta.vpc.base ".0.6" ))
+
+subnets:
+  - name: BOSHZ1
+    cidr: (( meta.vpc.base ".0.0/24" ))
+    availability_zone: (( meta.availability_zones.[0] ))
+    nat:
+      ip: (( meta.vpc.base ".0.10" ))
+
+  - name: CFELBZ1
+    cidr: (( meta.vpc.base ".1.0/24" ))
+    availability_zone: (( meta.availability_zones.[0] ))
+
+  - name: CFELBZ2
+    cidr: (( meta.vpc.base ".8.0/24" ))
+    availability_zone: (( meta.availability_zones.[1] ))
+
+  - name: CFELBZ3
+    cidr: (( meta.vpc.base ".9.0/24" ))
+    availability_zone: (( meta.availability_zones.[2] ))
+
+  - name: SSHProxyELBZ1
+    cidr: (( meta.vpc.base ".15.0/24" ))
+    availability_zone: (( meta.availability_zones.[0] ))
+
+  - name: SSHProxyELBZ2
+    cidr: (( meta.vpc.base ".16.0/24" ))
+    availability_zone: (( meta.availability_zones.[1] ))
+
+  - name: SSHProxyELBZ3
+    cidr: (( meta.vpc.base ".17.0/24" ))
+    availability_zone: (( meta.availability_zones.[2] ))
+
+  - name: CFZ1
+    cidr: (( meta.vpc.base ".2.0/24" ))
+    availability_zone: (( meta.availability_zones.[0] ))
+
+  - name: CFZ2
+    cidr: (( meta.vpc.base ".3.0/24" ))
+    availability_zone: (( meta.availability_zones.[1] ))
+
+  - name: CFZ3
+    cidr: (( meta.vpc.base ".4.0/24" ))
+    availability_zone: (( meta.availability_zones.[2] ))
+
+  - name: DiegoZ1
+    cidr: (( meta.vpc.base ".5.0/24" ))
+    availability_zone: (( meta.availability_zones.[0] ))
+
+  - name: DiegoZ2
+    cidr: (( meta.vpc.base ".6.0/24" ))
+    availability_zone: (( meta.availability_zones.[1] ))
+
+  - name: DiegoZ3
+    cidr: (( meta.vpc.base ".7.0/24" ))
+    availability_zone: (( meta.availability_zones.[2] ))
+
+  - name: Errands
+    cidr: (( meta.vpc.base ".10.0/24" ))
+    availability_zone: (( meta.availability_zones.[2] ))
+
+load_balancers:
+  - name: CFELB
+    listeners:
+      - protocol: http
+        port: 80
+      - protocol: https
+        port: 443
+        destination_protocol: http
+        destination_port: 80
+        ssl_certificate_id: (( .ServerCertificate.ServerCertificateMetadata.Arn ))
+      - protocol: ssl
+        port: 4443
+        destination_protocol: tcp
+        destination_port: 80
+        ssl_certificate_id: (( .ServerCertificate.ServerCertificateMetadata.Arn ))
+
+  - name: SSHProxyELB
+    listeners:
+      - protocol: tcp
+        port: 2222
+        destination_protocol: tcp
+        destination_port: 2222
+
+ServerCertificate: (( merge ))

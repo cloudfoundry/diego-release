@@ -508,7 +508,7 @@ properties:
     heartbeat_interval_in_milliseconds: (( property_overrides.etcd.heartbeat_interval_in_milliseconds || nil ))
     election_timeout_in_milliseconds: (( property_overrides.etcd.election_timeout_in_milliseconds || nil ))
 
-  # -- Properties below are used by the jobs from diego-release --
+  # -- Properties below are used by the jobs from diego- release --
   diego:
     # -- Global property --
     ssl:
@@ -529,8 +529,8 @@ properties:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       log_level: (( property_overrides.auctioneer.log_level || nil ))
     bbs:
-      active_key_label: (( property_overrides.bbs.active_key_label ))
-      encryption_keys: (( property_overrides.bbs.encryption_keys ))
+      active_key_label: (( property_overrides.bbs.active_key_label || nil ))
+      encryption_keys: (( property_overrides.bbs.encryption_keys || nil ))
       require_ssl: (( property_overrides.bbs.require_ssl || nil ))
       ca_cert: (( property_overrides.bbs.ca_cert ))
       server_cert: (( property_overrides.bbs.server_cert ))

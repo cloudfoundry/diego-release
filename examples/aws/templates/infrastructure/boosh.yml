@@ -1,0 +1,204 @@
+---
+description: |
+  P-a-a-S-i-n-g.
+
+domain: (( merge ))
+
+meta: (( merge ))
+
+vpc:
+  cidr: (( merge ))
+  internet_gateway: VPCGateway
+
+internet_gateways:
+  - name: VPCGateway
+
+elastic_ips:
+  - name: BoshInit
+
+dns: (( merge ))
+
+subnets:
+  - name: BOSHZ1
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      internet_gateway: VPCGateway
+    nat:
+      name: NATZ1
+      type: m1.small
+      ip: (( merge ))
+      key_pair_name: bosh
+      security_group: Open
+
+  - name: CFELBZ1
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      internet_gateway: VPCGateway
+
+  - name: CFELBZ2
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      internet_gateway: VPCGateway
+
+  - name: CFELBZ3
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      internet_gateway: VPCGateway
+
+  - name: SSHProxyELBZ1
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      internet_gateway: VPCGateway
+
+  - name: SSHProxyELBZ2
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      internet_gateway: VPCGateway
+
+  - name: SSHProxyELBZ3
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      internet_gateway: VPCGateway
+
+  - name: CFZ1
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      instance: NATZ1
+
+  - name: CFZ2
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      instance: NATZ1
+
+  - name: CFZ3
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      instance: NATZ1
+
+  - name: DiegoZ1
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      instance: NATZ1
+
+  - name: DiegoZ2
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      instance: NATZ1
+
+  - name: DiegoZ3
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      instance: NATZ1
+  
+  - name: Errands
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      instance: NATZ1
+
+buckets:
+  - name: AppBits
+  - name: AppResources
+  - name: Droplets
+  - name: Buildpacks
+
+load_balancers:
+  - name: CFELB
+    dns_record: "*"
+    listeners: (( merge ))
+    health_check:
+      target:
+        protocol: tcp
+        port: 80
+      timeout: 2
+      interval: 12
+      unhealthy_threshold: 2
+      healthy_threshold: 5
+    subnets:
+      - CFELBZ1
+      - CFELBZ2
+      - CFELBZ3
+    security_groups:
+      - Web
+    cross_zone: true
+  
+  - name: SSHProxyELB
+    dns_record: "ssh"
+    listeners: (( merge ))
+    health_check:
+      target:
+        protocol: tcp
+        port: 2222
+      timeout: 2
+      interval: 6
+      unhealthy_threshold: 2
+      healthy_threshold: 5
+    subnets:
+      - SSHProxyELBZ1
+      - SSHProxyELBZ2
+      - SSHProxyELBZ3
+    security_groups:
+      - SSHProxy
+    cross_zone: true
+
+security_groups:
+  - name: BOSH
+    ingress:
+      - protocol: tcp
+        ports: 0-65535
+        cidr: 0.0.0.0/0
+      - protocol: udp
+        ports: 0-65535
+        cidr: 0.0.0.0/0
+
+  - name: Open
+    ingress:
+      - protocol: tcp
+        ports: 0-65535
+        cidr: 0.0.0.0/0
+      - protocol: udp
+        ports: 0-65535
+        cidr: 0.0.0.0/0
+
+  - name: Internal
+    ingress:
+      - protocol: tcp
+        ports: 0-65535
+        cidr: 0.0.0.0/0
+      - protocol: udp
+        ports: 0-65535
+        cidr: 0.0.0.0/0
+
+  - name: Web
+    ingress:
+      - protocol: tcp
+        cidr: 0.0.0.0/0
+        ports: 80
+      - protocol: tcp
+        cidr: 0.0.0.0/0
+        ports: 8080
+      - protocol: tcp
+        cidr: 0.0.0.0/0
+        ports: 443
+      - protocol: tcp
+        cidr: 0.0.0.0/0
+        ports: 4443
+
+  - name: SSHProxy
+    ingress:
+      - protocol: tcp
+        cidr: 0.0.0.0/0
+        ports: 2222

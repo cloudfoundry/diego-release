@@ -1,0 +1,38 @@
+---
+name: bosh
+
+releases: (( merge ))
+
+resource_pools: (( merge ))
+
+disk_pools:
+- name: disks
+  disk_size: 20_000
+  cloud_properties: 
+    type: gp2
+
+networks: (( merge ))
+
+jobs: (( merge ))
+
+cloud_provider:
+  template: 
+    name: aws_cpi
+    release: bosh-aws-cpi
+
+  ssh_tunnel:
+    host: (( merge ))
+    port: 22
+    user: vcap
+    private_key: ../../keypair/id_rsa_bosh
+
+  mbus: (( merge )) 
+
+  properties: (( merge ))
+
+properties:
+  director:
+    user_management:
+      provider: local
+      local:
+        users: (( merge ))

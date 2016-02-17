@@ -1,0 +1,70 @@
+---
+meta:
+  <<: (( merge ))
+  environment: REPLACE_ME_WITH_CF_DEPLOYMENT_NAME
+
+properties:
+  app_ssh:
+    host_key_fingerprint: REPLACE_ME_WITH_(DEPLOYMENT_DIR/keypair/ssh-proxy-hostkey-fingerprint)
+
+  consul:
+    ca_cert: |
+      REPLACE_ME_WITH_(DEPLOYMENT_DIR/certs/consul-certs/server-ca.crt)
+    server_cert: |
+      REPLACE_ME_WITH_(DEPLOYMENT_DIR/certs/consul-certs/server.crt)
+    server_key: |
+      REPLACE_ME_WITH_(DEPLOYMENT_DIR/certs/consul-certs/server.key)
+    agent_cert: |
+      REPLACE_ME_WITH_(DEPLOYMENT_DIR/certs/consul-certs/agent.crt)
+    agent_key: |
+      REPLACE_ME_WITH_(DEPLOYMENT_DIR/certs/consul-certs/agent.key)
+    encrypt_keys: [REPLACE_ME_WITH_CONSUL_ENCRYPTION_KEY]
+
+  cc:
+    staging_upload_password: REPLACE_ME_WITH_STAGING_UPLOAD_PASSWORD
+    staging_upload_user: REPLACE_ME_WITH_STAGING_UPLOAD_USER
+    bulk_api_password: REPLACE_ME_WITH_BULK_API_PASSWORD
+    db_encryption_key: REPLACE_ME_WITH_DATABASE_ENCRYPTION_KEY
+
+  loggregator_endpoint:
+    shared_secret: REPLACE_ME_WITH_LOGGREGATOR_PASSWORD
+
+  router:
+    status:
+      password: REPLACE_ME_WITH_ROUTER_STATUS_PASSWORD
+      user: REPLACE_ME_WITH_ROUTER_STATUS_USER
+
+  nats:
+    password: REPLACE_ME_WITH_NATS_PASSWORD
+    user: REPLACE_ME_WITH_NATS_USER
+
+  uaa:
+    admin:
+      client_secret: REPLACE_ME_WITH_ADMIN_PASSWORD
+    cc:
+      client_secret: REPLACE_ME_WITH_CC_CLIENT_PASSWORD
+    clients:
+      cc_routing:
+        secret: REPLACE_ME_WITH_CC_ROUTING_PASSWORD
+      cloud_controller_username_lookup:
+        secret: REPLACE_ME_WITH_CLOUD_CONTROLLER_USERNAME_LOOKUP_PASSWORD
+      doppler:
+        secret: REPLACE_ME_WITH_DOPPLER_PASSWORD
+      login:
+        secret: REPLACE_ME_WITH_LOGIN_PASSWORD
+      tcp_emitter:
+        secret: REPLACE_ME_WITH_TCP_EMITTER_PASSWORD
+      gorouter:
+        secret: REPLACE_ME_WITH_GOROUTER_PASSWORD
+      notifications:
+        secret: REPLACE_ME_WITH_NOTIFICATIONS_PASSWORD
+      tcp_router:
+        secret: REPLACE_ME_WITH_TCP_ROUTER_PASSWORD
+    jwt:
+      signing_key: REPLACE_ME_WITH_(DEPLOYMENT_DIR/keypair/uaa)
+      verification_key: REPLACE_ME_WITH_(DEPLOYMENT_DIR/keypair/uaa.pub)
+    scim:
+      users:
+      - admin|REPLACE_ME_WITH_ADMIN_PASSWORD|scim.write,scim.read,openid,cloud_controller.admin,doppler.firehose
+
+

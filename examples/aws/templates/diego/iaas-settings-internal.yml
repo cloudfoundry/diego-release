@@ -1,0 +1,139 @@
+iaas_settings:
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: latest
+  subnet_configs:
+    - name: diego1
+      subnets:
+        - range:    (( Resources.SubnetCIDR.DiegoZ1 ))
+          reserved: (( [Resources.SubnetOctets.DiegoZ1.[2] ".2 - " Resources.SubnetOctets.DiegoZ1.[2] ".9"] ))
+          static:   (( [Resources.SubnetOctets.DiegoZ1.[2] ".10 - " Resources.SubnetOctets.DiegoZ1.[2] ".63"] ))
+          gateway:  (( Resources.SubnetOctets.DiegoZ1.[2] ".1" ))
+          dns:      (( [Resources.SubnetOctets.DiegoZ1.[1] ".0.2"] ))
+          cloud_properties:
+            security_groups: (( [Resources.SecurityGroupName.Internal] ))
+            subnet: (( Resources.Subnet.DiegoZ1 ))
+    - name: diego2
+      subnets:
+        - range:    (( Resources.SubnetCIDR.DiegoZ2 ))
+          reserved: (( [Resources.SubnetOctets.DiegoZ2.[2] ".2 - " Resources.SubnetOctets.DiegoZ2.[2] ".9"] ))
+          static:   (( [Resources.SubnetOctets.DiegoZ2.[2] ".10 - " Resources.SubnetOctets.DiegoZ2.[2] ".63"] ))
+          gateway:  (( Resources.SubnetOctets.DiegoZ2.[2] ".1" ))
+          dns:      (( [Resources.SubnetOctets.DiegoZ2.[1] ".0.2"] ))
+          cloud_properties:
+            security_groups: (( [Resources.SecurityGroupName.Internal] ))
+            subnet: (( Resources.Subnet.DiegoZ2 ))
+    - name: diego3
+      subnets:
+        - range:    (( Resources.SubnetCIDR.DiegoZ3 ))
+          reserved: (( [Resources.SubnetOctets.DiegoZ3.[2] ".2 - " Resources.SubnetOctets.DiegoZ3.[2] ".9"] ))
+          static:   (( [Resources.SubnetOctets.DiegoZ3.[2] ".10 - " Resources.SubnetOctets.DiegoZ3.[2] ".63"] ))
+          gateway:  (( Resources.SubnetOctets.DiegoZ3.[2] ".1" ))
+          dns:      (( [Resources.SubnetOctets.DiegoZ3.[1] ".0.2"] ))
+          cloud_properties:
+            security_groups: (( [Resources.SecurityGroupName.Internal] ))
+            subnet: (( Resources.Subnet.DiegoZ3 ))
+  compilation_cloud_properties:
+    instance_type: c3.large
+    availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
+  resource_pool_cloud_properties:
+    - name: access_z1
+      cloud_properties:
+        instance_type: m3.medium
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
+        elbs:
+        - (( Resources.LoadBalancer.SSHProxyELB ))
+    - name: access_z2
+      cloud_properties:
+        instance_type: m3.medium
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ2 ))
+        elbs:
+        - (( Resources.LoadBalancer.SSHProxyELB ))
+    - name: access_z3
+      cloud_properties:
+        instance_type: m3.medium
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ3 ))
+        elbs:
+        - (( Resources.LoadBalancer.SSHProxyELB ))
+    - name: brain_z1
+      cloud_properties:
+        instance_type: m3.medium
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
+    - name: brain_z2
+      cloud_properties:
+        instance_type: m3.medium
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ2 ))
+    - name: brain_z3
+      cloud_properties:
+        instance_type: m3.medium
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ3 ))
+    - name: cc_bridge_z1
+      cloud_properties:
+        instance_type: m3.medium
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
+    - name: cc_bridge_z2
+      cloud_properties:
+        instance_type: m3.medium
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ2 ))
+    - name: cc_bridge_z3
+      cloud_properties:
+        instance_type: m3.medium
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ3 ))
+    - name: cell_z1
+      cloud_properties:
+        instance_type: r3.xlarge
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
+    - name: cell_z2
+      cloud_properties:
+        instance_type: r3.xlarge
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ2 ))
+    - name: cell_z3
+      cloud_properties:
+        instance_type: r3.xlarge
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ3 ))
+    - name: database_z1
+      cloud_properties:
+        instance_type: m3.large
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
+    - name: database_z2
+      cloud_properties:
+        instance_type: m3.large
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ2 ))
+    - name: database_z3
+      cloud_properties:
+        instance_type: m3.large
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ3 ))
+    - name: route_emitter_z1
+      cloud_properties:
+        instance_type: m3.medium
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
+    - name: route_emitter_z2
+      cloud_properties:
+        instance_type: m3.medium
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ2 ))
+    - name: route_emitter_z3
+      cloud_properties:
+        instance_type: m3.medium
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ3 ))
+
+Resources:
+  Subnet:
+    DiegoZ1: (( merge ))
+    DiegoZ2: (( merge ))
+    DiegoZ3: (( merge ))
+  SubnetAvailabilityZone:
+    DiegoZ1: (( merge ))
+    DiegoZ2: (( merge ))
+    DiegoZ3: (( merge ))
+  SubnetOctets:
+    DiegoZ1: (( merge ))
+    DiegoZ2: (( merge ))
+    DiegoZ3: (( merge ))
+  SubnetCIDR:
+    DiegoZ1: (( merge ))
+    DiegoZ2: (( merge ))
+    DiegoZ3: (( merge ))
+  SecurityGroupName:
+    Internal: (( merge ))
+  LoadBalancer:
+    SSHProxyELB: (( merge ))

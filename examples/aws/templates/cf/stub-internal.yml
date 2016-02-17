@@ -1,0 +1,108 @@
+---
+meta:
+  zones:
+    z1: (( Resources.SubnetAvailabilityZone.CFZ1 ))
+    z2: (( Resources.SubnetAvailabilityZone.CFZ2 ))
+    z3: (( Resources.SubnetAvailabilityZone.CFZ3 ))
+
+director_uuid: (( merge ))
+
+networks:
+  - name: cf1
+    subnets:
+      - range:    (( Resources.SubnetCIDR.CFZ1 ))
+        reserved: (( [Resources.SubnetOctets.CFZ1.[2] ".2 - " Resources.SubnetOctets.CFZ1.[2] ".9"] ))
+        static:   (( [Resources.SubnetOctets.CFZ1.[2] ".10 - " Resources.SubnetOctets.CFZ1.[2] ".63"] ))
+        gateway:  (( Resources.SubnetOctets.CFZ1.[2] ".1" ))
+        dns:      (( [Resources.SubnetOctets.BOSHZ1.[2] ".2"] ))
+        cloud_properties:
+          security_groups: (( [Resources.SecurityGroupName.Internal] ))
+          subnet: (( Resources.Subnet.CFZ1 ))
+
+  - name: cf2
+    subnets:
+      - range:    (( Resources.SubnetCIDR.CFZ2 ))
+        reserved: (( [Resources.SubnetOctets.CFZ2.[2] ".2 - " Resources.SubnetOctets.CFZ2.[2] ".9"] ))
+        static:   (( [Resources.SubnetOctets.CFZ2.[2] ".10 - " Resources.SubnetOctets.CFZ2.[2] ".63"] ))
+        gateway:  (( Resources.SubnetOctets.CFZ2.[2] ".1" ))
+        dns:      (( [Resources.SubnetOctets.BOSHZ1.[2] ".2"] ))
+        cloud_properties:
+          security_groups: (( [Resources.SecurityGroupName.Internal] ))
+          subnet: (( Resources.Subnet.CFZ2 ))
+
+  - name: cf3
+    subnets:
+      - range:    (( Resources.SubnetCIDR.CFZ3 ))
+        reserved: (( [Resources.SubnetOctets.CFZ3.[2] ".2 - " Resources.SubnetOctets.CFZ3.[2] ".9"] ))
+        static:   (( [Resources.SubnetOctets.CFZ3.[2] ".10 - " Resources.SubnetOctets.CFZ3.[2] ".63"] ))
+        gateway:  (( Resources.SubnetOctets.CFZ3.[2] ".1" ))
+        dns:      (( [Resources.SubnetOctets.BOSHZ1.[2] ".2"] ))
+        cloud_properties:
+          security_groups: (( [Resources.SecurityGroupName.Internal] ))
+          subnet: (( Resources.Subnet.CFZ3 ))
+
+resource_pools:
+  - name: router_z1
+    cloud_properties:
+      availability_zone: (( meta.zones.z1 ))
+      elbs: (( [Resources.LoadBalancer.CFELB] ))
+
+  - name: router_z2
+    cloud_properties:
+      availability_zone: (( meta.zones.z2 ))
+      elbs: (( [Resources.LoadBalancer.CFELB] ))
+
+  - name: router_z3
+    cloud_properties:
+      availability_zone: (( meta.zones.z3 ))
+      elbs: (( [Resources.LoadBalancer.CFELB] ))
+
+jobs:
+  - name: postgres_z1
+    instances: 1
+    networks:
+      - name: cf1
+        static_ips: (( static_ips(32) ))
+
+properties:
+  # needed by cf-release
+  domain: (( merge ))
+  system_domain: (( properties.domain ))
+  app_domains:
+    - (( properties.domain ))
+
+  template_only:
+    aws:
+      access_key_id: (( AccessKeyID ))
+      secret_access_key: (( SecretAccessKey ))
+      subnet_ids:
+        cf1: (( Resources.Subnet.CFZ1 ))
+        cf2: (( Resources.Subnet.CFZ2 ))
+        cf3: (( Resources.Subnet.CFZ3 ))
+
+      availability_zone: (( meta.zones.z1 ))
+      availability_zone2: (( meta.zones.z2 ))
+      availability_zone3: (( meta.zones.z3 ))
+
+  cc:
+    resource_pool:
+      resource_directory_key: (( Resources.Bucket.AppResources ))
+    packages:
+      app_package_directory_key: (( Resources.Bucket.AppBits ))
+    droplets:
+      droplet_directory_key: (( Resources.Bucket.Droplets ))
+    buildpacks:
+      buildpack_directory_key: (( Resources.Bucket.Buildpacks ))
+
+  ccdb:
+    address: (( properties.databases.address ))
+
+  uaadb:
+    address: (( properties.databases.address ))
+
+  databases:
+    address: (( jobs.postgres_z1.networks.cf1.static_ips.[0] ))
+
+Resources: (( merge ))
+AccessKeyID: (( merge ))
+SecretAccessKey: (( merge ))

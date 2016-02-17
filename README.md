@@ -28,6 +28,7 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 1. [Discovering a Set of Releases to Deploy](#release-compatibility)
 1. [Deploying Diego to BOSH-Lite](#deploying-diego-to-bosh-lite)
 1. [Pushing to Diego](#pushing-to-diego)
+1. [Deploying Diego to AWS](#deploying-diego-to-aws)
 1. [Database Encryption](#database-encryption)
   1. [Configuring Encryption Keys](#configuring-encryption-keys)
 1. [TLS Configuration](#tls-configuration)
@@ -182,8 +183,6 @@ or the
 > the `manifest-generation/bosh-lite-stubs/colocated-instance-count-overrides.yml`
 > stub.
 
-
----
 ## Pushing a CF Application to the Diego backend
 
 1. Create and target a CF org and space:
@@ -205,6 +204,12 @@ or the
 1. Start your application:
 
         cf start my-app
+
+---
+
+##<a name="deploying-diego-to-aws"></a>Deploying Diego to AWS
+
+In order to deploy Diego to AWS follow [these instructions](examples/aws/README.md). Enjoy!
 
 ---
 ## Database Encryption
@@ -247,7 +252,7 @@ have no enforced limit. In addtion to that, the key label must not contain a
 separator.
 
 ---
-## TLS Configuration
+##<a name="tls-configuration"></a>TLS Configuration
 
 Diego Release can be configured to require TLS for communication with etcd.
 To enable or disable TLS communication with etcd, the `diego.etcd.require_ssl`

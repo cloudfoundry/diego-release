@@ -1,0 +1,136 @@
+---
+resource_pools:
+- name: vms
+  network: private
+  stemcell: (( BoshInitStemcell ))
+  cloud_properties:
+    instance_type: m3.xlarge
+    ephemeral_disk: 
+      size: 25_000
+      type: gp2
+    availability_zone: (( Resources.SubnetAvailabilityZone.BOSHZ1 ))
+
+networks:
+- name: private
+  type: manual
+  subnets:
+  - range: (( Resources.SubnetCIDR.BOSHZ1 ))
+    gateway: (( Resources.SubnetOctets.BOSHZ1.[2] ".1" )) 
+    dns:
+      - (( Resources.SubnetOctets.BOSHZ1.[2] ".2" ))
+    cloud_properties: 
+      subnet: (( Resources.Subnet.BOSHZ1 ))
+- name: public
+  type: vip
+
+jobs:
+- name: bosh
+  instances: 1
+
+  templates:
+  - {name: nats, release: bosh}
+  - {name: redis, release: bosh}
+  - {name: postgres, release: bosh}
+  - {name: blobstore, release: bosh}
+  - {name: director, release: bosh}
+  - {name: health_monitor, release: bosh}
+  - {name: registry, release: bosh}
+  - {name: aws_cpi, release: bosh-aws-cpi}
+
+  resource_pool: vms
+  persistent_disk_pool: disks
+
+  networks:
+  - name: private
+    static_ips: 
+      - (( Resources.SubnetOctets.BOSHZ1.[2] ".6" ))
+    default: [dns, gateway]
+  - name: public
+    static_ips: 
+      - (( Resources.EIP.BoshInit ))
+
+  properties:
+    nats:
+      address: 127.0.0.1
+      user: nats
+      password: nats-password
+
+    redis:
+      listen_addresss: 127.0.0.1
+      address: 127.0.0.1
+      password: redis-password
+
+    postgres: &db
+      host: 127.0.0.1
+      user: postgres
+      password: postgres-password
+      database: bosh
+      adapter: postgres
+
+    registry:
+      address: ((Resources.SubnetOctets.BOSHZ1.[2] ".6" ))
+      host: ((Resources.SubnetOctets.BOSHZ1.[2] ".6" ))
+      db: *db
+      http: {user: admin, password: admin, port: 25777}
+      username: admin
+      password: admin
+      port: 25777
+
+    blobstore:
+      address: ((Resources.SubnetOctets.BOSHZ1.[2] ".6" ))
+      port: 25250
+      provider: dav
+      director: {user: director, password: director-password}
+      agent: {user: agent, password: agent-password}
+
+    director:
+      address: 127.0.0.1
+      name: my-bosh
+      db: *db
+      cpi_job: aws_cpi
+      max_threads: 10
+
+    hm:
+      director_account: {user: hm, password: hm-password}
+    resurrector_enabled: true
+
+    aws: &aws
+      access_key_id: (( AccessKeyID ))
+      secret_access_key: (( SecretAccessKey ))
+      default_key_name: bosh
+      default_security_groups: (( [Resources.SecurityGroupName.BOSH] ))
+      region: (( Region ))
+
+    agent:
+      mbus: (( "nats://nats:nats-password@" Resources.SubnetOctets.BOSHZ1.[2] ".6:4222" ))
+
+    ntp: &ntp [0.pool.ntp.org, 1.pool.ntp.org]
+
+cloud_provider:
+  ssh_tunnel:
+    host: (( Resources.EIP.BoshInit ))
+
+  mbus: (( "https://mbus:mbus-password@" Resources.EIP.BoshInit ":6868" ))
+
+  properties:
+    aws: *aws
+    agent:
+      mbus: "https://mbus:mbus-password@0.0.0.0:6868"
+    blobstore:
+      provider: local
+      path: /var/vcap/micro_bosh/data/cache
+    ntp: *ntp
+
+properties:
+  director:
+    user_management:
+      provider: local
+      local:
+        users: (( BoshInitUsers ))
+
+Region: (( merge ))
+Resources: (( merge ))
+AccessKeyID: (( merge ))
+SecretAccessKey: (( merge ))
+BoshInitStemcell: (( merge ))
+BoshInitUsers: (( merge ))
