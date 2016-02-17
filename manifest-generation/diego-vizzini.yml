@@ -63,10 +63,10 @@ properties:
     routable_domain_suffix: (( property_overrides.vizzini.routable_domain_suffix ))
     bbs:
       api_location: (( property_overrides.vizzini.bbs.api_location || nil ))
-      require_ssl: (( property_overrides.vizzini.bbs.require_ssl || false ))
+      require_ssl: (( property_overrides.vizzini.bbs.require_ssl || nil ))
       client_cert: (( property_overrides.vizzini.bbs.client_cert || nil ))
       client_key: (( property_overrides.vizzini.bbs.client_key || nil ))
-    nodes: (( property_overrides.vizzini.nodes || 8 ))
+    nodes: (( property_overrides.vizzini.nodes || nil ))
     ssh:
       proxy_address: (( property_overrides.vizzini.ssh.proxy_address || nil ))
       proxy_secret: (( property_overrides.vizzini.ssh.proxy_secret || nil ))
