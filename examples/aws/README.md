@@ -153,9 +153,10 @@ you can generate a self signed cert following the commands below:
 
 ```
 openssl genrsa -out elb-cfrouter.key 2048
-openssl req -new -key elb-cfrouter.key -out elb-cfrouter.csr
+openssl req -new -key elb-cfrouter.key -out elb-cfrouter.csr # Enter `*.YOUR_CF_DOMAIN` as the "Common Name"
 ```
-You can leave all of the requested inputs blank. Then run:
+
+You can leave all of the requested inputs blank, except for `Common Name` which should be `*.YOUR_CF_DOMAIN`. Then run:
 
 ```
 openssl x509 -req -in elb-cfrouter.csr -signkey elb-cfrouter.key -out elb-cfrouter.pem
@@ -420,6 +421,9 @@ For more information on stubs for cf-release manifest generation, please refer t
 In order to correctly generate a manifest for the cf-release deployment, you must
 replace certain values in the provided `$DEPLOYMENT_DIR/stubs/cf/properties.yml`.
 Every value that needs to be replaced is prefixed with `REPLACE_ME_WITH`.
+
+** Note: ** If you did not generate a self signed certificate for the [elb-cfrouter.pem](#deployment-directory-setup)
+and are using a certificate signed by a trusted certificate authority, you will need to change the value of `properties.ssl.skip_cert_verify` from `true` to `false`.
 
 #### Diego Stub
 

@@ -7,6 +7,12 @@ properties:
   app_ssh:
     host_key_fingerprint: REPLACE_ME_WITH_(DEPLOYMENT_DIR/keypair/ssh-proxy-hostkey-fingerprint)
 
+  cc:
+    staging_upload_password: REPLACE_ME_WITH_STAGING_UPLOAD_PASSWORD
+    staging_upload_user: REPLACE_ME_WITH_STAGING_UPLOAD_USER
+    bulk_api_password: REPLACE_ME_WITH_BULK_API_PASSWORD
+    db_encryption_key: REPLACE_ME_WITH_DATABASE_ENCRYPTION_KEY
+
   consul:
     ca_cert: |
       REPLACE_ME_WITH_(DEPLOYMENT_DIR/certs/consul-certs/server-ca.crt)
@@ -20,23 +26,20 @@ properties:
       REPLACE_ME_WITH_(DEPLOYMENT_DIR/certs/consul-certs/agent.key)
     encrypt_keys: [REPLACE_ME_WITH_CONSUL_ENCRYPTION_KEY]
 
-  cc:
-    staging_upload_password: REPLACE_ME_WITH_STAGING_UPLOAD_PASSWORD
-    staging_upload_user: REPLACE_ME_WITH_STAGING_UPLOAD_USER
-    bulk_api_password: REPLACE_ME_WITH_BULK_API_PASSWORD
-    db_encryption_key: REPLACE_ME_WITH_DATABASE_ENCRYPTION_KEY
-
   loggregator_endpoint:
     shared_secret: REPLACE_ME_WITH_LOGGREGATOR_PASSWORD
+
+  nats:
+    password: REPLACE_ME_WITH_NATS_PASSWORD
+    user: REPLACE_ME_WITH_NATS_USER
 
   router:
     status:
       password: REPLACE_ME_WITH_ROUTER_STATUS_PASSWORD
       user: REPLACE_ME_WITH_ROUTER_STATUS_USER
 
-  nats:
-    password: REPLACE_ME_WITH_NATS_PASSWORD
-    user: REPLACE_ME_WITH_NATS_USER
+  ssl:
+    skip_cert_verify: true
 
   uaa:
     admin:
