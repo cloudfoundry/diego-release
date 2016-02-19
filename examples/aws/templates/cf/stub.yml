@@ -1,0 +1,144 @@
+---
+meta:
+  zones:
+    z1: (( merge ))
+    z2: (( merge ))
+    z3: (( merge ))
+
+director_uuid: (( merge ))
+
+networks:
+  - name: cf1
+    type: manual
+    subnets:
+      - range:    (( merge ))
+        reserved: (( merge ))
+        static:   (( merge ))
+        gateway:  (( merge ))
+        dns:      (( merge ))
+        cloud_properties:
+          security_groups: (( merge ))
+          subnet: (( merge ))
+
+  - name: cf2
+    type: manual
+    subnets:
+      - range:    (( merge ))
+        reserved: (( merge ))
+        static:   (( merge ))
+        gateway:  (( merge ))
+        dns:      (( merge ))
+        cloud_properties:
+          security_groups: (( merge ))
+          subnet: (( merge ))
+
+  - name: cf3
+    type: manual
+    subnets:
+      - range:    (( merge ))
+        reserved: (( merge ))
+        static:   (( merge ))
+        gateway:  (( merge ))
+        dns:      (( merge ))
+        cloud_properties:
+          security_groups: (( merge ))
+          subnet: (( merge ))
+
+resource_pools:
+  - name: router_z1
+    cloud_properties:
+      availability_zone: (( merge ))
+      elbs: (( merge ))
+
+  - name: router_z2
+    cloud_properties:
+      availability_zone: (( merge ))
+      elbs: (( merge ))
+
+  - name: router_z3
+    cloud_properties:
+      availability_zone: (( merge ))
+      elbs: (( merge ))
+
+jobs:
+  - name: postgres_z1
+    instances: 1
+    networks:
+      - name: cf1
+        static_ips: (( merge ))
+
+properties:
+  # needed by cf-release
+  domain: (( merge ))
+  system_domain: (( merge ))
+  system_domain_organization: ~
+  app_domains:
+    - (( merge ))
+
+  template_only:
+    aws:
+      access_key_id: (( merge ))
+      secret_access_key: (( merge ))
+      subnet_ids:
+        cf1: (( merge ))
+        cf2: (( merge ))
+        cf3: (( merge ))
+
+      availability_zone: (( merge ))
+      availability_zone2: (( merge ))
+      availability_zone3: (( merge ))
+
+  cc:
+    resource_pool:
+      resource_directory_key: (( merge ))
+    packages:
+      app_package_directory_key: (( merge ))
+    droplets:
+      droplet_directory_key: (( merge ))
+    buildpacks:
+      buildpack_directory_key: (( merge ))
+
+  ccdb:
+    db_scheme: postgres
+    address: (( merge ))
+    port: 5524
+    roles:
+      - tag: admin
+        name: ccadmin
+        password: admin
+    databases:
+      - tag: cc
+        name: ccdb
+        citext: true
+
+  uaadb:
+    db_scheme: postgresql
+    address: (( merge ))
+    port: 5524
+    roles:
+      - tag: admin
+        name: uaaadmin
+        password: admin
+    databases:
+      - tag: uaa
+        name: uaadb
+        citext: true
+
+  databases:
+    db_scheme: postgres
+    address: (( merge ))
+    port: 5524
+    roles:
+      - tag: admin
+        name: ccadmin
+        password: admin
+      - tag: admin
+        name: uaaadmin
+        password: admin
+    databases:
+      - tag: cc
+        name: ccdb
+        citext: true
+      - tag: uaa
+        name: uaadb
+        citext: true
