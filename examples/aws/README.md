@@ -127,6 +127,8 @@ your AWS account through the AWS console:
 1. Click the `Create Hosted Zone` button.
 1. Fill in the domain name you intend to use for your Cloud Foundry deployment. The domain name for your hosted zone will be the base domain for all apps deployed to your Cloud Foundry instance, as well as the base domain for the Cloud Foundry system components. This domain name will be referred to as `$CF_DOMAIN` below.
 
+If you host this domain at another domain registrar, set the nameservers at that registrar to the DNS servers listed in the NS record in the AWS Hosted Zone.
+
 
 ### Deployment Directory Setup
 
