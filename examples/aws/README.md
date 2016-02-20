@@ -354,20 +354,19 @@ The certificates in `consul-certs` are used to set SSL properties for the consul
 
 ####<a name="generating-ssh-proxy-host-key"></a>Generating SSH Proxy Host Key and Fingerprint
 
-In order for SSH to work for diego-release, you must generate the SSH Proxy host key and fingerprint, as follows:
+To enable SSH access to CF instances running on Diego, generate a host key and fingerprint for the SSH proxy as follows, entering an empty string for the passphrase when prompted:
 
 ```bash
 ssh-keygen -f $DEPLOYMENT_DIR/keypair/ssh-proxy-host-key.pem
 ssh-keygen -lf $DEPLOYMENT_DIR/keypair/ssh-proxy-host-key.pem.pub | cut -d ' ' -f2 > $DEPLOYMENT_DIR/keypair/ssh-proxy-host-key-fingerprint
 ```
 
-The `ssh-proxy-host-key.pem` file contains the PEM-encoded host key for the Diego manifest.
+The `ssh-proxy-host-key.pem` file contains the PEM-encoded private host key for the Diego manifest, and the `ssh-proxy-host-key-fingerprint` file contains the MD5 fingerprint of the public host key. You will later copy these values into stubs for generating the CF and Diego manifests.
 
-The host-key fingerprint in `$DEPLOYMENT_DIR/keypair/ssh-proxy-host-key-fingerprint` needs to be added to the CF manifest under `properties.app_ssh.host_key_fingerprint` before you deploy CF.
 
 #### Generating UAA Private/Public Keys
 
-UAA requires an RSA keypair for its configuration. Generate one as follows:
+UAA requires an RSA keypair for its configuration. Generate one as follows, entering an empty string for the passphrase when prompted:
 
 ```bash
 ssh-keygen -t rsa -b 4096 -f $DEPLOYMENT_DIR/keypair/uaa

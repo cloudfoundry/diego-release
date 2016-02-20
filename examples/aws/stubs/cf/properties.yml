@@ -62,6 +62,8 @@ properties:
         secret: REPLACE_WITH_GOROUTER_PASSWORD
       notifications:
         secret: REPLACE_WITH_NOTIFICATIONS_PASSWORD
+      ssh-proxy:
+        secret: REPLACE_WITH_SSH_PROXY_PASSWORD
       tcp_router:
         secret: REPLACE_WITH_TCP_ROUTER_PASSWORD
     jwt:
