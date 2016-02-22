@@ -43,6 +43,27 @@ case $1 in
     mkdir -p $CACHE_DIR
     chown -R vcap:vcap $CACHE_DIR
 
+    trusted_certs_flag=""
+    <% if p("diego.rep.trusted_certs") %>
+      TRUSTED_CERTS_DIR=${DATA_DIR}/trusted_certs
+      mkdir -p "$TRUSTED_CERTS_DIR"
+      chown -R vcap:vcap $TRUSTED_CERTS_DIR
+
+      trusted_certs_flag="--trustedSystemCertificatesPath=$TRUSTED_CERTS_DIR"
+      <% p("diego.rep.trusted_certs").each do |name, cert| %>
+        CERT_NAME='<%= name %>'
+        CERT_FILE=${DATA_DIR}/trusted_certs/${CERT_NAME}.crt
+
+        # Use a heredoc limit string with dashes so it doesn't conflict with the
+        # base64-encoded data
+        cat > "$CERT_FILE" <<End-Of-Cert
+<%= cert %>
+End-Of-Cert
+        chown -R vcap:vcap "$CERT_FILE"
+      <% end %>
+
+    <% end %>
+
     if running_in_container; then
         echo "Not setting /proc/sys/net/ipv4 parameters, since I'm running inside a linux container"
     else
@@ -95,6 +116,7 @@ case $1 in
       -pollingInterval=<%= "#{p("diego.rep.polling_interval_in_seconds")}s" %> \
       -evacuationPollingInterval=<%= "#{p("diego.rep.evacuation_polling_interval_in_seconds")}s" %> \
       -evacuationTimeout=<%= "#{p("diego.rep.evacuation_timeout_in_seconds")}s" %> \
+      ${trusted_certs_flag} \
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       -gardenNetwork=<%= p("diego.executor.garden.network") %> \
       -gardenAddr=<%= p("diego.executor.garden.address") %> \

@@ -47,6 +47,9 @@ properties:
   diego.rep.dropsonde_port:
     description: "local metron agent's port"
     default: 3457
+  diego.rep.trusted_certs:
+    description: "Map of trusted CA certificates to be made available on the cell in the form of cert name -> cert value."
+    default: {}
 
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
