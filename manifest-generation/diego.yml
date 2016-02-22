@@ -707,23 +707,21 @@ base_releases:
   - name: etcd
     version: (( release_versions.etcd || "latest" ))
 base_job_templates:
+  access:
+    - name: ssh_proxy
+      release: diego
+    - name: consul_agent
+      release: cf
+    - name: metron_agent
+      release: cf
+    - name: file_server
+      release: diego
   brain:
     - name: consul_agent
       release: cf
     - name: auctioneer
       release: diego
     - name: converger
-      release: diego
-    - name: metron_agent
-      release: cf
-  cell:
-    - name: rep
-      release: diego
-    - name: consul_agent
-      release: cf
-    - name: garden
-      release: garden-linux
-    - name: rootfses
       release: diego
     - name: metron_agent
       release: cf
@@ -740,26 +738,28 @@ base_job_templates:
       release: diego
     - name: metron_agent
       release: cf
-  route_emitter:
-    - name: route_emitter
+  cell:
+    - name: rep
       release: diego
     - name: consul_agent
       release: cf
+    - name: garden
+      release: garden-linux
+    - name: rootfses
+      release: diego
     - name: metron_agent
       release: cf
-  access:
-    - name: ssh_proxy
-      release: diego
-    - name: consul_agent
-      release: cf
-    - name: metron_agent
-      release: cf
-    - name: file_server
-      release: diego
   database:
     - name: etcd
       release: etcd
     - name: bbs
+      release: diego
+    - name: consul_agent
+      release: cf
+    - name: metron_agent
+      release: cf
+  route_emitter:
+    - name: route_emitter
       release: diego
     - name: consul_agent
       release: cf

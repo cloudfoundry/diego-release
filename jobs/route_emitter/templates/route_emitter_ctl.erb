@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+<% require "shellwords" %>
+
 RUN_DIR=/var/vcap/sys/run/route_emitter
 LOG_DIR=/var/vcap/sys/log/route_emitter
 CONF_DIR=/var/vcap/jobs/route_emitter/config
@@ -42,7 +44,7 @@ case $1 in
       -consulCluster=http://127.0.0.1:8500 \
       -natsAddresses=<%= p("diego.route_emitter.nats.machines").collect { |addr| "#{addr}:#{p("diego.route_emitter.nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("diego.route_emitter.nats.user") %> \
-      -natsPassword=<%= p("diego.route_emitter.nats.password") %> \
+      -natsPassword=<%= Shellwords.shellescape(p("diego.route_emitter.nats.password")) %> \
       -bbsAddress=${bbs_api_url} \
       <% if_p("diego.route_emitter.bbs.client_session_cache_size") do |value| %> \
         -bbsClientSessionCacheSize=<%= value %> \
