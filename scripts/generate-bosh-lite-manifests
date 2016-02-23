@@ -28,12 +28,6 @@ $scripts_path/generate-deployment-manifest \
       ${CF_MANIFESTS_DIR}/cf.yml \
       > ${tmpdir}/config-from-cf.yml
 
-$scripts_path/generate-acceptance-tests-manifest \
-    -c ${CF_MANIFESTS_DIR}/cf.yml \
-    -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \
-    -p  manifest-generation/bosh-lite-stubs/acceptance-tests-properties.yml \
-    > ${DIEGO_MANIFESTS_DIR}/diego-acceptance-tests.yml
-
 $scripts_path/generate-smoke-tests-manifest \
     -c ${CF_MANIFESTS_DIR}/cf.yml \
     -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \
@@ -56,7 +50,6 @@ popd
 
 echo "CF Release Manifest at ${CF_MANIFESTS_DIR}/cf.yml"
 echo "Diego Release Manifest at ${DIEGO_MANIFESTS_DIR}/diego.yml"
-echo "Diego Acceptance Tests Errand Manifest at ${DIEGO_MANIFESTS_DIR}/diego-acceptance-tests .yml"
 echo "Diego Smoke Tests Errand Manifest at ${DIEGO_MANIFESTS_DIR}/diego-smoke-tests.yml"
 echo "Benchmark-BBS Errand Manifest at ${DIEGO_MANIFESTS_DIR}/diego-benchmarks.yml"
 echo "Vizzini Errand Manifest at ${DIEGO_MANIFESTS_DIR}/vizzini.yml"

@@ -58,10 +58,6 @@ sync_package nsync                   -app  github.com/cloudfoundry-incubator/nsy
 sync_package tps                     -app  github.com/cloudfoundry-incubator/tps/cmd/tps-listener \
   -app github.com/cloudfoundry-incubator/tps/cmd/tps-watcher &
 
-sync_package acceptance-tests \
-  -test github.com/cloudfoundry-incubator/diego-acceptance-tests/... \
-  -app github.com/onsi/ginkgo/ginkgo &
-
 sync_package vizzini \
   -test github.com/cloudfoundry-incubator/vizzini/... \
   -app github.com/onsi/ginkgo/ginkgo &

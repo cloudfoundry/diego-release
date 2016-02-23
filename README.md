@@ -176,7 +176,7 @@ and then look up that commit's SHA in the diego-cf compatibility table.
 Now you are configured to push an app to the BOSH-Lite deployment, or to run the
 [Diego Smoke Tests](https://github.com/cloudfoundry-incubator/diego-smoke-tests)
 or the
-[Diego Acceptance Tests](https://github.com/cloudfoundry-incubator/diego-acceptance-tests).
+[CF Acceptance Tests](https://github.com/cloudfoundry/cf-acceptance-tests).
 
 > If you wish to run all of the diego jobs on a single VM, you can replace the
 > `manifest-generation/bosh-lite-stubs/instance-count-overrides.yml` stub with
