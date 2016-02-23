@@ -50,18 +50,16 @@ case $1 in
       chown -R vcap:vcap $TRUSTED_CERTS_DIR
 
       trusted_certs_flag="--trustedSystemCertificatesPath=$TRUSTED_CERTS_DIR"
-      <% p("diego.rep.trusted_certs").each do |name, cert| %>
-        CERT_NAME='<%= name %>'
-        CERT_FILE=${DATA_DIR}/trusted_certs/${CERT_NAME}.crt
 
-        # Use a heredoc limit string with dashes so it doesn't conflict with the
-        # base64-encoded data
-        cat > "$CERT_FILE" <<End-Of-Cert
-<%= cert %>
+			# Split files on '----END CERTIFICATE-----' and increment our file counter by 1
+			pushd $TRUSTED_CERTS_DIR
+				awk -v n=1 '
+					split_after == 1 {n++;split_after=0}
+					/-----END CERTIFICATE-----/ {split_after=1}
+					NF {print > "trusted_ca_" n ".crt"}' <<End-Of-Cert
+<%= p("diego.rep.trusted_certs") %>
 End-Of-Cert
-        chown -R vcap:vcap "$CERT_FILE"
-      <% end %>
-
+			popd
     <% end %>
 
     if running_in_container; then
