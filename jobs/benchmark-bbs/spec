@@ -19,6 +19,9 @@ properties:
     description: "the number of trials of each benchmark to average across"
   benchmark-bbs.num_reps:
     description: "the number of rep processes to simulate in test"
+  benchmark-bbs.percent_writes:
+    description: "percentage of actual LRPs to write on each rep bulk loop"
+    default: 5
   benchmark-bbs.num_populate_workers:
     description: "the number of workers generating desired LRPs during setup"
 

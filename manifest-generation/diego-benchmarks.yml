@@ -52,6 +52,7 @@ properties:
     desired_lrps: (( merge ))
     num_trials: (( merge ))
     num_reps: (( merge ))
+    percent_writes: (( merge || nil ))
     num_populate_workers: (( merge ))
     aws_access_key_id: (( merge || nil ))
     aws_secret_access_key: (( merge || nil ))

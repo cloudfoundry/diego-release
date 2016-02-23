@@ -43,6 +43,7 @@ ginkgo -- ${bbs_sec_flags} ${etcd_sec_flags} \
   -desiredLRPs=<%= p("benchmark-bbs.desired_lrps") %> \
   -numTrials=<%= p("benchmark-bbs.num_trials") %> \
   -numReps=<%= p("benchmark-bbs.num_reps") %> \
+  -percentWrites=<%= p("benchmark-bbs.percent_writes") %> \
   -numPopulateWorkers=<%= p("benchmark-bbs.num_populate_workers") %> \
   -bbsAddress=${bbs_api_url} \
   <% p("benchmark-bbs.encryption_keys").each do |encryption_key| %> \
