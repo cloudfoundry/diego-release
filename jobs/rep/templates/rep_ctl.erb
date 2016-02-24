@@ -51,15 +51,13 @@ case $1 in
 
       trusted_certs_flag="--trustedSystemCertificatesPath=$TRUSTED_CERTS_DIR"
 
-			# Split files on '----END CERTIFICATE-----' and increment our file counter by 1
-			pushd $TRUSTED_CERTS_DIR
-				awk -v n=1 '
-					split_after == 1 {n++;split_after=0}
-					/-----END CERTIFICATE-----/ {split_after=1}
-					NF {print > "trusted_ca_" n ".crt"}' <<End-Of-Cert
-<%= p("diego.rep.trusted_certs") %>
-End-Of-Cert
-			popd
+      # Split files on '----END CERTIFICATE-----' and increment our file counter by 1
+      pushd $TRUSTED_CERTS_DIR
+              awk -v n=1 '
+                      split_after == 1 {n++;split_after=0}
+                      /-----END CERTIFICATE-----/ {split_after=1}
+                      NF {print > "trusted_ca_" n ".crt"}' < $CONF_DIR/certs/rep/trusted_certs.crt
+      popd
     <% end %>
 
     if running_in_container; then

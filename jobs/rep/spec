@@ -5,6 +5,7 @@ templates:
   rep_ctl.erb: bin/rep_ctl
   drain.erb: bin/drain
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
+  trusted_certs.crt.erb: config/certs/rep/trusted_certs.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
 
@@ -49,7 +50,7 @@ properties:
     default: 3457
   diego.rep.trusted_certs:
     description: "Concatenation of trusted CA certificates to be made available on the cell."
-    default: {}
+    default: ""
 
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
