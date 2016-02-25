@@ -39,6 +39,9 @@ etcd_sec_flags=""
   bbs_api_url="<%= "http://" + p("benchmark-bbs.bbs.api_location") %>"
 <% end %>
 
+# Allowed number of open file descriptors
+ulimit -n 100000
+
 ginkgo -- ${bbs_sec_flags} ${etcd_sec_flags} \
   -desiredLRPs=<%= p("benchmark-bbs.desired_lrps") %> \
   -numTrials=<%= p("benchmark-bbs.num_trials") %> \
