@@ -50,7 +50,7 @@ properties:
     default: 3457
   diego.rep.trusted_certs:
     description: "Concatenation of trusted CA certificates to be made available on the cell."
-    default: ""
+    default: null
 
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"

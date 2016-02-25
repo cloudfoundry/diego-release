@@ -44,8 +44,9 @@ case $1 in
     chown -R vcap:vcap $CACHE_DIR
 
     trusted_certs_flag=""
-    <% if p("diego.rep.trusted_certs") %>
-      TRUSTED_CERTS_DIR=${DATA_DIR}/trusted_certs
+    TRUSTED_CERTS_DIR=${DATA_DIR}/trusted_certs
+    rm -rf "$TRUSTED_CERTS_DIR"
+    <% if_p("diego.rep.trusted_certs") do |value| %>
       mkdir -p "$TRUSTED_CERTS_DIR"
       chown -R vcap:vcap $TRUSTED_CERTS_DIR
 
