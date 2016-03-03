@@ -19,7 +19,7 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   - The [Migration Guide](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/migrating-to-diego.md) describes how developers and operators can manage a transition from the DEAs to Diego.
   - The [Docker Support Notes](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/docker-support.md) describe how Diego runs Docker-image-based apps in Cloud Foundry.
   - The [SSH Access Notes](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/ssh-access-and-policy.md) describe how Diego's SSH proxy and daemon can be used to connect to app instances running on Diego.
-  - The [Diego-CF Compatibility Log](https://github.com/cloudfoundry-incubator/diego-cf-compatibility) records which versions of cf-release and diego-release are compatible, according to the Diego team's [automated testing pipeline](https://concourse.diego-ci.cf-app.com/?groups=diego).
+  - The [Diego-CF Compatibility Log](https://github.com/cloudfoundry-incubator/diego-cf-compatibility) records which versions of cf-release and diego-release are compatible, according to the Diego team's [automated testing pipeline](https://diego.ci.cf-app.com/?group=diego).
   - [Diego's Pivotal Tracker project](https://www.pivotaltracker.com/n/projects/1003146) shows what we're working on these days.
 
 [Lattice](http://lattice.cf) is an easy-to-deploy distribution of Diego designed for experimentation with the next-generation core of Cloud Foundry.
