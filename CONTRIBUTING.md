@@ -189,7 +189,7 @@ To be able to run the integration test suite ("inigo"), you'll need to have a lo
         cf enable-feature-flag diego_docker
 
 Now you are configured to push an app to the BOSH-Lite deployment, or to run the
-[Diego Smoke Tests](https://github.com/cloudfoundry-incubator/diego-smoke-tests)
+[CF Smoke Tests](https://github.com/cloudfoundry/cf-smoke-tests)
 or the
 [CF Acceptance Tests](https://github.com/cloudfoundry/cf-acceptance-tests).
 
@@ -225,7 +225,7 @@ from the root of diego-release to run the integration tests.
 
 ###<a name="smokes-and-cats"></a> Running Smoke Tests, and CATs
 
-You can test that your diego-release deployment is working and integrating with cf-release by running the lightweight [diego-smoke-tests](https://github.com/cloudfoundry-incubator/diego-smoke-tests) or the more thorough [cf-acceptance-tests](https://github.com/cloudfoundry/cf-acceptance-tests). These test suites assume you have a BOSH environment to deploy cf and diego to. For local development, bosh-lite is an easy way to have a single-VM deployment. To deploy diego to bosh-lite, follow the instructions on [deploying diego to bosh-lite](README.md#deploy-bosh-lite).
+You can test that your diego-release deployment is working and integrating with cf-release by running the lightweight [cf-smoke-tests](https://github.com/cloudfoundry/cf-smoke-tests) or the more thorough [cf-acceptance-tests](https://github.com/cloudfoundry/cf-acceptance-tests). These test suites assume you have a BOSH environment to deploy cf and diego to. For local development, bosh-lite is an easy way to have a single-VM deployment. To deploy diego to bosh-lite, follow the instructions on [deploying diego to bosh-lite](README.md#deploy-bosh-lite).
 
 The instructions below assume you're using bosh-lite and have generated the
 manifests with the `scripts/generate-bosh-lite-manifests` script. This script
@@ -237,15 +237,10 @@ To run the cf-acceptance-tests against a Diego deployed to bosh-lite, run:
 
     ./scripts/run-cats-bosh-lite
 
-To run diego-smoke-tests you can similarly deploy and run an errand to run the tests, but you must make sure that the proper smoke org already exists:
+To run cf-smoke-tests you can similarly deploy and run an errand to run the tests:
 
-        # create the org for bosh lite
-        cf login -a api.bosh-lite.com -u admin -p admin --skip-ssl-validation
-        cf create-org smoke-tests
-
-        # deploy the errand for smoke tests
-        bosh -n -d bosh-lite/deployments/diego-smoke-tests.yml deploy
-        bosh -d bosh-lite/deployments/diego-smoke-tests.yml run errand diego_smoke_tests
+        # target the errand for smoke tests when running them
+        bosh -n -d bosh-lite/deployments/cf.yml run errand smoke_tests
 
 ### Running Benchmark Tests
 Running the benchmark tests isn't usually needed for most changes. However, for  changes to the BBS or the protobuf models, it may be helpful to run these tests to understand the performance impact.

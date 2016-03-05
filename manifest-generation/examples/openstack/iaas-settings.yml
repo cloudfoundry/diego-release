@@ -106,13 +106,3 @@ iaas_settings:
           security_groups:
           - bosh
           - cf-private
-    - name: diego-smoke-tests
-      type: manual
-      subnets:
-      - range: 10.0.5.0/24
-        gateway: 10.0.5.1
-        cloud_properties:
-          net_id: DIEGO_SMOKE_TESTS_NET_ID
-          security_groups:
-          - bosh
-          - cf-private

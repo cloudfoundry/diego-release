@@ -174,7 +174,7 @@ and then look up that commit's SHA in the diego-cf compatibility table.
         cf enable-feature-flag diego_docker
 
 Now you are configured to push an app to the BOSH-Lite deployment, or to run the
-[Diego Smoke Tests](https://github.com/cloudfoundry-incubator/diego-smoke-tests)
+[Smoke Tests](https://github.com/cloudfoundry/cf-smoke-tests)
 or the
 [CF Acceptance Tests](https://github.com/cloudfoundry/cf-acceptance-tests).
 
