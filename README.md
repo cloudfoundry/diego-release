@@ -144,7 +144,7 @@ and then look up that commit's SHA in the diego-cf compatibility table.
 
         cd ~/workspace/cf-release
         bosh deployment bosh-lite/deployments/cf.yml
-        bosh create release --force &&
+        bosh -n create release --force &&
         bosh -n upload release &&
         bosh -n deploy
 
@@ -164,7 +164,7 @@ and then look up that commit's SHA in the diego-cf compatibility table.
 
         cd ~/workspace/diego-release
         bosh deployment bosh-lite/deployments/diego.yml
-        bosh create release --force &&
+        bosh -n create release --force &&
         bosh -n upload release &&
         bosh -n deploy
 
