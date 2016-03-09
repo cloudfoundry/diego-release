@@ -8,7 +8,11 @@ LOG_DIR=/var/vcap/sys/log/rep
 LOGFILE=$LOG_DIR/drain.log
 ADDRESS=<%= p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") %>
 
+mkdir -p $LOG_DIR
+
 exec 3>&1
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
 
 exec 1>> $LOGFILE
 exec 2>> $LOGFILE
@@ -21,8 +25,6 @@ heartbeat() {
   curl --fail --silent http://$ADDRESS/ping >/dev/null 2>&1
 }
 
-source /var/vcap/packages/pid_utils/pid_utils.sh
-
 if [ ! -f $PIDFILE ]; then
   echo "$(date): PIDFILE does not exist"
   echo 0 >&3
@@ -30,6 +32,12 @@ if [ ! -f $PIDFILE ]; then
 fi
 
 pid=$(cat $PIDFILE)
+
+if [ ! -e /proc/$pid ]; then
+  echo "$(date): rep process not running"
+  echo 0 >&3
+  exit 0
+fi
 
 if evacuate; then
   echo "$(date): drain triggered"
