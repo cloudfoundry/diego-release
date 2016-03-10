@@ -21,7 +21,23 @@ pushd $ROOTFS_DIR
 popd
 
 # have to set TMPDIR so we can mktemp inside the chrooted subshell
-TMPDIR=/tmp timeout --signal=KILL 10s chroot $ROOTFS_DIR /usr/sbin/update-ca-certificates -f
+updated_certs=1
+retry_count=0
+max_retry_count=3
+
+set +e
+until [ $updated_certs -eq 0 ] || [ $retry_count -ge $max_retry_count ]; do
+  echo "trying to run update-ca-certificates..."
+  TMPDIR=/tmp timeout --signal=KILL 10s chroot $ROOTFS_DIR /usr/sbin/update-ca-certificates -f
+  updated_certs=$?
+  retry_count=$((retry_count + 1))
+done
+set -e
+
+if [ $updated_certs -ne 0 ]; then
+  echo "failed to setup ca certificates"
+  exit 1
+fi
 
 # change modification time to invalidate garden's image cache
 touch $ROOTFS_DIR
