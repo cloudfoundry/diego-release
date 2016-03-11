@@ -8,6 +8,7 @@ config_from_cf:
     srv_api_uri: (( properties.cc.srv_api_uri ))
   consul:
     datacenter: (( properties.consul.agent.datacenter ))
+    domain: (( properties.consul.agent.domain ))
     log_level: (( properties.consul.agent.log_level ))
     lan_servers: (( properties.consul.agent.servers.lan ))
     ca_cert: (( properties.consul.ca_cert ))
@@ -55,6 +56,7 @@ properties:
     srv_api_uri: (( merge ))
   consul:
     agent:
+      domain: (( merge ))
       log_level: (( merge ))
       datacenter: (( merge || nil ))
       servers:

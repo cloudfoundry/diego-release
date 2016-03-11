@@ -468,6 +468,7 @@ properties:
   consul:
     agent:
       datacenter: (( config_from_cf.consul.datacenter ))
+      domain: (( config_from_cf.consul.domain ))
       log_level: (( config_from_cf.consul.log_level ))
       servers:
         lan: (( config_from_cf.consul.lan_servers ))
