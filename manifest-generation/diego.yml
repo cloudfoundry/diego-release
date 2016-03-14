@@ -483,6 +483,7 @@ properties:
   # -- Properties below are used by the etcd from etcd-release --
   etcd:
     machines: ["etcd.service.cf.internal"]
+    advertise_urls_dns_suffix: "etcd.service.cf.internal"
     cluster:
       - name: "database_z1"
         instances: (( instance_count_overrides.database_z1.instances || 1 ))
