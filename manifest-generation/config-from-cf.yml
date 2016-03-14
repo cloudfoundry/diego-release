@@ -8,6 +8,7 @@ config_from_cf:
     srv_api_uri: (( merge ))
   consul:
     datacenter: (( merge ))
+    domain: (( merge ))
     log_level: (( merge ))
     lan_servers: (( merge ))
     ca_cert: (( merge ))
