@@ -15,4 +15,8 @@ if [ -n "${DIEGO_CI_TARGET}" ]; then
   target="-t ${DIEGO_CI_TARGET}"
 fi
 
+if [ -z "${RUN_VOLMAN}" ]; then
+  export SKIP_PACKAGES="volman"
+fi
+
 fly ${target} execute -p -x -c $DIEGO_RELEASE_DIR/scripts/ci/run_inigo.build.yml -i diego-release=$PWD -i garden-linux-release=$HOME/workspace/garden-linux-release -- "$@"

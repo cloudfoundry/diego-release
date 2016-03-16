@@ -11,6 +11,7 @@ params:
   GINKGO_PARALLEL: true
   DEFAULT_EVENTUALLY_TIMEOUT:
   INIGO_REPEAT_COUNT: 1
+  SKIP_PACKAGES:
 
 run:
   path: diego-release/scripts/ci/run_inigo

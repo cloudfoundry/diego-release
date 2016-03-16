@@ -78,14 +78,26 @@ fi
 
 pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
   if [ "$GINKGO_PARALLEL" = "true" ]; then
-    ginkgo $nodes_flag -r -skipPackage=docker -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
+    PACKAGES_TO_SKIP="docker"
+
+    if [ -n "$SKIP_PACKAGES" ]; then
+      PACKAGES_TO_SKIP=$PACKAGES_TO_SKIP",$SKIP_PACKAGES"
+    fi
+
+    ginkgo $nodes_flag -r -skipPackage=${PACKAGES_TO_SKIP} -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
     # always run docker tests serially
     ginkgo -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@" docker/
   else
+    PACKAGES_TO_SKIP="executor"
+
+    if [ -n "$SKIP_PACKAGES" ]; then
+      PACKAGES_TO_SKIP=$PACKAGES_TO_SKIP",$SKIP_PACKAGES"
+    fi
+
     # always attempt to run executor in parallel
     ginkgo -nodes=4 -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@" executor/
 
     # run everything but executor with normal rules
-    ginkgo $nodes_flag -r -skipPackage=executor -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
+    ginkgo $nodes_flag -r -skipPackage=${PACKAGES_TO_SKIP} -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
   fi
 popd
