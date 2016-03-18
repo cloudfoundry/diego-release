@@ -208,6 +208,10 @@ This will synchronize submodules, update the BOSH package specs, run all unit te
 
 If you're introducing a new component (e.g. a new job/errand) or changing the main path for an existing component, make sure to update `./scripts/sync-package-specs` and `./scripts/sync-submodule-config`.
 
+## Logging in Diego
+
+Please follow our logging conventions as outlined [here](https://github.com/cloudfoundry-incubator/diego-dev-notes/blob/master/notes/logging-guidence.md).
+
 ## Testing Diego
 
 ### Running Unit Tests
