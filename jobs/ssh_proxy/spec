@@ -22,6 +22,12 @@ properties:
     description: "Address to the BBS Server"
   diego.ssh_proxy.host_key:
     description: "PEM encoded RSA private key used to identify host"
+  diego.ssh_proxy.allowed_ciphers:
+    description: "Comma separated list of allowed cipher algorithms"
+  diego.ssh_proxy.allowed_macs:
+    description: "Comma separated list of allowed MAC algorithms"
+  diego.ssh_proxy.allowed_keyexchanges:
+    description: "Comma separated list of allowed key exchange algorithms"
   diego.ssh_proxy.debug_addr:
     description: "address at which to serve debug info"
     default: "0.0.0.0:17016"
