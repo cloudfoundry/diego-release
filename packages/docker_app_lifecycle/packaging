@@ -7,7 +7,7 @@ export GOPATH=$BOSH_INSTALL_TARGET
 cp /var/vcap/packages/docker/docker ./docker
 cp github.com/cloudfoundry-incubator/docker_app_lifecycle/mount_cgroups ./mount_cgroups
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang_1.4)
+export GOROOT=$(readlink -nf /var/vcap/packages/golang)
 export PATH=$GOROOT/bin:$PATH
 
 CGO_ENABLED=0 go build -a -installsuffix static github.com/cloudfoundry-incubator/docker_app_lifecycle/builder

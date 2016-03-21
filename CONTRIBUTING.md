@@ -49,7 +49,7 @@ automated system uses, then we manually make the Pull Request as having a CLA on
 ##Initial Setup
 This BOSH release doubles as a `$GOPATH`. It will automatically be set up for you if you have [direnv](http://direnv.net) installed.
 
-**NOTE:** diego-release and its components assume you're running go **1.4.3**. The project may not compile or work as expected with other versions of go.
+**NOTE:** diego-release and its components assume you're running go **1.6**. The project may not compile or work as expected with other versions of go.
 
     # create parent directory of cf-release and diego-release
     mkdir -p ~/workspace

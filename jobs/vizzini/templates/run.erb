@@ -4,7 +4,7 @@ CONF_DIR=/var/vcap/jobs/vizzini/config
 
 set -e -x
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang_1.4)
+export GOROOT=$(readlink -nf /var/vcap/packages/golang)
 export PATH=${GOROOT}/bin:${PATH}
 
 export GOPATH=/var/vcap/packages/vizzini
