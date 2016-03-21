@@ -1,7 +1,7 @@
 
 platform: linux
 
-image: docker:///cloudfoundry/inigo-ci
+image: docker:///cloudfoundry/inigo-ci#go16
 
 inputs:
 - name: diego-release
