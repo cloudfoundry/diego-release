@@ -150,6 +150,7 @@ DEPLOYMENT_DIR
 | |-infrastructure
 | | |-(availablity_zones.yml)
 | |-bosh-init
+|   |-(keypair.yml)
 |   |-(releases.yml)
 |   |-(users.yml)
 |   |-(stemcell.yml)
@@ -234,6 +235,24 @@ Value (us-east-1b) for parameter availabilityZone is invalid Subnets can current
 
 then update this file with acceptable availability zone values.
 
+
+#### `stubs/bosh-init/keypair.yml`
+
+This YAML file contains the name of the keypair created on [AWS keypair for the
+BOSH director](#aws-keypair-for-the-bosh-director). Use the same name that was
+used on that step.
+
+```yaml
+---
+BoshKeypairName: REPLACE_WITH_BOSH_KEYPAIR_NAME
+```
+
+For example:
+
+```yaml
+---
+BoshKeypairName: bosh_keypair
+```
 
 #### `stubs/bosh-init/releases.yml`
 

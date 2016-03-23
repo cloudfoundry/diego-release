@@ -97,7 +97,7 @@ jobs:
     aws: &aws
       access_key_id: (( AccessKeyID ))
       secret_access_key: (( SecretAccessKey ))
-      default_key_name: bosh
+      default_key_name: (( BoshKeypairName ))
       default_security_groups: (( [Resources.SecurityGroupName.BOSH] ))
       region: (( Region ))
 
