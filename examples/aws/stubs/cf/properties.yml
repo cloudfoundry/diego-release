@@ -74,5 +74,33 @@ properties:
     scim:
       users:
       - admin|REPLACE_WITH_ADMIN_PASSWORD|scim.write,scim.read,openid,cloud_controller.admin,doppler.firehose
-
+  smoke_tests:
+    api: REPLACE_WITH_API_DOMAIN
+    apps_domain: REPLACE_WITH_APPS_DOMAIN
+    user: admin
+    password: REPLACE_WITH_ADMIN_PASSWORD
+    org: REPLACE_WITH_SMOKE_TESTS_ORG
+    space: REPLACE_WITH_SMOKE_TESTS_SPACE
+    skip_ssl_validation: true
+  acceptance_tests:
+    api: REPLACE_WITH_API_DOMAIN
+    apps_domain: REPLACE_WITH_APPS_DOMAIN
+    system_domain: REPLACE_WITH_SYSTEM_DOMAIN
+    admin_user: admin
+    admin_password: REPLACE_WITH_ADMIN_PASSWORD
+    backend: diego
+    include_backend_compatibility: true
+    include_internet_dependent: true
+    include_diego_docker: true
+    include_diego_ssh: true
+    include_logging: true
+    include_route_services: false
+    include_routing: true
+    include_security_groups: true
+    include_services: true
+    include_sso: true
+    nodes: REPLACE_WITH_NUMBER_OF_NODES
+    skip_diego_unsupported_tests: true
+    skip_ssl_validation: true
+    use_http: true
 
