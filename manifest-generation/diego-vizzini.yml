@@ -48,6 +48,7 @@ jobs:
 properties:
   consul:
     agent:
+      domain: (( config_from_cf.consul.domain ))
       datacenter: (( config_from_cf.consul.datacenter ))
       log_level: (( config_from_cf.consul.log_level ))
       servers:
