@@ -5,6 +5,9 @@ meta:
     z2: (( Resources.SubnetAvailabilityZone.CFZ2 ))
     z3: (( Resources.SubnetAvailabilityZone.CFZ3 ))
 
+  fog_config:
+    region: (( Region ))
+
 director_uuid: (( merge ))
 
 networks:
