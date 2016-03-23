@@ -116,8 +116,9 @@ your AWS account through the AWS console:
 1. From the AWS console homepage, click on `EC2`.
 1. Click on the `Key Pairs` link in the sidebar, in the `Network & Security` group.
 1. Click the `Create Key Pair` button at the top of the page.
-1. When prompted for the key name, enter `bosh`.
-1. Make the directory `$DEPLOYMENT_DIR/keypair` and move the downloaded `bosh.pem` key to `$DEPLOYMENT_DIR/keypair/id_rsa_bosh`.
+1. When prompted for the key name, enter a name that can be easily referred to later, for example: `bosh_keypair`.
+1. Make the directory `$DEPLOYMENT_DIR/keypair` and move the downloaded `bosh_keypair.pem` key to `$DEPLOYMENT_DIR/keypair/id_rsa_bosh`.
+1. Change the permissions on the new key file to `600` (`rw-------`): `chmod 600 $DEPLOYMENTS_DIR/keypair/id_rsa_bosh`.
 
 
 #### Route 53 Hosted Zone
