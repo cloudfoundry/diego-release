@@ -571,22 +571,27 @@ Here is a summary of the properties that need to be changed:
 - Replace the SSH-Proxy host key with the [host key generated](#generating-ssh-proxy-host-key) above.
 
 
-### Edit the Instance-Count-Overrides Stub (Optional)
+### Edit the Instance-Count-Overrides Stub
 
-To change the instance counts of the Diego jobs, copy the example stub to `$DEPLOYMENT_DIR` and edit it:
+Copy the example stub to `$DEPLOYMENT_DIR`:
 
 ```bash
 cp $DIEGO_RELEASE_DIR/examples/aws/stubs/diego/instance-count-overrides-example.yml $DEPLOYMENT_DIR/stubs/diego/instance-count-overrides.yml
 ```
 
+That stub can be edited if there's need to change the instance counts for any of the jobs deployed.
 
-### Edit the Release-Versions Stub (Optional)
+### Edit the Release-Versions Stub
 
-To fix the versions of the Diego, Garden-Linux, and etcd releases in the Diego deployment, instead of using the latest versions uploaded to the BOSH director, copy the example release-versions stub to the correct location and edit it:
+Copy the example release-versions stub to the correct location:
 
 ```bash
 cp $DIEGO_RELEASE_DIR/examples/aws/stubs/diego/release-versions.yml $DEPLOYMENT_DIR/stubs/diego/release-versions.yml
 ```
+
+Edit it to fix the versions of the Diego, Garden-Linux, and etcd releases in
+the Diego deployment, instead of using the latest versions uploaded to the BOSH
+director.
 
 For example, to use version 22 of etcd-release and version 0.331.0 of garden-linux-release, edit the stub to read:
 
