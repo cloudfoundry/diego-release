@@ -519,7 +519,7 @@ properties:
     # -- Job-specific properties --
     auctioneer:
       bbs:
-        api_location: (( "bbs.service.cf.internal:8889" ))
+        api_location: (( property_overrides.bbs.api_location || nil ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
@@ -539,9 +539,9 @@ properties:
       server_key: (( property_overrides.bbs.server_key ))
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       auctioneer:
-        api_url: (( "http://auctioneer.service.cf.internal:9016" ))
+        api_url: (( property_overrides.bbs.auctioneer.api_url || nil ))
       etcd:
-        machines: ["etcd.service.cf.internal"]
+        machines: (( property_overrides.etcd_machines || nil ))
         require_ssl: (( property_overrides.etcd.require_ssl || nil ))
         ca_cert: (( property_overrides.etcd.ca_cert ))
         client_cert: (( property_overrides.etcd.client_cert ))
@@ -552,7 +552,7 @@ properties:
     converger:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       bbs:
-        api_location: (( "bbs.service.cf.internal:8889" ))
+        api_location: (( property_overrides.bbs.api_location || nil ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
@@ -589,7 +589,7 @@ properties:
     nsync:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       bbs:
-        api_location: (( "bbs.service.cf.internal:8889" ))
+        api_location: (( property_overrides.bbs.api_location || nil ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
@@ -604,7 +604,7 @@ properties:
     rep:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       bbs:
-        api_location: (( "bbs.service.cf.internal:8889" ))
+        api_location: (( property_overrides.bbs.api_location || nil ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
@@ -619,7 +619,7 @@ properties:
     route_emitter:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       bbs:
-        api_location: (( "bbs.service.cf.internal:8889" ))
+        api_location: (( property_overrides.bbs.api_location || nil ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
@@ -635,7 +635,7 @@ properties:
     ssh_proxy:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       bbs:
-        api_location: (( "bbs.service.cf.internal:8889" ))
+        api_location: (( property_overrides.bbs.api_location || nil ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
@@ -654,7 +654,7 @@ properties:
         basic_auth_username: (( config_from_cf.cc.internal_api_user ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
       bbs:
-        api_location: (( "bbs.service.cf.internal:8889" ))
+        api_location: (( property_overrides.bbs.api_location || nil ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
@@ -669,7 +669,7 @@ properties:
         basic_auth_username: (( config_from_cf.cc.internal_api_user ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
       bbs:
-        api_location: (( "bbs.service.cf.internal:8889" ))
+        api_location: (( property_overrides.bbs.api_location || nil ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))

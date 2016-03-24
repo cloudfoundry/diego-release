@@ -48,6 +48,9 @@ properties:
   diego.rep.dropsonde_port:
     description: "local metron agent's port"
     default: 3457
+  diego.rep.consul_agent_port:
+    description: "local consul agent's port"
+    default: 8500
   diego.rep.trusted_certs:
     description: "Concatenation of trusted CA certificates to be made available on the cell."
     default: null
@@ -137,6 +140,7 @@ properties:
 
   diego.rep.bbs.api_location:
     description: "Address to the BBS Server"
+    default: "bbs.service.cf.internal:8889"
 
   diego.rep.bbs.ca_cert:
     description: "PEM-encoded CA certificate"

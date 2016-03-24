@@ -27,6 +27,7 @@ properties:
 
   benchmark-bbs.bbs.api_location:
     description: "the address of the BBS"
+    default: "bbs.service.cf.internal:8889"
   benchmark-bbs.bbs.client_cert:
     description: "PEM-encoded client certificate"
   benchmark-bbs.bbs.client_key:

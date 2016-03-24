@@ -30,9 +30,13 @@ properties:
   diego.auctioneer.dropsonde_port:
     description: "local metron agent's port"
     default: 3457
+  diego.auctioneer.consul_agent_port:
+    description: "local consul agent's port"
+    default: 8500
 
   diego.auctioneer.bbs.api_location:
     description: "Address to the BBS Server"
+    default: "bbs.service.cf.internal:8889"
   diego.auctioneer.bbs.ca_cert:
     description: "PEM-encoded CA certificate"
   diego.auctioneer.bbs.client_cert:

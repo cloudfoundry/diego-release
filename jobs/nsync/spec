@@ -19,6 +19,7 @@ properties:
 
   diego.nsync.bbs.api_location:
     description: "Address to the BBS Server"
+    default: "bbs.service.cf.internal:8889"
 
   diego.nsync.bbs.ca_cert:
     description: "PEM-encoded CA certificate"
@@ -36,6 +37,9 @@ properties:
   diego.nsync.dropsonde_port:
     description: "local metron agent's port"
     default: 3457
+  diego.nsync.consul_agent_port:
+    description: "local consul agent's port"
+    default: 8500
 
   diego.nsync.listen_addr:
     description: Address from which NSYNC serves requests

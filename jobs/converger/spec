@@ -33,9 +33,13 @@ properties:
   diego.converger.dropsonde_port:
     description: "local metron agent's port"
     default: 3457
+  diego.converger.consul_agent_port:
+    description: "local consul agent's port"
+    default: 8500
 
   diego.converger.bbs.api_location:
     description: "Address to the BBS Server"
+    default: "bbs.service.cf.internal:8889"
   diego.converger.bbs.ca_cert:
     description: "PEM-encoded CA certificate"
   diego.converger.bbs.client_cert:

@@ -27,8 +27,12 @@ properties:
   diego.bbs.dropsonde_port:
     description: "local metron agent's port"
     default: 3457
+  diego.bbs.consul_agent_port:
+    description: "local consul agent's port"
+    default: 8500
   diego.bbs.auctioneer.api_url:
     description: "Address of the auctioneer API"
+    default: "http://auctioneer.service.cf.internal:9016"
   diego.bbs.active_key_label:
     description: "Label of the encryption key to be used when writing to the database"
   diego.bbs.encryption_keys:
@@ -48,6 +52,7 @@ properties:
 
   diego.bbs.etcd.machines:
     description: "Addresses pointing to the ETCD cluster"
+    default: ["etcd.service.cf.internal"]
   diego.bbs.etcd.require_ssl:
     description: "enable ssl for all communication with etcd"
     default: true

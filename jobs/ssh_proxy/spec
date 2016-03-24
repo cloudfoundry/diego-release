@@ -20,6 +20,7 @@ properties:
     default: "0.0.0.0:2222"
   diego.ssh_proxy.bbs.api_location:
     description: "Address to the BBS Server"
+    default: "bbs.service.cf.internal:8889"
   diego.ssh_proxy.host_key:
     description: "PEM encoded RSA private key used to identify host"
   diego.ssh_proxy.allowed_ciphers:
@@ -37,6 +38,9 @@ properties:
   diego.ssh_proxy.dropsonde_port:
     description: "local metron agent's port"
     default: 3457
+  diego.ssh_proxy.consul_agent_port:
+    description: "local consul agent's port"
+    default: 8500
   diego.ssh_proxy.enable_cf_auth:
     description: Allow ssh access for cf applications
     default: false

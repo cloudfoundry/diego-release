@@ -34,9 +34,13 @@ properties:
   diego.route_emitter.dropsonde_port:
     description: "local metron agent's port"
     default: 3457
+  diego.route_emitter.consul_agent_port:
+    description: "local consul agent's port"
+    default: 8500
 
   diego.route_emitter.bbs.api_location:
     description: "Address to the BBS Server"
+    default: "bbs.service.cf.internal:8889"
   diego.route_emitter.bbs.ca_cert:
     description: "PEM-encoded CA certificate"
   diego.route_emitter.bbs.client_cert:

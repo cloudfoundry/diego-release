@@ -54,7 +54,7 @@ case $1 in
         -bbsMaxIdleConnsPerHost=<%= value %> \
       <% end %> \
       -dropsondePort=<%= p("diego.tps.dropsonde_port") %> \
-      -consulCluster=http://127.0.0.1:8500 \
+      -consulCluster=http://127.0.0.1:<%= p("diego.tps.consul_agent_port") %> \
       -ccBaseURL=http://<%= p("diego.tps.cc.internal_service_hostname") %>:<%= p("diego.tps.cc.external_port") %> \
       -ccUsername=<%= Shellwords.shellescape(p("diego.tps.cc.basic_auth_username")) %> \
       -ccPassword=<%= Shellwords.shellescape(p("diego.tps.cc.basic_auth_password")) %> \

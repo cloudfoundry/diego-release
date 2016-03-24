@@ -19,6 +19,9 @@ properties:
   diego.tps.dropsonde_port:
     description: "local metron agent's port"
     default: 3457
+  diego.tps.consul_agent_port:
+    description: "local consul agent's port"
+    default: 8500
   diego.tps.max_in_flight_requests:
     description: "Maximum number of requests to handle at once."
     default: 200
@@ -31,7 +34,7 @@ properties:
 
   diego.tps.bbs.api_location:
     description: "Address to the BBS Server"
-    default: http://bbs.service.cf.internal:8889
+    default: bbs.service.cf.internal:8889
   diego.tps.bbs.ca_cert:
     description: "PEM-encoded CA certificate"
   diego.tps.bbs.client_cert:

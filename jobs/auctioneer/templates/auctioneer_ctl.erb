@@ -48,7 +48,7 @@ case $1 in
       <% if_p("diego.auctioneer.bbs.max_idle_conns_per_host") do |value| %> \
         -bbsMaxIdleConnsPerHost=<%= value %> \
       <% end %> \
-      -consulCluster=http://127.0.0.1:8500 \
+      -consulCluster=http://127.0.0.1:<%= p("diego.auctioneer.consul_agent_port") %> \
       -debugAddr=<%= p("diego.auctioneer.debug_addr") %> \
       -listenAddr=<%= p("diego.auctioneer.listen_addr") %> \
       -dropsondePort=<%= p("diego.auctioneer.dropsonde_port") %> \

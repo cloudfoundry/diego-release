@@ -103,7 +103,7 @@ case $1 in
         -bbsMaxIdleConnsPerHost=<%= value %> \
       <% end %> \
       -dropsondePort=<%= p("diego.rep.dropsonde_port") %> \
-      -consulCluster=http://127.0.0.1:8500 \
+      -consulCluster=http://127.0.0.1:<%= p("diego.rep.consul_agent_port") %> \
       -debugAddr=<%= p("diego.rep.debug_addr") %> \
       -listenAddr=<%= p("diego.rep.listen_addr") %> \
       <%= p("diego.rep.preloaded_rootfses").map { |rootfs| "-preloadedRootFS #{rootfs}" }.join(" ") %> \

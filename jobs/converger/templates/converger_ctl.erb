@@ -47,7 +47,7 @@ case $1 in
         -bbsMaxIdleConnsPerHost=<%= value %> \
       <% end %> \
       -dropsondePort=<%= p("diego.converger.dropsonde_port") %> \
-      -consulCluster=http://127.0.0.1:8500 \
+      -consulCluster=http://127.0.0.1:<%= p("diego.converger.consul_agent_port") %> \
       -debugAddr=<%= p("diego.converger.debug_addr") %> \
       -convergeRepeatInterval=<%= "#{p("diego.converger.repeat_interval_in_seconds")}s" %> \
       -kickTaskDuration=<%= "#{p("diego.converger.kick_task_duration_in_seconds")}s" %> \
