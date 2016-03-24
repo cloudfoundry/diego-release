@@ -711,10 +711,10 @@ empty_hash: {}
 base_releases: (( merge ))
 base_job_templates:
   access:
-    - name: ssh_proxy
-      release: diego
     - name: consul_agent
       release: cf
+    - name: ssh_proxy
+      release: diego
     - name: metron_agent
       release: cf
     - name: file_server
@@ -742,10 +742,10 @@ base_job_templates:
     - name: metron_agent
       release: cf
   cell:
-    - name: rep
-      release: diego
     - name: consul_agent
       release: cf
+    - name: rep
+      release: diego
     - name: garden
       release: garden-linux
     - name: (( rootfs_overrides.job_name || "rootfses" ))
@@ -753,22 +753,24 @@ base_job_templates:
     - name: metron_agent
       release: cf
   database:
+    - name: consul_agent
+      release: cf
     - name: etcd
       release: etcd
     - name: bbs
       release: diego
-    - name: consul_agent
-      release: cf
     - name: metron_agent
       release: cf
   route_emitter:
-    - name: route_emitter
-      release: diego
     - name: consul_agent
       release: cf
+    - name: route_emitter
+      release: diego
     - name: metron_agent
       release: cf
   colocated:
+    - name: consul_agent
+      release: cf
     - name: rep
       release: diego
     - name: auctioneer
@@ -779,8 +781,6 @@ base_job_templates:
       release: diego
     - name: converger
       release: diego
-    - name: consul_agent
-      release: cf
     - name: etcd
       release: etcd
     - name: file_server
