@@ -13,6 +13,8 @@ popd
 
 if [ -n "${DIEGO_CI_TARGET}" ]; then
   target="-t ${DIEGO_CI_TARGET}"
+else
+  target="-t local"
 fi
 
 if [ -z "${RUN_VOLMAN}" ]; then
