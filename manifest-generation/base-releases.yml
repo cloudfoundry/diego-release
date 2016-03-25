@@ -1,0 +1,7 @@
+base_releases:
+  - name: diego
+    version: (( release_versions.diego || "latest" ))
+  - name: garden-linux
+    version: (( release_versions.garden-linux || "latest" ))
+  - name: etcd
+    version: (( release_versions.etcd || "latest" ))

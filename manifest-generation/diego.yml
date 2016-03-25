@@ -510,6 +510,9 @@ properties:
     heartbeat_interval_in_milliseconds: (( property_overrides.etcd.heartbeat_interval_in_milliseconds || nil ))
     election_timeout_in_milliseconds: (( property_overrides.etcd.election_timeout_in_milliseconds || nil ))
 
+  cflinuxfs2-rootfs:
+    trusted_certs: (( property_overrides.rootfs_cflinuxfs2.trusted_certs || nil ))
+
   # -- Properties below are used by the jobs from diego- release --
   diego:
     # -- Global property --
@@ -602,6 +605,7 @@ properties:
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
       log_level: (( property_overrides.nsync.log_level || nil ))
     rep:
+      preloaded_rootfses: (( rootfs_overrides.diego.rep.preloaded_rootfses || nil ))
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       bbs:
         api_location: (( property_overrides.bbs.api_location || nil ))
@@ -690,7 +694,7 @@ properties:
     insecure_docker_registry_list: (( property_overrides.garden.insecure_docker_registry_list || nil ))
     network_mtu: (( property_overrides.garden.mtu || nil ))
     disk_quota_enabled: (( property_overrides.garden.disk_quota_enabled || nil ))
-    persistent_image_list: (( property_overrides.garden.persistent_image_list || ["/var/vcap/packages/rootfs_cflinuxfs2/rootfs"] ))
+    persistent_image_list: (( property_overrides.garden.persistent_image_list || rootfs_overrides.garden.persistent_image_list || ["/var/vcap/packages/rootfs_cflinuxfs2/rootfs"] ))
     enable_graph_cleanup: (( property_overrides.garden.enable_graph_cleanup || true ))
     graph_cleanup_threshold_in_mb: (( property_overrides.garden.graph_cleanup_threshold_in_mb || 0 ))
     log_level: (( property_overrides.garden.log_level || nil ))
@@ -701,15 +705,10 @@ config_from_cf: (( merge ))
 iaas_settings: (( merge ))
 instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
+rootfs_overrides: (( merge || nil ))
 release_versions: (( merge || nil ))
 empty_hash: {}
-base_releases:
-  - name: diego
-    version: (( release_versions.diego || "latest" ))
-  - name: garden-linux
-    version: (( release_versions.garden-linux || "latest" ))
-  - name: etcd
-    version: (( release_versions.etcd || "latest" ))
+base_releases: (( merge ))
 base_job_templates:
   access:
     - name: ssh_proxy
@@ -749,8 +748,8 @@ base_job_templates:
       release: cf
     - name: garden
       release: garden-linux
-    - name: rootfses
-      release: diego
+    - name: (( rootfs_overrides.job_name || "rootfses" ))
+      release: (( rootfs_overrides.job_release || "diego" ))
     - name: metron_agent
       release: cf
   database:
@@ -792,8 +791,8 @@ base_job_templates:
       release: cf
     - name: nsync
       release: diego
-    - name: rootfses
-      release: diego
+    - name: (( rootfs_overrides.job_name || "rootfses" ))
+      release: (( rootfs_overrides.job_release || "diego" ))
     - name: route_emitter
       release: diego
     - name: ssh_proxy
