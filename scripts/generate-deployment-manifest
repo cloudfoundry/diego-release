@@ -14,6 +14,7 @@ function usage() {
     Optional arguments:
        -n instance-count-overrides stub file
        -v release-versions stub file
+       -r [use cflinuxfs-rootfs bosh release]
 
     Example:
     $0 -c ~/deployments/cf.yml \\
@@ -21,11 +22,14 @@ function usage() {
        -p manifest-generation/bosh-lite-stubs/property-overrides.yml \\
        -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
        -v manifest-generation/bosh-lite-stubs/release-versions.yml
+       -r
 "
   exit 1
 }
 
-while getopts "c:i:p:n:k:v:" opt; do
+rootfs_properties="${manifest_generation}/base-releases.yml";
+
+while getopts "c:i:p:n:k:v:r" opt; do
   case $opt in
     c)
       cf_deployment_manifest=$OPTARG
@@ -41,6 +45,9 @@ while getopts "c:i:p:n:k:v:" opt; do
       ;;
     k)
       >&2 echo "DEPRECATED: Persistent disk configuration moved to iaas_settings"
+      ;;
+    r)
+      rootfs_properties="${manifest_generation}/rootfs-properties.yml";
       ;;
     v)
       release_versions=$OPTARG
@@ -107,6 +114,7 @@ spiff merge \
 
 spiff merge \
   ${manifest_generation}/diego.yml \
+  ${rootfs_properties} \
   ${property_overrides} \
   ${instance_counts} \
   ${iaas_settings} \

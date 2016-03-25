@@ -1,0 +1,20 @@
+base_releases:
+  - name: diego
+    version: (( release_versions.diego || "latest" ))
+  - name: garden-linux
+    version: (( release_versions.garden-linux || "latest" ))
+  - name: etcd
+    version: (( release_versions.etcd || "latest" ))
+  - name: cflinuxfs2-rootfs
+    version: (( release_versions.cflinuxfs2-rootfs || "latest" ))
+
+rootfs_overrides:
+  garden:
+    persistent_image_list:
+      - /var/vcap/packages/cflinuxfs2/rootfs
+  diego:
+    rep:
+      preloaded_rootfses:
+        - cflinuxfs2:/var/vcap/packages/cflinuxfs2/rootfs
+  job_name: cflinuxfs2-rootfs-setup
+  job_release: cflinuxfs2-rootfs
