@@ -138,5 +138,5 @@ file_must_include() {
 }
 
 running_in_container() {
-  grep -q '/instance' /proc/self/cgroup
+  grep -q -E '/instance|/docker/' /proc/self/cgroup
 }
