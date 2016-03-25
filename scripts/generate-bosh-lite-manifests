@@ -18,6 +18,7 @@ $scripts_path/generate-deployment-manifest \
     -p manifest-generation/bosh-lite-stubs/property-overrides.yml \
     -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
     -v manifest-generation/bosh-lite-stubs/release-versions.yml \
+    "$@" \
     > ${DIEGO_MANIFESTS_DIR}/diego.yml
 
     tmpdir=$(mktemp -d /tmp/diego-manifest.XXXXX)
