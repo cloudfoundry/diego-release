@@ -61,13 +61,12 @@ properties:
       datacenter: (( merge || nil ))
       servers:
         lan: (( merge ))
-    ca_cert: (( merge || nil ))
-    agent_cert: (( merge || nil ))
-    agent_key: (( merge || nil ))
-    encrypt_keys: (( merge || nil ))
-    require_ssl: (( merge || nil ))
-    server_cert: (( merge || nil ))
-    server_key: (( merge || nil ))
+    ca_cert: (( merge ))
+    agent_cert: (( merge ))
+    agent_key: (( merge ))
+    encrypt_keys: (( merge ))
+    server_cert: (( merge ))
+    server_key: (( merge ))
   loggregator:
     etcd:
       machines: (( merge ))
