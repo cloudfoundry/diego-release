@@ -44,7 +44,7 @@ while getopts "c:i:p:n:k:v:r" opt; do
       instance_counts=$OPTARG
       ;;
     k)
-      >&2 echo "DEPRECATED: Persistent disk configuration moved to iaas_settings"
+      >&2 echo "DEPRECATED: Persistent disk configuration moved to IaaS-settings stub"
       ;;
     r)
       rootfs_properties="${manifest_generation}/rootfs-properties.yml";
@@ -60,43 +60,43 @@ while getopts "c:i:p:n:k:v:r" opt; do
 done
 
 if [ -z ${cf_deployment_manifest} ]; then
-  >&2 echo "CF manifest file is missing"
+  >&2 echo "ERROR: CF manifest file is missing"
   argument_error=true
 else
   if [ ! -f "${cf_deployment_manifest}" ]; then
-    >&2 echo "CF manifest '${cf_deployment_manifest}' is not a regular file"
+    >&2 echo "ERROR: CF manifest '${cf_deployment_manifest}' is not a regular file"
     argument_error=true
   fi
 fi
 
 if [ -z ${iaas_settings} ]; then
-  >&2 echo "IaaS-settings stub file is missing"
+  >&2 echo "ERROR: IaaS-settings stub file is missing"
   argument_error=true
 else
   if [ ! -f "${iaas_settings}" ]; then
-    >&2 echo "IaaS Setting stub '${iaas_settings}' is not a regular file"
+    >&2 echo "ERROR: IaaS Setting stub '${iaas_settings}' is not a regular file"
     argument_error=true
   fi
 fi
 
 if [ -z ${property_overrides} ]; then
-  >&2 echo "property-overrides stub file is missing"
+  >&2 echo "ERROR: Property-overrides stub file is missing"
   argument_error=true
 
 else
   if [ ! -f "${property_overrides}" ]; then
-    >&2 echo "Property Overrides stub '${property_overrides}' is not a regular file"
+    >&2 echo "ERROR: Property-overrides stub '${property_overrides}' is not a regular file"
     argument_error=true
   fi
 fi
 
 if [[ ! -z "${instance_counts}" && ! -f "${instance_counts}" ]]; then
-  >&2 echo "Instance Count Overrides stub '${instance_counts}' is not a regular file"
+  >&2 echo "ERROR: Instance-count-overrides stub '${instance_counts}' is not a regular file"
   argument_error=true
 fi
 
 if [[ ! -z "${release_versions}" && ! -f "${release_versions}" ]]; then
-  >&2 echo "Release versions stub '${release_versions}' is not a regular file"
+  >&2 echo "ERROR: Release-versions stub '${release_versions}' is not a regular file"
   argument_error=true
 fi
 
