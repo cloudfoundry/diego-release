@@ -4,26 +4,33 @@ set -e
 
 manifest_generation=$(dirname $0)/../manifest-generation
 
-function usage() {
-  >&2 echo "    Usage:
-    $0 <MANDATORY ARGUMENTS> [OPTIONAL ARGUMENTS]
-    Mandatory arguments:
-       -c CF manifest file
-       -i IaaS-settings stub file
-       -p property-overrides stub file
-    Optional arguments:
-       -n instance-count-overrides stub file
-       -v release-versions stub file
-       -r [use cflinuxfs-rootfs bosh release]
+usage() {
+  >&2 cat <<EOF
+SYNOPSIS:
+    Generate a manifest for a Diego deployment to accompany an existing CF deployment.
 
-    Example:
-    $0 -c ~/deployments/cf.yml \\
-       -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \\
-       -p manifest-generation/bosh-lite-stubs/property-overrides.yml \\
-       -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
-       -v manifest-generation/bosh-lite-stubs/release-versions.yml
-       -r
-"
+USAGE:
+    $0 <MANDATORY ARGUMENTS> [OPTIONAL ARGUMENTS]
+
+MANDATORY ARGUMENTS:
+    -c <cf-path>        Path to CF manifest file.
+    -i <iaas-path>      Path to IaaS-settings stub file.
+    -p <property-path>  Path to property-overrides stub file.
+
+OPTIONAL ARGUMENTS:
+    -n <count-path>     Path to instance-count-overrides stub file.
+    -v <versions-path>  Path to release-versions stub file.
+    -r                  Opt into using cflinuxfs-rootfs release.
+
+EXAMPLE:
+    $0 \\
+      -c ../cf-release/bosh-lite/deployments/cf.yml \\
+      -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \\
+      -p manifest-generation/bosh-lite-stubs/property-overrides.yml \\
+      -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
+      -v manifest-generation/bosh-lite-stubs/release-versions.yml \\
+      -r
+EOF
   exit 1
 }
 
@@ -101,6 +108,7 @@ if [[ ! -z "${release_versions}" && ! -f "${release_versions}" ]]; then
 fi
 
 if [ ! -z $argument_error ]; then
+  echo
   usage
 fi
 
