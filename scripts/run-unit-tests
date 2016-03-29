@@ -8,7 +8,6 @@ eval $($scripts_path/get_paths.sh)
 SKIP_PACKAGES="./inigo"
 SKIP_PACKAGES="$SKIP_PACKAGES,./auction/simulation"
 SKIP_PACKAGES="$SKIP_PACKAGES,./bbs/db/sqldb"
-SKIP_PACKAGES="$SKIP_PACKAGES,./bbs/measurements"
 SKIP_PACKAGES="$SKIP_PACKAGES,./benchmark-bbs"
 SKIP_PACKAGES="$SKIP_PACKAGES,./candiedyaml"
 SKIP_PACKAGES="$SKIP_PACKAGES,./cf-test-helpers"
