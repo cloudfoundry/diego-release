@@ -112,6 +112,39 @@ To be able to run unit tests, you'll also need to install the following binaries
 
 To be able to run the integration test suite ("inigo"), you'll need to have a local [Concourse](http://concourse.ci) VM. Follow the instructions on the Concourse [README](https://github.com/concourse/concourse/blob/master/README.md) to set it up locally using [vagrant](https://www.vagrantup.com/). Download the fly CLI as instructed and move it somewhere visible to your `$PATH`.
 
+### Running the experimental SQL unit tests
+To run the experimental SQL unit tests, you'll need mysql running locally with the correct sql_mode and user configuration.
+
+On OS X, you can follow the these steps to install and configure mysql:
+
+1. `brew install mysql`
+2. `mysql.server start`
+3. Run `mysql_secure_installation` and set a root password
+    - Follow the on-screen prompts to complete the installation. The answers won't affect whether the unit tests can run.
+4. Create /etc/my.cnf with the following contents:
+
+    ```
+[mysqld]
+sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+    ```
+5. `mysql.server restart`
+6. Log in to the mysql console as root, using the password you specified in step 3
+
+    ```
+mysql -uroot -p<your password>
+    ```
+7. Run the following SQL commands to create a diego user with the correct permissions:
+
+    ```
+CREATE USER 'diego'@'localhost' IDENTIFIED BY 'diego_password';
+GRANT ALL PRIVILEGES ON `diego\_%`.* TO 'diego'@'localhost';
+    ```
+8. You should now be able to run the SQL unit tests. To run the tests, run the following command from the bbs submodule:
+
+    ```
+ginkgo -p db/sqldb
+    ```
+
 ## <a name="deploy-bosh-lite"></a> Deploying Diego to BOSH-Lite
 
 1. Install and start [BOSH-Lite](https://github.com/cloudfoundry/bosh-lite),
