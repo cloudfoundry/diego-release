@@ -5,10 +5,24 @@ set -e
 scripts_path=./$(dirname $0)
 eval $($scripts_path/get_paths.sh)
 
-SKIP_PACKAGES="bbs/measurements,benchmark-bbs,simulation,inigo,fezzik,./garden,garden-linux,dropsonde,candiedyaml,diegocanaryapp,cf-test-helpers,vizzini,veritas,benchmark-bbs,upgrade-stability,volman"
+SKIP_PACKAGES="./inigo"
+SKIP_PACKAGES="$SKIP_PACKAGES,./auction/simulation"
+SKIP_PACKAGES="$SKIP_PACKAGES,./bbs/db/sqldb"
+SKIP_PACKAGES="$SKIP_PACKAGES,./bbs/measurements"
+SKIP_PACKAGES="$SKIP_PACKAGES,./benchmark-bbs"
+SKIP_PACKAGES="$SKIP_PACKAGES,./candiedyaml"
+SKIP_PACKAGES="$SKIP_PACKAGES,./cf-test-helpers"
+SKIP_PACKAGES="$SKIP_PACKAGES,./diegocanaryapp"
+SKIP_PACKAGES="$SKIP_PACKAGES,./dropsonde"
+SKIP_PACKAGES="$SKIP_PACKAGES,./fezzik"
+SKIP_PACKAGES="$SKIP_PACKAGES,./garden"
+SKIP_PACKAGES="$SKIP_PACKAGES,./garden-linux"
+SKIP_PACKAGES="$SKIP_PACKAGES,./diego-upgrade-stability-tests"
+SKIP_PACKAGES="$SKIP_PACKAGES,./veritas"
+SKIP_PACKAGES="$SKIP_PACKAGES,./vizzini"
 
-if [ -n "${RUN_VOLMAN}" ]; then
-  SKIP_PACKAGES="bbs/measurements,benchmark-bbs,simulation,inigo,fezzik,./garden,garden-linux,dropsonde,candiedyaml,diegocanaryapp,cf-test-helpers,vizzini,veritas,benchmark-bbs,upgrade-stability"
+if [ -z "${RUN_VOLMAN}" ]; then
+  SKIP_PACKAGES="$SKIP_PACKAGES,volman"
 fi
 
 if [ -n "$PACKAGE" ]; then
