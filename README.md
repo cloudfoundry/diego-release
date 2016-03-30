@@ -265,14 +265,14 @@ separator.
 ##<a name="tls-configuration"></a>TLS Configuration
 
 Diego Release can be configured to require TLS for communication with etcd.
-To enable or disable TLS communication with etcd, the `diego.etcd.require_ssl`
-and `diego.<component>.etcd.require_ssl` properties should be set to `true` or
+To enable or disable TLS communication with etcd, the `etcd.require_ssl`
+and `diego.bbs.etcd.require_ssl` properties should be set to `true` or
 `false`.  By default, Diego has `require_ssl` set to `true`.  When
 `require_ssl` is `true`, the operator must generate TLS certificates and keys
 for the etcd server and its clients.
 
 TLS and mutual authentication can also be enabled between etcd peers. To
-enable or disable this, the `diego.etcd.peer_require_ssl` property should be
+enable or disable this, the `etcd.peer_require_ssl` property should be
 set to `true` or `false`. By default, Diego has `peer_require_ssl` set to
 `true`.  When `peer_require_ssl` is set to `true`, the operator must provide
 TLS certificates and keys for the cluster members. The CA, server certificate,
@@ -280,9 +280,10 @@ and server key across may be shared between the client and peer configurations
 if desired.
 
 Similarly, TLS with mutual authentication can be enabled for communication to
-the BBS server, via the `diego.bbs.require_ssl` BOSH property, which defaults
-to `true`. When enabled, the operator must provide TLS certificates and keys
-for the BBS server and its clients (other components in the Diego deployment).
+the BBS server, via the `diego.bbs.require_ssl` and
+`diego.CLIENT.bbs.require_ssl` BOSH properties. These properties default to
+`true`. When enabled, the operator must provide TLS certificates and keys for
+the BBS server and its clients (other components in the Diego deployment).
 
 
 ### Generating TLS Certificates
@@ -334,8 +335,8 @@ following steps to successfully generate the required certificates.
    Created out/etcd.service.cf.internal.crt from out/etcd.service.cf.internal.csr signed by out/diegoCA.key
    ```
 
-   The manifest property `properties.diego.etcd.server_cert` should be set to the certificate in `out/etcd.service.cf.internal.crt`.
-   The manifest property `properties.diego.etcd.server_key` should be set to the certificate in `out/etcd.service.cf.internal.key`.
+   The manifest property `properties.etcd.server_cert` should be set to the certificate in `out/etcd.service.cf.internal.crt`.
+   The manifest property `properties.etcd.server_key` should be set to the certificate in `out/etcd.service.cf.internal.key`.
 
 4. Create and sign a certificate for etcd clients.
    ```
@@ -351,8 +352,8 @@ following steps to successfully generate the required certificates.
    Created out/clientName.crt from out/clientName.csr signed by out/diegoCA.key
    ```
 
-   The manifest property `properties.diego.etcd.client_cert` should be set to the certificate in `out/clientName.crt`.
-   The manifest property `properties.diego.etcd.client_key` should be set to the certificate in `out/clientName.key`.
+   The manifest property `properties.etcd.client_cert` should be set to the certificate in `out/clientName.crt`.
+   The manifest property `properties.etcd.client_key` should be set to the certificate in `out/clientName.key`.
 
 5. Create and sign a certificate for the BBS server.
    ```
@@ -371,7 +372,7 @@ following steps to successfully generate the required certificates.
    The manifest property `properties.diego.bbs.server_cert` should be set to the certificate in `out/bbs.service.cf.internal.crt`.
    The manifest property `properties.diego.bbs.server_key` should be set to the certificate in `out/bbs.service.cf.internal.key`.
 
-6. Create and sign a certificate for bbs clients.
+6. Create and sign a certificate for BBS clients.
    ```
    $ ./certstrap request-cert --common-name "clientName"
    Enter passphrase (empty for no passphrase): <hit enter for no password>
@@ -385,9 +386,11 @@ following steps to successfully generate the required certificates.
    Created out/clientName.crt from out/clientName.csr signed by out/diegoCA.key
    ```
 
-   The manifest property `properties.diego.CLIENT.bbs.client_cert` should be set to the certificate in `out/clientName.crt`,
-   and the manifest property `properties.diego.CLIENT.bbs.client_key` should be set to the certificate in `out/clientName.key`,
-   Where `CLIENT` is each of the diego components that has a BBS client.
+   For each component `CLIENT` that has a BBS client, the manifest properties
+   `properties.diego.CLIENT.bbs.client_cert` should be set to the certificate in
+   `out/clientName.crt`, and the manifest properties
+   `properties.diego.CLIENT.bbs.client_key` should be set to the certificate in
+   `out/clientName.key`.
 
 7. (Optional) Initialize a new peer certificate authority.
    ```
@@ -400,7 +403,7 @@ following steps to successfully generate the required certificates.
    Created peer/peerCA.crt
    ```
 
-   The manifest property `properties.diego.etcd.peer_ca_cert` should be set to the certificate in `peer/peerCA.crt`.
+   The manifest property `properties.etcd.peer_ca_cert` should be set to the certificate in `peer/peerCA.crt`.
 
 8. (Optional) Create and sign a certificate for the etcd peers.
    ```
@@ -416,8 +419,8 @@ following steps to successfully generate the required certificates.
    Created peer/etcd.service.cf.internal.crt from peer/etcd.service.cf.internal.csr signed by peer/peerCA.key
    ```
 
-   The manifest property `properties.diego.etcd.peer_cert` should be set to the certificate in `peer/etcd.service.cf.internal.crt`.
-   The manifest property `properties.diego.etcd.peer_key` should be set to the certificate in `peer/etcd.service.cf.internal.key`.
+   The manifest property `properties.etcd.peer_cert` should be set to the certificate in `peer/etcd.service.cf.internal.crt`.
+   The manifest property `properties.etcd.peer_key` should be set to the certificate in `peer/etcd.service.cf.internal.key`.
 
 
 ### Custom TLS Certificate Generation
