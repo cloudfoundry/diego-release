@@ -102,7 +102,7 @@ your AWS account through the AWS console:
 1. Fill in only one user name.
 1. Make sure that the `Generate an access key for each user` checkbox is checked and click `Create`.
 1. Click `Download Credentials` at the bottom of the screen.
-1. Copy the downloaded `credentials.csv` file to `$DEPLOYMENTS_DIR`.
+1. Copy the downloaded `credentials.csv` file to `$DEPLOYMENT_DIR`.
 1. Click on the `Close` link to return to the IAM Users page.
 1. Click on the user that you created.
 1. Click on the `Permissions` tab.
@@ -118,7 +118,7 @@ your AWS account through the AWS console:
 1. Click the `Create Key Pair` button at the top of the page.
 1. When prompted for the key name, enter a name that can be easily referred to later, for example: `bosh_keypair`.
 1. Make the directory `$DEPLOYMENT_DIR/keypair` and move the downloaded `bosh_keypair.pem` key to `$DEPLOYMENT_DIR/keypair/id_rsa_bosh`.
-1. Change the permissions on the new key file to `600` (`rw-------`): `chmod 600 $DEPLOYMENTS_DIR/keypair/id_rsa_bosh`.
+1. Change the permissions on the new key file to `600` (`rw-------`): `chmod 600 $DEPLOYMENT_DIR/keypair/id_rsa_bosh`.
 
 
 #### Route 53 Hosted Zone
