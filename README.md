@@ -23,6 +23,8 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 
 
 ### Table of Contents
+
+1. [BOSH Dependencies](#bosh-dependencies)
 1. [Discovering a Set of Releases to Deploy](#release-compatibility)
 1. [Deploying Diego to BOSH-Lite](#deploying-diego-to-bosh-lite)
 1. [Pushing to Diego](#pushing-to-diego)
@@ -32,8 +34,18 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 1. [TLS Configuration](#tls-configuration)
   1. [Generating TLS Certificates](#generating-tls-certificates)
   1. [Custom TLS Certificate Generation](#custom-tls-certificate-generation)
-1. [BOSH Dependencies](#bosh-dependencies)
 1. [Recommended Instance Types](#recommended-instance-types)
+
+---
+
+## BOSH Dependencies
+
+When deploying diego-release via BOSH, the following minimum versions are required:
+
+* BOSH Release v206+ (Director version 1.3072.0)
+* BOSH Stemcell 3125+
+
+These versions ensure that the pre-start script in the rootfses job will be run to extract and configure the cflinuxfs2 rootfs and that the drain scripts will be called for all jobs on each VM during updates, instead of only the first job.
 
 ---
 
@@ -416,14 +428,6 @@ placeholders and can be renamed provided that all clients client certificate.
 The server certificate must have the common name `etcd.service.cf.internal` and
 must specify `etcd.service.cf.internal` and `*.etcd.service.cf.internal` as
 Subject Alternative Names (SANs).
-
----
-## BOSH Dependencies
-
-When deploying diego-release to a BOSH director you should have at least:
-
-* BOSH Release v206+ (1.3072.0)
-* BOSH Stemcell 3125+
 
 ---
 ## Recommended Instance Types
