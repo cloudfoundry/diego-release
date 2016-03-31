@@ -21,6 +21,7 @@ OPTIONAL ARGUMENTS:
     -n <count-path>     Path to instance-count-overrides stub file.
     -v <versions-path>  Path to release-versions stub file.
     -r                  Opt into using cflinuxfs-rootfs release.
+    -b                  Opt into using cf-release for bridge components.
 
 EXAMPLE:
     $0 \\
@@ -30,13 +31,15 @@ EXAMPLE:
       -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
       -v manifest-generation/bosh-lite-stubs/release-versions.yml \\
       -r
+      -b
 EOF
   exit 1
 }
 
 rootfs_properties="${manifest_generation}/base-releases.yml";
+bridge_properties=""
 
-while getopts "c:i:p:n:k:v:r" opt; do
+while getopts "c:i:p:n:k:v:rb" opt; do
   case $opt in
     c)
       cf_deployment_manifest=$OPTARG
@@ -55,6 +58,9 @@ while getopts "c:i:p:n:k:v:r" opt; do
       ;;
     r)
       rootfs_properties="${manifest_generation}/rootfs-properties.yml";
+      ;;
+    b)
+      bridge_properties="${manifest_generation}/bridge-properties.yml";
       ;;
     v)
       release_versions=$OPTARG
@@ -123,6 +129,7 @@ spiff merge \
 spiff merge \
   ${manifest_generation}/diego.yml \
   ${rootfs_properties} \
+  ${bridge_properties} \
   ${property_overrides} \
   ${instance_counts} \
   ${iaas_settings} \

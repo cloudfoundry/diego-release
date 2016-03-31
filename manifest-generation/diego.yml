@@ -706,6 +706,7 @@ iaas_settings: (( merge ))
 instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
 rootfs_overrides: (( merge || nil ))
+bridge_overrides: (( merge || nil ))
 release_versions: (( merge || nil ))
 empty_hash: {}
 base_releases: (( merge ))
@@ -732,13 +733,13 @@ base_job_templates:
     - name: consul_agent
       release: cf
     - name: stager
-      release: diego
+      release: (( bridge_overrides.job_release || "diego" ))
     - name: nsync
-      release: diego
+      release: (( bridge_overrides.job_release || "diego" ))
     - name: tps
-      release: diego
+      release: (( bridge_overrides.job_release || "diego" ))
     - name: cc_uploader
-      release: diego
+      release: (( bridge_overrides.job_release || "diego" ))
     - name: metron_agent
       release: cf
   cell:
@@ -778,7 +779,7 @@ base_job_templates:
     - name: bbs
       release: diego
     - name: cc_uploader
-      release: diego
+      release: (( bridge_overrides.job_release || "diego" ))
     - name: converger
       release: diego
     - name: etcd
@@ -790,7 +791,7 @@ base_job_templates:
     - name: metron_agent
       release: cf
     - name: nsync
-      release: diego
+      release: (( bridge_overrides.job_release || "diego" ))
     - name: (( rootfs_overrides.job_name || "rootfses" ))
       release: (( rootfs_overrides.job_release || "diego" ))
     - name: route_emitter
@@ -798,6 +799,6 @@ base_job_templates:
     - name: ssh_proxy
       release: diego
     - name: stager
-      release: diego
+      release: (( bridge_overrides.job_release || "diego" ))
     - name: tps
-      release: diego
+      release: (( bridge_overrides.job_release || "diego" ))
