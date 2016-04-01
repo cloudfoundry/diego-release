@@ -22,6 +22,8 @@ SKIP_PACKAGES="$SKIP_PACKAGES,./vizzini"
 
 if [ -z "${RUN_VOLMAN}" ]; then
   SKIP_PACKAGES="$SKIP_PACKAGES,volman"
+else
+  SKIP_PACKAGES="$SKIP_PACKAGES,diego-ssh"
 fi
 
 if [ -n "$PACKAGE" ]; then

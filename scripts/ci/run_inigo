@@ -84,7 +84,12 @@ pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
       PACKAGES_TO_SKIP=$PACKAGES_TO_SKIP",$SKIP_PACKAGES"
     fi
 
-    ginkgo $nodes_flag -r -skipPackage=${PACKAGES_TO_SKIP} -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
+    if [ -z $SKIP_REGEX]; then
+        ginkgo $nodes_flag -r -skipPackage=${PACKAGES_TO_SKIP} -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
+    else
+        ginkgo $nodes_flag -r -skipPackage=${PACKAGES_TO_SKIP} -skip=${SKIP_REGEX} -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
+    fi
+
     # always run docker tests serially
     ginkgo -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@" docker/
   else
@@ -98,6 +103,10 @@ pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
     ginkgo -nodes=4 -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@" executor/
 
     # run everything but executor with normal rules
-    ginkgo $nodes_flag -r -skipPackage=${PACKAGES_TO_SKIP} -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
+    if [ -z $SKIP_REGEX]; then
+        ginkgo $nodes_flag -r -skipPackage=${PACKAGES_TO_SKIP} -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
+    else
+        ginkgo $nodes_flag -r -skipPackage=${PACKAGES_TO_SKIP} -skip=${SKIP_REGEX} -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
+    fi
   fi
 popd
