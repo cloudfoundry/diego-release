@@ -38,9 +38,6 @@ properties:
   diego.ssh_proxy.dropsonde_port:
     description: "local metron agent's port"
     default: 3457
-  diego.ssh_proxy.consul_agent_port:
-    description: "local consul agent's port"
-    default: 8500
   diego.ssh_proxy.enable_cf_auth:
     description: Allow ssh access for cf applications
     default: false

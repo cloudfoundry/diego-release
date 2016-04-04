@@ -48,7 +48,7 @@ case $1 in
         -bbsMaxIdleConnsPerHost=<%= value %> \
       <% end %> \
       -dropsondePort=<%= p("diego.nsync.dropsonde_port") %> \
-      -consulCluster=http://127.0.0.1:<%= p("diego.nsync.consul_agent_port") %> \
+      -consulCluster=http://127.0.0.1:8500 \
       -listenAddress=<%= p("diego.nsync.listen_addr") %> \
       -debugAddr=<%= p("diego.nsync.listener_debug_addr") %> \
       <%= p("diego.nsync.lifecycle_bundles").map { |bundle| "-lifecycle #{bundle}" }.join(" ") %> \

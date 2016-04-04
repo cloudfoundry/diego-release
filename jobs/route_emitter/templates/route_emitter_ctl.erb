@@ -41,7 +41,7 @@ case $1 in
     export GODEBUG=netdns=cgo
 
     exec chpst -u vcap:vcap /var/vcap/packages/route_emitter/bin/route-emitter ${bbs_sec_flags} \
-      -consulCluster=http://127.0.0.1:<%= p("diego.route_emitter.consul_agent_port") %> \
+      -consulCluster=http://127.0.0.1:8500 \
       -natsAddresses=<%= p("diego.route_emitter.nats.machines").collect { |addr| "#{addr}:#{p("diego.route_emitter.nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("diego.route_emitter.nats.user") %> \
       -natsPassword=<%= Shellwords.shellescape(p("diego.route_emitter.nats.password")) %> \

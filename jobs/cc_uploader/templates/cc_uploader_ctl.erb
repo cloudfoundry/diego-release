@@ -49,7 +49,7 @@ case $1 in
     exec chpst -u vcap:vcap /var/vcap/packages/cc_uploader/bin/cc-uploader \
       -address=<%= p("diego.cc_uploader.listen_addr") %> \
       -debugAddr=<%= p("diego.cc_uploader.debug_addr") %> \
-      -consulCluster=http://127.0.0.1:<%= p("diego.cc_uploader.consul_agent_port") %> \
+      -consulCluster=http://127.0.0.1:8500 \
       <% if_p("diego.cc_uploader.cc.job_polling_interval_in_seconds") do |interval| %>\
         -ccJobPollingInterval=<%= "#{interval}s" %> \
       <% end %>\

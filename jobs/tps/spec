@@ -19,9 +19,6 @@ properties:
   diego.tps.dropsonde_port:
     description: "local metron agent's port"
     default: 3457
-  diego.tps.consul_agent_port:
-    description: "local consul agent's port"
-    default: 8500
   diego.tps.max_in_flight_requests:
     description: "Maximum number of requests to handle at once."
     default: 200

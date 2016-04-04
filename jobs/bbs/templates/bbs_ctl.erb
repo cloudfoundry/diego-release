@@ -80,7 +80,7 @@ case $1 in
       -activeKeyLabel='<%= p("diego.bbs.active_key_label") %>' \
       -advertiseURL=${ad_url_scheme}<%="://#{name.gsub('_', '-')}-#{spec.index}.bbs.service.cf.internal:#{p("diego.bbs.listen_addr").split(':')[1]}" %> \
       -auctioneerAddress=<%= p("diego.bbs.auctioneer.api_url") %> \
-      -consulCluster=http://127.0.0.1:<%= p("diego.bbs.consul_agent_port") %> \
+      -consulCluster=http://127.0.0.1:8500 \
       -debugAddr=<%= p("diego.bbs.debug_addr") %> \
       <% p("diego.bbs.encryption_keys").each do |encryption_key| %> \
         -encryptionKey='<%= "#{encryption_key["label"]}:#{encryption_key["passphrase"]}" %>' \

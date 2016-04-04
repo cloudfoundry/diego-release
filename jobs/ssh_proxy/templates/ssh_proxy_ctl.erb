@@ -64,7 +64,7 @@ case $1 in
       ${diego_auth_flags} \
       ${uaa_flags} \
       -address=<%= p("diego.ssh_proxy.listen_addr") %> \
-      -consulCluster=http://127.0.0.1:<%= p("diego.ssh_proxy.consul_agent_port") %> \
+      -consulCluster=http://127.0.0.1:8500 \
       -hostKey="$HOST_KEY" \
       <% if_p("diego.ssh_proxy.allowed_ciphers") do |value| %> \
         -allowedCiphers=<%= value %> \
