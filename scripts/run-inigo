@@ -5,11 +5,15 @@ set -e
 scripts_path=./$(dirname $0)
 eval $($scripts_path/get_paths.sh)
 
+echo "checking code for compilation errors..."
+
 pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/inigo
   for pkg in `find . -type d ! -path . -maxdepth 1`; do
     go test -c ./${pkg} > /dev/null
   done
 popd
+
+echo "done"
 
 if [ -n "${DIEGO_CI_TARGET}" ]; then
   target="-t ${DIEGO_CI_TARGET}"
