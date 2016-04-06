@@ -15,7 +15,6 @@ config_from_cf:
     agent_cert: (( properties.consul.agent_cert ))
     agent_key: (( properties.consul.agent_key ))
     encrypt_keys: (( properties.consul.encrypt_keys ))
-    require_ssl: (( properties.consul.require_ssl ))
     server_cert: (( properties.consul.server_cert ))
     server_key: (( properties.consul.server_key ))
   loggregator:
@@ -61,13 +60,12 @@ properties:
       datacenter: (( merge || nil ))
       servers:
         lan: (( merge ))
-    ca_cert: (( merge || nil ))
-    agent_cert: (( merge || nil ))
-    agent_key: (( merge || nil ))
-    encrypt_keys: (( merge || nil ))
-    require_ssl: (( merge || nil ))
-    server_cert: (( merge || nil ))
-    server_key: (( merge || nil ))
+    ca_cert: (( merge ))
+    agent_cert: (( merge ))
+    agent_key: (( merge ))
+    encrypt_keys: (( merge ))
+    server_cert: (( merge ))
+    server_key: (( merge ))
   loggregator:
     etcd:
       machines: (( merge ))
