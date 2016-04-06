@@ -15,7 +15,6 @@ config_from_cf:
     agent_cert: (( merge ))
     agent_key: (( merge ))
     encrypt_keys: (( merge ))
-    require_ssl: (( merge ))
     server_cert: (( merge ))
     server_key: (( merge ))
   loggregator:
