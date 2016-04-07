@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+scripts_path=./$(dirname $0)
+eval $($scripts_path/get_paths.sh)
+
+pushd ${DIEGO_RELEASE_DIR}/src/github.com/cloudfoundry-incubator/vizzini/
+ginkgo -r -nodes=2 -skipPackage="./blackbox" \
+  -- \
+ -bbs-address="https://10.244.16.2:8889" \
+ -bbs-client-cert=${DIEGO_RELEASE_DIR}/manifest-generation/bosh-lite-stubs/bbs-certs/client.crt \
+ -bbs-client-key=${DIEGO_RELEASE_DIR}/manifest-generation/bosh-lite-stubs/bbs-certs/client.key
+popd
