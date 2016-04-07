@@ -1,6 +1,6 @@
 name: (( config_from_cf.cf_deployment_name "-diego" ))
 
-releases: (( base_releases [config_from_cf.cf_release] ))
+releases: (( base_releases rootfs_overrides.releases [garden_overrides.release] [config_from_cf.cf_release] ))
 
 director_uuid: (( config_from_cf.cf_director_uuid ))
 
@@ -705,8 +705,15 @@ config_from_cf: (( merge ))
 iaas_settings: (( merge ))
 instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
-rootfs_overrides: (( merge || nil ))
 bridge_overrides: (( merge || nil ))
+rootfs_overrides:
+  <<: (( merge ))
+  releases: (( merge || [] ))
+garden_overrides:
+  job_release: garden-linux
+  release:
+    name: garden-linux
+    version: (( release_versions.garden_linux || "latest" ))
 release_versions: (( merge || nil ))
 empty_hash: {}
 base_releases: (( merge ))
@@ -748,7 +755,7 @@ base_job_templates:
     - name: rep
       release: diego
     - name: garden
-      release: garden-linux
+      release: (( garden_overrides.job_release || "garden-linux" ))
     - name: (( rootfs_overrides.job_name || "rootfses" ))
       release: (( rootfs_overrides.job_release || "diego" ))
     - name: metron_agent
@@ -787,7 +794,7 @@ base_job_templates:
     - name: file_server
       release: diego
     - name: garden
-      release: garden-linux
+      release: (( garden_overrides.job_release || "garden-linux" ))
     - name: metron_agent
       release: cf
     - name: nsync

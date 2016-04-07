@@ -190,7 +190,7 @@ ginkgo -p db/sqldb
 1. Generate the Diego manifests:
 
         cd ~/workspace/diego-release
-        ./scripts/generate-bosh-lite-manifests
+        ./scripts/generate-bosh-lite-manifests # specify [-g] for guardian-release
 
 1. Create, upload, and deploy the CF release:
 
@@ -200,9 +200,12 @@ ginkgo -p db/sqldb
         bosh -n upload release &&
         bosh -n deploy
 
-1. Upload the latest garden-linux-release:
+1. Upload the latest garden-linux-release OR guardian-release:
 
         bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
+
+        # if you specified [-g] when you generated your manifest:
+        # bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/guardian-release
 
 1. Upload the latest etcd-release:
 
