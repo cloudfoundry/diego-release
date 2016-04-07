@@ -3,6 +3,7 @@ iaas_settings:
     name: bosh-warden-boshlite-ubuntu-trusty-go_agent
     version: latest
   compilation_cloud_properties: {}
+  compilation_workers: 3
   resource_pool_cloud_properties:
     - name: access_z1
       cloud_properties: {}

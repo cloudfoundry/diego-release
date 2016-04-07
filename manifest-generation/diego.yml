@@ -5,7 +5,7 @@ releases: (( base_releases [config_from_cf.cf_release] ))
 director_uuid: (( config_from_cf.cf_director_uuid ))
 
 compilation:
-  workers: 6
+  workers: (( iaas_settings.compilation_workers || 6 ))
   network: diego1
   reuse_compilation_vms: true
   cloud_properties: (( iaas_settings.compilation_cloud_properties ))
