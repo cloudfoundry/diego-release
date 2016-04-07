@@ -460,9 +460,7 @@ properties:
       ca_cert: (( config_from_cf.loggregator.tls.ca_cert ))
   metron_endpoint:
     shared_secret: (( config_from_cf.metron_endpoint.shared_secret ))
-  syslog_daemon_config:
-    address: (( property_overrides.syslog_daemon_config.address || nil ))
-    port: (( property_overrides.syslog_daemon_config.port || nil ))
+  syslog_daemon_config: (( config_from_cf.syslog_daemon_config ))
 
   # -- Properties below are used by the consul_agent job from cf-release --
   consul:

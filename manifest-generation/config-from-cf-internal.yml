@@ -39,6 +39,7 @@ config_from_cf:
     password: (( properties.nats.password ))
     port: (( properties.nats.port ))
     machines: (( properties.nats.machines ))
+  syslog_daemon_config: (( properties.syslog_daemon_config ))
   uaa:
     ssh_proxy_client_secret: (( properties.uaa.clients.ssh-proxy.secret ))
     token_url: (( properties.uaa.url "/oauth/token" ))
@@ -90,6 +91,7 @@ properties:
     machines: (( merge ))
     port: (( merge ))
   system_domain: (( merge ))
+  syslog_daemon_config: (( merge ))
   app_domains: (( merge ))
   uaa:
     clients:
