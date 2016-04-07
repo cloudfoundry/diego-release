@@ -410,7 +410,7 @@ cd "$DIEGO_RELEASE_DIR/examples/aws"
 
 The `./deploy_aws_environment` script takes three arguments:
 
-- The first argument is one of the following commands:
+- The first argument is one of three directives, which you'll need if our script doesn't succeed the first time:
   - `create` creates an AWS CloudFormation stack based off of the stubs filled out above.
   - `update` updates the CloudFormation stack. Run the script with this command after changing the stubs in `$DEPLOYMENT_DIR/stubs/infrastructure`, or after an update to this example directory. If there are **no** changes to the stack, instead run the `skip` command below, as otherwise the script will fail.
   - `skip` upgrades the BOSH director without affecting the CloudFormation stack.
