@@ -39,6 +39,9 @@ case $1 in
     # Work around for GOLANG 1.5.3 DNS bug
     export GODEBUG=netdns=cgo
 
+    # Allowed number of open file descriptors
+    ulimit -n 100000
+
     exec chpst -u vcap:vcap /var/vcap/packages/nsync/bin/nsync-listener ${bbs_sec_flags} \
       -bbsAddress=${bbs_api_url} \
       <% if_p("diego.nsync.bbs.client_session_cache_size") do |value| %> \
