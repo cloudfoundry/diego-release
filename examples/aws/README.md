@@ -189,7 +189,7 @@ This file is the private key pair generated as the [AWS keypair for the BOSH dir
 ####<a name="elb-cfrouter"></a> `certs/elb-cfrouter.key` and `certs/elb-cfrouter.pem`
 
 An SSL certificate for the domain where Cloud Foundry will be accessible is required.
-If you do not already provide a certificate, you can generate a self-signed certificate following the commands below. When prompted 
+If you do not already provide a certificate, you can generate a self-signed certificate following the commands below. 
 
 ```
 openssl genrsa -out elb-cfrouter.key 2048
