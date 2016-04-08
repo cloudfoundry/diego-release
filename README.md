@@ -158,9 +158,12 @@ and then look up that commit's SHA in the diego-cf compatibility table.
         bosh -n upload release &&
         bosh -n deploy
 
-1. Upload the latest garden-linux-release or guardian-release:
+1. Upload the latest garden-linux-release OR guardian-release:
 
         bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
+
+        # if you specified [-g] when you generated your manifest:
+        # bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/guardian-release
 
   If you wish to upload a specific version of garden-linux-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-linux-release).
 
