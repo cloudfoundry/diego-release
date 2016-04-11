@@ -37,9 +37,9 @@ for package in github.com/coreos/etcd github.com/apcera/gnatsd; do
   go install $package
 done
 
-cd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
+cd "${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo"
 
-pushd $GARDEN_LINUX_GOPATH/src/github.com/cloudfoundry-incubator/garden-linux
+pushd "${GARDEN_LINUX_GOPATH}/src/github.com/cloudfoundry-incubator/garden-linux"
   GOPATH=${GARDEN_LINUX_GOPATH} make # compile wshd/etc.
   export GARDEN_BINPATH=$PWD/linux_backend/bin
 popd
@@ -47,66 +47,48 @@ popd
 go install github.com/onsi/ginkgo/ginkgo
 
 # use the 1.28 version of tar that's installed in the inigo-ci docker image
-ln -s /usr/local/bin/tar ${GARDEN_BINPATH}
+ln -s /usr/local/bin/tar "${GARDEN_BINPATH}"
 
 export GARDEN_ROOTFS=/tmp/opt/inigo/rootfs
-mkdir -p $GARDEN_ROOTFS
-mount -t tmpfs tmpfs $GARDEN_ROOTFS
-cp -rp /opt/inigo/rootfs/* $GARDEN_ROOTFS
+mkdir -p "${GARDEN_ROOTFS}"
+mount -t tmpfs tmpfs "${GARDEN_ROOTFS}"
+cp -rp /opt/inigo/rootfs/* "${GARDEN_ROOTFS}"
 
 # used for routing to apps; same logic that Garden uses.
-export EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\s/\1/;tx;d;:x')
+EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\s/\1/;tx;d;:x')
+export EXTERNAL_ADDRESS
 
 # GARDEN_GRAPH_PATH is the root of the docker image filesystem
 export GARDEN_GRAPH_PATH=/tmp/garden/graph
-mkdir -p $GARDEN_GRAPH_PATH
-mount -t tmpfs tmpfs $GARDEN_GRAPH_PATH
+mkdir -p "${GARDEN_GRAPH_PATH}"
+mount -t tmpfs tmpfs "${GARDEN_GRAPH_PATH}"
 
 # workaround until Concourse's garden sets this up for us
 if ! grep -qs '/sys' /proc/mounts; then
   mount -t sysfs sysfs /sys
 fi
 
-source $GARDEN_LINUX_GOPATH/ci/scripts/aufs
+# shellcheck source=/dev/null
+source "${GARDEN_LINUX_GOPATH}/ci/scripts/aufs"
 permit_device_control
 create_loop_devices 256
 
 nodes_flag=""
-if [ "$GINKGO_PARALLEL" = "true" ]; then
+if [ "${GINKGO_PARALLEL}" = "true" ]; then
   nodes_flag="-nodes=4"
 fi
 
-pushd $GOPATH_ROOT/src/github.com/cloudfoundry-incubator/inigo
-  if [ "$GINKGO_PARALLEL" = "true" ]; then
-    PACKAGES_TO_SKIP="docker"
+pushd "${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo"
+  PACKAGES_TO_SKIP="docker"
 
-    if [ -n "$SKIP_PACKAGES" ]; then
-      PACKAGES_TO_SKIP=$PACKAGES_TO_SKIP",$SKIP_PACKAGES"
-    fi
+  if [ -n "$SKIP_PACKAGES" ]; then
+    PACKAGES_TO_SKIP=$PACKAGES_TO_SKIP",$SKIP_PACKAGES"
+  fi
 
-    if [ -z $SKIP_REGEX]; then
-        ginkgo $nodes_flag -r -skipPackage=${PACKAGES_TO_SKIP} -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
-    else
-        ginkgo $nodes_flag -r -skipPackage=${PACKAGES_TO_SKIP} -skip=${SKIP_REGEX} -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
-    fi
+  ginkgo "$nodes_flag" -r -skipPackage="${PACKAGES_TO_SKIP}" -skip="${SKIP_REGEX}" -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
 
+  if [[ -z "$@" || "$@" =~ "docker" ]]; then
     # always run docker tests serially
-    ginkgo -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@" docker/
-  else
-    PACKAGES_TO_SKIP="executor"
-
-    if [ -n "$SKIP_PACKAGES" ]; then
-      PACKAGES_TO_SKIP=$PACKAGES_TO_SKIP",$SKIP_PACKAGES"
-    fi
-
-    # always attempt to run executor in parallel
-    ginkgo -nodes=4 -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 "$@" executor/
-
-    # run everything but executor with normal rules
-    if [ -z $SKIP_REGEX]; then
-        ginkgo $nodes_flag -r -skipPackage=${PACKAGES_TO_SKIP} -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
-    else
-        ginkgo $nodes_flag -r -skipPackage=${PACKAGES_TO_SKIP} -skip=${SKIP_REGEX} -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
-    fi
+    ginkgo -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing docker/
   fi
 popd
