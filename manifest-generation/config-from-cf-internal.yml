@@ -91,7 +91,7 @@ properties:
     machines: (( merge ))
     port: (( merge ))
   system_domain: (( merge ))
-  syslog_daemon_config: (( merge ))
+  syslog_daemon_config: (( merge || nil ))
   app_domains: (( merge ))
   uaa:
     clients:
