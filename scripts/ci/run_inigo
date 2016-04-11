@@ -74,8 +74,8 @@ permit_device_control
 create_loop_devices 256
 
 nodes_flag=""
-if [ "${GINKGO_PARALLEL}" = "true" ]; then
-  nodes_flag="-nodes=4"
+if [ "$GINKGO_PARALLEL" = "true" ]; then
+  nodes_flag=-nodes=4
 fi
 
 pushd "${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo"
@@ -85,7 +85,7 @@ pushd "${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo"
     PACKAGES_TO_SKIP=$PACKAGES_TO_SKIP",$SKIP_PACKAGES"
   fi
 
-  ginkgo "$nodes_flag" -r -skipPackage="${PACKAGES_TO_SKIP}" -skip="${SKIP_REGEX}" -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing "$@"
+  ginkgo $nodes_flag -r -skipPackage="${PACKAGES_TO_SKIP}" -skip="${SKIP_REGEX}" -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing $@
 
   if [[ -z "$@" || "$@" =~ "docker" ]]; then
     # always run docker tests serially

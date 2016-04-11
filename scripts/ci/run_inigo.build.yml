@@ -8,7 +8,7 @@ inputs:
 - name: garden-linux-release
 
 params:
-  GINKGO_PARALLEL: true
+  GINKGO_PARALLEL: "true" # we check for the literal string "true" in the run_inigo script
   DEFAULT_EVENTUALLY_TIMEOUT:
   INIGO_REPEAT_COUNT: 1
   SKIP_PACKAGES:
