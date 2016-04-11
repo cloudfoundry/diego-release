@@ -25,9 +25,22 @@ heartbeat() {
   curl --fail --silent http://$ADDRESS/ping >/dev/null 2>&1
 }
 
+output_for_bosh() {
+  exit_code=$?
+
+  if [ $exit_code -eq 0 ]; then
+    echo "$(date): rep exited"
+  else
+    echo "$(date): evacuation failed"
+  fi
+
+  echo $exit_code >&3
+}
+
+trap output_for_bosh EXIT
+
 if [ ! -f $PIDFILE ]; then
   echo "$(date): PIDFILE does not exist"
-  echo 0 >&3
   exit 0
 fi
 
@@ -35,23 +48,17 @@ pid=$(cat $PIDFILE)
 
 if [ ! -e /proc/$pid ]; then
   echo "$(date): rep process not running"
-  echo 0 >&3
   exit 0
 fi
 
+echo "$(date): drain triggered"
 if evacuate; then
-  echo "$(date): drain triggered"
-
   while heartbeat; do
     sleep 5
     echo "$(date): waiting"
   done
 
   kill_and_wait $PIDFILE
-  echo "$(date): rep exited"
-  echo 0 >&3
-  exit 0
 else
-  echo "$(date): evacuation failed"
   exit 1
 fi
