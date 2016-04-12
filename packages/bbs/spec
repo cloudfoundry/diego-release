@@ -13,10 +13,12 @@ files:
   - github.com/cloudfoundry-incubator/bbs/db/deprecations/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/db/etcd/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/db/migrations/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/db/sqldb/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/encryption/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/encryptor/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/events/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/format/*.go # gosub
+  - github.com/cloudfoundry-incubator/bbs/guidprovider/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/handlers/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/handlers/middleware/*.go # gosub
   - github.com/cloudfoundry-incubator/bbs/metrics/*.go # gosub
@@ -51,6 +53,7 @@ files:
   - github.com/cloudfoundry/gunk/workpool/*.go # gosub
   - github.com/cloudfoundry/sonde-go/events/*.go # gosub
   - github.com/coreos/go-etcd/etcd/*.go # gosub
+  - github.com/go-sql-driver/mysql/*.go # gosub
   - github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/gogo/protobuf/sortkeys/*.go # gosub
   - github.com/hashicorp/consul/api/*.go # gosub
