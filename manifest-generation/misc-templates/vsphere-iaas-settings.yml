@@ -1,0 +1,152 @@
+iaas_settings:
+  disk_pools:
+    - name: database_disks
+      <<: (( merge ))
+      cloud_properties:
+        <<: (( merge ))
+  stemcell:
+    name: (( merge ))
+    version: (( merge ))
+  subnet_configs:
+    - name: diego1
+      subnets: (( merge ))
+    - name: diego2
+      subnets: (( merge ))
+    - name: diego3
+      subnets: (( merge ))
+    - name: diego-vizzini
+      subnets: (( merge || "nil" ))
+  compilation_cloud_properties: (( merge ))
+  resource_pool_cloud_properties:
+    - name: access_z1
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 4096
+        ram: 1024
+    - name: access_z2
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 4096
+        ram: 1024
+    - name: access_z3
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 4096
+        ram: 1024
+    - name: brain_z1
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 4096
+        ram: 1024
+    - name: brain_z2
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 4096
+        ram: 1024
+    - name: brain_z3
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 4096
+        ram: 1024
+    - name: cc_bridge_z1
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 4096
+        ram: 1024
+    - name: cc_bridge_z2
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 4096
+        ram: 1024
+    - name: cc_bridge_z3
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 4096
+        ram: 1024
+    - name: cell_z1
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 2
+        disk: 50000
+        ram: 8192
+    - name: cell_z2
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 2
+        disk: 50000
+        ram: 8192
+    - name: cell_z3
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 2
+        disk: 50000
+        ram: 8192
+    - name: colocated_z1
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 8192
+        ram: 1024
+    - name: colocated_z2
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 8192
+        ram: 1024
+    - name: colocated_z3
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 8192
+        ram: 1024
+    - name: database_z1
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 8192
+        ram: 1024
+    - name: database_z2
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 8192
+        ram: 1024
+    - name: database_z3
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 8192
+        ram: 1024
+    - name: route_emitter_z1
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 8192
+        ram: 1024
+    - name: route_emitter_z2
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 8192
+        ram: 1024
+    - name: route_emitter_z3
+      cloud_properties:
+        <<: (( merge ))
+        cpu: 1
+        disk: 8192
+        ram: 1024
+    - name: errand
+      cloud_properties:
+        <<: (( merge || nil ))
+        cpu: 1
+        disk: 4096
+        ram: 1024
