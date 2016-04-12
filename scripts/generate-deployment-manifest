@@ -134,19 +134,14 @@ spiff merge \
   > ${tmpdir}/config-from-cf.yml
 
 spiff merge \
+  ${manifest_generation}/diego.yml \
   ${rootfs_properties} \
   ${release_versions} \
-  > ${tmpdir}/rootfs-properties.yml
-
-spiff merge \
-  ${manifest_generation}/diego.yml \
-  ${tmpdir}/rootfs-properties.yml \
   ${bridge_properties} \
   ${garden_properties} \
   ${property_overrides} \
   ${instance_counts} \
   ${iaas_settings} \
-  ${release_versions} \
   ${tmpdir}/config-from-cf.yml \
   > ${tmpdir}/diego.yml
 
