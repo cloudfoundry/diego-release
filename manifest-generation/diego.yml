@@ -463,6 +463,7 @@ properties:
   syslog_daemon_config:
     address: (( property_overrides.syslog_daemon_config.address || nil ))
     port: (( property_overrides.syslog_daemon_config.port || nil ))
+    transport: (( property_overrides.syslog_daemon_config.transport || tcp ))
 
   # -- Properties below are used by the consul_agent job from cf-release --
   consul:
