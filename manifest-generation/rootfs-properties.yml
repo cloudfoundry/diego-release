@@ -10,4 +10,6 @@ rootfs_overrides:
   job_release: cflinuxfs2-rootfs
   releases:
     - name: cflinuxfs2-rootfs
-      version: (( release_versions.cflinuxfs2-rootfs || "latest" ))
+      version: (( release_versions.cflinuxfs2_rootfs || "latest" ))
+
+release_versions: (( merge ))

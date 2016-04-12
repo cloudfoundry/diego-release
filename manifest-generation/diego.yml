@@ -712,9 +712,13 @@ garden_overrides:
   release:
     name: garden-linux
     version: (( release_versions.garden_linux || "latest" ))
-release_versions: (( merge || nil ))
 empty_hash: {}
-base_releases: (( merge ))
+base_releases:
+  - name: diego
+    version: (( release_versions.diego || "latest" ))
+  - name: etcd
+    version: (( release_versions.etcd || "latest" ))
+release_versions: (( merge || nil ))
 base_job_templates:
   access:
     - name: consul_agent

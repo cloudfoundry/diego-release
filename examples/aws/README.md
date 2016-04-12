@@ -616,11 +616,11 @@ For example, to use version 22 of etcd-release and version 0.331.0 of garden-lin
 
 ```yaml
 release-versions:
-  - diego: latest
-  - etcd: 22
-  - garden-linux: 0.331.0
+  diego: latest
+  etcd: 22
+  garden_linux: 0.331.0
+  cflinuxfs2_rootfs: 0.2.0
 ```
-
 
 ### Generate the Diego manifest
 
