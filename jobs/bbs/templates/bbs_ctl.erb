@@ -48,7 +48,7 @@ case $1 in
     chown -R vcap:vcap $TMP_DIR
 
     export GOMAXPROCS=$(nproc)
-   
+
     # Work around for GOLANG 1.5.3 DNS bug
     export GODEBUG=netdns=cgo
 
@@ -98,6 +98,9 @@ case $1 in
       -requireSSL=<%= p("diego.bbs.require_ssl") %> \
       <% if_p("diego.bbs.desired_lrp_creation_timeout") do |value| %> \
         -desiredLRPCreationTimeout=<%= value %> \
+      <% end %> \
+      <% if_p("diego.bbs.sql.db_connection_string") do |value| %> \
+        -databaseConnectionString='<%= value %>' \
       <% end %> \
       2> >(tee -a $LOG_DIR/bbs.stderr.log | logger -p user.error -t vcap.bbs) \
       1> >(tee -a $LOG_DIR/bbs.stdout.log | logger -p user.info -t vcap.bbs)

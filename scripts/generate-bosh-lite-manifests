@@ -12,35 +12,34 @@ fi
 mkdir -p ${DIEGO_MANIFESTS_DIR}
 
 pushd ${DIEGO_RELEASE_DIR}
-$scripts_path/generate-deployment-manifest \
-    -c ${CF_MANIFESTS_DIR}/cf.yml \
-    -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \
-    -p manifest-generation/bosh-lite-stubs/property-overrides.yml \
-    -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
-    -v manifest-generation/bosh-lite-stubs/release-versions.yml \
-    "$@" \
-    > ${DIEGO_MANIFESTS_DIR}/diego.yml
+	$scripts_path/generate-deployment-manifest \
+			-c ${CF_MANIFESTS_DIR}/cf.yml \
+			-i manifest-generation/bosh-lite-stubs/iaas-settings.yml \
+			-p manifest-generation/bosh-lite-stubs/property-overrides.yml \
+			-n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
+			-v manifest-generation/bosh-lite-stubs/release-versions.yml \
+			"$@" \
+			> ${DIEGO_MANIFESTS_DIR}/diego.yml
 
-    tmpdir=$(mktemp -d /tmp/diego-manifest.XXXXX)
+	tmpdir=$(mktemp -d /tmp/diego-manifest.XXXXX)
 
-    spiff merge \
-      manifest-generation/config-from-cf.yml \
-      manifest-generation/config-from-cf-internal.yml \
-      ${CF_MANIFESTS_DIR}/cf.yml \
-      > ${tmpdir}/config-from-cf.yml
+	spiff merge \
+			manifest-generation/config-from-cf.yml \
+			manifest-generation/config-from-cf-internal.yml \
+			${CF_MANIFESTS_DIR}/cf.yml \
+			> ${tmpdir}/config-from-cf.yml
 
-    $scripts_path/generate-benchmarks-manifest \
-      ${DIEGO_MANIFESTS_DIR}/diego.yml \
-      manifest-generation/benchmark-errand-stubs/default_bosh_lite_benchmark_properties.yml \
-      manifest-generation/bosh-lite-stubs/iaas-settings.yml \
-      > ${DIEGO_MANIFESTS_DIR}/diego-benchmarks.yml
+	$scripts_path/generate-benchmarks-manifest \
+			${DIEGO_MANIFESTS_DIR}/diego.yml \
+			manifest-generation/benchmark-errand-stubs/default_bosh_lite_benchmark_properties.yml \
+			manifest-generation/bosh-lite-stubs/iaas-settings.yml \
+			> ${DIEGO_MANIFESTS_DIR}/diego-benchmarks.yml
 
-$scripts_path/generate-vizzini-manifest \
-    -c ${CF_MANIFESTS_DIR}/cf.yml \
-    -p manifest-generation/bosh-lite-stubs/vizzini-properties.yml \
-    -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \
-    > ${DIEGO_MANIFESTS_DIR}/vizzini.yml
-
+	$scripts_path/generate-vizzini-manifest \
+			-c ${CF_MANIFESTS_DIR}/cf.yml \
+			-p manifest-generation/bosh-lite-stubs/vizzini-properties.yml \
+			-i manifest-generation/bosh-lite-stubs/iaas-settings.yml \
+			> ${DIEGO_MANIFESTS_DIR}/vizzini.yml
 popd
 
 echo "CF Release Manifest at ${CF_MANIFESTS_DIR}/cf.yml"

@@ -67,3 +67,5 @@ properties:
   diego.bbs.etcd.max_idle_conns_per_host:
     description: "maximum number of idle http connections"
 
+  diego.bbs.sql.db_connection_string:
+    description: "EXPERIMENTAL: connection string to use for SQL backend [username:password@tcp(1.1.1.1:1234)/database]"

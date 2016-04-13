@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+scripts_path=./$(dirname $0)
+eval $($scripts_path/get_paths.sh)
+
+./$scripts_path/experimental/generate-mysql-bosh-lite-manifests
+
+bosh -t 192.168.50.4 -d $DIEGO_MANIFESTS_DIR/cf-mysql.yml -n deploy

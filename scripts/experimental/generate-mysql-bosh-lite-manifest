@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+scripts_path=./$(dirname $0)/..
+eval $($scripts_path/get_paths.sh)
+
+mkdir -p ${DIEGO_MANIFESTS_DIR}
+
+pushd ${DIEGO_RELEASE_DIR}
+    tmpdir=$(mktemp -d /tmp/diego-manifest.XXXXX)
+
+    spiff merge \
+      manifest-generation/bosh-lite-stubs/experimental/mysql/cf-mysql.yml \
+      ${CF_MANIFESTS_DIR}/cf.yml \
+      > ${DIEGO_MANIFESTS_DIR}/cf-mysql.yml
+popd
+
+echo "CF MYSQL Release Manifest at ${DIEGO_MANIFESTS_DIR}/cf-mysql.yml"

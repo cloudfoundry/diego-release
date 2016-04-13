@@ -150,6 +150,11 @@ and then look up that commit's SHA in the diego-cf compatibility table.
         cd ~/workspace/diego-release
         ./scripts/generate-bosh-lite-manifests
 
+	1. **EXPERIMENTAL**: If using MySQL run the following to enable it on Diego:
+
+           spiff merge bosh-lite/deployments/diego.yml manifest-generation/bosh-lite-stubs/experimental/mysql/diego-sql.yml > /tmp/diego.yml
+           mv /tmp/diego.yml bosh-lite/deployments/diego.yml
+
 1. Create, upload, and deploy the CF release:
 
         cd ~/workspace/cf-release
@@ -173,18 +178,34 @@ and then look up that commit's SHA in the diego-cf compatibility table.
 
   If you wish to upload a specific version of etcd-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/etcd-release).
 
+1. **EXPERIMENTAL**: Deploy latest cf-mysql-release:
+
+       cd ~/workspace/diego-release
+       bosh upload release https://bosh.io/d/github.com/cloudfoundry/cf-mysql-release
+       ./scripts/experimental/generate-mysql-bosh-lite-manifest
+       bosh deployment bosh-lite/deployments/cf-mysql.yml
+       bosh -n deploy
+
+  1. Accessing the MySQL remotely:
+
+    You can access the mysql database used as deployed above with the following command:
+
+          mysql -h 10.244.7.2 -udiego -pdiego diego
+
+    Then commands such as "SELECT * FROM desired_lrps;" can be run to show all the desired lrps in the system.
+
 1. Create, upload, and deploy the Diego release:
 
-        cd ~/workspace/diego-release
-        bosh deployment bosh-lite/deployments/diego.yml
-        bosh -n create release --force &&
-        bosh -n upload release &&
-        bosh -n deploy
+       cd ~/workspace/diego-release
+       bosh deployment bosh-lite/deployments/diego.yml
+       bosh -n create release --force &&
+       bosh -n upload release &&
+       bosh -n deploy
 
 1. Login to CF and enable Docker support:
 
-        cf login -a api.bosh-lite.com -u admin -p admin --skip-ssl-validation &&
-        cf enable-feature-flag diego_docker
+       cf login -a api.bosh-lite.com -u admin -p admin --skip-ssl-validation &&
+       cf enable-feature-flag diego_docker
 
 Now you are configured to push an app to the BOSH-Lite deployment, or to run the
 [Smoke Tests](https://github.com/cloudfoundry/cf-smoke-tests)
@@ -442,10 +463,10 @@ If you are deploying to AWS, you can use our recommended instance types by spiff
 your `iaas-settings.yml` with our provided `manifest-generation/misc-templates/aws-iaas-settings.yml`:
 
 ```
-  spiff merge \
-    manifest-generation/misc-templates/aws-iaas-settings.yml \
-    /path/to/iaas-settings.yml \
-    > /tmp/iaas-settings.yml
+spiff merge \
+	manifest-generation/misc-templates/aws-iaas-settings.yml \
+	/path/to/iaas-settings.yml \
+	> /tmp/iaas-settings.yml
 ```
 
 You can then use the template generated as the `iaas-settings.yml` for the `scripts/generate-deployment-manifest` tool.
