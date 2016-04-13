@@ -145,6 +145,12 @@ GRANT ALL PRIVILEGES ON `diego\_%`.* TO 'diego'@'localhost';
 ginkgo -p db/sqldb
     ```
 
+9. You can run the full bbs/cmd tests using the mysql backend with the following command from the bbs submodule:
+
+    ```
+ginkgo cmd/bbs -- --useSQL
+    ```
+
 ## <a name="deploy-bosh-lite"></a> Deploying Diego to BOSH-Lite
 
 1. Install and start [BOSH-Lite](https://github.com/cloudfoundry/bosh-lite),
