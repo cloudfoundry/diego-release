@@ -23,8 +23,6 @@ fi
 
 if [ -z "${RUN_VOLMAN}" ]; then
   export SKIP_PACKAGES="volman"
-else
-  export SKIP_REGEX="SSH"
 fi
 
 fly ${target} execute -p -x -c $DIEGO_RELEASE_DIR/scripts/ci/run_inigo.build.yml -i diego-release=$PWD -i garden-linux-release=$HOME/workspace/garden-linux-release -- "$@"
