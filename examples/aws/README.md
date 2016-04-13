@@ -498,7 +498,7 @@ For more information on stubs for Cloud Foundry manifest generation, please refe
 #### Diego Stub for CF
 
 The default deployment configuration from the manifest-generation scripts in cf-release omits some instances and properties that Diego depends on.
-It also includes some instances and properties that are unnecessary for a deployment with Diego as the only container runtime. Including `$DIEGO_RELEASE_DIR/stubs/cf/diego.yml` in the list of stubs when generating the Cloud Foundry manifest will configure these instance counts and properties correctly.
+It also includes some instances and properties that are unnecessary for a deployment with Diego as the only container runtime. Including `$DIEGO_RELEASE_DIR/examples/aws/stubs/cf/diego.yml` in the list of stubs when generating the Cloud Foundry manifest will configure these instance counts and properties correctly.
 
 
 #### Fill in Properties Stub
@@ -512,7 +512,7 @@ Replace all the values that are prefixed with `REPLACE_WITH_`.
 trusted certificate authority, change the value of `properties.ssl.skip_cert_verify`
 from `true` to `false`.
 
-If you also wish to change the instance counts for the jobs in the CF deployment, add those different counts to this stub. These counts will override the counts set in the `$DIEGO_RELEASE_DIR/stubs/cf/diego.yml` if using the command below to generate the manifest.
+If you also wish to change the instance counts for the jobs in the CF deployment, add those different counts to this stub. These counts will override the counts set in the `$DIEGO_RELEASE_DIR/examples/aws/stubs/cf/diego.yml` if using the command below to generate the manifest.
 
 
 #### Generate the CF deployment manifest
