@@ -67,6 +67,9 @@ ginkgo -- ${bbs_sec_flags} ${etcd_sec_flags} \
   -awsSecretAccessKey=<%= p("benchmark-bbs.aws_secret_access_key") %> \
   -awsBucketName=<%= p("benchmark-bbs.aws_bucket_name") %> \
   -bbsClientHTTPTimeout=<%= p("benchmark-bbs.client_timeout") %> \
+  <% if_p("benchmark-bbs.sql.db_connection_string") do |value| %> \
+    -databaseConnectionString='<%= value %>' \
+  <% end %> \
   <% if_p("benchmark-bbs.log_level") do |value| %> \
     -logLevel=<%= value %> \
   <% end %> \

@@ -167,8 +167,8 @@ and then look up that commit's SHA in the diego-cf compatibility table.
   1. **EXPERIMENTAL**: If using MySQL run the following to enable it on Diego:
 
      ```bash
-     spiff merge bosh-lite/deployments/diego.yml manifest-generation/bosh-lite-stubs/experimental/mysql/diego-sql.yml > /tmp/diego.yml
-     mv /tmp/diego.yml bosh-lite/deployments/diego.yml
+     cd ~/workspace/diego-release
+     USE_MYSQL='true' ./scripts/generate-bosh-lite-manifests
      ```
 
 1. Create, upload, and deploy the CF release:

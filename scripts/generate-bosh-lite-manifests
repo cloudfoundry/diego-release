@@ -21,6 +21,11 @@ pushd ${DIEGO_RELEASE_DIR}
 			"$@" \
 			> ${DIEGO_MANIFESTS_DIR}/diego.yml
 
+	if [ "$USE_MYSQL" == 'true' ]; then
+	  spiff merge bosh-lite/deployments/diego.yml manifest-generation/bosh-lite-stubs/experimental/mysql/diego-sql.yml > /tmp/diego.yml
+	  mv /tmp/diego.yml bosh-lite/deployments/diego.yml
+	fi
+
 	tmpdir=$(mktemp -d /tmp/diego-manifest.XXXXX)
 
 	spiff merge \

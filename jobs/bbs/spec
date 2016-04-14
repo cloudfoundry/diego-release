@@ -69,3 +69,5 @@ properties:
 
   diego.bbs.sql.db_connection_string:
     description: "EXPERIMENTAL: connection string to use for SQL backend [username:password@tcp(1.1.1.1:1234)/database]"
+  diego.bbs.sql.max_open_connections:
+    description: "Maximum number of open connections to the SQL database"

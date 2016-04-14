@@ -38,6 +38,9 @@ properties:
     description: "enable ssl for all communication with the bbs (false unsupported)"
     default: true
 
+  benchmark-bbs.sql.db_connection_string:
+    description: "EXPERIMENTAL: connection string to use for SQL backend [username:password@tcp(1.1.1.1:1234)/database]"
+
   benchmark-bbs.etcd.machines:
     description: "Addresses pointing to the ETCD cluster"
   benchmark-bbs.etcd.require_ssl:

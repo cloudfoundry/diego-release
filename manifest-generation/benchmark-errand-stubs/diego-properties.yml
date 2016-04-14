@@ -9,11 +9,13 @@ properties:
       bbs: (( merge ))
     bbs:
       etcd: (( merge ))
+      sql: (( merge ))
       active_key_label: (( merge ))
       encryption_keys: (( merge ))
   benchmark-bbs:
     bbs: (( diego.auctioneer.bbs ))
     etcd: (( diego.bbs.etcd ))
+    sql: (( diego.bbs.sql ))
     active_key_label: (( diego.bbs.active_key_label ))
     encryption_keys: (( diego.bbs.encryption_keys ))
   consul:

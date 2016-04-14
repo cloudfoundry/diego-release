@@ -233,6 +233,8 @@ property_overrides:
     encryption_keys:
       - label: key1
         passphrase: "a secure passphrase"
+    etcd:
+      machines: ["etcd.service.cf.internal"]
     require_ssl: true
     ca_cert: |
       -----BEGIN CERTIFICATE-----
