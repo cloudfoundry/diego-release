@@ -106,106 +106,136 @@ and then look up that commit's SHA in the diego-cf compatibility table.
 
 1. Upload the latest version of the Warden BOSH-Lite stemcell directly to BOSH-Lite:
 
-        bosh upload stemcell https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent
+  ```
+  bosh upload stemcell https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent
+  ```
 
-    Alternately, download the stemcell locally first and then upload it to BOSH-Lite:
+  Alternately, download the stemcell locally first and then upload it to BOSH-Lite:
 
-        curl -L -o bosh-lite-stemcell-latest.tgz https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent
-        bosh upload stemcell bosh-lite-stemcell-latest.tgz
+  ```
+  curl -L -o bosh-lite-stemcell-latest.tgz https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent
+  bosh upload stemcell bosh-lite-stemcell-latest.tgz
+  ```
 
-    Please note that the consul_agent job does not set up DNS correctly on version 3126 of the Warden BOSH-Lite stemcell, so we do not recommend the use of that stemcell version.
+  Please note that the consul_agent job does not set up DNS correctly on version 3126 of the Warden BOSH-Lite stemcell, so we do not recommend the use of that stemcell version.
 
 1. Check out cf-release (runtime-passed branch or tagged release) from git:
 
-        cd ~/workspace
-        git clone https://github.com/cloudfoundry/cf-release.git
-        cd ~/workspace/cf-release
-        git checkout runtime-passed # do not push to runtime-passed
-        ./scripts/update
+  ```bash
+  cd ~/workspace
+  git clone https://github.com/cloudfoundry/cf-release.git
+  cd ~/workspace/cf-release
+  git checkout runtime-passed # do not push to runtime-passed
+  ./scripts/update
+  ```
 
 1. Check out diego-release (master branch or tagged release) from git:
 
-        cd ~/workspace
-        git clone https://github.com/cloudfoundry-incubator/diego-release.git
-        cd ~/workspace/diego-release
-        git checkout master # do not push to master
-        ./scripts/update
+  ```bash
+  cd ~/workspace
+  git clone https://github.com/cloudfoundry-incubator/diego-release.git
+  cd ~/workspace/diego-release
+  git checkout master # do not push to master
+  ./scripts/update
+  ```
 
 1. Install `spiff` according to its [README](https://github.com/cloudfoundry-incubator/spiff).
    `spiff` is a tool for generating BOSH manifests that is required in some of the scripts used below.
 
 1. Generate the CF manifest:
 
-        cd ~/workspace/cf-release
-        ./scripts/generate-bosh-lite-dev-manifest
+  ```bash
+  cd ~/workspace/cf-release
+  ./scripts/generate-bosh-lite-dev-manifest
+  ```
 
    **Or if you are running Windows cells** along side this deployment, instead generate the CF manifest as follows:
 
-        cd ~/workspace/cf-release
-        ./scripts/generate-bosh-lite-dev-manifest \
-          ~/workspace/diego-release/manifest-generation/stubs-for-cf-release/enable_diego_windows_in_cc.yml
+  ```bash
+  cd ~/workspace/cf-release
+  ./scripts/generate-bosh-lite-dev-manifest \
+    ~/workspace/diego-release/manifest-generation/stubs-for-cf-release/enable_diego_windows_in_cc.yml
+  ```
 
 1. Generate the Diego manifests:
 
-        cd ~/workspace/diego-release
-        ./scripts/generate-bosh-lite-manifests
+  ```bash
+  cd ~/workspace/diego-release
+  ./scripts/generate-bosh-lite-manifests
+  ```
 
-	1. **EXPERIMENTAL**: If using MySQL run the following to enable it on Diego:
+  1. **EXPERIMENTAL**: If using MySQL run the following to enable it on Diego:
 
-           spiff merge bosh-lite/deployments/diego.yml manifest-generation/bosh-lite-stubs/experimental/mysql/diego-sql.yml > /tmp/diego.yml
-           mv /tmp/diego.yml bosh-lite/deployments/diego.yml
+     ```bash
+     spiff merge bosh-lite/deployments/diego.yml manifest-generation/bosh-lite-stubs/experimental/mysql/diego-sql.yml > /tmp/diego.yml
+     mv /tmp/diego.yml bosh-lite/deployments/diego.yml
+     ```
 
 1. Create, upload, and deploy the CF release:
 
-        cd ~/workspace/cf-release
-        bosh deployment bosh-lite/deployments/cf.yml
-        bosh -n create release --force &&
-        bosh -n upload release &&
-        bosh -n deploy
+  ```bash
+  cd ~/workspace/cf-release
+  bosh deployment bosh-lite/deployments/cf.yml
+  bosh -n create release --force &&
+  bosh -n upload release &&
+  bosh -n deploy
+  ```
 
 1. Upload the latest garden-linux-release OR guardian-release:
 
-        bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
+  ```bash
+  bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
 
-        # if you specified [-g] when you generated your manifest:
-        # bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/guardian-release
+  # if you specified [-g] when you generated your manifest:
+  # bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/guardian-release
+  ```
 
   If you wish to upload a specific version of garden-linux-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-linux-release).
 
 1. Upload the latest etcd-release:
 
-        bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release
+  ```bash
+  bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release
+  ```
 
   If you wish to upload a specific version of etcd-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/etcd-release).
 
 1. **EXPERIMENTAL**: Deploy latest cf-mysql-release:
 
-       cd ~/workspace/diego-release
-       bosh upload release https://bosh.io/d/github.com/cloudfoundry/cf-mysql-release
-       ./scripts/experimental/generate-mysql-bosh-lite-manifest
-       bosh deployment bosh-lite/deployments/cf-mysql.yml
-       bosh -n deploy
+  ```bash
+  cd ~/workspace/diego-release
+  bosh upload release https://bosh.io/d/github.com/cloudfoundry/cf-mysql-release
+  ./scripts/experimental/generate-mysql-bosh-lite-manifest
+  bosh deployment bosh-lite/deployments/cf-mysql.yml
+  bosh -n deploy
+  ```
 
   1. Accessing the MySQL remotely:
 
     You can access the mysql database used as deployed above with the following command:
 
-          mysql -h 10.244.7.2 -udiego -pdiego diego
+    ```bash
+    mysql -h 10.244.7.2 -udiego -pdiego diego
+    ```
 
-    Then commands such as "SELECT * FROM desired_lrps;" can be run to show all the desired lrps in the system.
+    Then commands such as `SELECT * FROM desired_lrps` can be run to show all the desired lrps in the system.
 
 1. Create, upload, and deploy the Diego release:
 
-       cd ~/workspace/diego-release
-       bosh deployment bosh-lite/deployments/diego.yml
-       bosh -n create release --force &&
-       bosh -n upload release &&
-       bosh -n deploy
+  ```bash
+  cd ~/workspace/diego-release
+  bosh deployment bosh-lite/deployments/diego.yml
+  bosh -n create release --force &&
+  bosh -n upload release &&
+  bosh -n deploy
+  ```
 
 1. Login to CF and enable Docker support:
 
-       cf login -a api.bosh-lite.com -u admin -p admin --skip-ssl-validation &&
-       cf enable-feature-flag diego_docker
+  ```bash
+  cf login -a api.bosh-lite.com -u admin -p admin --skip-ssl-validation &&
+  cf enable-feature-flag diego_docker
+  ```
 
 Now you are configured to push an app to the BOSH-Lite deployment, or to run the
 [Smoke Tests](https://github.com/cloudfoundry/cf-smoke-tests)
@@ -221,27 +251,33 @@ or the
 
 1. Create and target a CF org and space:
 
-        cf api --skip-ssl-validation api.bosh-lite.com
-        cf auth admin admin
-        cf create-org diego
-        cf target -o diego
-        cf create-space diego
-        cf target -s diego
+  ```bash
+  cf api --skip-ssl-validation api.bosh-lite.com
+  cf auth admin admin
+  cf create-org diego
+  cf target -o diego
+  cf create-space diego
+  cf target -s diego
+  ```
 
 1. Change into your application directory and push your application without starting it:
 
-        cd <app-directory>
-        cf push my-app --no-start
+  ```bash
+  cd <app-directory>
+  cf push my-app --no-start
+  ```
 
 1. [Enable Diego](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/migrating-to-diego.md#targeting-diego) for your application.
 
 1. Start your application:
 
-        cf start my-app
+  ```bash
+  cf start my-app
+  ```
 
 ---
 
-##<a name="deploying-diego-to-aws"></a>Deploying Diego to AWS
+## Deploying Diego to AWS
 
 In order to deploy Diego to AWS follow [these instructions](examples/aws/README.md). Enjoy!
 
@@ -323,7 +359,7 @@ following steps to successfully generate the required certificates.
 
 
 1. Get certstrap
-   ```
+   ```bash
    go get github.com/square/certstrap
    cd $GOPATH/src/github.com/square/certstrap
    ./build
@@ -331,7 +367,7 @@ following steps to successfully generate the required certificates.
    ```
 
 2. Initialize a new certificate authority.
-   ```
+   ```bash
    $ ./certstrap init --common-name "diegoCA"
    Enter passphrase (empty for no passphrase): <hit enter for no password>
 
@@ -346,7 +382,7 @@ following steps to successfully generate the required certificates.
    `out/diegoCA.crt`.
 
 3. Create and sign a certificate for the etcd server.
-   ```
+   ```bash
    $ ./certstrap request-cert --common-name "etcd.service.cf.internal" --domain "*.etcd.service.cf.internal,etcd.service.cf.internal"
    Enter passphrase (empty for no passphrase): <hit enter for no password>
 

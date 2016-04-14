@@ -3,7 +3,7 @@ compilation:
   network: mysql1
   reuse_compilation_vms: true
   workers: 4
-director_uuid: (( merge ))
+director_uuid: (( config_from_cf.cf_director_uuid ))
 disk_pools:
 - cloud_properties: {}
   disk_size: 100000
@@ -1585,3 +1585,4 @@ update:
   serial: true
   update_watch_time: 30000-600000
 
+config_from_cf: (( merge ))
