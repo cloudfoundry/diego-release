@@ -6,11 +6,13 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
 function usage() {
   >&2 echo "    Usage:
-    $0 <create|update|skip> <cloud_foundry_release_dir> <deployment_dir>
+    $0 <create|update|skip> <cloud_foundry_release_dir> <deployment_dir> [<stack_name>]
     cloud_foundry_release_dir:
       Location where the cf-release repository has been download to.
     deployment_dir:
       Private deployment directory containg your keys.
+    stack_name:
+      Name of the cloud formation stack to create (default: cf-diego-stack)
 "
   exit 1
 }
@@ -28,6 +30,7 @@ fi
 
 cf_release_dir=$2
 deployment_dir=$3
+stack_name=${4:-cf-diego-stack}
 
 if [ -z ${deployment_dir} ]; then
   usage
@@ -78,11 +81,11 @@ spiff merge \
 # deploy infrastructure
 if [ $UPDATE_OR_CREATE != "skip" ]; then
   aws cloudformation $UPDATE_OR_CREATE \
-    --stack-name cf-diego-stack \
+    --stack-name $stack_name \
     --template-body file://stubs/infrastructure/cloudformation.json
 
   # ensure that create or update was successful to aws
-  boosh watch --name cf-diego-stack
+  boosh watch --name $stack_name
 fi
 
 # generate AWS resources stub for shared purposes
@@ -90,7 +93,7 @@ cat > stubs/aws-resources.yml <<EOF
 # GENERATED, NO TOUCHING
 EOF
 
-boosh resources --name cf-diego-stack >> stubs/aws-resources.yml
+boosh resources --name $stack_name >> stubs/aws-resources.yml
 
 cat > deployments/bosh-init/bosh-init.yml <<EOF
 # GENERATED, NO TOUCHING
