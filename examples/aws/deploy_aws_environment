@@ -48,7 +48,6 @@ pushd ${deployment_dir}
 mkdir -p stubs/cf
 mkdir -p stubs/infrastructure
 mkdir -p deployments/bosh-init
-mkdir -p certs/consul
 
 source bootstrap_environment
 
