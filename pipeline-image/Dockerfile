@@ -23,7 +23,7 @@ ADD https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 /bin/jq
 RUN chmod +x /bin/jq
 
 RUN \
-  wget -q "https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.4/spiff_linux_amd64.zip" -P /tmp/ && \
+  wget -q "https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.7/spiff_linux_amd64.zip" -P /tmp/ && \
   unzip /tmp/spiff_linux_amd64.zip -d /usr/local/bin && \
   rm /tmp/spiff_linux_amd64.zip
 
