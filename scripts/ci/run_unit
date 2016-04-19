@@ -5,4 +5,11 @@ set -e
 
 chown -R diego diego-release/
 
+cat << EOF > /etc/my.cnf
+[mysqld]
+sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+EOF
+
+service mysql start
+
 su diego -c ./diego-release/scripts/ci/run_unit_internal

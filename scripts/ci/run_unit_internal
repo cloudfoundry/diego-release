@@ -15,4 +15,4 @@ go install github.com/apcera/gnatsd
 go install github.com/coreos/etcd
 go install github.com/onsi/ginkgo/ginkgo
 
-./scripts/run-unit-tests -race "$@"
+RUN_SQL_TESTS=true scripts/run-unit-tests "$@"

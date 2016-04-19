@@ -7,7 +7,6 @@ eval $($scripts_path/get_paths.sh)
 
 SKIP_PACKAGES="./inigo"
 SKIP_PACKAGES="$SKIP_PACKAGES,./auction/simulation"
-SKIP_PACKAGES="$SKIP_PACKAGES,./bbs/db/sqldb"
 SKIP_PACKAGES="$SKIP_PACKAGES,./benchmark-bbs"
 SKIP_PACKAGES="$SKIP_PACKAGES,./candiedyaml"
 SKIP_PACKAGES="$SKIP_PACKAGES,./cf-test-helpers"
@@ -24,12 +23,23 @@ if [ -z "${RUN_VOLMAN}" ]; then
   SKIP_PACKAGES="$SKIP_PACKAGES,volman"
 fi
 
+if [ -z "${RUN_SQL_TESTS}" ]; then
+  SKIP_PACKAGES="$SKIP_PACKAGES,./bbs/db/sqldb"
+fi
+
 if [ -n "$PACKAGE" ]; then
   ginkgo -r -p "$@" "./src/${PACKAGE}"
 else
   pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry/gunk/diegonats/
     ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress --race
   popd
+
+  if [ -n "${RUN_SQL_TESTS}" ]; then
+    echo "Running BBS Cmd Suite against MySQL..."
+    pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/bbs
+      ginkgo -p cmd/bbs -- -useSQL
+    popd
+  fi
 
   pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/
     ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress --race \
