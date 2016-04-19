@@ -42,7 +42,7 @@ etcd_sec_flags=""
 # Allowed number of open file descriptors
 ulimit -n 100000
 
-ginkgo -- ${bbs_sec_flags} ${etcd_sec_flags} \
+ginkgo -nodes=<%= p("benchmark-bbs.ginkgo_nodes") -- ${bbs_sec_flags} ${etcd_sec_flags} \
   -desiredLRPs=<%= p("benchmark-bbs.desired_lrps") %> \
   -numTrials=<%= p("benchmark-bbs.num_trials") %> \
   -numReps=<%= p("benchmark-bbs.num_reps") %> \

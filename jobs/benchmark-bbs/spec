@@ -24,6 +24,9 @@ properties:
     default: 5
   benchmark-bbs.num_populate_workers:
     description: "the number of workers generating desired LRPs during setup"
+  benchmark-bbs.ginkgo_nodes:
+    description: "number of parallel ginkgo nodes to run"
+    default: 4
 
   benchmark-bbs.bbs.api_location:
     description: "the address of the BBS"
