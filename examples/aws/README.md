@@ -382,13 +382,13 @@ To enable SSH access to CF instances running on Diego, generate a host key and f
 ssh-keygen -f $DEPLOYMENT_DIR/keypair/ssh-proxy-host-key.pem
 ```
 
-If you're running at least OSX 10.11 El Capitan or Ubuntu 16.04 Xenial Xerus then you may generate your MD5 fingerprint with:
+If the local `ssh-keygen` supports the `-E` flag, as it does on OS X 10.11 El Capitan or Ubuntu 16.04 Xenial Xerus, generate the MD5 fingerprint of the public host key as follows:
 
 ```bash
 ssh-keygen -lf $DEPLOYMENT_DIR/keypair/ssh-proxy-host-key.pem.pub -E md5 | cut -d ' ' -f2 | sed 's/MD5://g' > $DEPLOYMENT_DIR/keypair/ssh-proxy-host-key-fingerprint
 ```
 
-Otherwise you may generate your MD5 fingerprint with:
+Otherwise, generate the MD5 fingerprint as follows:
 
 ```bash
 ssh-keygen -lf $DEPLOYMENT_DIR/keypair/ssh-proxy-host-key.pem.pub | cut -d ' ' -f2 > $DEPLOYMENT_DIR/keypair/ssh-proxy-host-key-fingerprint
