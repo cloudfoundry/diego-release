@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 scripts_path=./$(dirname $0)
 eval $($scripts_path/get_paths.sh)
 
@@ -18,6 +16,7 @@ SKIP_PACKAGES="$SKIP_PACKAGES,./garden-linux"
 SKIP_PACKAGES="$SKIP_PACKAGES,./diego-upgrade-stability-tests"
 SKIP_PACKAGES="$SKIP_PACKAGES,./veritas"
 SKIP_PACKAGES="$SKIP_PACKAGES,./vizzini"
+ERROR_CODE=0
 
 if [ -z "${RUN_VOLMAN}" ]; then
   SKIP_PACKAGES="$SKIP_PACKAGES,volman"
@@ -29,20 +28,25 @@ fi
 
 if [ -n "$PACKAGE" ]; then
   ginkgo -r -p "$@" "./src/${PACKAGE}"
+  exit $?
 else
   pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry/gunk/diegonats/
     ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress --race
+    ERROR_CODE=$?
   popd
 
   if [ -n "${RUN_SQL_TESTS}" ]; then
     echo "Running BBS Cmd Suite against MySQL..."
     pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/bbs
       ginkgo -p cmd/bbs -- -useSQL
+      let ERROR_CODE+=$?
     popd
   fi
 
   pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/
     ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress --race \
       -skipPackage=${SKIP_PACKAGES} "$@"
+    let ERROR_CODE+=$?
   popd
+  exit $ERROR_CODE
 fi
