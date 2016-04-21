@@ -58,6 +58,15 @@ cp -rp /opt/inigo/rootfs/* "${GARDEN_ROOTFS}"
 EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\s/\1/;tx;d;:x')
 export EXTERNAL_ADDRESS
 
+if [ -n "${USE_SQL}" ]; then
+  cat << EOF > /etc/my.cnf
+[mysqld]
+sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+EOF
+
+  service mysql start
+fi
+
 # GARDEN_GRAPH_PATH is the root of the docker image filesystem
 export GARDEN_GRAPH_PATH=/tmp/garden/graph
 mkdir -p "${GARDEN_GRAPH_PATH}"
