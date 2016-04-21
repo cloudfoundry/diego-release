@@ -37,26 +37,18 @@ function sync_package() {
 
 sync_package auctioneer              -app  github.com/cloudfoundry-incubator/auctioneer/cmd/auctioneer &
 sync_package bbs                     -app  github.com/cloudfoundry-incubator/bbs/cmd/bbs &
-sync_package cc_uploader             -app  github.com/cloudfoundry-incubator/cc-uploader/cmd/cc-uploader &
 sync_package converger               -app  github.com/cloudfoundry-incubator/converger/cmd/converger &
 sync_package diego-sshd              -app  github.com/cloudfoundry-incubator/diego-ssh/cmd/sshd &
 sync_package file_server             -app  github.com/cloudfoundry-incubator/file-server/cmd/file-server &
 sync_package rep                     -app  github.com/cloudfoundry-incubator/rep/cmd/rep &
 sync_package route_emitter           -app  github.com/cloudfoundry-incubator/route-emitter/cmd/route-emitter &
 sync_package ssh_proxy               -app  github.com/cloudfoundry-incubator/diego-ssh/cmd/ssh-proxy &
-sync_package stager                  -app  github.com/cloudfoundry-incubator/stager/cmd/stager &
 
 sync_package docker_app_lifecycle    -app  github.com/cloudfoundry-incubator/docker_app_lifecycle/builder \
   -app github.com/cloudfoundry-incubator/docker_app_lifecycle/launcher &
 
 sync_package buildpack_app_lifecycle -app  github.com/cloudfoundry-incubator/buildpack_app_lifecycle/builder \
   -app github.com/cloudfoundry-incubator/buildpack_app_lifecycle/launcher &
-
-sync_package nsync                   -app  github.com/cloudfoundry-incubator/nsync/cmd/nsync-bulker \
-  -app github.com/cloudfoundry-incubator/nsync/cmd/nsync-listener &
-
-sync_package tps                     -app  github.com/cloudfoundry-incubator/tps/cmd/tps-listener \
-  -app github.com/cloudfoundry-incubator/tps/cmd/tps-watcher &
 
 sync_package vizzini \
   -test github.com/cloudfoundry-incubator/vizzini/... \

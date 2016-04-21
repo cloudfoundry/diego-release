@@ -21,7 +21,6 @@ OPTIONAL ARGUMENTS:
     -n <count-path>     Path to instance-count-overrides stub file.
     -v <versions-path>  Path to release-versions stub file.
     -r                  Opt into using cflinuxfs-rootfs release.
-    -b                  Opt into using cf-release for bridge components.
     -g                  Opt into using guardian-release for cells.
 
 EXAMPLE:
@@ -32,7 +31,6 @@ EXAMPLE:
       -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
       -v manifest-generation/bosh-lite-stubs/release-versions.yml \\
       -r \\
-      -b \\
       -g
 EOF
   exit 1
@@ -40,7 +38,6 @@ EOF
 
 base_releases="${manifest_generation}/base-releases.yml"
 rootfs_properties=""
-bridge_properties=""
 garden_properties=""
 
 while getopts "c:i:p:n:k:v:rbg" opt; do
@@ -58,13 +55,13 @@ while getopts "c:i:p:n:k:v:rbg" opt; do
       instance_counts=$OPTARG
       ;;
     k)
-      >&2 echo "DEPRECATED: Persistent disk configuration moved to IaaS-settings stub"
+      >&2 echo "DEPRECATED -k flag: Persistent disk configuration moved to IaaS-settings stub"
       ;;
     r)
       rootfs_properties="${manifest_generation}/rootfs-properties.yml";
       ;;
     b)
-      bridge_properties="${manifest_generation}/bridge-properties.yml";
+      >&2 echo "DEPRECATED -b flag: Bridge components are always deployed from cf-release"
       ;;
     g)
       garden_properties="${manifest_generation}/guardian-properties.yml";
@@ -137,7 +134,6 @@ spiff merge \
   ${manifest_generation}/diego.yml \
   ${rootfs_properties} \
   ${release_versions} \
-  ${bridge_properties} \
   ${garden_properties} \
   ${property_overrides} \
   ${instance_counts} \

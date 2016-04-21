@@ -745,13 +745,13 @@ base_job_templates:
     - name: consul_agent
       release: cf
     - name: stager
-      release: (( bridge_overrides.job_release || "diego" ))
+      release: cf
     - name: nsync
-      release: (( bridge_overrides.job_release || "diego" ))
+      release: cf
     - name: tps
-      release: (( bridge_overrides.job_release || "diego" ))
+      release: cf
     - name: cc_uploader
-      release: (( bridge_overrides.job_release || "diego" ))
+      release: cf
     - name: metron_agent
       release: cf
   cell:
@@ -791,7 +791,7 @@ base_job_templates:
     - name: bbs
       release: diego
     - name: cc_uploader
-      release: (( bridge_overrides.job_release || "diego" ))
+      release: cf
     - name: converger
       release: diego
     - name: etcd
@@ -803,7 +803,7 @@ base_job_templates:
     - name: metron_agent
       release: cf
     - name: nsync
-      release: (( bridge_overrides.job_release || "diego" ))
+      release: cf
     - name: (( rootfs_overrides.job_name || "rootfses" ))
       release: (( rootfs_overrides.job_release || "diego" ))
     - name: route_emitter
@@ -811,6 +811,6 @@ base_job_templates:
     - name: ssh_proxy
       release: diego
     - name: stager
-      release: (( bridge_overrides.job_release || "diego" ))
+      release: cf
     - name: tps
-      release: (( bridge_overrides.job_release || "diego" ))
+      release: cf
