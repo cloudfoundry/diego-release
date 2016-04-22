@@ -1,6 +1,6 @@
 name: (( config_from_cf.cf_deployment_name "-diego" ))
 
-releases: (( base_releases rootfs_overrides.releases [garden_overrides.release] [config_from_cf.cf_release] ))
+releases: (( base_releases [garden_overrides.release] [config_from_cf.cf_release] ))
 
 director_uuid: (( config_from_cf.cf_director_uuid ))
 
@@ -508,7 +508,7 @@ properties:
     election_timeout_in_milliseconds: (( property_overrides.etcd.election_timeout_in_milliseconds || nil ))
 
   cflinuxfs2-rootfs:
-    trusted_certs: (( property_overrides.rootfs_cflinuxfs2.trusted_certs || nil ))
+    trusted_certs: (( property_overrides.cflinuxfs2-rootfs.trusted_certs || property_overrides.rootfs_cflinuxfs2.trusted_certs || nil ))
 
   # -- Properties below are used by the jobs from diego- release --
   diego:
@@ -606,7 +606,7 @@ properties:
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
       log_level: (( property_overrides.nsync.log_level || nil ))
     rep:
-      preloaded_rootfses: (( rootfs_overrides.diego.rep.preloaded_rootfses || nil ))
+      preloaded_rootfses: (( property_overrides.diego.rep.preloaded_rootfses || ["cflinuxfs2:/var/vcap/packages/cflinuxfs2/rootfs"] ))
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       bbs:
         api_location: (( property_overrides.bbs.api_location || nil ))
@@ -619,8 +619,6 @@ properties:
       evacuation_timeout_in_seconds: (( property_overrides.rep.evacuation_timeout_in_seconds || nil ))
       trusted_certs: (( property_overrides.rep.trusted_certs || nil ))
       log_level: (( property_overrides.rep.log_level || nil ))
-    rootfs_cflinuxfs2:
-      trusted_certs: (( property_overrides.rootfs_cflinuxfs2.trusted_certs || nil ))
     route_emitter:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       bbs:
@@ -695,7 +693,7 @@ properties:
     insecure_docker_registry_list: (( property_overrides.garden.insecure_docker_registry_list || nil ))
     network_mtu: (( property_overrides.garden.mtu || nil ))
     disk_quota_enabled: (( property_overrides.garden.disk_quota_enabled || nil ))
-    persistent_image_list: (( property_overrides.garden.persistent_image_list || rootfs_overrides.garden.persistent_image_list || ["/var/vcap/packages/rootfs_cflinuxfs2/rootfs"] ))
+    persistent_image_list: (( property_overrides.garden.persistent_image_list || ["/var/vcap/packages/cflinuxfs2/rootfs"] ))
     enable_graph_cleanup: (( property_overrides.garden.enable_graph_cleanup || true ))
     graph_cleanup_threshold_in_mb: (( property_overrides.garden.graph_cleanup_threshold_in_mb || 0 ))
     log_level: (( property_overrides.garden.log_level || nil ))
@@ -707,9 +705,6 @@ iaas_settings: (( merge ))
 instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
 bridge_overrides: (( merge || nil ))
-rootfs_overrides:
-  <<: (( merge ))
-  releases: (( merge || [] ))
 garden_overrides:
   job_release: garden-linux
   release:
@@ -720,6 +715,8 @@ base_releases:
   - name: diego
     version: (( release_versions.diego || "latest" ))
   - name: etcd
+    version: (( release_versions.etcd || "latest" ))
+  - name: cflinuxfs2-rootfs
     version: (( release_versions.etcd || "latest" ))
 release_versions: (( merge || nil ))
 base_job_templates:
@@ -761,8 +758,8 @@ base_job_templates:
       release: diego
     - name: garden
       release: (( garden_overrides.job_release || "garden-linux" ))
-    - name: (( rootfs_overrides.job_name || "rootfses" ))
-      release: (( rootfs_overrides.job_release || "diego" ))
+    - name: cflinuxfs2-rootfs-setup
+      release: cflinuxfs2-rootfs
     - name: metron_agent
       release: cf
   database:
@@ -804,8 +801,8 @@ base_job_templates:
       release: cf
     - name: nsync
       release: cf
-    - name: (( rootfs_overrides.job_name || "rootfses" ))
-      release: (( rootfs_overrides.job_release || "diego" ))
+    - name: cflinuxfs2-rootfs-setup
+      release: cflinuxfs2-rootfs
     - name: route_emitter
       release: diego
     - name: ssh_proxy

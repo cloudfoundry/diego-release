@@ -20,7 +20,6 @@ MANDATORY ARGUMENTS:
 OPTIONAL ARGUMENTS:
     -n <count-path>     Path to instance-count-overrides stub file.
     -v <versions-path>  Path to release-versions stub file.
-    -r                  Opt into using cflinuxfs-rootfs release.
     -g                  Opt into using guardian-release for cells.
 
 EXAMPLE:
@@ -37,7 +36,6 @@ EOF
 }
 
 base_releases="${manifest_generation}/base-releases.yml"
-rootfs_properties=""
 garden_properties=""
 
 while getopts "c:i:p:n:k:v:rbg" opt; do
@@ -58,7 +56,7 @@ while getopts "c:i:p:n:k:v:rbg" opt; do
       >&2 echo "DEPRECATED -k flag: Persistent disk configuration moved to IaaS-settings stub"
       ;;
     r)
-      rootfs_properties="${manifest_generation}/rootfs-properties.yml";
+      >&2 echo "DEPRECATED -r flag: the rootfs is always deployed from rootfs-release"
       ;;
     b)
       >&2 echo "DEPRECATED -b flag: Bridge components are always deployed from cf-release"
@@ -132,7 +130,6 @@ spiff merge \
 
 spiff merge \
   ${manifest_generation}/diego.yml \
-  ${rootfs_properties} \
   ${release_versions} \
   ${garden_properties} \
   ${property_overrides} \
