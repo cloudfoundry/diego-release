@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+scripts_path=./$(dirname $0)
+eval $($scripts_path/get_paths.sh)
+
+if [ -n "${USE_SQL}" ]; then
+  echo "Running store-dependent test suites against MySQL..."
+  DB_UNITS="./bbs/db/sqldb"
+else
+  echo "Running store-dependent test suites against ETCD..."
+  DB_UNITS="./bbs/db/etcd"
+fi
+
+pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/ > /dev/null
+  ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress --race \
+    bbs/cmd/bbs \
+    auctioneer/cmd/auctioneer \
+    converger/cmd/converger \
+    rep/cmd/rep \
+    route-emitter/cmd/route-emitter \
+    ${DB_UNITS}
+popd > /dev/null
+
