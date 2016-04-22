@@ -38,7 +38,7 @@ else
   if [ -n "${RUN_SQL_TESTS}" ]; then
     echo "Running BBS Cmd Suite against MySQL..."
     pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/bbs
-      ginkgo -p cmd/bbs -- -useSQL
+      USE_SQL=true ginkgo -p cmd/bbs
       let ERROR_CODE+=$?
     popd
   fi
