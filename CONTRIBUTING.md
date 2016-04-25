@@ -117,39 +117,42 @@ To run the experimental SQL unit tests, you'll need mysql running locally with t
 
 On OS X, you can follow the these steps to install and configure mysql:
 
-1. `brew install mysql`
-2. `mysql.server start`
-3. Run `mysql_secure_installation` and set a root password
+1. Install MySQL
+
+        brew install mysql
+2. Start MySQL
+
+        mysql.server start
+3. Run and set a root password
+
+        mysql_secure_installation
     - Follow the on-screen prompts to complete the installation. The answers won't affect whether the unit tests can run.
+
 4. Create /etc/my.cnf with the following contents:
 
-    ```
-[mysqld]
-sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
-    ```
-5. `mysql.server restart`
+        [mysqld]
+        sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+
+5. Restart MySQL
+
+        mysql.server restart
+
 6. Log in to the mysql console as root, using the password you specified in step 3
 
-    ```
-mysql -uroot -p<your password>
-    ```
+        mysql -uroot -p<your password>
+
 7. Run the following SQL commands to create a diego user with the correct permissions:
 
-    ```
-CREATE USER 'diego'@'localhost' IDENTIFIED BY 'diego_password';
-GRANT ALL PRIVILEGES ON `diego\_%`.* TO 'diego'@'localhost';
-    ```
-8. You should now be able to run the SQL unit tests. To run the tests, run the following command from the bbs submodule:
+        CREATE USER 'diego'@'localhost' IDENTIFIED BY 'diego_password';
+        GRANT ALL PRIVILEGES ON `diego\_%`.* TO 'diego'@'localhost';
 
-    ```
-ginkgo -p db/sqldb
-    ```
+8. You should now be able to run the SQL unit tests. To run all the SQL backed tests, run the following command from
+the root of diego-release:
 
-9. You can run the full bbs/cmd tests using the mysql backend with the following command from the bbs submodule:
+        RUN_SQL_TESTS=true ./scripts/run-unit-tests
 
-    ```
-ginkgo cmd/bbs -- --useSQL
-    ```
+  This command will run all regular unit tests plus the etcd backed and sql backed unit tests including bbs and
+  integration unit tests such as auctioneer/cmd/auctioneer where a backing store is required.
 
 ## <a name="deploy-bosh-lite"></a> Deploying Diego to BOSH-Lite
 
@@ -261,7 +264,6 @@ Please follow logging conventions as outlined [here](https://github.com/cloudfou
 Once you've followed the steps [above](#initial-setup) to install ginkgo and the other binaries needed for testing, execute the following script to run all unit tests in diego-release.
 
     ./scripts/run-unit-tests
-
 
 ### Running Integration Tests
 
