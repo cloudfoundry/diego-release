@@ -33,7 +33,7 @@ if [ -z "${RUN_SQL_TESTS}" ]; then
   SKIP_PACKAGES="$SKIP_PACKAGES,./bbs/db/sqldb"
 fi
 
-if [ -n "$PACKAGE" ]; then
+if [ ! -z "$PACKAGE" ]; then
   ginkgo -r -p "$@" "./src/${PACKAGE}"
   exit $?
 else

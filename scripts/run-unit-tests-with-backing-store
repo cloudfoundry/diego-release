@@ -5,7 +5,7 @@ set -e
 scripts_path=./$(dirname $0)
 DIEGO_RELEASE_DIR=${DIEGO_RELEASE_DIR:-$(cd $scripts_path/.. && pwd)}
 
-if [ -n "${USE_SQL}" ]; then
+if [ ! -z "${USE_SQL}" ]; then
   echo "Running store-dependent test suites against MySQL..."
   DB_UNITS="./bbs/db/sqldb"
 else

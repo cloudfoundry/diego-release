@@ -10,7 +10,7 @@ cat << EOF > /etc/my.cnf
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 EOF
 
-if [ -n ${RUN_SQL_TESTS} ]; then
+if [ ! -z ${RUN_SQL_TESTS} ]; then
   service mysql start
 fi
 

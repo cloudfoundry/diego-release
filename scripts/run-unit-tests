@@ -5,7 +5,7 @@ eval $($scripts_path/get_paths.sh)
 
 ERROR_CODE=0
 
-if [ -n ${RUN_SQL_TESTS} ]; then
+if [ ! -z ${RUN_SQL_TESTS} ]; then
   USE_SQL=true $scripts_path/run-unit-tests-with-backing-store
   ERROR_CODE=$?
 fi
