@@ -10,8 +10,10 @@ cat << EOF > /etc/my.cnf
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 EOF
 
+echo ${RUN_SQL_TESTS}
+
 if [ -n ${RUN_SQL_TESTS} ]; then
   service mysql start
 fi
 
-su diego -c ./diego-release/scripts/ci/run_unit_internal
+su diego -p -c ./diego-release/scripts/ci/run_unit_internal
