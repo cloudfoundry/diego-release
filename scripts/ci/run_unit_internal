@@ -3,8 +3,6 @@
 
 set -e
 
-echo "run_unit_internal SQL " + ${RUN_SQL_TESTS}
-
 cd diego-release/
 
 export GOROOT=/usr/local/go
@@ -12,6 +10,8 @@ export PATH=$GOROOT/bin:$PATH
 
 export GOPATH=$PWD
 export PATH=$PWD/bin:$PATH
+
+export USE_SQL=${RUN_SQL_TESTS}
 
 SCRIPT=${SCRIPT:-run-unit-tests}
 

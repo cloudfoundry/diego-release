@@ -3,7 +3,7 @@
 set -e
 
 scripts_path=./$(dirname $0)
-eval $($scripts_path/get_paths.sh)
+DIEGO_RELEASE_DIR=${DIEGO_RELEASE_DIR:-$(cd $scripts_path/.. && pwd)}
 
 if [ -n "${USE_SQL}" ]; then
   echo "Running store-dependent test suites against MySQL..."
