@@ -11,8 +11,10 @@ export PATH=$GOROOT/bin:$PATH
 export GOPATH=$PWD
 export PATH=$PWD/bin:$PATH
 
+SCRIPT=${SCRIPT:-run-unit-tests}
+
 go install github.com/apcera/gnatsd
 go install github.com/coreos/etcd
 go install github.com/onsi/ginkgo/ginkgo
 
-RUN_SQL_TESTS=true scripts/run-unit-tests "$@"
+"scripts/${SCRIPT}" "$@"
