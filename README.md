@@ -168,7 +168,7 @@ and then look up that commit's SHA in the diego-cf compatibility table.
 
      ```bash
      cd ~/workspace/diego-release
-     USE_MYSQL='true' ./scripts/generate-bosh-lite-manifests
+     USE_SQL='true' ./scripts/generate-bosh-lite-manifests
      ```
 
 1. Create, upload, and deploy the CF release:

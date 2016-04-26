@@ -549,8 +549,8 @@ properties:
         client_session_cache_size: (( property_overrides.etcd.client_session_cache_size || nil ))
         max_idle_conns_per_host: (( property_overrides.etcd.max_idle_conns_per_host || nil ))
       sql:
-        db_connection_string: (( property_overrides.bbs.sql.db_connection_string || nil ))
-        max_open_connections: (( property_overrides.bbs.sql.max_open_connections || nil ))
+        db_connection_string: (( sql_overrides.bbs.sql.db_connection_string || nil ))
+        max_open_connections: (( sql_overrides.bbs.sql.max_open_connections || nil ))
       log_level: (( property_overrides.bbs.log_level || nil ))
     converger:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
@@ -704,6 +704,7 @@ config_from_cf: (( merge ))
 iaas_settings: (( merge ))
 instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
+sql_overrides: (( merge ))
 bridge_overrides: (( merge || nil ))
 garden_overrides:
   job_release: garden-linux
