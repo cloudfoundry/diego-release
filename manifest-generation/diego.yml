@@ -704,7 +704,7 @@ config_from_cf: (( merge ))
 iaas_settings: (( merge ))
 instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
-sql_overrides: (( merge ))
+sql_overrides: (( merge  || nil ))
 bridge_overrides: (( merge || nil ))
 garden_overrides:
   job_release: garden-linux
