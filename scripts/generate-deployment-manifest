@@ -20,6 +20,7 @@ MANDATORY ARGUMENTS:
 OPTIONAL ARGUMENTS:
     -n <count-path>     Path to instance-count-overrides stub file.
     -v <versions-path>  Path to release-versions stub file.
+    -s <sql-db-path>    Path to SQL stub file.
     -g                  Opt into using guardian-release for cells.
 
 EXAMPLE:
@@ -29,6 +30,7 @@ EXAMPLE:
       -p manifest-generation/bosh-lite-stubs/property-overrides.yml \\
       -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
       -v manifest-generation/bosh-lite-stubs/release-versions.yml \\
+      -s manifest-generation/bosh-lite-stubs/diego-sql.yml \\
       -r \\
       -g
 EOF
@@ -38,7 +40,7 @@ EOF
 base_releases="${manifest_generation}/base-releases.yml"
 garden_properties=""
 
-while getopts "c:i:p:n:k:v:rbg" opt; do
+while getopts "c:i:p:n:k:v:s:rbg" opt; do
   case $opt in
     c)
       cf_deployment_manifest=$OPTARG
@@ -66,6 +68,9 @@ while getopts "c:i:p:n:k:v:rbg" opt; do
       ;;
     v)
       release_versions=$OPTARG
+      ;;
+    s)
+      sql_settings=$OPTARG
       ;;
     *)
       echo "Unknown arguments"
@@ -105,6 +110,11 @@ else
   fi
 fi
 
+if [[ ! -z "${sql_settings}" && ! -f "${sql_settings}" ]]; then
+  >&2 echo "ERROR: SQL Setting stub '${sql_settings}' is not a regular file"
+  argument_error=true
+fi
+
 if [[ ! -z "${instance_counts}" && ! -f "${instance_counts}" ]]; then
   >&2 echo "ERROR: Instance-count-overrides stub '${instance_counts}' is not a regular file"
   argument_error=true
@@ -134,6 +144,7 @@ spiff merge \
   ${garden_properties} \
   ${property_overrides} \
   ${instance_counts} \
+  ${sql_settings} \
   ${iaas_settings} \
   ${tmpdir}/config-from-cf.yml \
   > ${tmpdir}/diego.yml
