@@ -181,27 +181,7 @@ and then look up that commit's SHA in the diego-cf compatibility table.
   bosh -n deploy
   ```
 
-1. Upload the latest garden-linux-release OR guardian-release:
-
-  ```bash
-  bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
-
-  # if you specified [-g] when you generated your manifest:
-  # bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/guardian-release
-  ```
-
-  If you wish to upload a specific version of garden-linux-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-linux-release).
-
-1. Upload the latest etcd-release and cflinuxfs2-rootfs-release:
-
-  ```bash
-  bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release
-  bosh upload release https://bosh.io/d/github.com/cloudfoundry/cflinuxfs2-rootfs-release
-  ```
-
-  If you wish to upload a specific version of etcd-release or cflinuxfs2-rootfs-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/etcd-release).
-
-1. **EXPERIMENTAL**: Deploy latest cf-mysql-release:
+1. **EXPERIMENTAL**: If configuring Diego to use MySQL, upload and deploy the latest cf-mysql-release:
 
   ```bash
   cd ~/workspace/diego-release
@@ -220,6 +200,33 @@ and then look up that commit's SHA in the diego-cf compatibility table.
     ```
 
     Then commands such as `SELECT * FROM desired_lrps` can be run to show all the desired lrps in the system.
+
+1. Upload the latest garden-linux-release OR guardian-release:
+
+  ```bash
+  bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
+
+  # if you specified [-g] when you generated your manifest:
+  # bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/guardian-release
+  ```
+
+  If you wish to upload a specific version of garden-linux-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-linux-release).
+
+1. Upload the latest etcd-release:
+
+  ```bash
+  bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release
+  ```
+
+  If you wish to upload a specific version of etcd-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/etcd-release).
+
+1. Upload the latest cflinuxfs2-rootfs-release:
+
+  ```bash
+  bosh upload release https://bosh.io/d/github.com/cloudfoundry/cflinuxfs2-rootfs-release
+  ```
+
+  If you wish to upload a specific version of cflinuxfs2-rootfs-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry/cflinuxfs2-rootfs-release).
 
 1. Create, upload, and deploy the Diego release:
 
