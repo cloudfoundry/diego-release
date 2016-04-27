@@ -6,7 +6,6 @@ These instructions allow you to:
 * Deploy BOSH to AWS via `bosh-init`, and
 * Deploy CF and Diego via the deployed BOSH.
 
-
 ## Table of Contents
 
 1. [Setting Up the Local Environment](#setting-up-the-local-environment)
@@ -35,7 +34,6 @@ You must also clone the following git repositories from GitHub:
 * [cf-release](https://github.com/cloudfoundry/cf-release)
 * [diego-release](https://github.com/cloudfoundry-incubator/diego-release)
 
-
 ### Deployment Directory
 
 The deployment process requires that you create a directory for each deployment
@@ -54,7 +52,6 @@ export DIEGO_RELEASE_DIR=REPLACE_WITH_PATH_TO_DIEGO_RELEASE_DIR
 ```
 
 These instructions use these environment variables as `$DEPLOYMENT_DIR`, `$CF_RELEASE_DIR`, and `$DIEGO_RELEASE_DIR`.
-
 
 ### AWS Requirements
 
@@ -93,7 +90,6 @@ your AWS account through the AWS console:
 }
 ```
 
-
 #### IAM User
 
 1. From the AWS console homepage, click on `Identity & Access Management`.
@@ -120,7 +116,6 @@ your AWS account through the AWS console:
 1. Make the directory `$DEPLOYMENT_DIR/keypair` and move the downloaded `bosh_keypair.pem` key to `$DEPLOYMENT_DIR/keypair/id_rsa_bosh`.
 1. Change the permissions on the new key file to `600` (`rw-------`): `chmod 600 $DEPLOYMENT_DIR/keypair/id_rsa_bosh`.
 
-
 #### Route 53 Hosted Zone
 
 1. From the AWS console homepage, click on `Route 53`.
@@ -129,7 +124,6 @@ your AWS account through the AWS console:
 1. Fill in the domain name you intend to use for your Cloud Foundry deployment. The domain name for your hosted zone will be the base domain for all apps deployed to your Cloud Foundry instance, as well as the base domain for the Cloud Foundry system components. This domain name will be referred to as `$CF_DOMAIN` below.
 
 If you host this domain at another domain registrar, set the nameservers at that registrar to the DNS servers listed in the NS record in the AWS Hosted Zone.
-
 
 ### Deployment Directory Setup
 
@@ -180,11 +174,9 @@ export AWS_ACCESS_KEY_ID=REPLACE_WITH_AKI
 export AWS_SECRET_ACCESS_KEY='REPLACE_WITH_SECRET_ACCESS_KEY'
 ```
 
-
 #### `keypair/id_rsa_bosh`
 
 This file is the private key pair generated as the [AWS keypair for the BOSH director](#aws-keypair-for-the-bosh-director).
-
 
 ####<a name="elb-cfrouter"></a> `certs/elb-cfrouter.key` and `certs/elb-cfrouter.pem`
 
@@ -201,7 +193,6 @@ When prompted for the 'Common Name' in the next command, enter `*.$CF_DOMAIN`, w
 openssl req -new -key elb-cfrouter.key -out elb-cfrouter.csr
 openssl x509 -req -in elb-cfrouter.csr -signkey elb-cfrouter.key -out elb-cfrouter.pem
 ```
-
 
 #### `stubs/domain.yml`
 
@@ -234,7 +225,6 @@ Value (us-east-1b) for parameter availabilityZone is invalid Subnets can current
 ```
 
 then update this file with acceptable availability zone values.
-
 
 #### `stubs/bosh-init/keypair.yml`
 
@@ -373,7 +363,6 @@ You can ignore any files with a `crl` or `csr`.
 
 The certificates in `consul-certs` are used to set SSL properties for the consul VMs, and the certificates in `bbs-certs` and `etcd-certs` are used to set SSL properties on the Diego etcd cluster and BBS API servers.
 
-
 ####<a name="generating-ssh-proxy-host-key"></a>Generating SSH Proxy Host Key and Fingerprint
 
 To enable SSH access to CF instances running on Diego, generate a host key and fingerprint for the SSH proxy as follows, entering an empty string for the passphrase when prompted:
@@ -396,7 +385,6 @@ ssh-keygen -lf $DEPLOYMENT_DIR/keypair/ssh-proxy-host-key.pem.pub | cut -d ' ' -
 
 The `ssh-proxy-host-key.pem` file contains the PEM-encoded private host key for the Diego manifest, and the `ssh-proxy-host-key-fingerprint` file contains the MD5 fingerprint of the public host key. You will later copy these values into stubs for generating the CF and Diego manifests.
 
-
 #### Generating UAA Private/Public Keys
 
 UAA requires an RSA keypair for its configuration. Generate one as follows, entering an empty string for the passphrase when prompted:
@@ -405,7 +393,6 @@ UAA requires an RSA keypair for its configuration. Generate one as follows, ente
 ssh-keygen -t rsa -b 4096 -f $DEPLOYMENT_DIR/keypair/uaa
 openssl rsa -in $DEPLOYMENT_DIR/keypair/uaa -pubout > $DEPLOYMENT_DIR/keypair/uaa.pub
 ```
-
 
 ## Creating the AWS environment
 
@@ -456,13 +443,11 @@ DEPLOYMENT_DIR
 The `./deploy_aws_environment` script generates a partial stub for your
 Cloud Foundry deployment. It is a generated stub that contains information specific to the AWS CloudFormation stack and should not be edited manually.
 
-
 ### `stubs/cf/properties.yml`
 
 The `./deploy_aws_environment` script copies another partial stub for your
 Cloud Foundry deployment. This stub is intended to be editied, as describes in more detail in the
 [Manifest Generation](#manifest-generation) section.
-
 
 ### `stubs/diego/property-overrides.yml`
 
@@ -472,12 +457,10 @@ the skeleton for the certificates generated in the
 [Configuring Security](#configuring-security) section,
 as well as for setting the log levels of components.
 
-
 ### `stubs/diego/iaas-settings.yml`
 
 This stub is during Diego manifest generation.
 It contains settings specific to your AWS environment.
-
 
 ## Set up Public DNS for BOSH Director (optional)
 
@@ -495,6 +478,23 @@ perform the following steps:
 1. Enter the public IP address of the BOSH director for the value.
 1. Click the `Create` button.
 
+## Using RDS MySQL instead of etcd (optional)
+Support for using a SQL database instead of etcd for the backing store of Diego is still in the experimental phase. The instructions below describe how to set up a MariaDB RDS instance that is known to work with Diego.
+
+1. From the AWS console homepage, click on `RDS` in the `Database` section.
+1. Click on `Launch a DB Instance` under Create Instance.
+1. Click on the `MariaDB` Tab and click the `Select` button.
+1. Select Production or Dev/Test version of MariaDB depending on your use case.
+1. Select the DB Instance Class required. For performance testing the Diego team uses db.m4.4xlarge.
+1. You can optionally tune the other parameters based on your deployment requirements.
+1. Provide a unique DB Instance Identifier and choose a master username and password.
+1. Click `Next Step`
+1. Select the VPC created during the bosh-init steps above.
+1. Select `No` for the `Publicly Accessible` option.
+1. Select the `VPC Security Group` matching `*-InternalSecurityGroup-*`.
+1. Choose a Database Name (e.g. diego).
+1. Click `Launch DB Instance`.
+1. Wait for the Instance to be `available`.
 
 ## Deploying Cloud Foundry
 
@@ -505,12 +505,10 @@ The generated stub `$DEPLOYMENT_DIR/stubs/cf/stub.yml` already has some of these
 The stub `$DEPLOYMENT_DIR/stubs/cf/properties.yml` contains some additional placeholder properties that you must specify.
 For more information on stubs for Cloud Foundry manifest generation, please refer to the documentation [here](http://docs.cloudfoundry.org/deploying/aws/cf-stub.html#editing).
 
-
 #### Diego Stub for CF
 
 The default deployment configuration from the manifest-generation scripts in cf-release omits some instances and properties that Diego depends on.
 It also includes some instances and properties that are unnecessary for a deployment with Diego as the only container runtime. Including `$DIEGO_RELEASE_DIR/examples/aws/stubs/cf/diego.yml` in the list of stubs when generating the Cloud Foundry manifest will configure these instance counts and properties correctly.
-
 
 #### Fill in Properties Stub
 
@@ -524,7 +522,6 @@ trusted certificate authority, change the value of `properties.ssl.skip_cert_ver
 from `true` to `false`.
 
 If you also wish to change the instance counts for the jobs in the CF deployment, add those different counts to this stub. These counts will override the counts set in the `$DIEGO_RELEASE_DIR/examples/aws/stubs/cf/diego.yml` if using the command below to generate the manifest.
-
 
 #### Generate the CF deployment manifest
 
@@ -583,7 +580,6 @@ bosh deploy
 
 From here, follow the documentation on [deploying a Cloud Foundry with BOSH](http://docs.cloudfoundry.org/deploying/common/deploy.html). Depending on the size of the deployment and the time required for package compilation, the initial deploy can take many minutes or hours.
 
-
 ## Deploying Diego
 
 After deploying Cloud Foundry, you can now deploy Diego.
@@ -599,7 +595,6 @@ Here is a summary of the properties that need to be changed:
 - Replace REPLACE_WITH_A_SECURE_PASSPHRASE with a unique passphrase associated with the active key label.
 - Replace the BBS and etcd certificate placeholders with the contents of the files generated in [Configuring Security](#configuring-security).
 - Replace the SSH-Proxy host key with the [host key generated](#generating-ssh-proxy-host-key) above.
-
 
 ### Edit the Instance-Count-Overrides Stub
 
@@ -633,6 +628,23 @@ release-versions:
   cflinuxfs2_rootfs: 0.2.0
 ```
 
+### Fill in diego-sql Stub (optional)
+
+If using the **experimental** [SQL backend](#using-rds-mysql-instead-of-etcd-optional) as described above, you will also need a stub with the RDS instance details.  Create a file `$DEPLOYMENT_DIR/stubs/diego/diego-sql.yml` with the following contents:
+
+```yaml
+sql_overrides:
+  bbs:
+    db_connection_string: '<username>:<password>@tcp(<rds-instance-endpoint>)/<database-name>'
+    max_open_connections: 500
+```
+
+Fill in the bracketed parameters above with the following values:
+<username>: the master username chosen when you created the RDS instance
+<password>: the master password chosen when you created the RDS instance
+<rds-instance-endpoint>: the endpoint displayed at the top of the DB instance details page in AWS including the port
+<database-name>: the name chosen when you created the RDS instance
+
 ### Generate the Diego manifest
 
 Remember that the last two arguments for `instance-count-overrides` and `release-versions`
@@ -647,6 +659,12 @@ cd $DIEGO_RELEASE_DIR
   -n $DEPLOYMENT_DIR/stubs/diego/instance-count-overrides.yml \
   -v $DEPLOYMENT_DIR/stubs/diego/release-versions.yml \
   > $DEPLOYMENT_DIR/deployments/diego.yml
+```
+
+If using the **experimental** [SQL backend](#using-rds-mysql-instead-of-etcd-optional) as described above, also include the following flag:
+
+```bash
+  -s $DEPLOYMENT_DIR/stubs/diego/diego-sql.yml \
 ```
 
 ### Upload Garden-Linux and etcd releases
@@ -664,7 +682,6 @@ cd $DIEGO_RELEASE_DIR
     ```
 
     If you wish to upload a specific version of etcd-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/etcd-release).
-
 
 ### Deploy Diego
 
