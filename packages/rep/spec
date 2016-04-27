@@ -54,8 +54,6 @@ files:
   - github.com/cloudfoundry-incubator/rep/maintain/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
   - github.com/cloudfoundry-incubator/volman/*.go # gosub
-  - github.com/cloudfoundry-incubator/volman/system/*.go # gosub
-  - github.com/cloudfoundry-incubator/volman/system/http/*.go # gosub
   - github.com/cloudfoundry-incubator/volman/voldriver/*.go # gosub
   - github.com/cloudfoundry-incubator/volman/voldriver/driverhttp/*.go # gosub
   - github.com/cloudfoundry-incubator/volman/vollocal/*.go # gosub
@@ -74,6 +72,8 @@ files:
   - github.com/cloudfoundry/dropsonde/runtime_stats/*.go # gosub
   - github.com/cloudfoundry/gosteno/*.go # gosub
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
+  - github.com/cloudfoundry/gunk/http_wrap/*.go # gosub
+  - github.com/cloudfoundry/gunk/os_wrap/*.go # gosub
   - github.com/cloudfoundry/gunk/workpool/*.go # gosub
   - github.com/cloudfoundry/sonde-go/events/*.go # gosub
   - github.com/cloudfoundry/systemcerts/*.go # gosub
