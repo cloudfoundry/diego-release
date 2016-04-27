@@ -1,5 +1,4 @@
 sql_overrides:
   bbs:
-    sql:
-      db_connection_string: 'diego:diego@tcp(10.244.7.2:3306)/diego'
-      max_open_connections: 500
+    db_connection_string: 'diego:diego@tcp(10.244.7.2:3306)/diego'
+    max_open_connections: 500
