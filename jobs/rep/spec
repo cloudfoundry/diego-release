@@ -15,9 +15,6 @@ packages:
   - rep
 
 properties:
-  diego.rep.stack:
-    description: "The stack for which to handle requests"
-    default: "cflinuxfs2"
   diego.rep.listen_addr:
     description: "address to serve auction and LRP stop requests on"
     default: "0.0.0.0:1800"
