@@ -1,6 +1,6 @@
 name: (( config_from_cf.cf_deployment_name "-diego" ))
 
-releases: (( base_releases [garden_overrides.release] [config_from_cf.cf_release] ))
+releases: (( base_releases volman_overrides.release [garden_overrides.release] [config_from_cf.cf_release] ))
 
 director_uuid: (( config_from_cf.cf_director_uuid ))
 
@@ -188,7 +188,7 @@ jobs:
         zone: z1
 
   - name: cell_z1
-    templates: (( base_job_templates.cell ))
+    templates: ((  base_job_templates.cell drivers.template ))
     instances: (( instance_count_overrides.cell_z1.instances || 1 ))
     resource_pool: cell_z1
     networks:
@@ -716,6 +716,8 @@ garden_overrides:
     name: garden-linux
     version: (( release_versions.garden_linux || "latest" ))
 empty_hash: {}
+volman_overrides:
+  release: (( merge || [] ))
 base_releases:
   - name: diego
     version: (( release_versions.diego || "latest" ))
@@ -724,6 +726,9 @@ base_releases:
   - name: cflinuxfs2-rootfs
     version: (( release_versions.etcd || "latest" ))
 release_versions: (( merge || nil ))
+drivers:
+ template: (( merge || [] ))
+
 base_job_templates:
   access:
     - name: consul_agent
