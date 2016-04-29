@@ -510,7 +510,7 @@ properties:
   cflinuxfs2-rootfs:
     trusted_certs: (( property_overrides.rootfs_cflinuxfs2.trusted_certs || nil ))
 
-  # -- Properties below are used by the jobs from diego- release --
+  # -- Properties below are used by the jobs from diego-release --
   diego:
     # -- Global property --
     ssl:
@@ -587,24 +587,6 @@ properties:
     file_server:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       log_level: (( property_overrides.file_server.log_level || nil ))
-    cc_uploader:
-      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
-      log_level: (( property_overrides.cc_uploader.log_level || nil ))
-    nsync:
-      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
-      bbs:
-        api_location: (( property_overrides.bbs.api_location || nil ))
-        ca_cert: (( property_overrides.bbs.ca_cert ))
-        client_cert: (( property_overrides.bbs.client_cert ))
-        client_key: (( property_overrides.bbs.client_key ))
-        require_ssl: (( property_overrides.bbs.require_ssl || nil ))
-        client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
-        max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
-      cc:
-        base_url: (( config_from_cf.cc.srv_api_uri ))
-        basic_auth_username: (( config_from_cf.cc.internal_api_user ))
-        basic_auth_password: (( config_from_cf.cc.internal_api_password ))
-      log_level: (( property_overrides.nsync.log_level || nil ))
     rep:
       preloaded_rootfses: (( property_overrides.diego.rep.preloaded_rootfses || ["cflinuxfs2:/var/vcap/packages/cflinuxfs2/rootfs"] ))
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
@@ -651,6 +633,27 @@ properties:
       uaa_secret: (( config_from_cf.uaa.ssh_proxy_client_secret ))
       uaa_token_url: (( config_from_cf.uaa.token_url ))
       diego_credentials: (( property_overrides.ssh_proxy.diego_credentials || nil ))
+
+  # -- Proerties below are used by jobs from the capi-release --
+  capi:
+    cc_uploader:
+      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
+      log_level: (( property_overrides.cc_uploader.log_level || nil ))
+    nsync:
+      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
+      bbs:
+        api_location: (( property_overrides.bbs.api_location || nil ))
+        ca_cert: (( property_overrides.bbs.ca_cert ))
+        client_cert: (( property_overrides.bbs.client_cert ))
+        client_key: (( property_overrides.bbs.client_key ))
+        require_ssl: (( property_overrides.bbs.require_ssl || nil ))
+        client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
+        max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
+      cc:
+        base_url: (( config_from_cf.cc.srv_api_uri ))
+        basic_auth_username: (( config_from_cf.cc.internal_api_user ))
+        basic_auth_password: (( config_from_cf.cc.internal_api_password ))
+      log_level: (( property_overrides.nsync.log_level || nil ))
     stager:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       cc:
