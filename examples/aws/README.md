@@ -482,17 +482,18 @@ perform the following steps:
 Support for using a SQL database instead of etcd for the backing store of Diego is still in the experimental phase. The instructions below describe how to set up a MariaDB RDS instance that is known to work with Diego.
 
 1. From the AWS console homepage, click on `RDS` in the `Database` section.
-1. Click on `Launch a DB Instance` under Create Instance.
+1. Click on `Launch DB Instance` under Instances.
 1. Click on the `MariaDB` Tab and click the `Select` button.
-1. Select Production or Dev/Test version of MariaDB depending on your use case.
+1. Select Production or Dev/Test version of MariaDB depending on your use case and click the `Next Step` button.
 1. Select the DB Instance Class required. For performance testing the Diego team uses db.m4.4xlarge.
-1. You can optionally tune the other parameters based on your deployment requirements.
-1. Provide a unique DB Instance Identifier and choose a master username and password.
-1. Click `Next Step`
+1. Optionally tune the other parameters based on your deployment requirements.
+1. Provide a unique DB Instance Identifier.
+1. Choose and confirm a master username and password, and record them for later use in the diego-sql stub.
+1. Click `Next Step`.
 1. Select the VPC created during the bosh-init steps above.
 1. Select `No` for the `Publicly Accessible` option.
 1. Select the `VPC Security Group` matching `*-InternalSecurityGroup-*`.
-1. Choose a Database Name (e.g. diego).
+1. Choose a Database Name (for example, `diego`).
 1. Click `Launch DB Instance`.
 1. Wait for the Instance to be `available`.
 
@@ -640,10 +641,11 @@ sql_overrides:
 ```
 
 Fill in the bracketed parameters above with the following values:
-<username>: the master username chosen when you created the RDS instance
-<password>: the master password chosen when you created the RDS instance
-<rds-instance-endpoint>: the endpoint displayed at the top of the DB instance details page in AWS including the port
-<database-name>: the name chosen when you created the RDS instance
+
+- `<username>`: The master username chosen when you created the RDS instance.
+- `<password>`: The master password chosen when you created the RDS instance.
+- `<rds-instance-endpoint>`: The endpoint displayed at the top of the DB instance details page in AWS, including the port.
+- `<database-name>`: the name chosen when you created the RDS instance.
 
 ### Generate the Diego manifest
 
@@ -682,6 +684,13 @@ If using the **experimental** [SQL backend](#using-rds-mysql-instead-of-etcd-opt
     ```
 
     If you wish to upload a specific version of etcd-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/etcd-release).
+
+1. Upload the latest cflinuxfs2-rootfs-release:
+    ```bash
+    bosh upload release https://bosh.io/d/github.com/cloudfoundry/cflinuxfs2-rootfs-release
+    ```
+
+    If you wish to upload a specific version of cflinuxfs2-rootfs-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry/cflinuxfs2-rootfs-release).
 
 ### Deploy Diego
 
