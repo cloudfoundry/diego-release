@@ -669,28 +669,28 @@ If using the **experimental** [SQL backend](#using-rds-mysql-instead-of-etcd-opt
   -s $DEPLOYMENT_DIR/stubs/diego/diego-sql.yml \
 ```
 
-### Upload Garden-Linux and etcd releases
+### Upload Garden-Linux, etcd, and cflinuxfs2 releases
 
 1. Upload the latest garden-linux-release:
     ```bash
     bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
     ```
 
-    If you wish to upload a specific version of garden-linux-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-linux-release).
+    To upload a specific version of garden-linux-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-linux-release).
 
 1. Upload the latest etcd-release:
     ```bash
     bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release
     ```
 
-    If you wish to upload a specific version of etcd-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/etcd-release).
+    To upload a specific version of etcd-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/etcd-release).
 
 1. Upload the latest cflinuxfs2-rootfs-release:
     ```bash
     bosh upload release https://bosh.io/d/github.com/cloudfoundry/cflinuxfs2-rootfs-release
     ```
 
-    If you wish to upload a specific version of cflinuxfs2-rootfs-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry/cflinuxfs2-rootfs-release).
+    To upload a specific version of cflinuxfs2-rootfs-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry/cflinuxfs2-rootfs-release).
 
 ### Deploy Diego
 
