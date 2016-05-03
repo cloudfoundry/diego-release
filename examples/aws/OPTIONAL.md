@@ -10,7 +10,7 @@ These instructions allow you to either:
 
 1. [Setup RDS MySQL](#setup-aws-rds-mysql)
 1. [Deploy Standalone CF-MySQL](#deploy-standalone-cf-mysql)
-1. [Deploying Diego](#deploying-diego)
+1. [Deploying Diego](#deploy-diego)
 
 ## Setup AWS RDS MySQL
 Support for using a SQL database instead of etcd for the backing store of Diego is still in the experimental phase. The instructions below describe how to set up a MariaDB RDS instance that is known to work with Diego.
