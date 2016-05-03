@@ -478,7 +478,7 @@ perform the following steps:
 1. Enter the public IP address of the BOSH director for the value.
 1. Click the `Create` button.
 
-## [Using RDS MySQL instead of etcd](optional.md#setup-aws-rds-mysql) (optional)
+## [Using RDS MySQL instead of etcd. (OPTIONAL.md#setup-aws-rds-mysql) (optional)
 
 ## Deploying Cloud Foundry
 
@@ -612,7 +612,7 @@ release-versions:
   cflinuxfs2_rootfs: 0.2.0
 ```
 
-### [Fill in diego-sql Stub](optional.md#fill-in-diego-sql-stub) (optional)
+### [Fill in diego-sql Stub](OPTIONAL.md#fill-in-diego-sql-stub) (optional)
 
 ### Generate the Diego manifest
 
@@ -630,7 +630,7 @@ cd $DIEGO_RELEASE_DIR
   > $DEPLOYMENT_DIR/deployments/diego.yml
 ```
 
-Optionally use instructions for [generating With SQL Backend](optional.md#generate-the-diego-manifest)
+Optionally use instructions for [generating With SQL Backend](OPTIONAL.md#generate-the-diego-manifest)
 
 ### Upload Garden-Linux, etcd, and cflinuxfs2 releases
 
