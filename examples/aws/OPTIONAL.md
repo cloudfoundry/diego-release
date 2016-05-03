@@ -54,7 +54,7 @@ instance_count_overrides:
 
 ## Deploy Diego
 
-### Fill in diego-sql Stub (optional)
+### Fill in diego-sql stub
 
 You will also need a stub with the SQL instance details.  Create a file `$DEPLOYMENT_DIR/stubs/diego/diego-sql.yml` with the following contents:
 
