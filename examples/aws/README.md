@@ -478,7 +478,7 @@ perform the following steps:
 1. Enter the public IP address of the BOSH director for the value.
 1. Click the `Create` button.
 
-## [Using RDS MySQL instead of etcd. (OPTIONAL.md#setup-aws-rds-mysql) (optional)
+## [Using RDS MySQL instead of etcd.](OPTIONAL.md#setup-aws-rds-mysql) (optional)
 
 ## Deploying Cloud Foundry
 
