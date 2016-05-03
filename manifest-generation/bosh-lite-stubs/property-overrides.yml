@@ -381,6 +381,8 @@ property_overrides:
       network: tcp
       address: 127.0.0.1:7777
     log_level: debug
+    volman:
+      driver_paths: /var/vcap/data/voldrivers
   garden:
     listen_network: tcp
     listen_address: 0.0.0.0:7777

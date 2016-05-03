@@ -585,6 +585,8 @@ properties:
           env: (( property_overrides.executor.garden_healthcheck.process.env || nil ))
       ca_certs_for_downloads: (( property_overrides.executor.ca_certs_for_downloads || nil ))
       log_level: (( property_overrides.executor.log_level || nil ))
+      volman:
+        driver_paths: (( property_overrides.executor.volman.driver_paths || nil ))
     file_server:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       log_level: (( property_overrides.file_server.log_level || nil ))

@@ -135,6 +135,7 @@ properties:
     description: "Experimental: user to run post setup hook command"
   diego.executor.volman.driver_paths:
     description: "Experimental: OS style path string containing the directories volman will look in for voldriver specs (delimited by : or ; depending on the OS)"
+    default: "/var/vcap/data/voldrivers"
 
   diego.rep.bbs.api_location:
     description: "Address to the BBS Server"
