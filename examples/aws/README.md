@@ -478,24 +478,7 @@ perform the following steps:
 1. Enter the public IP address of the BOSH director for the value.
 1. Click the `Create` button.
 
-## Using RDS MySQL instead of etcd (optional)
-Support for using a SQL database instead of etcd for the backing store of Diego is still in the experimental phase. The instructions below describe how to set up a MariaDB RDS instance that is known to work with Diego.
-
-1. From the AWS console homepage, click on `RDS` in the `Database` section.
-1. Click on `Launch DB Instance` under Instances.
-1. Click on the `MariaDB` Tab and click the `Select` button.
-1. Select Production or Dev/Test version of MariaDB depending on your use case and click the `Next Step` button.
-1. Select the DB Instance Class required. For performance testing the Diego team uses db.m4.4xlarge.
-1. Optionally tune the other parameters based on your deployment requirements.
-1. Provide a unique DB Instance Identifier.
-1. Choose and confirm a master username and password, and record them for later use in the diego-sql stub.
-1. Click `Next Step`.
-1. Select the VPC created during the bosh-init steps above.
-1. Select `No` for the `Publicly Accessible` option.
-1. Select the `VPC Security Group` matching `*-InternalSecurityGroup-*`.
-1. Choose a Database Name (for example, `diego`).
-1. Click `Launch DB Instance`.
-1. Wait for the Instance to be `available`.
+## [Using RDS MySQL instead of etcd](optional.md#setup-aws-rds-mysql) (optional)
 
 ## Deploying Cloud Foundry
 
@@ -629,23 +612,7 @@ release-versions:
   cflinuxfs2_rootfs: 0.2.0
 ```
 
-### Fill in diego-sql Stub (optional)
-
-If using the **experimental** [SQL backend](#using-rds-mysql-instead-of-etcd-optional) as described above, you will also need a stub with the RDS instance details.  Create a file `$DEPLOYMENT_DIR/stubs/diego/diego-sql.yml` with the following contents:
-
-```yaml
-sql_overrides:
-  bbs:
-    db_connection_string: '<username>:<password>@tcp(<rds-instance-endpoint>)/<database-name>'
-    max_open_connections: 500
-```
-
-Fill in the bracketed parameters above with the following values:
-
-- `<username>`: The master username chosen when you created the RDS instance.
-- `<password>`: The master password chosen when you created the RDS instance.
-- `<rds-instance-endpoint>`: The endpoint displayed at the top of the DB instance details page in AWS, including the port.
-- `<database-name>`: the name chosen when you created the RDS instance.
+### [Fill in diego-sql Stub](optional.md#fill-in-diego-sql-stub) (optional)
 
 ### Generate the Diego manifest
 
@@ -663,11 +630,7 @@ cd $DIEGO_RELEASE_DIR
   > $DEPLOYMENT_DIR/deployments/diego.yml
 ```
 
-If using the **experimental** [SQL backend](#using-rds-mysql-instead-of-etcd-optional) as described above, also include the following flag:
-
-```bash
-  -s $DEPLOYMENT_DIR/stubs/diego/diego-sql.yml \
-```
+Optionally use instructions for [generating With SQL Backend](optional.md#generate-the-diego-manifest)
 
 ### Upload Garden-Linux, etcd, and cflinuxfs2 releases
 
