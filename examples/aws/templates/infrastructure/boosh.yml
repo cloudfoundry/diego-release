@@ -28,7 +28,7 @@ subnets:
       name: NATZ1
       type: m1.small
       ip: (( merge ))
-      key_pair_name: bosh
+      key_pair_name: (( BoshKeypairName ))
       security_group: Open
 
   - name: CFELBZ1
@@ -202,3 +202,5 @@ security_groups:
       - protocol: tcp
         cidr: 0.0.0.0/0
         ports: 2222
+
+BoshKeypairName: (( merge ))

@@ -71,6 +71,7 @@ aws iam get-server-certificate --server-certificate-name cfrouter \
 spiff merge \
   $SCRIPT_DIR/templates/infrastructure/boosh.yml \
   $SCRIPT_DIR/templates/infrastructure/boosh-internal.yml \
+  stubs/bosh-init/keypair.yml \
   stubs/domain.yml \
   stubs/infrastructure/certificates.yml \
   stubs/infrastructure/availability_zones.yml \
