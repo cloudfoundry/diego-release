@@ -16,6 +16,7 @@ fi
 pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/ > /dev/null
   ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress --race \
     bbs/cmd/bbs \
+    bbs/db/migrations \
     auctioneer/cmd/auctioneer \
     converger/cmd/converger \
     rep/cmd/rep \

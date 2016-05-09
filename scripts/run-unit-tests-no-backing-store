@@ -23,6 +23,7 @@ SKIP_PACKAGES="$SKIP_PACKAGES,./rep/cmd/rep"
 SKIP_PACKAGES="$SKIP_PACKAGES,./route-emitter/cmd/route-emitter"
 SKIP_PACKAGES="$SKIP_PACKAGES,./bbs/db/sqldb"
 SKIP_PACKAGES="$SKIP_PACKAGES,./bbs/db/etcd"
+SKIP_PACKAGES="$SKIP_PACKAGES,./bbs/db/migrations"
 ERROR_CODE=0
 
 if [ -z "${RUN_VOLMAN}" ]; then
