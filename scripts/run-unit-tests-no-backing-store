@@ -26,10 +26,6 @@ SKIP_PACKAGES="$SKIP_PACKAGES,./bbs/db/etcd"
 SKIP_PACKAGES="$SKIP_PACKAGES,./bbs/db/migrations"
 ERROR_CODE=0
 
-if [ -z "${RUN_VOLMAN}" ]; then
-  SKIP_PACKAGES="$SKIP_PACKAGES,volman"
-fi
-
 if [ -z "${RUN_SQL_TESTS}" ]; then
   SKIP_PACKAGES="$SKIP_PACKAGES,./bbs/db/sqldb"
 fi
