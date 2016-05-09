@@ -201,13 +201,13 @@ and then look up that commit's SHA in the diego-cf compatibility table.
 
     Then commands such as `SELECT * FROM desired_lrps` can be run to show all the desired lrps in the system.
 
-1. Upload the latest garden-linux-release OR guardian-release:
+1. Upload the latest garden-linux-release OR garden-runc-release:
 
   ```bash
   bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
 
   # if you specified [-g] when you generated your manifest:
-  # bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/guardian-release
+  # bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-runc-release
   ```
 
   If you wish to upload a specific version of garden-linux-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-linux-release).

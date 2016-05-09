@@ -21,7 +21,7 @@ OPTIONAL ARGUMENTS:
     -n <count-path>     Path to instance-count-overrides stub file.
     -v <versions-path>  Path to release-versions stub file.
     -s <sql-db-path>    Path to SQL stub file.
-    -g                  Opt into using guardian-release for cells.
+    -g                  Opt into using garden-runc-release for cells.
 
 EXAMPLE:
     $0 \\
@@ -64,7 +64,7 @@ while getopts "c:i:p:n:k:v:s:rbg" opt; do
       >&2 echo "DEPRECATED -b flag: Bridge components are always deployed from cf-release"
       ;;
     g)
-      garden_properties="${manifest_generation}/guardian-properties.yml";
+      garden_properties="${manifest_generation}/garden-runc-properties.yml";
       ;;
     v)
       release_versions=$OPTARG

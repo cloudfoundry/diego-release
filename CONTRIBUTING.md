@@ -199,7 +199,7 @@ the root of diego-release:
 1. Generate the Diego manifests:
 
         cd ~/workspace/diego-release
-        ./scripts/generate-bosh-lite-manifests # specify [-g] for guardian-release
+        ./scripts/generate-bosh-lite-manifests # specify [-g] for garden-runc-release
 
 1. Create, upload, and deploy the CF release:
 
@@ -209,12 +209,12 @@ the root of diego-release:
         bosh -n upload release &&
         bosh -n deploy
 
-1. Upload the latest garden-linux-release OR guardian-release:
+1. Upload the latest garden-linux-release OR garden-runc-release:
 
         bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
 
         # if you specified [-g] when you generated your manifest:
-        # bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/guardian-release
+        # bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-runc-release
 
 1. Upload the latest etcd-release:
 
