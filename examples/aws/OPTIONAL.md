@@ -31,6 +31,13 @@ Support for using a SQL database instead of etcd for the backing store of Diego 
 1. Click `Launch DB Instance`.
 1. Wait for the Instance to be `available`.
 
+### Configuring SSL
+In order to configure SSL for RDS you need to download the ca cert bundle from AWS. This can be done by:
+
+```
+curl -o $DEPLOYMENT_DIR/certs/rds-combined-ca-bundle.pem http://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
+```
+
 ## Deploy Standalone CF-MySQL
 Follow the instructions at [CF MySQL Deploy](https://github.com/cloudfoundry/cf-mysql-release#deploy-on-aws-or-vsphere) to deploy a stand alone example [examples/standalone](https://github.com/cloudfoundry/cf-mysql-release/blob/develop/manifest-generation/examples/standalone)
 
@@ -63,6 +70,7 @@ sql_overrides:
   bbs:
     db_connection_string: '<username>:<password>@tcp(<sql-instance-endpoint>)/<database-name>'
     max_open_connections: 500
+    ca_cert: REPLACE_WITH_CONTENTS_OF_(DEPLOYMENT_DIR/certs/rds-combined-ca-bundle.pem)
 ```
 
 Fill in the bracketed parameters above with the following values:
@@ -73,6 +81,8 @@ Fill in the bracketed parameters above with the following values:
 	- For AWS RDS - The endpoint displayed at the top of the DB instance details page in AWS, including the port.
 	- For CF-MySQL - The IP and Port of the SQL Node (e.g. 10.10.5.222:3306)
 - `<database-name>`: the name chosen when you created the SQL instance.
+
+**Note:** The `sql_overrides.bbs.ca_cert` property should only be provided when deploying with an SSL supported mysql.
 
 ### Generate the Diego manifest
 
