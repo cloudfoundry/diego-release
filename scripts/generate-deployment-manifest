@@ -31,7 +31,6 @@ EXAMPLE:
       -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
       -v manifest-generation/bosh-lite-stubs/release-versions.yml \\
       -s manifest-generation/bosh-lite-stubs/diego-sql.yml \\
-      -r \\
       -g
 EOF
   exit 1
@@ -56,9 +55,6 @@ while getopts "c:i:p:n:k:v:s:rbg" opt; do
       ;;
     k)
       >&2 echo "DEPRECATED -k flag: Persistent disk configuration moved to IaaS-settings stub"
-      ;;
-    r)
-      >&2 echo "DEPRECATED -r flag: the rootfs is always deployed from rootfs-release"
       ;;
     b)
       >&2 echo "DEPRECATED -b flag: Bridge components are always deployed from cf-release"
