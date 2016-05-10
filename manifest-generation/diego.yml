@@ -551,6 +551,7 @@ properties:
       sql:
         db_connection_string: (( sql_overrides.bbs.db_connection_string || nil ))
         max_open_connections: (( sql_overrides.bbs.max_open_connections || nil ))
+        ca_cert: (( sql_overrides.bbs.ca_cert || nil ))
       log_level: (( property_overrides.bbs.log_level || nil ))
     converger:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))

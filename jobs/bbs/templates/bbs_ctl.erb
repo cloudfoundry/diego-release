@@ -29,6 +29,13 @@ etcd_sec_flags=""
   bbs_sec_flags=""
 <% end %>
 
+<% if p("diego.bbs.sql.ca_cert") %>
+  sql_sec_flags=" \
+   -sqlCACertFile=${CONF_DIR}/certs/sql/ca.crt"
+<% else %>
+  sql_sec_flags=""
+<% end %>
+
 
 case $1 in
 
@@ -76,7 +83,7 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec chpst -u vcap:vcap /var/vcap/packages/bbs/bin/bbs ${etcd_sec_flags} ${bbs_sec_flags} \
+    exec chpst -u vcap:vcap /var/vcap/packages/bbs/bin/bbs ${etcd_sec_flags} ${bbs_sec_flags} ${sql_sec_flags} \
       -activeKeyLabel='<%= p("diego.bbs.active_key_label") %>' \
       -advertiseURL=${ad_url_scheme}<%="://#{name.gsub('_', '-')}-#{spec.index}.#{p("diego.bbs.advertisement_base_hostname")}:#{p("diego.bbs.listen_addr").split(':')[1]}" %> \
       -auctioneerAddress=<%= p("diego.bbs.auctioneer.api_url") %> \

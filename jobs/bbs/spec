@@ -9,6 +9,7 @@ templates:
   bbs_ca.crt.erb: config/certs/ca.crt
   bbs_server.crt.erb: config/certs/server.crt
   bbs_server.key.erb: config/certs/server.key
+  sql_ca.crt.erb: config/certs/sql/ca.crt
 
 packages:
   - pid_utils
@@ -71,3 +72,6 @@ properties:
     description: "EXPERIMENTAL: connection string to use for SQL backend [username:password@tcp(1.1.1.1:1234)/database]"
   diego.bbs.sql.max_open_connections:
     description: "Maximum number of open connections to the SQL database"
+  diego.bbs.sql.ca_cert:
+    description: "The ca cert bundle to verify SQL connections against"
+    default: ""
