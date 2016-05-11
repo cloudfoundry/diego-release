@@ -1,9 +1,8 @@
-drivers:
-  template:
-     - name: cephdriver
-       release: cephfs-bosh-release
-
 volman_overrides:
-   release:
+  release:
     - name: cephfs-bosh-release
       version: "latest"
+  drivers:
+    template:
+    - name: cephdriver
+      release: cephfs-bosh-release

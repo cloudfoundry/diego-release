@@ -188,7 +188,7 @@ jobs:
         zone: z1
 
   - name: cell_z1
-    templates: ((  base_job_templates.cell drivers.template ))
+    templates: ((  base_job_templates.cell volman_overrides.drivers.template ))
     instances: (( instance_count_overrides.cell_z1.instances || 1 ))
     resource_pool: cell_z1
     networks:
@@ -585,8 +585,6 @@ properties:
           env: (( property_overrides.executor.garden_healthcheck.process.env || nil ))
       ca_certs_for_downloads: (( property_overrides.executor.ca_certs_for_downloads || nil ))
       log_level: (( property_overrides.executor.log_level || nil ))
-      volman:
-        driver_paths: (( property_overrides.executor.volman.driver_paths || nil ))
     file_server:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       log_level: (( property_overrides.file_server.log_level || nil ))
@@ -718,8 +716,7 @@ garden_overrides:
     name: garden-linux
     version: (( release_versions.garden_linux || "latest" ))
 empty_hash: {}
-volman_overrides:
-  release: (( merge || [] ))
+volman_overrides: (( merge || [] ))
 base_releases:
   - name: diego
     version: (( release_versions.diego || "latest" ))
@@ -728,8 +725,6 @@ base_releases:
   - name: cflinuxfs2-rootfs
     version: (( release_versions.etcd || "latest" ))
 release_versions: (( merge || nil ))
-drivers:
- template: (( merge || [] ))
 
 base_job_templates:
   access:
