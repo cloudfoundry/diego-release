@@ -1,2 +1,3 @@
-<%= p("diego.bbs.sql.ca_cert") %>
-
+<% if_p("diego.bbs.sql.ca_cert") do |value| %>
+<%= value %>
+<% end %>

@@ -29,7 +29,7 @@ etcd_sec_flags=""
   bbs_sec_flags=""
 <% end %>
 
-<% if p("diego.bbs.sql.ca_cert") %>
+<% if p("diego.bbs.sql.require_ssl") %>
   sql_sec_flags=" \
    -sqlCACertFile=${CONF_DIR}/certs/sql/ca.crt"
 <% else %>
