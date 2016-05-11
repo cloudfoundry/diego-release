@@ -133,6 +133,8 @@ properties:
     description: "Experimental: arbitrary command to run after setup action"
   diego.executor.post_setup_user:
     description: "Experimental: user to run post setup hook command"
+  diego.executor.volman.driver_paths:
+    description: "Experimental: OS style path string containing the directories volman will look in for voldriver specs (delimited by : or ; depending on the OS)"
 
   diego.rep.bbs.api_location:
     description: "Address to the BBS Server"
