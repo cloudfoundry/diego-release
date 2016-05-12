@@ -70,6 +70,7 @@ sql_overrides:
   bbs:
     db_connection_string: '<username>:<password>@tcp(<sql-instance-endpoint>)/<database-name>'
     max_open_connections: 500
+    require_ssl: true
     ca_cert: REPLACE_WITH_CONTENTS_OF_(DEPLOYMENT_DIR/certs/rds-combined-ca-bundle.pem)
 ```
 
