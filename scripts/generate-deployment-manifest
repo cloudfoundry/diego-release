@@ -39,7 +39,7 @@ EOF
 base_releases="${manifest_generation}/base-releases.yml"
 garden_properties=""
 
-while getopts "c:i:p:n:k:v:s:rbg" opt; do
+while getopts "c:i:p:n:v:s:krbg" opt; do
   case $opt in
     c)
       cf_deployment_manifest=$OPTARG
@@ -53,12 +53,6 @@ while getopts "c:i:p:n:k:v:s:rbg" opt; do
     n)
       instance_counts=$OPTARG
       ;;
-    k)
-      >&2 echo "DEPRECATED -k flag: Persistent disk configuration moved to IaaS-settings stub"
-      ;;
-    b)
-      >&2 echo "DEPRECATED -b flag: Bridge components are always deployed from cf-release"
-      ;;
     g)
       garden_properties="${manifest_generation}/garden-runc-properties.yml";
       ;;
@@ -67,6 +61,15 @@ while getopts "c:i:p:n:k:v:s:rbg" opt; do
       ;;
     s)
       sql_settings=$OPTARG
+      ;;
+    k)
+      >&2 echo "DEPRECATED -k flag: Persistent disk configuration moved to IaaS-settings stub."
+      ;;
+    r)
+      >&2 echo "DEPRECATED -r flag: The cflinuxfs2 rootfs now always comes from its own release."
+      ;;
+    b)
+      >&2 echo "DEPRECATED -b flag: CF-Release now always provides the CC-Bridge components."
       ;;
     *)
       echo "Unknown arguments"
