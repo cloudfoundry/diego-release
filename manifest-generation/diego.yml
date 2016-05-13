@@ -723,7 +723,7 @@ base_releases:
   - name: etcd
     version: (( release_versions.etcd || "latest" ))
   - name: cflinuxfs2-rootfs
-    version: (( release_versions.etcd || "latest" ))
+    version: (( release_versions.cflinuxfs2-rootfs || "latest" ))
 release_versions: (( merge || nil ))
 base_job_templates:
   access:
