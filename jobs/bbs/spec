@@ -69,11 +69,11 @@ properties:
     description: "maximum number of idle http connections"
 
   diego.bbs.sql.db_connection_string:
-    description: "EXPERIMENTAL: connection string to use for SQL backend [username:password@tcp(1.1.1.1:1234)/database]"
+    description: "EXPERIMENTAL: Connection string to use for SQL backend (for example, username:password@tcp(1.1.1.1:1234)/database)"
   diego.bbs.sql.max_open_connections:
     description: "Maximum number of open connections to the SQL database"
   diego.bbs.sql.require_ssl:
-    description: "require ssl for communication to the sql backend"
+    description: "Whether to require SSL for BBS communication to the SQL backend"
     default: false
   diego.bbs.sql.ca_cert:
-    description: "The ca cert bundle to verify SQL connections against"
+    description: "Bundle of CA certificates for the BBS to verify the SQL server SSL certificate when connecting via SSL"
