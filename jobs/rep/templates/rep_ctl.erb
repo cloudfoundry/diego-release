@@ -93,6 +93,9 @@ case $1 in
     # Work around for GOLANG 1.5.3 DNS bug
     export GODEBUG=netdns=cgo
 
+    DRIVERS_PATHS=<%= p("diego.executor.volman.driver_paths") %>
+    mkdir -p $DRIVERS_PATHS
+    chown vcap:vcap $DRIVERS_PATHS
 
     chpst -u vcap:vcap /var/vcap/packages/rep/bin/rep ${bbs_sec_flags} \
       -bbsAddress=${bbs_api_url} \
@@ -138,6 +141,7 @@ case $1 in
         <% end %> \
       <% end %> \
       -tempDir=$TMP_DIR \
+      -volmanDriverPaths=$DRIVERS_PATHS \
       -logLevel=<%= p("diego.rep.log_level") %> \
       -gardenHealthcheckInterval=<%= p("diego.executor.garden_healthcheck.interval") %> \
       -gardenHealthcheckTimeout=<%= p("diego.executor.garden_healthcheck.timeout") %> \
@@ -158,9 +162,6 @@ case $1 in
       <% end %> \
       <% if_p("diego.executor.post_setup_hook") do |value| %> \
         -postSetupHook=<%= Shellwords.shellescape(value) %> \
-      <% end %> \
-      <% if_p("diego.executor.volman.driver_paths") do |value| %> \
-        -volmanDriverPaths=<%= value %> \
       <% end %> \
       2>> $LOG_DIR/rep.stderr.log \
       1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep) &

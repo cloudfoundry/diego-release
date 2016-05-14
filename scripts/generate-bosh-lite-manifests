@@ -15,6 +15,12 @@ if [ ! -z ${USE_SQL} ]; then
   sql_option="-s manifest-generation/bosh-lite-stubs/experimental/mysql/diego-sql.yml"
 fi
 
+if [ ! -d ${ENABLE_VOLDRIVER} ]; then
+  voldriver_option="-d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml"
+fi
+
+
+
 pushd ${DIEGO_RELEASE_DIR}
 	$scripts_path/generate-deployment-manifest \
 			-c ${CF_MANIFESTS_DIR}/cf.yml \
@@ -22,6 +28,7 @@ pushd ${DIEGO_RELEASE_DIR}
 			-p manifest-generation/bosh-lite-stubs/property-overrides.yml \
 			-n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
 			${sql_option} \
+			${voldriver_option} \
 			-v manifest-generation/bosh-lite-stubs/release-versions.yml \
 			"$@" \
 			> ${DIEGO_MANIFESTS_DIR}/diego.yml

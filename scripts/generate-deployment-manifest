@@ -22,6 +22,7 @@ OPTIONAL ARGUMENTS:
     -v <versions-path>  Path to release-versions stub file.
     -s <sql-db-path>    Path to SQL stub file.
     -g                  Opt into using garden-runc-release for cells.
+    -d <voldriver-path> Path to voldriver stub file.
 
 EXAMPLE:
     $0 \\
@@ -31,6 +32,7 @@ EXAMPLE:
       -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
       -v manifest-generation/bosh-lite-stubs/release-versions.yml \\
       -s manifest-generation/bosh-lite-stubs/diego-sql.yml \\
+      -d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml \\
       -g
 EOF
   exit 1
@@ -39,7 +41,7 @@ EOF
 base_releases="${manifest_generation}/base-releases.yml"
 garden_properties=""
 
-while getopts "c:i:p:n:v:s:krbg" opt; do
+while getopts "c:i:p:n:k:v:s:d:krbg" opt; do
   case $opt in
     c)
       cf_deployment_manifest=$OPTARG
@@ -70,6 +72,9 @@ while getopts "c:i:p:n:v:s:krbg" opt; do
       ;;
     b)
       >&2 echo "DEPRECATED -b flag: CF-Release now always provides the CC-Bridge components."
+      ;;
+    d)
+      voldriver_settings=$OPTARG
       ;;
     *)
       echo "Unknown arguments"
@@ -114,6 +119,11 @@ if [[ ! -z "${sql_settings}" && ! -f "${sql_settings}" ]]; then
   argument_error=true
 fi
 
+if [[ ! -z "${voldriver_settings}" && ! -f "${voldriver_settings}" ]]; then
+  >&2 echo "ERROR: Voldriver Setting stub '${voldriver_settings}' is not a regular file"
+  argument_error=true
+fi
+
 if [[ ! -z "${instance_counts}" && ! -f "${instance_counts}" ]]; then
   >&2 echo "ERROR: Instance-count-overrides stub '${instance_counts}' is not a regular file"
   argument_error=true
@@ -144,6 +154,7 @@ spiff merge \
   ${property_overrides} \
   ${instance_counts} \
   ${sql_settings} \
+  ${voldriver_settings} \
   ${iaas_settings} \
   ${tmpdir}/config-from-cf.yml \
   > ${tmpdir}/diego.yml
