@@ -1,6 +1,6 @@
 name: (( config_from_cf.cf_deployment_name "-diego" ))
 
-releases: (( base_releases volman_overrides.release [garden_overrides.release] [config_from_cf.cf_release] ))
+releases: (( base_releases volman_overrides.releases [garden_overrides.release] [config_from_cf.cf_release] ))
 
 director_uuid: (( config_from_cf.cf_director_uuid ))
 
@@ -188,7 +188,7 @@ jobs:
         zone: z1
 
   - name: cell_z1
-    templates: ((  base_job_templates.cell volman_overrides.drivers.template ))
+    templates: (( base_job_templates.cell volman_overrides.driver_templates ))
     instances: (( instance_count_overrides.cell_z1.instances || 1 ))
     resource_pool: cell_z1
     networks:
@@ -256,7 +256,7 @@ jobs:
         zone: z2
 
   - name: cell_z2
-    templates: (( base_job_templates.cell ))
+    templates: (( base_job_templates.cell volman_overrides.driver_templates ))
     instances: (( instance_count_overrides.cell_z2.instances || 1 ))
     resource_pool: cell_z2
     networks:
@@ -324,7 +324,7 @@ jobs:
         zone: z3
 
   - name: cell_z3
-    templates: (( base_job_templates.cell ))
+    templates: (( base_job_templates.cell volman_overrides.driver_templates ))
     instances: (( instance_count_overrides.cell_z3.instances || 0 ))
     resource_pool: cell_z3
     networks:
@@ -717,7 +717,9 @@ garden_overrides:
     name: garden-linux
     version: (( release_versions.garden_linux || "latest" ))
 empty_hash: {}
-volman_overrides: (( merge || [] ))
+volman_overrides:
+  releases: (( merge || [] ))
+  driver_templates: (( merge || [] ))
 base_releases:
   - name: diego
     version: (( release_versions.diego || "latest" ))

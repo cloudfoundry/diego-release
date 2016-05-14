@@ -15,7 +15,7 @@ if [ ! -z ${USE_SQL} ]; then
   sql_option="-s manifest-generation/bosh-lite-stubs/experimental/mysql/diego-sql.yml"
 fi
 
-if [ ! -d ${ENABLE_VOLDRIVER} ]; then
+if [ ! -d ${USE_VOLDRIVER} ]; then
   voldriver_option="-d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml"
 fi
 
