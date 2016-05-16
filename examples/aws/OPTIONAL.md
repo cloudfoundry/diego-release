@@ -45,7 +45,12 @@ The contents of this file will be supplied in the `sql_overrides.bbs.ca_cert` fi
 
 Follow the instructions at [CF MySQL Deploy](https://github.com/cloudfoundry/cf-mysql-release#deploy-on-aws-or-vsphere) to deploy a stand alone example [examples/standalone](https://github.com/cloudfoundry/cf-mysql-release/blob/develop/manifest-generation/examples/standalone)
 
-To minimize the deployment to only a single MySQL node use the following instance-count-overrides.yml
+**Note**: Currently the `master` branch of CF-MySQL (v26) cannot be checked out due to a missing submodule. We recommend that you use the `release-candidate` branch until a new final release is cut (v27).
+
+You will need to make changes to the `instance-count-overrides.yml` and `property-overrides.yml` found [here](https://github.com/cloudfoundry/cf-mysql-release/tree/master/manifest-generation/examples/standalone),
+as well as the `iaas-settings.yml` stub file found [here](https://github.com/cloudfoundry/cf-mysql-release/blob/master/manifest-generation/examples/aws/iaas-settings.yml).
+
+To minimize the deployment to only a single MySQL node use the following `instance-count-overrides.yml`
 
 ```yaml
 instance_count_overrides:
@@ -63,6 +68,31 @@ instance_count_overrides:
     instances: 0
 ```
 
+You will also need to seed the mysql deployment with a Diego database, username, and password. This can be done by providing the following property in your `property_overrides.yml`:
+
+```yaml
+property_overrides:
+  mysql:
+    seeded_databases: |
+      - name: diego
+        username: diego
+        password: REPLACE_ME_WITH_DB_PASSWORD
+```
+
+When filling out the [`iaas_settings.yml`](https://github.com/cloudfoundry/cf-mysql-release/blob/develop/manifest-generation/examples/aws/iaas-settings.yml),
+you only need to create one subnet and fill in the corresponding properties for the `mysql1` network/AZ.
+You can create an AWS subnet for the CF-MySQL deployment by:
+
+1. From the AWS console homepage, click on `VPC` in the `Networking` section.
+1. Click on the `Subnets` link.
+1. Click on the `Create Subnet` button.
+1. Fill in the name tag property for the subnet.
+1. Select the VPC associated with your deployment.
+1. Select the preferred AZ for your CF-MySQL deployment.
+1. Fill in `10.10.32.0/24` as the CIDR range.
+1. Click on the `Yes, create` button.
+
+
 ## Deploy Diego
 
 ### Fill in Diego-SQL stub
@@ -72,7 +102,7 @@ To configure Diego to communicate with the SQL instance, first create a Diego-SQ
 ```yaml
 sql_overrides:
   bbs:
-    db_connection_string: '<username>:<password>@tcp(<sql-instance-endpoint>)/<database-name>'
+    db_connection_string: 'diego:REPLACE_ME_WITH_DB_PASSWORD@tcp(<sql-instance-endpoint>)/diego'
     max_open_connections: 500
     require_ssl: true
     ca_cert: |
@@ -81,12 +111,10 @@ sql_overrides:
 
 Fill in the bracketed parameters in the `db_connection_string` with the following values:
 
-- `<username>`: The username chosen when you created the SQL instance.
-- `<password>`: The password chosen when you created the SQL instance.
-- `<sql-instance-endpoint>`: 
+- `REPLACE_ME_WITH_DB_PASSWORD`: The password chosen when you created the SQL instance.
+- `<sql-instance-endpoint>`:
 	- For AWS RDS: The endpoint displayed at the top of the DB instance details page in AWS, including the port.
-	- For CF-MySQL: The IP and Port of the SQL Node (e.g. 10.10.5.222:3306)
-- `<database-name>`: the name chosen when you created the SQL instance.
+	- For Standalone CF-MySQL: The internal IP address and port of the single MySQL node. (e.g. 10.10.5.222:3306). By default the port will be 3306.
 
 **Note:** The `sql_overrides.bbs.ca_cert` and `sql_overrides.bbs.require_ssl` properties should be provided only when deploying with an SSL-supported MySQL cluster. Set the `require_ssl` property to `true` to ensure that the BBS uses SSL to connect to the store, and set the `ca_cert` property to the contents of a certificate bundle containing the correct CA certificates to verify the certificate that the SQL server presents.
 
