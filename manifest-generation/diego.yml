@@ -715,7 +715,7 @@ garden_overrides:
   job_release: garden-linux
   release:
     name: garden-linux
-    version: (( release_versions.garden_linux || "latest" ))
+    version: (( release_versions.garden-linux || release_versions.garden_linux || "latest" ))
 empty_hash: {}
 volman_overrides:
   releases: (( merge || [] ))
