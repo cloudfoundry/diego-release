@@ -23,6 +23,7 @@ OPTIONAL ARGUMENTS:
     -s <sql-db-path>    Path to SQL stub file.
     -g                  Opt into using garden-runc-release for cells.
     -d <voldriver-path> Path to voldriver stub file.
+    -e                  Opt into removing etcd from the deployment
 
 EXAMPLE:
     $0 \\
@@ -33,7 +34,8 @@ EXAMPLE:
       -v manifest-generation/bosh-lite-stubs/release-versions.yml \\
       -s manifest-generation/bosh-lite-stubs/diego-sql.yml \\
       -d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml \\
-      -g
+      -g \\
+      -e
 EOF
   exit 1
 }
@@ -41,7 +43,7 @@ EOF
 base_releases="${manifest_generation}/base-releases.yml"
 garden_properties=""
 
-while getopts "c:i:p:n:k:v:s:d:krbg" opt; do
+while getopts "c:i:p:n:k:v:s:d:krbge" opt; do
   case $opt in
     c)
       cf_deployment_manifest=$OPTARG
@@ -75,6 +77,9 @@ while getopts "c:i:p:n:k:v:s:d:krbg" opt; do
       ;;
     d)
       voldriver_settings=$OPTARG
+      ;;
+    e)
+      bbs_properties="${manifest_generation}/bbs-overrides-no-etcd.yml"
       ;;
     *)
       echo "Unknown arguments"
@@ -150,6 +155,7 @@ spiff merge \
 spiff merge \
   ${manifest_generation}/diego.yml \
   ${release_versions} \
+  ${bbs_properties} \
   ${garden_properties} \
   ${property_overrides} \
   ${instance_counts} \

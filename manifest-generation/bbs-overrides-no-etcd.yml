@@ -1,0 +1,19 @@
+---
+bbs_overrides:
+  job_properties:
+    consul: {}
+  job_templates:
+  - name: consul_agent
+    release: cf
+  - name: bbs
+    release: diego
+  - name: metron_agent
+    release: cf
+  etcd_properties: {}
+  bbs_properties:
+    etcd:
+      machines: []
+      ca_cert: ""
+      client_cert: ""
+      client_key: ""
+  releases: []

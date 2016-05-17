@@ -83,7 +83,21 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec chpst -u vcap:vcap /var/vcap/packages/bbs/bin/bbs ${etcd_sec_flags} ${bbs_sec_flags} ${sql_sec_flags} \
+    etcd_flags=""
+    <% if p("diego.bbs.etcd.machines").size > 0 %>
+      etcd_flags="
+        ${etcd_sec_flags} \
+      -etcdCluster=<%= p("diego.bbs.etcd.machines").map{|addr| "\"#{p("diego.bbs.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
+      <% if_p("diego.bbs.etcd.client_session_cache_size") do |value| %> \
+        -etcdClientSessionCacheSize=<%= value %> \
+      <% end %> \
+      <% if_p("diego.bbs.etcd.max_idle_conns_per_host") do |value| %> \
+        -etcdMaxIdleConnsPerHost=<%= value %> \
+      <% end %> \
+      "
+    <% end %>
+
+    exec chpst -u vcap:vcap /var/vcap/packages/bbs/bin/bbs ${etcd_flags} ${bbs_sec_flags} ${sql_sec_flags} \
       -activeKeyLabel='<%= p("diego.bbs.active_key_label") %>' \
       -advertiseURL=${ad_url_scheme}<%="://#{name.gsub('_', '-')}-#{spec.index}.#{p("diego.bbs.advertisement_base_hostname")}:#{p("diego.bbs.listen_addr").split(':')[1]}" %> \
       -auctioneerAddress=<%= p("diego.bbs.auctioneer.api_url") %> \
@@ -91,13 +105,6 @@ case $1 in
       -debugAddr=<%= p("diego.bbs.debug_addr") %> \
       <% p("diego.bbs.encryption_keys").each do |encryption_key| %> \
         -encryptionKey='<%= "#{encryption_key["label"]}:#{encryption_key["passphrase"]}" %>' \
-      <% end %> \
-      -etcdCluster=<%= p("diego.bbs.etcd.machines").map{|addr| "\"#{p("diego.bbs.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
-      <% if_p("diego.bbs.etcd.client_session_cache_size") do |value| %> \
-        -etcdClientSessionCacheSize=<%= value %> \
-      <% end %> \
-      <% if_p("diego.bbs.etcd.max_idle_conns_per_host") do |value| %> \
-        -etcdMaxIdleConnsPerHost=<%= value %> \
       <% end %> \
       -dropsondePort=<%= p("diego.bbs.dropsonde_port") %> \
       -listenAddress=<%= p("diego.bbs.listen_addr") %> \

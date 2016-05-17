@@ -1,6 +1,6 @@
 name: (( config_from_cf.cf_deployment_name "-diego" ))
 
-releases: (( base_releases volman_overrides.releases [garden_overrides.release] [config_from_cf.cf_release] ))
+releases: (( base_releases bbs_overrides.releases volman_overrides.releases [garden_overrides.release] [config_from_cf.cf_release] ))
 
 director_uuid: (( config_from_cf.cf_director_uuid ))
 
@@ -121,7 +121,7 @@ resource_pools:
 
 jobs:
   - name: database_z1
-    templates: (( base_job_templates.database ))
+    templates: (( bbs_overrides.job_templates ))
     instances: (( instance_count_overrides.database_z1.instances || 1 ))
     persistent_disk_pool: database_disks
     resource_pool: database_z1
@@ -131,15 +131,12 @@ jobs:
       serial: true
       max_in_flight: 1
     properties:
-      consul:
-        agent:
-          services:
-            etcd: {}
+      consul: (( bbs_overrides.job_properties.consul ))
       metron_agent:
         zone: z1
 
   - name: database_z2
-    templates: (( base_job_templates.database ))
+    templates: (( bbs_overrides.job_templates ))
     instances: (( instance_count_overrides.database_z2.instances || 1 ))
     persistent_disk_pool: database_disks
     resource_pool: database_z2
@@ -149,15 +146,12 @@ jobs:
       serial: true
       max_in_flight: 1
     properties:
-      consul:
-        agent:
-          services:
-            etcd: {}
+      consul: (( bbs_overrides.job_properties.consul ))
       metron_agent:
         zone: z2
 
   - name: database_z3
-    templates: (( base_job_templates.database ))
+    templates: (( bbs_overrides.job_templates ))
     instances: (( instance_count_overrides.database_z3.instances || 1 ))
     persistent_disk_pool: database_disks
     resource_pool: database_z3
@@ -167,10 +161,7 @@ jobs:
       serial: true
       max_in_flight: 1
     properties:
-      consul:
-        agent:
-          services:
-            etcd: {}
+      consul: (( bbs_overrides.job_properties.consul ))
       metron_agent:
         zone: z3
 
@@ -379,7 +370,7 @@ jobs:
         zone: z3
 
   - name: colocated_z1
-    templates: (( base_job_templates.colocated ))
+    templates: (( base_job_templates.colocated bbs_overrides.job_templates ))
     instances: (( instance_count_overrides.colocated_z1.instances || 0 ))
     persistent_disk_pool: database_disks
     resource_pool: colocated_z1
@@ -400,7 +391,7 @@ jobs:
         zone: z1
 
   - name: colocated_z2
-    templates: (( base_job_templates.colocated ))
+    templates: (( base_job_templates.colocated bbs_overrides.job_templates ))
     instances: (( instance_count_overrides.colocated_z2.instances || 0 ))
     persistent_disk_pool: database_disks
     resource_pool: colocated_z2
@@ -421,7 +412,7 @@ jobs:
         zone: z2
 
   - name: colocated_z3
-    templates: (( base_job_templates.colocated ))
+    templates: (( base_job_templates.colocated bbs_overrides.job_templates ))
     instances: (( instance_count_overrides.colocated_z3.instances || 0 ))
     persistent_disk_pool: database_disks
     resource_pool: colocated_z3
@@ -478,34 +469,7 @@ properties:
     server_key: (( config_from_cf.consul.server_key ))
 
   # -- Properties below are used by the etcd from etcd-release --
-  etcd:
-    machines: ["etcd.service.cf.internal"]
-    advertise_urls_dns_suffix: "etcd.service.cf.internal"
-    cluster:
-      - name: "database_z1"
-        instances: (( instance_count_overrides.database_z1.instances || 1 ))
-      - name: "database_z2"
-        instances: (( instance_count_overrides.database_z2.instances || 1 ))
-      - name: "database_z3"
-        instances: (( instance_count_overrides.database_z3.instances || 1 ))
-      - name: "colocated_z1"
-        instances: (( instance_count_overrides.colocated_z1.instances || 0 ))
-      - name: "colocated_z2"
-        instances: (( instance_count_overrides.colocated_z2.instances || 0 ))
-      - name: "colocated_z2"
-        instances: (( instance_count_overrides.colocated_z2.instances || 0 ))
-    require_ssl: (( property_overrides.etcd.require_ssl || nil ))
-    ca_cert: (( property_overrides.etcd.ca_cert || nil ))
-    server_cert: (( property_overrides.etcd.server_cert || nil ))
-    server_key: (( property_overrides.etcd.server_key || nil ))
-    client_cert: (( property_overrides.etcd.client_cert || nil ))
-    client_key: (( property_overrides.etcd.client_key || nil ))
-    peer_require_ssl: (( property_overrides.etcd.peer_require_ssl || nil ))
-    peer_ca_cert: (( property_overrides.etcd.peer_ca_cert || nil ))
-    peer_cert: (( property_overrides.etcd.peer_cert || nil ))
-    peer_key: (( property_overrides.etcd.peer_key || nil ))
-    heartbeat_interval_in_milliseconds: (( property_overrides.etcd.heartbeat_interval_in_milliseconds || nil ))
-    election_timeout_in_milliseconds: (( property_overrides.etcd.election_timeout_in_milliseconds || nil ))
+  etcd: (( bbs_overrides.etcd_properties ))
 
   cflinuxfs2-rootfs:
     trusted_certs: (( property_overrides.rootfs_cflinuxfs2.trusted_certs || nil ))
@@ -540,14 +504,7 @@ properties:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       auctioneer:
         api_url: (( property_overrides.bbs.auctioneer.api_url || nil ))
-      etcd:
-        machines: (( properties.etcd.machines ))
-        require_ssl: (( property_overrides.etcd.require_ssl || nil ))
-        ca_cert: (( property_overrides.etcd.ca_cert ))
-        client_cert: (( property_overrides.etcd.client_cert ))
-        client_key: (( property_overrides.etcd.client_key ))
-        client_session_cache_size: (( property_overrides.etcd.client_session_cache_size || nil ))
-        max_idle_conns_per_host: (( property_overrides.etcd.max_idle_conns_per_host || nil ))
+      etcd: (( bbs_overrides.bbs_properties.etcd ))
       sql:
         db_connection_string: (( sql_overrides.bbs.db_connection_string || nil ))
         max_open_connections: (( sql_overrides.bbs.max_open_connections || nil ))
@@ -711,22 +668,78 @@ instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
 sql_overrides: (( merge  || nil ))
 bridge_overrides: (( merge || nil ))
+
+bbs_overrides:
+  job_properties:
+    consul: (( merge  || base_etcd_properties.consul ))
+  job_templates: (( merge || base_job_templates.database ))
+  etcd_properties: (( merge || base_etcd_properties.properties ))
+  bbs_properties:
+    etcd:
+      machines: (( base_etcd_properties.properties.machines ))
+      require_ssl: (( property_overrides.etcd.require_ssl || nil ))
+      ca_cert: (( property_overrides.etcd.ca_cert ))
+      client_cert: (( property_overrides.etcd.client_cert ))
+      client_key: (( property_overrides.etcd.client_key ))
+      client_session_cache_size: (( property_overrides.etcd.client_session_cache_size || nil ))
+      max_idle_conns_per_host: (( property_overrides.etcd.max_idle_conns_per_host || nil ))
+  releases: (( merge || base_etcd_properties.releases ))
+
+base_etcd_properties:
+  releases:
+  - name: etcd
+    version: (( release_versions.etcd || "latest" ))
+  consul:
+    agent:
+      services:
+        etcd: {}
+  properties:
+    machines: ["etcd.service.cf.internal"]
+    advertise_urls_dns_suffix: "etcd.service.cf.internal"
+    cluster:
+      - name: "database_z1"
+        instances: (( instance_count_overrides.database_z1.instances || 1 ))
+      - name: "database_z2"
+        instances: (( instance_count_overrides.database_z2.instances || 1 ))
+      - name: "database_z3"
+        instances: (( instance_count_overrides.database_z3.instances || 1 ))
+      - name: "colocated_z1"
+        instances: (( instance_count_overrides.colocated_z1.instances || 0 ))
+      - name: "colocated_z2"
+        instances: (( instance_count_overrides.colocated_z2.instances || 0 ))
+      - name: "colocated_z2"
+        instances: (( instance_count_overrides.colocated_z2.instances || 0 ))
+    require_ssl: (( property_overrides.etcd.require_ssl || nil ))
+    ca_cert: (( property_overrides.etcd.ca_cert || nil ))
+    server_cert: (( property_overrides.etcd.server_cert || nil ))
+    server_key: (( property_overrides.etcd.server_key || nil ))
+    client_cert: (( property_overrides.etcd.client_cert || nil ))
+    client_key: (( property_overrides.etcd.client_key || nil ))
+    peer_require_ssl: (( property_overrides.etcd.peer_require_ssl || nil ))
+    peer_ca_cert: (( property_overrides.etcd.peer_ca_cert || nil ))
+    peer_cert: (( property_overrides.etcd.peer_cert || nil ))
+    peer_key: (( property_overrides.etcd.peer_key || nil ))
+    heartbeat_interval_in_milliseconds: (( property_overrides.etcd.heartbeat_interval_in_milliseconds || nil ))
+    election_timeout_in_milliseconds: (( property_overrides.etcd.election_timeout_in_milliseconds || nil ))
+
 garden_overrides:
   job_release: garden-linux
   release:
     name: garden-linux
     version: (( release_versions.garden-linux || release_versions.garden_linux || "latest" ))
+
 empty_hash: {}
+
 volman_overrides:
   releases: (( merge || [] ))
   driver_templates: (( merge || [] ))
+
 base_releases:
   - name: diego
     version: (( release_versions.diego || "latest" ))
-  - name: etcd
-    version: (( release_versions.etcd || "latest" ))
   - name: cflinuxfs2-rootfs
     version: (( release_versions.cflinuxfs2-rootfs || "latest" ))
+
 release_versions: (( merge || nil ))
 
 base_job_templates:
@@ -789,26 +802,18 @@ base_job_templates:
     - name: metron_agent
       release: cf
   colocated:
-    - name: consul_agent
-      release: cf
     - name: rep
       release: diego
     - name: auctioneer
-      release: diego
-    - name: bbs
       release: diego
     - name: cc_uploader
       release: cf
     - name: converger
       release: diego
-    - name: etcd
-      release: etcd
     - name: file_server
       release: diego
     - name: garden
       release: (( garden_overrides.job_release || "garden-linux" ))
-    - name: metron_agent
-      release: cf
     - name: nsync
       release: cf
     - name: cflinuxfs2-rootfs-setup
