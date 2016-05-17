@@ -8,7 +8,7 @@ eval $($scripts_path/get_paths.sh)
 echo "checking code for compilation errors..."
 
 pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/inigo > /dev/null
-  for pkg in `find . -type d ! -path . -maxdepth 1`; do
+  for pkg in `find . -maxdepth 1 -type d ! -path .`; do
     go test -c ./${pkg} > /dev/null
   done
 popd > /dev/null
