@@ -21,4 +21,16 @@ else
   target="-t local"
 fi
 
-fly ${target} execute -p -x -c $DIEGO_RELEASE_DIR/scripts/ci/run_inigo.build.yml -i diego-release=$PWD -i garden-linux-release=$HOME/workspace/garden-linux-release -- "$@"
+if [ -z "${USE_GARDEN_RUNC}" ]; then
+  fly ${target} execute -p -x \
+    -c $DIEGO_RELEASE_DIR/scripts/ci/run_inigo_glinux.build.yml \
+    -i diego-release=$PWD \
+    -i garden-linux-release=$HOME/workspace/garden-linux-release \
+    -- "$@"
+else
+  fly ${target} execute -p -x \
+    -c $DIEGO_RELEASE_DIR/scripts/ci/run_inigo_grunc.build.yml \
+    -i diego-release=$PWD \
+    -i garden-runc-release=$HOME/workspace/garden-runc-release \
+    -- "$@"
+fi

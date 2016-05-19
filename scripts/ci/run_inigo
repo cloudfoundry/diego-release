@@ -5,7 +5,46 @@ set -e -x
 export GOROOT=/usr/local/go
 export PATH=${GOROOT}/bin:${PATH}
 
-export GARDEN_LINUX_GOPATH=$PWD/garden-linux-release
+build_gardenlinux () {
+  echo "Building garden-linux"
+  export GARDEN_GOPATH=$PWD/garden-linux-release
+
+  pushd "${GARDEN_GOPATH}/src/github.com/cloudfoundry-incubator/garden-linux"
+    GOPATH=${GARDEN_GOPATH} make # compile wshd/etc.
+    export GARDEN_BINPATH=$PWD/linux_backend/bin
+  popd
+}
+
+build_gardenrunc () {
+  echo "Building garden-runc"
+  export GARDEN_GOPATH=$PWD/garden-runc-release
+
+  pushd ${GARDEN_GOPATH}
+    export GOPATH=${PWD}
+    export PATH=${GOPATH}/bin:${PATH}
+    export GARDEN_BINPATH=${PWD}/bin/
+
+    go install github.com/cloudfoundry-incubator/guardian/rundmc/iodaemon/cmd/iodaemon
+    go install github.com/cloudfoundry-incubator/guardian/cmd/kawasaki/
+    go install github.com/cloudfoundry-incubator/guardian/cmd/init/
+    go install github.com/cloudfoundry-incubator/guardian/cmd/dadoo/
+    go install github.com/cloudfoundry-incubator/guardian/cmd/inspector-garden/
+
+    pushd src/github.com/opencontainers/runc
+      GOPATH=${PWD}/Godeps/_workspace:${GOPATH} go install
+    popd
+
+    pushd src/github.com/cloudfoundry-incubator/guardian/rundmc/nstar
+      make && cp nstar ${GARDEN_BINPATH}
+    popd
+  popd
+}
+
+if [ -z "${USE_GARDEN_RUNC}" ]; then
+  build_gardenlinux
+else
+  build_gardenrunc
+fi
 
 cd diego-release/
 
@@ -38,11 +77,6 @@ for package in github.com/coreos/etcd github.com/apcera/gnatsd; do
 done
 
 cd "${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo"
-
-pushd "${GARDEN_LINUX_GOPATH}/src/github.com/cloudfoundry-incubator/garden-linux"
-  GOPATH=${GARDEN_LINUX_GOPATH} make # compile wshd/etc.
-  export GARDEN_BINPATH=$PWD/linux_backend/bin
-popd
 
 go install github.com/onsi/ginkgo/ginkgo
 
@@ -78,7 +112,7 @@ if ! grep -qs '/sys' /proc/mounts; then
 fi
 
 # shellcheck source=/dev/null
-source "${GARDEN_LINUX_GOPATH}/ci/scripts/aufs"
+source "${GARDEN_GOPATH}/ci/scripts/aufs"
 permit_device_control
 create_loop_devices 256
 
