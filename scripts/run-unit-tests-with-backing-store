@@ -13,6 +13,7 @@ else
   DB_UNITS="./bbs/db/etcd"
 fi
 
+ERROR_CODE=1
 pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/ > /dev/null
   ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress --race \
     bbs/cmd/bbs \
@@ -22,5 +23,9 @@ pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/ > /dev/null
     rep/cmd/rep \
     route-emitter/cmd/route-emitter \
     ${DB_UNITS}
+
+  ERROR_CODE=$?
 popd > /dev/null
+
+exit $ERROR_CODE
 
