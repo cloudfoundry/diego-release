@@ -10,6 +10,7 @@ templates:
   bbs_server.crt.erb: config/certs/server.crt
   bbs_server.key.erb: config/certs/server.key
   sql_ca.crt.erb: config/certs/sql/ca.crt
+  post-start.erb: bin/post-start
 
 packages:
   - pid_utils
@@ -22,6 +23,9 @@ properties:
   diego.bbs.listen_addr:
     description: "address at which to serve API requests"
     default: "0.0.0.0:8889"
+  diego.bbs.health_addr:
+    description: "address at which to serve API requests"
+    default: "127.0.0.1:8890"
   diego.bbs.log_level:
     description: "Log level"
     default: "info"

@@ -108,6 +108,7 @@ case $1 in
       <% end %> \
       -dropsondePort=<%= p("diego.bbs.dropsonde_port") %> \
       -listenAddress=<%= p("diego.bbs.listen_addr") %> \
+      -healthAddress=<%= p("diego.bbs.health_addr") %> \
       -logLevel=<%= p("diego.bbs.log_level") %> \
       -requireSSL=<%= p("diego.bbs.require_ssl") %> \
       <% if_p("diego.bbs.desired_lrp_creation_timeout") do |value| %> \
