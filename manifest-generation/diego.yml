@@ -380,10 +380,7 @@ jobs:
       serial: true
       max_in_flight: 1
     properties:
-      consul:
-        agent:
-          services:
-            etcd: {}
+      consul: (( bbs_overrides.job_properties.consul ))
       diego:
         rep:
           zone: z1
@@ -401,10 +398,7 @@ jobs:
       serial: true
       max_in_flight: 1
     properties:
-      consul:
-        agent:
-          services:
-            etcd: {}
+      consul: (( bbs_overrides.job_properties.consul ))
       diego:
         rep:
           zone: z2
@@ -422,10 +416,7 @@ jobs:
       serial: true
       max_in_flight: 1
     properties:
-      consul:
-        agent:
-          services:
-            etcd: {}
+      consul: (( bbs_overrides.job_properties.consul ))
       diego:
         rep:
           zone: z3

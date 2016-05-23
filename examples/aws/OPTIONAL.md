@@ -142,3 +142,22 @@ cd $DIEGO_RELEASE_DIR
   -v $DEPLOYMENT_DIR/stubs/diego/release-versions.yml \
   > $DEPLOYMENT_DIR/deployments/diego.yml
 ```
+
+### Disable and remove ETCD from your Diego deployment
+
+Once you've successfully deployed a SQL-backed Diego, you may want to remove the now-idle etcd jobs from your database cluster to save on infrastructure costs. Once the database VMs are free of etcd jobs, they do not need to be deployed with write-optimized disks. 
+
+To remove etcd from your deployment, just supply the manifest generation scripts with the `-x` flag.
+
+```bash
+cd $DIEGO_RELEASE_DIR
+./scripts/generate-deployment-manifest \
+  -c $DEPLOYMENT_DIR/deployments/cf.yml \
+  -i $DEPLOYMENT_DIR/stubs/diego/iaas-settings.yml \
+  -p $DEPLOYMENT_DIR/stubs/diego/property-overrides.yml \
+  -s $DEPLOYMENT_DIR/stubs/diego/diego-sql.yml \
+  -x \
+  -n $DEPLOYMENT_DIR/stubs/diego/instance-count-overrides.yml \
+  -v $DEPLOYMENT_DIR/stubs/diego/release-versions.yml \
+  > $DEPLOYMENT_DIR/deployments/diego.yml
+```

@@ -21,9 +21,9 @@ OPTIONAL ARGUMENTS:
     -n <count-path>     Path to instance-count-overrides stub file.
     -v <versions-path>  Path to release-versions stub file.
     -s <sql-db-path>    Path to SQL stub file.
+    -x                  Opt out of deploying etcd with the database vms (requires sql)
     -g                  Opt into using garden-runc-release for cells.
     -d <voldriver-path> Path to voldriver stub file.
-    -e                  Opt into removing etcd from the deployment
 
 EXAMPLE:
     $0 \\
@@ -33,9 +33,9 @@ EXAMPLE:
       -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
       -v manifest-generation/bosh-lite-stubs/release-versions.yml \\
       -s manifest-generation/bosh-lite-stubs/diego-sql.yml \\
+      -x \\
       -d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml \\
-      -g \\
-      -e
+      -g
 EOF
   exit 1
 }
@@ -43,7 +43,7 @@ EOF
 base_releases="${manifest_generation}/base-releases.yml"
 garden_properties=""
 
-while getopts "c:i:p:n:k:v:s:d:krbge" opt; do
+while getopts "c:i:p:n:k:v:s:d:krbgx" opt; do
   case $opt in
     c)
       cf_deployment_manifest=$OPTARG
@@ -78,7 +78,7 @@ while getopts "c:i:p:n:k:v:s:d:krbge" opt; do
     d)
       voldriver_settings=$OPTARG
       ;;
-    e)
+    x)
       bbs_properties="${manifest_generation}/bbs-overrides-no-etcd.yml"
       ;;
     *)
