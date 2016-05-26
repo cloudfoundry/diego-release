@@ -66,6 +66,8 @@ files:
   - github.com/gogo/protobuf/sortkeys/*.go # gosub
   - github.com/golang/protobuf/proto/*.go # gosub
   - github.com/hashicorp/consul/api/*.go # gosub
+  - github.com/hashicorp/consul/vendor/github.com/hashicorp/go-cleanhttp/*.go # gosub
+  - github.com/hashicorp/consul/vendor/github.com/hashicorp/serf/coordinate/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/onsi/ginkgo/*.go # gosub
   - github.com/onsi/ginkgo/config/*.go # gosub
