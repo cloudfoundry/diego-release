@@ -43,44 +43,44 @@ The contents of this file will be supplied in the `sql_overrides.bbs.ca_cert` fi
 
 ## Deploy Standalone CF-MySQL
 
-**Note: Standalone MySQL can also be deployed in a single node for a minimal deployment. Follow the [instructions below](#scaling-down-the-mysql-cluster) to scale down the MySQL cluster**
+**Note: MySQL can also be deployed with a single node for a minimal, standalone deployment. Follow the [instructions below](#scaling-down-the-mysql-cluster) to provision this single-node MySQL cluster.**
 
-Follow the instructions at [CF MySQL Deploy](https://github.com/cloudfoundry/cf-mysql-release#deploy-on-aws-or-vsphere) to deploy a stand alone example [examples/standalone](https://github.com/cloudfoundry/cf-mysql-release/blob/develop/manifest-generation/examples/standalone)
+Follow the instructions at [CF MySQL Deploy](https://github.com/cloudfoundry/cf-mysql-release#deploy-on-aws-or-vsphere) to deploy a standalone example.
 
-**Note**: Currently the `master` branch of CF-MySQL (v26) cannot be checked out due to a missing submodule. We recommend that you use the `release-candidate` branch until a new final release is cut (v27).
+**Note**: The current head of the `master` branch of CF-MySQL (release v26) cannot be checked out fully due to a missing submodule. We recommend that you use the `release-candidate` branch until a new final release is created (v27).
 
 You will need to make changes to the `instance-count-overrides.yml` and `property-overrides.yml` found [here](https://github.com/cloudfoundry/cf-mysql-release/tree/master/manifest-generation/examples/standalone), as well as the `iaas-settings.yml` stub file found [here](https://github.com/cloudfoundry/cf-mysql-release/blob/master/manifest-generation/examples/aws/iaas-settings.yml).
 
 
-### Set the Consul Property Overrides
+### Set the CF-MySQL Property Overrides
 
-1. You will also need to seed the mysql deployment with a Diego database, username, and password. This can be done by providing the following property in your `property_overrides.yml`:
+1. The CF-MySQL deployment must also be seeded with a Diego database, username, and password. Do this by providing the following property in your `property_overrides.yml`:
 ```yaml
 property_overrides:
   mysql:
-    seeded_databases: |
-      - name: diego
-        username: diego
-        password: REPLACE_ME_WITH_DB_PASSWORD
+    seeded_databases:
+    - name: diego
+      username: diego
+      password: REPLACE_ME_WITH_DB_PASSWORD
 ```
 1. Follow [these instructions](https://github.com/cloudfoundry/cf-mysql-release/blob/develop/docs/proxy.md#configuring-consul) to configure the MySQL deployment to use Consul for service discovery. Specifically, you will want the `job-overrides.yml` that includes Consul.
 
-### Set the Consul IaaS Settings
+### Set the CF-MySQL IaaS Settings
 
-When filling out the [`iaas_settings.yml`](https://github.com/cloudfoundry/cf-mysql-release/blob/develop/manifest-generation/examples/aws/iaas-settings.yml), you only need to create one subnet and fill in the corresponding properties for the `mysql1` network/AZ.  You can create an AWS subnet for the CF-MySQL deployment by:
+When filling out the [`iaas_settings.yml`](https://github.com/cloudfoundry/cf-mysql-release/blob/develop/manifest-generation/examples/aws/iaas-settings.yml), you only need to create one subnet and fill in the corresponding properties for the `mysql1` network and AZ.  You can create an AWS subnet for the CF-MySQL deployment by:
 
 1. From the AWS console homepage, click on `VPC` in the `Networking` section.
 1. Click on the `Subnets` link.
 1. Click on the `Create Subnet` button.
-1. Fill in the name tag property for the subnet.
+1. Fill in the name tag property for the subnet as is desired (for example, MySQLZ1).
 1. Select the VPC associated with your deployment.
-1. Select the preferred AZ for your CF-MySQL deployment.
+1. Select the AZ you used as the first AZ in the `stubs/infrastructure/availability_zones.yml` file.
 1. Fill in `10.10.32.0/24` as the CIDR range.
-1. Click on the `Yes, create` button.
+1. Click on the `Yes, Create` button.
 
-### Scaling down the MySQL cluster
+### Scaling down the CF-MySQL cluster
 
-To minimize the deployment to only a single MySQL node use the following `instance-count-overrides.yml`
+To minimize the deployment to only a single MySQL node use the following settings in `instance-count-overrides.yml`:
 
 ```yaml
 instance_count_overrides:
