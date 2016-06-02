@@ -43,7 +43,7 @@ The contents of this file will be supplied in the `sql_overrides.bbs.ca_cert` fi
 
 ## Deploy Standalone CF-MySQL
 
-**Note: MySQL can also be deployed with a single node for a minimal, standalone deployment. Follow the [instructions below](#scaling-down-the-mysql-cluster) to provision this single-node MySQL cluster.**
+**Note: MySQL can also be deployed with a single node for a minimal, standalone deployment. Follow the [instructions below](#scaling-down-the-cf-mysql-cluster) to provision this single-node MySQL cluster.**
 
 Follow the instructions at [CF MySQL Deploy](https://github.com/cloudfoundry/cf-mysql-release#deploy-on-aws-or-vsphere) to deploy a standalone example.
 
