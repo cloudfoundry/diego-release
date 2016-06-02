@@ -87,8 +87,8 @@ case $1 in
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       -debugAddr=<%= p("diego.ssh_proxy.debug_addr") %> \
       -logLevel=<%= p("diego.ssh_proxy.log_level") %> \
-      2> >(tee -a $LOG_DIR/ssh_proxy.stderr.log | logger -p user.error -t vcap.ssh-proxy) \
-      1> >(tee -a $LOG_DIR/ssh_proxy.stdout.log | logger -p user.info -t vcap.ssh-proxy)
+      2> >(chpst -u vcap:vcap tee -a $LOG_DIR/ssh_proxy.stderr.log | chpst -u vcap:vcap logger -p user.error -t vcap.ssh-proxy) \
+      1> >(chpst -u vcap:vcap tee -a $LOG_DIR/ssh_proxy.stdout.log | chpst -u vcap:vcap logger -p user.info -t vcap.ssh-proxy)
 
     ;;
 

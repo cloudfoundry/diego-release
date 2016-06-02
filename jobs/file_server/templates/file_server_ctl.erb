@@ -54,8 +54,8 @@ case $1 in
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       -dropsondePort=<%= p("diego.file_server.dropsonde_port") %> \
       -logLevel=<%= p("diego.file_server.log_level") %> \
-      2> >(tee -a $LOG_DIR/file_server.stderr.log | logger -p user.error -t vcap.file-server) \
-      1> >(tee -a $LOG_DIR/file_server.stdout.log | logger -p user.info -t vcap.file-server)
+      2> >(chpst -u vcap:vcap tee -a $LOG_DIR/file_server.stderr.log | chpst -u vcap:vcap logger -p user.error -t vcap.file-server) \
+      1> >(chpst -u vcap:vcap tee -a $LOG_DIR/file_server.stdout.log | chpst -u vcap:vcap logger -p user.info -t vcap.file-server)
 
     ;;
 

@@ -163,8 +163,8 @@ case $1 in
       <% if_p("diego.executor.post_setup_hook") do |value| %> \
         -postSetupHook=<%= Shellwords.shellescape(value) %> \
       <% end %> \
-      2>> $LOG_DIR/rep.stderr.log \
-      1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep) &
+      2> >(chpst -u vcap:vcap tee -a $LOG_DIR/rep.stderr.log | chpst -u vcap:vcap logger -p user.error -t vcap.rep) \
+      1> >(chpst -u vcap:vcap tee -a $LOG_DIR/rep.stdout.log | chpst -u vcap:vcap logger -t vcap.rep) &
 
     pid=$!
 

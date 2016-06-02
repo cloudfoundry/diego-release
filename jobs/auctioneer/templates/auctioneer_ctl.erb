@@ -55,8 +55,8 @@ case $1 in
       -cellStateTimeout=<%= p("diego.auctioneer.cell_state_timeout") %> \
       -startingContainerWeight=<%= p("diego.auctioneer.starting_container_weight") %> \
       -logLevel=<%= p("diego.auctioneer.log_level") %> \
-      2> >(tee -a $LOG_DIR/auctioneer.stderr.log | logger -p user.error -t vcap.auctioneer) \
-      1> >(tee -a $LOG_DIR/auctioneer.stdout.log | logger -p user.info -t vcap.auctioneer)
+      2> >(chpst -u vcap:vcap tee -a $LOG_DIR/auctioneer.stderr.log | chpst -u vcap:vcap logger -p user.error -t vcap.auctioneer) \
+      1> >(chpst -u vcap:vcap tee -a $LOG_DIR/auctioneer.stdout.log | chpst -u vcap:vcap logger -p user.info -t vcap.auctioneer)
 
     ;;
 

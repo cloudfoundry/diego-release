@@ -120,8 +120,8 @@ case $1 in
       <% if_p("diego.bbs.sql.max_open_connections") do |value| %> \
         -maxDatabaseConnections=<%= value %> \
       <% end %> \
-      2> >(tee -a $LOG_DIR/bbs.stderr.log | logger -p user.error -t vcap.bbs) \
-      1> >(tee -a $LOG_DIR/bbs.stdout.log | logger -p user.info -t vcap.bbs)
+      2> >(chpst -u vcap:vcap tee -a $LOG_DIR/bbs.stderr.log | chpst -u vcap:vcap logger -p user.error -t vcap.bbs) \
+      1> >(chpst -u vcap:vcap tee -a $LOG_DIR/bbs.stdout.log | chpst -u vcap:vcap logger -p user.info -t vcap.bbs)
 
     ;;
 
