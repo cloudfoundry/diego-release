@@ -43,15 +43,28 @@ The contents of this file will be supplied in the `sql_overrides.bbs.ca_cert` fi
 
 ## Deploy Standalone CF-MySQL
 
-**Note: MySQL can also be deployed with a single node for a minimal, standalone deployment. Follow the [instructions below](#scaling-down-the-cf-mysql-cluster) to provision this single-node MySQL cluster.**
+**Note: MySQL can also be deployed with a single node for a minimal, standalone deployment. Follow the [instructions below](#scaling-down-the-cf-mysql-cluster) to provision a single-node MySQL cluster. **
 
-Follow the instructions at [CF MySQL Deploy](https://github.com/cloudfoundry/cf-mysql-release#deploy-on-aws-or-vsphere) to deploy a standalone example.
+We recommend deploying with an HA, standalone mysql that is resolvable via consul dns for stability and availability. To do this, copy the correct example stubs from cf-mysql-release and fill in their REPLACE_WITH values as appropriate for passwords and so on.
 
-You will need to make changes to the `instance-count-overrides.yml` and `property-overrides.yml` found [here](https://github.com/cloudfoundry/cf-mysql-release/tree/master/manifest-generation/examples/standalone), as well as the `iaas-settings.yml` stub file found [here](https://github.com/cloudfoundry/cf-mysql-release/blob/master/manifest-generation/examples/aws/iaas-settings.yml).
+```bash
+git clone git@github.com:cloudfoundry/cf-mysql-release.git
+export CF_MYSQL_REL_DIR=./cf-mysql-release
+
+cp $CF_MYSQL_REL_DIR/manifest-generation/examples/aws/iaas-settings.yml \ 
+   $CF_MYSQL_REL_DIR/manifest-generation/examples/standalone/property-overrides.yml \  	 
+   $CF_MYSQL_REL_DIR/manifest-generation/examples/standalone/standalone-cf-manifest.yml \ 
+   $CF_MYSQL_REL_DIR/manifest-generation/examples/standalone/instance-count-overrides.yml \
+   $CF_MYSQL_REL_DIR/manifest-generation/examples/job-overrides-consul.yml \
+$DEPLOYMENT_DIR/stubs/cf-mysql/
+```
+
+You will need to make additional changes to the `instance-count-overrides.yml` and `property-overrides.yml` found [here](https://github.com/cloudfoundry/cf-mysql-release/tree/master/manifest-generation/examples/standalone), as well as the `iaas-settings.yml` stub file found [here](https://github.com/cloudfoundry/cf-mysql-release/blob/master/manifest-generation/examples/aws/iaas-settings.yml).
 
 
 ### Set the CF-MySQL Property Overrides
 
+1. Anything related to the ELB can be removed, as we'll be doing service discovery via consul.
 1. The CF-MySQL deployment must also be seeded with a Diego database, username, and password. Do this by providing the following property in your `property_overrides.yml`:
 ```yaml
 property_overrides:
@@ -65,16 +78,19 @@ property_overrides:
 
 ### Set the CF-MySQL IaaS Settings
 
-When filling out the [`iaas_settings.yml`](https://github.com/cloudfoundry/cf-mysql-release/blob/develop/manifest-generation/examples/aws/iaas-settings.yml), you only need to create one subnet and fill in the corresponding properties for the `mysql1` network and AZ.  You can create an AWS subnet for the CF-MySQL deployment by:
+When filling out the [`iaas_settings.yml`](https://github.com/cloudfoundry/cf-mysql-release/blob/develop/manifest-generation/examples/aws/iaas-settings.yml), you only need to create one subnet per availability zone and fill in the corresponding properties for the `mysql1`, `mysql2`, and `mysql3` network and AZ.  You can create an AWS subnet for the CF-MySQL deployment by:
 
 1. From the AWS console homepage, click on `VPC` in the `Networking` section.
 1. Click on the `Subnets` link.
 1. Click on the `Create Subnet` button.
 1. Fill in the name tag property for the subnet as is desired (for example, MySQLZ1).
 1. Select the VPC associated with your deployment.
-1. Select the AZ you used as the first AZ in the `stubs/infrastructure/availability_zones.yml` file.
+1. Select the AZ you used to AZ in the `stubs/infrastructure/availability_zones.yml` file.
+    2. If you're configuring HA, the 1st subnet should match the 1st AZ, the 2nd subnet should match the 2nd AZ, etc.
 1. Fill in `10.10.32.0/24` as the CIDR range.
 1. Click on the `Yes, Create` button.
+
+If deploying in HA configuration, this should be repeated 3 times, once for each AZ.
 
 ### Scaling down the CF-MySQL cluster
 
