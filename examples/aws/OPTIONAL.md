@@ -60,13 +60,23 @@ cp $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/aws/iaas-settings.yml \
 $DEPLOYMENT_DIR/stubs/cf-mysql/
 ```
 
-You will need to make additional changes to the `instance-count-overrides.yml` and `property-overrides.yml` found [here](https://github.com/cloudfoundry/cf-mysql-release/tree/master/manifest-generation/examples/standalone), as well as the `iaas-settings.yml` stub file found [here](https://github.com/cloudfoundry/cf-mysql-release/blob/master/manifest-generation/examples/aws/iaas-settings.yml).
+You will need to make additional changes to the `instance-count-overrides.yml`, `property-overrides.yml`, and `iaas-settings.yml` stub file.
 
 
 ### Set the CF-MySQL Property Overrides
+1. Rename the deployment so you could use another mysql-release as a user service if you wanted to:
+```yaml
+property_overrides:
+    deployment_name: diego-mysql
+```
 
-1. Anything related to the ELB can be removed, as we'll be doing service discovery via consul.
-1. The CF-MySQL deployment must also be seeded with a Diego database, username, and password. Do this by providing the following property in your `property_overrides.yml`:
+2. Anything related to the ELB and healthcheck endpoints can be removed, as we'll be doing service discovery via consul.
+```yaml
+property_overrides:
+    host: YOUR_LOAD_BALANCER_ADDRESS # Delete this property
+```
+
+3. The CF-MySQL deployment must also be seeded with a Diego database, username, and password. Do this by providing the following property in your `stubs/cf-mysql/property_overrides.yml`:
 ```yaml
 property_overrides:
   mysql:
@@ -75,7 +85,6 @@ property_overrides:
       username: diego
       password: REPLACE_ME_WITH_DB_PASSWORD
 ```
-1. Follow [these instructions](https://github.com/cloudfoundry/cf-mysql-release/blob/develop/docs/proxy.md#configuring-consul) to configure the MySQL deployment to use Consul for service discovery. Specifically, you will want the `job-overrides.yml` that includes Consul.
 
 ### Set the CF-MySQL IaaS Settings
 
