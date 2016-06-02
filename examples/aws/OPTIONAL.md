@@ -51,6 +51,7 @@ We recommend deploying with an HA, standalone mysql that is resolvable via consu
 git clone git@github.com:cloudfoundry/cf-mysql-release.git
 export CF_MYSQL_RELEASE_DIR=$PWD/cf-mysql-release
 
+mkdir -p $DEPLOYMENT_DIR/stubs/cf-mysql
 cp $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/aws/iaas-settings.yml \
    $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/property-overrides.yml \
    $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/standalone-cf-manifest.yml \
