@@ -480,7 +480,7 @@ perform the following steps:
 
 ## Using RDS MySQL instead of etcd (optional)
 
-If using RDS MySQL, follow the directions in [Setup AWS RDS MySQL](OPTIONAL.md#setup-aws-rds-mysql) to configure and create the RDS instance.
+If using RDS MySQL, follow the directions in [Setup AWS RDS MySQL](OPTIONAL.md#setup-aws-rds-mysql) to configure and create the RDS instance. You can also deploy a CF-mysql cluster if you so choose, but that should be done after deploying your initial cf deployment below. 
 
 ## Deploying Cloud Foundry
 
@@ -565,6 +565,10 @@ bosh deploy
 ```
 
 From here, follow the documentation on [deploying a Cloud Foundry with BOSH](http://docs.cloudfoundry.org/deploying/common/deploy.html). Depending on the size of the deployment and the time required for package compilation, the initial deploy can take many minutes or hours.
+
+## Using CF-MySQL instead of etcd (optional)
+
+If you want to use CF-MySQL, follow the directions in [Setup CF-MySQL](OPTIONAL.md#deploy-standalone-cf-mysql) to configure and create the Cf-MySQL cluster.
 
 ## Deploying Diego
 
