@@ -103,6 +103,14 @@ When filling out the [`iaas_settings.yml`](https://github.com/cloudfoundry/cf-my
 
 If deploying in HA configuration, this should be repeated 3 times, once for each AZ.
 
+Delete the following property, as we won't be using an ELB:
+```yaml
+properties:
+  template_only:
+     aws:
+        mysql_elb_names: [REPLACE_WITH_ELB_NAME_NOT_DNS_HOSTNAME] # delete this as we don't need an elb
+```
+
 ### Scaling down the CF-MySQL cluster
 
 To minimize the deployment to only a single MySQL node use the following settings in `instance-count-overrides.yml`:
