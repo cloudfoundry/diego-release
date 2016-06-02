@@ -49,13 +49,13 @@ We recommend deploying with an HA, standalone mysql that is resolvable via consu
 
 ```bash
 git clone git@github.com:cloudfoundry/cf-mysql-release.git
-export CF_MYSQL_REL_DIR=./cf-mysql-release
+export CF_MYSQL_RELEASE_DIR=$PWD/cf-mysql-release
 
-cp $CF_MYSQL_REL_DIR/manifest-generation/examples/aws/iaas-settings.yml \ 
-   $CF_MYSQL_REL_DIR/manifest-generation/examples/standalone/property-overrides.yml \  	 
-   $CF_MYSQL_REL_DIR/manifest-generation/examples/standalone/standalone-cf-manifest.yml \ 
-   $CF_MYSQL_REL_DIR/manifest-generation/examples/standalone/instance-count-overrides.yml \
-   $CF_MYSQL_REL_DIR/manifest-generation/examples/job-overrides-consul.yml \
+cp $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/aws/iaas-settings.yml \
+   $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/property-overrides.yml \
+   $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/standalone-cf-manifest.yml \
+   $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/instance-count-overrides.yml \
+   $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/job-overrides-consul.yml \
 $DEPLOYMENT_DIR/stubs/cf-mysql/
 ```
 
