@@ -98,6 +98,7 @@ When filling out the [`iaas_settings.yml`](https://github.com/cloudfoundry/cf-my
 1. Select the AZ you used to AZ in the `stubs/infrastructure/availability_zones.yml` file.
     2. If you're configuring HA, the 1st subnet should match the 1st AZ, the 2nd subnet should match the 2nd AZ, etc.
 1. Fill in `10.10.32.0/24` as the CIDR range.
+    2. If you're configuring HA, try `10.10.33.0/24` and `10.10.34.0/24` for the 2nd and 3rd subnets
 1. Click on the `Yes, Create` button.
 
 If deploying in HA configuration, this should be repeated 3 times, once for each AZ.
