@@ -47,8 +47,6 @@ The contents of this file will be supplied in the `sql_overrides.bbs.ca_cert` fi
 
 Follow the instructions at [CF MySQL Deploy](https://github.com/cloudfoundry/cf-mysql-release#deploy-on-aws-or-vsphere) to deploy a standalone example.
 
-**Note**: The current head of the `master` branch of CF-MySQL (release v26) cannot be checked out fully due to a missing submodule. We recommend that you use the `release-candidate` branch until a new final release is created (v27).
-
 You will need to make changes to the `instance-count-overrides.yml` and `property-overrides.yml` found [here](https://github.com/cloudfoundry/cf-mysql-release/tree/master/manifest-generation/examples/standalone), as well as the `iaas-settings.yml` stub file found [here](https://github.com/cloudfoundry/cf-mysql-release/blob/master/manifest-generation/examples/aws/iaas-settings.yml).
 
 
