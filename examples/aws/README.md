@@ -415,6 +415,7 @@ The `./deploy_aws_environment` script takes three arguments:
 
 - The second argument is the **absolute path** to `$CF_RELEASE_DIR`.
 - The third argument is the **absolute path** to `$DEPLOYMENT_DIR`, which must be structured as defined above.
+- The fourth argument is the **stack name** for the deployment environment which, if provided, overrides the default environment name `cf-diego-stack`.
 
 The deployment process generates a collection of stubs, in the following directory structure. Some of the stubs start with the line `GENERATED: NO TOUCHING`, and are not intended for hand-editing.
 
