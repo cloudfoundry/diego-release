@@ -5,15 +5,20 @@ set -e
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
 function usage() {
-  >&2 echo "    Usage:
-    $0 <create|update|skip> <cloud_foundry_release_dir> <deployment_dir> [<stack_name>]
-    cloud_foundry_release_dir:
-      Location where the cf-release repository has been download to.
-    deployment_dir:
-      Private deployment directory containg your keys.
-    stack_name:
-      Name of the cloud formation stack to create (default: cf-diego-stack)
-"
+  >&2 cat <<EOF
+  SYNOPSIS:
+    Create a CloudFormation stack, deploy BOSH, and create initial CF and Diego stubs.
+
+  USAGE:
+    $0 (create|update|skip) CF_RELEASE_DIR DEPLOYMENT_DIR [STACK_NAME]
+
+  MANDATORY ARGUMENTS:
+    CF_RELEASE_DIR:     Path to the local cf-release repository.
+    DEPLOYMENT_DIR:     Directory to store files for this deployment.
+
+  OPTIONAL ARGUMENTS:
+    STACK_NAME:         Name of the CloudFormation stack to create (default: cf-diego-stack)
+EOF
   exit 1
 }
 
