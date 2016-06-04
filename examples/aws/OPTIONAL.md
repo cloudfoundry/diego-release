@@ -54,7 +54,6 @@ export CF_MYSQL_RELEASE_DIR=$PWD/cf-mysql-release
 mkdir -p $DEPLOYMENT_DIR/stubs/cf-mysql
 cp $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/aws/iaas-settings.yml \
    $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/property-overrides.yml \
-   $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/standalone-cf-manifest.yml \
    $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/instance-count-overrides.yml \
    $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/job-overrides-consul.yml \
 $DEPLOYMENT_DIR/stubs/cf-mysql/
@@ -111,7 +110,23 @@ properties:
         mysql_elb_names: [REPLACE_WITH_ELB_NAME_NOT_DNS_HOSTNAME] # delete this as we don't need an elb
 ```
 
-### Scaling down the CF-MySQL cluster
+### Genera
+
+### Deploy the cf-mysql cluster
+
+```yaml
+$CF_MYSQL_RELEASE_DIR/scripts/generate-deployment-manifest \
+    -c $DEPLOYMENT_DIR/deployments/cf.yml \
+    -p $DEPLOYMENT_DIR/stubs/cf-mysql/property-overrides.yml \
+    -i $DEPLOYMENT_DIR/stubs/cf-mysql/iaas-settings.yml \
+    -j $DEPLOYMENT_DIR/stubs/cf-mysql/job-overrides-consul.yml \
+    -n $DEPLOYMENT_DIR/stubs/cf-mysql/instance-count-overrides.yml \
+> $DEPLOYMENT_DIR/deployments/cf-mysql.yml
+
+bosh -d $DEPLOYMENT_DIR/deployments/cf-mysql.yml deploy
+```
+
+### Scaling down the CF-MySQL cluster (optional, not suitable for production environments)
 
 To minimize the deployment to only a single MySQL node use the following settings in `instance-count-overrides.yml`:
 
@@ -178,7 +193,7 @@ cd $DIEGO_RELEASE_DIR
 
 ### Disable and remove ETCD from your Diego deployment
 
-Once you've successfully deployed a SQL-backed Diego, you may want to remove the now-idle etcd jobs from your database cluster to save on infrastructure costs. Once the database VMs are free of etcd jobs, they do not need to be deployed with write-optimized disks. 
+Once you've successfully deployed a SQL-backed Diego, you may want to remove the now-idle etcd jobs from your database cluster to save on infrastructure costs. Once the database VMs are free of etcd jobs, they do not need to be deployed with write-optimized disks.
 
 To remove etcd from your deployment, just supply the manifest generation scripts with the `-x` flag.
 
