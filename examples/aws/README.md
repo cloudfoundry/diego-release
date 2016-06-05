@@ -577,15 +577,17 @@ After deploying Cloud Foundry, you can now deploy Diego.
 
 ### Fill in the Property-Overrides Stub
 
-To generate a manifest for the Diego deployment, replace the properties in
+To generate a manifest for the Diego deployment, replace the properties in the
 `$DEPLOYMENT_DIR/stubs/diego/property-overrides.yml` file that are prefixed with `REPLACE_WITH_`.
 
-Here is a summary of the properties that need to be changed:
+Here is a summary of the properties that must be changed:
 
-- Replace REPLACE_WITH_ACTIVE_KEY_LABEL with any desired key name (such as `key-a`).
-- Replace REPLACE_WITH_A_SECURE_PASSPHRASE with a unique passphrase associated with the active key label.
-- Replace the BBS and etcd certificate placeholders with the contents of the files generated in [Configuring Security](#configuring-security).
-- Replace the SSH-Proxy host key with the [host key generated](#generating-ssh-proxy-host-key) above.
+- Replace `REPLACE_WITH_ACTIVE_KEY_LABEL` with any desired key name (such as `key-a`).
+- Replace `REPLACE_WITH_A_SECURE_PASSPHRASE` with a unique passphrase associated with the active key label.
+
+Component log levels and other deployment properties may also be overridden in this stub file.
+
+This stub file also contains the contents of the BBS, etcd, and SSH-Proxy certificates and keys generated above. If those files are regenerated, the `deploy_aws_environment` script will update the property-overrides stub with their new contents.
 
 ### Edit the Instance-Count-Overrides Stub
 

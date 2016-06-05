@@ -91,6 +91,9 @@ properties:
       availability_zone2: (( merge ))
       availability_zone3: (( merge ))
 
+  app_ssh:
+    host_key_fingerprint: (( merge ))
+
   cc:
     resource_pool:
       resource_directory_key: (( merge ))
@@ -113,6 +116,11 @@ properties:
       - tag: cc
         name: ccdb
         citext: true
+
+  uaa:
+    jwt:
+      signing_key: (( merge ))
+      verification_key: (( merge ))
 
   uaadb:
     db_scheme: postgresql
@@ -145,3 +153,10 @@ properties:
       - tag: uaa
         name: uaadb
         citext: true
+
+  consul:
+    ca_cert: (( merge ))
+    server_cert: (( merge ))
+    server_key: (( merge ))
+    agent_cert: (( merge ))
+    agent_key: (( merge ))

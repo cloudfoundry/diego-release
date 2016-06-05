@@ -4,9 +4,6 @@ meta:
   environment: REPLACE_WITH_CF_DEPLOYMENT_NAME
 
 properties:
-  app_ssh:
-    host_key_fingerprint: REPLACE_WITH_CONTENTS_OF_(DEPLOYMENT_DIR/keypair/ssh-proxy-host-key-fingerprint)
-
   cc:
     staging_upload_password: REPLACE_WITH_STAGING_UPLOAD_PASSWORD
     staging_upload_user: REPLACE_WITH_STAGING_UPLOAD_USER
@@ -14,16 +11,6 @@ properties:
     db_encryption_key: REPLACE_WITH_DATABASE_ENCRYPTION_KEY
 
   consul:
-    ca_cert: |
-      REPLACE_WITH_CONTENTS_OF_(DEPLOYMENT_DIR/certs/consul-certs/server-ca.crt)
-    server_cert: |
-      REPLACE_WITH_CONTENTS_OF_(DEPLOYMENT_DIR/certs/consul-certs/server.crt)
-    server_key: |
-      REPLACE_WITH_CONTENTS_OF_(DEPLOYMENT_DIR/certs/consul-certs/server.key)
-    agent_cert: |
-      REPLACE_WITH_CONTENTS_OF_(DEPLOYMENT_DIR/certs/consul-certs/agent.crt)
-    agent_key: |
-      REPLACE_WITH_CONTENTS_OF_(DEPLOYMENT_DIR/certs/consul-certs/agent.key)
     encrypt_keys:
       - REPLACE_WITH_CONSUL_ENCRYPTION_KEY
 
@@ -66,11 +53,6 @@ properties:
         secret: REPLACE_WITH_SSH_PROXY_PASSWORD
       tcp_router:
         secret: REPLACE_WITH_TCP_ROUTER_PASSWORD
-    jwt:
-      signing_key: |
-        REPLACE_WITH_CONTENTS_OF_(DEPLOYMENT_DIR/keypair/uaa)
-      verification_key: |
-        REPLACE_WITH_CONTENTS_OF_(DEPLOYMENT_DIR/keypair/uaa.pub)
     scim:
       users:
       - admin|REPLACE_WITH_ADMIN_PASSWORD|scim.write,scim.read,openid,cloud_controller.admin,doppler.firehose
