@@ -1,0 +1,20 @@
+property_overrides:
+  bbs:
+    ca_cert: (( diego_credentials.diego_ca ))
+    client_cert: (( diego_credentials.bbs.client_cert ))
+    client_key: (( diego_credentials.bbs.client_key ))
+    server_cert: (( diego_credentials.bbs.server_cert ))
+    server_key: (( diego_credentials.bbs.server_key ))
+  etcd:
+    ca_cert: (( diego_credentials.diego_ca ))
+    client_cert: (( diego_credentials.etcd.client_cert ))
+    client_key: (( diego_credentials.etcd.client_key ))
+    peer_ca_cert: (( diego_credentials.etcd.peer_ca ))
+    peer_cert: (( diego_credentials.etcd.peer_cert ))
+    peer_key: (( diego_credentials.etcd.peer_key ))
+    server_cert: (( diego_credentials.etcd.server_cert ))
+    server_key: (( diego_credentials.etcd.server_key ))
+  ssh_proxy:
+    host_key: (( diego_credentials.ssh_proxy_host_key ))
+
+diego_credentials: (( merge ))

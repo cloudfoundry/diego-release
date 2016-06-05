@@ -87,6 +87,9 @@ properties:
       availability_zone2: (( meta.zones.z2 ))
       availability_zone3: (( meta.zones.z3 ))
 
+  app_ssh:
+    host_key_fingerprint: (( cf_credentials.ssh_host_key_fingerprint ))
+
   cc:
     resource_pool:
       resource_directory_key: (( Resources.Bucket.AppResources ))
@@ -100,13 +103,27 @@ properties:
   ccdb:
     address: (( properties.databases.address ))
 
+  uaa:
+    jwt:
+      signing_key: (( cf_credentials.uaa.signing_key ))
+      verification_key: (( cf_credentials.uaa.verification_key ))
+
   uaadb:
     address: (( properties.databases.address ))
 
   databases:
     address: (( jobs.postgres_z1.networks.cf1.static_ips.[0] ))
 
+  consul:
+    ca_cert: (( cf_credentials.consul.ca_cert ))
+    server_cert: (( cf_credentials.consul.server_cert ))
+    server_key: (( cf_credentials.consul.server_key ))
+    agent_cert: (( cf_credentials.consul.agent_cert ))
+    agent_key: (( cf_credentials.consul.agent_key ))
+
 Resources: (( merge ))
 Region: (( merge ))
 AccessKeyID: (( merge ))
 SecretAccessKey: (( merge ))
+
+cf_credentials: (( merge ))
