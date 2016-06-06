@@ -194,3 +194,63 @@ cd $DIEGO_RELEASE_DIR
   -v $DEPLOYMENT_DIR/stubs/diego/release-versions.yml \
   > $DEPLOYMENT_DIR/deployments/diego.yml
 ```
+
+### Fill in Drivers stub
+
+To co-locate a driver on the Diego cells, first create a Drivers stub file at `$DEPLOYMENT_DIR/stubs/diego/drivers.yml` with the following contents:
+
+```yaml
+volman_overrides:
+  releases:
+  - name: REPLACE_WITH_DRIVER_BOSH_RELEASE
+    version: REPLACE_WITH_DRIVER_BOSH_RELEASE_VERSION
+  driver_templates:
+  - name: REPLACE_WITH_DRIVER_TEMPLATE
+    release: REPLACE_WITH_DRIVER_BOSH_RELEASE
+```
+
+Replace all `REPLACE_WITH_DRIVER_*` entries with the values of your driver's bosh release.
+
+If you wish to use the `cephdriver` that we use for testing and development you may use the following stub:-
+
+```yaml
+volman_overrides:
+  releases:
+  - name: cephfs-bosh-release
+    version: "latest"
+  driver_templates:
+  - name: cephdriver
+    release: cephfs-bosh-release
+```
+
+Now return to the previous steps to [generate the Diego manifest](README.md#generate-the-diego-manifest) and supply the `-d ` flag that specifies the location of this Drivers stub file, as the example below demonstrates.
+
+```
+cd $DIEGO_RELEASE_DIR
+  ./scripts/generate-deployment-manifest \
+  -c $DEPLOYMENT_DIR/deployments/cf.yml \
+  -i $DEPLOYMENT_DIR/stubs/diego/iaas-settings-internal.yml \
+  -p $DEPLOYMENT_DIR/stubs/diego/property-overrides.yml \
+  -n $DEPLOYMENT_DIR/stubs/diego/instance-count-overrides.yml \
+  -v $DEPLOYMENT_DIR/stubs/diego/release-versions.yml \
+  -d $DIEGO_RELEASE_DIR/stubs/diego/drivers.yml
+  > $DEPLOYMENT_DIR/deployments/diego.yml
+```
+
+Diego volume services use Docker Volume Plugins to manage volume mounts on each of the Cells.  These drivers are discovered by looking in a specific location for Docker Volume Plugin configuration files (for more information on Docker plugin configuration files see `Plugin discovery` in the Docker [documentation](https://docs.docker.com/engine/extend/plugin_api/)).  This location defaults to `/var/vcap/data/voldrivers` however it may be overriden by specifying the `diego.executor.volman.driver_paths` property in one or more of the Cell job templates in your generated diego manifest as the following example shows:
+```
+- instances: 1
+  name: cell_z1
+  networks:
+  - name: diego1
+  properties:
+    diego:
+      rep:
+        zone: z1
+        executor:
+          volman:
+            driver_paths: /etc/docker/plugins
+    metron_agent:
+      zone: z1
+    ...
+```

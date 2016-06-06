@@ -510,6 +510,15 @@ from `true` to `false`.
 
 If you also wish to change the instance counts for the jobs in the CF deployment, add those different counts to this stub. These counts will override the counts set in the `$DIEGO_RELEASE_DIR/examples/aws/stubs/cf/diego.yml` if using the command below to generate the manifest.
 
+##### Enable Volume Services (experimental) (optional)
+
+If you wish to enable volume services add the following property to the `cc` section of `$DEPLOYMENT_DIR/stubs/cf/properties.yml`:
+```
+cc:
+  ...
+  volume_services_enabled: true
+```
+
 #### Generate the CF deployment manifest
 
 After following the instructions to fill out the placeholder values
@@ -571,6 +580,12 @@ From here, follow the documentation on [deploying a Cloud Foundry with BOSH](htt
 
 If you want to use CF-MySQL, follow the directions in [Setup CF-MySQL](OPTIONAL.md#deploy-standalone-cf-mysql) to configure and create the Cf-MySQL cluster.
 
+## Create and Upload Volume Driver Release (experimental) (optional)
+
+If you enabled volume services, create and upload your Driver's bosh release.
+
+If you would like to use the `cephdriver` that we use for testing and development then you may use this [repo](https://github.com/cloudfoundry-incubator/cephfs-bosh-release).
+
 ## Deploying Diego
 
 After deploying Cloud Foundry, you can now deploy Diego.
@@ -622,6 +637,10 @@ release-versions:
 ### Fill in `diego-sql` Stub (optional)
 
 If using a SQL store for the BBS, follow the directions to [fill in the Diego-SQL Stub](OPTIONAL.md#fill-in-diego-sql-stub) with the SQL database configuration.
+
+### Fill in `Drivers` Stub (experimental) (optional)
+
+If you enabled volume services, follow these directions to [fill in the drivers Stub](OPTIONAL.md#fill-in-drivers-stub) with your driver configuration.
 
 ### Generate the Diego manifest
 
