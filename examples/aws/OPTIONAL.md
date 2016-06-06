@@ -233,7 +233,7 @@ cd $DIEGO_RELEASE_DIR
   -p $DEPLOYMENT_DIR/stubs/diego/property-overrides.yml \
   -n $DEPLOYMENT_DIR/stubs/diego/instance-count-overrides.yml \
   -v $DEPLOYMENT_DIR/stubs/diego/release-versions.yml \
-  -d $DIEGO_RELEASE_DIR/stubs/diego/drivers.yml
+  -d $DIEGO_RELEASE_DIR/stubs/diego/drivers.yml \
   > $DEPLOYMENT_DIR/deployments/diego.yml
 ```
 
@@ -247,9 +247,9 @@ Diego volume services use Docker Volume Plugins to manage volume mounts on each 
     diego:
       rep:
         zone: z1
-        executor:
-          volman:
-            driver_paths: /etc/docker/plugins
+      executor:
+        volman:
+          driver_paths: /etc/docker/plugins
     metron_agent:
       zone: z1
     ...
