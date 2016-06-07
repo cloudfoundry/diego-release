@@ -112,7 +112,7 @@ case $1 in
       <%= p("diego.rep.preloaded_rootfses").map { |rootfs| "-preloadedRootFS #{rootfs}" }.join(" ") %> \
       <%= p("diego.rep.rootfs_providers").map { |provider| "-rootFSProvider #{provider}" }.join(" ") %> \
       -cellID=<%= spec.job.name %>-<%= spec.index %> \
-      -zone=<%= p("diego.rep.zone") %> \
+      -zone=<%= spec.az || p("diego.rep.zone") %> \
       -pollingInterval=<%= "#{p("diego.rep.polling_interval_in_seconds")}s" %> \
       -evacuationPollingInterval=<%= "#{p("diego.rep.evacuation_polling_interval_in_seconds")}s" %> \
       -evacuationTimeout=<%= "#{p("diego.rep.evacuation_timeout_in_seconds")}s" %> \
