@@ -1,0 +1,13 @@
+compilation: (( merge ))
+director_uuid: (( merge ))
+jobs: (( merge ))
+name:  (( merge ))
+networks: (( merge ))
+properties:
+  <<: (( merge ))
+  admin_username: UNUSED_VALUE
+  admin_password: UNUSED_VALUE
+  domain: (( properties.system_domain ))
+releases: (( merge ))
+resource_pools: (( merge ))
+update: (( merge ))

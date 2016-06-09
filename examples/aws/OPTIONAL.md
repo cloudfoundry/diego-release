@@ -8,12 +8,25 @@ These instructions allow you to either:
 
 ## Table of Contents
 
-1. [Setup RDS MySQL](#setup-aws-rds-mysql)
-1. [Deploy Standalone CF-MySQL](#deploy-standalone-cf-mysql)
+1. [Setup a SQL database for Diego](#setup-a-sql-database-for-diego)
+  * [Setup RDS MySQL](#setup-aws-rds-mysql) *OR*
+  * [Deploy Standalone CF-MySQL](#deploy-standalone-cf-mysql)
 1. [Deploying Diego](#deploy-diego)
 
-## Setup AWS RDS MySQL
-Support for using a SQL database instead of etcd for the backing store of Diego is still in the experimental phase. The instructions below describe how to set up a MariaDB RDS instance that is known to work with Diego.
+## Setup a SQL database for Diego
+
+Support for using a SQL database instead of *etcd* for the backing store of
+Diego is still in the experimental phase.
+
+We support two ways of providing a SQL database. They are:
+
+* [Setup RDS MySQL](#setup-aws-rds-mysql) *OR*
+* [Deploy Standalone CF-MySQL](#deploy-standalone-cf-mysql)
+
+### Setup AWS RDS MySQL
+
+The instructions below describe how to set up a *MariaDB* RDS instance that is
+known to work with Diego.
 
 1. From the AWS console homepage, click on `RDS` in the `Database` section.
 1. Click on `Launch DB Instance` under Instances.
@@ -31,7 +44,7 @@ Support for using a SQL database instead of etcd for the backing store of Diego 
 1. Click `Launch DB Instance`.
 1. Wait for the Instance to be `available`.
 
-### Configuring SSL
+#### Configuring SSL
 
 In order to configure SSL for RDS you need to download the ca cert bundle from AWS. This can be done by:
 
@@ -41,111 +54,133 @@ curl -o $DEPLOYMENT_DIR/certs/rds-combined-ca-bundle.pem http://s3.amazonaws.com
 
 The contents of this file will be supplied in the `sql_overrides.bbs.ca_cert` field in the Diego-SQL stub below.
 
-## Deploy Standalone CF-MySQL
+### Deploy Standalone CF-MySQL
 
-**Note: MySQL can also be deployed with a single node for a minimal, standalone deployment. Follow the [instructions below](#scaling-down-the-cf-mysql-cluster) to provision a single-node MySQL cluster. **
+The CF-MySQL release can be deployed in a few different modes and
+configurations. All configurations have the same starting steps:
 
-We recommend deploying with an HA, standalone mysql that is resolvable via consul dns for stability and availability. To do this, copy the correct example stubs from cf-mysql-release and fill in their REPLACE_WITH values as appropriate for passwords and so on.
+1. Make a directory for the CF-MySQL stubs:
+  ```bash
+  mkdir -p $DEPLOYMENT_DIR/stubs/cf-mysql
+  ```
+1. Clone CF-MySQL release:
+  ```bash
+  git clone https://github.com/cloudfoundry/cf-mysql-release.git
+  export CF_MYSQL_RELEASE_DIR=$PWD/cf-mysql-release
+  ```
+1. Copy over relevant stubs from the CF-MySQL release to deployment directory:
+  ```bash
+  cp $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/property-overrides.yml \
+     $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/instance-count-overrides.yml \
+  $DEPLOYMENT_DIR/stubs/cf-mysql/
+  ```
+1. Generate CF based manifest stub:
+  ```bash
+  spiff merge \
+	  $DIEGO_RELEASE_DIR/manifest-generation/cf-mysql-stubs/cf-shim.yml \
+	  $DEPLOYMENT_DIR/deployments/cf.yml \
+	> $DEPLOYMENT_DIR/stubs/cf-mysql/cf-augmented.yml
+  ```
+1. Edits to `property-overrides.yml`:
+  1. Rename deployment:
+    ```yaml
+    property_overrides:
+	deployment_name: diego-mysql
+    ```
+  1. Fill in all `REPLACE_WITH_` properties with appropriate values (ignore all `UNUSED_VALUE` properties).
+  1. Edit *ELB* related properties, we have to set `host` to `null` since the
+     current manifest generation scripts for CF-MySQL depend on its presence:
+    ```yaml
+    property_overrides:
+	host: nil
+    ```
+  1. Configured a seeded database for Diego to use (add the `seeded_databases` property):
+    ```yaml
+    property_overrides:
+      mysql:
+	seeded_databases:
+	- name: diego
+	  username: diego
+	  password: REPLACE_ME_WITH_DB_PASSWORD
+    ```
+1. Edits to `iaas-settings.yml`:
+  1. Delete the following property, as we won't be using an ELB:
+    ```yaml
+    properties:
+      template_only:
+	 aws:
+	    mysql_elb_names: [REPLACE_WITH_ELB_NAME_NOT_DNS_HOSTNAME] # delete this as we don't need an elb
+    ```
 
-```bash
-git clone git@github.com:cloudfoundry/cf-mysql-release.git
-export CF_MYSQL_RELEASE_DIR=$PWD/cf-mysql-release
+After that you can deploy the CF-MySQL release in either mode:
 
-mkdir -p $DEPLOYMENT_DIR/stubs/cf-mysql
-cp $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/aws/iaas-settings.yml \
-   $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/property-overrides.yml \
-   $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/instance-count-overrides.yml \
-   $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/job-overrides-consul.yml \
-$DEPLOYMENT_DIR/stubs/cf-mysql/
-```
+* [Single Node CF-MySQL](#single-node-cf-mysql) - Used mostly for development
+  and experimentation since it does not provide the same uptime guarantees that
+  the multi-node deployment does.
+* [Highly Available CF-MySQL](#highly-available-cf-mysql) - Recommended for
+  production use. Uses [Consul](https://consul.io) for discovery.
 
-You will need to make additional changes to the `instance-count-overrides.yml`, `property-overrides.yml`, and `iaas-settings.yml` stub file.
+#### Single Node CF-MySQL
 
+1. Edits to `instance-count-overrides.yml`:
+  ```yaml
+  instance_count_overrides:
+    - name: cf-mysql-broker_z1
+      instances: 0
+    - name: cf-mysql-broker_z2
+      instances: 0
+    - name: mysql_z2
+      instances: 0
+    - name: arbitrator_z3
+      instances: 0
+    - name: proxy_z1
+      instances: 0
+    - name: proxy_z2
+      instances: 0
+  ```
+1. Generate deployment manifest:
+  ```bash
+  $CF_MYSQL_RELEASE_DIR/scripts/generate-deployment-manifest \
+      -c $DEPLOYMENT_DIR/stubs/cf-mysql/cf-augmented.yml \
+      -p $DEPLOYMENT_DIR/stubs/cf-mysql/property-overrides.yml \
+      -i $DEPLOYMENT_DIR/stubs/cf-mysql/iaas-settings.yml \
+      -n $DEPLOYMENT_DIR/stubs/cf-mysql/instance-count-overrides.yml \
+  > $DEPLOYMENT_DIR/deployments/cf-mysql.yml
+  ```
+1. Deploy the CF-MySQL cluster
+  ```bash
+  bosh -d $DEPLOYMENT_DIR/deployments/cf-mysql.yml deploy
+  ```
 
-### Set the CF-MySQL Property Overrides
-1. Rename the deployment so you could use another mysql-release as a user service if you wanted to:
-```yaml
-property_overrides:
-    deployment_name: diego-mysql
-```
+#### Highly Available CF-MySQL
 
-2. Anything related to the ELB and healthcheck endpoints can be removed, as we'll be doing service discovery via consul.
-```yaml
-property_overrides:
-    host: YOUR_LOAD_BALANCER_ADDRESS # Delete this property
-```
-
-3. The CF-MySQL deployment must also be seeded with a Diego database, username, and password. Do this by providing the following property in your `stubs/cf-mysql/property_overrides.yml`:
-```yaml
-property_overrides:
-  mysql:
-    seeded_databases:
-    - name: diego
-      username: diego
-      password: REPLACE_ME_WITH_DB_PASSWORD
-```
-
-### Set the CF-MySQL IaaS Settings
-
-When filling out the [`iaas_settings.yml`](https://github.com/cloudfoundry/cf-mysql-release/blob/develop/manifest-generation/examples/aws/iaas-settings.yml), you only need to create one subnet per availability zone and fill in the corresponding properties for the `mysql1`, `mysql2`, and `mysql3` network and AZ.  You can create an AWS subnet for the CF-MySQL deployment by:
-
-1. From the AWS console homepage, click on `VPC` in the `Networking` section.
-1. Click on the `Subnets` link.
-1. Click on the `Create Subnet` button.
-1. Fill in the name tag property for the subnet as is desired (for example, MySQLZ1).
-1. Select the VPC associated with your deployment.
-1. Select the AZ you used to AZ in the `stubs/infrastructure/availability_zones.yml` file.
-    2. If you're configuring HA, the 1st subnet should match the 1st AZ, the 2nd subnet should match the 2nd AZ, etc.
-1. Fill in `10.10.32.0/24` as the CIDR range.
-    2. If you're configuring HA, try `10.10.33.0/24` and `10.10.34.0/24` for the 2nd and 3rd subnets
-1. Click on the `Yes, Create` button.
-
-If deploying in HA configuration, this should be repeated 3 times, once for each AZ.
-
-Delete the following property, as we won't be using an ELB:
-```yaml
-properties:
-  template_only:
-     aws:
-        mysql_elb_names: [REPLACE_WITH_ELB_NAME_NOT_DNS_HOSTNAME] # delete this as we don't need an elb
-```
-
-### Genera
-
-### Deploy the cf-mysql cluster
-
-```yaml
-$CF_MYSQL_RELEASE_DIR/scripts/generate-deployment-manifest \
-    -c $DEPLOYMENT_DIR/deployments/cf.yml \
-    -p $DEPLOYMENT_DIR/stubs/cf-mysql/property-overrides.yml \
-    -i $DEPLOYMENT_DIR/stubs/cf-mysql/iaas-settings.yml \
-    -j $DEPLOYMENT_DIR/stubs/cf-mysql/job-overrides-consul.yml \
-    -n $DEPLOYMENT_DIR/stubs/cf-mysql/instance-count-overrides.yml \
-> $DEPLOYMENT_DIR/deployments/cf-mysql.yml
-
-bosh -d $DEPLOYMENT_DIR/deployments/cf-mysql.yml deploy
-```
-
-### Scaling down the CF-MySQL cluster (optional, not suitable for production environments)
-
-To minimize the deployment to only a single MySQL node use the following settings in `instance-count-overrides.yml`:
-
-```yaml
-instance_count_overrides:
-  - name: cf-mysql-broker_z1
-    instances: 0
-  - name: cf-mysql-broker_z2
-    instances: 0
-  - name: mysql_z2
-    instances: 0
-  - name: arbitrator_z3
-    instances: 0
-  - name: proxy_z1
-    instances: 0
-  - name: proxy_z2
-    instances: 0
-```
-
+1. Copy additional `job-overrides-consul.yml`:
+  ```bash
+  cp $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/job-overrides-consul.yml \
+  $DEPLOYMENT_DIR/stubs/cf-mysql/
+  ```
+1. Edits to `property-overrides.yml`, add the following properties:
+  ```yaml
+  property_overrides:
+    proxy:
+      # ...
+      consul_enabled: true
+      consul_service_name: mysql
+  ```
+1. Generate deployment manifest:
+  ```bash
+  $CF_MYSQL_RELEASE_DIR/scripts/generate-deployment-manifest \
+      -c $DEPLOYMENT_DIR/stubs/cf-mysql/cf-augmented.yml \
+      -p $DEPLOYMENT_DIR/stubs/cf-mysql/property-overrides.yml \
+      -i $DEPLOYMENT_DIR/stubs/cf-mysql/iaas-settings.yml \
+      -j $DEPLOYMENT_DIR/stubs/cf-mysql/job-overrides-consul.yml \
+      -n $DEPLOYMENT_DIR/stubs/cf-mysql/instance-count-overrides.yml \
+  > $DEPLOYMENT_DIR/deployments/cf-mysql.yml
+  ```
+1. Deploy the CF-MySQL cluster
+  ```bash
+  bosh -d $DEPLOYMENT_DIR/deployments/cf-mysql.yml deploy
+  ```
 
 ## Deploy Diego
 
@@ -167,11 +202,11 @@ Fill in the bracketed parameters in the `db_connection_string` with the followin
 
 - `REPLACE_ME_WITH_DB_PASSWORD`: The password chosen when you created the SQL instance.
 - `<sql-instance-endpoint>`:
-	- For AWS RDS: The endpoint displayed at the top of the DB instance details page in AWS, including the port.
-	- For Standalone CF-MySQL:
-     - If configuring an HA MySQL with Consul use the consul service address (e.g. mysql.service.cf.internal:3306).
-     - If configuring a single node MySQL the internal IP address and port of the single MySQL node. (e.g. 10.10.5.222:3306).
-     - *In both cases the port will be 3306 by default.*
+  - For AWS RDS: The endpoint displayed at the top of the DB instance details page in AWS, including the port.
+  - For Standalone CF-MySQL:
+    - If configuring a Single Node CF-MySQL the internal IP address and port of the single MySQL node. (e.g. `10.10.5.222:3306`).
+    - If configuring an Highly Available CF-MySQL with Consul use the consul service address (e.g. `mysql.service.cf.internal:3306`).
+    - *In both cases the port will be `3306` by default.*
 
 **Note:** The `sql_overrides.bbs.ca_cert` and `sql_overrides.bbs.require_ssl` properties should be provided only when deploying with an SSL-supported MySQL cluster. Set the `require_ssl` property to `true` to ensure that the BBS uses SSL to connect to the store, and set the `ca_cert` property to the contents of a certificate bundle containing the correct CA certificates to verify the certificate that the SQL server presents.
 
