@@ -60,41 +60,54 @@ The CF-MySQL release can be deployed in a few different modes and
 configurations. All configurations have the same starting steps:
 
 1. Make a directory for the CF-MySQL stubs:
+
   ```bash
   mkdir -p $DEPLOYMENT_DIR/stubs/cf-mysql
   ```
-1. Clone CF-MySQL release:
+
+1. Clone the CF-MySQL release `release-candidate` branch:
+  
   ```bash
-  git clone https://github.com/cloudfoundry/cf-mysql-release.git
+  git clone -b release-candidate https://github.com/cloudfoundry/cf-mysql-release.git
   export CF_MYSQL_RELEASE_DIR=$PWD/cf-mysql-release
   ```
+  
 1. Copy over relevant stubs from the CF-MySQL release to deployment directory:
+  
   ```bash
   cp $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/property-overrides.yml \
      $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/instance-count-overrides.yml \
   $DEPLOYMENT_DIR/stubs/cf-mysql/
   ```
+  
 1. Generate CF based manifest stub:
+  
   ```bash
   spiff merge \
 	  $DIEGO_RELEASE_DIR/manifest-generation/cf-mysql-stubs/cf-shim.yml \
 	  $DEPLOYMENT_DIR/deployments/cf.yml \
 	> $DEPLOYMENT_DIR/stubs/cf-mysql/cf-augmented.yml
   ```
+  
 1. Edits to `property-overrides.yml`:
   1. Rename deployment:
+    
     ```yaml
     property_overrides:
 	deployment_name: diego-mysql
     ```
+    
   1. Fill in all `REPLACE_WITH_` properties with appropriate values (ignore all `UNUSED_VALUE` properties).
   1. Edit *ELB* related properties, we have to set `host` to `null` since the
      current manifest generation scripts for CF-MySQL depend on its presence:
+    
     ```yaml
     property_overrides:
 	host: nil
     ```
+    
   1. Configured a seeded database for Diego to use (add the `seeded_databases` property):
+    
     ```yaml
     property_overrides:
       mysql:
@@ -103,8 +116,10 @@ configurations. All configurations have the same starting steps:
 	  username: diego
 	  password: REPLACE_ME_WITH_DB_PASSWORD
     ```
+    
 1. Edits to `iaas-settings.yml`:
   1. Delete the following property, as we won't be using an ELB:
+    
     ```yaml
     properties:
       template_only:
@@ -123,6 +138,7 @@ After that you can deploy the CF-MySQL release in either mode:
 #### Single Node CF-MySQL
 
 1. Edits to `instance-count-overrides.yml`:
+  
   ```yaml
   instance_count_overrides:
     - name: cf-mysql-broker_z1
@@ -138,7 +154,9 @@ After that you can deploy the CF-MySQL release in either mode:
     - name: proxy_z2
       instances: 0
   ```
+  
 1. Generate deployment manifest:
+  
   ```bash
   $CF_MYSQL_RELEASE_DIR/scripts/generate-deployment-manifest \
       -c $DEPLOYMENT_DIR/stubs/cf-mysql/cf-augmented.yml \
@@ -147,7 +165,9 @@ After that you can deploy the CF-MySQL release in either mode:
       -n $DEPLOYMENT_DIR/stubs/cf-mysql/instance-count-overrides.yml \
   > $DEPLOYMENT_DIR/deployments/cf-mysql.yml
   ```
+  
 1. Deploy the CF-MySQL cluster
+  
   ```bash
   bosh -d $DEPLOYMENT_DIR/deployments/cf-mysql.yml deploy
   ```
@@ -155,11 +175,14 @@ After that you can deploy the CF-MySQL release in either mode:
 #### Highly Available CF-MySQL
 
 1. Copy additional `job-overrides-consul.yml`:
+  
   ```bash
   cp $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/job-overrides-consul.yml \
   $DEPLOYMENT_DIR/stubs/cf-mysql/
   ```
+  
 1. Edits to `property-overrides.yml`, add the following properties:
+  
   ```yaml
   property_overrides:
     proxy:
@@ -167,7 +190,9 @@ After that you can deploy the CF-MySQL release in either mode:
       consul_enabled: true
       consul_service_name: mysql
   ```
+  
 1. Generate deployment manifest:
+  
   ```bash
   $CF_MYSQL_RELEASE_DIR/scripts/generate-deployment-manifest \
       -c $DEPLOYMENT_DIR/stubs/cf-mysql/cf-augmented.yml \
@@ -177,7 +202,9 @@ After that you can deploy the CF-MySQL release in either mode:
       -n $DEPLOYMENT_DIR/stubs/cf-mysql/instance-count-overrides.yml \
   > $DEPLOYMENT_DIR/deployments/cf-mysql.yml
   ```
+  
 1. Deploy the CF-MySQL cluster
+  
   ```bash
   bosh -d $DEPLOYMENT_DIR/deployments/cf-mysql.yml deploy
   ```
@@ -288,6 +315,7 @@ cd $DIEGO_RELEASE_DIR
 ```
 
 Diego volume services use Docker Volume Plugins to manage volume mounts on each of the Cells.  These drivers are discovered by looking in a specific location for Docker Volume Plugin configuration files (for more information on Docker plugin configuration files see `Plugin discovery` in the Docker [documentation](https://docs.docker.com/engine/extend/plugin_api/)).  This location defaults to `/var/vcap/data/voldrivers` however it may be overriden by specifying the `diego.executor.volman.driver_paths` property in one or more of the Cell job templates in your generated diego manifest as the following example shows:
+
 ```
 - instances: 1
   name: cell_z1
