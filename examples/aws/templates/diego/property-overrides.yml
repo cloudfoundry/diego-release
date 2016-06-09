@@ -1,0 +1,58 @@
+property_overrides:
+  bbs:
+    active_key_label: REPLACE_WITH_ACTIVE_KEY_LABEL
+    encryption_keys:
+    - label: REPLACE_WITH_ACTIVE_KEY_LABEL
+      passphrase: REPLACE_WITH_A_SECURE_PASSPHRASE
+    require_ssl: true
+
+    # If bbs.require_ssl is set to false, the following certs and keys must be set
+    # to nil.
+    ca_cert: (( merge ))
+    client_cert: (( merge ))
+    client_key: (( merge ))
+    server_cert: (( merge ))
+    server_key: (( merge ))
+    log_level: debug
+  etcd:
+    heartbeat_interval_in_milliseconds: 200
+    election_timeout_in_milliseconds: 2000
+    require_ssl: true
+    peer_require_ssl: true
+    # if etcd.require_ssl and etcd.peer_require_ssl are set to false, the following certs
+    # and keys must be set to nil.
+    ca_cert: (( merge ))
+    client_cert: (( merge ))
+    client_key: (( merge ))
+    peer_ca_cert: (( merge ))
+    peer_cert: (( merge ))
+    peer_key: (( merge ))
+    server_cert: (( merge ))
+    server_key: (( merge ))
+    log_level: debug
+  nsync:
+    log_level: debug
+  converger:
+    log_level: debug
+  auctioneer:
+    log_level: debug
+  cc_uploader:
+    log_level: debug
+  file_server:
+    log_level: debug
+  executor:
+    log_level: debug
+  tps:
+    log_level: debug
+  route_emitter:
+    log_level: debug
+  stager:
+    log_level: debug
+  rep:
+    log_level: debug
+  garden:
+    log_level: debug
+  skip_cert_verify: true
+  ssh_proxy:
+    enable_cf_auth: true
+    host_key: (( merge ))

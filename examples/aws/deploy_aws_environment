@@ -22,6 +22,65 @@ EOF
   exit 1
 }
 
+
+indent() {
+  sed -e 's/^/  /'
+}
+
+indent_contents_of() {
+  indent < "$1"
+}
+
+block() {
+  cat <<-EOF
+$1: |
+$(indent_contents_of "$2")
+EOF
+}
+
+cf_credentials() {
+  cat <<-EOF
+# GENERATED: NO TOUCHING
+---
+cf_credentials:
+  ssh_host_key_fingerprint: "$(cat keypair/ssh-proxy-host-key-fingerprint)"
+  consul:
+$(block ca_cert     certs/consul-certs/server-ca.crt | indent | indent)
+$(block agent_cert  certs/consul-certs/agent.crt     | indent | indent)
+$(block agent_key   certs/consul-certs/agent.key     | indent | indent)
+$(block server_cert certs/consul-certs/server.crt    | indent | indent)
+$(block server_key  certs/consul-certs/server.key    | indent | indent)
+  uaa:
+$(block signing_key      keypair/uaa     | indent | indent)
+$(block verification_key keypair/uaa.pub | indent | indent)
+
+EOF
+}
+
+diego_credentials() {
+  cat <<-EOF
+# GENERATED: NO TOUCHING
+---
+diego_credentials:
+$(block diego_ca           certs/diego-ca.crt             | indent)
+$(block ssh_proxy_host_key keypair/ssh-proxy-host-key.pem | indent)
+  bbs:
+$(block client_cert certs/bbs-certs/client.crt  | indent | indent)
+$(block client_key  certs/bbs-certs/client.key  | indent | indent)
+$(block server_cert certs/bbs-certs/server.crt  | indent | indent)
+$(block server_key  certs/bbs-certs/server.key  | indent | indent)
+  etcd:
+$(block client_cert certs/etcd-certs/client.crt | indent | indent)
+$(block client_key  certs/etcd-certs/client.key | indent | indent)
+$(block server_cert certs/etcd-certs/server.crt | indent | indent)
+$(block server_key  certs/etcd-certs/server.key | indent | indent)
+$(block peer_ca     certs/etcd-peer-ca.crt      | indent | indent)
+$(block peer_cert   certs/etcd-certs/peer.crt   | indent | indent)
+$(block peer_key    certs/etcd-certs/peer.key   | indent | indent)
+EOF
+}
+
+
 if [ "$1" == "create" ]; then
   UPDATE_OR_CREATE=create-stack
 elif [ "$1" == "update" ]; then
@@ -66,7 +125,7 @@ fi
 
 # generate stub to be fed into template for cloudformation
 cat > stubs/infrastructure/certificates.yml <<EOF
-# GENERATED, NO TOUCHING
+# GENERATED: NO TOUCHING
 EOF
 
 aws iam get-server-certificate --server-certificate-name cfrouter \
@@ -95,13 +154,13 @@ fi
 
 # generate AWS resources stub for shared purposes
 cat > stubs/aws-resources.yml <<EOF
-# GENERATED, NO TOUCHING
+# GENERATED: NO TOUCHING
 EOF
 
 boosh resources --name $stack_name >> stubs/aws-resources.yml
 
 cat > deployments/bosh-init/bosh-init.yml <<EOF
-# GENERATED, NO TOUCHING
+# GENERATED: NO TOUCHING
 EOF
 
 spiff merge \
@@ -112,30 +171,28 @@ spiff merge \
   >> deployments/bosh-init/bosh-init.yml
 
 bosh-init deploy deployments/bosh-init/bosh-init.yml
-bosh -n target `cat stubs/aws-resources.yml | grep BoshInit | awk '{ gsub(/"/, "", $NF); print $NF }'`
+bosh -n target $(cat stubs/aws-resources.yml | grep BoshInit | awk '{ gsub(/"/, "", $NF); print $NF }')
 
 # generate director uuid stub for template to create deployment stub
 cat > stubs/director-uuid.yml <<EOF
-# GENERATED, NO TOUCHING
+# GENERATED: NO TOUCHING
 ---
 director_uuid: $(bosh status --uuid | tr -d '\n')
 EOF
 
-touch stubs/cf/domain.yml
-
+# generate stub with deployment base domain
 cat > stubs/cf/domain.yml <<EOF
-# GENERATED, NO TOUCHING
+# GENERATED: NO TOUCHING
 EOF
 
 spiff merge $SCRIPT_DIR/templates/cf/domain.yml \
   $SCRIPT_DIR/templates/cf/domain-internal.yml \
-  stubs/domain.yml >> stubs/cf/domain.yml
+  stubs/domain.yml \
+  >> stubs/cf/domain.yml
 
 # generate deployment stub
-touch stubs/cf/stub.yml
-
 cat > stubs/cf/stub.yml <<EOF
-# GENERATED, NO TOUCHING
+# GENERATED: NO TOUCHING
 EOF
 
 spiff merge \
@@ -144,18 +201,38 @@ spiff merge \
   stubs/aws-resources.yml \
   stubs/cf/domain.yml \
   stubs/director-uuid.yml \
+  <(cf_credentials) \
   >> stubs/cf/stub.yml
 
+# copy CF property stub if not already present
 if [ ! -f stubs/cf/properties.yml ]; then
   cp $SCRIPT_DIR/stubs/cf/properties.yml stubs/cf/properties.yml
 fi
 
 mkdir -p stubs/diego
 
-if [ ! -f stubs/diego/property-overrides.yml ]; then
-  cp $SCRIPT_DIR/stubs/diego/property-overrides.yml stubs/diego/property-overrides.yml
+# generate Diego property-override stub with certs
+if [ -f stubs/diego/property-overrides.yml ]; then
+  # update BBS, etcd certs and keys in existing property-overrides stub
+  temp_property_overrides=$(mktemp stubs/diego/property-overrides.yml.XXXXX)
+
+  spiff merge \
+    stubs/diego/property-overrides.yml \
+    $SCRIPT_DIR/templates/diego/property-overrides-internal.yml \
+    <(diego_credentials) \
+    > "${temp_property_overrides}"
+
+  mv "${temp_property_overrides}" stubs/diego/property-overrides.yml
+else
+  # create new property-overrides stub with default overrides
+  spiff merge \
+    $SCRIPT_DIR/templates/diego/property-overrides.yml \
+    $SCRIPT_DIR/templates/diego/property-overrides-internal.yml \
+    <(diego_credentials) \
+    > stubs/diego/property-overrides.yml
 fi
 
+# generate Diego IaaS-settings stub
 spiff merge \
   $SCRIPT_DIR/../../manifest-generation/misc-templates/aws-iaas-settings.yml \
   $SCRIPT_DIR/templates/diego/iaas-settings-internal.yml \
