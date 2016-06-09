@@ -16,7 +16,9 @@ iaas_settings:
     - name: diego3
       subnets: (( merge ))
     - name: diego-vizzini
-      subnets: (( merge || "nil" ))
+      subnets: (( merge || nil ))
+    - name: diego-benchmarks
+      subnets: (( merge || nil ))
   compilation_cloud_properties: (( merge ))
   resource_pool_cloud_properties:
     - name: access_z1

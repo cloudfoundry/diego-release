@@ -71,6 +71,18 @@ subnets:
     cidr: (( meta.vpc.base ".10.0/24" ))
     availability_zone: (( meta.availability_zones.[2] ))
 
+  - name: MySQLZ1
+    cidr: (( meta.vpc.base ".11.0/24" ))
+    availability_zone: (( meta.availability_zones.[0] ))
+
+  - name: MySQLZ2
+    cidr: (( meta.vpc.base ".12.0/24" ))
+    availability_zone: (( meta.availability_zones.[1] ))
+
+  - name: MySQLZ3
+    cidr: (( meta.vpc.base ".13.0/24" ))
+    availability_zone: (( meta.availability_zones.[2] ))
+
 load_balancers:
   - name: CFELB
     listeners:

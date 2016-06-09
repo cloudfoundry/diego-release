@@ -1,0 +1,119 @@
+iaas_settings:
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: latest
+  subnet_configs:
+    - name: mysql1
+      subnets:
+        - range:    (( Resources.SubnetCIDR.MySQLZ1 ))
+          reserved: 
+            - (( Resources.SubnetOctets.MySQLZ1.[2] ".2 - " Resources.SubnetOctets.MySQLZ1.[2] ".9" ))
+            - (( Resources.SubnetOctets.MySQLZ1.[2] ".130 - " Resources.SubnetOctets.MySQLZ1.[2] ".254" ))
+          static:   (( [Resources.SubnetOctets.MySQLZ1.[2] ".10 - " Resources.SubnetOctets.MySQLZ1.[2] ".63"] ))
+          gateway:  (( Resources.SubnetOctets.MySQLZ1.[2] ".1" ))
+          dns:      (( [Resources.SubnetOctets.MySQLZ1.[1] ".0.2"] ))
+          cloud_properties:
+            subnet: (( Resources.Subnet.MySQLZ1 ))
+    - name: mysql2
+      subnets:
+        - range:    (( Resources.SubnetCIDR.MySQLZ2 ))
+          reserved:
+            - (( Resources.SubnetOctets.MySQLZ2.[2] ".2 - " Resources.SubnetOctets.MySQLZ2.[2] ".9" ))
+            - (( Resources.SubnetOctets.MySQLZ2.[2] ".130 - " Resources.SubnetOctets.MySQLZ2.[2] ".254" ))
+          static:   (( [Resources.SubnetOctets.MySQLZ2.[2] ".10 - " Resources.SubnetOctets.MySQLZ2.[2] ".63"] ))
+          gateway:  (( Resources.SubnetOctets.MySQLZ2.[2] ".1" ))
+          dns:      (( [Resources.SubnetOctets.MySQLZ2.[1] ".0.2"] ))
+          cloud_properties:
+            subnet: (( Resources.Subnet.MySQLZ2 ))
+    - name: mysql3
+      subnets:
+        - range:    (( Resources.SubnetCIDR.MySQLZ3 ))
+          reserved:
+            - (( Resources.SubnetOctets.MySQLZ3.[2] ".2 - " Resources.SubnetOctets.MySQLZ3.[2] ".9" ))
+            - (( Resources.SubnetOctets.MySQLZ3.[2] ".130 - " Resources.SubnetOctets.MySQLZ3.[2] ".254" ))
+          static:   (( [Resources.SubnetOctets.MySQLZ3.[2] ".10 - " Resources.SubnetOctets.MySQLZ3.[2] ".63"] ))
+          gateway:  (( Resources.SubnetOctets.MySQLZ3.[2] ".1" ))
+          dns:      (( [Resources.SubnetOctets.MySQLZ3.[1] ".0.2"] ))
+          cloud_properties:
+            subnet: (( Resources.Subnet.MySQLZ3 ))
+  compilation_cloud_properties:
+    instance_type: c4.large
+    availability_zone: (( Resources.SubnetAvailabilityZone.MySQLZ1 ))
+    ephemeral_disk:
+      size: 30000 # in MB
+      type: gp2
+  resource_pool_cloud_properties:
+  - name: mysql_z1
+    cloud_properties:
+      instance_type: m3.large
+      availability_zone: (( Resources.SubnetAvailabilityZone.MySQLZ1 ))
+
+  - name: mysql_z2
+    cloud_properties:
+      instance_type: m3.large
+      availability_zone: (( Resources.SubnetAvailabilityZone.MySQLZ2 ))
+
+  - name: mysql_z3
+    cloud_properties:
+      instance_type: m3.large
+      availability_zone: (( Resources.SubnetAvailabilityZone.MySQLZ3 ))
+
+  - name: arbitrator_z3
+    cloud_properties:
+      instance_type: t2.small
+      availability_zone: (( Resources.SubnetAvailabilityZone.MySQLZ3 ))
+
+  - name: proxy_z1
+    cloud_properties:
+      instance_type: m3.medium
+      availability_zone: (( Resources.SubnetAvailabilityZone.MySQLZ1 ))
+      elbs: nil
+
+  - name: proxy_z2
+    cloud_properties:
+      instance_type: m3.medium
+      availability_zone: (( Resources.SubnetAvailabilityZone.MySQLZ2 ))
+      elbs: nil
+
+  - name: cf-mysql-broker_z1
+    cloud_properties:
+      instance_type: m3.medium
+      availability_zone: (( Resources.SubnetAvailabilityZone.MySQLZ1 ))
+
+  - name: cf-mysql-broker_z2
+    cloud_properties:
+      instance_type: m3.medium
+      availability_zone: (( Resources.SubnetAvailabilityZone.MySQLZ2 ))
+
+  - name: errands_z1
+    cloud_properties:
+      instance_type: m3.medium
+      availability_zone: (( Resources.SubnetAvailabilityZone.MySQLZ1 ))
+
+  disk_pools:
+  - name: mysql-persistent-disk
+    disk_size: 100000
+    cloud_properties:
+      type: gp2
+
+Resources:
+  Subnet:
+    MySQLZ1: (( merge ))
+    MySQLZ2: (( merge ))
+    MySQLZ3: (( merge ))
+  SubnetAvailabilityZone:
+    MySQLZ1: (( merge ))
+    MySQLZ2: (( merge ))
+    MySQLZ3: (( merge ))
+  SubnetOctets:
+    MySQLZ1: (( merge ))
+    MySQLZ2: (( merge ))
+    MySQLZ3: (( merge ))
+  SubnetCIDR:
+    MySQLZ1: (( merge ))
+    MySQLZ2: (( merge ))
+    MySQLZ3: (( merge ))
+  SecurityGroupName:
+    Internal: (( merge ))
+  LoadBalancer:
+    SSHProxyELB: (( merge ))

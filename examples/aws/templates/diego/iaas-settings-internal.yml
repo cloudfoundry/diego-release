@@ -33,6 +33,16 @@ iaas_settings:
           cloud_properties:
             security_groups: (( [Resources.SecurityGroupName.Internal] ))
             subnet: (( Resources.Subnet.DiegoZ3 ))
+    - name: diego-benchmarks
+      subnets:
+        - range:    (( Resources.SubnetCIDR.DiegoZ1 ))
+          reserved: (( [Resources.SubnetOctets.DiegoZ1.[2] ".2 - " Resources.SubnetOctets.DiegoZ1.[2] ".9"] ))
+          static:   (( [Resources.SubnetOctets.DiegoZ1.[2] ".64 - " Resources.SubnetOctets.DiegoZ1.[2] ".67"] ))
+          gateway:  (( Resources.SubnetOctets.DiegoZ1.[2] ".1" ))
+          dns:      (( [Resources.SubnetOctets.DiegoZ1.[1] ".0.2"] ))
+          cloud_properties:
+            security_groups: (( [Resources.SecurityGroupName.Internal] ))
+            subnet: (( Resources.Subnet.DiegoZ1 ))
   compilation_cloud_properties:
     instance_type: c3.large
     availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
