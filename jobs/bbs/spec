@@ -3,6 +3,7 @@ name: bbs
 
 templates:
   bbs_ctl.erb: bin/bbs_ctl
+  pre-start.erb: bin/pre-start
   etcd_ca.crt.erb: config/certs/etcd/ca.crt
   etcd_client.crt.erb: config/certs/etcd/client.crt
   etcd_client.key.erb: config/certs/etcd/client.key

@@ -5,7 +5,6 @@ LOG_DIR=/var/vcap/sys/log/ssh_proxy
 CONF_DIR=/var/vcap/jobs/ssh_proxy/config
 
 PIDFILE=$RUN_DIR/ssh_proxy.pid
-
 HOST_KEY="<%= p("diego.ssh_proxy.host_key") %>"
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
@@ -47,20 +46,12 @@ source /var/vcap/packages/pid_utils/pid_utils.sh
 case $1 in
 
   start)
-    pid_guard $PIDFILE "ssh_proxy"
-
-    mkdir -p $RUN_DIR
-    chown -R vcap:vcap $RUN_DIR
-
-    mkdir -p $LOG_DIR
-    chown -R vcap:vcap $LOG_DIR
-
     echo $$ > $PIDFILE
 
     # Work around for GOLANG 1.5.3 DNS bug
     export GODEBUG=netdns=cgo
 
-    exec chpst -u vcap:vcap /var/vcap/packages/ssh_proxy/bin/ssh-proxy ${bbs_sec_flags} \
+    exec /var/vcap/packages/ssh_proxy/bin/ssh-proxy ${bbs_sec_flags} \
       ${diego_auth_flags} \
       ${uaa_flags} \
       -address=<%= p("diego.ssh_proxy.listen_addr") %> \
@@ -87,8 +78,8 @@ case $1 in
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       -debugAddr=<%= p("diego.ssh_proxy.debug_addr") %> \
       -logLevel=<%= p("diego.ssh_proxy.log_level") %> \
-      2> >(chpst -u vcap:vcap tee -a $LOG_DIR/ssh_proxy.stderr.log | chpst -u vcap:vcap logger -p user.error -t vcap.ssh-proxy) \
-      1> >(chpst -u vcap:vcap tee -a $LOG_DIR/ssh_proxy.stdout.log | chpst -u vcap:vcap logger -p user.info -t vcap.ssh-proxy)
+      2> >(tee -a $LOG_DIR/ssh_proxy.stderr.log | logger -p user.error -t vcap.ssh-proxy) \
+      1> >(tee -a $LOG_DIR/ssh_proxy.stdout.log | logger -p user.info -t vcap.ssh-proxy)
 
     ;;
 

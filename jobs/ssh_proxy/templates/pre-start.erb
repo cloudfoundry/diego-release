@@ -1,0 +1,35 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/ssh_proxy
+LOG_DIR=/var/vcap/sys/log/ssh_proxy
+MONIT_LOG_DIR=/var/vcap/sys/log/monit
+CONF_DIR=/var/vcap/jobs/ssh_proxy/config
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+function create_directories_and_chown_to_vcap() {
+  mkdir -p ${RUN_DIR}
+  chown -R vcap:vcap ${RUN_DIR}
+
+  mkdir -p ${LOG_DIR}
+  chown -R vcap:vcap ${LOG_DIR}
+
+  mkdir -p $MONIT_LOG_DIR
+  chown -R vcap:vcap $MONIT_LOG_DIR
+
+  mkdir -p "${CONF_DIR}"
+  chown -R vcap:vcap "${CONF_DIR}"
+}
+
+function set_pidguard() {
+	pid_guard ${PIDFILE} "file_server"
+}
+
+function setup() {
+  create_directories_and_chown_to_vcap
+
+  set_pidguard
+
+}
+
+setup

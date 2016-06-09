@@ -1,0 +1,85 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/rep
+LOG_DIR=/var/vcap/sys/log/rep
+MONIT_LOG_DIR=/var/vcap/sys/log/monit
+CONF_DIR=/var/vcap/jobs/rep/config
+DATA_DIR=/var/vcap/data/executor
+CACHE_DIR=<%= p("diego.executor.cache_path") %>
+
+TMP_DIR=$DATA_DIR/tmp
+DRIVERS_PATHS=<%= p("diego.executor.volman.driver_paths") %>
+TRUSTED_CERTS_DIR=${DATA_DIR}/trusted_certs
+PIDFILE=$RUN_DIR/rep.pid
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+function create_directories_and_chown_to_vcap() {
+  mkdir -p $RUN_DIR
+  chown -R vcap:vcap $RUN_DIR
+
+  mkdir -p $LOG_DIR
+  chown -R vcap:vcap $LOG_DIR
+
+  mkdir -p $MONIT_LOG_DIR
+  chown -R vcap:vcap $MONIT_LOG_DIR
+
+  mkdir -p $CONF_DIR
+  chown -R vcap:vcap $CONF_DIR
+
+  mkdir -p $DATA_DIR
+  chown -R vcap:vcap $DATA_DIR
+
+  mkdir -p $TMP_DIR
+  chown -R vcap:vcap $TMP_DIR
+
+  mkdir -p $CACHE_DIR
+  chown -R vcap:vcap $CACHE_DIR
+
+  mkdir -p $DRIVERS_PATHS
+  chown -R vcap:vcap $DRIVERS_PATHS
+
+  mkdir -p "$TRUSTED_CERTS_DIR"
+  chown -R vcap:vcap $TRUSTED_CERTS_DIR
+}
+
+function pre_setup() {
+  pid_guard $PIDFILE "rep"
+
+  if running_in_container; then
+      echo "Not setting /proc/sys/net/ipv4 parameters, since I'm running inside a linux container"
+  else
+      # TCP_FIN_TIMEOUT
+      # This setting determines the time that must elapse before TCP/IP can release a closed connection and reuse
+      # its resources. During this TIME_WAIT state, reopening the connection to the client costs less than establishing
+      # a new connection. By reducing the value of this entry, TCP/IP can release closed connections faster, making more
+      # resources available for new connections. Addjust this in the presense of many connections sitting in the
+      # TIME_WAIT state:
+
+      echo 10 > /proc/sys/net/ipv4/tcp_fin_timeout
+
+      # TCP_TW_REUSE
+      # This allows reusing sockets in TIME_WAIT state for new connections when it is safe from protocol viewpoint.
+      # Default value is 0 (disabled). It is generally a safer alternative to tcp_tw_recycle
+
+      echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse
+
+      # NF_CONNTRACK_MAX
+      # Default value is 65536. We set it to a larger number to avoid running out of connections.
+      echo 262144 > /proc/sys/net/netfilter/nf_conntrack_max
+  fi
+
+}
+
+function set_open_file_descriptors() {
+	# Allowed number of open file descriptors
+  ulimit -n 100000
+}
+
+function setup() {
+  create_directories_and_chown_to_vcap
+  pre_setup
+  set_open_file_descriptors
+}
+
+setup

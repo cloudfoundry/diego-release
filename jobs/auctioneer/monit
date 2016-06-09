@@ -1,5 +1,7 @@
 check process auctioneer
   with pidfile /var/vcap/sys/run/auctioneer/auctioneer.pid
   start program "/var/vcap/jobs/auctioneer/bin/auctioneer_ctl start"
+    as uid vcap and gid vcap
   stop program "/var/vcap/jobs/auctioneer/bin/auctioneer_ctl stop"
+    as uid vcap and gid vcap
   group vcap

@@ -1,7 +1,9 @@
 check process rep
   with pidfile /var/vcap/sys/run/rep/rep.pid
   start program "/var/vcap/jobs/rep/bin/rep_ctl start"
+    as uid vcap and gid vcap
   stop program "/var/vcap/jobs/rep/bin/rep_ctl stop"
+    as uid vcap and gid vcap
   group vcap
   depends on <%= spec['job']['templates'].inject([]) do | deps, template |
 		case template.name

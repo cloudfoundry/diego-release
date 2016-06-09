@@ -3,6 +3,7 @@ name: rep
 
 templates:
   rep_ctl.erb: bin/rep_ctl
+  pre-start.erb: bin/pre-start
   drain.erb: bin/drain
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   trusted_certs.crt.erb: config/certs/rep/trusted_certs.crt

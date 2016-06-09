@@ -3,6 +3,7 @@ name: route_emitter
 
 templates:
   route_emitter_ctl.erb: bin/route_emitter_ctl
+  pre-start.erb: bin/pre-start
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key

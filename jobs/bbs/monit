@@ -1,5 +1,7 @@
 check process bbs
   with pidfile /var/vcap/sys/run/bbs/bbs.pid
   start program "/var/vcap/jobs/bbs/bin/bbs_ctl start"
+    as uid vcap and gid vcap
   stop program "/var/vcap/jobs/bbs/bin/bbs_ctl stop"
+    as uid vcap and gid vcap
   group vcap

@@ -3,6 +3,7 @@ name: file_server
 
 templates:
   file_server_ctl.erb: bin/file_server_ctl
+  pre-start.erb: bin/pre-start
 
 packages:
   - pid_utils
