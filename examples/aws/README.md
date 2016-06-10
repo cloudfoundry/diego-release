@@ -37,21 +37,40 @@ You must also clone the following git repositories from GitHub:
 ### Deployment Directory
 
 The deployment process requires that you create a directory for each deployment
-which will hold the necessary configuration to deploy bosh, cf-release, and
+which will hold the necessary configuration to deploy BOSH, cf-release, and
 diego-release.
 
-### Exporting Directory Locations as Environment Variables
+### Base Domain for Deployment
 
-Export the locations of the deployment directory, CF release directory, and Diego release directory
-as the following environment variables, replacing the `REPLACE_WITH` placeholders below to match your local paths:
+Before proceeding with setup, select a domain name you intend to use for your CF deployment.
+This domain name will be the base domain for all apps deployed to your Cloud Foundry instance, as well as the base domain for the Cloud Foundry system components.
+You will later create a Route 53 Hosted Zone for this domain to set up DNS entries for the deployment, so you should make sure you have access at your domain registrar to integrate these DNS settings into your domain.
+
+
+### Exporting Directory Locations and Configuration as Environment Variables
+
+Change into the directory you just created for the deployment and run the following to produce the `deployment-env` file:
 
 ```bash
-export DEPLOYMENT_DIR=REPLACE_WITH_PATH_TO_DEPLOYMENT_DIR
-export CF_RELEASE_DIR=REPLACE_WITH_PATH_TO_CF_RELEASE_DIR
-export DIEGO_RELEASE_DIR=REPLACE_WITH_PATH_TO_DIEGO_RELEASE_DIR
+cat <<"EOF" > deployment-env
+export DEPLOYMENT_DIR="$(cd $(dirname "$BASH_SOURCE[0]") && pwd)"
+
+export CF_RELEASE_DIR="$HOME/workspace/cf-release"
+export DIEGO_RELEASE_DIR="$HOME/workspace/diego-release"
+
+export CF_DOMAIN=REPLACE_WITH_DEPLOYMENT_DOMAIN
+
+echo "DEPLOYMENT_DIR set to '$DEPLOYMENT_DIR'"
+echo "CF_RELEASE_DIR set to '$CF_RELEASE_DIR'"
+echo "DIEGO_RELEASE_DIR set to '$DIEGO_RELEASE_DIR'"
+echo "CF_DOMAIN set to '$CF_DOMAIN'"
+EOF
 ```
 
-These instructions use these environment variables as `$DEPLOYMENT_DIR`, `$CF_RELEASE_DIR`, and `$DIEGO_RELEASE_DIR`.
+Edit the `deployment-env` file to replace `REPLACE_WITH_DEPLOYMENT_DOMAIN` with the domain selected above. If you have not checked out cf-release and diego-release as subdirectories of `~/workspace`, also replace those default locations.
+
+Run `source deployment-env` to export these variables to your environment. They will be used extensively as `$DEPLOYMENT_DIR`, `$CF_RELEASE_DIR`, `$DIEGO_RELEASE_DIR`, and `$CF_DOMAIN` in commands and references below.
+
 
 ### AWS Requirements
 
@@ -121,7 +140,7 @@ your AWS account through the AWS console:
 1. From the AWS console homepage, click on `Route 53`.
 1. Select `Hosted zones` from the left sidebar.
 1. Click the `Create Hosted Zone` button.
-1. Fill in the domain name you intend to use for your Cloud Foundry deployment. The domain name for your hosted zone will be the base domain for all apps deployed to your Cloud Foundry instance, as well as the base domain for the Cloud Foundry system components. This domain name will be referred to as `$CF_DOMAIN` below.
+1. Fill in the `$CF_DOMAIN` domain name you chose above for your Cloud Foundry deployment.
 
 If you host this domain at another domain registrar, set the nameservers at that registrar to the DNS servers listed in the NS record in the AWS Hosted Zone.
 
@@ -163,16 +182,22 @@ mkdir -p stubs/bosh-init
 #### `bootstrap_environment`
 
 This script exports your AWS default region and the access and secret keys of your IAM user as environment variables.
-Copy the template below into a new `bootstrap_environment` file in `$DEPLOYMENT_DIR`, then replace the `PLACEHOLDER` values as follows from the values in the `credentials.csv` file downloaded during [creation of the IAM user](#iam-user):
+Run the following to create a new ``
+Copy the template below into a new `bootstrap_environment` file in `$DEPLOYMENT_DIR`
+```bash
+cat <<EOF > $DEPLOYMENT_DIR/bootstrap_environment
+export AWS_DEFAULT_REGION=us-east-1
+export AWS_ACCESS_KEY_ID=REPLACE_WITH_AKI
+export AWS_SECRET_ACCESS_KEY='REPLACE_WITH_SECRET_ACCESS_KEY'
+EOF
+```
+
+Next, replace the values prefixed with `REPLACE_WITH_` as follows from the values in the `credentials.csv` file downloaded during [creation of the IAM user](#iam-user):
 
 - For the `AWS_ACCESS_KEY_ID` variable, replace `REPLACE_WITH_AKI` with the access key id.
 - For the `AWS_SECRET_ACCESS_KEY` variable, replace `REPLACE_WITH_SECRET_ACCESS_KEY` with the secret access key.
 
-```bash
-export AWS_DEFAULT_REGION=us-east-1
-export AWS_ACCESS_KEY_ID=REPLACE_WITH_AKI
-export AWS_SECRET_ACCESS_KEY='REPLACE_WITH_SECRET_ACCESS_KEY'
-```
+Replace the value of `AWS_DEFAULT_REGION` if you are deploying to a different AWS region.
 
 #### `keypair/id_rsa_bosh`
 
@@ -184,6 +209,7 @@ An SSL certificate for the domain where Cloud Foundry will be accessible is requ
 If you do not already provide a certificate, you can generate a self-signed certificate following the commands below. 
 
 ```
+cd $DEPLOYMENT_DIR/certs
 openssl genrsa -out elb-cfrouter.key 2048
 ```
 
@@ -196,26 +222,31 @@ openssl x509 -req -in elb-cfrouter.csr -signkey elb-cfrouter.key -out elb-cfrout
 
 #### `stubs/domain.yml`
 
-Enter the domain for the [Route 53 Hosted Zone](#route-53-hosted-zone) in the `domain.yml` stub:
+Run the following command to produce the `stubs/domain.yml` stub file with the domain you [selected above](#base-domain-for-deployment):
 
 ```yaml
+cat <<EOF > $DEPLOYMENT_DIR/stubs/domain.yml
 ---
 domain: $CF_DOMAIN
+EOF
 ```
 
 #### `stubs/infrastructure/availability_zones.yml`
 
-This YAML file defines the three availability zones to host your Cloud Foundry deployment.
-They must be located in the region specified in the `bootstrap_environment` file. For example:
+Run the following to produce the `stubs/infrastructure/availability_zones.yml` file, which defines the three availability zones to host your Cloud Foundry deployment.
 
 ```yaml
+cat <<EOF > $DEPLOYMENT_DIR/stubs/infrastructure/availability_zones.yml
 ---
 meta:
   availability_zones:
   - us-east-1a
   - us-east-1c
   - us-east-1d
+EOF
 ```
+
+If you wish to use different availability zones, or to assign them a different order, edit this file to replace them. Note that these availability zones must be located in the AWS region specified in the `bootstrap_environment` file.
 
 Note: These zones could become restricted by AWS. If at some point during the `deploy_aws_cli` script and you see an error
 similar to the following message:
@@ -228,16 +259,17 @@ then update this file with acceptable availability zone values.
 
 #### `stubs/bosh-init/keypair.yml`
 
-This YAML file contains the name of the keypair created on [AWS keypair for the
-BOSH director](#aws-keypair-for-the-bosh-director). Use the same name that was
-used on that step.
+Run the following to create the `stubs/bosh-init/keypair.yml` file:
 
 ```yaml
+cat <<EOF > $DEPLOYMENT_DIR/stubs/bosh-init/keypair.yml
 ---
 BoshKeypairName: REPLACE_WITH_BOSH_KEYPAIR_NAME
+EOF
 ```
 
-For example:
+Next, edit this file to replace `REPLACE_WITH_BOSH_KEYPAIR_NAME` with the name of the keypair created on [AWS keypair for the
+BOSH director](#aws-keypair-for-the-bosh-director). For example:
 
 ```yaml
 ---
@@ -246,13 +278,10 @@ BoshKeypairName: bosh_keypair
 
 #### `stubs/bosh-init/releases.yml`
 
-To deploy the BOSH director, the `releases.yml` for `bosh-init` must specify `bosh` and `bosh-aws-cpi` releases by `url` and `sha1`.
-Releases for `bosh` can be found [here](https://bosh.io/releases/github.com/cloudfoundry/bosh?all=1), and 
-releases for `bosh-aws-cpi` can be found [here](https://bosh.io/releases/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?all=1).
-
-Fill out the following template with the desired values:
+Run the following to create the `stubs/bosh-init/releases.yml` file, which specifies the  `bosh` and `bosh-aws-cpi` releases for `bosh-init` to use to deploy the BOSH VM.
 
 ```yaml
+cat <<EOF > $DEPLOYMENT_DIR/stubs/bosh-init/releases.yml
 ---
 releases:
 - name: bosh
@@ -261,8 +290,12 @@ releases:
 - name: bosh-aws-cpi
   url: REPLACE_WITH_URL_TO_LATEST_BOSH_AWS_CPI_BOSH_RELEASE
   sha1: REPLACE_WITH_SHA1_OF_LATEST_BOSH_AWS_CPI_BOSH_RELEASE
+EOF
 ```
 
+Next, replace the values in this file with the URLs and SHA1 checksums of the `bosh` and `bosh-aws-cpi` releases.
+Releases for `bosh` can be found [here](https://bosh.io/releases/github.com/cloudfoundry/bosh?all=1), and 
+releases for `bosh-aws-cpi` can be found [here](https://bosh.io/releases/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?all=1).
 For example:
 
 ```yaml
@@ -277,38 +310,43 @@ releases:
 
 #### `stubs/bosh-init/users.yml`
 
-This file defines the admin users for the BOSH director. Replace the 'password' field below with the password you intend to use for the 'admin' user.
+Run the following to create the `stubs/bosh-init/users.yml` file, which defines the admin users for the BOSH director. 
 
 ```yaml
+cat <<EOF > $DEPLOYMENT_DIR/stubs/bosh-init/users.yml
 ---
 BoshInitUsers:
 - name: admin
-  password: REPLACE_WITH_YOUR_PASSWORD
+  password: REPLACE_WITH_BOSH_ADMIN_PASSWORD
+EOF
 ```
+
+Next, edit this file to replace the `REPLACE_WITH_BOSH_ADMIN_PASSWORD` with the password you intend to use for the 'admin' BOSH user.
 
 #### `stubs/bosh-init/stemcell.yml`
 
-This file defines which stemcell to use on the BOSH director. Stemcells can be found
-[here](https://bosh.io/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent), and must be specified by their `url` and `sha1`.
+Run the following to create the `stubs/bosh-init/stemcell.yml` file, which defines the stemcell to use to create the BOSH director. 
 
 ```yaml
+cat <<EOF > $DEPLOYMENT_DIR/stubs/bosh-init/stemcell.yml
 ---
 BoshInitStemcell:
   url: REPLACE_WITH_URL_TO_LATEST_BOSH_AWS_HVM_STEMCELL
   sha1: REPLACE_WITH_URL_TO_LATEST_BOSH_AWS_HVM_STEMCELL
+EOF
 ```
 
-For example:
+Next, select an [AWS Xen-HVM Light stemcell](https://bosh.io/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent) and edit the file to replace the `url` and `sha1` fields for that stemcell. For example:
 
 ```yaml
 ---
 BoshInitStemcell:
-  url: https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=3197
-  sha1: 89a2210b8caf3884855d7db6d48b8863202c7783
+  url: https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=3232.6
+  sha1: 971e869bd825eb0a7bee36a02fe2f61e930aaf29
 ```
 
 The [bosh.io](https://bosh.io) site does not currently provide the SHA1 hash of stemcells. You must download the
-stemcell locally and calcuate the SHA1 hash manually. On Mac OS X, this can be done on OSX by running:
+stemcell locally and calcuate the SHA1 hash manually. On Mac OS X, this can be done by running:
 
 ```
 shasum /path/to/downloaded/stemcell
@@ -359,7 +397,7 @@ DEPLOYMENT_DIR/certs
 |  |- peer.key
 ```
 
-You can ignore any files with a `crl` or `csr`.
+You can ignore any files with a `crl` or `csr` extension.
 
 The certificates in `consul-certs` are used to set SSL properties for the consul VMs, and the certificates in `bbs-certs` and `etcd-certs` are used to set SSL properties on the Diego etcd cluster and BBS API servers.
 
@@ -406,7 +444,7 @@ cd "$DIEGO_RELEASE_DIR/examples/aws"
 ./deploy_aws_environment create "$CF_RELEASE_DIR" "$DEPLOYMENT_DIR"
 ```
 
-The `./deploy_aws_environment` script takes three arguments:
+The `./deploy_aws_environment` script takes three required arguments and a fourth, optional argument:
 
 - The first argument is one of three directives, which you'll need if our script doesn't succeed the first time:
   - `create` creates an AWS CloudFormation stack based off of the stubs filled out above.
@@ -415,7 +453,7 @@ The `./deploy_aws_environment` script takes three arguments:
 
 - The second argument is the **absolute path** to `$CF_RELEASE_DIR`.
 - The third argument is the **absolute path** to `$DEPLOYMENT_DIR`, which must be structured as defined above.
-- The fourth argument is the **stack name** for the deployment environment which, if provided, overrides the default environment name `cf-diego-stack`.
+- The fourth (optional) argument is the **stack name** for the deployment environment which, if provided, overrides the default environment name `cf-diego-stack`.
 
 The deployment process generates a collection of stubs, in the following directory structure. Some of the stubs start with the line `GENERATED: NO TOUCHING`, and are not intended for hand-editing.
 
@@ -481,7 +519,8 @@ perform the following steps:
 
 ## Using RDS MySQL instead of etcd (optional)
 
-If using RDS MySQL, follow the directions in [Setup AWS RDS MySQL](OPTIONAL.md#setup-aws-rds-mysql) to configure and create the RDS instance. You can also deploy a CF-mysql cluster if you so choose, but that should be done after deploying your initial cf deployment below. 
+If using RDS MySQL, follow the directions in [Setup AWS RDS MySQL](OPTIONAL.md#setup-aws-rds-mysql) to configure and create the RDS instance.
+You can also deploy a CF-MySQL cluster if you so choose, but that should be done after deploying your initial CF deployment below.
 
 ## Deploying Cloud Foundry
 
@@ -578,7 +617,7 @@ From here, follow the documentation on [deploying a Cloud Foundry with BOSH](htt
 
 ## Using CF-MySQL instead of etcd (optional)
 
-If you want to use CF-MySQL, follow the directions in [Setup CF-MySQL](OPTIONAL.md#deploy-standalone-cf-mysql) to configure and create the Cf-MySQL cluster.
+To use a CF-MySQL deployment as the Diego data store, follow the directions in [Setup CF-MySQL](OPTIONAL.md#deploy-standalone-cf-mysql) to configure and create the CF-MySQL cluster.
 
 ## Create and Upload Volume Driver Release (experimental) (optional)
 
@@ -597,7 +636,7 @@ To generate a manifest for the Diego deployment, replace the properties in the
 
 Here is a summary of the properties that must be changed:
 
-- Replace `REPLACE_WITH_ACTIVE_KEY_LABEL` with any desired key name (such as `key-a`).
+- Replace all instances of `REPLACE_WITH_ACTIVE_KEY_LABEL` with the desired key name (for example, `key-a`).
 - Replace `REPLACE_WITH_A_SECURE_PASSPHRASE` with a unique passphrase associated with the active key label.
 
 Component log levels and other deployment properties may also be overridden in this stub file.
@@ -606,13 +645,13 @@ This stub file also contains the contents of the BBS, etcd, and SSH-Proxy certif
 
 ### Edit the Instance-Count-Overrides Stub
 
-Copy the example stub to `$DEPLOYMENT_DIR`:
+Copy the example stub to `$DEPLOYMENT_DIR/stubs/diego/instance-count-overrides.yml`:
 
 ```bash
 cp $DIEGO_RELEASE_DIR/examples/aws/stubs/diego/instance-count-overrides-example.yml $DEPLOYMENT_DIR/stubs/diego/instance-count-overrides.yml
 ```
 
-That stub can be edited if there's need to change the instance counts for any of the jobs deployed.
+Edit that file to change the instance counts of the deployed Diego VMs.
 
 ### Edit the Release-Versions Stub
 

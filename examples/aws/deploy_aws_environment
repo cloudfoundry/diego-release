@@ -242,6 +242,7 @@ spiff merge \
 
 mkdir -p stubs/cf-mysql
 
+# generate CF-MySQL IaaS-settings stub
 spiff merge \
   $SCRIPT_DIR/templates/mysql/iaas-settings.yml \
   $SCRIPT_DIR/templates/mysql/iaas-settings-internal.yml \

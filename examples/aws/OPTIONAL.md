@@ -80,7 +80,7 @@ configurations. All configurations have the same starting steps:
   $DEPLOYMENT_DIR/stubs/cf-mysql/
   ```
   
-1. Generate CF based manifest stub:
+1. Generate CF-based manifest stub:
   
   ```bash
   spiff merge \
@@ -89,42 +89,32 @@ configurations. All configurations have the same starting steps:
 	> $DEPLOYMENT_DIR/stubs/cf-mysql/cf-augmented.yml
   ```
   
-1. Edits to `property-overrides.yml`:
-  1. Rename deployment:
+1. Edit `property-overrides.yml`:
+  1. Rename the deployment:
     
     ```yaml
     property_overrides:
-	deployment_name: diego-mysql
+      deployment_name: diego-mysql
     ```
     
-  1. Fill in all `REPLACE_WITH_` properties with appropriate values (ignore all `UNUSED_VALUE` properties).
-  1. Edit *ELB* related properties, we have to set `host` to `null` since the
-     current manifest generation scripts for CF-MySQL depend on its presence:
+  1. Fill in all `REPLACE_WITH_` properties with appropriate values. Ignore all `UNUSED_VALUE` properties.
+  1. Set the `host` property to `null`. Do not remove it entirely, since the
+     current manifest-generation scripts for CF-MySQL depend on its presence:
     
     ```yaml
     property_overrides:
-	host: nil
+      host: null
     ```
     
-  1. Configured a seeded database for Diego to use (add the `seeded_databases` property):
+  1. Add the following `seeded_databases` property to configure a database for Diego to use. Replace `REPLACE_ME_WITH_DB_PASSWORD` with the desired password for the database:
     
     ```yaml
     property_overrides:
       mysql:
-	seeded_databases:
-	- name: diego
-	  username: diego
-	  password: REPLACE_ME_WITH_DB_PASSWORD
-    ```
-    
-1. Edits to `iaas-settings.yml`:
-  1. Delete the following property, as we won't be using an ELB:
-    
-    ```yaml
-    properties:
-      template_only:
-	 aws:
-	    mysql_elb_names: [REPLACE_WITH_ELB_NAME_NOT_DNS_HOSTNAME] # delete this as we don't need an elb
+        seeded_databases:
+        - name: diego
+          username: diego
+          password: REPLACE_ME_WITH_DB_PASSWORD
     ```
 
 After that you can deploy the CF-MySQL release in either mode:
@@ -220,9 +210,8 @@ sql_overrides:
   bbs:
     db_connection_string: 'diego:REPLACE_ME_WITH_DB_PASSWORD@tcp(<sql-instance-endpoint>)/diego'
     max_open_connections: 500
-    require_ssl: true
-    ca_cert: |
-      REPLACE_WITH_CONTENTS_OF_(DEPLOYMENT_DIR/certs/rds-combined-ca-bundle.pem)
+    require_ssl: null
+    ca_cert: null
 ```
 
 Fill in the bracketed parameters in the `db_connection_string` with the following values:
@@ -236,6 +225,15 @@ Fill in the bracketed parameters in the `db_connection_string` with the followin
     - *In both cases the port will be `3306` by default.*
 
 **Note:** The `sql_overrides.bbs.ca_cert` and `sql_overrides.bbs.require_ssl` properties should be provided only when deploying with an SSL-supported MySQL cluster. Set the `require_ssl` property to `true` to ensure that the BBS uses SSL to connect to the store, and set the `ca_cert` property to the contents of a certificate bundle containing the correct CA certificates to verify the certificate that the SQL server presents.
+
+If enabling SSL for an RDS database, include the contents of `$DEPLOYMENT_DIR/certs/rds-combined-ca-bundle.pem` as the value of the `ca_cert` property:
+
+```yaml
+sql_overrides:
+  bbs:
+    ca_cert: |
+      REPLACE_WITH_CONTENTS_OF_(DEPLOYMENT_DIR/certs/rds-combined-ca-bundle.pem)
+```
 
 ### Generate the Diego manifest
 
@@ -257,7 +255,7 @@ cd $DIEGO_RELEASE_DIR
 
 Once you've successfully deployed a SQL-backed Diego, you may want to remove the now-idle etcd jobs from your database cluster to save on infrastructure costs. Once the database VMs are free of etcd jobs, they do not need to be deployed with write-optimized disks.
 
-To remove etcd from your deployment, just supply the manifest generation scripts with the `-x` flag.
+To remove etcd from your deployment, invoke the manifest-generation script with the `-x` flag:
 
 ```bash
 cd $DIEGO_RELEASE_DIR

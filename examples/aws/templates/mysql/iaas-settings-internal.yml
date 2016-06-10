@@ -67,13 +67,11 @@ iaas_settings:
     cloud_properties:
       instance_type: m3.medium
       availability_zone: (( Resources.SubnetAvailabilityZone.MySQLZ1 ))
-      elbs: nil
 
   - name: proxy_z2
     cloud_properties:
       instance_type: m3.medium
       availability_zone: (( Resources.SubnetAvailabilityZone.MySQLZ2 ))
-      elbs: nil
 
   - name: cf-mysql-broker_z1
     cloud_properties:
