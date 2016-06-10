@@ -22,14 +22,25 @@ source /var/vcap/packages/pid_utils/pid_utils.sh
 case $1 in
 
   start)
-    echo $$ > $PIDFILE
+    pid_guard $PIDFILE "auctioneer"
+
+    mkdir -p $RUN_DIR
+    chown -R vcap:vcap $RUN_DIR
+
+    mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
 
     export GOMAXPROCS=$(nproc)
-
+   
     # Work around for GOLANG 1.5.3 DNS bug
     export GODEBUG=netdns=cgo
 
-    exec /var/vcap/packages/auctioneer/bin/auctioneer ${bbs_sec_flags} \
+    echo $$ > $PIDFILE
+
+    # Allowed number of open file descriptors
+    ulimit -n 100000
+
+    exec chpst -u vcap:vcap /var/vcap/packages/auctioneer/bin/auctioneer ${bbs_sec_flags} \
       -bbsAddress=${bbs_api_url} \
       <% if_p("diego.auctioneer.bbs.client_session_cache_size") do |value| %> \
         -bbsClientSessionCacheSize=<%= value %> \
@@ -44,8 +55,8 @@ case $1 in
       -cellStateTimeout=<%= p("diego.auctioneer.cell_state_timeout") %> \
       -startingContainerWeight=<%= p("diego.auctioneer.starting_container_weight") %> \
       -logLevel=<%= p("diego.auctioneer.log_level") %> \
-      2> >(tee -a $LOG_DIR/auctioneer.stderr.log | logger -p user.error -t vcap.auctioneer) \
-      1> >(tee -a $LOG_DIR/auctioneer.stdout.log | logger -p user.info -t vcap.auctioneer)
+      2> >(chpst -u vcap:vcap tee -a $LOG_DIR/auctioneer.stderr.log | chpst -u vcap:vcap logger -p user.error -t vcap.auctioneer) \
+      1> >(chpst -u vcap:vcap tee -a $LOG_DIR/auctioneer.stdout.log | chpst -u vcap:vcap logger -p user.info -t vcap.auctioneer)
 
     ;;
 

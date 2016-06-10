@@ -2,20 +2,51 @@
 
 RUN_DIR=/var/vcap/sys/run/file_server
 LOG_DIR=/var/vcap/sys/log/file_server
+CONF_DIR=/var/vcap/jobs/file_server/config
 
-PIDFILE=${RUN_DIR}/file_server.pid
+PIDFILE=$RUN_DIR/file_server.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
 case $1 in
 
   start)
-    echo $$ > ${PIDFILE}
+    pid_guard $PIDFILE "file_server"
+
+    mkdir -p $RUN_DIR
+    chown -R vcap:vcap $RUN_DIR
+
+    mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
+
+    echo $$ > $PIDFILE
+
+    if running_in_container; then
+        echo "Not setting /proc/sys/net/ipv4 parameters, since I'm running inside a linux container"
+    else
+        # TCP_FIN_TIMEOUT
+        # This setting determines the time that must elapse before TCP/IP can release a closed connection and reuse
+        # its resources. During this TIME_WAIT state, reopening the connection to the client costs less than establishing
+        # a new connection. By reducing the value of this entry, TCP/IP can release closed connections faster, making more
+        # resources available for new connections. Addjust this in the presense of many connections sitting in the
+        # TIME_WAIT state:
+
+        echo 10 > /proc/sys/net/ipv4/tcp_fin_timeout
+
+        # TCP_TW_REUSE
+        # This allows reusing sockets in TIME_WAIT state for new connections when it is safe from protocol viewpoint.
+        # Default value is 0 (disabled). It is generally a safer alternative to tcp_tw_recycle
+
+        echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse
+    fi
+
+    # Allowed number of open file descriptors
+    ulimit -n 100000
 
     # Work around for GOLANG 1.5.3 DNS bug
     export GODEBUG=netdns=cgo
 
-    exec /var/vcap/packages/file_server/bin/file-server \
+    exec chpst -u vcap:vcap /var/vcap/packages/file_server/bin/file-server \
       -address=<%= p("diego.file_server.listen_addr") %> \
       -consulCluster=http://127.0.0.1:8500 \
       -debugAddr=<%= p("diego.file_server.debug_addr") %> \
@@ -23,13 +54,13 @@ case $1 in
       -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
       -dropsondePort=<%= p("diego.file_server.dropsonde_port") %> \
       -logLevel=<%= p("diego.file_server.log_level") %> \
-      2> >(tee -a $LOG_DIR/file_server.stderr.log | logger -p user.error -t vcap.file-server) \
-      1> >(tee -a $LOG_DIR/file_server.stdout.log | logger -p user.info -t vcap.file-server)
+      2> >(chpst -u vcap:vcap tee -a $LOG_DIR/file_server.stderr.log | chpst -u vcap:vcap logger -p user.error -t vcap.file-server) \
+      1> >(chpst -u vcap:vcap tee -a $LOG_DIR/file_server.stdout.log | chpst -u vcap:vcap logger -p user.info -t vcap.file-server)
 
     ;;
 
   stop)
-    kill_and_wait ${PIDFILE}
+    kill_and_wait $PIDFILE
 
     ;;
 

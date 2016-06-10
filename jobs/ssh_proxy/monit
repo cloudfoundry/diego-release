@@ -1,8 +1,6 @@
 check process ssh_proxy
   with pidfile /var/vcap/sys/run/ssh_proxy/ssh_proxy.pid
   start program "/var/vcap/jobs/ssh_proxy/bin/ssh_proxy_ctl start"
-    as uid vcap and gid vcap
   stop program "/var/vcap/jobs/ssh_proxy/bin/ssh_proxy_ctl stop"
-    as uid vcap and gid vcap
   group vcap
 

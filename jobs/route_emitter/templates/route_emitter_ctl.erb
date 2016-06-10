@@ -24,8 +24,15 @@ source /var/vcap/packages/pid_utils/pid_utils.sh
 case $1 in
 
   start)
+    pid_guard $PIDFILE "route_emitter"
 
-    echo $$ > $PIDFILE
+    mkdir -p $RUN_DIR
+    chown -R vcap:vcap $RUN_DIR
+
+    mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
+
+    echo $$ > /var/vcap/sys/run/route_emitter/route_emitter.pid
 
     # Enable maximum OS thread concurrency
     export GOMAXPROCS=$(nproc)
@@ -33,7 +40,7 @@ case $1 in
     # Work around for GOLANG 1.5.3 DNS bug
     export GODEBUG=netdns=cgo
 
-    exec /var/vcap/packages/route_emitter/bin/route-emitter ${bbs_sec_flags} \
+    exec chpst -u vcap:vcap /var/vcap/packages/route_emitter/bin/route-emitter ${bbs_sec_flags} \
       -consulCluster=http://127.0.0.1:8500 \
       -natsAddresses=<%= p("diego.route_emitter.nats.machines").collect { |addr| "#{addr}:#{p("diego.route_emitter.nats.port")}" }.join(",") %> \
       -natsUsername=<%= p("diego.route_emitter.nats.user") %> \
@@ -49,8 +56,8 @@ case $1 in
       -debugAddr=<%= p("diego.route_emitter.debug_addr") %> \
       -syncInterval=<%= "#{p("diego.route_emitter.sync_interval_in_seconds")}s" %> \
       -logLevel=<%= p("diego.route_emitter.log_level") %> \
-      2> >(tee -a $LOG_DIR/route_emitter.stderr.log | logger -p user.error -t vcap.route-emitter) \
-      1> >(tee -a $LOG_DIR/route_emitter.stdout.log | logger -p user.info -t vcap.route-emitter)
+      2> >(chpst -u vcap:vcap tee -a $LOG_DIR/route_emitter.stderr.log | chpst -u vcap:vcap logger -p user.error -t vcap.route-emitter) \
+      1> >(chpst -u vcap:vcap tee -a $LOG_DIR/route_emitter.stdout.log | chpst -u vcap:vcap logger -p user.info -t vcap.route-emitter)
 
     ;;
 

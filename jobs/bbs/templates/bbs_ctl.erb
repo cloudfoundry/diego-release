@@ -40,12 +40,48 @@ etcd_sec_flags=""
 case $1 in
 
   start)
-    echo $$ > $PIDFILE
+    pid_guard $PIDFILE "bbs"
+
+    mkdir -p $RUN_DIR
+    chown -R vcap:vcap $RUN_DIR
+
+    mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
+
+    mkdir -p $DATA_DIR
+    chown -R vcap:vcap $DATA_DIR
+
+    mkdir -p $TMP_DIR
+    chown -R vcap:vcap $TMP_DIR
 
     export GOMAXPROCS=$(nproc)
 
     # Work around for GOLANG 1.5.3 DNS bug
     export GODEBUG=netdns=cgo
+
+    echo $$ > $PIDFILE
+
+    if running_in_container; then
+        echo "Not setting /proc/sys/net/ipv4 parameters, since I'm running inside a linux container"
+    else
+        # TCP_FIN_TIMEOUT
+        # This setting determines the time that must elapse before TCP/IP can release a closed connection and reuse
+        # its resources. During this TIME_WAIT state, reopening the connection to the client costs less than establishing
+        # a new connection. By reducing the value of this entry, TCP/IP can release closed connections faster, making more
+        # resources available for new connections. Addjust this in the presense of many connections sitting in the
+        # TIME_WAIT state:
+
+        echo 10 > /proc/sys/net/ipv4/tcp_fin_timeout
+
+        # TCP_TW_REUSE
+        # This allows reusing sockets in TIME_WAIT state for new connections when it is safe from protocol viewpoint.
+        # Default value is 0 (disabled). It is generally a safer alternative to tcp_tw_recycle
+
+        echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse
+    fi
+
+    # Allowed number of open file descriptors
+    ulimit -n 100000
 
     etcd_flags=""
     <% if p("diego.bbs.etcd.machines").size > 0 %>
@@ -61,7 +97,7 @@ case $1 in
       "
     <% end %>
 
-    exec /var/vcap/packages/bbs/bin/bbs ${etcd_flags} ${bbs_sec_flags} ${sql_sec_flags} \
+    exec chpst -u vcap:vcap /var/vcap/packages/bbs/bin/bbs ${etcd_flags} ${bbs_sec_flags} ${sql_sec_flags} \
       -activeKeyLabel='<%= p("diego.bbs.active_key_label") %>' \
       -advertiseURL=${ad_url_scheme}<%="://#{name.gsub('_', '-')}-#{spec.index}.#{p("diego.bbs.advertisement_base_hostname")}:#{p("diego.bbs.listen_addr").split(':')[1]}" %> \
       -auctioneerAddress=<%= p("diego.bbs.auctioneer.api_url") %> \
@@ -84,8 +120,8 @@ case $1 in
       <% if_p("diego.bbs.sql.max_open_connections") do |value| %> \
         -maxDatabaseConnections=<%= value %> \
       <% end %> \
-      2> >(tee -a $LOG_DIR/bbs.stderr.log | logger -p user.error -t vcap.bbs) \
-      1> >(tee -a $LOG_DIR/bbs.stdout.log | logger -p user.info -t vcap.bbs)
+      2> >(chpst -u vcap:vcap tee -a $LOG_DIR/bbs.stderr.log | chpst -u vcap:vcap logger -p user.error -t vcap.bbs) \
+      1> >(chpst -u vcap:vcap tee -a $LOG_DIR/bbs.stdout.log | chpst -u vcap:vcap logger -p user.info -t vcap.bbs)
 
     ;;
 

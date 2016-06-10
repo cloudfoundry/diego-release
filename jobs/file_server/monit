@@ -1,7 +1,5 @@
 check process file_server
   with pidfile /var/vcap/sys/run/file_server/file_server.pid
   start program "/var/vcap/jobs/file_server/bin/file_server_ctl start"
-    as uid vcap and gid vcap
   stop program "/var/vcap/jobs/file_server/bin/file_server_ctl stop"
-    as uid vcap and gid vcap
   group vcap

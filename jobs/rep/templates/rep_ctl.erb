@@ -8,8 +8,6 @@ PIDFILE=$RUN_DIR/rep.pid
 DATA_DIR=/var/vcap/data/executor
 CACHE_DIR=<%= p("diego.executor.cache_path") %>
 TMP_DIR=$DATA_DIR/tmp
-DRIVERS_PATHS=<%= p("diego.executor.volman.driver_paths") %>
-TRUSTED_CERTS_DIR=${DATA_DIR}/trusted_certs
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
@@ -28,16 +26,29 @@ source /var/vcap/packages/pid_utils/pid_utils.sh
 case $1 in
 
   start)
+    pid_guard $PIDFILE "rep"
 
-    # Enable maximum OS thread concurrency
-    export GOMAXPROCS=$(nproc)
+    mkdir -p $RUN_DIR
+    chown -R vcap:vcap $RUN_DIR
 
-    # Work around for GOLANG 1.5.3 DNS bug
-    export GODEBUG=netdns=cgo
+    mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
+
+    mkdir -p $DATA_DIR
+    chown -R vcap:vcap $DATA_DIR
+
+    mkdir -p $TMP_DIR
+    chown -R vcap:vcap $TMP_DIR
+
+    mkdir -p $CACHE_DIR
+    chown -R vcap:vcap $CACHE_DIR
 
     trusted_certs_flag=""
+    TRUSTED_CERTS_DIR=${DATA_DIR}/trusted_certs
     rm -rf "$TRUSTED_CERTS_DIR"
     <% if_p("diego.rep.trusted_certs") do |value| %>
+      mkdir -p "$TRUSTED_CERTS_DIR"
+      chown -R vcap:vcap $TRUSTED_CERTS_DIR
 
       trusted_certs_flag="--trustedSystemCertificatesPath=$TRUSTED_CERTS_DIR"
 
@@ -50,7 +61,43 @@ case $1 in
       popd
     <% end %>
 
-    /var/vcap/packages/rep/bin/rep ${bbs_sec_flags} \
+    if running_in_container; then
+        echo "Not setting /proc/sys/net/ipv4 parameters, since I'm running inside a linux container"
+    else
+        # TCP_FIN_TIMEOUT
+        # This setting determines the time that must elapse before TCP/IP can release a closed connection and reuse
+        # its resources. During this TIME_WAIT state, reopening the connection to the client costs less than establishing
+        # a new connection. By reducing the value of this entry, TCP/IP can release closed connections faster, making more
+        # resources available for new connections. Addjust this in the presense of many connections sitting in the
+        # TIME_WAIT state:
+
+        echo 10 > /proc/sys/net/ipv4/tcp_fin_timeout
+
+        # TCP_TW_REUSE
+        # This allows reusing sockets in TIME_WAIT state for new connections when it is safe from protocol viewpoint.
+        # Default value is 0 (disabled). It is generally a safer alternative to tcp_tw_recycle
+
+        echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse
+
+        # NF_CONNTRACK_MAX
+        # Default value is 65536. We set it to a larger number to avoid running out of connections.
+        echo 262144 > /proc/sys/net/netfilter/nf_conntrack_max
+    fi
+
+    # Allowed number of open file descriptors
+    ulimit -n 100000
+
+    # Enable maximum OS thread concurrency
+    export GOMAXPROCS=$(nproc)
+
+    # Work around for GOLANG 1.5.3 DNS bug
+    export GODEBUG=netdns=cgo
+
+    DRIVERS_PATHS=<%= p("diego.executor.volman.driver_paths") %>
+    mkdir -p $DRIVERS_PATHS
+    chown vcap:vcap $DRIVERS_PATHS
+
+    chpst -u vcap:vcap /var/vcap/packages/rep/bin/rep ${bbs_sec_flags} \
       -bbsAddress=${bbs_api_url} \
       <% if_p("diego.rep.bbs.client_session_cache_size") do |value| %> \
         -bbsClientSessionCacheSize=<%= value %> \
@@ -116,8 +163,8 @@ case $1 in
       <% if_p("diego.executor.post_setup_hook") do |value| %> \
         -postSetupHook=<%= Shellwords.shellescape(value) %> \
       <% end %> \
-      2> >(tee -a $LOG_DIR/rep.stderr.log | logger -p user.error -t vcap.rep) \
-      1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep) &
+      2> >(chpst -u vcap:vcap tee -a $LOG_DIR/rep.stderr.log | chpst -u vcap:vcap logger -p user.error -t vcap.rep) \
+      1> >(chpst -u vcap:vcap tee -a $LOG_DIR/rep.stdout.log | chpst -u vcap:vcap logger -t vcap.rep) &
 
     pid=$!
 
