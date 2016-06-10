@@ -1,0 +1,82 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/bbs
+LOG_DIR=/var/vcap/sys/log/bbs
+CONF_DIR=/var/vcap/jobs/bbs/config
+
+PIDFILE=$RUN_DIR/bbs.pid
+
+export GOMAXPROCS=$(nproc)
+
+# Work around for GOLANG 1.5.3 DNS bug
+export GODEBUG=netdns=cgo
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+<% if p("diego.bbs.etcd.require_ssl") %>
+etcd_sec_flags=" \
+   -etcdCertFile=${CONF_DIR}/certs/etcd/client.crt \
+   -etcdKeyFile=${CONF_DIR}/certs/etcd/client.key \
+   -etcdCaFile=${CONF_DIR}/certs/etcd/ca.crt"
+<% else %>
+etcd_sec_flags=""
+<% end %>
+
+<% if p("diego.bbs.require_ssl") %>
+  ad_url_scheme="https"
+  bbs_sec_flags=" \
+   -certFile=${CONF_DIR}/certs/server.crt \
+   -keyFile=${CONF_DIR}/certs/server.key \
+   -caFile=${CONF_DIR}/certs/ca.crt"
+<% else %>
+  ad_url_scheme="http"
+  bbs_sec_flags=""
+<% end %>
+
+<% if p("diego.bbs.sql.require_ssl") %>
+  sql_sec_flags=" \
+   -sqlCACertFile=${CONF_DIR}/certs/sql/ca.crt"
+<% else %>
+  sql_sec_flags=""
+<% end %>
+
+
+etcd_flags=""
+<% if p("diego.bbs.etcd.machines").size > 0 %>
+  etcd_flags="
+    ${etcd_sec_flags} \
+  -etcdCluster=<%= p("diego.bbs.etcd.machines").map{|addr| "\"#{p("diego.bbs.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
+  <% if_p("diego.bbs.etcd.client_session_cache_size") do |value| %> \
+    -etcdClientSessionCacheSize=<%= value %> \
+  <% end %> \
+  <% if_p("diego.bbs.etcd.max_idle_conns_per_host") do |value| %> \
+    -etcdMaxIdleConnsPerHost=<%= value %> \
+  <% end %> \
+  "
+<% end %>
+
+/var/vcap/packages/bbs/bin/bbs ${etcd_flags} ${bbs_sec_flags} ${sql_sec_flags} \
+  -activeKeyLabel='<%= p("diego.bbs.active_key_label") %>' \
+  -advertiseURL=${ad_url_scheme}<%="://#{name.gsub('_', '-')}-#{spec.index}.#{p("diego.bbs.advertisement_base_hostname")}:#{p("diego.bbs.listen_addr").split(':')[1]}" %> \
+  -auctioneerAddress=<%= p("diego.bbs.auctioneer.api_url") %> \
+  -consulCluster=http://127.0.0.1:8500 \
+  -debugAddr=<%= p("diego.bbs.debug_addr") %> \
+  <% p("diego.bbs.encryption_keys").each do |encryption_key| %> \
+    -encryptionKey='<%= "#{encryption_key["label"]}:#{encryption_key["passphrase"]}" %>' \
+  <% end %> \
+  -dropsondePort=<%= p("diego.bbs.dropsonde_port") %> \
+  -listenAddress=<%= p("diego.bbs.listen_addr") %> \
+  -healthAddress=<%= p("diego.bbs.health_addr") %> \
+  -logLevel=<%= p("diego.bbs.log_level") %> \
+  -requireSSL=<%= p("diego.bbs.require_ssl") %> \
+  <% if_p("diego.bbs.desired_lrp_creation_timeout") do |value| %> \
+    -desiredLRPCreationTimeout=<%= value %> \
+  <% end %> \
+  <% if_p("diego.bbs.sql.db_connection_string") do |value| %> \
+    -databaseConnectionString='<%= value %>' \
+  <% end %> \
+  <% if_p("diego.bbs.sql.max_open_connections") do |value| %> \
+    -maxDatabaseConnections=<%= value %> \
+  <% end %> \
+  2> >(tee -a $LOG_DIR/bbs.stderr.log | logger -p user.error -t vcap.bbs) \
+  1> >(tee -a $LOG_DIR/bbs.stdout.log | logger -p user.info -t vcap.bbs) & echo $! > $PIDFILE

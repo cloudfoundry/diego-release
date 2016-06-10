@@ -3,25 +3,14 @@
 RUN_DIR=/var/vcap/sys/run/rep
 LOG_DIR=/var/vcap/sys/log/rep
 CONF_DIR=/var/vcap/jobs/rep/config
-PIDFILE=$RUN_DIR/rep.pid
 
 DATA_DIR=/var/vcap/data/executor
 CACHE_DIR=<%= p("diego.executor.cache_path") %>
 TMP_DIR=$DATA_DIR/tmp
 
+PIDFILE=$RUN_DIR/rep.pid
+
 source /var/vcap/packages/pid_utils/pid_utils.sh
-
-<% if p("diego.rep.bbs.require_ssl") %>
-  bbs_sec_flags=" \
-   -bbsClientCert=${CONF_DIR}/certs/bbs/client.crt \
-   -bbsClientKey=${CONF_DIR}/certs/bbs/client.key \
-   -bbsCACert=${CONF_DIR}/certs/bbs/ca.crt"
-
-  bbs_api_url="<%= "https://" + p("diego.rep.bbs.api_location") %>"
-<% else %>
-  bbs_sec_flags=""
-  bbs_api_url="<%= "http://" + p("diego.rep.bbs.api_location") %>"
-<% end %>
 
 case $1 in
 
@@ -42,6 +31,10 @@ case $1 in
 
     mkdir -p $CACHE_DIR
     chown -R vcap:vcap $CACHE_DIR
+
+    DRIVERS_PATHS=<%= p("diego.executor.volman.driver_paths") %>
+    mkdir -p $DRIVERS_PATHS
+    chown vcap:vcap $DRIVERS_PATHS
 
     trusted_certs_flag=""
     TRUSTED_CERTS_DIR=${DATA_DIR}/trusted_certs
@@ -87,100 +80,7 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    # Enable maximum OS thread concurrency
-    export GOMAXPROCS=$(nproc)
-
-    # Work around for GOLANG 1.5.3 DNS bug
-    export GODEBUG=netdns=cgo
-
-    DRIVERS_PATHS=<%= p("diego.executor.volman.driver_paths") %>
-    mkdir -p $DRIVERS_PATHS
-    chown vcap:vcap $DRIVERS_PATHS
-
-    chpst -u vcap:vcap /var/vcap/packages/rep/bin/rep ${bbs_sec_flags} \
-      -bbsAddress=${bbs_api_url} \
-      <% if_p("diego.rep.bbs.client_session_cache_size") do |value| %> \
-        -bbsClientSessionCacheSize=<%= value %> \
-      <% end %> \
-      <% if_p("diego.rep.bbs.max_idle_conns_per_host") do |value| %> \
-        -bbsMaxIdleConnsPerHost=<%= value %> \
-      <% end %> \
-      -dropsondePort=<%= p("diego.rep.dropsonde_port") %> \
-      -consulCluster=http://127.0.0.1:8500 \
-      -debugAddr=<%= p("diego.rep.debug_addr") %> \
-      -listenAddr=<%= p("diego.rep.listen_addr") %> \
-      <%= p("diego.rep.preloaded_rootfses").map { |rootfs| "-preloadedRootFS #{rootfs}" }.join(" ") %> \
-      <%= p("diego.rep.rootfs_providers").map { |provider| "-rootFSProvider #{provider}" }.join(" ") %> \
-      -cellID=<%= spec.job.name %>-<%= spec.index %> \
-      -zone=<%= spec.az || p("diego.rep.zone") %> \
-      -pollingInterval=<%= "#{p("diego.rep.polling_interval_in_seconds")}s" %> \
-      -evacuationPollingInterval=<%= "#{p("diego.rep.evacuation_polling_interval_in_seconds")}s" %> \
-      -evacuationTimeout=<%= "#{p("diego.rep.evacuation_timeout_in_seconds")}s" %> \
-      ${trusted_certs_flag} \
-      -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
-      -gardenNetwork=<%= p("diego.executor.garden.network") %> \
-      -gardenAddr=<%= p("diego.executor.garden.address") %> \
-      -memoryMB=<%= p("diego.executor.memory_capacity_mb") %> \
-      -diskMB=<%= p("diego.executor.disk_capacity_mb") %> \
-      -containerInodeLimit=<%= p("diego.executor.container_inode_limit") %> \
-      -containerMaxCpuShares=<%= p("diego.executor.container_max_cpu_shares") %> \
-      -cachePath=$CACHE_DIR \
-      -maxCacheSizeInBytes=<%= p("diego.executor.max_cache_size_in_bytes") %>\
-      -exportNetworkEnvVars=<%= p("diego.executor.export_network_env_vars") %>\
-      -healthyMonitoringInterval=<%= "#{p("diego.executor.healthy_monitoring_interval_in_seconds")}s" %> \
-      -unhealthyMonitoringInterval=<%= "#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s" %> \
-      -createWorkPoolSize=<%= p("diego.executor.create_work_pool_size") %> \
-      -deleteWorkPoolSize=<%= p("diego.executor.delete_work_pool_size") %> \
-      -readWorkPoolSize=<%= p("diego.executor.read_work_pool_size") %> \
-      -metricsWorkPoolSize=<%= p("diego.executor.metrics_work_pool_size") %> \
-      -healthCheckWorkPoolSize=<%= p("diego.executor.healthcheck_work_pool_size") %> \
-      -maxConcurrentDownloads=<%= p("diego.executor.max_concurrent_downloads") %> \
-      <% if_p("diego.executor.ca_certs_for_downloads") do |value| %> \
-        <% if !value.empty? %> \
-         -caCertsForDownloads=$CONF_DIR/certs/rep/ca_certs_for_downloads.crt \
-        <% end %> \
-      <% end %> \
-      -tempDir=$TMP_DIR \
-      -volmanDriverPaths=$DRIVERS_PATHS \
-      -logLevel=<%= p("diego.rep.log_level") %> \
-      -gardenHealthcheckInterval=<%= p("diego.executor.garden_healthcheck.interval") %> \
-      -gardenHealthcheckTimeout=<%= p("diego.executor.garden_healthcheck.timeout") %> \
-      -gardenHealthcheckCommandRetryPause=<%= p("diego.executor.garden_healthcheck.command_retry_pause") %> \
-      -gardenHealthcheckProcessPath=<%= p("diego.executor.garden_healthcheck.process.path") %> \
-      -gardenHealthcheckProcessUser=<%= p("diego.executor.garden_healthcheck.process.user") %> \
-      <% if_p("diego.executor.garden_healthcheck.process.dir") do |value| %> \
-        -gardenHealthcheckProcessDir=<%= value %> \
-      <% end %> \
-      <% if_p("diego.executor.garden_healthcheck.process.args") do |value| %> \
-        -gardenHealthcheckProcessArgs=<%= Shellwords.shellescape(value) %> \
-      <% end %> \
-      <% if_p("diego.executor.garden_healthcheck.process.env") do |value| %> \
-        -gardenHealthcheckProcessEnv=<%= Shellwords.shellescape(value) %> \
-      <% end %> \
-      <% if_p("diego.executor.post_setup_user") do |value| %> \
-        -postSetupUser=<%= value %> \
-      <% end %> \
-      <% if_p("diego.executor.post_setup_hook") do |value| %> \
-        -postSetupHook=<%= Shellwords.shellescape(value) %> \
-      <% end %> \
-      2> >(chpst -u vcap:vcap tee -a $LOG_DIR/rep.stderr.log | chpst -u vcap:vcap logger -p user.error -t vcap.rep) \
-      1> >(chpst -u vcap:vcap tee -a $LOG_DIR/rep.stdout.log | chpst -u vcap:vcap logger -t vcap.rep) &
-
-    pid=$!
-
-    set +e
-
-    address=<%= p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") %>
-    start=`date +%s`
-    # wait up to 25 seconds (monit gives us 30 -- defined on the monit script)
-    while [ $(( $(date +%s) - 25 )) -lt $start ]; do
-      if curl --fail --silent http://$address/ping >/dev/null 2>&1
-      then
-        echo $pid > $PIDFILE
-        break
-      fi
-      sleep 1
-    done
+    chpst -u vcap:vcap bash -c '/var/vcap/jobs/rep/bin/rep_script'
 
     if [ -f $PIDFILE ]; then
       wait $(cat $PIDFILE)

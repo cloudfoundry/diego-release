@@ -2,6 +2,7 @@
 name: ssh_proxy
 
 templates:
+  ssh_proxy_script.erb: bin/ssh_proxy_script
   ssh_proxy_ctl.erb: bin/ssh_proxy_ctl
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt

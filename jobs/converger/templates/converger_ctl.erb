@@ -2,22 +2,10 @@
 
 RUN_DIR=/var/vcap/sys/run/converger
 LOG_DIR=/var/vcap/sys/log/converger
-CONF_DIR=/var/vcap/jobs/converger/config
+
 PIDFILE=$RUN_DIR/converger.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
-
-<% if p("diego.converger.bbs.require_ssl") %>
-  bbs_sec_flags=" \
-   -bbsClientCert=${CONF_DIR}/certs/bbs/client.crt \
-   -bbsClientKey=${CONF_DIR}/certs/bbs/client.key \
-   -bbsCACert=${CONF_DIR}/certs/bbs/ca.crt"
-
-  bbs_api_url="<%= "https://" + p("diego.converger.bbs.api_location") %>"
-<% else %>
-  bbs_sec_flags=""
-  bbs_api_url="<%= "http://" + p("diego.converger.bbs.api_location") %>"
-<% end %>
 
 case $1 in
 
@@ -30,34 +18,10 @@ case $1 in
     mkdir -p $LOG_DIR
     chown -R vcap:vcap $LOG_DIR
 
-    echo $$ > /var/vcap/sys/run/converger/converger.pid
-
-    # Enable maximum OS thread concurrency
-    export GOMAXPROCS=$(nproc)
-
-    # Work around for GOLANG 1.5.3 DNS bug
-    export GODEBUG=netdns=cgo
-
-    exec chpst -u vcap:vcap /var/vcap/packages/converger/bin/converger ${bbs_sec_flags} \
-      -bbsAddress=${bbs_api_url} \
-      <% if_p("diego.converger.bbs.client_session_cache_size") do |value| %> \
-        -bbsClientSessionCacheSize=<%= value %> \
-      <% end %> \
-      <% if_p("diego.converger.bbs.max_idle_conns_per_host") do |value| %> \
-        -bbsMaxIdleConnsPerHost=<%= value %> \
-      <% end %> \
-      -dropsondePort=<%= p("diego.converger.dropsonde_port") %> \
-      -consulCluster=http://127.0.0.1:8500 \
-      -debugAddr=<%= p("diego.converger.debug_addr") %> \
-      -convergeRepeatInterval=<%= "#{p("diego.converger.repeat_interval_in_seconds")}s" %> \
-      -kickTaskDuration=<%= "#{p("diego.converger.kick_task_duration_in_seconds")}s" %> \
-      -expireCompletedTaskDuration=<%= "#{p("diego.converger.expire_completed_task_duration_in_seconds")}s" %> \
-      -expirePendingTaskDuration=<%= "#{p("diego.converger.expire_pending_task_duration_in_seconds")}s" %> \
-      -logLevel=<%= p("diego.converger.log_level") %> \
-      2> >(chpst -u vcap:vcap tee -a $LOG_DIR/converger.stderr.log | chpst -u vcap:vcap logger -p user.error -t vcap.converger) \
-      1> >(chpst -u vcap:vcap tee -a $LOG_DIR/converger.stdout.log | chpst -u vcap:vcap logger -p user.info -t vcap.converger)
+    exec chpst -u vcap:vcap bash -c '/var/vcap/jobs/converger/bin/converger_script'
 
     ;;
+
 
   stop)
     kill_and_wait $PIDFILE

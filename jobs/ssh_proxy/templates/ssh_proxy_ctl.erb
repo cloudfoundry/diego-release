@@ -2,47 +2,10 @@
 
 RUN_DIR=/var/vcap/sys/run/ssh_proxy
 LOG_DIR=/var/vcap/sys/log/ssh_proxy
-CONF_DIR=/var/vcap/jobs/ssh_proxy/config
 
 PIDFILE=$RUN_DIR/ssh_proxy.pid
 
-HOST_KEY="<%= p("diego.ssh_proxy.host_key") %>"
-
 source /var/vcap/packages/pid_utils/pid_utils.sh
-
-<% require "shellwords" %>
-
-<% if p("diego.ssh_proxy.bbs.require_ssl") %>
-  bbs_sec_flags=" \
-   -bbsClientCert=${CONF_DIR}/certs/bbs/client.crt \
-   -bbsClientKey=${CONF_DIR}/certs/bbs/client.key \
-   -bbsCACert=${CONF_DIR}/certs/bbs/ca.crt"
-
-  bbs_api_url="<%= "https://" + p("diego.ssh_proxy.bbs.api_location") %>"
-<% else %>
-  bbs_sec_flags=""
-  bbs_api_url="<%= "http://" + p("diego.ssh_proxy.bbs.api_location") %>"
-<% end %>
-
-<% if p("diego.ssh_proxy.enable_diego_auth") %>
-  diego_auth_flags="\
-   -enableDiegoAuth=true \
-   -diegoCredentials=<%= p("diego.ssh_proxy.diego_credentials") %>"
-<% else %>
-  diego_auth_flags="\
-   -enableDiegoAuth=false"
- <% end %>
-
-<% if p("diego.ssh_proxy.enable_cf_auth") %>
-  uaa_flags="\
-    -enableCFAuth=true \
-    -uaaTokenURL=<%= p("diego.ssh_proxy.uaa_token_url") %> \
-    -uaaPassword="<%= Shellwords.shellescape(p("diego.ssh_proxy.uaa_secret")) %>" \
-    -uaaUsername="ssh-proxy""
-<% else %>
-  uaa_flags="\
-    -enableCFAuth=false"
- <% end %>
 
 case $1 in
 
@@ -55,40 +18,7 @@ case $1 in
     mkdir -p $LOG_DIR
     chown -R vcap:vcap $LOG_DIR
 
-    echo $$ > $PIDFILE
-
-    # Work around for GOLANG 1.5.3 DNS bug
-    export GODEBUG=netdns=cgo
-
-    exec chpst -u vcap:vcap /var/vcap/packages/ssh_proxy/bin/ssh-proxy ${bbs_sec_flags} \
-      ${diego_auth_flags} \
-      ${uaa_flags} \
-      -address=<%= p("diego.ssh_proxy.listen_addr") %> \
-      -consulCluster=http://127.0.0.1:8500 \
-      -hostKey="$HOST_KEY" \
-      <% if_p("diego.ssh_proxy.allowed_ciphers") do |value| %> \
-        -allowedCiphers=<%= value %> \
-      <% end %> \
-      <% if_p("diego.ssh_proxy.allowed_macs") do |value| %> \
-        -allowedMACs=<%= value %> \
-      <% end %> \
-      <% if_p("diego.ssh_proxy.allowed_keyexchanges") do |value| %> \
-        -allowedKeyExchanges=<%= value %> \
-      <% end %> \
-      -bbsAddress=${bbs_api_url} \
-      <% if_p("diego.ssh_proxy.bbs.client_session_cache_size") do |value| %> \
-        -bbsClientSessionCacheSize=<%= value %> \
-      <% end %> \
-      <% if_p("diego.ssh_proxy.bbs.max_idle_conns_per_host") do |value| %> \
-        -bbsMaxIdleConnsPerHost=<%= value %> \
-      <% end %> \
-      -ccAPIURL=http://<%= p("diego.ssh_proxy.cc.internal_service_hostname") %>:<%= p("diego.ssh_proxy.cc.external_port") %> \
-      -dropsondePort=<%= p("diego.ssh_proxy.dropsonde_port") %> \
-      -skipCertVerify=<%= p("diego.ssl.skip_cert_verify") %> \
-      -debugAddr=<%= p("diego.ssh_proxy.debug_addr") %> \
-      -logLevel=<%= p("diego.ssh_proxy.log_level") %> \
-      2> >(chpst -u vcap:vcap tee -a $LOG_DIR/ssh_proxy.stderr.log | chpst -u vcap:vcap logger -p user.error -t vcap.ssh-proxy) \
-      1> >(chpst -u vcap:vcap tee -a $LOG_DIR/ssh_proxy.stdout.log | chpst -u vcap:vcap logger -p user.info -t vcap.ssh-proxy)
+    exec chpst -u vcap:vcap bash -c '/var/vcap/jobs/ssh_proxy/bin/ssh_proxy_script'
 
     ;;
 

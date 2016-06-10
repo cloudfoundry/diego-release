@@ -1,0 +1,47 @@
+#!/bin/bash -e
+
+<% require "shellwords" %>
+
+RUN_DIR=/var/vcap/sys/run/route_emitter
+LOG_DIR=/var/vcap/sys/log/route_emitter
+CONF_DIR=/var/vcap/jobs/route_emitter/config
+
+PIDFILE=$RUN_DIR/route_emitter.pid
+
+# Enable maximum OS thread concurrency
+export GOMAXPROCS=$(nproc)
+
+# Work around for GOLANG 1.5.3 DNS bug
+export GODEBUG=netdns=cgo
+
+<% if p("diego.route_emitter.bbs.require_ssl") %>
+  bbs_sec_flags=" \
+   -bbsClientCert=${CONF_DIR}/certs/bbs/client.crt \
+   -bbsClientKey=${CONF_DIR}/certs/bbs/client.key \
+   -bbsCACert=${CONF_DIR}/certs/bbs/ca.crt"
+
+  bbs_api_url="<%= "https://" + p("diego.route_emitter.bbs.api_location") %>"
+<% else %>
+  bbs_sec_flags=""
+  bbs_api_url="<%= "http://" + p("diego.route_emitter.bbs.api_location") %>"
+<% end %>
+
+/var/vcap/packages/route_emitter/bin/route-emitter ${bbs_sec_flags} \
+  -consulCluster=http://127.0.0.1:8500 \
+  -natsAddresses=<%= p("diego.route_emitter.nats.machines").collect { |addr| "#{addr}:#{p("diego.route_emitter.nats.port")}" }.join(",") %> \
+  -natsUsername=<%= p("diego.route_emitter.nats.user") %> \
+  -natsPassword=<%= Shellwords.shellescape(p("diego.route_emitter.nats.password")) %> \
+  -bbsAddress=${bbs_api_url} \
+  <% if_p("diego.route_emitter.bbs.client_session_cache_size") do |value| %> \
+    -bbsClientSessionCacheSize=<%= value %> \
+  <% end %> \
+  <% if_p("diego.route_emitter.bbs.max_idle_conns_per_host") do |value| %> \
+    -bbsMaxIdleConnsPerHost=<%= value %> \
+  <% end %> \
+  -dropsondePort=<%= p("diego.route_emitter.dropsonde_port") %> \
+  -debugAddr=<%= p("diego.route_emitter.debug_addr") %> \
+  -syncInterval=<%= "#{p("diego.route_emitter.sync_interval_in_seconds")}s" %> \
+  -logLevel=<%= p("diego.route_emitter.log_level") %> \
+  2> >(tee -a $LOG_DIR/route_emitter.stderr.log | logger -p user.error -t vcap.route-emitter) \
+  1> >(tee -a $LOG_DIR/route_emitter.stdout.log | logger -p user.info -t vcap.route-emitter) & echo $! > $PIDFILE
+

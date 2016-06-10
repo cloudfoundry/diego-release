@@ -2,22 +2,10 @@
 
 RUN_DIR=/var/vcap/sys/run/auctioneer
 LOG_DIR=/var/vcap/sys/log/auctioneer
-CONF_DIR=/var/vcap/jobs/auctioneer/config
+
 PIDFILE=$RUN_DIR/auctioneer.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
-
-<% if p("diego.auctioneer.bbs.require_ssl") %>
-  bbs_sec_flags=" \
-   -bbsClientCert=${CONF_DIR}/certs/bbs/client.crt \
-   -bbsClientKey=${CONF_DIR}/certs/bbs/client.key \
-   -bbsCACert=${CONF_DIR}/certs/bbs/ca.crt"
-
-  bbs_api_url="<%= "https://" + p("diego.auctioneer.bbs.api_location") %>"
-<% else %>
-  bbs_sec_flags=""
-  bbs_api_url="<%= "http://" + p("diego.auctioneer.bbs.api_location") %>"
-<% end %>
 
 case $1 in
 
@@ -30,33 +18,10 @@ case $1 in
     mkdir -p $LOG_DIR
     chown -R vcap:vcap $LOG_DIR
 
-    export GOMAXPROCS=$(nproc)
-   
-    # Work around for GOLANG 1.5.3 DNS bug
-    export GODEBUG=netdns=cgo
-
-    echo $$ > $PIDFILE
-
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec chpst -u vcap:vcap /var/vcap/packages/auctioneer/bin/auctioneer ${bbs_sec_flags} \
-      -bbsAddress=${bbs_api_url} \
-      <% if_p("diego.auctioneer.bbs.client_session_cache_size") do |value| %> \
-        -bbsClientSessionCacheSize=<%= value %> \
-      <% end %> \
-      <% if_p("diego.auctioneer.bbs.max_idle_conns_per_host") do |value| %> \
-        -bbsMaxIdleConnsPerHost=<%= value %> \
-      <% end %> \
-      -consulCluster=http://127.0.0.1:8500 \
-      -debugAddr=<%= p("diego.auctioneer.debug_addr") %> \
-      -listenAddr=<%= p("diego.auctioneer.listen_addr") %> \
-      -dropsondePort=<%= p("diego.auctioneer.dropsonde_port") %> \
-      -cellStateTimeout=<%= p("diego.auctioneer.cell_state_timeout") %> \
-      -startingContainerWeight=<%= p("diego.auctioneer.starting_container_weight") %> \
-      -logLevel=<%= p("diego.auctioneer.log_level") %> \
-      2> >(chpst -u vcap:vcap tee -a $LOG_DIR/auctioneer.stderr.log | chpst -u vcap:vcap logger -p user.error -t vcap.auctioneer) \
-      1> >(chpst -u vcap:vcap tee -a $LOG_DIR/auctioneer.stdout.log | chpst -u vcap:vcap logger -p user.info -t vcap.auctioneer)
+    chpst -u vcap:vcap bash -c '/var/vcap/jobs/auctioneer/bin/auctioneer_script'
 
     ;;
 
