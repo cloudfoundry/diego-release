@@ -5,8 +5,11 @@ set -e
 scripts_path=./$(dirname $0)
 DIEGO_RELEASE_DIR=${DIEGO_RELEASE_DIR:-$(cd $scripts_path/.. && pwd)}
 
-if [ ! -z "${USE_SQL}" ]; then
-  echo "Running store-dependent test suites against MySQL..."
+if [ "${USE_SQL}" = "mysql" ]; then
+  echo "Running store-dependent test suites against a MySQL database..."
+  DB_UNITS="./bbs/db/sqldb"
+elif [ "${USE_SQL}" = "postgres" ]; then
+  echo "Running store-dependent test suites against a Postgres database..."
   DB_UNITS="./bbs/db/sqldb"
 else
   echo "Running store-dependent test suites against ETCD..."

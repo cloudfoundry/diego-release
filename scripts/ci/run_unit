@@ -12,6 +12,7 @@ EOF
 
 if [ ! -z ${RUN_SQL_TESTS} ]; then
   service mysql start
+  service postgresql start
 fi
 
 su diego -p -c ./diego-release/scripts/ci/run_unit_internal

@@ -113,9 +113,9 @@ To be able to run unit tests, you'll also need to install the following binaries
 To be able to run the integration test suite ("inigo"), you'll need to have a local [Concourse](http://concourse.ci) VM. Follow the instructions on the Concourse [README](https://github.com/concourse/concourse/blob/master/README.md) to set it up locally using [vagrant](https://www.vagrantup.com/). Download the fly CLI as instructed and move it somewhere visible to your `$PATH`.
 
 ### Running the experimental SQL unit tests
-To run the experimental SQL unit tests, you'll need mysql running locally with the correct sql_mode and user configuration.
+To run the experimental SQL unit tests, you'll need mysql and postgres running locally with the correct configuration.
 
-On OS X, you can follow the these steps to install and configure mysql:
+On OS X, you can follow the these steps to install and configure mysql and postgres:
 
 1. Install MySQL
 
@@ -146,7 +146,31 @@ On OS X, you can follow the these steps to install and configure mysql:
         CREATE USER 'diego'@'localhost' IDENTIFIED BY 'diego_password';
         GRANT ALL PRIVILEGES ON `diego\_%`.* TO 'diego'@'localhost';
 
-8. You should now be able to run the SQL unit tests. To run all the SQL backed tests, run the following command from
+8. Install Postgres
+
+        brew install postgresql
+
+9. Create a self-signed certificate as described here: https://www.postgresql.org/docs/9.1/static/ssl-tcp.html#SSL-CERTIFICATE-CREATION
+
+10. Edit your postgres.conf file to set `ssl = on` and the reference the location of the keypair you just created. For example:
+
+        ssl = on
+        ssl_cert_file = '/path/to/server.crt'
+        ssl_key_file = '/path/to/server.key'
+        # Other SSL params can be left commented out
+
+11. Start postgres as a daemon. Fill in the path values below with the location of postgres and the desired location of the logs.
+
+        pg_ctl -D /path/to/postgres -l /path/to/var/postgres/server.log start
+12. Create the diego database
+
+        createdb diego
+
+13. Create the diego user. When prompted for the password, enter 'diego_pw'.
+
+        createuser -d -P -r -s diego
+
+14. You should now be able to run the SQL unit tests. To run all the SQL backed tests, run the following command from
 the root of diego-release:
 
         RUN_SQL_TESTS=true ./scripts/run-unit-tests

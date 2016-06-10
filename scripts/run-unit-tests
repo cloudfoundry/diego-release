@@ -6,8 +6,11 @@ eval $($scripts_path/get_paths.sh)
 ERROR_CODE=0
 
 if [ ! -z ${RUN_SQL_TESTS} ]; then
-  USE_SQL=true $scripts_path/run-unit-tests-with-backing-store
+  USE_SQL=mysql $scripts_path/run-unit-tests-with-backing-store
   ERROR_CODE=$?
+
+  USE_SQL=postgres $scripts_path/run-unit-tests-with-backing-store
+  ERROR_CODE+=$?
 fi
 
 $scripts_path/run-unit-tests-with-backing-store
