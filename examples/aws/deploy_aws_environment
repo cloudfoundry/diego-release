@@ -171,8 +171,8 @@ spiff merge \
   stubs/bosh-init/*.yml \
   >> deployments/bosh-init/bosh-init.yml
 
-#bosh-init deploy deployments/bosh-init/bosh-init.yml
-#bosh -n target $(cat stubs/aws-resources.yml | grep BoshInit | awk '{ gsub(/"/, "", $NF); print $NF }')
+bosh-init deploy deployments/bosh-init/bosh-init.yml
+bosh -n target $(cat stubs/aws-resources.yml | grep BoshInit | awk '{ gsub(/"/, "", $NF); print $NF }')
 
 # generate director uuid stub for template to create deployment stub
 cat > stubs/director-uuid.yml <<EOF
@@ -240,7 +240,7 @@ spiff merge \
   stubs/aws-resources.yml \
   > stubs/diego/iaas-settings.yml
 
-mkdir -p stubs/mysql
+mkdir -p stubs/cf-mysql
 
 spiff merge \
   $SCRIPT_DIR/templates/mysql/iaas-settings.yml \
