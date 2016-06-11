@@ -92,13 +92,16 @@ cp -rp /opt/inigo/rootfs/* "${GARDEN_ROOTFS}"
 EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\s/\1/;tx;d;:x')
 export EXTERNAL_ADDRESS
 
-if [ -n "${USE_SQL}" ]; then
+if [ "${USE_SQL}" = "mysql" ]; then
   cat << EOF > /etc/my.cnf
 [mysqld]
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 EOF
 
   service mysql start
+elif [ "${USE_SQL}" = "postgres" ]; then
+  sed -i 's/max_connections = 100/max_connections = 2000/g' /etc/postgresql/9.4/main/postgresql.conf
+  service postgresql start
 fi
 
 # GARDEN_GRAPH_PATH is the root of the docker image filesystem
