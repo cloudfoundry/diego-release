@@ -11,8 +11,6 @@ export GOMAXPROCS=$(nproc)
 # Work around for GOLANG 1.5.3 DNS bug
 export GODEBUG=netdns=cgo
 
-source /var/vcap/packages/pid_utils/pid_utils.sh
-
 <% if p("diego.bbs.etcd.require_ssl") %>
 etcd_sec_flags=" \
    -etcdCertFile=${CONF_DIR}/certs/etcd/client.crt \
