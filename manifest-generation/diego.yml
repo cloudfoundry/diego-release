@@ -433,9 +433,14 @@ properties:
     tls:
       client_cert: (( config_from_cf.metron_agent.tls.client_cert ))
       client_key: (( config_from_cf.metron_agent.tls.client_key ))
+    etcd:
+      client_cert: (( config_from_cf.metron_agent.etcd.client_cert ))
+      client_key: (( config_from_cf.metron_agent.etcd.client_key ))
     dropsonde_incoming_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
   loggregator:
     etcd:
+      require_ssl: (( config_from_cf.loggregator.etcd_require_ssl ))
+      ca_cert: (( config_from_cf.loggregator.etcd_ca_cert ))
       machines: (( config_from_cf.loggregator.etcd_machines ))
     dropsonde_incoming_port: (( config_from_cf.loggregator.dropsonde_incoming_port ))
     tls:
