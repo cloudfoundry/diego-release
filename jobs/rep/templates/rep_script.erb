@@ -97,16 +97,14 @@ export GODEBUG=netdns=cgo
     -postSetupHook=<%= Shellwords.shellescape(value) %> \
   <% end %> \
   2> >(tee -a $LOG_DIR/rep.stderr.log | logger -p user.error -t vcap.rep) \
-  1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep) &
-
-pid=$!
+  1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep) & pid=$!
 
 set +e
 
 address=<%= p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") %>
 start=`date +%s`
-# wait up to 25 seconds (monit gives us 30 -- defined on the monit script)
-while [ $(( $(date +%s) - 25 )) -lt $start ]; do
+# wait up to 28 seconds (monit gives us 30 -- defined on the monit script)
+while [ $(( $(date +%s) - 28 )) -lt $start ]; do
   if curl --fail --silent http://$address/ping >/dev/null 2>&1
   then
     echo $pid > $PIDFILE
@@ -114,3 +112,10 @@ while [ $(( $(date +%s) - 25 )) -lt $start ]; do
   fi
   sleep 1
 done
+
+if [ -f $PIDFILE ]; then
+  wait $(cat $PIDFILE)
+else
+  echo "$(date) rep did not start in time"
+  echo $pid > ${PIDFILE}.fail
+fi
