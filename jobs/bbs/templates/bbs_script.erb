@@ -73,6 +73,9 @@ etcd_flags=""
   <% if_p("diego.bbs.sql.db_connection_string") do |value| %> \
     -databaseConnectionString='<%= value %>' \
   <% end %> \
+  <% if_p("diego.bbs.sql.db_driver") do |value| %> \
+    -databaseDriver='<%= value %>' \
+  <% end %> \
   <% if_p("diego.bbs.sql.max_open_connections") do |value| %> \
     -maxDatabaseConnections=<%= value %> \
   <% end %> \
