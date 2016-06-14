@@ -19,7 +19,7 @@ config_from_cf:
     server_key: (( properties.consul.server_key ))
   loggregator:
     etcd_machines: (( properties.loggregator.etcd.machines ))
-    etcd_require_ssl: (( properties.loggregator.etcd.require_ssl))
+    etcd_require_ssl: (( properties.loggregator.etcd.require_ssl ))
     etcd_ca_cert: (( properties.loggregator.etcd.ca_cert ))
     shared_secret: (( properties.loggregator_endpoint.shared_secret ))
     traffic_controller_url: (( "wss://doppler." properties.system_domain ":443" ))
@@ -74,8 +74,8 @@ properties:
     server_key: (( merge ))
   loggregator:
     etcd:
-      ca_cert: (( merge || nil ))
-      require_ssl: (( merge || false ))
+      ca_cert: null
+      require_ssl: null
       machines: (( merge ))
     dropsonde_incoming_port: (( merge || nil ))
     tls:
@@ -93,8 +93,8 @@ properties:
       client_cert: (( merge ))
       client_key: (( merge ))
     etcd:
-      client_cert: (( properties.metron_agent.etcd.client_cert ))
-      client_key: (( properties.metron_agent.etcd.client_key ))
+      client_cert: null
+      client_key: null
 
   nats:
     user: (( merge ))
