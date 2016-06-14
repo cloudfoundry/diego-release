@@ -98,6 +98,8 @@ if [ "${USE_SQL}" = "mysql" ]; then
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 EOF
 
+  sed -i 's/#max_connections.*= 100/max_connections = 2000/g' /etc/mysql/my.cnf
+
   service mysql start
 elif [ "${USE_SQL}" = "postgres" ]; then
   sed -i 's/max_connections = 100/max_connections = 2000/g' /etc/postgresql/9.4/main/postgresql.conf
