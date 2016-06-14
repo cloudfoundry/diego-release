@@ -97,7 +97,9 @@ export GODEBUG=netdns=cgo
     -postSetupHook=<%= Shellwords.shellescape(value) %> \
   <% end %> \
   2> >(tee -a $LOG_DIR/rep.stderr.log | logger -p user.error -t vcap.rep) \
-  1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep) & pid=$!
+  1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep) &
+
+pid=$!
 
 set +e
 

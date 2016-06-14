@@ -80,7 +80,7 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    chpst -u vcap:vcap bash -c '/var/vcap/jobs/rep/bin/rep_script'
+    exec chpst -u vcap:vcap /var/vcap/jobs/rep/bin/rep_script
 
     if [ -f ${PIDFILE}.fail ]; then
       kill_and_wait ${PIDFILE}.fail
