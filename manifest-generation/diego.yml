@@ -498,6 +498,7 @@ properties:
       etcd: (( bbs_overrides.bbs_properties.etcd ))
       sql:
         db_connection_string: (( sql_overrides.bbs.db_connection_string || nil ))
+        db_driver: (( sql_overrides.bbs.db_driver || nil ))
         max_open_connections: (( sql_overrides.bbs.max_open_connections || nil ))
         require_ssl: (( sql_overrides.bbs.require_ssl || nil ))
         ca_cert: (( sql_overrides.bbs.ca_cert || nil ))
