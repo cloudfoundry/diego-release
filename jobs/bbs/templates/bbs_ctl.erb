@@ -49,7 +49,7 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec chpst -u vcap:vcap bash -c  '/var/vcap/jobs/bbs/bin/bbs_script'
+    exec chpst -u vcap:vcap bash -c  '/var/vcap/jobs/bbs/bin/bbs_as_vcap'
 
     ;;
 

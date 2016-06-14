@@ -3,7 +3,7 @@ name: converger
 
 templates:
   converger_ctl.erb: bin/converger_ctl
-  converger_script.erb: bin/converger_script
+  converger_as_vcap.erb: bin/converger_as_vcap
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key

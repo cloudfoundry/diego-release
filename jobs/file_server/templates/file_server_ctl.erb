@@ -40,7 +40,7 @@ case $1 in
     # Allowed number of open file descriptors
     ulimit -n 100000
 
-    exec chpst -u vcap:vcap bash -c '/var/vcap/jobs/file_server/bin/file_server_script'
+    exec chpst -u vcap:vcap bash -c '/var/vcap/jobs/file_server/bin/file_server_as_vcap'
 
     ;;
 

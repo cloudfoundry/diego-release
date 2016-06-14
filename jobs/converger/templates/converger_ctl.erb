@@ -18,7 +18,7 @@ case $1 in
     mkdir -p $LOG_DIR
     chown -R vcap:vcap $LOG_DIR
 
-    exec chpst -u vcap:vcap bash -c '/var/vcap/jobs/converger/bin/converger_script'
+    exec chpst -u vcap:vcap bash -c '/var/vcap/jobs/converger/bin/converger_as_vcap'
 
     ;;
 

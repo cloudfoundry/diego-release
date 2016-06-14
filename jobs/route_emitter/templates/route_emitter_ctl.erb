@@ -17,7 +17,7 @@ case $1 in
     mkdir -p $LOG_DIR
     chown -R vcap:vcap $LOG_DIR
 
-    exec chpst -u vcap:vcap bash -c '/var/vcap/jobs/route_emitter/bin/route_emitter_script'
+    exec chpst -u vcap:vcap bash -c '/var/vcap/jobs/route_emitter/bin/route_emitter_as_vcap'
 
     ;;
 
