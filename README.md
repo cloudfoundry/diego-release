@@ -26,6 +26,7 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 
 1. [BOSH Dependencies](#bosh-dependencies)
 1. [Discovering a Set of Releases to Deploy](#release-compatibility)
+1. [Manifest Generation] (#manifest-generation)
 1. [Deploying Diego to BOSH-Lite](#deploying-diego-to-bosh-lite)
 1. [Pushing to Diego](#pushing-to-diego)
 1. [Deploying Diego to AWS](#deploying-diego-to-aws)
@@ -95,6 +96,9 @@ If you can't find a specific cf-release SHA in the table, deploy the diego-relea
 that matches the most recent cf-release relative to that commit. To do this, go back
 through cf-release's git log from your commit until you find a Final Release commit
 and then look up that commit's SHA in the diego-cf compatibility table.
+
+## Manifest Generation
+The Diego manifest generation documentation can be found [here](https://github.com/cloudfoundry-incubator/diego-release/docs/manifest-generation.md).
 
 ## Deploying Diego to BOSH-Lite
 
@@ -243,6 +247,16 @@ and then look up that commit's SHA in the diego-cf compatibility table.
   bosh -n create release --force &&
   bosh -n upload release &&
   bosh -n deploy
+  ```
+
+  If deploying using garden-runc after already deploying using garden-linux the cells must be recreated.  Pass the --recreate flag to the deploy command.
+
+  ```bash
+  cd ~/workspace/diego-release
+  bosh deployment bosh-lite/deployments/diego.yml
+  bosh -n create release --force &&
+  bosh -n upload release &&
+  bosh -n deploy --recreate
   ```
 
 1. Login to CF and enable Docker support:
