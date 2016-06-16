@@ -82,11 +82,6 @@ case $1 in
 
     exec chpst -u vcap:vcap /var/vcap/jobs/rep/bin/rep_as_vcap
 
-    if [ -f ${PIDFILE}.fail ]; then
-      kill_and_wait ${PIDFILE}.fail
-    fi
-
-
     ;;
 
   stop)

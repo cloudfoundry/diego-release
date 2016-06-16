@@ -10,6 +10,7 @@ templates:
   ca_certs_for_downloads.crt.erb: config/certs/rep/ca_certs_for_downloads.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
+  post-start.erb: bin/post-start
 
 packages:
   - pid_utils

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+address=<%= p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") %>
+start=`date +%s`
+timeout=60
+
+while [ $(( $(date +%s) - $timeout )) -lt $start ]; do
+  if curl --fail --silent http://$address/ping >/dev/null 2>&1; then
+    exit 0
+  fi
+  sleep 1
+done
+
+exit 1
