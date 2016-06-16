@@ -43,10 +43,14 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 
 When deploying diego-release via BOSH, the following minimum versions are required:
 
-* BOSH Release v206+ (Director version 1.3072.0)
+* BOSH Release v255.4+ (Director version 1.3213.0)
 * BOSH Stemcell 3125+
 
-These versions ensure that the pre-start script in the rootfses job will be run to extract and configure the cflinuxfs2 rootfs and that the drain scripts will be called for all jobs on each VM during updates, instead of only the first job.
+These versions ensure that the `pre-start` script in the rootfses job will be run
+to extract and configure the cflinuxfs2 rootfs and that the drain scripts will
+be called for all jobs on each VM during updates, instead of only the first
+job. We also require `post-start` for the initial cell health check, which is
+also provided by the same versions listed above.
 
 ---
 
