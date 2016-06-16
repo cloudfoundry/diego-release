@@ -4,11 +4,18 @@ address=<%= p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") %>
 start=`date +%s`
 timeout=60
 
+echo "$(date): Pinging rep..."
+i=1
+
 while [ $(( $(date +%s) - $timeout )) -lt $start ]; do
   if curl --fail --silent http://$address/ping >/dev/null 2>&1; then
+    echo "$(date): Success!"
     exit 0
   fi
+  echo "$(date): Attempt $i failed. Trying again..."
+  i=$((i + 1))
   sleep 1
 done
 
+echo "$(date): Timed out pinging rep. Failing post-start."
 exit 1
