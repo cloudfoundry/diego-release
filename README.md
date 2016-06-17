@@ -102,7 +102,9 @@ through cf-release's git log from your commit until you find a Final Release com
 and then look up that commit's SHA in the diego-cf compatibility table.
 
 ## Manifest Generation
-The Diego manifest generation documentation can be found [here](https://github.com/cloudfoundry-incubator/diego-release/docs/manifest-generation.md).
+
+The Diego manifest generation documentation can be found in [docs/manifest-generation.md](docs/manifest-generation.md).
+
 
 ## Deploying Diego to BOSH-Lite
 
