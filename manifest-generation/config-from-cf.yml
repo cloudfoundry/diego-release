@@ -18,6 +18,8 @@ config_from_cf:
     server_cert: (( merge ))
     server_key: (( merge ))
   loggregator:
+    etcd_ca_cert: (( merge ))
+    etcd_require_ssl: (( merge ))
     etcd_machines: (( merge ))
     shared_secret: (( merge ))
     traffic_controller_url: (( merge ))
@@ -31,6 +33,9 @@ config_from_cf:
     enable_buffer: (( merge ))
     buffer_size: (( merge ))
     tls:
+      client_cert: (( merge ))
+      client_key: (( merge ))
+    etcd:
       client_cert: (( merge ))
       client_key: (( merge ))
 
