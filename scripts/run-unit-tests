@@ -10,7 +10,7 @@ if [ ! -z ${RUN_SQL_TESTS} ]; then
   ERROR_CODE=$?
 
   USE_SQL=postgres $scripts_path/run-unit-tests-with-backing-store
-  ERROR_CODE+=$?
+  let ERROR_CODE+=$?
 fi
 
 $scripts_path/run-unit-tests-with-backing-store
