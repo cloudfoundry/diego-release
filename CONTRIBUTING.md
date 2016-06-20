@@ -113,31 +113,35 @@ To be able to run unit tests, you'll also need to install the following binaries
 To be able to run the integration test suite ("inigo"), you'll need to have a local [Concourse](http://concourse.ci) VM. Follow the instructions on the Concourse [README](https://github.com/concourse/concourse/blob/master/README.md) to set it up locally using [vagrant](https://www.vagrantup.com/). Download the fly CLI as instructed and move it somewhere visible to your `$PATH`.
 
 ### Running the experimental SQL unit tests
-To run the experimental SQL unit tests, you'll need mysql and postgres running locally with the correct configuration.
 
-On OS X, you can follow the these steps to install and configure mysql and postgres:
+To run the experimental SQL unit tests locally requires running MySQL and Postgres with the correct configuration.
 
-1. Install MySQL
+On OS X, follow these steps to install and configure MySQL and Postgres:
+
+1. Install MySQL:
 
         brew install mysql
-2. Start MySQL
+
+2. Start MySQL:
 
         mysql.server start
-3. Run and set a root password
+
+3. Set a root password:
 
         mysql_secure_installation
-    - Follow the on-screen prompts to complete the installation. The answers won't affect whether the unit tests can run.
+
+   Follow the on-screen prompts to complete the installation. The answers will not affect whether the unit tests can run.
 
 4. Create /etc/my.cnf with the following contents:
 
         [mysqld]
         sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 
-5. Restart MySQL
+5. Restart MySQL:
 
         mysql.server restart
 
-6. Log in to the mysql console as root, using the password you specified in step 3
+6. Log in to the mysql console as root, using the password you specified in step 3:
 
         mysql -uroot -p<your password>
 
@@ -146,23 +150,28 @@ On OS X, you can follow the these steps to install and configure mysql and postg
         CREATE USER 'diego'@'localhost' IDENTIFIED BY 'diego_password';
         GRANT ALL PRIVILEGES ON `diego\_%`.* TO 'diego'@'localhost';
 
-8. Install Postgres
+8. Install Postgres:
 
         brew install postgresql
 
-9. Create a self-signed certificate as described here: https://www.postgresql.org/docs/9.1/static/ssl-tcp.html#SSL-CERTIFICATE-CREATION
+   By default, brew installs Postgres to use `/usr/local/var/postgres` as its
+   data directory, and the instructions below assume that.
 
-10. Edit your postgres.conf file to set `ssl = on` and the reference the location of the keypair you just created. For example:
+9. Create a self-signed certificate as described in the [PostgreSQL documentation](https://www.postgresql.org/docs/9.4/static/ssl-tcp.html#SSL-CERTIFICATE-CREATION). 
+   Save the certificate and key to a local directory of your choosing.
+
+10. Edit the `/usr/local/var/postgres/postgres.conf` file to set `ssl = on` and to refer to the certificate and key created above. For example:
 
         ssl = on
         ssl_cert_file = '/path/to/server.crt'
         ssl_key_file = '/path/to/server.key'
         # Other SSL params can be left commented out
 
-11. Start postgres as a daemon. Fill in the path values below with the location of postgres and the desired location of the logs.
+11. Run postgres in daemon mode:
 
-        pg_ctl -D /path/to/postgres -l /path/to/var/postgres/server.log start
-12. Create the diego database
+        pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
+
+12. Create the diego database:
 
         createdb diego
 
@@ -170,13 +179,15 @@ On OS X, you can follow the these steps to install and configure mysql and postg
 
         createuser -d -P -r -s diego
 
-14. You should now be able to run the SQL unit tests. To run all the SQL backed tests, run the following command from
-the root of diego-release:
+14. You should now be able to run the SQL unit tests. To run all the SQL-backed
+    tests, run the following command from
+    the root of diego-release:
 
         RUN_SQL_TESTS=true ./scripts/run-unit-tests
 
-  This command will run all regular unit tests plus the etcd backed and sql backed unit tests including bbs and
-  integration unit tests such as auctioneer/cmd/auctioneer where a backing store is required.
+   This command will run all regular unit tests, as well as BBS and component
+   integration tests where a backing store is required in both etcd-backed,
+   MySQL-backed, and Postgres-backed modes.
 
 ## <a name="deploy-bosh-lite"></a> Deploying Diego to BOSH-Lite
 
