@@ -10,8 +10,9 @@ cat << EOF > /etc/my.cnf
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 EOF
 
-if [ ! -z ${RUN_SQL_TESTS} ]; then
+if [ "${USE_SQL}" = "mysql" ]; then
   service mysql start
+elif [ "${USE_SQL}" = "postgres" ]; then
   service postgresql start
 fi
 
