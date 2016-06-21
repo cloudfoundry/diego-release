@@ -159,7 +159,8 @@ After that you can deploy the CF-MySQL release in either mode:
 1. Deploy the CF-MySQL cluster
   
   ```bash
-  bosh -d $DEPLOYMENT_DIR/deployments/cf-mysql.yml deploy
+  cd $CF_MYSQL_RELEASE_DIR
+  bosh create release && bosh upload release && bosh -d $DEPLOYMENT_DIR/deployments/cf-mysql.yml deploy
   ```
 
 #### Highly Available CF-MySQL
