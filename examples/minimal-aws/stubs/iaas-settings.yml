@@ -1,0 +1,83 @@
+iaas_settings:
+  compilation_cloud_properties:
+    availability_zone: REPLACE_WITH_DIEGO_SUBNET_AZ
+    instance_type: c3.large
+  disk_pools:
+  - cloud_properties:
+      type: gp2
+    name: database_disks
+  resource_pool_cloud_properties:
+  - cloud_properties:
+      availability_zone: REPLACE_WITH_DIEGO_SUBNET_AZ
+      instance_type: t2.medium
+    name: access_z1
+  - cloud_properties:
+      availability_zone: REPLACE_WITH_DIEGO_SUBNET_AZ
+      instance_type: t2.medium
+    name: brain_z1
+  - cloud_properties:
+      availability_zone: REPLACE_WITH_DIEGO_SUBNET_AZ
+      instance_type: t2.medium
+    name: cc_bridge_z1
+  - cloud_properties:
+      availability_zone: REPLACE_WITH_DIEGO_SUBNET_AZ
+      instance_type: m3.medium
+      ephemeral_disk:
+        size: 20480
+    name: cell_z1
+  - cloud_properties:
+      availability_zone: REPLACE_WITH_DIEGO_SUBNET_AZ
+      instance_type: t2.medium
+    name: database_z1
+  - cloud_properties:
+      availability_zone: REPLACE_WITH_DIEGO_SUBNET_AZ
+      instance_type: t2.medium
+    name: route_emitter_z1
+  - cloud_properties:
+      availability_zone: REPLACE_WITH_DIEGO_SUBNET_AZ
+      instance_type: t2.medium
+    name: access_z2
+  - cloud_properties: {} # UNUSED
+    name: brain_z2
+  - cloud_properties: {} # UNUSED
+    name: cc_bridge_z2
+  - cloud_properties: {} # UNUSED
+    name: cell_z2
+  - cloud_properties: {} # UNUSED
+    name: database_z2
+  - cloud_properties: {} # UNUSED
+    name: route_emitter_z2
+  - cloud_properties: {} # UNUSED
+    name: access_z3
+  - cloud_properties: {} # UNUSED
+    name: brain_z3
+  - cloud_properties: {} # UNUSED
+    name: cc_bridge_z3
+  - cloud_properties: {} # UNUSED
+    name: cell_z3
+  - cloud_properties: {} # UNUSED
+    name: database_z3
+  - cloud_properties: {} # UNUSED
+    name: route_emitter_z3
+  - cloud_properties: {} # UNUSED
+    name: colocated_z1
+  - cloud_properties: {} # UNUSED
+    name: colocated_z2
+  - cloud_properties: {} # UNUSED
+    name: colocated_z3
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: REPLACE_WITH_BOSH_STEMCELL_VERSION
+  subnet_configs:
+  - name: diego1
+    subnets:
+    - cloud_properties:
+        subnet: REPLACE_WITH_DIEGO_SUBNET_ID
+      dns: [10.0.0.2]
+      gateway: 10.0.18.1
+      range: 10.0.18.0/24
+      reserved: ["10.0.18.2 - 10.0.18.3"]
+  - name: diego2
+    subnets: [] #THIS IS AN UNUSED SUBNET
+  - name: diego3
+    subnets: [] #THIS IS AN UNUSED SUBNET

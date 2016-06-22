@@ -1,0 +1,22 @@
+property_overrides:
+  bbs:
+    active_key_label: active
+    ca_cert: ""
+    client_cert: ""
+    client_key: ""
+    server_cert: ""
+    server_key: ""
+    encryption_keys:
+    - label: active
+      passphrase: PASSWORD
+    require_ssl: false
+  etcd:
+    ca_cert: ""
+    client_cert: ""
+    client_key: ""
+    peer_require_ssl: false
+    require_ssl: false
+  skip_cert_verify: true
+  ssh_proxy:
+    enable_cf_auth: true
+    host_key: REPLACE_WITH_SSH_HOST_KEY

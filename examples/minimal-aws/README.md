@@ -22,10 +22,10 @@ availability and lacks basic security configuration.
   - Name tag: diego
   - VPC: bosh
   - Availability Zone: Pick the same Availability Zone as the bosh Subnet
-    - Replace REPLACE_WITH_AZ in the example manifest with the Availability Zone you chose
+    - Replace REPLACE_WITH_DIEGO_SUBNET_AZ in the example manifest with the Availability Zone you chose
   - CIDR block: 10.0.18.0/24
   - Click "Yes, Create"
-- Replace REPLACE_WITH_PRIVATE_SUBNET_ID in the example manifest with the Subnet ID for the diego Subnet
+- Replace REPLACE_WITH_DIEGO_SUBNET_ID in the example manifest with the Subnet ID for the diego Subnet
 - Select the `diego` Subnet from the Subnet list
 - Click the name of the "Route table:" to view the route tables
 - Select the route table from the list
@@ -65,6 +65,7 @@ properties:
   cc:
     allow_app_ssh_access: true
     default_to_diego_backend: true
+    internal_api_user: internal_user
   uaa:
     clients:
       cf:
@@ -112,6 +113,30 @@ You will need to make the following changes to the example `diego.yml` provided:
 - Replace REPLACE_WITH_DIRECTOR_ID with the UUID obtained from running `bosh status`
 - Replace the `properties.consul` properties that begin with REPLACE_WITH with the values of `properties.consul` from [minimal-aws.yml](https://github.com/cloudfoundry/cf-release/blob/master/example_manifests/minimal-aws.yml).
 - Replace the `properties.route_emitter.nats` properties that begin with REPLACE_WITH with the values of `properties.nats` from [minimal-aws.yml](https://github.com/cloudfoundry/cf-release/blob/master/example_manifests/minimal-aws.yml).
+
+
+### Generate Diego Manifest from Stubs (optional)
+
+You can also use the provided stubs to generate a diego manifest.
+
+You will need to make the following changes to the example stubs provided:
+
+- `stubs/iaas-settings.yml`
+  - Replace REPLACE_WITH_DIEGO_SUBNET_AZ with the availability zone for the diego subnet
+  - Replace REPLACE_WITH_BOSH_STEMCELL_VERSION with the version of the bosh stemcell uploaded to the director
+  - Replace REPLACE_WITH_DIEGO_SUBNET_ID with the subnet-id for the diego subnet
+- `stubs/property_overrides.yml`
+  - Replace REPLACE_WITH_SSH_HOST_KEY with the contents of `ssh-proxy-host-key.pem`.
+
+After replacing these values you can generate the diego manifest by running:
+```
+pushd $DIEGO_RELEASE_DIR
+  ./scripts/generate-deployment-manifest -c $CF_RELEASE_DIR/example_manifests/minimal-aws.yml \
+    -i $DIEGO_RELEASE_DIR/examples/minimal-aws/stubs/iaas-settings.yml \
+    -p $DIEGO_RELEASE_DIR/examples/minimal-aws/stubs/property_overrides.yml \
+    -n $DIEGO_RELEASE_DIR/examples/minimal-aws/stubs/instance_count_overrides.yml
+popd
+```
 
 ### Upload Diego Bosh Releases
 

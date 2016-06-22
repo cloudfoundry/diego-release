@@ -18,7 +18,7 @@ networks:
       dns: [10.0.0.2]
       reserved: ["10.0.18.2 - 10.0.18.3"]
       cloud_properties:
-        subnet: REPLACE_WITH_PRIVATE_SUBNET_ID
+        subnet: REPLACE_WITH_DIEGO_SUBNET_ID
 
 resource_pools:
 - name: cell
@@ -27,7 +27,7 @@ resource_pools:
     name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
     version: REPLACE_WITH_BOSH_STEMCELL_VERSION
   cloud_properties:
-    availability_zone: REPLACE_WITH_AZ
+    availability_zone: REPLACE_WITH_DIEGO_SUBNET_AZ
     ephemeral_disk:
       size: 20000
     instance_type: m3.medium
@@ -37,7 +37,7 @@ resource_pools:
     name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
     version: REPLACE_WITH_BOSH_STEMCELL_VERSION
   cloud_properties:
-    availability_zone: REPLACE_WITH_AZ
+    availability_zone: REPLACE_WITH_DIEGO_SUBNET_AZ
     instance_type: t2.medium
 
 compilation:
@@ -45,7 +45,7 @@ compilation:
   network: diego
   reuse_compilation_vms: true
   cloud_properties:
-    availability_zone: REPLACE_WITH_AZ
+    availability_zone: REPLACE_WITH_DIEGO_SUBNET_AZ
     instance_type: c3.large
 
 update:

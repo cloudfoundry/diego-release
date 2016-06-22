@@ -79,19 +79,19 @@ properties:
       machines: (( merge ))
     dropsonde_incoming_port: (( merge || nil ))
     tls:
-      ca_cert: (( merge ))
+      ca_cert: (( merge || nil ))
   loggregator_endpoint:
     shared_secret: (( merge ))
   metron_endpoint:
     shared_secret: (( merge ))
   metron_agent:
     dropsonde_incoming_port: (( merge || nil ))
-    preferred_protocol: (( merge ))
+    preferred_protocol: (( merge || nil ))
     enable_buffer: (( merge || nil ))
     buffer_size: (( merge || nil ))
     tls:
-      client_cert: (( merge ))
-      client_key: (( merge ))
+      client_cert: (( merge || nil ))
+      client_key: (( merge || nil ))
     etcd:
       client_cert: null
       client_key: null
