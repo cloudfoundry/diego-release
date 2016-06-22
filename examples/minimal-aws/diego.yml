@@ -1,0 +1,320 @@
+---
+name: diego
+director_uuid: REPLACE_WITH_DIRECTOR_ID
+
+releases:
+- {name: diego, version: latest}
+- {name: cf, version: latest}
+- {name: etcd, version: latest}
+- {name: garden-linux, version: latest}
+- {name: cflinuxfs2-rootfs , version: latest}
+
+networks:
+- name: diego
+  type: manual
+  subnets:
+    - range: 10.0.18.0/24
+      gateway: 10.0.18.1
+      dns: [10.0.0.2]
+      reserved: ["10.0.18.2 - 10.0.18.3"]
+      cloud_properties:
+        subnet: REPLACE_WITH_PRIVATE_SUBNET_ID
+
+resource_pools:
+- name: cell
+  network: diego
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: REPLACE_WITH_BOSH_STEMCELL_VERSION
+  cloud_properties:
+    availability_zone: REPLACE_WITH_AZ
+    ephemeral_disk:
+      size: 20000
+    instance_type: m3.medium
+- name: small
+  network: diego
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: REPLACE_WITH_BOSH_STEMCELL_VERSION
+  cloud_properties:
+    availability_zone: REPLACE_WITH_AZ
+    instance_type: t2.medium
+
+compilation:
+  workers: 6
+  network: diego
+  reuse_compilation_vms: true
+  cloud_properties:
+    availability_zone: REPLACE_WITH_AZ
+    instance_type: c3.large
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  serial: false
+  canary_watch_time: 5000-120000
+  update_watch_time: 5000-120000
+
+jobs:
+- name: database_z1
+  instances: 1
+  templates:
+  - name: consul_agent
+    release: cf
+  - name: etcd
+    release: etcd
+  - name: bbs
+    release: diego
+  - name: metron_agent
+    release: cf
+  persistent_disk: 20480
+  resource_pool: small
+  networks:
+    - name: diego
+  update:
+    serial: true
+    max_in_flight: 1
+  properties:
+    consul:
+      agent:
+        services:
+          etcd: {}
+    metron_agent:
+      zone: z1
+
+- name: brain_z1
+  instances: 1
+  templates:
+  - name: consul_agent
+    release: cf
+  - name: auctioneer
+    release: diego
+  - name: converger
+    release: diego
+  - name: metron_agent
+    release: cf
+  resource_pool: small
+  networks:
+    - name: diego
+  update:
+    serial: true
+    max_in_flight: 1
+  properties:
+    metron_agent:
+      zone: z1
+
+- name: cell_z1
+  instances: 1
+  templates:
+  - name: consul_agent
+    release: cf
+  - name: rep
+    release: diego
+  - name: garden
+    release: garden-linux
+  - name: cflinuxfs2-rootfs-setup
+    release: cflinuxfs2-rootfs
+  - name: metron_agent
+    release: cf
+  resource_pool: cell
+  networks:
+    - name: diego
+  update:
+    serial: false
+    max_in_flight: 1
+  properties:
+    metron_agent:
+      zone: z1
+    diego:
+      rep:
+        zone: z1
+
+- name: cc_bridge_z1
+  instances: 1
+  templates:
+  - name: consul_agent
+    release: cf
+  - name: stager
+    release: cf
+  - name: nsync
+    release: cf
+  - name: tps
+    release: cf
+  - name: cc_uploader
+    release: cf
+  - name: metron_agent
+    release: cf
+  resource_pool: small
+  networks:
+    - name: diego
+  update:
+    serial: false
+    max_in_flight: 1
+  properties:
+    metron_agent:
+      zone: z1
+
+- name: access_z1
+  instances: 1
+  templates:
+  - name: consul_agent
+    release: cf
+  - name: ssh_proxy
+    release: diego
+  - name: metron_agent
+    release: cf
+  - name: file_server
+    release: diego
+  resource_pool: small
+  networks:
+    - name: diego
+  update:
+    serial: false
+    max_in_flight: 1
+  properties:
+    metron_agent:
+      zone: z1
+
+- name: route_emitter_z1
+  instances: 1
+  templates:
+  - name: consul_agent
+    release: cf
+  - name: route_emitter
+    release: diego
+  - name: metron_agent
+    release: cf
+  resource_pool: small
+  networks:
+    - name: diego
+  update:
+    serial: false
+    max_in_flight: 1
+  properties:
+    metron_agent:
+      zone: z1
+
+properties:
+  capi:
+    nsync:
+      bbs:
+        ca_cert: ""
+        client_cert: ""
+        client_key: ""
+        require_ssl: false
+      cc:
+        base_url: https://api.REPLACE_WITH_SYSTEM_DOMAIN
+        basic_auth_password: PASSWORD
+    tps:
+      bbs:
+        ca_cert: ""
+        client_cert: ""
+        client_key: ""
+        require_ssl: false
+      cc:
+        base_url: https://api.REPLACE_WITH_SYSTEM_DOMAIN
+        basic_auth_password: PASSWORD
+      traffic_controller_url: wss://doppler.REPLACE_WITH_SYSTEM_DOMAIN:443 
+    tps_listener:
+      bbs:
+        ca_cert: ""
+        client_cert: ""
+        client_key: ""
+        require_ssl: false
+      cc:
+        base_url: https://api.REPLACE_WITH_SYSTEM_DOMAIN
+        basic_auth_password: PASSWORD
+    stager:
+      bbs:
+        ca_cert: ""
+        client_cert: ""
+        client_key: ""
+        require_ssl: false
+      cc:
+        base_url: https://api.REPLACE_WITH_SYSTEM_DOMAIN
+        basic_auth_password: PASSWORD
+  consul:
+    agent:
+      domain: cf.internal
+      servers:
+        lan:
+          - REPLACE_WITH_IP_ADDRESS_OF_CONSUL_FROM_CF
+    encrypt_keys:
+    - PASSWORD
+    ca_cert: REPLACE_WITH_CA_CERT_FROM_CF
+    agent_cert: REPLACE_WITH_AGENT_CERT_FROM_CF
+    agent_key: REPLACE_WITH_AGENT_KEY_FROM_CF
+    server_cert: REPLACE_WITH_SERVER_CERT_FROM_CF
+    server_key: REPLACE_WITH_SERVER_KEY_FROM_CF
+  diego:
+    auctioneer:
+      bbs:
+        ca_cert: ""
+        client_cert: ""
+        client_key: ""
+        require_ssl: false
+    bbs:
+      active_key_label: active
+      encryption_keys:
+      - label: active
+        passphrase: PASSWORD
+      ca_cert: ""
+      etcd:
+        ca_cert: ""
+        client_cert: ""
+        client_key: ""
+        require_ssl: false
+      require_ssl: false
+      server_cert: ""
+      server_key: ""
+    converger:
+      bbs:
+        ca_cert: ""
+        client_cert: ""
+        client_key: ""
+        require_ssl: false
+    rep:
+      bbs:
+        ca_cert: ""
+        client_cert: ""
+        client_key: ""
+        require_ssl: false
+      preloaded_rootfses: ["cflinuxfs2:/var/vcap/packages/cflinuxfs2/rootfs"]
+    route_emitter:
+      bbs:
+        ca_cert: ""
+        client_cert: ""
+        client_key: ""
+        require_ssl: false
+      nats:
+        machines: REPLACE_WITH_NATS_MACHINES_FROM_CF
+        password: REPLACE_WITH_NATS_PASSWORD_FROM_CF
+        port: REPLACE_WITH_NATS_PORT_FROM_CF
+        user: REPLACE_WITH_NATS_USER_FROM_CF
+    ssl:
+      skip_cert_verify: true
+    ssh_proxy:
+      bbs:
+        ca_cert: ""
+        client_cert: ""
+        client_key: ""
+        require_ssl: false
+      enable_cf_auth: true
+      host_key: REPLACE_WITH_SSH_HOST_KEY
+      uaa_secret: PASSWORD
+      uaa_token_url: https://uaa.REPLACE_WITH_SYSTEM_DOMAIN/oauth/token
+  etcd:
+    advertise_urls_dns_suffix: etcd.service.cf.internal
+    cluster:
+    - name: database_z1
+      instances: 1
+    machines: ["etcd.service.cf.internal"]
+    peer_require_ssl: false
+    require_ssl: false
+  loggregator:
+    etcd:
+      machines: REPLACE_WITH_ETCD_MACHINES_FROM_CF
+  metron_agent:
+    deployment: diego
+  metron_endpoint:
+    shared_secret: PASSWORD
