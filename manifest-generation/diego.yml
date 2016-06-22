@@ -427,6 +427,7 @@ properties:
   # -- Properties below are used by the metron_agent job from cf-release --
   metron_agent:
     deployment: (( name ))
+    protocols: (( config_from_cf.metron_agent.protocols ))
     preferred_protocol: (( config_from_cf.metron_agent.preferred_protocol ))
     enable_buffer: (( config_from_cf.metron_agent.enable_buffer ))
     buffer_size: (( config_from_cf.metron_agent.buffer_size ))

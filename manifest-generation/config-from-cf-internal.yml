@@ -30,6 +30,7 @@ config_from_cf:
     shared_secret: (( properties.metron_endpoint.shared_secret ))
   metron_agent:
     dropsonde_incoming_port: (( properties.metron_agent.dropsonde_incoming_port ))
+    protocols: (( properties.metron_agent.protocols ))
     preferred_protocol: (( properties.metron_agent.preferred_protocol ))
     enable_buffer: (( properties.metron_agent.enable_buffer ))
     buffer_size: (( properties.metron_agent.buffer_size ))
@@ -86,6 +87,7 @@ properties:
     shared_secret: (( merge ))
   metron_agent:
     dropsonde_incoming_port: (( merge || nil ))
+    protocols: (( merge || nil ))
     preferred_protocol: (( merge || nil ))
     enable_buffer: (( merge || nil ))
     buffer_size: (( merge || nil ))
