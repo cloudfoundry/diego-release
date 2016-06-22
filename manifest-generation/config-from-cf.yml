@@ -29,6 +29,7 @@ config_from_cf:
 
   metron_agent:
     dropsonde_incoming_port: (( merge ))
+    protocols: (( merge ))
     preferred_protocol: (( merge ))
     enable_buffer: (( merge ))
     buffer_size: (( merge ))
