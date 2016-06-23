@@ -15,10 +15,10 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 ### Additional Diego Resources
 
   - The [Contribution Guidelines](CONTRIBUTING.md) describes the developer workflow for making changes to Diego.
-  - The [Diego Design Notes](https://github.com/cloudfoundry-incubator/diego-design-notes) present an overview of Diego, and links to the various Diego components.
-  - The [Migration Guide](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/migrating-to-diego.md) describes how developers and operators can manage a transition from the DEAs to Diego.
-  - The [Docker Support Notes](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/docker-support.md) describe how Diego runs Docker-image-based apps in Cloud Foundry.
-  - The [Diego-CF Compatibility Log](https://github.com/cloudfoundry-incubator/diego-cf-compatibility) records which versions of cf-release and diego-release are compatible, according to the Diego team's [automated testing pipeline](https://diego.ci.cf-app.com/?groups=diego).
+  - The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) present an overview of Diego, and links to the various Diego components.
+  - The [Migration Guide](https://github.com/cloudfoundry/diego-design-notes/blob/master/migrating-to-diego.md) describes how developers and operators can manage a transition from the DEAs to Diego.
+  - The [Docker Support Notes](https://github.com/cloudfoundry/diego-design-notes/blob/master/docker-support.md) describe how Diego runs Docker-image-based apps in Cloud Foundry.
+  - The [Diego-CF Compatibility Log](https://github.com/cloudfoundry/diego-cf-compatibility) records which versions of cf-release and diego-release are compatible, according to the Diego team's [automated testing pipeline](https://diego.ci.cf-app.com/?groups=diego).
   - [Diego's Pivotal Tracker project](https://www.pivotaltracker.com/n/projects/1003146) shows what we're working on these days.
 
 
@@ -57,7 +57,7 @@ also provided by the same versions listed above.
 ## <a name="compatibility"></a>Release Compatibility
 
 Diego releases are tested against Cloud Foundry, Garden, and ETCD. Compatible versions
-of Garden and ETCD are listed with Diego on the [Github releases page](https://github.com/cloudfoundry-incubator/diego-release/releases).
+of Garden and ETCD are listed with Diego on the [Github releases page](https://github.com/cloudfoundry/diego-release/releases).
 
 ### Checking out a release of Diego
 
@@ -81,7 +81,7 @@ This is the easiest way to correlate releases.
 Alternatively, you can use records of CF and Diego compatibility captured from
 automated testing. First look up the release candidate SHA for your CF release.
 This is listed as the `commit_hash` in the release yaml file. Find the SHA in
-[diego-cf-compatibility/compatibility-v2.csv](https://github.com/cloudfoundry-incubator/diego-cf-compatibility/blob/master/compatibility-v2.csv)
+[diego-cf-compatibility/compatibility-v2.csv](https://github.com/cloudfoundry/diego-cf-compatibility/blob/master/compatibility-v2.csv)
 to look up tested versions of Diego Release, Garden, and ETCD.
 
 Example: Let's say you want to deploy Diego alongside CF final release `222`. The release file
@@ -143,7 +143,7 @@ The Diego manifest generation documentation can be found in [docs/manifest-gener
 
   ```bash
   cd ~/workspace
-  git clone https://github.com/cloudfoundry-incubator/diego-release.git
+  git clone https://github.com/cloudfoundry/diego-release.git
   cd ~/workspace/diego-release
   git checkout master # do not push to master
   ./scripts/update
@@ -302,7 +302,7 @@ or the
   cf push my-app --no-start
   ```
 
-1. [Enable Diego](https://github.com/cloudfoundry-incubator/diego-design-notes/blob/master/migrating-to-diego.md#targeting-diego) for your application.
+1. [Enable Diego](https://github.com/cloudfoundry/diego-design-notes/blob/master/migrating-to-diego.md#targeting-diego) for your application.
 
 1. Start your application:
 

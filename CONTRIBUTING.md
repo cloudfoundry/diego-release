@@ -6,7 +6,7 @@ The Diego team uses GitHub and accepts contributions via [pull request](https://
 
 The `diego-release` repository is a [BOSH](https://github.com/cloudfoundry/bosh) release for Diego. The root of this repository doubles as a Golang [`GOPATH`](https://golang.org/doc/code.html#GOPATH). For more information about configuring your Golang environment and automatically setting your `GOPATH` to the release directory, see the [instructions below](#initial-setup).
 
-All Diego components are submodules in diego-release and can be found in the [`src/github.com/cloudfoundry-incubator`](https://github.com/cloudfoundry-incubator/diego-release/tree/master/src/github.com/cloudfoundry-incubator) and [`src/github.com/cloudfoundry`](https://github.com/cloudfoundry-incubator/diego-release/tree/master/src/github.com/cloudfoundry) directories of this repository.
+All Diego components are submodules in diego-release and can be found in the [`src/github.com/cloudfoundry`](https://github.com/cloudfoundry/diego-release/tree/master/src/github.com/cloudfoundry) and [`src/github.com/cloudfoundry-incubator`](https://github.com/cloudfoundry/diego-release/tree/master/src/github.com/cloudfoundry-incubator) directories of this repository.
 
 If you wish to make a change to an individual Diego component, submit a pull request to the master branches of its repository. Once accepted, those changes should make their way into `diego-release`.
 
@@ -75,7 +75,7 @@ This BOSH release doubles as a `$GOPATH`. It will automatically be set up for yo
     popd
 
     # clone diego-release
-    git clone https://github.com/cloudfoundry-incubator/diego-release.git
+    git clone https://github.com/cloudfoundry/diego-release.git
     pushd diego-release/
 
     # automate $GOPATH and $PATH setup
@@ -212,7 +212,7 @@ On OS X, follow these steps to install and configure MySQL and Postgres:
 1. Check out diego-release (develop branch) from git:
 
         cd ~/workspace
-        git clone https://github.com/cloudfoundry-incubator/diego-release.git
+        git clone https://github.com/cloudfoundry/diego-release.git
         cd ~/workspace/diego-release
         git checkout develop
         ./scripts/update
@@ -290,7 +290,7 @@ If you're introducing a new component (e.g. a new job/errand) or changing the ma
 
 ## Logging in Diego
 
-Please follow logging conventions as outlined [here](https://github.com/cloudfoundry-incubator/diego-dev-notes/blob/master/notes/logging-guidance.md).
+Please follow logging conventions as outlined [here](https://github.com/cloudfoundry/diego-dev-notes/blob/master/notes/logging-guidance.md).
 
 
 ## Testing Diego

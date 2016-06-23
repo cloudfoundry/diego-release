@@ -143,7 +143,7 @@ popd
 In order to successfully deploy diego, you will need to upload the following bosh releases:
 
 ```
-bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/diego-release
+bosh upload release https://bosh.io/d/github.com/cloudfoundry/diego-release
 bosh upload release https://bosh.io/d/github.com/cloudfoundry/cflinuxfs2-rootfs-release
 bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
 bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release

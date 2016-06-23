@@ -62,19 +62,19 @@ To use garden-runc release instead of garden-linux.
 The  file to specify the IaaS specific values.  Items such as the subnet-configs, stemcell specifications etc.
 
 ##### Bosh-lite example:
-The bosh-lite IaaS-settings example can be found [iaas-settings.yml](https://github.com/cloudfoundry-incubator/diego-release/blob/develop/manifest-generation/bosh-lite-stubs/iaas-settings.yml).
+The bosh-lite IaaS-settings example can be found [iaas-settings.yml](https://github.com/cloudfoundry/diego-release/blob/develop/manifest-generation/bosh-lite-stubs/iaas-settings.yml).
 
 #### Property overrides stub file
 The  file to override specific diego properties
 
 ##### Bosh-lite example:
-The bosh-lite property-overrides example can be found [property-overrides.yml](https://github.com/cloudfoundry-incubator/diego-release/blob/develop/manifest-generation/bosh-lite-stubs/property-overrides.yml)
+The bosh-lite property-overrides example can be found [property-overrides.yml](https://github.com/cloudfoundry/diego-release/blob/develop/manifest-generation/bosh-lite-stubs/property-overrides.yml)
 
 #### Instance count overrides stub file (optional)
 The file is used override the instance count for jobs in the diego manifest
 
 ##### Bosh-lite example:
-The bosh-lite instance-count-overrides example can be found [instance-count-overrides.yml](https://github.com/cloudfoundry-incubator/diego-release/blob/develop/manifest-generation/bosh-lite-stubs/instance-count-overrides.yml)
+The bosh-lite instance-count-overrides example can be found [instance-count-overrides.yml](https://github.com/cloudfoundry/diego-release/blob/develop/manifest-generation/bosh-lite-stubs/instance-count-overrides.yml)
 
 #### Release versions override stub file (optional)
 The file is used to override the default (latest) release version for the releases used in the manifest

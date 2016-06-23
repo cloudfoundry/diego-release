@@ -32,7 +32,7 @@ As part of the deployment process, you must install the following dependencies:
 You must also clone the following git repositories from GitHub:
 
 * [cf-release](https://github.com/cloudfoundry/cf-release)
-* [diego-release](https://github.com/cloudfoundry-incubator/diego-release)
+* [diego-release](https://github.com/cloudfoundry/diego-release)
 
 ### Deployment Directory
 
@@ -685,7 +685,7 @@ If you enabled volume services, follow these directions to [fill in the drivers 
 
 ### Generate the Diego manifest
 
-See the full [manifest generation documentation](https://github.com/cloudfoundry-incubator/diego-release/docs/manifest-generation.md) for more generation instructions.
+See the full [manifest generation documentation](https://github.com/cloudfoundry/diego-release/docs/manifest-generation.md) for more generation instructions.
 Remember that the `-n` instance-count-overrides flag and the `-v` release-versions flags are optional. If using a non-standard deployment (SQL, Volume Drivers, Garden-RunC, etc) follow the [generate the Diego manifest optional instructions](OPTIONAL.md#generate-the-diego-manifest).
 
 ```bash
