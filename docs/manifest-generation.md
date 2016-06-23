@@ -2,7 +2,7 @@
 
 This document is for describing options to Diego manifest generation.
 
-### Table of Conents
+### Table of Contents
 
 1. [Scripts](#scripts)
 1. [Options](#options)
@@ -29,6 +29,7 @@ This document is for describing options to Diego manifest generation.
     -s <sql-db-path>    Path to SQL stub file.
     -x                  Opt out of deploying etcd with the database vms (requires sql)
     -g                  Opt into using garden-runc-release for cells.
+    -b                  Opt into using capi-release for bridge components.
     -d <voldriver-path> Path to voldriver stub file.
 
 #### EXAMPLE:
@@ -41,27 +42,31 @@ This document is for describing options to Diego manifest generation.
       -s manifest-generation/bosh-lite-stubs/diego-sql.yml \\
       -x \\
       -d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml \\
-      -g
+      -g \\
+      -b
 
 ### Options
 
 #### -c Path to CF Manifest File
 To specify the CF manifest and used to pull CF related properties into the generated Diego manifest
 
-#### -x Opt out of deployting etcd with the database VMs
+#### -x Opt out of deploying etcd with the database VMs
 When fully migrated data from an etcd release to SQL, or a fresh install using SQL use the -x flag to not deploy etcd to the database VMs.
 
 #### -g Opt into using garden-runc-release for cells
-To use garden-runc release instead of garden-linux.  
+To use garden-runc release instead of garden-linux.
 
 **Note**: Migration from garden-linux based cells to garden-runc cells is not supported.  Cells must be recreated if previously deployed using garden-linux.
+
+#### -b Opt into using capi-release for bridge components
+Use the cc-bridge components (e.g., stager, nsync, tps, etc.) from capi-release instead of cf-release.
 
 ### Stubs
 
 #### IaaS settings stub file
 The  file to specify the IaaS specific values.  Items such as the subnet-configs, stemcell specifications etc.
 
-##### Bosh-lite example:
+##### bosh-lite example:
 The bosh-lite IaaS-settings example can be found [iaas-settings.yml](https://github.com/cloudfoundry/diego-release/blob/develop/manifest-generation/bosh-lite-stubs/iaas-settings.yml).
 
 #### Property overrides stub file
@@ -73,7 +78,7 @@ The bosh-lite property-overrides example can be found [property-overrides.yml](h
 #### Instance count overrides stub file (optional)
 The file is used override the instance count for jobs in the diego manifest
 
-##### Bosh-lite example:
+##### bosh-lite example:
 The bosh-lite instance-count-overrides example can be found [instance-count-overrides.yml](https://github.com/cloudfoundry/diego-release/blob/develop/manifest-generation/bosh-lite-stubs/instance-count-overrides.yml)
 
 #### Release versions override stub file (optional)
@@ -93,7 +98,7 @@ release-versions:
 
 The optional -s flag is used to specify the stub for SQL and needs to be specific to either MySQL or Postgres.
 
-##### MySQL Example: 
+##### MySQL Example:
 
 ```yaml
 sql_overrides:
@@ -127,5 +132,3 @@ volman_overrides:
   - name: cephdriver
     release: cephfs-bosh-release
 ```
-
-

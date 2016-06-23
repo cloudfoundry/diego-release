@@ -23,6 +23,7 @@ OPTIONAL ARGUMENTS:
     -s <sql-db-path>    Path to SQL stub file.
     -x                  Opt out of deploying etcd with the database vms (requires sql)
     -g                  Opt into using garden-runc-release for cells.
+    -b                  Opt into using capi-release for bridge components.
     -d <voldriver-path> Path to voldriver stub file.
 
 EXAMPLE:
@@ -35,7 +36,8 @@ EXAMPLE:
       -s manifest-generation/bosh-lite-stubs/diego-sql.yml \\
       -x \\
       -d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml \\
-      -g
+      -g \\
+      -b
 EOF
   exit 1
 }
