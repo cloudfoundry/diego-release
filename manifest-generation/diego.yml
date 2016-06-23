@@ -1,6 +1,6 @@
 name: (( config_from_cf.cf_deployment_name "-diego" ))
 
-releases: (( base_releases bbs_overrides.releases volman_overrides.releases [garden_overrides.release] [config_from_cf.cf_release] ))
+releases: (( base_releases bbs_overrides.releases volman_overrides.releases [garden_overrides.release] [config_from_cf.cf_release] bridge_overrides.releases ))
 
 director_uuid: (( config_from_cf.cf_director_uuid ))
 
@@ -665,7 +665,9 @@ iaas_settings: (( merge ))
 instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
 sql_overrides: (( merge  || nil ))
-bridge_overrides: (( merge || nil ))
+bridge_overrides:
+  job_release: cf
+  releases: (( merge || [] ))
 
 bbs_overrides:
   job_properties:
@@ -763,13 +765,13 @@ base_job_templates:
     - name: consul_agent
       release: cf
     - name: stager
-      release: cf
+      release: (( bridge_overrides.job_release || "cf" ))
     - name: nsync
-      release: cf
+      release: (( bridge_overrides.job_release || "cf" ))
     - name: tps
-      release: cf
+      release: (( bridge_overrides.job_release || "cf" ))
     - name: cc_uploader
-      release: cf
+      release: (( bridge_overrides.job_release || "cf" ))
     - name: metron_agent
       release: cf
   cell:
