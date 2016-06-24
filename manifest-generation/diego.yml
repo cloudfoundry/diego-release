@@ -654,7 +654,6 @@ properties:
     network_mtu: (( property_overrides.garden.mtu || nil ))
     disk_quota_enabled: (( property_overrides.garden.disk_quota_enabled || nil ))
     persistent_image_list: (( property_overrides.garden.persistent_image_list || ["/var/vcap/packages/cflinuxfs2/rootfs"] ))
-    enable_graph_cleanup: (( property_overrides.garden.enable_graph_cleanup || true ))
     graph_cleanup_threshold_in_mb: (( property_overrides.garden.graph_cleanup_threshold_in_mb || 0 ))
     log_level: (( property_overrides.garden.log_level || nil ))
 
