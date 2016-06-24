@@ -314,7 +314,7 @@ or the
 
 ## Deploying Diego to AWS
 
-In order to deploy Diego to AWS follow [these instructions](examples/aws/README.md). Enjoy!
+In order to deploy Diego to AWS, follow the instructions in [examples/aws](examples/aws/README.md) to deploy BOSH, CF, and Diego to a new CloudFormation stack, or follow the instructions in [examples/aws](examples/minimal-aws/README.md) to deploy Diego alongside a [minimal CF deployment](https://github.com/cloudfoundry/cf-release/tree/master/example_manifests).
 
 ---
 ## Database Encryption

@@ -38,20 +38,27 @@ availability and lacks basic security configuration.
 
 ### Generate SSH Proxy Host Key and Fingerprint
 
+Run the following to generate a host key for the SSH proxy. When prompted for the key passphrase, hit 'enter' to set no passphrase.
+
 ```bash
 ssh-keygen -f ssh-proxy-host-key.pem
 ```
+
 If the local `ssh-keygen` supports the `-E` flag, as it does on OS X 10.11 El Capitan or Ubuntu 16.04 Xenial Xerus, generate the MD5 fingerprint of the public host key as follows:
+
 ```bash
 ssh-keygen -lf ssh-proxy-host-key.pem.pub -E md5 | cut -d ' ' -f2 | sed 's/MD5://g' > ssh-proxy-host-key-fingerprint
 ```
+
 Otherwise, generate the MD5 fingerprint as follows:
+
 ```bash
 ssh-keygen -lf ssh-proxy-host-key.pem.pub | cut -d ' ' -f2 > ssh-proxy-host-key-fingerprint
 ```
+
 The `ssh-proxy-host-key.pem` file contains the PEM-encoded private host key for the Diego manifest, and the `ssh-proxy-host-key-fingerprint` file contains the MD5 fingerprint of the public host key. You will later copy these values into stubs for generating the CF and Diego manifests.
 
-Replace REPLACE_WITH_SSH_HOST_KEY in the example diego manifest with the contents of `ssh-proxy-host-key.pem`.
+Replace REPLACE_WITH_SSH_HOST_KEY in the example diego manifest with the contents of `ssh-proxy-host-key.pem`, making sure to indent the contents correctly for the YAML literal block.
 
 ### Modify the CF Manifest with Diego Properties
 
@@ -68,8 +75,7 @@ properties:
     internal_api_user: internal_user
   uaa:
     clients:
-      cf:
-      - ssh-proxy:
+      ssh-proxy:
         authorized-grant-types: authorization_code
         autoapprove: true
         override: true
@@ -107,12 +113,16 @@ popd
 
 ### Fill in the Needed Values in the Diego Manifest
 
-You will need to make the following changes to the example `diego.yml` provided:
+You will need to make the following changes to the example `diego.yml` file provided:
 
-- Replace REPLACE_WITH_BOSH_STEMCELL_VERSION with the version of the bosh stemcell uploaded to the director
-- Replace REPLACE_WITH_DIRECTOR_ID with the UUID obtained from running `bosh status`
-- Replace the `properties.consul` properties that begin with REPLACE_WITH with the values of `properties.consul` from [minimal-aws.yml](https://github.com/cloudfoundry/cf-release/blob/master/example_manifests/minimal-aws.yml).
-- Replace the `properties.route_emitter.nats` properties that begin with REPLACE_WITH with the values of `properties.nats` from [minimal-aws.yml](https://github.com/cloudfoundry/cf-release/blob/master/example_manifests/minimal-aws.yml).
+- Replace REPLACE_WITH_BOSH_STEMCELL_VERSION with the version of the BOSH stemcell uploaded to the director.
+- Replace REPLACE_WITH_DIRECTOR_ID with the UUID obtained from running `bosh status`.
+
+Some of the values come from the CF manifest constructed by modifying [minimal-aws.yml](https://github.com/cloudfoundry/cf-release/blob/master/example_manifests/minimal-aws.yml):
+
+- Replace the `properties.consul` properties that begin with REPLACE_WITH with the values of `properties.consul` from your CF manifest.
+- Replace the `properties.route_emitter.nats` properties that begin with REPLACE_WITH with the values of `properties.nats` from your CF manifest.
+- Replace the REPLACE_WITH_ETCD_MACHINES_FROM_CF value in the `properties.loggregator.etcd.machines` property with the value of `properties.loggregator.etcd.machines` from your CF manifest.
 
 
 ### Generate Diego Manifest from Stubs (optional)

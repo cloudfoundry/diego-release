@@ -241,11 +241,16 @@ properties:
           - REPLACE_WITH_IP_ADDRESS_OF_CONSUL_FROM_CF
     encrypt_keys:
     - PASSWORD
-    ca_cert: REPLACE_WITH_CA_CERT_FROM_CF
-    agent_cert: REPLACE_WITH_AGENT_CERT_FROM_CF
-    agent_key: REPLACE_WITH_AGENT_KEY_FROM_CF
-    server_cert: REPLACE_WITH_SERVER_CERT_FROM_CF
-    server_key: REPLACE_WITH_SERVER_KEY_FROM_CF
+    ca_cert: |
+      REPLACE_WITH_CA_CERT_FROM_CF
+    agent_cert: |
+      REPLACE_WITH_AGENT_CERT_FROM_CF
+    agent_key: |
+      REPLACE_WITH_AGENT_KEY_FROM_CF
+    server_cert: |
+      REPLACE_WITH_SERVER_CERT_FROM_CF
+    server_key: |
+      REPLACE_WITH_SERVER_KEY_FROM_CF
   diego:
     auctioneer:
       bbs:
@@ -300,7 +305,8 @@ properties:
         client_key: ""
         require_ssl: false
       enable_cf_auth: true
-      host_key: REPLACE_WITH_SSH_HOST_KEY
+      host_key: |
+        REPLACE_WITH_SSH_HOST_KEY
       uaa_secret: PASSWORD
       uaa_token_url: https://uaa.REPLACE_WITH_SYSTEM_DOMAIN/oauth/token
   etcd:
