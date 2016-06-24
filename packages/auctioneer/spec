@@ -5,9 +5,9 @@ dependencies:
   - golang
 
 files:
+  - code.cloudfoundry.org/auction/auctionrunner/*.go # gosub
+  - code.cloudfoundry.org/auction/auctiontypes/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
-  - github.com/cloudfoundry-incubator/auction/auctionrunner/*.go # gosub
-  - github.com/cloudfoundry-incubator/auction/auctiontypes/*.go # gosub
   - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
   - github.com/cloudfoundry-incubator/auctioneer/auctionmetricemitterdelegate/*.go # gosub
   - github.com/cloudfoundry-incubator/auctioneer/auctionrunnerdelegate/*.go # gosub
