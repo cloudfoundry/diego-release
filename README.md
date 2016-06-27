@@ -129,13 +129,13 @@ The Diego manifest generation documentation can be found in [docs/manifest-gener
 
   Please note that the consul_agent job does not set up DNS correctly on version 3126 of the Warden BOSH-Lite stemcell, so we do not recommend the use of that stemcell version.
 
-1. Check out cf-release (runtime-passed branch or tagged release) from git:
+1. Check out cf-release (release-candidate branch or tagged release) from git:
 
   ```bash
   cd ~/workspace
   git clone https://github.com/cloudfoundry/cf-release.git
   cd ~/workspace/cf-release
-  git checkout runtime-passed # do not push to runtime-passed
+  git checkout release-candidate # do not push to release-candidate
   ./scripts/update
   ```
 
