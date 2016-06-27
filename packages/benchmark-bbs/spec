@@ -5,6 +5,7 @@ dependencies:
   - golang
 
 files:
+  - code.cloudfoundry.org/auctioneer/*.go # gosub
   - code.cloudfoundry.org/bbs/*.go # gosub
   - code.cloudfoundry.org/bbs/cmd/bbs/testrunner/*.go # gosub
   - code.cloudfoundry.org/bbs/db/*.go # gosub
@@ -39,7 +40,6 @@ files:
   - github.com/aws/aws-sdk-go/service/s3/s3iface/*.go # gosub
   - github.com/aws/aws-sdk-go/service/s3/s3manager/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
-  - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
   - github.com/cloudfoundry-incubator/benchmark-bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/benchmark-bbs/generator/*.go # gosub
   - github.com/cloudfoundry-incubator/benchmark-bbs/reporter/*.go # gosub

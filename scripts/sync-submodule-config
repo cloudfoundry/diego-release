@@ -8,7 +8,7 @@ go install github.com/vito/gosub
 
 {
   gosub list \
-    -app github.com/cloudfoundry-incubator/auctioneer/cmd/... \
+    -app code.cloudfoundry.org/auctioneer/cmd/... \
     -app code.cloudfoundry.org/bbs/cmd/bbs \
     -app github.com/cloudfoundry-incubator/buildpack_app_lifecycle/... \
     -app github.com/cloudfoundry-incubator/converger/cmd/... \
@@ -23,7 +23,7 @@ go install github.com/vito/gosub
     -app github.com/apcera/gnatsd
 
   # separate these so gosub doesn't asplode
-  gosub list -test github.com/cloudfoundry-incubator/auctioneer/...
+  gosub list -test code.cloudfoundry.org/auctioneer/...
   gosub list -test code.cloudfoundry.org/bbs/...
   gosub list -test github.com/cloudfoundry-incubator/buildpack_app_lifecycle/...
   gosub list -test github.com/cloudfoundry-incubator/converger/...

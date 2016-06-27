@@ -35,7 +35,7 @@ function sync_package() {
   )
 }
 
-sync_package auctioneer              -app  github.com/cloudfoundry-incubator/auctioneer/cmd/auctioneer &
+sync_package auctioneer              -app  code.cloudfoundry.org/auctioneer/cmd/auctioneer &
 sync_package bbs                     -app  code.cloudfoundry.org/bbs/cmd/bbs &
 sync_package converger               -app  github.com/cloudfoundry-incubator/converger/cmd/converger &
 sync_package diego-sshd              -app  github.com/cloudfoundry-incubator/diego-ssh/cmd/sshd &

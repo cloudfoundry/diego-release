@@ -7,6 +7,11 @@ dependencies:
 files:
   - code.cloudfoundry.org/auction/auctionrunner/*.go # gosub
   - code.cloudfoundry.org/auction/auctiontypes/*.go # gosub
+  - code.cloudfoundry.org/auctioneer/*.go # gosub
+  - code.cloudfoundry.org/auctioneer/auctionmetricemitterdelegate/*.go # gosub
+  - code.cloudfoundry.org/auctioneer/auctionrunnerdelegate/*.go # gosub
+  - code.cloudfoundry.org/auctioneer/cmd/auctioneer/*.go # gosub
+  - code.cloudfoundry.org/auctioneer/handlers/*.go # gosub
   - code.cloudfoundry.org/bbs/*.go # gosub
   - code.cloudfoundry.org/bbs/encryption/*.go # gosub
   - code.cloudfoundry.org/bbs/events/*.go # gosub
@@ -14,11 +19,6 @@ files:
   - code.cloudfoundry.org/bbs/handlers/middleware/*.go # gosub
   - code.cloudfoundry.org/bbs/models/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
-  - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
-  - github.com/cloudfoundry-incubator/auctioneer/auctionmetricemitterdelegate/*.go # gosub
-  - github.com/cloudfoundry-incubator/auctioneer/auctionrunnerdelegate/*.go # gosub
-  - github.com/cloudfoundry-incubator/auctioneer/cmd/auctioneer/*.go # gosub
-  - github.com/cloudfoundry-incubator/auctioneer/handlers/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/*.go # gosub

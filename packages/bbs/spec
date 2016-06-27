@@ -5,6 +5,7 @@ dependencies:
   - golang
 
 files:
+  - code.cloudfoundry.org/auctioneer/*.go # gosub
   - code.cloudfoundry.org/bbs/*.go # gosub
   - code.cloudfoundry.org/bbs/cmd/bbs/*.go # gosub
   - code.cloudfoundry.org/bbs/db/*.go # gosub
@@ -24,7 +25,6 @@ files:
   - code.cloudfoundry.org/bbs/models/*.go # gosub
   - code.cloudfoundry.org/bbs/taskworkpool/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
-  - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
