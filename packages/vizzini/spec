@@ -6,12 +6,12 @@ dependencies:
 
 files:
   - github.com/cloudfoundry-incubator/vizzini/scripts/**/*
+  - code.cloudfoundry.org/bbs/*.go # gosub
+  - code.cloudfoundry.org/bbs/encryption/*.go # gosub
+  - code.cloudfoundry.org/bbs/events/*.go # gosub
+  - code.cloudfoundry.org/bbs/format/*.go # gosub
+  - code.cloudfoundry.org/bbs/models/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/encryption/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/events/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/format/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/models/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/unix_transport/*.go # gosub
   - github.com/cloudfoundry-incubator/consuladapter/*.go # gosub

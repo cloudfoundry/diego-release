@@ -5,26 +5,26 @@ dependencies:
   - golang
 
 files:
+  - code.cloudfoundry.org/bbs/*.go # gosub
+  - code.cloudfoundry.org/bbs/cmd/bbs/*.go # gosub
+  - code.cloudfoundry.org/bbs/db/*.go # gosub
+  - code.cloudfoundry.org/bbs/db/deprecations/*.go # gosub
+  - code.cloudfoundry.org/bbs/db/etcd/*.go # gosub
+  - code.cloudfoundry.org/bbs/db/migrations/*.go # gosub
+  - code.cloudfoundry.org/bbs/db/sqldb/*.go # gosub
+  - code.cloudfoundry.org/bbs/encryption/*.go # gosub
+  - code.cloudfoundry.org/bbs/encryptor/*.go # gosub
+  - code.cloudfoundry.org/bbs/events/*.go # gosub
+  - code.cloudfoundry.org/bbs/format/*.go # gosub
+  - code.cloudfoundry.org/bbs/guidprovider/*.go # gosub
+  - code.cloudfoundry.org/bbs/handlers/*.go # gosub
+  - code.cloudfoundry.org/bbs/handlers/middleware/*.go # gosub
+  - code.cloudfoundry.org/bbs/metrics/*.go # gosub
+  - code.cloudfoundry.org/bbs/migration/*.go # gosub
+  - code.cloudfoundry.org/bbs/models/*.go # gosub
+  - code.cloudfoundry.org/bbs/taskworkpool/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/cmd/bbs/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/db/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/db/deprecations/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/db/etcd/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/db/migrations/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/db/sqldb/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/encryption/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/encryptor/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/events/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/format/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/guidprovider/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/handlers/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/handlers/middleware/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/metrics/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/migration/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/models/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/taskworkpool/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-debug-server/*.go # gosub
   - github.com/cloudfoundry-incubator/cf-lager/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/*.go # gosub

@@ -5,6 +5,18 @@ dependencies:
   - golang
 
 files:
+  - code.cloudfoundry.org/bbs/*.go # gosub
+  - code.cloudfoundry.org/bbs/cmd/bbs/testrunner/*.go # gosub
+  - code.cloudfoundry.org/bbs/db/*.go # gosub
+  - code.cloudfoundry.org/bbs/db/etcd/*.go # gosub
+  - code.cloudfoundry.org/bbs/db/etcd/test/etcd_helpers/*.go # gosub
+  - code.cloudfoundry.org/bbs/db/sqldb/*.go # gosub
+  - code.cloudfoundry.org/bbs/encryption/*.go # gosub
+  - code.cloudfoundry.org/bbs/events/*.go # gosub
+  - code.cloudfoundry.org/bbs/format/*.go # gosub
+  - code.cloudfoundry.org/bbs/guidprovider/*.go # gosub
+  - code.cloudfoundry.org/bbs/models/*.go # gosub
+  - code.cloudfoundry.org/bbs/models/test/model_helpers/*.go # gosub
   - github.com/aws/aws-sdk-go/aws/*.go # gosub
   - github.com/aws/aws-sdk-go/aws/awserr/*.go # gosub
   - github.com/aws/aws-sdk-go/aws/awsutil/*.go # gosub
@@ -28,18 +40,6 @@ files:
   - github.com/aws/aws-sdk-go/service/s3/s3manager/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/auctioneer/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/cmd/bbs/testrunner/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/db/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/db/etcd/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/db/etcd/test/etcd_helpers/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/db/sqldb/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/encryption/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/events/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/format/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/guidprovider/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/models/*.go # gosub
-  - github.com/cloudfoundry-incubator/bbs/models/test/model_helpers/*.go # gosub
   - github.com/cloudfoundry-incubator/benchmark-bbs/*.go # gosub
   - github.com/cloudfoundry-incubator/benchmark-bbs/generator/*.go # gosub
   - github.com/cloudfoundry-incubator/benchmark-bbs/reporter/*.go # gosub
