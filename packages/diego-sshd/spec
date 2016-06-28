@@ -15,22 +15,22 @@ files:
   - code.cloudfoundry.org/cflager/*.go # gosub
   - code.cloudfoundry.org/consuladapter/*.go # gosub
   - code.cloudfoundry.org/debugserver/*.go # gosub
+  - code.cloudfoundry.org/diego-ssh/authenticators/*.go # gosub
+  - code.cloudfoundry.org/diego-ssh/cmd/sshd/*.go # gosub
+  - code.cloudfoundry.org/diego-ssh/daemon/*.go # gosub
+  - code.cloudfoundry.org/diego-ssh/handlers/*.go # gosub
+  - code.cloudfoundry.org/diego-ssh/helpers/*.go # gosub
+  - code.cloudfoundry.org/diego-ssh/keys/*.go # gosub
+  - code.cloudfoundry.org/diego-ssh/proxy/*.go # gosub
+  - code.cloudfoundry.org/diego-ssh/routes/*.go # gosub
+  - code.cloudfoundry.org/diego-ssh/scp/*.go # gosub
+  - code.cloudfoundry.org/diego-ssh/scp/atime/*.go # gosub
+  - code.cloudfoundry.org/diego-ssh/server/*.go # gosub
+  - code.cloudfoundry.org/diego-ssh/signals/*.go # gosub
+  - code.cloudfoundry.org/diego-ssh/termcodes/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
   - code.cloudfoundry.org/runtimeschema/metric/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
-  - github.com/cloudfoundry-incubator/diego-ssh/authenticators/*.go # gosub
-  - github.com/cloudfoundry-incubator/diego-ssh/cmd/sshd/*.go # gosub
-  - github.com/cloudfoundry-incubator/diego-ssh/daemon/*.go # gosub
-  - github.com/cloudfoundry-incubator/diego-ssh/handlers/*.go # gosub
-  - github.com/cloudfoundry-incubator/diego-ssh/helpers/*.go # gosub
-  - github.com/cloudfoundry-incubator/diego-ssh/keys/*.go # gosub
-  - github.com/cloudfoundry-incubator/diego-ssh/proxy/*.go # gosub
-  - github.com/cloudfoundry-incubator/diego-ssh/routes/*.go # gosub
-  - github.com/cloudfoundry-incubator/diego-ssh/scp/*.go # gosub
-  - github.com/cloudfoundry-incubator/diego-ssh/scp/atime/*.go # gosub
-  - github.com/cloudfoundry-incubator/diego-ssh/server/*.go # gosub
-  - github.com/cloudfoundry-incubator/diego-ssh/signals/*.go # gosub
-  - github.com/cloudfoundry-incubator/diego-ssh/termcodes/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
   - github.com/cloudfoundry/dropsonde/log_sender/*.go # gosub
   - github.com/cloudfoundry/dropsonde/logs/*.go # gosub

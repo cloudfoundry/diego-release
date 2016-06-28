@@ -7,7 +7,7 @@ export GOPATH=$BOSH_INSTALL_TARGET
 export GOROOT=$(readlink -nf /var/vcap/packages/golang)
 export PATH=$GOROOT/bin:$PATH
 
-CGO_ENABLED=0 go build -a -installsuffix static github.com/cloudfoundry-incubator/diego-ssh/cmd/sshd
+CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/diego-ssh/cmd/sshd
 
 ldd sshd && echo 'diego-sshd must be statically linked' && false
 

@@ -127,10 +127,6 @@
 	path = src/golang.org/x/crypto
 	url = https://go.googlesource.com/crypto
 	branch = master
-[submodule "src/github.com/cloudfoundry-incubator/diego-ssh"]
-	path = src/github.com/cloudfoundry-incubator/diego-ssh
-	url = https://github.com/cloudfoundry-incubator/diego-ssh
-	branch = master
 [submodule "src/github.com/kr/pty"]
 	path = src/github.com/kr/pty
 	url = https://github.com/kr/pty
@@ -307,4 +303,8 @@
 [submodule "src/code.cloudfoundry.org/fileserver"]
 	path = src/code.cloudfoundry.org/fileserver
 	url = https://github.com/cloudfoundry/fileserver
+	branch = master
+[submodule "src/code.cloudfoundry.org/diego-ssh"]
+	path = src/code.cloudfoundry.org/diego-ssh
+	url = https://github.com/cloudfoundry/diego-ssh
 	branch = master
