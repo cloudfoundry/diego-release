@@ -7,11 +7,11 @@ dependencies:
   - diego-sshd
 
 files:
+  - code.cloudfoundry.org/buildpackapplifecycle/*.go # gosub
+  - code.cloudfoundry.org/buildpackapplifecycle/builder/*.go # gosub
+  - code.cloudfoundry.org/buildpackapplifecycle/buildpackrunner/*.go # gosub
+  - code.cloudfoundry.org/buildpackapplifecycle/launcher/*.go # gosub
   - code.cloudfoundry.org/cacheddownloader/*.go # gosub
-  - github.com/cloudfoundry-incubator/buildpack_app_lifecycle/*.go # gosub
-  - github.com/cloudfoundry-incubator/buildpack_app_lifecycle/builder/*.go # gosub
-  - github.com/cloudfoundry-incubator/buildpack_app_lifecycle/buildpackrunner/*.go # gosub
-  - github.com/cloudfoundry-incubator/buildpack_app_lifecycle/launcher/*.go # gosub
   - github.com/cloudfoundry-incubator/candiedyaml/*.go # gosub
   - github.com/cloudfoundry/systemcerts/*.go # gosub
   - github.com/pivotal-golang/archiver/extractor/*.go # gosub

@@ -7,8 +7,8 @@ export GOPATH=$BOSH_INSTALL_TARGET
 export GOROOT=$(readlink -nf /var/vcap/packages/golang)
 export PATH=$GOROOT/bin:$PATH
 
-CGO_ENABLED=0 go build -a -installsuffix static github.com/cloudfoundry-incubator/buildpack_app_lifecycle/builder
-CGO_ENABLED=0 go build -a -installsuffix static github.com/cloudfoundry-incubator/buildpack_app_lifecycle/launcher
+CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/builder
+CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/launcher
 
 for binary in builder launcher; do
     ldd $binary && echo "$binary must be statically linked" && false

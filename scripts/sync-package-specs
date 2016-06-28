@@ -47,8 +47,8 @@ sync_package ssh_proxy               -app  github.com/cloudfoundry-incubator/die
 sync_package docker_app_lifecycle    -app  github.com/cloudfoundry-incubator/docker_app_lifecycle/builder \
   -app github.com/cloudfoundry-incubator/docker_app_lifecycle/launcher &
 
-sync_package buildpack_app_lifecycle -app  github.com/cloudfoundry-incubator/buildpack_app_lifecycle/builder \
-  -app github.com/cloudfoundry-incubator/buildpack_app_lifecycle/launcher &
+sync_package buildpack_app_lifecycle -app  code.cloudfoundry.org/buildpackapplifecycle/builder \
+  -app code.cloudfoundry.org/buildpackapplifecycle/launcher &
 
 sync_package vizzini \
   -test code.cloudfoundry.org/vizzini/... \
