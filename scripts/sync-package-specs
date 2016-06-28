@@ -55,7 +55,7 @@ sync_package vizzini \
   -app github.com/onsi/ginkgo/ginkgo &
 
 sync_package benchmark-bbs \
-  -test github.com/cloudfoundry-incubator/benchmark-bbs/... \
+  -test code.cloudfoundry.org/benchmarkbbs/... \
   -app github.com/onsi/ginkgo/ginkgo &
 
 wait
