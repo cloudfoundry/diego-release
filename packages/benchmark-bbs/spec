@@ -28,6 +28,7 @@ files:
   - code.cloudfoundry.org/executor/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
   - code.cloudfoundry.org/rep/*.go # gosub
+  - code.cloudfoundry.org/runtimeschema/metric/*.go # gosub
   - github.com/aws/aws-sdk-go/aws/*.go # gosub
   - github.com/aws/aws-sdk-go/aws/awserr/*.go # gosub
   - github.com/aws/aws-sdk-go/aws/awsutil/*.go # gosub
@@ -50,7 +51,6 @@ files:
   - github.com/aws/aws-sdk-go/service/s3/s3iface/*.go # gosub
   - github.com/aws/aws-sdk-go/service/s3/s3manager/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
-  - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metrics/*.go # gosub
