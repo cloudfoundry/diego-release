@@ -10,13 +10,13 @@ files:
   - code.cloudfoundry.org/bbs/events/*.go # gosub
   - code.cloudfoundry.org/bbs/format/*.go # gosub
   - code.cloudfoundry.org/bbs/models/*.go # gosub
+  - code.cloudfoundry.org/cfhttp/*.go # gosub
+  - code.cloudfoundry.org/cfhttp/unix_transport/*.go # gosub
   - code.cloudfoundry.org/cflager/*.go # gosub
   - code.cloudfoundry.org/consuladapter/*.go # gosub
   - code.cloudfoundry.org/debugserver/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
-  - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
-  - github.com/cloudfoundry-incubator/cf_http/unix_transport/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/authenticators/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/cmd/sshd/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/daemon/*.go # gosub

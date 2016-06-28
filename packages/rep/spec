@@ -11,6 +11,9 @@ files:
   - code.cloudfoundry.org/bbs/format/*.go # gosub
   - code.cloudfoundry.org/bbs/models/*.go # gosub
   - code.cloudfoundry.org/cacheddownloader/*.go # gosub
+  - code.cloudfoundry.org/cfhttp/*.go # gosub
+  - code.cloudfoundry.org/cfhttp/handlers/*.go # gosub
+  - code.cloudfoundry.org/cfhttp/unix_transport/*.go # gosub
   - code.cloudfoundry.org/cflager/*.go # gosub
   - code.cloudfoundry.org/consuladapter/*.go # gosub
   - code.cloudfoundry.org/debugserver/*.go # gosub
@@ -40,9 +43,6 @@ files:
   - code.cloudfoundry.org/rep/harmonizer/*.go # gosub
   - code.cloudfoundry.org/rep/maintain/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
-  - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
-  - github.com/cloudfoundry-incubator/cf_http/handlers/*.go # gosub
-  - github.com/cloudfoundry-incubator/cf_http/unix_transport/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/client/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/client/connection/*.go # gosub

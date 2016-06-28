@@ -10,14 +10,14 @@ files:
   - code.cloudfoundry.org/bbs/events/*.go # gosub
   - code.cloudfoundry.org/bbs/format/*.go # gosub
   - code.cloudfoundry.org/bbs/models/*.go # gosub
+  - code.cloudfoundry.org/cfhttp/*.go # gosub
+  - code.cloudfoundry.org/cfhttp/unix_transport/*.go # gosub
   - code.cloudfoundry.org/cflager/*.go # gosub
   - code.cloudfoundry.org/consuladapter/*.go # gosub
   - code.cloudfoundry.org/debugserver/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
   - github.com/apcera/nats/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
-  - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
-  - github.com/cloudfoundry-incubator/cf_http/unix_transport/*.go # gosub
   - github.com/cloudfoundry-incubator/route-emitter/*.go # gosub
   - github.com/cloudfoundry-incubator/route-emitter/cmd/route-emitter/*.go # gosub
   - github.com/cloudfoundry-incubator/route-emitter/nats_emitter/*.go # gosub

@@ -116,10 +116,6 @@
 	path = src/github.com/hashicorp/go-multierror
 	url = https://github.com/hashicorp/go-multierror
 	branch = master
-[submodule "src/github.com/cloudfoundry-incubator/cf_http"]
-	path = src/github.com/cloudfoundry-incubator/cf_http
-	url = https://github.com/cloudfoundry-incubator/cf_http
-	branch = master
 [submodule "src/github.com/pivotal-golang/clock"]
 	path = src/github.com/pivotal-golang/clock
 	url = https://github.com/pivotal-golang/clock
@@ -307,4 +303,8 @@
 [submodule "src/code.cloudfoundry.org/cflager"]
 	path = src/code.cloudfoundry.org/cflager
 	url = https://github.com/cloudfoundry/cflager
+	branch = master
+[submodule "src/code.cloudfoundry.org/cfhttp"]
+	path = src/code.cloudfoundry.org/cfhttp
+	url = https://github.com/cloudfoundry/cfhttp
 	branch = master
