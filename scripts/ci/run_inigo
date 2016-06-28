@@ -76,7 +76,7 @@ for package in github.com/coreos/etcd github.com/apcera/gnatsd; do
   go install $package
 done
 
-cd "${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo"
+cd "${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo"
 
 go install github.com/onsi/ginkgo/ginkgo
 
@@ -126,7 +126,7 @@ if [ "$GINKGO_PARALLEL" = "true" ]; then
   nodes_flag=-nodes=4
 fi
 
-pushd "${GOPATH_ROOT}/src/github.com/cloudfoundry-incubator/inigo"
+pushd "${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo"
   PACKAGES_TO_SKIP="docker"
 
   if [ -n "$SKIP_PACKAGES" ]; then
