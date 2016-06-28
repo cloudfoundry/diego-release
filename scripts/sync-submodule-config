@@ -39,7 +39,7 @@ go install github.com/vito/gosub
   gosub list -test code.cloudfoundry.org/auction/... \
     \
     -test code.cloudfoundry.org/inigo/... \
-    -test github.com/cloudfoundry-incubator/diego-upgrade-stability-tests/... \
+    -test code.cloudfoundry.org/diego-upgrade-stability-tests/... \
     -test github.com/cloudfoundry-incubator/diegocanaryapp/...
 
 } > /tmp/packages

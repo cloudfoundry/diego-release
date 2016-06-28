@@ -208,10 +208,6 @@
 	path = src/github.com/cloudfoundry-incubator/routing-info
 	url = https://github.com/jfmyers9/routing-info
 	branch = wip-change-bbs-imports
-[submodule "src/github.com/cloudfoundry-incubator/diego-upgrade-stability-tests"]
-	path = src/github.com/cloudfoundry-incubator/diego-upgrade-stability-tests
-	url = https://github.com/cloudfoundry-incubator/diego-upgrade-stability-tests
-	branch = master
 [submodule "src/github.com/kr/fs"]
 	path = src/github.com/kr/fs
 	url = https://github.com/kr/fs
@@ -307,4 +303,8 @@
 [submodule "src/code.cloudfoundry.org/dockerapplifecycle"]
 	path = src/code.cloudfoundry.org/dockerapplifecycle
 	url = https://github.com/cloudfoundry/dockerapplifecycle
+	branch = master
+[submodule "src/code.cloudfoundry.org/diego-upgrade-stability-tests"]
+	path = src/code.cloudfoundry.org/diego-upgrade-stability-tests
+	url = https://github.com/cloudfoundry/diego-upgrade-stability-tests
 	branch = master
