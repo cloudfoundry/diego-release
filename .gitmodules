@@ -69,10 +69,6 @@
 	path = src/github.com/pivotal-golang/lager
 	url = https://github.com/pivotal-golang/lager
 	branch = master
-[submodule "src/github.com/cloudfoundry-incubator/cf-lager"]
-	path = src/github.com/cloudfoundry-incubator/cf-lager
-	url = https://github.com/cloudfoundry-incubator/cf-lager
-	branch = master
 [submodule "src/github.com/cloudfoundry-incubator/runtime-schema"]
 	path = src/github.com/cloudfoundry-incubator/runtime-schema
 	url = https://github.com/cloudfoundry-incubator/runtime-schema
@@ -307,4 +303,8 @@
 [submodule "src/code.cloudfoundry.org/debugserver"]
 	path = src/code.cloudfoundry.org/debugserver
 	url = https://github.com/cloudfoundry/debugserver
+	branch = master
+[submodule "src/code.cloudfoundry.org/cflager"]
+	path = src/code.cloudfoundry.org/cflager
+	url = https://github.com/cloudfoundry/cflager
 	branch = master
