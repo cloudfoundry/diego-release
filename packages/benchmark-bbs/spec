@@ -18,6 +18,8 @@ files:
   - code.cloudfoundry.org/bbs/guidprovider/*.go # gosub
   - code.cloudfoundry.org/bbs/models/*.go # gosub
   - code.cloudfoundry.org/bbs/models/test/model_helpers/*.go # gosub
+  - code.cloudfoundry.org/consuladapter/*.go # gosub
+  - code.cloudfoundry.org/consuladapter/consulrunner/*.go # gosub
   - github.com/aws/aws-sdk-go/aws/*.go # gosub
   - github.com/aws/aws-sdk-go/aws/awserr/*.go # gosub
   - github.com/aws/aws-sdk-go/aws/awsutil/*.go # gosub
@@ -45,8 +47,6 @@ files:
   - github.com/cloudfoundry-incubator/benchmark-bbs/reporter/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/unix_transport/*.go # gosub
-  - github.com/cloudfoundry-incubator/consuladapter/*.go # gosub
-  - github.com/cloudfoundry-incubator/consuladapter/consulrunner/*.go # gosub
   - github.com/cloudfoundry-incubator/executor/*.go # gosub
   - github.com/cloudfoundry-incubator/locket/*.go # gosub
   - github.com/cloudfoundry-incubator/rep/*.go # gosub
