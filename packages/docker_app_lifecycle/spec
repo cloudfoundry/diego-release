@@ -8,15 +8,15 @@ dependencies:
   - diego-sshd
 
 files:
-  - github.com/cloudfoundry-incubator/docker_app_lifecycle/mount_cgroups
+  - code.cloudfoundry.org/dockerapplifecycle/mount_cgroups
+  - code.cloudfoundry.org/dockerapplifecycle/*.go # gosub
+  - code.cloudfoundry.org/dockerapplifecycle/builder/*.go # gosub
+  - code.cloudfoundry.org/dockerapplifecycle/docker/nat/*.go # gosub
+  - code.cloudfoundry.org/dockerapplifecycle/helpers/*.go # gosub
+  - code.cloudfoundry.org/dockerapplifecycle/launcher/*.go # gosub
+  - code.cloudfoundry.org/dockerapplifecycle/protocol/*.go # gosub
+  - code.cloudfoundry.org/dockerapplifecycle/unix_transport/*.go # gosub
   - github.com/Sirupsen/logrus/*.go # gosub
-  - github.com/cloudfoundry-incubator/docker_app_lifecycle/*.go # gosub
-  - github.com/cloudfoundry-incubator/docker_app_lifecycle/builder/*.go # gosub
-  - github.com/cloudfoundry-incubator/docker_app_lifecycle/docker/nat/*.go # gosub
-  - github.com/cloudfoundry-incubator/docker_app_lifecycle/helpers/*.go # gosub
-  - github.com/cloudfoundry-incubator/docker_app_lifecycle/launcher/*.go # gosub
-  - github.com/cloudfoundry-incubator/docker_app_lifecycle/protocol/*.go # gosub
-  - github.com/cloudfoundry-incubator/docker_app_lifecycle/unix_transport/*.go # gosub
   - github.com/docker/distribution/*.go # gosub
   - github.com/docker/distribution/context/*.go # gosub
   - github.com/docker/distribution/digest/*.go # gosub

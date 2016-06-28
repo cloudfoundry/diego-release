@@ -5,13 +5,13 @@ cp -a . ${BOSH_INSTALL_TARGET}/src
 export GOPATH=$BOSH_INSTALL_TARGET
 
 cp /var/vcap/packages/docker/docker ./docker
-cp github.com/cloudfoundry-incubator/docker_app_lifecycle/mount_cgroups ./mount_cgroups
+cp code.cloudfoundry.org/dockerapplifecycle/mount_cgroups ./mount_cgroups
 
 export GOROOT=$(readlink -nf /var/vcap/packages/golang)
 export PATH=$GOROOT/bin:$PATH
 
-CGO_ENABLED=0 go build -a -installsuffix static github.com/cloudfoundry-incubator/docker_app_lifecycle/builder
-CGO_ENABLED=0 go build -a -installsuffix static github.com/cloudfoundry-incubator/docker_app_lifecycle/launcher
+CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/dockerapplifecycle/builder
+CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/dockerapplifecycle/launcher
 
 for binary in builder launcher; do
     ldd $binary && echo "$binary must be statically linked" && false

@@ -44,8 +44,8 @@ sync_package rep                     -app  code.cloudfoundry.org/rep/cmd/rep &
 sync_package route_emitter           -app  github.com/cloudfoundry-incubator/route-emitter/cmd/route-emitter &
 sync_package ssh_proxy               -app  github.com/cloudfoundry-incubator/diego-ssh/cmd/ssh-proxy &
 
-sync_package docker_app_lifecycle    -app  github.com/cloudfoundry-incubator/docker_app_lifecycle/builder \
-  -app github.com/cloudfoundry-incubator/docker_app_lifecycle/launcher &
+sync_package docker_app_lifecycle    -app  code.cloudfoundry.org/dockerapplifecycle/builder \
+  -app code.cloudfoundry.org/dockerapplifecycle/launcher &
 
 sync_package buildpack_app_lifecycle -app  code.cloudfoundry.org/buildpackapplifecycle/builder \
   -app code.cloudfoundry.org/buildpackapplifecycle/launcher &
