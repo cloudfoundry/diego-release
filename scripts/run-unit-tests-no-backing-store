@@ -5,7 +5,7 @@ DIEGO_RELEASE_DIR=${DIEGO_RELEASE_DIR:-$(cd $scripts_path/.. && pwd)}
 
 SKIP_PACKAGES="./inigo"
 SKIP_PACKAGES="$SKIP_PACKAGES,./auction/simulation"
-SKIP_PACKAGES="$SKIP_PACKAGES,./benchmark-bbs"
+SKIP_PACKAGES="$SKIP_PACKAGES,./benchmarkbbs"
 SKIP_PACKAGES="$SKIP_PACKAGES,./candiedyaml"
 SKIP_PACKAGES="$SKIP_PACKAGES,./cf-test-helpers"
 SKIP_PACKAGES="$SKIP_PACKAGES,./diegocanaryapp"

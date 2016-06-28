@@ -20,9 +20,9 @@ $scripts_path/run-unit-tests-no-backing-store
 let ERROR_CODE+=$?
 
 if [ ${ERROR_CODE} -eq 0 ]; then
-  echo "Diego Unit Tests Failed!"
-else
   echo "Diego Unit Tests Passed."
+else
+  echo "Diego Unit Tests Failed!"
 fi
 
 exit ${ERROR_CODE}
