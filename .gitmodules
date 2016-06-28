@@ -57,10 +57,6 @@
 	path = src/github.com/cloudfoundry/storeadapter
 	url = https://github.com/cloudfoundry/storeadapter
 	branch = master
-[submodule "src/github.com/cloudfoundry-incubator/route-emitter"]
-	path = src/github.com/cloudfoundry-incubator/route-emitter
-	url = https://github.com/cloudfoundry-incubator/route-emitter
-	branch = master
 [submodule "src/github.com/pivotal-golang/lager"]
 	path = src/github.com/pivotal-golang/lager
 	url = https://github.com/pivotal-golang/lager
@@ -307,4 +303,8 @@
 [submodule "src/code.cloudfoundry.org/diego-ssh"]
 	path = src/code.cloudfoundry.org/diego-ssh
 	url = https://github.com/cloudfoundry/diego-ssh
+	branch = master
+[submodule "src/code.cloudfoundry.org/route-emitter"]
+	path = src/code.cloudfoundry.org/route-emitter
+	url = https://github.com/cloudfoundry/route-emitter
 	branch = master

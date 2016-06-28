@@ -17,12 +17,6 @@ else
 fi
 
 ERROR_CODE=1
-pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/ > /dev/null
-  ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress --race \
-    route-emitter/cmd/route-emitter \
-
-  ERROR_CODE=$?
-popd > /dev/null
 
 pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/ > /dev/null
   ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress --race \
@@ -31,6 +25,7 @@ pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/ > /dev/null
     bbs/db/migrations \
     converger/cmd/converger \
     rep/cmd/rep \
+    route-emitter/cmd/route-emitter \
     ${DB_UNITS}
 
   ERROR_CODE=$?

@@ -16,15 +16,15 @@ files:
   - code.cloudfoundry.org/consuladapter/*.go # gosub
   - code.cloudfoundry.org/debugserver/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
+  - code.cloudfoundry.org/route-emitter/*.go # gosub
+  - code.cloudfoundry.org/route-emitter/cmd/route-emitter/*.go # gosub
+  - code.cloudfoundry.org/route-emitter/nats_emitter/*.go # gosub
+  - code.cloudfoundry.org/route-emitter/routing_table/*.go # gosub
+  - code.cloudfoundry.org/route-emitter/syncer/*.go # gosub
+  - code.cloudfoundry.org/route-emitter/watcher/*.go # gosub
   - code.cloudfoundry.org/runtimeschema/metric/*.go # gosub
   - github.com/apcera/nats/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
-  - github.com/cloudfoundry-incubator/route-emitter/*.go # gosub
-  - github.com/cloudfoundry-incubator/route-emitter/cmd/route-emitter/*.go # gosub
-  - github.com/cloudfoundry-incubator/route-emitter/nats_emitter/*.go # gosub
-  - github.com/cloudfoundry-incubator/route-emitter/routing_table/*.go # gosub
-  - github.com/cloudfoundry-incubator/route-emitter/syncer/*.go # gosub
-  - github.com/cloudfoundry-incubator/route-emitter/watcher/*.go # gosub
   - github.com/cloudfoundry-incubator/routing-info/cfroutes/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
