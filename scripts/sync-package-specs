@@ -40,7 +40,7 @@ sync_package bbs                     -app  code.cloudfoundry.org/bbs/cmd/bbs &
 sync_package converger               -app  code.cloudfoundry.org/converger/cmd/converger &
 sync_package diego-sshd              -app  github.com/cloudfoundry-incubator/diego-ssh/cmd/sshd &
 sync_package file_server             -app  github.com/cloudfoundry-incubator/file-server/cmd/file-server &
-sync_package rep                     -app  github.com/cloudfoundry-incubator/rep/cmd/rep &
+sync_package rep                     -app  code.cloudfoundry.org/rep/cmd/rep &
 sync_package route_emitter           -app  github.com/cloudfoundry-incubator/route-emitter/cmd/route-emitter &
 sync_package ssh_proxy               -app  github.com/cloudfoundry-incubator/diego-ssh/cmd/ssh-proxy &
 
