@@ -187,10 +187,6 @@
 	path = src/github.com/cloudfoundry/sonde-go
 	url = https://github.com/cloudfoundry/sonde-go
 	branch = master
-[submodule "src/github.com/cloudfoundry-incubator/healthcheck"]
-	path = src/github.com/cloudfoundry-incubator/healthcheck
-	url = https://github.com/cloudfoundry-incubator/healthcheck
-	branch = master
 [submodule "src/btrfs-progs"]
 	path = src/btrfs-progs
 	url = git://git.kernel.org/pub/scm/linux/kernel/git/kdave/btrfs-progs.git
@@ -307,4 +303,8 @@
 [submodule "src/code.cloudfoundry.org/executor"]
 	path = src/code.cloudfoundry.org/executor
 	url = https://github.com/cloudfoundry/executor
+	branch = master
+[submodule "src/code.cloudfoundry.org/healthcheck"]
+	path = src/code.cloudfoundry.org/healthcheck
+	url = https://github.com/cloudfoundry/healthcheck
 	branch = master
