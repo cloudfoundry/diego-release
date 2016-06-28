@@ -5,7 +5,7 @@ dependencies:
   - golang
 
 files:
-  - github.com/cloudfoundry-incubator/vizzini/scripts/**/*
+  - code.cloudfoundry.org/vizzini/scripts/**/*
   - code.cloudfoundry.org/bbs/*.go # gosub
   - code.cloudfoundry.org/bbs/encryption/*.go # gosub
   - code.cloudfoundry.org/bbs/events/*.go # gosub
@@ -13,14 +13,14 @@ files:
   - code.cloudfoundry.org/bbs/models/*.go # gosub
   - code.cloudfoundry.org/consuladapter/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
+  - code.cloudfoundry.org/vizzini/*.go # gosub
+  - code.cloudfoundry.org/vizzini/matchers/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/*.go # gosub
   - github.com/cloudfoundry-incubator/cf_http/unix_transport/*.go # gosub
   - github.com/cloudfoundry-incubator/diego-ssh/routes/*.go # gosub
   - github.com/cloudfoundry-incubator/routing-info/cfroutes/*.go # gosub
   - github.com/cloudfoundry-incubator/runtime-schema/metric/*.go # gosub
-  - github.com/cloudfoundry-incubator/vizzini/*.go # gosub
-  - github.com/cloudfoundry-incubator/vizzini/matchers/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metrics/*.go # gosub

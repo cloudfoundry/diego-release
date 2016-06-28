@@ -51,7 +51,7 @@ sync_package buildpack_app_lifecycle -app  github.com/cloudfoundry-incubator/bui
   -app github.com/cloudfoundry-incubator/buildpack_app_lifecycle/launcher &
 
 sync_package vizzini \
-  -test github.com/cloudfoundry-incubator/vizzini/... \
+  -test code.cloudfoundry.org/vizzini/... \
   -app github.com/onsi/ginkgo/ginkgo &
 
 sync_package benchmark-bbs \

@@ -5,7 +5,7 @@ set -e
 scripts_path=./$(dirname $0)
 eval $($scripts_path/get_paths.sh)
 
-pushd ${DIEGO_RELEASE_DIR}/src/github.com/cloudfoundry-incubator/vizzini/
+pushd ${DIEGO_RELEASE_DIR}/src/code.cloudfoundry.org/vizzini/
 ginkgo \
   -nodes=${NODES:-2} \
   -randomizeAllSpecs \
