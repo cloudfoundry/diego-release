@@ -73,7 +73,7 @@ etcd_flags=""
     -desiredLRPCreationTimeout=<%= value %> \
   <% end %> \
   <% if_p("diego.bbs.sql.db_connection_string") do |value| %> \
-    -databaseConnectionString=<%= Shellwords.shellescape(value) %>" \
+    -databaseConnectionString=<%= Shellwords.shellescape(value) %> \
   <% end %> \
   <% if_p("diego.bbs.sql.db_driver") do |value| %> \
     -databaseDriver='<%= value %>' \
