@@ -36,6 +36,7 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   1. [Generating TLS Certificates](#generating-tls-certificates)
   1. [Custom TLS Certificate Generation](#custom-tls-certificate-generation)
 1. [Recommended Instance Types](#recommended-instance-types)
+1. [Benchmarks](#benchmarks)
 
 ---
 
@@ -550,3 +551,70 @@ ephemeral_disk:
   size: 174_080
   type: gp2
 ```
+
+## Benchmarks
+
+### Viewing Results
+
+Diego benchmark results can be found [here](http://time-rotor-diego-benchmarks.s3.amazonaws.com/).
+
+### Metrics
+
+Example:
+```
+{
+  "Timestamp" : 1466806960,
+  "Measurement" : {
+    "Name" : "BBS' internal gathering of LRPs",
+    "Info" : {
+      "MetricName" : "ConvergenceGathering"
+    },
+    "Results" : [
+      0.048770786
+    ]
+    "Average" : 0.048770786,
+    "Smallest" : 0.048770786,
+    "Largest" : 0.048770786,
+    "AverageLabel" : "Average Time",
+    "SmallestLabel" : "Fastest Time",
+    "LargestLabel" : "Slowest Time",
+    "Order" : 5,
+    "Units" : "s",
+    "StdDeviation" : 0,
+  }
+}
+```
+
+Fields:
+
+##### Name
+
+The metric name
+
+##### Info
+
+Additional reporter info for this metric
+
+##### Results
+
+The metric results
+
+##### Average, Smallest, Largest
+
+The average, smallest, and largest values in Results
+
+##### AverageLabel, SmallestLabel, LargestLabel
+
+Labels for the average, smallest, and largest values
+
+##### Order
+
+The index of this metric out of all metrics in this run
+
+##### Units
+
+The units of measurement for this metric
+
+##### StdDeviation
+
+The standard deviation of the results
