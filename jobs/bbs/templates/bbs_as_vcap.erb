@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+<% require "shellwords" %>
+
 RUN_DIR=/var/vcap/sys/run/bbs
 LOG_DIR=/var/vcap/sys/log/bbs
 CONF_DIR=/var/vcap/jobs/bbs/config
@@ -71,7 +73,7 @@ etcd_flags=""
     -desiredLRPCreationTimeout=<%= value %> \
   <% end %> \
   <% if_p("diego.bbs.sql.db_connection_string") do |value| %> \
-    -databaseConnectionString='<%= value %>' \
+    -databaseConnectionString=<%= Shellwords.shellescape(value) %>" \
   <% end %> \
   <% if_p("diego.bbs.sql.db_driver") do |value| %> \
     -databaseDriver='<%= value %>' \

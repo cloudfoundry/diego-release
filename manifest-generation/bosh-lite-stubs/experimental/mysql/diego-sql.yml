@@ -1,5 +1,5 @@
 sql_overrides:
   bbs:
-    db_connection_string: 'diego:diego@tcp(10.244.7.2:3306)/diego'
+    db_connection_string: diego:diego@tcp(10.244.7.2:3306)/diego
     db_driver: mysql
     max_open_connections: 500
