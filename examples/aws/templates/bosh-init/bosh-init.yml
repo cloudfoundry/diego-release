@@ -7,7 +7,7 @@ resource_pools: (( merge ))
 
 disk_pools:
 - name: disks
-  disk_size: 20_000
+  disk_size: 100_000
   cloud_properties: 
     type: gp2
 
@@ -36,3 +36,9 @@ properties:
       provider: local
       local:
         users: (( merge ))
+
+  hm:
+    datadog:
+      api_key: (( merge || nil ))
+      application_key: (( merge || nil ))
+    datadog_enabled: (( merge || false ))

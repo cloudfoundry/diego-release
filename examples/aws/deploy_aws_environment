@@ -151,14 +151,13 @@ if [ $UPDATE_OR_CREATE != "skip" ]; then
 
   # ensure that create or update was successful to aws
   boosh watch --name $stack_name
-fi
-
-# generate AWS resources stub for shared purposes
-cat > stubs/aws-resources.yml <<EOF
+  # generate AWS resources stub for shared purposes
+  cat > stubs/aws-resources.yml <<EOF
 # GENERATED: NO TOUCHING
 EOF
 
-boosh resources --name $stack_name >> stubs/aws-resources.yml
+  boosh resources --name $stack_name >> stubs/aws-resources.yml
+fi
 
 cat > deployments/bosh-init/bosh-init.yml <<EOF
 # GENERATED: NO TOUCHING
