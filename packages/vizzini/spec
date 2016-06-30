@@ -16,6 +16,8 @@ files:
   - code.cloudfoundry.org/clock/*.go # gosub
   - code.cloudfoundry.org/consuladapter/*.go # gosub
   - code.cloudfoundry.org/diego-ssh/routes/*.go # gosub
+  - code.cloudfoundry.org/lager/*.go # gosub
+  - code.cloudfoundry.org/lager/lagertest/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
   - code.cloudfoundry.org/runtimeschema/metric/*.go # gosub
   - code.cloudfoundry.org/vizzini/*.go # gosub
@@ -72,8 +74,6 @@ files:
   - github.com/onsi/gomega/matchers/support/goraph/util/*.go # gosub
   - github.com/onsi/gomega/types/*.go # gosub
   - github.com/onsi/say/*.go # gosub
-  - github.com/pivotal-golang/lager/*.go # gosub
-  - github.com/pivotal-golang/lager/lagertest/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
   - github.com/vito/go-sse/sse/*.go # gosub

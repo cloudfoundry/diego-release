@@ -27,6 +27,8 @@ files:
   - code.cloudfoundry.org/consuladapter/*.go # gosub
   - code.cloudfoundry.org/consuladapter/consulrunner/*.go # gosub
   - code.cloudfoundry.org/executor/*.go # gosub
+  - code.cloudfoundry.org/lager/*.go # gosub
+  - code.cloudfoundry.org/lager/lagertest/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
   - code.cloudfoundry.org/operationq/*.go # gosub
   - code.cloudfoundry.org/rep/*.go # gosub
@@ -110,8 +112,6 @@ files:
   - github.com/onsi/gomega/matchers/support/goraph/node/*.go # gosub
   - github.com/onsi/gomega/matchers/support/goraph/util/*.go # gosub
   - github.com/onsi/gomega/types/*.go # gosub
-  - github.com/pivotal-golang/lager/*.go # gosub
-  - github.com/pivotal-golang/lager/lagertest/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/ginkgomon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub

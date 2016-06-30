@@ -29,6 +29,7 @@ files:
   - code.cloudfoundry.org/diego-ssh/server/*.go # gosub
   - code.cloudfoundry.org/diego-ssh/signals/*.go # gosub
   - code.cloudfoundry.org/diego-ssh/termcodes/*.go # gosub
+  - code.cloudfoundry.org/lager/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
   - code.cloudfoundry.org/runtimeschema/metric/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
@@ -51,7 +52,6 @@ files:
   - github.com/kr/pty/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/pborman/getopt/*.go # gosub
-  - github.com/pivotal-golang/lager/*.go # gosub
   - github.com/pkg/sftp/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
