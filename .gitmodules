@@ -298,10 +298,11 @@
 	branch = master
 [submodule "src/github.com/cloudfoundry-incubator/voldriver"]
 	path = src/github.com/cloudfoundry-incubator/voldriver
-	url = git@github.com:cloudfoundry-incubator/voldriver.git
+	url = https://github.com/cloudfoundry-incubator/voldriver
 [submodule "src/code.cloudfoundry.org/diegocanaryapp"]
 	path = src/code.cloudfoundry.org/diegocanaryapp
 	url = https://github.com/cloudfoundry/diegocanaryapp
+	branch = master
 [submodule "src/code.cloudfoundry.org/archiver"]
 	path = src/code.cloudfoundry.org/archiver
 	url = https://github.com/cloudfoundry/archiver
@@ -309,4 +310,8 @@
 [submodule "src/code.cloudfoundry.org/bytefmt"]
 	path = src/code.cloudfoundry.org/bytefmt
 	url = https://github.com/cloudfoundry/bytefmt
+	branch = master
+[submodule "src/code.cloudfoundry.org/clock"]
+	path = src/code.cloudfoundry.org/clock
+	url = https://github.com/cloudfoundry/clock
 	branch = master
