@@ -100,10 +100,6 @@
 	path = src/github.com/pivotal-golang/clock
 	url = https://github.com/pivotal-golang/clock
 	branch = master
-[submodule "src/github.com/pivotal-golang/eventhub"]
-	path = src/github.com/pivotal-golang/eventhub
-	url = https://github.com/pivotal-golang/eventhub
-	branch = master
 [submodule "src/github.com/hashicorp/consul"]
 	path = src/github.com/hashicorp/consul
 	url = https://github.com/hashicorp/consul
@@ -314,4 +310,8 @@
 [submodule "src/code.cloudfoundry.org/clock"]
 	path = src/code.cloudfoundry.org/clock
 	url = https://github.com/cloudfoundry/clock
+	branch = master
+[submodule "src/code.cloudfoundry.org/eventhub"]
+	path = src/code.cloudfoundry.org/eventhub
+	url = https://github.com/cloudfoundry/eventhub
 	branch = master
