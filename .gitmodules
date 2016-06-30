@@ -88,17 +88,9 @@
 	path = src/github.com/golang/protobuf
 	url = https://github.com/golang/protobuf
 	branch = master
-[submodule "src/github.com/pivotal-golang/operationq"]
-	path = src/github.com/pivotal-golang/operationq
-	url = https://github.com/pivotal-golang/operationq
-	branch = master
 [submodule "src/github.com/hashicorp/go-multierror"]
 	path = src/github.com/hashicorp/go-multierror
 	url = https://github.com/hashicorp/go-multierror
-	branch = master
-[submodule "src/github.com/pivotal-golang/clock"]
-	path = src/github.com/pivotal-golang/clock
-	url = https://github.com/pivotal-golang/clock
 	branch = master
 [submodule "src/github.com/hashicorp/consul"]
 	path = src/github.com/hashicorp/consul
@@ -295,6 +287,7 @@
 [submodule "src/github.com/cloudfoundry-incubator/voldriver"]
 	path = src/github.com/cloudfoundry-incubator/voldriver
 	url = https://github.com/cloudfoundry-incubator/voldriver
+	branch = master
 [submodule "src/code.cloudfoundry.org/diegocanaryapp"]
 	path = src/code.cloudfoundry.org/diegocanaryapp
 	url = https://github.com/cloudfoundry/diegocanaryapp
@@ -314,4 +307,8 @@
 [submodule "src/code.cloudfoundry.org/eventhub"]
 	path = src/code.cloudfoundry.org/eventhub
 	url = https://github.com/cloudfoundry/eventhub
+	branch = master
+[submodule "src/code.cloudfoundry.org/operationq"]
+	path = src/code.cloudfoundry.org/operationq
+	url = https://github.com/cloudfoundry/operationq
 	branch = master
