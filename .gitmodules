@@ -112,10 +112,6 @@
 	path = src/github.com/pivotal-golang/eventhub
 	url = https://github.com/pivotal-golang/eventhub
 	branch = master
-[submodule "src/github.com/cloudfoundry-incubator/diegocanaryapp"]
-	path = src/github.com/cloudfoundry-incubator/diegocanaryapp
-	url = https://github.com/cloudfoundry-incubator/diegocanaryapp
-	branch = master
 [submodule "src/github.com/hashicorp/consul"]
 	path = src/github.com/hashicorp/consul
 	url = https://github.com/hashicorp/consul
@@ -311,3 +307,7 @@
 [submodule "src/github.com/cloudfoundry-incubator/voldriver"]
 	path = src/github.com/cloudfoundry-incubator/voldriver
 	url = git@github.com:cloudfoundry-incubator/voldriver.git
+[submodule "src/code.cloudfoundry.org/diegocanaryapp"]
+	path = src/code.cloudfoundry.org/diegocanaryapp
+	url = https://github.com/cloudfoundry/diegocanaryapp
+	branch = master

@@ -3,5 +3,5 @@
 set -e -x
 
 
-cd github.com/cloudfoundry-incubator/diegocanaryapp
+cd code.cloudfoundry.org/diegocanaryapp
 cp -a . ${BOSH_INSTALL_TARGET}
