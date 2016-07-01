@@ -556,9 +556,32 @@ ephemeral_disk:
 
 ### Viewing Results
 
-Diego benchmark results can be found [here](http://time-rotor-diego-benchmarks.s3.amazonaws.com/).
+Diego benchmark results can be found
+[here](http://time-rotor-diego-benchmarks.s3.amazonaws.com/). You can also
+visit this [dashboard](https://p.datadoghq.com/sb/ed32fa2e4-a6d96f22f4) to view
+the results for all benchmark runs in the last 24 hours.
 
 ### Metrics
+
+#### Collected metrics
+
+* *ConvergenceGathering:* The time to complete a convergence loop.
+
+* *FetchActualLRPsAndSchedulingInfos:* The time to fetch information about all `ActualLRPs` and `DesiredLRPs`
+known to the BBS.
+
+* *NsyncBulkerFetching:* The time to fetch information about new `DesiredLRPs` from the
+`nsync-bulker` process.
+
+* *RepBulkFetching:* The time to fetch a cell's expected `ActualLRPs` from the BBS.
+
+* *RepBulkLoop:* The time to calculate `ActualLRP` statistics and enqueue operations based on the
+results.
+
+* *RepClaimActualLRP:* The time required to claim an `ActualLRP` within the BBS.
+
+* *RepStartActualLRP:* The time needed to register an `ActualLRP` with the BBS as "started".
+
 
 Example:
 ```
