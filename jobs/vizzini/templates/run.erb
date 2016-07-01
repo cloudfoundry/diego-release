@@ -55,7 +55,9 @@ ginkgo \
   --bbs-address=${bbs_api_url} \
   --ssh-address=${ssh_proxy_address} \
   ${ssh_proxy_secret_flag} \
-  --routable-domain-suffix=${routable_domain_suffix}
+  --routable-domain-suffix=${routable_domain_suffix} \
+  2> >(tee -a /var/vcap/sys/log/vizzini.stderr.log) \
+  1> >(tee -a /var/vcap/sys/log/vizzini.stdout.log)
 
 echo "Vizzini Complete; exit status: $EXITSTATUS"
 
