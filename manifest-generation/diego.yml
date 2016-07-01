@@ -644,18 +644,19 @@ properties:
 
   # -- Proerties below are used by jobs from garden-linux-release --
   garden:
-    listen_network: (( property_overrides.garden.listen_network || nil ))
-    listen_address: (( property_overrides.garden.listen_address || nil ))
+    allow_host_access: (( property_overrides.garden.allow_host_access || nil ))
+    allow_networks: (( property_overrides.garden.allow_networks || nil ))
     default_container_grace_time: (( property_overrides.garden.default_container_grace_time || 0 ))
     deny_networks: (( property_overrides.garden.deny_networks || ["0.0.0.0/0"] ))
-    allow_networks: (( property_overrides.garden.allow_networks || nil ))
-    allow_host_access: (( property_overrides.garden.allow_host_access || nil ))
-    insecure_docker_registry_list: (( property_overrides.garden.insecure_docker_registry_list || nil ))
-    network_mtu: (( property_overrides.garden.mtu || nil ))
+    destroy_containers_on_start: (( property_overrides.garden.destroy_containers_on_start || true ))
     disk_quota_enabled: (( property_overrides.garden.disk_quota_enabled || nil ))
-    persistent_image_list: (( property_overrides.garden.persistent_image_list || ["/var/vcap/packages/cflinuxfs2/rootfs"] ))
     graph_cleanup_threshold_in_mb: (( property_overrides.garden.graph_cleanup_threshold_in_mb || 0 ))
+    insecure_docker_registry_list: (( property_overrides.garden.insecure_docker_registry_list || nil ))
+    listen_address: (( property_overrides.garden.listen_address || nil ))
+    listen_network: (( property_overrides.garden.listen_network || nil ))
     log_level: (( property_overrides.garden.log_level || nil ))
+    network_mtu: (( property_overrides.garden.mtu || nil ))
+    persistent_image_list: (( property_overrides.garden.persistent_image_list || ["/var/vcap/packages/cflinuxfs2/rootfs"] ))
 
 
 # The keys below should not be included in the final stub
