@@ -1,0 +1,23 @@
+#!/bin/bash
+
+metrics_in_code() {
+  grep --no-filename 'metric\..*("' -r src/code.cloudfoundry.org/ | \
+    cut -d '"' -f2 | sort -u
+}
+
+documented_metrics() {
+  cat docs/metrics.md | grep '`' | awk '{print $2}' |  tr -d '`' | sort -u
+}
+
+diff=$(diff <(metrics_in_code) <(documented_metrics) | grep '^<' | awk '{print $2}')
+
+if [ $(echo -n "$diff" | wc -l) -ne 0 ] ; then
+  echo -ne "\e[1m"
+  echo "Missing documentation for the following metrics:"
+  echo "------------------------------------------------"
+  echo -ne "\e[0m"
+  echo -ne "\e[31m"
+  echo "$diff"
+  echo -ne "\e[0m"
+  exit 1
+fi

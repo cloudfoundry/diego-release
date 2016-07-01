@@ -3,6 +3,10 @@
 scripts_path=./$(dirname $0)
 eval $($scripts_path/get_paths.sh)
 
+set -e
+${scripts_path}/check-metrics-documentation
+set +e
+
 ERROR_CODE=0
 
 if [ ! -z ${RUN_SQL_TESTS} ]; then
