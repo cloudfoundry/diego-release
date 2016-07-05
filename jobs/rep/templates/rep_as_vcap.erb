@@ -98,5 +98,8 @@ exec /var/vcap/packages/rep/bin/rep ${bbs_sec_flags} \
   <% if_p("diego.executor.post_setup_hook") do |value| %> \
     -postSetupHook=<%= Shellwords.shellescape(value) %> \
   <% end %> \
+  <% if_p("diego.executor.container_metrics_report_interval") do |value| %> \
+    -containerMetricsReportInterval=<%= value %> \
+  <% end %> \
   2> >(tee -a $LOG_DIR/rep.stderr.log | logger -p user.error -t vcap.rep) \
   1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep)

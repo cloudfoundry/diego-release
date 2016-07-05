@@ -72,6 +72,8 @@ properties:
   diego.executor.container_inode_limit:
     description: "the inode limit enforced on each garden container."
     default: 200000
+  diego.executor.container_metrics_report_interval:
+    description: "the frequency for emitting container metrics"
   diego.executor.cache_path:
     description: "path to the executor's cache"
     default: "/var/vcap/data/executor_cache"
