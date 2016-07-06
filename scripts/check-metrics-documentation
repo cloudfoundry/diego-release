@@ -11,7 +11,7 @@ documented_metrics() {
 
 diff=$(diff <(metrics_in_code) <(documented_metrics) | grep '^<' | awk '{print $2}')
 
-if [ $(echo -n "$diff" | wc -l) -ne 0 ] ; then
+if [ $(echo -n "$diff" | wc -c) -ne 0 ] ; then
   echo -ne "\e[1m"
   echo "Missing documentation for the following metrics:"
   echo "------------------------------------------------"
