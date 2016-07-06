@@ -34,6 +34,11 @@ availability and lacks basic security configuration.
 - Fill in a new route
   - Destination: 0.0.0.0/0
   - Target: Select the NAT instance from the list
+    - Update the security group for this NAT instance to add the following rule:
+      - Type: All traffic
+      - Protocol: All
+      - Port Range: 0 - 65535
+      - Source: Custom IP / 10.0.18.0/24
 - Click "Save"
 
 ### Generate SSH Proxy Host Key and Fingerprint
