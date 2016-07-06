@@ -57,6 +57,10 @@ also provided by the same versions listed above.
 
 ---
 
+## Deploying alongside an existing CF Deployment
+
+General instructions and guidelines can be found [here](docs/deploy-onto-existing-cf.md)
+
 ## <a name="compatibility"></a>Release Compatibility
 
 Diego releases are tested against Cloud Foundry, Garden, and ETCD. Compatible versions
