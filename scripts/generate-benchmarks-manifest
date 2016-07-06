@@ -2,6 +2,8 @@
 
 set -e
 
+manifest_generation=$(dirname $0)/../manifest-generation
+
 function usage() {
   >&2 echo "
 Benchmark Errand Manifest Generator
@@ -9,24 +11,39 @@ Benchmark Errand Manifest Generator
 Copy one of the default_benchmark_properties files from manifest-generation/benchmark-errand-stubs and fill it in with your aws info and datadog keys if desired.
 
     Usage:
-    $0 /path/to/diego.yml /path/to/benchmark-properties.yml /path/to/iaas_settings.yml
+    $0 -c /path/to/diego.yml -p /path/to/benchmark-properties.yml -i /path/to/iaas_settings.yml
 
     Ex:
-    $0 ~/workspace/diego-release/bosh-lite-manifests/diego.yml \\
-       manifest-generation/benchmark-errand-stubs/default_bosh_lite_benchmark_properties.yml \\
-       manifest-generation/bosh-lite-stubs/iaas-settings.yml \\
-       > ~/workspace/diego-release/bosh-lite-manifests/benchmarks.yml
+    $0 -c ~/workspace/diego-release/bosh-lite/deployments/diego.yml \\
+       -p manifest-generation/benchmark-errand-stubs/default_bosh_lite_benchmark_properties.yml \\
+       -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \\
+       > ~/workspace/diego-release/bosh-lite/deployments/diego-benchmarks.yml
 "
   exit 1
 }
 
-benchmark_template=$(dirname $0)/../manifest-generation/diego-benchmarks.yml
-bosh_template=$(dirname $0)/../manifest-generation/misc-templates/bosh.yml
-diego_properties=$(dirname $0)/../manifest-generation/benchmark-errand-stubs/diego-properties.yml
+while getopts "c:i:p:" opt; do
+  case $opt in
+    c)
+      diego_yml=$OPTARG
+      ;;
+    i)
+      iaas_settings=$OPTARG
+      ;;
+    p)
+      benchmark_properties=$OPTARG
+      ;;
+    *)
+      ERR_MSG="${S}Unknown arguments\n"
+      ;;
+  esac
+done
+
+
+benchmark_template=${manifest_generation}/diego-benchmarks.yml
+bosh_template=${manifest_generation}/misc-templates/bosh.yml
+diego_properties=${manifest_generation}/benchmark-errand-stubs/diego-properties.yml
 tmpdir=$(mktemp -d /tmp/benchmark-manifest.XXXXX)
-diego_yml=$1
-benchmark_properties=$2
-iaas_settings=$3
 
 
 if [ ! -f "${diego_yml}" ]; then
@@ -47,14 +64,16 @@ fi
 spiff merge \
   ${diego_properties} \
   ${diego_yml} \
-  > ${tmpdir}/diego_properties.yml 
+  > ${tmpdir}/diego_properties.yml
+
 spiff merge \
   ${benchmark_template} \
   ${tmpdir}/diego_properties.yml \
   ${benchmark_properties} \
   ${iaas_settings} \
   > ${tmpdir}/diego-benchmarks.yml
+
 spiff merge \
   ${bosh_template} \
   ${tmpdir}/diego-benchmarks.yml
-  
+
