@@ -2,7 +2,7 @@
 
 set -e
 
-scripts_path=./$(dirname $0)/..
+scripts_path=./$(dirname $0)
 eval $($scripts_path/get_paths.sh)
 
 mkdir -p ${DIEGO_MANIFESTS_DIR}
@@ -17,7 +17,7 @@ pushd ${DIEGO_RELEASE_DIR}
       > ${tmpdir}/config-from-cf.yml
 
     spiff merge \
-      manifest-generation/bosh-lite-stubs/experimental/mysql/cf-mysql.yml \
+      manifest-generation/bosh-lite-stubs/mysql/cf-mysql.yml \
       ${tmpdir}/config-from-cf.yml \
       > ${DIEGO_MANIFESTS_DIR}/cf-mysql.yml
 popd

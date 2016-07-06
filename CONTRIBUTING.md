@@ -112,9 +112,9 @@ To be able to run unit tests, you'll also need to install the following binaries
 
 To be able to run the integration test suite ("inigo"), you'll need to have a local [Concourse](http://concourse.ci) VM. Follow the instructions on the Concourse [README](https://github.com/concourse/concourse/blob/master/README.md) to set it up locally using [vagrant](https://www.vagrantup.com/). Download the fly CLI as instructed and move it somewhere visible to your `$PATH`.
 
-### Running the experimental SQL unit tests
+### Running the SQL unit tests
 
-To run the experimental SQL unit tests locally requires running MySQL and Postgres with the correct configuration.
+To run the SQL unit tests locally requires running MySQL and Postgres with the correct configuration.
 
 On OS X, follow these steps to install and configure MySQL and Postgres:
 

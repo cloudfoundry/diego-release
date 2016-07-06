@@ -94,7 +94,7 @@ release-versions:
   garden-runc: 0.2.0
 ```
 
-##### **Experimental** SQL stub file
+##### SQL stub file
 
 The optional -s flag is used to specify the stub for SQL and needs to be specific to either MySQL or Postgres.
 

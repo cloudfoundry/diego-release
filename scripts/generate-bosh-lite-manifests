@@ -12,9 +12,9 @@ fi
 mkdir -p ${DIEGO_MANIFESTS_DIR}
 
 if [ "${USE_SQL}" = "mysql" ]; then
-  sql_option="-s manifest-generation/bosh-lite-stubs/experimental/mysql/diego-sql.yml"
+  sql_option="-s manifest-generation/bosh-lite-stubs/mysql/diego-sql.yml"
 elif [ "${USE_SQL}" = "postgres" ]; then
-  sql_option="-s manifest-generation/bosh-lite-stubs/experimental/postgres/diego-sql.yml"
+  sql_option="-s manifest-generation/bosh-lite-stubs/postgres/diego-sql.yml"
 fi
 
 if [ ! -d ${USE_VOLDRIVER} ]; then
