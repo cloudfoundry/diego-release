@@ -31,7 +31,8 @@ build_gardenrunc () {
     go install github.com/cloudfoundry-incubator/guardian/cmd/inspector-garden/
 
     pushd src/github.com/opencontainers/runc
-      GOPATH=${PWD}/Godeps/_workspace:${GOPATH} go install
+      PKG_CONFIG_PATH=/usr/local/lib/pkgconfig GOPATH=${PWD}/Godeps/_workspace:${GOPATH} BUILDTAGS="seccomp" make static
+      mv runc ${GARDEN_BINPATH}
     popd
 
     pushd src/github.com/cloudfoundry-incubator/guardian/rundmc/nstar
