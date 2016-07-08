@@ -75,7 +75,7 @@ If using etcd as the BBS data store instead of a relational data store, also upl
 
 ### <a name="deploy-relational-datastore-optional"></a>Deploy Relational Datastore (Optional)
 
-See documentation on [data stores](datastores.md) to select and deploy a relational data store instead of etcd to back the BBS server.
+See documentation on [data stores](data-stores.md) to select and deploy a relational data store instead of etcd to back the BBS server.
 
 ### <a name="create-and-upload-diego-release"></a>Create and Upload Diego Release
 
