@@ -15,9 +15,6 @@ These instructions allow you to either:
 
 ## Setup a SQL database for Diego
 
-Support for using a SQL database instead of *etcd* for the backing store of
-Diego is still in the experimental phase.
-
 We support two ways of providing a SQL database. They are:
 
 * [Setup RDS MySQL](#setup-aws-rds-mysql) *OR*
