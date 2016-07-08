@@ -28,7 +28,7 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 
 1. [BOSH Dependencies](#bosh-dependencies)
 1. [Discovering a Set of Releases to Deploy](#release-compatibility)
-1. [Manifest Generation] (#manifest-generation)
+1. [Manifest Generation](#manifest-generation)
 1. [Deploying Diego to BOSH-Lite](#deploying-diego-to-bosh-lite)
 1. [Pushing to Diego](#pushing-to-diego)
 1. [Deploying Diego to AWS](#deploying-diego-to-aws)
@@ -57,9 +57,9 @@ also provided by the same versions listed above.
 
 ---
 
-## Deploying alongside an existing CF Deployment
+## Deploying Alongside an Existing CF Deployment
 
-General instructions and guidelines can be found [here](docs/deploy-onto-existing-cf.md)
+Diego is typically deployed alongside a CF deployment to serve as its new container runtime. See "[Deploying Diego Alongside an Existing CF Deployment](docs/deploy-alongside-existing-cf.md)" for general instructions and guidelines to deploy Diego this way.
 
 ## <a name="compatibility"></a>Release Compatibility
 
