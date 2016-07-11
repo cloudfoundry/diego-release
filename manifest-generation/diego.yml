@@ -509,17 +509,6 @@ properties:
         require_ssl: (( sql_overrides.bbs.require_ssl || nil ))
         ca_cert: (( sql_overrides.bbs.ca_cert || nil ))
       log_level: (( property_overrides.bbs.log_level || nil ))
-    converger:
-      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
-      bbs:
-        api_location: (( property_overrides.bbs.api_location || nil ))
-        ca_cert: (( property_overrides.bbs.ca_cert ))
-        client_cert: (( property_overrides.bbs.client_cert ))
-        client_key: (( property_overrides.bbs.client_key ))
-        require_ssl: (( property_overrides.bbs.require_ssl || nil ))
-        client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
-        max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
-      log_level: (( property_overrides.converger.log_level || nil ))
     executor:
       disk_capacity_mb: (( property_overrides.executor.disk_capacity_mb || nil ))
       memory_capacity_mb: (( property_overrides.executor.memory_capacity_mb || nil ))
@@ -760,8 +749,6 @@ base_job_templates:
       release: cf
     - name: auctioneer
       release: diego
-    - name: converger
-      release: diego
     - name: metron_agent
       release: cf
   cc_bridge:
@@ -811,8 +798,6 @@ base_job_templates:
       release: diego
     - name: cc_uploader
       release: cf
-    - name: converger
-      release: diego
     - name: file_server
       release: diego
     - name: garden

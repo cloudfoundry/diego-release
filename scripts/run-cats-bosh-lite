@@ -7,10 +7,10 @@ eval $($scripts_path/get_paths.sh)
 
 cat > /tmp/diego_cats_integration_config.json <<EOF
 {
-  "api": "api.bosh-lite.com",
+  "api": "api.diego-2.cf-app.com",
   "admin_user": "admin",
-  "admin_password": "admin",
-  "apps_domain": "bosh-lite.com",
+  "admin_password": "dizzy87mouse",
+  "apps_domain": "diego-2.cf-app.com",
   "skip_ssl_validation": true,
   "use_http": true,
   "backend": "diego"

@@ -1,5 +1,0 @@
-check process converger
-  with pidfile /var/vcap/sys/run/converger/converger.pid
-  start program "/var/vcap/jobs/converger/bin/converger_ctl start"
-  stop program "/var/vcap/jobs/converger/bin/converger_ctl stop"
-  group vcap
