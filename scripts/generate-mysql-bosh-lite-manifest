@@ -2,13 +2,39 @@
 
 set -e
 
+absolute_path() {
+  (cd $1 && pwd)
+}
+
+pushd_quiet() {
+  command pushd "$@" > /dev/null
+}
+
+popd_quiet() {
+  command popd "$@" > /dev/null
+}
+
 scripts_path=./$(dirname $0)
 eval $($scripts_path/get_paths.sh)
 
+if [ ! -d ${DIEGO_RELEASE_DIR}/../cf-mysql-release ]; then
+  echo "Could not find cf-mysql-release in your workspace. Make sure you have it cloned."
+  exit 1
+fi
+
+CF_MYSQL_RELEASE_DIR=${CF_MYSQL_RELEASE_DIR:-$(absolute_path $DIEGO_RELEASE_DIR/../cf-mysql-release)}
+
+if [ ! -f ${CF_MYSQL_RELEASE_DIR}/cf-mysql.yml ]; then
+  ${CF_MYSQL_RELEASE_DIR}/scripts/generate-bosh-lite-manifest > /dev/null
+fi
+
 mkdir -p ${DIEGO_MANIFESTS_DIR}
 
-pushd ${DIEGO_RELEASE_DIR}
+pushd_quiet ${DIEGO_RELEASE_DIR}
     tmpdir=$(mktemp -d /tmp/diego-manifest.XXXXX)
+
+    mv ${CF_MYSQL_RELEASE_DIR}/cf-mysql.yml ${tmpdir}/cf-mysql.yml
+    echo "config_from_cf: (( merge ))" >> ${tmpdir}/cf-mysql.yml
 
     spiff merge \
       manifest-generation/config-from-cf.yml \
@@ -17,9 +43,10 @@ pushd ${DIEGO_RELEASE_DIR}
       > ${tmpdir}/config-from-cf.yml
 
     spiff merge \
-      manifest-generation/bosh-lite-stubs/mysql/cf-mysql.yml \
+      ${tmpdir}/cf-mysql.yml \
       ${tmpdir}/config-from-cf.yml \
+      manifest-generation/bosh-lite-stubs/mysql/cf-diego-mysql.yml \
       > ${DIEGO_MANIFESTS_DIR}/cf-mysql.yml
-popd
+popd_quiet
 
 echo "CF MYSQL Release Manifest at ${DIEGO_MANIFESTS_DIR}/cf-mysql.yml"
