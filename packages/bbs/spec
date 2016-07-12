@@ -8,6 +8,8 @@ files:
   - code.cloudfoundry.org/auctioneer/*.go # gosub
   - code.cloudfoundry.org/bbs/*.go # gosub
   - code.cloudfoundry.org/bbs/cmd/bbs/*.go # gosub
+  - code.cloudfoundry.org/bbs/controllers/*.go # gosub
+  - code.cloudfoundry.org/bbs/converger/*.go # gosub
   - code.cloudfoundry.org/bbs/db/*.go # gosub
   - code.cloudfoundry.org/bbs/db/deprecations/*.go # gosub
   - code.cloudfoundry.org/bbs/db/etcd/*.go # gosub
@@ -19,8 +21,6 @@ files:
   - code.cloudfoundry.org/bbs/format/*.go # gosub
   - code.cloudfoundry.org/bbs/guidprovider/*.go # gosub
   - code.cloudfoundry.org/bbs/handlers/*.go # gosub
-  - code.cloudfoundry.org/bbs/controllers/*.go # gosub
-  - code.cloudfoundry.org/bbs/converger/*.go # gosub
   - code.cloudfoundry.org/bbs/handlers/middleware/*.go # gosub
   - code.cloudfoundry.org/bbs/metrics/*.go # gosub
   - code.cloudfoundry.org/bbs/migration/*.go # gosub
