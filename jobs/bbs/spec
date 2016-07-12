@@ -86,15 +86,15 @@ properties:
   diego.bbs.sql.ca_cert:
     description: "Bundle of CA certificates for the BBS to verify the SQL server SSL certificate when connecting via SSL"
 
-  diego.converger.repeat_interval_in_seconds:
+  diego.bbs.convergence.repeat_interval_in_seconds:
     description: "the interval between runs of the converge process"
     default: 30
-  diego.converger.kick_task_duration_in_seconds:
+  diego.bbs.convergence.kick_task_duration_in_seconds:
     description: "the interval, in seconds, between kicks to tasks in seconds"
     default: 30
-  diego.converger.expire_completed_task_duration_in_seconds:
+  diego.bbs.convergence.expire_completed_task_duration_in_seconds:
     description: "completed, unresolved tasks are deleted after this duration in seconds"
     default: 120
-  diego.converger.expire_pending_task_duration_in_seconds:
+  diego.bbs.convergence.expire_pending_task_duration_in_seconds:
     description: "unclaimed tasks are marked as failed, after this duration in seconds"
     default: 1800

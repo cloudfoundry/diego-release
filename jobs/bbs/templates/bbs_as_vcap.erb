@@ -69,10 +69,10 @@ etcd_flags=""
   -healthAddress=<%= p("diego.bbs.health_addr") %> \
   -logLevel=<%= p("diego.bbs.log_level") %> \
   -requireSSL=<%= p("diego.bbs.require_ssl") %> \
-  -convergeRepeatInterval=<%= "#{p("diego.converger.repeat_interval_in_seconds")}s" %> \
-  -kickTaskDuration=<%= "#{p("diego.converger.kick_task_duration_in_seconds")}s" %> \
-  -expireCompletedTaskDuration=<%= "#{p("diego.converger.expire_completed_task_duration_in_seconds")}s" %> \
-  -expirePendingTaskDuration=<%= "#{p("diego.converger.expire_pending_task_duration_in_seconds")}s" %> \
+  -convergeRepeatInterval=<%= "#{p("diego.bbs.convergence.repeat_interval_in_seconds")}s" %> \
+  -kickTaskDuration=<%= "#{p("diego.bbs.convergence.kick_task_duration_in_seconds")}s" %> \
+  -expireCompletedTaskDuration=<%= "#{p("diego.bbs.convergence.expire_completed_task_duration_in_seconds")}s" %> \
+  -expirePendingTaskDuration=<%= "#{p("diego.bbs.convergence.expire_pending_task_duration_in_seconds")}s" %> \
   <% if_p("diego.bbs.desired_lrp_creation_timeout") do |value| %> \
     -desiredLRPCreationTimeout=<%= value %> \
   <% end %> \
