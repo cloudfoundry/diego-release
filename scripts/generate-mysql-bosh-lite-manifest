@@ -25,7 +25,8 @@ fi
 CF_MYSQL_RELEASE_DIR=${CF_MYSQL_RELEASE_DIR:-$(absolute_path $DIEGO_RELEASE_DIR/../cf-mysql-release)}
 
 if [ ! -f ${CF_MYSQL_RELEASE_DIR}/cf-mysql.yml ]; then
-  ${CF_MYSQL_RELEASE_DIR}/scripts/generate-bosh-lite-manifest > /dev/null
+  ${CF_MYSQL_RELEASE_DIR}/scripts/generate-bosh-lite-manifest \
+    -n ${DIEGO_RELEASE_DIR}/manifest-generation/bosh-lite-stubs/mysql/instance-count-overrides.yml > /dev/null
 fi
 
 mkdir -p ${DIEGO_MANIFESTS_DIR}

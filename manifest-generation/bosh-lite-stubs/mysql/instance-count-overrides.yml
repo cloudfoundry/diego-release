@@ -1,0 +1,13 @@
+instance_count_overrides:
+  - name: mysql_z2
+    instances: 1
+  - name: mysql_z3
+    instances: 0
+  - name: arbitrator_z3
+    instances: 0
+  - name: proxy_z2
+    instances: 0
+  - name: cf-mysql-broker_z1
+    instances: 0
+  - name: cf-mysql-broker_z2
+    instances: 0
