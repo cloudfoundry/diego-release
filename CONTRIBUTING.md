@@ -1,5 +1,3 @@
-
-
 # Contributing to Diego
 
 The Diego team uses GitHub and accepts contributions via [pull request](https://help.github.com/articles/using-pull-requests).
