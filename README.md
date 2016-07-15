@@ -20,6 +20,7 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   - The [Docker Support Notes](https://github.com/cloudfoundry/diego-design-notes/blob/master/docker-support.md) describe how Diego runs Docker-image-based apps in Cloud Foundry.
   - The [Diego-CF Compatibility Log](https://github.com/cloudfoundry/diego-cf-compatibility) records which versions of cf-release and diego-release are compatible, according to the Diego team's [automated testing pipeline](https://diego.ci.cf-app.com/?groups=diego).
   - [Supported Data Stores for Diego](docs/data-stores.md)
+  - [Data Store Encryption](docs/data-store-encryption.md)
   - [Diego's Pivotal Tracker project](https://www.pivotaltracker.com/n/projects/1003146) shows what we're working on these days.
   - [Diego Metrics](docs/metrics.md) lists the various metrics that Diego emits through the Loggregator system.
 
@@ -32,8 +33,6 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
 1. [Deploying Diego to BOSH-Lite](#deploying-diego-to-bosh-lite)
 1. [Pushing to Diego](#pushing-to-diego)
 1. [Deploying Diego to AWS](#deploying-diego-to-aws)
-1. [Database Encryption](#database-encryption)
-  1. [Configuring Encryption Keys](#configuring-encryption-keys)
 1. [TLS Configuration](#tls-configuration)
   1. [Generating TLS Certificates](#generating-tls-certificates)
   1. [Custom TLS Certificate Generation](#custom-tls-certificate-generation)
@@ -355,46 +354,6 @@ or the
 ## Deploying Diego to AWS
 
 In order to deploy Diego to AWS, follow the instructions in [examples/aws](examples/aws/README.md) to deploy BOSH, CF, and Diego to a new CloudFormation stack, or follow the instructions in [examples/aws](examples/minimal-aws/README.md) to deploy Diego alongside a [minimal CF deployment](https://github.com/cloudfoundry/cf-release/tree/master/example_manifests).
-
----
-## Database Encryption
-
-Diego Release must be configured with a set of encryption keys to be used when
-encrypting data at rest in the ETCD database. To configure encryption the
-`diego.bbs.encryption_keys` and `diego.bbs.active_key_label` properties should
-be set.
-
-Diego will automatically (re-)encrypt all of the data stored in ETCD using the
-active key upon boot. This ensures an operator can rotate a key out without
-having to manually rewrite all of the records.
-
-### Configuring Encryption Keys
-
-Diego uses multiple keys for decryption while allowing only one for encryption.
-This allows an operator to rotate encryption keys in a downtime-less way.
-
-For example:
-
-```yaml
-properties:
-  diego:
-    bbs:
-      active_key_label: key-2015-09
-      encryption_keys:
-        - label: 'key-2015-09'
-          passphrase: 'my september passphrase'
-        - label: 'key-2015-08'
-          passphrase: 'my august passphrase'
-```
-
-In the above, the operator is configuring two encryption, and selecting one to
-be the active. The active key is the one used for encryption while all the
-other can be used for decryption.
-
-The key labels must be no longer than 127 characters, while the passphrases
-have no enforced limit. In addtion to that, the key label must not contain a
-`:` (colon) character, due the way we build command line flags using `:` as a
-separator.
 
 ---
 ##<a name="tls-configuration"></a>TLS Configuration
