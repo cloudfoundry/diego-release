@@ -19,9 +19,13 @@ come from [cf-release](https://github.com/cloudfoundry/cf-release).
   1. [AWS](#aws)
 1. [Additional Diego Resources](#additional-diego-resources)
 1. [BOSH Dependencies](#bosh-dependencies)
-1. [Discovering a Set of Releases to Deploy](#release-compatibility)
+1. [Deploying Alongside an Existing CF Deployment](#deploy-alongside-cf)
+1. [Release Compatibility](#release-compatibility)
 1. [Manifest Generation](#manifest-generation)
-1. [Pushing to Diego](#pushing-to-diego)
+1. [Deployment Constraints](#deployment-constraints)
+  1. [Required Dependencies](#required-dependencies)
+  1. [Diego Manifest Jobs](#diego-manifest-jobs)
+1. [Pushing a CF Application to the Diego Runtime](#pushing-to-diego)
 1. [Recommended Instance Types](#recommended-instance-types)
 1. [Benchmarks](#benchmarks)
 
@@ -71,11 +75,11 @@ also provided by the same versions listed above.
 
 ---
 
-## Deploying Alongside an Existing CF Deployment
+## <a name="deploy-alongside-cf"></a>Deploying Alongside an Existing CF Deployment
 
 Diego is typically deployed alongside a CF deployment to serve as its new container runtime. See "[Deploying Diego Alongside an Existing CF Deployment](docs/deploy-alongside-existing-cf.md)" for general instructions and guidelines to deploy Diego this way.
 
-## <a name="compatibility"></a>Release Compatibility
+## <a name="release-compatibility"></a>Release Compatibility
 
 Diego releases are tested against Cloud Foundry, Garden, and ETCD. Compatible versions
 of Garden and ETCD are listed with Diego on the [Github releases page](https://github.com/cloudfoundry/diego-release/releases).
@@ -122,13 +126,22 @@ that matches the most recent cf-release relative to that commit. To do this, go 
 through cf-release's git log from your commit until you find a Final Release commit
 and then look up that commit's SHA in the diego-cf compatibility table.
 
-## Manifest Generation
+## <a name="manifest-generation"></a>Manifest Generation
 
 The Diego manifest generation documentation can be found in [docs/manifest-generation.md](docs/manifest-generation.md).
 
-### Deployment constraints
+## <a name="deployment-constraints"></a>Deployment Constraints
 
-In your manifest, ensure that the following constraints are met:
+### <a name="required-dependencies"></a>Required Dependencies
+
+Before deploying the Diego cluster, ensure that the consul server cluster it will connect to is already deployed. In most deployment scenarios, these consul servers come from a CF deployment.
+
+Additionally, if configuring the BBS to use a relational data store such as a CF-MySQL database, that data store must be deployed or otherwise provisioned before deploying the Diego cluster.
+
+
+### <a name="diego-manifest-jobs"></a>Diego Manifest Jobs
+
+In your manifest, ensure that the following constraints on job update order and rate are met:
 
 1. BBS servers should update before BBS clients. This can be achieved by placing `database_zN` instances at the beginning of the jobs list in your manifest. For example:
 
@@ -161,7 +174,7 @@ In your manifest, ensure that the following constraints are met:
 	```
 
 
-## Pushing a CF Application to the Diego backend
+## <a name="pushing-to-diego"></a>Pushing a CF Application to the Diego Runtime
 
 1. Create and target a CF org and space:
 
