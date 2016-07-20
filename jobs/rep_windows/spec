@@ -1,0 +1,156 @@
+---
+name: rep_windows
+
+templates:
+  drain.ps1.erb: bin/drain.ps1
+  start.ps1.erb: bin/start.ps1
+  bbs_ca.crt.erb: config/certs/bbs/ca.crt
+  trusted_certs.crt.erb: config/certs/rep/trusted_certs.crt
+  bbs_client.crt.erb: config/certs/bbs/client.crt
+  bbs_client.key.erb: config/certs/bbs/client.key
+
+packages:
+  - rep_windows
+
+properties:
+  diego.rep.stack:
+    description: "The stack for which to handle requests"
+    default: "windows2012R2"
+  diego.rep.listen_addr:
+    description: "address to serve auction and LRP stop requests on"
+    default: "0.0.0.0:1800"
+  diego.rep.debug_addr:
+    description: "address at which to serve debug info"
+    default: "0.0.0.0:17008"
+  diego.rep.polling_interval_in_seconds:
+    description: "The interval to look for completed tasks and LRPs in seconds"
+    default: 30
+  diego.rep.evacuation_polling_interval_in_seconds:
+    description: "The interval to look for completed tasks and LRPs during evacuation in seconds"
+    default: 10
+  diego.rep.evacuation_timeout_in_seconds:
+    description: "The time to wait for evacuation to complete in seconds"
+    default: 600
+  diego.rep.zone:
+    description: "The zone associated with the rep"
+  diego.rep.preloaded_rootfses:
+    description: "Array of name:absolute_path pairs representing root filesystems preloaded onto the underlying garden"
+    default:
+      - windows2012R2:/tmp/windows2012R2
+  diego.rep.rootfs_providers:
+    description: "Array of schemes for which the underlying garden can support arbitrary root filesystems"
+    default:
+      - docker
+  diego.rep.log_level:
+    description: "Log level"
+    default: "info"
+  diego.rep.dropsonde_port:
+    description: "local metron agent's port"
+    default: 3457
+  diego.rep.consul_agent_port:
+    description: "local consul agent's port"
+    default: 8500
+  diego.rep.trusted_certs:
+    description: "Concatenation of trusted CA certificates to be made available on the cell."
+    default: null
+
+  diego.ssl.skip_cert_verify:
+    description: "when connecting over https, ignore bad ssl certificates"
+    default: false
+
+  diego.executor.memory_capacity_mb:
+    description: "the memory capacity the executor should manage.  this should not be greater than the actual memory on the VM"
+    default: "auto"
+  diego.executor.disk_capacity_mb:
+    description: "the container disk capacity the executor should manage.  this should not be greater than the actual disk quota on the VM"
+    default: "auto"
+  diego.executor.max_concurrent_downloads:
+    description: "the max concurrent download steps that can be active"
+    default: 5
+  diego.executor.container_max_cpu_shares:
+    description: "the maximum number of cpu shares for a container."
+    default: 1024
+  diego.executor.container_inode_limit:
+    description: "the inode limit enforced on each garden container."
+    default: 200000
+  diego.executor.cache_path:
+    description: "path to the executor's cache"
+    default: "/var/vcap/data/executor_cache"
+  diego.executor.max_cache_size_in_bytes:
+    description: "maximum size of the cache in bytes - this should leave a healthy overhead for temporary items, etc."
+    default: 10000000000
+  diego.executor.garden.address:
+    description: "Garden server listening address."
+    default: /var/vcap/data/garden/garden.sock
+  diego.executor.garden.network:
+    description: "Network type for the garden server connection (tcp or unix)."
+    default: unix
+  diego.executor.export_network_env_vars:
+    description: "Export network environment variables into container (e.g. CF_INSTANCE_IP, CF_INSTANCE_PORT)."
+    default: true
+  diego.executor.healthy_monitoring_interval_in_seconds:
+    description: "Interval to check healthy containers in seconds."
+    default: 30
+  diego.executor.unhealthy_monitoring_interval_in_seconds:
+    description: "Interval to check unhealthy containers in seconds."
+    default: 0.5
+  diego.executor.create_work_pool_size:
+    description: "Maximum number of concurrent create container operations."
+    default: 32
+  diego.executor.delete_work_pool_size:
+    description: "Maximum number of concurrent delete container operations."
+    default: 32
+  diego.executor.read_work_pool_size:
+    description: "Maximum number of concurrent get container info operations."
+    default: 64
+  diego.executor.metrics_work_pool_size:
+    description: "Maximum number of concurrent get container metrics operations."
+    default: 8
+  diego.executor.healthcheck_work_pool_size:
+    description: "Maximum number of concurrent health check operations."
+    default: 64
+
+  diego.executor.garden_healthcheck.interval:
+    description: "Frequency for healtchecking garden"
+    default: "10m"
+  diego.executor.garden_healthcheck.timeout:
+    description: "Maximum allowed time for garden healthcheck"
+    default: "10m"
+  diego.executor.garden_healthcheck.command_retry_pause:
+    description: "Time to wait between retrying garden commands"
+    default: "5s"
+  diego.executor.garden_healthcheck.process.path:
+    description: "Path of the command to run to perform a container healthcheck"
+    default: "/bin/sh"
+  diego.executor.garden_healthcheck.process.args:
+    description: "List of command line args to pass to the garden health check process"
+    default: "-c, ls > /tmp/test"
+  diego.executor.garden_healthcheck.process.user:
+    description: "User to use while performing a container healthcheck"
+    default: "vcap"
+  diego.executor.garden_healthcheck.process.dir:
+    description: "Directory to run the healthcheck process from"
+  diego.executor.garden_healthcheck.process.env:
+    description: "Environment variables to use when running the garden health check"
+  diego.executor.post_setup_hook:
+    description: "Experimental: arbitrary command to run after setup action"
+  diego.executor.post_setup_user:
+    description: "Experimental: user to run post setup hook command"
+
+  diego.rep.bbs.api_location:
+    description: "Address to the BBS Server"
+    default: "bbs.service.cf.internal:8889"
+
+  diego.rep.bbs.ca_cert:
+    description: "PEM-encoded CA certificate"
+  diego.rep.bbs.client_cert:
+    description: "PEM-encoded client certificate"
+  diego.rep.bbs.client_key:
+    description: "PEM-encoded client key"
+  diego.rep.bbs.require_ssl:
+    description: "enable ssl for all communication with the bbs"
+    default: true
+  diego.rep.bbs.client_session_cache_size:
+    description: "capacity of the tls client cache"
+  diego.rep.bbs.max_idle_conns_per_host:
+    description: "maximum number of idle http connections"

@@ -1,0 +1,51 @@
+<%=
+  CONF_DIR="/var/vcap/jobs/rep_windows/config"
+
+  if p("diego.rep.bbs.require_ssl")
+    bbs_sec_flags=%{ \
+   -bbsClientCert="#{CONF_DIR}/certs/bbs/client.crt" \
+   -bbsClientKey="#{CONF_DIR}/certs/bbs/client.key" \
+   -bbsCACert="#{CONF_DIR}/certs/bbs/ca.crt"}
+   bbs_api_url="https://" + p("diego.rep.bbs.api_location")
+  else
+    bbs_sec_flags=""
+    bbs_api_url="http://" + p("diego.rep.bbs.api_location")
+  end
+  preloaded_rootfses = p("diego.rep.preloaded_rootfses").map { |rootfs|
+    %{-preloadedRootFS="#{rootfs}"}
+  }.join(" ")
+
+  %{/var/vcap/packages/rep_windows/rep.exe #{bbs_sec_flags} \
+  -bbsAddress="#{bbs_api_url}" \
+  -consulCluster="http://127.0.0.1:#{p("diego.rep.consul_agent_port")}" \
+  -debugAddr="#{p("diego.rep.debug_addr")}" \
+  -listenAddr="#{p("diego.rep.listen_addr")}" \
+  #{preloaded_rootfses} \
+  -cellID=#{spec.job.name}-#{spec.index} \
+  -zone=#{p("diego.rep.zone")} \
+  -pollingInterval="#{p("diego.rep.polling_interval_in_seconds")}s" \
+  -evacuationPollingInterval="#{p("diego.rep.evacuation_polling_interval_in_seconds")}s" \
+  -evacuationTimeout="#{p("diego.rep.evacuation_timeout_in_seconds")}s" \
+  -skipCertVerify=#{p("diego.ssl.skip_cert_verify")} \
+  -gardenNetwork=tcp \
+  -gardenAddr="127.0.0.1:9241" \
+  -memoryMB=#{p("diego.executor.memory_capacity_mb")} \
+  -diskMB=#{p("diego.executor.disk_capacity_mb")} \
+  -containerMaxCpuShares=#{p("diego.executor.container_max_cpu_shares")} \
+  -cachePath=#{p("diego.executor.cache_path")} \
+  -maxCacheSizeInBytes=#{p("diego.executor.max_cache_size_in_bytes")} \
+  -exportNetworkEnvVars=#{p("diego.executor.export_network_env_vars")} \
+  -healthyMonitoringInterval="#{p("diego.executor.healthy_monitoring_interval_in_seconds")}s" \
+  -unhealthyMonitoringInterval="#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s" \
+  -createWorkPoolSize=#{p("diego.executor.create_work_pool_size")} \
+  -deleteWorkPoolSize=#{p("diego.executor.delete_work_pool_size")} \
+  -readWorkPoolSize=#{p("diego.executor.read_work_pool_size")} \
+  -metricsWorkPoolSize=#{p("diego.executor.metrics_work_pool_size")} \
+  -healthCheckWorkPoolSize=#{p("diego.executor.healthcheck_work_pool_size")} \
+  -tempDir=/var/vcap/data/executor/tmp \
+  -gardenHealthcheckProcessUser=#{p("diego.executor.garden_healthcheck.process.user")} \
+  -gardenHealthcheckProcessPath=C:\\windows\\system32\\cmd.exe \
+  -gardenHealthcheckProcessArgs="/c,dir" \
+  -logLevel=#{p("diego.rep.log_level")}
+  }
+  %>
