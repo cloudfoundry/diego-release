@@ -1,0 +1,194 @@
+name: (( config_from_cf.cf_deployment_name "-diego-windows" ))
+
+releases: (( base_releases ))
+
+director_uuid: (( config_from_cf.cf_director_uuid ))
+
+compilation:
+  workers: (( iaas_settings.compilation_workers || 6 ))
+  network: diego1_windows
+  reuse_compilation_vms: true
+  cloud_properties: (( iaas_settings.compilation_cloud_properties ))
+
+update:
+  canaries: 1
+  canary_watch_time: 5000-120000
+  update_watch_time: 5000-120000
+  max_in_flight: 1
+  serial: false
+
+networks:
+  - name: diego1_windows
+    type: manual
+    subnets: (( iaas_settings.subnet_configs.diego1_windows.subnets ))
+  - name: diego2_windows
+    type: manual
+    subnets: (( iaas_settings.subnet_configs.diego2_windows.subnets ))
+  - name: diego3_windows
+    type: manual
+    subnets: (( iaas_settings.subnet_configs.diego3_windows.subnets ))
+
+resource_pools:
+  - name: windows_z1
+    network: diego1_windows
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.windows_z1.cloud_properties ))
+  - name: windows_z2
+    network: diego2_windows
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.windows_z2.cloud_properties ))
+  - name: windows_z3
+    network: diego3_windows
+    stemcell: (( iaas_settings.stemcell ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.windows_z3.cloud_properties ))
+
+jobs:
+  - name: windows_z1
+    templates:
+      - name: rep_windows
+        release: diego
+      - name: garden-windows
+        release: garden-windows
+      - name: consul_agent_windows
+        release: garden-windows
+      - name: metron_agent_windows
+        release: garden-windows
+    instances: (( instance_count_overrides.windows_z1.instances || 1 ))
+    resource_pool: windows_z1
+    networks:
+      - name: diego1_windows
+    update:
+      serial: false
+      max_in_flight: (( instance_count_overrides.windows_z1.max_in_flight || 1 ))
+    properties:
+      metron_agent:
+        zone: z1
+      diego:
+        rep:
+          zone: z1
+
+  - name: windows_z2
+    templates:
+      - name: rep_windows
+        release: diego
+      - name: garden-windows
+        release: garden-windows
+      - name: consul_agent_windows
+        release: garden-windows
+      - name: metron_agent_windows
+        release: garden-windows
+    instances: (( instance_count_overrides.windows_z2.instances || 1 ))
+    resource_pool: windows_z2
+    networks:
+      - name: diego2_windows
+    update:
+      serial: false
+      max_in_flight: (( instance_count_overrides.windows_z2.max_in_flight || 1 ))
+    properties:
+      metron_agent:
+        zone: z2
+      diego:
+        rep:
+          zone: z2
+
+  - name: windows_z3
+    templates:
+      - name: rep_windows
+        release: diego
+      - name: garden-windows
+        release: garden-windows
+      - name: consul_agent_windows
+        release: garden-windows
+      - name: metron_agent_windows
+        release: garden-windows
+    instances: (( instance_count_overrides.windows_z3.instances || 0 ))
+    resource_pool: windows_z3
+    networks:
+      - name: diego3_windows
+    update:
+      serial: false
+      max_in_flight: (( instance_count_overrides.windows_z3.max_in_flight || 1 ))
+    properties:
+      metron_agent:
+        zone: z3
+      diego:
+        rep:
+          zone: z3
+
+properties:
+  # -- Properties below are used by the metron_agent job from cf-release --
+  metron_agent:
+    deployment: (( name ))
+    protocols: (( config_from_cf.metron_agent.protocols ))
+    preferred_protocol: (( config_from_cf.metron_agent.preferred_protocol ))
+    enable_buffer: (( config_from_cf.metron_agent.enable_buffer ))
+    buffer_size: (( config_from_cf.metron_agent.buffer_size ))
+    tls:
+      client_cert: (( config_from_cf.metron_agent.tls.client_cert ))
+      client_key: (( config_from_cf.metron_agent.tls.client_key ))
+    etcd:
+      client_cert: (( config_from_cf.metron_agent.etcd.client_cert ))
+      client_key: (( config_from_cf.metron_agent.etcd.client_key ))
+    dropsonde_incoming_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
+  loggregator:
+    etcd:
+      require_ssl: (( config_from_cf.loggregator.etcd_require_ssl ))
+      ca_cert: (( config_from_cf.loggregator.etcd_ca_cert ))
+      machines: (( config_from_cf.loggregator.etcd_machines ))
+    dropsonde_incoming_port: (( config_from_cf.loggregator.dropsonde_incoming_port ))
+    tls:
+      ca_cert: (( config_from_cf.loggregator.tls.ca_cert ))
+  metron_endpoint:
+    shared_secret: (( config_from_cf.metron_endpoint.shared_secret ))
+  syslog_daemon_config: (( config_from_cf.syslog_daemon_config ))
+
+  # -- Properties below are used by the consul_agent job from cf-release --
+  consul:
+    agent:
+      datacenter: (( config_from_cf.consul.datacenter ))
+      domain: (( config_from_cf.consul.domain ))
+      log_level: (( config_from_cf.consul.log_level ))
+      servers:
+        lan: (( config_from_cf.consul.lan_servers ))
+    ca_cert: (( config_from_cf.consul.ca_cert ))
+    agent_cert: (( config_from_cf.consul.agent_cert ))
+    agent_key: (( config_from_cf.consul.agent_key ))
+    encrypt_keys: (( config_from_cf.consul.encrypt_keys ))
+    server_cert: (( config_from_cf.consul.server_cert ))
+    server_key: (( config_from_cf.consul.server_key ))
+
+  # -- Properties below are used by the jobs from diego-release --
+  diego:
+    # -- Global property --
+    ssl:
+      skip_cert_verify: (( property_overrides.skip_cert_verify || nil ))
+
+    # -- Job-specific properties --
+    rep:
+      preloaded_rootfses: (( property_overrides.diego.rep.preloaded_rootfses || ["windows2012R2:/tmp/windows2012R2"] ))
+      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
+      bbs:
+        api_location: (( property_overrides.bbs.api_location || nil ))
+        ca_cert: (( property_overrides.bbs.ca_cert ))
+        client_cert: (( property_overrides.bbs.client_cert ))
+        client_key: (( property_overrides.bbs.client_key ))
+        require_ssl: (( property_overrides.bbs.require_ssl || nil ))
+        client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
+        max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
+      evacuation_timeout_in_seconds: (( property_overrides.rep.evacuation_timeout_in_seconds || nil ))
+      trusted_certs: (( property_overrides.rep.trusted_certs || nil ))
+      log_level: (( property_overrides.rep.log_level || nil ))
+
+# The keys below should not be included in the final stub
+config_from_cf: (( merge ))
+iaas_settings: (( merge ))
+instance_count_overrides: (( merge || nil ))
+property_overrides: (( merge ))
+
+base_releases:
+  - name: diego
+    version: (( release_versions.diego || "latest" ))
+  - name: garden-windows
+    version: (( release_versions.garden-windows || "latest" ))
+
+release_versions: (( merge || nil ))
