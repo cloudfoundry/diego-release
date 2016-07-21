@@ -1,7 +1,7 @@
 volman_overrides:
   releases:
-  - name: cephfs-bosh-release
+  - name: local-volume
     version: "latest"
   driver_templates:
-  - name: cephdriver
-    release: cephfs-bosh-release
+  - name: localdriver
+    release: local-volume
