@@ -29,21 +29,21 @@ networks:
     subnets: (( iaas_settings.subnet_configs.diego3_windows.subnets ))
 
 resource_pools:
-  - name: windows_z1
+  - name: cell_windows_z1
     network: diego1_windows
     stemcell: (( iaas_settings.stemcell ))
-    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.windows_z1.cloud_properties ))
-  - name: windows_z2
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.cell_windows_z1.cloud_properties ))
+  - name: cell_windows_z2
     network: diego2_windows
     stemcell: (( iaas_settings.stemcell ))
-    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.windows_z2.cloud_properties ))
-  - name: windows_z3
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.cell_windows_z2.cloud_properties ))
+  - name: cell_windows_z3
     network: diego3_windows
     stemcell: (( iaas_settings.stemcell ))
-    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.windows_z3.cloud_properties ))
+    cloud_properties: (( iaas_settings.resource_pool_cloud_properties.cell_windows_z3.cloud_properties ))
 
 jobs:
-  - name: windows_z1
+  - name: cell_windows_z1
     templates:
       - name: rep_windows
         release: diego
@@ -53,13 +53,13 @@ jobs:
         release: garden-windows
       - name: metron_agent_windows
         release: garden-windows
-    instances: (( instance_count_overrides.windows_z1.instances || 1 ))
-    resource_pool: windows_z1
+    instances: (( instance_count_overrides.cell_windows_z1.instances || 1 ))
+    resource_pool: cell_windows_z1
     networks:
       - name: diego1_windows
     update:
       serial: false
-      max_in_flight: (( instance_count_overrides.windows_z1.max_in_flight || 1 ))
+      max_in_flight: (( instance_count_overrides.cell_windows_z1.max_in_flight || 1 ))
     properties:
       metron_agent:
         zone: z1
@@ -67,7 +67,7 @@ jobs:
         rep:
           zone: z1
 
-  - name: windows_z2
+  - name: cell_windows_z2
     templates:
       - name: rep_windows
         release: diego
@@ -77,13 +77,13 @@ jobs:
         release: garden-windows
       - name: metron_agent_windows
         release: garden-windows
-    instances: (( instance_count_overrides.windows_z2.instances || 1 ))
-    resource_pool: windows_z2
+    instances: (( instance_count_overrides.cell_windows_z2.instances || 1 ))
+    resource_pool: cell_windows_z2
     networks:
       - name: diego2_windows
     update:
       serial: false
-      max_in_flight: (( instance_count_overrides.windows_z2.max_in_flight || 1 ))
+      max_in_flight: (( instance_count_overrides.cell_windows_z2.max_in_flight || 1 ))
     properties:
       metron_agent:
         zone: z2
@@ -91,7 +91,7 @@ jobs:
         rep:
           zone: z2
 
-  - name: windows_z3
+  - name: cell_windows_z3
     templates:
       - name: rep_windows
         release: diego
@@ -101,13 +101,13 @@ jobs:
         release: garden-windows
       - name: metron_agent_windows
         release: garden-windows
-    instances: (( instance_count_overrides.windows_z3.instances || 0 ))
-    resource_pool: windows_z3
+    instances: (( instance_count_overrides.cell_windows_z3.instances || 0 ))
+    resource_pool: cell_windows_z3
     networks:
       - name: diego3_windows
     update:
       serial: false
-      max_in_flight: (( instance_count_overrides.windows_z3.max_in_flight || 1 ))
+      max_in_flight: (( instance_count_overrides.cell_windows_z3.max_in_flight || 1 ))
     properties:
       metron_agent:
         zone: z3
