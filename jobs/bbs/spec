@@ -20,7 +20,7 @@ packages:
 properties:
   diego.bbs.debug_addr:
     description: "address at which to serve debug info"
-    default: "0.0.0.0:17017"
+    default: "127.0.0.1:17017"
   diego.bbs.listen_addr:
     description: "address at which to serve API requests"
     default: "0.0.0.0:8889"

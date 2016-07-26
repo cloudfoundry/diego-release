@@ -21,7 +21,7 @@ properties:
     description: "Fully-qualified path to the doc root for the file server's static files"
   diego.file_server.debug_addr:
     description: "address at which to serve debug info"
-    default: "0.0.0.0:17005"
+    default: "127.0.0.1:17005"
   diego.file_server.log_level:
     description: "Log level"
     default: "info"
