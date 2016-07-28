@@ -34,6 +34,9 @@ properties:
     default: 600
   diego.rep.zone:
     description: "The zone associated with the rep"
+  diego.rep.use_azure_fault_domains:
+    description: "Use Azure Fault-Domains to determine the value of the zone. The value of the zone will be z<FD-index>. e.g. z0, z1, etc."
+    default: false
   diego.rep.preloaded_rootfses:
     description: "Array of name:absolute_path pairs representing root filesystems preloaded onto the underlying garden"
   diego.rep.rootfs_providers:

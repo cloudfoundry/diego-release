@@ -192,7 +192,8 @@ jobs:
         zone: z1
       diego:
         rep:
-          zone: z1
+          use_azure_fault_domains: (( property_overrides.cell_z1.use_azure_fault_domains ))
+          zone: (( property_overrides.cell_z1.zone || z1 ))
 
   - name: cc_bridge_z1
     templates: (( base_job_templates.cc_bridge ))
@@ -260,7 +261,8 @@ jobs:
         zone: z2
       diego:
         rep:
-          zone: z2
+          use_azure_fault_domains: (( property_overrides.cell_z2.use_azure_fault_domains ))
+          zone: (( property_overrides.cell_z2.zone || z2 ))
 
   - name: cc_bridge_z2
     templates: (( base_job_templates.cc_bridge ))
@@ -328,7 +330,8 @@ jobs:
         zone: z3
       diego:
         rep:
-          zone: z3
+          use_azure_fault_domains: (( property_overrides.cell_z3.use_azure_fault_domains ))
+          zone: (( property_overrides.cell_z3.zone || z3 ))
 
   - name: cc_bridge_z3
     templates: (( base_job_templates.cc_bridge ))

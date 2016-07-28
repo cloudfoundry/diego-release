@@ -30,6 +30,12 @@ export GODEBUG=netdns=cgo
   bbs_api_url="<%= "http://" + p("diego.rep.bbs.api_location") %>"
 <% end %>
 
+<% if p("diego.rep.use_azure_fault_domains") %>
+  zone=z`curl --connect-timeout 5 --silent http://169.254.169.254/metadata/v1/InstanceInfo/FD`
+<% else %>
+  zone=<%= spec.az || p("diego.rep.zone") %>
+<% end %>
+
 echo $$ > $PIDFILE
 
 exec /var/vcap/packages/rep/bin/rep ${bbs_sec_flags} \
@@ -47,7 +53,7 @@ exec /var/vcap/packages/rep/bin/rep ${bbs_sec_flags} \
   <%= p("diego.rep.preloaded_rootfses").map { |rootfs| "-preloadedRootFS #{rootfs}" }.join(" ") %> \
   <%= p("diego.rep.rootfs_providers").map { |provider| "-rootFSProvider #{provider}" }.join(" ") %> \
   -cellID=<%= spec.job.name %>-<%= spec.index %> \
-  -zone=<%= spec.az || p("diego.rep.zone") %> \
+  -zone=${zone} \
   -pollingInterval=<%= "#{p("diego.rep.polling_interval_in_seconds")}s" %> \
   -evacuationPollingInterval=<%= "#{p("diego.rep.evacuation_polling_interval_in_seconds")}s" %> \
   -evacuationTimeout=<%= "#{p("diego.rep.evacuation_timeout_in_seconds")}s" %> \
