@@ -40,7 +40,7 @@ To deploy CF and Diego to BOSH-Lite, follow the instructions at [examples/bosh-l
 
 ### <a name="aws"></a>AWS
 
-In order to deploy Diego to AWS, follow the instructions in [examples/aws](examples/aws/README.md) to deploy BOSH, CF, and Diego to a new CloudFormation stack, or follow the instructions in [examples/aws](examples/minimal-aws/README.md) to deploy Diego alongside a [minimal CF deployment](https://github.com/cloudfoundry/cf-release/tree/master/example_manifests).
+In order to deploy Diego to AWS, follow the instructions in [examples/aws](examples/aws/README.md) to deploy BOSH, CF, and Diego to a new CloudFormation stack, or follow the instructions in [examples/minimal-aws](examples/minimal-aws/README.md) to deploy Diego alongside a [minimal CF deployment](https://github.com/cloudfoundry/cf-release/tree/master/example_manifests).
 
 
 ## <a name="additional-diego-resources"></a>Additional Diego Resources
