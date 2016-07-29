@@ -182,8 +182,8 @@ mkdir -p stubs/bosh-init
 #### `bootstrap_environment`
 
 This script exports your AWS default region and the access and secret keys of your IAM user as environment variables.
-Run the following to create a new ``
-Copy the template below into a new `bootstrap_environment` file in `$DEPLOYMENT_DIR`
+Run the following to create a new `bootstrap_environment` file in `$DEPLOYMENT_DIR`:
+
 ```bash
 cat <<EOF > $DEPLOYMENT_DIR/bootstrap_environment
 export AWS_DEFAULT_REGION=us-east-1
