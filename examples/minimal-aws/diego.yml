@@ -89,8 +89,6 @@ jobs:
     release: cf
   - name: auctioneer
     release: diego
-  - name: converger
-    release: diego
   - name: metron_agent
     release: cf
   resource_pool: small
@@ -272,12 +270,6 @@ properties:
       require_ssl: false
       server_cert: ""
       server_key: ""
-    converger:
-      bbs:
-        ca_cert: ""
-        client_cert: ""
-        client_key: ""
-        require_ssl: false
     rep:
       bbs:
         ca_cert: ""
