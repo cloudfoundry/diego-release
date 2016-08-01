@@ -25,7 +25,6 @@ files:
   - code.cloudfoundry.org/route-emitter/syncer/*.go # gosub
   - code.cloudfoundry.org/route-emitter/watcher/*.go # gosub
   - code.cloudfoundry.org/runtimeschema/metric/*.go # gosub
-  - github.com/apcera/nats/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/routing-info/cfroutes/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
@@ -51,6 +50,9 @@ files:
   - github.com/hashicorp/consul/api/*.go # gosub
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/go-cleanhttp/*.go # gosub
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/serf/coordinate/*.go # gosub
+  - github.com/nats-io/nats/*.go # gosub
+  - github.com/nats-io/nats/encoders/builtin/*.go # gosub
+  - github.com/nats-io/nuid/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
