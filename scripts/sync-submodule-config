@@ -18,9 +18,9 @@ go install github.com/vito/gosub
     -app code.cloudfoundry.org/healthcheck/cmd/... \
     -app code.cloudfoundry.org/rep/cmd/... \
     -app code.cloudfoundry.org/route-emitter/cmd/... \
+    -app code.cloudfoundry.org/localdriver/cmd/... \
     -app github.com/apcera/gnatsd \
     -app github.com/apcera/nats \
-    -app github.com/cloudfoundry-incubator/localdriver/cmd/... \
     -app github.com/golang/protobuf...
 
   # separate these so gosub doesn't asplode
@@ -42,7 +42,7 @@ go install github.com/vito/gosub
     -test code.cloudfoundry.org/diego-upgrade-stability-tests/... \
     -test code.cloudfoundry.org/diegocanaryapp/...
 
-  gosub list -test github.com/cloudfoundry-incubator/localdriver/...
+  gosub list -test code.cloudfoundry.org/localdriver/...
 
 } > /tmp/packages
 
