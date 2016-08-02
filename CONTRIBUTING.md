@@ -204,7 +204,7 @@ On OS X, follow these steps to install and configure MySQL and Postgres:
         cd ~/workspace
         git clone https://github.com/cloudfoundry/cf-release.git
         cd ~/workspace/cf-release
-        git checkout runtime-passed
+        git checkout release-candidate
         ./scripts/update
 
 1. Check out diego-release (develop branch) from git:
