@@ -276,10 +276,6 @@
 	path = src/code.cloudfoundry.org/route-emitter
 	url = https://github.com/cloudfoundry/route-emitter
 	branch = master
-[submodule "src/github.com/cloudfoundry-incubator/voldriver"]
-	path = src/github.com/cloudfoundry-incubator/voldriver
-	url = https://github.com/cloudfoundry-incubator/voldriver
-	branch = master
 [submodule "src/code.cloudfoundry.org/diegocanaryapp"]
 	path = src/code.cloudfoundry.org/diegocanaryapp
 	url = https://github.com/cloudfoundry/diegocanaryapp
@@ -311,6 +307,7 @@
 [submodule "src/github.com/cloudfoundry-incubator/localdriver"]
 	path = src/github.com/cloudfoundry-incubator/localdriver
 	url = https://github.com/cloudfoundry-incubator/localdriver
+	branch = master
 [submodule "src/github.com/spf13/cobra"]
 	path = src/github.com/spf13/cobra
 	url = https://github.com/spf13/cobra
@@ -334,3 +331,7 @@
 [submodule "src/github.com/apcera/nats"]
 	path = src/github.com/apcera/nats
 	url = https://github.com/apcera/nats
+[submodule "src/code.cloudfoundry.org/voldriver"]
+	path = src/code.cloudfoundry.org/voldriver
+	url = https://github.com/cloudfoundry-incubator/voldriver
+	branch = master
