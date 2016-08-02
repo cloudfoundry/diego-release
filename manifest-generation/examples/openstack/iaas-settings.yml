@@ -8,67 +8,69 @@ iaas_settings:
     - name: access_z1
       cloud_properties:
         instance_type: m1.small
-    - name: access_z2
-      cloud_properties:
-        instance_type: m1.small
-    - name: access_z3
-      cloud_properties:
-        instance_type: m1.small
     - name: brain_z1
-      cloud_properties:
-        instance_type: m1.small
-    - name: brain_z2
-      cloud_properties:
-        instance_type: m1.small
-    - name: brain_z3
       cloud_properties:
         instance_type: m1.small
     - name: cc_bridge_z1
       cloud_properties:
         instance_type: m1.small
-    - name: cc_bridge_z2
-      cloud_properties:
-        instance_type: m1.small
-    - name: cc_bridge_z3
-      cloud_properties:
-        instance_type: m1.small
     - name: cell_z1
-      cloud_properties:
-        instance_type: m1.large
-    - name: cell_z2
-      cloud_properties:
-        instance_type: m1.large
-    - name: cell_z3
       cloud_properties:
         instance_type: m1.large
     - name: colocated_z1
       cloud_properties:
         instance_type: m1.large
-    - name: colocated_z2
-      cloud_properties:
-        instance_type: m1.large
-    - name: colocated_z3
-      cloud_properties:
-        instance_type: m1.large
     - name: database_z1
-      cloud_properties:
-        instance_type: m1.small
-    - name: database_z2
-      cloud_properties:
-        instance_type: m1.small
-    - name: database_z3
       cloud_properties:
         instance_type: m1.small
     - name: route_emitter_z1
       cloud_properties:
         instance_type: m1.small
+    - name: errand
+      cloud_properties:
+        instance_type: m1.small
+# z2 & z3 are used for high-available deployments
+# You can safely remove them if you run a single-zone deployment
+    - name: access_z2
+      cloud_properties:
+        instance_type: m1.small
+    - name: brain_z2
+      cloud_properties:
+        instance_type: m1.small
+    - name: cc_bridge_z2
+      cloud_properties:
+        instance_type: m1.small
+    - name: cell_z2
+      cloud_properties:
+        instance_type: m1.large
+    - name: colocated_z2
+      cloud_properties:
+        instance_type: m1.large
+    - name: database_z2
+      cloud_properties:
+        instance_type: m1.small
     - name: route_emitter_z2
       cloud_properties:
         instance_type: m1.small
-    - name: route_emitter_z3
+    - name: access_z3
       cloud_properties:
         instance_type: m1.small
-    - name: errand
+    - name: brain_z3
+      cloud_properties:
+        instance_type: m1.small
+    - name: cc_bridge_z3
+      cloud_properties:
+        instance_type: m1.small
+    - name: cell_z3
+      cloud_properties:
+        instance_type: m1.large
+    - name: colocated_z3
+      cloud_properties:
+        instance_type: m1.large
+    - name: database_z3
+      cloud_properties:
+        instance_type: m1.small
+    - name: route_emitter_z3
       cloud_properties:
         instance_type: m1.small
 
@@ -84,6 +86,9 @@ iaas_settings:
           security_groups:
           - bosh
           - cf-private
+
+# Diego2 & diego3 subnets are used for high-available deployments
+# They can be safely removed if you run a single-zone deployment
     - name: diego2
       type: manual
       subnets:
