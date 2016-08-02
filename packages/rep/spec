@@ -53,6 +53,8 @@ files:
   - code.cloudfoundry.org/runtimeschema/metric/*.go # gosub
   - code.cloudfoundry.org/voldriver/*.go # gosub
   - code.cloudfoundry.org/voldriver/driverhttp/*.go # gosub
+  - code.cloudfoundry.org/volman/*.go # gosub
+  - code.cloudfoundry.org/volman/vollocal/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/client/*.go # gosub
@@ -63,8 +65,6 @@ files:
   - github.com/cloudfoundry-incubator/garden/server/streamer/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/server/timebomb/*.go # gosub
   - github.com/cloudfoundry-incubator/garden/transport/*.go # gosub
-  - github.com/cloudfoundry-incubator/volman/*.go # gosub
-  - github.com/cloudfoundry-incubator/volman/vollocal/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
   - github.com/cloudfoundry/dropsonde/envelope_sender/*.go # gosub
