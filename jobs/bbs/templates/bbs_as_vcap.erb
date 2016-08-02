@@ -68,6 +68,9 @@ etcd_flags=""
   -listenAddress=<%= p("diego.bbs.listen_addr") %> \
   -healthAddress=<%= p("diego.bbs.health_addr") %> \
   -logLevel=<%= p("diego.bbs.log_level") %> \
+  <% if p("diego.bbs.enable_acces_log") %> \
+  -accessLogPath=$LOG_DIR/bbs.access.log \
+  <% end %> \
   -requireSSL=<%= p("diego.bbs.require_ssl") %> \
   -convergeRepeatInterval=<%= "#{p("diego.bbs.convergence.repeat_interval_in_seconds")}s" %> \
   -kickTaskDuration=<%= "#{p("diego.bbs.convergence.kick_task_duration_in_seconds")}s" %> \
