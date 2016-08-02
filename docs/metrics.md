@@ -89,6 +89,10 @@
 | `StalledGardenDuration`                     | Time the rep is waiting on its garden backend to become healthy during startup.  Emitted only if garden not responsive when the rep starts up.             | ns               |
 | `StrandedEvacuatingActualLRPs`              | Evacuating ActualLPRs that timed out during the evacuation process. Emitted when evacuation doesn't complete successful.                                   | number           |
 | `UnhealthyCell`                             | Whether the cell has failed to pass its healthcheck against the garden backend.  0 signifies healthy, and 1 signifies unhealthy. Emitted periodically.     | 0 or 1 (boolean) |
+| `VolmanMountDuration`                       | Time volman took to mount a volume. Emitted by each rep when volumes are mounted.                                                                          | ns               |
+| `VolmanMountErrors`                         | Count of failed volume mounts. Emitted periodically by each rep.                                                                                           | number           |
+| `VolmanUnmountDuration`                     | Time volman took to unmount a volume. Emitted by each rep when volumes are mounted.                                                                        | ns               |
+| `VolmanUnmountErrors`                       | Count of failed volume unmounts. Emitted periodically by each rep.                                                                                         | number           |
 
 ## Route Emitter
 
