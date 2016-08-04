@@ -55,7 +55,6 @@ files:
   - github.com/aws/aws-sdk-go/service/s3/s3iface/*.go # gosub
   - github.com/aws/aws-sdk-go/service/s3/s3manager/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
-  - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metrics/*.go # gosub
   - github.com/cloudfoundry/gunk/urljoiner/*.go # gosub
@@ -66,7 +65,9 @@ files:
   - github.com/cloudfoundry/storeadapter/storerunner/etcdstorerunner/*.go # gosub
   - github.com/coreos/go-etcd/etcd/*.go # gosub
   - github.com/go-sql-driver/mysql/*.go # gosub
+  - github.com/gogo/protobuf/gogoproto/*.go # gosub
   - github.com/gogo/protobuf/proto/*.go # gosub
+  - github.com/gogo/protobuf/protoc-gen-gogo/descriptor/*.go # gosub
   - github.com/gogo/protobuf/sortkeys/*.go # gosub
   - github.com/golang/protobuf/proto/*.go # gosub
   - github.com/hashicorp/consul/api/*.go # gosub
