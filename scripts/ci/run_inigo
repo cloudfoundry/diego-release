@@ -24,7 +24,6 @@ build_gardenrunc () {
     export PATH=${GOPATH}/bin:${PATH}
     export GARDEN_BINPATH=${PWD}/bin/
 
-    go install github.com/cloudfoundry-incubator/guardian/cmd/kawasaki/
     go install github.com/cloudfoundry-incubator/guardian/cmd/init/
     go install github.com/cloudfoundry-incubator/guardian/cmd/dadoo/
     go install github.com/cloudfoundry-incubator/guardian/cmd/inspector-garden/
