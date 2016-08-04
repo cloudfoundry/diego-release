@@ -24,16 +24,16 @@ build_gardenrunc () {
     export PATH=${GOPATH}/bin:${PATH}
     export GARDEN_BINPATH=${PWD}/bin/
 
-    go install github.com/cloudfoundry-incubator/guardian/cmd/init/
-    go install github.com/cloudfoundry-incubator/guardian/cmd/dadoo/
-    go install github.com/cloudfoundry-incubator/guardian/cmd/inspector-garden/
+    go install code.cloudfoundry.org/guardian/cmd/init/
+    go install code.cloudfoundry.org/guardian/cmd/dadoo/
+    go install code.cloudfoundry.org/guardian/cmd/inspector-garden/
 
     pushd src/github.com/opencontainers/runc
       PKG_CONFIG_PATH=/usr/local/lib/pkgconfig GOPATH=${PWD}/Godeps/_workspace:${GOPATH} BUILDTAGS="seccomp" make static
       mv runc ${GARDEN_BINPATH}
     popd
 
-    pushd src/github.com/cloudfoundry-incubator/guardian/rundmc/nstar
+    pushd src/code.cloudfoundry.org/guardian/rundmc/nstar
       make && cp nstar ${GARDEN_BINPATH}
     popd
   popd
