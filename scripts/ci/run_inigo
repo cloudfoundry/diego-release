@@ -9,7 +9,7 @@ build_gardenlinux () {
   echo "Building garden-linux"
   export GARDEN_GOPATH=$PWD/garden-linux-release
 
-  pushd "${GARDEN_GOPATH}/src/github.com/cloudfoundry-incubator/garden-linux"
+  pushd "${GARDEN_GOPATH}/src/code.cloudfoundry.org/garden-linux"
     GOPATH=${GARDEN_GOPATH} make # compile wshd/etc.
     export GARDEN_BINPATH=$PWD/linux_backend/bin
   popd
