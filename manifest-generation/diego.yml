@@ -519,6 +519,7 @@ properties:
         expire_pending_task_duration_in_seconds: (( property_overrides.bbs.convergence.expire_pending_task_duration_in_seconds || nil ))
     executor:
       disk_capacity_mb: (( property_overrides.executor.disk_capacity_mb || nil ))
+      max_cache_size_in_bytes: (( property_overrides.executor.max_cache_size_in_bytes || nil ))
       memory_capacity_mb: (( property_overrides.executor.memory_capacity_mb || nil ))
       drain_timeout_in_seconds: (( property_overrides.executor.drain_timeout_in_seconds || nil ))
       post_setup_hook: (( property_overrides.executor.post_setup_hook || nil ))
