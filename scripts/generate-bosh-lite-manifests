@@ -6,7 +6,7 @@ scripts_path=./$(dirname $0)
 eval $($scripts_path/get_paths.sh)
 
 if [ ! -f ${CF_MANIFESTS_DIR}/cf.yml ]; then
-  ${CF_RELEASE_DIR}/scripts/generate-bosh-lite-dev-manifest
+  ${CF_RELEASE_DIR}/scripts/generate-bosh-lite-dev-manifest <(echo '{"properties":{"cc":{"default_to_diego_backend":true}}}')
 fi
 
 mkdir -p ${DIEGO_MANIFESTS_DIR}
