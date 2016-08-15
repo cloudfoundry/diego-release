@@ -1,0 +1,38 @@
+---
+name: cfdot
+
+dependencies:
+  - golang
+
+files:
+  - code.cloudfoundry.org/bbs/*.go # gosub
+  - code.cloudfoundry.org/bbs/encryption/*.go # gosub
+  - code.cloudfoundry.org/bbs/events/*.go # gosub
+  - code.cloudfoundry.org/bbs/format/*.go # gosub
+  - code.cloudfoundry.org/bbs/models/*.go # gosub
+  - code.cloudfoundry.org/cfdot/*.go # gosub
+  - code.cloudfoundry.org/cfdot/commands/*.go # gosub
+  - code.cloudfoundry.org/cfhttp/*.go # gosub
+  - code.cloudfoundry.org/cfhttp/unix_transport/*.go # gosub
+  - code.cloudfoundry.org/clock/*.go # gosub
+  - code.cloudfoundry.org/consuladapter/*.go # gosub
+  - code.cloudfoundry.org/lager/*.go # gosub
+  - code.cloudfoundry.org/locket/*.go # gosub
+  - code.cloudfoundry.org/runtimeschema/metric/*.go # gosub
+  - github.com/bmizerany/pat/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/metrics/*.go # gosub
+  - github.com/cloudfoundry/sonde-go/events/*.go # gosub
+  - github.com/gogo/protobuf/gogoproto/*.go # gosub
+  - github.com/gogo/protobuf/proto/*.go # gosub
+  - github.com/gogo/protobuf/protoc-gen-gogo/descriptor/*.go # gosub
+  - github.com/gogo/protobuf/sortkeys/*.go # gosub
+  - github.com/hashicorp/consul/api/*.go # gosub
+  - github.com/hashicorp/consul/vendor/github.com/hashicorp/go-cleanhttp/*.go # gosub
+  - github.com/hashicorp/consul/vendor/github.com/hashicorp/serf/coordinate/*.go # gosub
+  - github.com/nu7hatch/gouuid/*.go # gosub
+  - github.com/spf13/cobra/*.go # gosub
+  - github.com/spf13/pflag/*.go # gosub
+  - github.com/tedsuo/ifrit/*.go # gosub
+  - github.com/tedsuo/rata/*.go # gosub
+  - github.com/vito/go-sse/sse/*.go # gosub
