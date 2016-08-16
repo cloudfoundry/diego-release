@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+export PATH=/var/vcap/packages/cfdot/bin:$PATH
+export BBS_URL=<%= p("diego.cfdot.bbs.use_ssl") ? 'https' : 'http' %>://bbs.service.cf.internal:8889
+export BBS_CA_CERT_FILE=/var/vcap/jobs/cfdot/config/certs/bbs/ca.crt
+export BBS_CERT_FILE=/var/vcap/jobs/cfdot/config/certs/bbs/client.crt
+export BBS_KEY_FILE=/var/vcap/jobs/cfdot/config/certs/bbs/client.key

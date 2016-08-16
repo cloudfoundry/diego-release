@@ -2,6 +2,7 @@
 name: cfdot
 
 templates:
+  setup.erb: bin/setup
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
@@ -10,6 +11,9 @@ packages:
   - cfdot
 
 properties:
+  diego.cfdot.bbs.use_ssl:
+    description: "true if the bbs requires TLS connections, false otherwise"
+    default: true
   diego.cfdot.bbs.ca_cert:
     description: "PEM-encoded CA certificate"
   diego.cfdot.bbs.client_cert:

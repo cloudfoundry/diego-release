@@ -496,6 +496,7 @@ properties:
       log_level: (( property_overrides.auctioneer.log_level || nil ))
     cfdot:
       bbs:
+        use_ssl: (( property_overrides.cfdot.use_ssl || property_overrides.bbs.require_ssl || nil ))
         ca_cert: (( property_overrides.cfdot.ca_cert || property_overrides.bbs.ca_cert ))
         client_cert: (( property_overrides.cfdot.client_cert || property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.cfdot.client_key || property_overrides.bbs.client_key ))
