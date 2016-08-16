@@ -1,4 +1,4 @@
-set -e
+set -e -x
 
 mkdir -p ${BOSH_INSTALL_TARGET}/src
 cp -a . ${BOSH_INSTALL_TARGET}/src
@@ -10,3 +10,9 @@ go install code.cloudfoundry.org/cfdot
 
 # clean up source artifacts
 rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg
+
+# install jq
+BIN_DIR=${BOSH_INSTALL_TARGET}/bin
+mkdir -p ${BIN_DIR}
+cp jq/jq-linux64 ${BIN_DIR}/jq
+chmod +x ${BIN_DIR}/jq
