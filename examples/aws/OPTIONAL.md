@@ -77,13 +77,10 @@ configurations. All configurations have the same starting steps:
   $DEPLOYMENT_DIR/stubs/cf-mysql/
   ```
   
-1. Generate CF-based manifest stub:
+1. Copy over CF-based manifest stub:
   
   ```bash
-  spiff merge \
-	  $DIEGO_RELEASE_DIR/manifest-generation/cf-mysql-stubs/cf-shim.yml \
-	  $DEPLOYMENT_DIR/deployments/cf.yml \
-	> $DEPLOYMENT_DIR/stubs/cf-mysql/cf-augmented.yml
+  cp $DEPLOYMENT_DIR/deployments/cf.yml $DEPLOYMENT_DIR/stubs/cf-mysql/cf.yml
   ```
   
 1. Edit `property-overrides.yml`:
@@ -146,7 +143,7 @@ After that you can deploy the CF-MySQL release in either mode:
   
   ```bash
   $CF_MYSQL_RELEASE_DIR/scripts/generate-deployment-manifest \
-      -c $DEPLOYMENT_DIR/stubs/cf-mysql/cf-augmented.yml \
+      -c $DEPLOYMENT_DIR/stubs/cf-mysql/cf.yml \
       -p $DEPLOYMENT_DIR/stubs/cf-mysql/property-overrides.yml \
       -i $DEPLOYMENT_DIR/stubs/cf-mysql/iaas-settings.yml \
       -n $DEPLOYMENT_DIR/stubs/cf-mysql/instance-count-overrides.yml \
@@ -183,7 +180,7 @@ After that you can deploy the CF-MySQL release in either mode:
   
   ```bash
   $CF_MYSQL_RELEASE_DIR/scripts/generate-deployment-manifest \
-      -c $DEPLOYMENT_DIR/stubs/cf-mysql/cf-augmented.yml \
+      -c $DEPLOYMENT_DIR/stubs/cf-mysql/cf.yml \
       -p $DEPLOYMENT_DIR/stubs/cf-mysql/property-overrides.yml \
       -i $DEPLOYMENT_DIR/stubs/cf-mysql/iaas-settings.yml \
       -j $DEPLOYMENT_DIR/stubs/cf-mysql/job-overrides-consul.yml \
