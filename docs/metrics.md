@@ -75,24 +75,28 @@
 
 ## Rep
 
-| Metric                                      | Description                                                                                                                                                | Unit             |
-| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----             |
-| `CapacityRemainingContainers`               | Remaining number of containers this cell can host. Emitted periodically.                                                                                   | number           |
-| `CapacityRemainingDisk`                     | Remaining amount of disk available for this cell to allocate to containers.  Emitted periodically.                                                         | bytes            |
-| `CapacityRemainingMemory`                   | Remaining amount of memory available for this cell to allocate to containers.  Emitted periodically.                                                       | bytes            |
-| `CapacityTotalContainers`                   | Total number of containers this cell can host. Emitted periodically.                                                                                       | number           |
-| `CapacityTotalDisk`                         | Total amount of disk available for this cell to allocate to containers. Emitted periodically.                                                              | bytes            |
-| `CapacityTotalMemory`                       | Total amount of memory available for this cell to allocate to containers.  Emitted periodically.                                                           | bytes            |
-| `ContainerCount`                            | Number of containers hosted on the cell. Emitted periodically.                                                                                             | number           |
-| `GardenContainerCreationDuration`           | Time the rep's Garden backend took to create a container. Emitted after every successful container creation.                                               | ns               |
-| `RepBulkSyncDuration`                       | Time the cell rep took to synchronize the ActualLRPs it has claimed with its actual garden containers. Emitted periodically by each rep.                   | ns               |
-| `StalledGardenDuration`                     | Time the rep is waiting on its garden backend to become healthy during startup.  Emitted only if garden not responsive when the rep starts up.             | ns               |
-| `StrandedEvacuatingActualLRPs`              | Evacuating ActualLPRs that timed out during the evacuation process. Emitted when evacuation doesn't complete successful.                                   | number           |
-| `UnhealthyCell`                             | Whether the cell has failed to pass its healthcheck against the garden backend.  0 signifies healthy, and 1 signifies unhealthy. Emitted periodically.     | 0 or 1 (boolean) |
-| `VolmanMountDuration`                       | Time volman took to mount a volume. Emitted by each rep when volumes are mounted.                                                                          | ns               |
-| `VolmanMountErrors`                         | Count of failed volume mounts. Emitted periodically by each rep.                                                                                           | number           |
-| `VolmanUnmountDuration`                     | Time volman took to unmount a volume. Emitted by each rep when volumes are mounted.                                                                        | ns               |
-| `VolmanUnmountErrors`                       | Count of failed volume unmounts. Emitted periodically by each rep.                                                                                         | number           |
+| Metric                                               | Description                                                                                                                                                | Unit             |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----             |
+| `CapacityRemainingContainers`                        | Remaining number of containers this cell can host. Emitted periodically.                                                                                   | number           |
+| `CapacityRemainingDisk`                              | Remaining amount of disk available for this cell to allocate to containers.  Emitted periodically.                                                         | bytes            |
+| `CapacityRemainingMemory`                            | Remaining amount of memory available for this cell to allocate to containers.  Emitted periodically.                                                       | bytes            |
+| `CapacityTotalContainers`                            | Total number of containers this cell can host. Emitted periodically.                                                                                       | number           |
+| `CapacityTotalDisk`                                  | Total amount of disk available for this cell to allocate to containers. Emitted periodically.                                                              | bytes            |
+| `CapacityTotalMemory`                                | Total amount of memory available for this cell to allocate to containers.  Emitted periodically.                                                           | bytes            |
+| `ContainerCount`                                     | Number of containers hosted on the cell. Emitted periodically.                                                                                             | number           |
+| `GardenContainerCreationDuration`                    | Time the rep's Garden backend took to create a container. Emitted after every successful container creation. (Deprecated)                                  | ns               |
+| `GardenContainerCreationSucceededDuration`           | Time the rep's Garden backend took to create a container. Emitted after every successful container creation.                                               | ns               |
+| `GardenContainerCreationFailedDuration`              | Time the rep's Garden backend took to create a container. Emitted after every failed container creation.                                                   | ns               |
+| `GardenContainerDestructionSucceededDuration`        | Time the rep's Garden backend took to destroy a container. Emitted after every successful container destruction.                                           | ns               |
+| `GardenContainerDestructionFailedDuration`           | Time the rep's Garden backend took to destroy a container. Emitted after every failed container destruction.                                               | ns               |
+| `RepBulkSyncDuration`                                | Time the cell rep took to synchronize the ActualLRPs it has claimed with its actual garden containers. Emitted periodically by each rep.                   | ns               |
+| `StalledGardenDuration`                              | Time the rep is waiting on its garden backend to become healthy during startup.  Emitted only if garden not responsive when the rep starts up.             | ns               |
+| `StrandedEvacuatingActualLRPs`                       | Evacuating ActualLPRs that timed out during the evacuation process. Emitted when evacuation doesn't complete successful.                                   | number           |
+| `UnhealthyCell`                                      | Whether the cell has failed to pass its healthcheck against the garden backend.  0 signifies healthy, and 1 signifies unhealthy. Emitted periodically.     | 0 or 1 (boolean) |
+| `VolmanMountDuration`                                | Time volman took to mount a volume. Emitted by each rep when volumes are mounted.                                                                          | ns               |
+| `VolmanMountErrors`                                  | Count of failed volume mounts. Emitted periodically by each rep.                                                                                           | number           |
+| `VolmanUnmountDuration`                              | Time volman took to unmount a volume. Emitted by each rep when volumes are mounted.                                                                        | ns               |
+| `VolmanUnmountErrors`                                | Count of failed volume unmounts. Emitted periodically by each rep.                                                                                         | number           |
 
 ## Route Emitter
 
