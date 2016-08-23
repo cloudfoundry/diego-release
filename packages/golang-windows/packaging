@@ -5,7 +5,7 @@ try {
     Exit 1
 }
 
-$path="golang/go1.6.3.windows-amd64.zip"
+$path="golang/go1.7.windows-amd64.zip"
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 function Unzip
