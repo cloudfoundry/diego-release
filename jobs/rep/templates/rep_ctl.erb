@@ -36,7 +36,7 @@ case $1 in
     mkdir -p $DRIVERS_PATHS
     chown vcap:vcap $DRIVERS_PATHS
 
-    trusted_certs_flag=""
+    export trusted_certs_flag=""
     TRUSTED_CERTS_DIR=${DATA_DIR}/trusted_certs
     rm -rf "$TRUSTED_CERTS_DIR"
     <% if_p("diego.rep.trusted_certs") do |value| %>
