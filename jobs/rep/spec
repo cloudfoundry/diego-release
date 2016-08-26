@@ -97,7 +97,7 @@ properties:
     default: 30
   diego.executor.unhealthy_monitoring_interval_in_seconds:
     description: "Interval to check unhealthy containers in seconds."
-    default: 0.5
+    default: 2
   diego.executor.create_work_pool_size:
     description: "Maximum number of concurrent create container operations."
     default: 32
