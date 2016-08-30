@@ -37,10 +37,6 @@
 	path = src/github.com/nu7hatch/gouuid
 	url = https://github.com/nu7hatch/gouuid
 	branch = master
-[submodule "src/github.com/cloudfoundry/gorouter"]
-	path = src/github.com/cloudfoundry/gorouter
-	url = https://github.com/cloudfoundry/gorouter
-	branch = master
 [submodule "src/github.com/tedsuo/rata"]
 	path = src/github.com/tedsuo/rata
 	url = https://github.com/tedsuo/rata
@@ -52,10 +48,6 @@
 [submodule "src/github.com/cloudfoundry/storeadapter"]
 	path = src/github.com/cloudfoundry/storeadapter
 	url = https://github.com/cloudfoundry/storeadapter
-	branch = master
-[submodule "src/github.com/pivotal-golang/lager"]
-	path = src/github.com/pivotal-golang/lager
-	url = https://github.com/pivotal-golang/lager
 	branch = master
 [submodule "src/code.cloudfoundry.org/lager"]
 	path = src/code.cloudfoundry.org/lager
@@ -79,10 +71,6 @@
 [submodule "src/github.com/vito/go-sse"]
 	path = src/github.com/vito/go-sse
 	url = https://github.com/vito/go-sse
-	branch = master
-[submodule "src/github.com/pivotal-golang/localip"]
-	path = src/github.com/pivotal-golang/localip
-	url = https://github.com/pivotal-golang/localip
 	branch = master
 [submodule "src/github.com/golang/protobuf"]
 	path = src/github.com/golang/protobuf
@@ -126,10 +114,6 @@
 	path = src/github.com/ugorji/go
 	url = https://github.com/ugorji/go
 	branch = master
-[submodule "src/github.com/cloudfoundry-incubator/garden"]
-	path = src/github.com/cloudfoundry-incubator/garden
-	url = https://github.com/cloudfoundry-incubator/garden
-	branch = master
 [submodule "src/github.com/onsi/say"]
 	path = src/github.com/onsi/say
 	url = https://github.com/onsi/say
@@ -164,10 +148,6 @@
 [submodule "src/github.com/gorilla/context"]
 	path = src/github.com/gorilla/context
 	url = https://github.com/gorilla/context
-[submodule "src/github.com/cloudfoundry-incubator/routing-info"]
-	path = src/github.com/cloudfoundry-incubator/routing-info
-	url = https://github.com/cloudfoundry-incubator/routing-info
-	branch = bbs-import-path
 [submodule "src/github.com/kr/fs"]
 	path = src/github.com/kr/fs
 	url = https://github.com/kr/fs
@@ -346,4 +326,20 @@
 [submodule "src/code.cloudfoundry.org/goshims"]
 	path = src/code.cloudfoundry.org/goshims
 	url = https://github.com/cloudfoundry-incubator/goshims
+	branch = master
+[submodule "src/code.cloudfoundry.org/gorouter"]
+	path = src/code.cloudfoundry.org/gorouter
+	url = https://github.com/cloudfoundry/gorouter
+	branch = master
+[submodule "src/code.cloudfoundry.org/garden"]
+	path = src/code.cloudfoundry.org/garden
+	url = https://github.com/cloudfoundry/garden
+	branch = master
+[submodule "src/gopkg.in/yaml.v2"]
+	path = src/gopkg.in/yaml.v2
+	url = https://gopkg.in/yaml.v2
+	branch = v2
+[submodule "src/code.cloudfoundry.org/routing-info"]
+	path = src/code.cloudfoundry.org/routing-info
+	url = https://github.com/cloudfoundry-incubator/routing-info
 	branch = master

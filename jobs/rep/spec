@@ -52,6 +52,9 @@ properties:
   diego.rep.trusted_certs:
     description: "Concatenation of trusted CA certificates to be made available inside the rootfses"
     default: null
+  diego.rep.placement_tags:
+    description: "Array of tags used for scheduling Tasks and LRPs"
+    default: []
 
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
