@@ -8,6 +8,7 @@ go install github.com/vito/gosub
 
 {
   gosub list \
+    -app code.cloudfoundry.org/guardian/gqt/runner \
     -app code.cloudfoundry.org/auctioneer/cmd/... \
     -app code.cloudfoundry.org/bbs/cmd/bbs \
     -app code.cloudfoundry.org/buildpackapplifecycle/... \
