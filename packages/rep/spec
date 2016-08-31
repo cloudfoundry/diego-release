@@ -36,6 +36,15 @@ files:
   - code.cloudfoundry.org/executor/guidgen/*.go # gosub
   - code.cloudfoundry.org/executor/initializer/*.go # gosub
   - code.cloudfoundry.org/executor/initializer/configuration/*.go # gosub
+  - code.cloudfoundry.org/garden/*.go # gosub
+  - code.cloudfoundry.org/garden/client/*.go # gosub
+  - code.cloudfoundry.org/garden/client/connection/*.go # gosub
+  - code.cloudfoundry.org/garden/routes/*.go # gosub
+  - code.cloudfoundry.org/garden/server/*.go # gosub
+  - code.cloudfoundry.org/garden/server/bomberman/*.go # gosub
+  - code.cloudfoundry.org/garden/server/streamer/*.go # gosub
+  - code.cloudfoundry.org/garden/server/timebomb/*.go # gosub
+  - code.cloudfoundry.org/garden/transport/*.go # gosub
   - code.cloudfoundry.org/lager/*.go # gosub
   - code.cloudfoundry.org/localip/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
@@ -56,15 +65,6 @@ files:
   - code.cloudfoundry.org/volman/*.go # gosub
   - code.cloudfoundry.org/volman/vollocal/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden/client/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden/client/connection/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden/routes/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden/server/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden/server/bomberman/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden/server/streamer/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden/server/timebomb/*.go # gosub
-  - github.com/cloudfoundry-incubator/garden/transport/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
   - github.com/cloudfoundry/dropsonde/envelope_sender/*.go # gosub
@@ -95,7 +95,6 @@ files:
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/serf/coordinate/*.go # gosub
   - github.com/hashicorp/go-multierror/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
-  - github.com/pivotal-golang/lager/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
   - github.com/tedsuo/ifrit/http_server/*.go # gosub

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 metrics_in_code() {
-  grep --no-filename -I 'metric\..*("' -r src/code.cloudfoundry.org/ | \
+  grep --no-filename --exclude-dir=gorouter -I 'metric\..*("' -r src/code.cloudfoundry.org/ | \
     cut -d '"' -f2 | sort -u
 }
 
