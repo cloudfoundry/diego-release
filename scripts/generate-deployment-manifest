@@ -157,9 +157,9 @@ spiff merge \
 
 spiff merge \
   ${manifest_generation}/diego.yml \
+  ${garden_properties} \
   ${release_versions} \
   ${bbs_properties} \
-  ${garden_properties} \
   ${bridge_properties} \
   ${property_overrides} \
   ${instance_counts} \
