@@ -657,6 +657,7 @@ properties:
     deny_networks: (( property_overrides.garden.deny_networks || ["0.0.0.0/0"] ))
     destroy_containers_on_start: (( property_overrides.garden.destroy_containers_on_start || true ))
     disk_quota_enabled: (( property_overrides.garden.disk_quota_enabled || nil ))
+    dns_servers: (( property_overrides.garden.dns_servers || [] ))
     graph_cleanup_threshold_in_mb: (( property_overrides.garden.graph_cleanup_threshold_in_mb || 0 ))
     insecure_docker_registry_list: (( property_overrides.garden.insecure_docker_registry_list || nil ))
     listen_address: (( property_overrides.garden.listen_address || nil ))
