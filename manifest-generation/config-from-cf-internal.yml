@@ -32,8 +32,6 @@ config_from_cf:
     dropsonde_incoming_port: (( properties.metron_agent.dropsonde_incoming_port ))
     protocols: (( properties.metron_agent.protocols ))
     preferred_protocol: (( properties.metron_agent.preferred_protocol ))
-    enable_buffer: (( properties.metron_agent.enable_buffer ))
-    buffer_size: (( properties.metron_agent.buffer_size ))
     tls:
       client_cert: (( properties.metron_agent.tls.client_cert ))
       client_key: (( properties.metron_agent.tls.client_key ))
@@ -89,8 +87,6 @@ properties:
     dropsonde_incoming_port: (( merge || nil ))
     protocols: (( merge || nil ))
     preferred_protocol: (( merge || nil ))
-    enable_buffer: (( merge || nil ))
-    buffer_size: (( merge || nil ))
     tls:
       client_cert: (( merge || nil ))
       client_key: (( merge || nil ))
