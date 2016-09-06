@@ -664,6 +664,8 @@ properties:
     listen_network: (( property_overrides.garden.listen_network || nil ))
     log_level: (( property_overrides.garden.log_level || nil ))
     network_mtu: (( property_overrides.garden.mtu || nil ))
+    max_containers: (( property_overrides.garden.max_containers || nil ))
+    network_pool: (( property_overrides.garden.network_pool || nil ))
     persistent_image_list: (( property_overrides.garden.persistent_image_list || ["/var/vcap/packages/cflinuxfs2/rootfs"] ))
 
 
