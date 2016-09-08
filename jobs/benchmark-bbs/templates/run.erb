@@ -50,7 +50,7 @@ ginkgo -nodes=<%= p("benchmark-bbs.ginkgo_nodes") %> -- ${bbs_sec_flags} ${etcd_
   -numPopulateWorkers=<%= p("benchmark-bbs.num_populate_workers") %> \
   -bbsAddress=${bbs_api_url} \
   <% p("benchmark-bbs.encryption_keys").each do |encryption_key| %> \
-    -encryptionKey='<%= "#{encryption_key["label"]}:#{encryption_key["passphrase"]}" %>' \
+    -encryptionKey=<%= Shellwords.shellescape("#{encryption_key["label"]}:#{encryption_key["passphrase"]}") %> \
   <% end %> \
   -etcdCluster=<%= p("benchmark-bbs.etcd.machines").map{|addr| "\"#{p("benchmark-bbs.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
   <% if_p("benchmark-bbs.etcd.client_session_cache_size") do |value| %> \
@@ -59,7 +59,7 @@ ginkgo -nodes=<%= p("benchmark-bbs.ginkgo_nodes") %> -- ${bbs_sec_flags} ${etcd_
   <% if_p("benchmark-bbs.etcd.max_idle_conns_per_host") do |value| %> \
     -etcdMaxIdleConnsPerHost=<%= value %> \
   <% end %> \
-  -activeKeyLabel='<%= p("benchmark-bbs.active_key_label") %>' \
+  -activeKeyLabel='<%= Shellwords.shellescape(p("benchmark-bbs.active_key_label")) %>' \
   -dataDogAPIKey=<%= p("benchmark-bbs.datadog_api_key") %> \
   -dataDogAppKey=<%= p("benchmark-bbs.datadog_app_key") %> \
   -metricPrefix=<%= p("benchmark-bbs.datadog_metric_prefix") %> \
