@@ -31,8 +31,6 @@ config_from_cf:
     dropsonde_incoming_port: (( merge ))
     protocols: (( merge ))
     preferred_protocol: (( merge ))
-    enable_buffer: (( merge ))
-    buffer_size: (( merge ))
     tls:
       client_cert: (( merge ))
       client_key: (( merge ))
