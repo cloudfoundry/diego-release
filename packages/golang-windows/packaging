@@ -1,3 +1,4 @@
+. exiter
 try {
     $BOSH_INSTALL_TARGET = Resolve-Path $env:BOSH_INSTALL_TARGET
 } catch {
