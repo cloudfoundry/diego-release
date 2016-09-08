@@ -55,6 +55,9 @@ properties:
   diego.rep.placement_tags:
     description: "Array of tags used for scheduling Tasks and LRPs"
     default: []
+  diego.rep.optional_placement_tags:
+    description: "Array of optional tags used for scheduling Tasks and LRPs"
+    default: []
 
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
