@@ -19,6 +19,7 @@ chown -R vcap:vcap $LOG_DIR
 cd /var/vcap/packages/benchmark-bbs/src/code.cloudfoundry.org/benchmarkbbs
 
 EXITSTATUS=0
+GODEBUG=netdns=cgo
 
 <% if p("benchmark-bbs.etcd.require_ssl") %>
 etcd_sec_flags=" \
