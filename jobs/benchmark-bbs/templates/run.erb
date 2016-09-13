@@ -43,7 +43,7 @@ etcd_sec_flags=""
 # Allowed number of open file descriptors
 ulimit -n 100000
 
-ginkgo -nodes=<%= p("benchmark-bbs.ginkgo_nodes") %> -- ${bbs_sec_flags} ${etcd_sec_flags} \
+ginkgo -- ${bbs_sec_flags} ${etcd_sec_flags} \
   -desiredLRPs=<%= p("benchmark-bbs.desired_lrps") %> \
   -numTrials=<%= p("benchmark-bbs.num_trials") %> \
   -numReps=<%= p("benchmark-bbs.num_reps") %> \
@@ -70,6 +70,9 @@ ginkgo -nodes=<%= p("benchmark-bbs.ginkgo_nodes") %> -- ${bbs_sec_flags} ${etcd_
   -bbsClientHTTPTimeout=<%= p("benchmark-bbs.client_timeout") %> \
   <% if_p("benchmark-bbs.sql.db_connection_string") do |value| %> \
     -databaseConnectionString='<%= value %>' \
+  <% end %> \
+  <% if_p("benchmark-bbs.sql.db_driver") do |value| %> \
+    -databaseDriver='<%= value %>' \
   <% end %> \
   <% if_p("benchmark-bbs.log_level") do |value| %> \
     -logLevel=<%= value %> \
