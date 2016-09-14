@@ -46,6 +46,8 @@ files:
   - code.cloudfoundry.org/garden/server/streamer/*.go # gosub
   - code.cloudfoundry.org/garden/server/timebomb/*.go # gosub
   - code.cloudfoundry.org/garden/transport/*.go # gosub
+  - code.cloudfoundry.org/goshims/http_wrap/*.go # gosub
+  - code.cloudfoundry.org/goshims/os/*.go # gosub
   - code.cloudfoundry.org/lager/*.go # gosub
   - code.cloudfoundry.org/localip/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
@@ -81,8 +83,6 @@ files:
   - github.com/cloudfoundry/dropsonde/runtime_stats/*.go # gosub
   - github.com/cloudfoundry/gosteno/*.go # gosub
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
-  - github.com/cloudfoundry/gunk/http_wrap/*.go # gosub
-  - github.com/cloudfoundry/gunk/os_wrap/*.go # gosub
   - github.com/cloudfoundry/gunk/workpool/*.go # gosub
   - github.com/cloudfoundry/sonde-go/events/*.go # gosub
   - github.com/cloudfoundry/systemcerts/*.go # gosub
