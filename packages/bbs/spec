@@ -37,6 +37,8 @@ files:
   - code.cloudfoundry.org/locket/*.go # gosub
   - code.cloudfoundry.org/rep/*.go # gosub
   - code.cloudfoundry.org/runtimeschema/metric/*.go # gosub
+  - code.cloudfoundry.org/urljoiner/*.go # gosub
+  - code.cloudfoundry.org/workpool/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
@@ -53,8 +55,6 @@ files:
   - github.com/cloudfoundry/dropsonde/runtime_stats/*.go # gosub
   - github.com/cloudfoundry/gosteno/*.go # gosub
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
-  - github.com/cloudfoundry/gunk/urljoiner/*.go # gosub
-  - github.com/cloudfoundry/gunk/workpool/*.go # gosub
   - github.com/cloudfoundry/sonde-go/events/*.go # gosub
   - github.com/coreos/go-etcd/etcd/*.go # gosub
   - github.com/go-sql-driver/mysql/*.go # gosub

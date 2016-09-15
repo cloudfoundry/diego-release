@@ -33,6 +33,8 @@ files:
   - code.cloudfoundry.org/operationq/*.go # gosub
   - code.cloudfoundry.org/rep/*.go # gosub
   - code.cloudfoundry.org/runtimeschema/metric/*.go # gosub
+  - code.cloudfoundry.org/urljoiner/*.go # gosub
+  - code.cloudfoundry.org/workpool/*.go # gosub
   - github.com/aws/aws-sdk-go/aws/*.go # gosub
   - github.com/aws/aws-sdk-go/aws/awserr/*.go # gosub
   - github.com/aws/aws-sdk-go/aws/awsutil/*.go # gosub
@@ -57,8 +59,6 @@ files:
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metrics/*.go # gosub
-  - github.com/cloudfoundry/gunk/urljoiner/*.go # gosub
-  - github.com/cloudfoundry/gunk/workpool/*.go # gosub
   - github.com/cloudfoundry/sonde-go/events/*.go # gosub
   - github.com/cloudfoundry/storeadapter/*.go # gosub
   - github.com/cloudfoundry/storeadapter/etcdstoreadapter/*.go # gosub
