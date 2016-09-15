@@ -499,6 +499,7 @@ properties:
         client_cert: (( property_overrides.bbs.client_cert ))
         client_key: (( property_overrides.bbs.client_key ))
     bbs:
+      enable_access_log: (( property_overrides.bbs.enable_access_log || nil ))
       active_key_label: (( property_overrides.bbs.active_key_label || nil ))
       encryption_keys: (( property_overrides.bbs.encryption_keys || nil ))
       require_ssl: (( property_overrides.bbs.require_ssl || nil ))
