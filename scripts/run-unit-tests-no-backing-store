@@ -41,11 +41,6 @@ if [ ! -z "$PACKAGE" ]; then
   ginkgo -r -p "$@" "./src/${PACKAGE}"
   exit $?
 else
-  pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry/gunk/diegonats/ > /dev/null
-    ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress --race
-    ERROR_CODE=$?
-  popd > /dev/null
-
   pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/ > /dev/null
     ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress --race \
       -skipPackage=${SKIP_PACKAGES} "$@"
