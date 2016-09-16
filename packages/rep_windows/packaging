@@ -1,8 +1,9 @@
 . ./exiter.ps1
+
 try {
     $BOSH_INSTALL_TARGET = Resolve-Path $env:BOSH_INSTALL_TARGET
 } catch {
-    $Host.UI.WriteErrorLine($_.Exception.Message)
+    Write-Error $_.Exception.Message
     Exit 1
 }
 
@@ -11,11 +12,6 @@ $env:GOPATH="${BOSH_INSTALL_TARGET}"
 $env:PATH="${env:GOROOT}\bin;${env:PATH}"
 $pkg_name="rep"
 $pkg_path="code.cloudfoundry.org\rep\cmd\rep"
-
-function CompileGo {
-    go.exe build -o "${BOSH_INSTALL_TARGET}\${pkg_name}.exe" "${pkg_path}"
-    $?
-}
 
 try
 {
@@ -26,8 +22,9 @@ try
         Exit 1
     }
 
-    if (-Not (CompileGo)) {
-        $Host.UI.WriteErrorLine("Error compiling: ${pkg_path}")
+    go.exe build -o "${BOSH_INSTALL_TARGET}\${pkg_name}.exe" "${pkg_path}"
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "Error compiling: ${pkg_path}"
         Exit 1
     }
 
@@ -36,7 +33,7 @@ try
 }
 catch
 {
-    $Host.UI.WriteErrorLine($_.Exception.Message)
+    Write-Error $_.Exception.Message
     Exit 1
 }
 
