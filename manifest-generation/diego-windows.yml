@@ -1,6 +1,6 @@
 name: (( config_from_cf.cf_deployment_name "-diego-windows" ))
 
-releases: (( base_releases [config_from_cf.cf_release] ))
+releases: (( base_releases ))
 
 director_uuid: (( config_from_cf.cf_director_uuid ))
 
@@ -52,7 +52,7 @@ jobs:
       - name: consul_agent_windows
         release: garden-windows
       - name: metron_agent_windows
-        release: cf
+        release: garden-windows
     instances: (( instance_count_overrides.cell_windows_z1.instances || 1 ))
     resource_pool: cell_windows_z1
     networks:
@@ -76,7 +76,7 @@ jobs:
       - name: consul_agent_windows
         release: garden-windows
       - name: metron_agent_windows
-        release: cf
+        release: garden-windows
     instances: (( instance_count_overrides.cell_windows_z2.instances || 1 ))
     resource_pool: cell_windows_z2
     networks:
@@ -100,7 +100,7 @@ jobs:
       - name: consul_agent_windows
         release: garden-windows
       - name: metron_agent_windows
-        release: cf
+        release: garden-windows
     instances: (( instance_count_overrides.cell_windows_z3.instances || 0 ))
     resource_pool: cell_windows_z3
     networks:
