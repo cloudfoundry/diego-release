@@ -17,6 +17,8 @@ config_from_cf:
     encrypt_keys: (( merge ))
     server_cert: (( merge ))
     server_key: (( merge ))
+  etcd:
+    advertise_urls_dns_suffix: (( merge ))
   loggregator:
     etcd_ca_cert: (( merge ))
     etcd_require_ssl: (( merge ))
@@ -46,6 +48,7 @@ config_from_cf:
     port: (( merge ))
     machines: (( merge ))
   syslog_daemon_config: (( merge ))
+  system_domain: (( merge ))
   uaa:
     ssh_proxy_client_secret: (( merge ))
     token_url: (( merge ))

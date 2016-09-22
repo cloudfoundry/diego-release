@@ -1,6 +1,6 @@
 name: (( config_from_cf.cf_deployment_name "-diego" ))
 
-releases: (( base_releases bbs_overrides.releases volman_overrides.releases [garden_overrides.release] [config_from_cf.cf_release] bridge_overrides.releases ))
+releases: (( base_releases bbs_overrides.releases volman_overrides.releases netman_overrides.releases [garden_overrides.release] [config_from_cf.cf_release] bridge_overrides.releases ))
 
 director_uuid: (( config_from_cf.cf_director_uuid ))
 
@@ -119,312 +119,315 @@ resource_pools:
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.colocated_z3.cloud_properties || empty_hash ))
 
-jobs:
-  - name: database_z1
-    templates: (( bbs_overrides.job_templates ))
-    instances: (( instance_count_overrides.database_z1.instances || 1 ))
-    persistent_disk_pool: database_disks
-    resource_pool: database_z1
-    networks:
-      - name: diego1
-    update:
-      serial: true
-      max_in_flight: 1
-    properties:
-      consul: (( bbs_overrides.job_properties.consul ))
-      metron_agent:
-        zone: z1
+jobs: (( netman_overrides.jobs base.jobs ))
 
-  - name: database_z2
-    templates: (( bbs_overrides.job_templates ))
-    instances: (( instance_count_overrides.database_z2.instances || 1 ))
-    persistent_disk_pool: database_disks
-    resource_pool: database_z2
-    networks:
-      - name: diego2
-    update:
-      serial: true
-      max_in_flight: 1
-    properties:
-      consul: (( bbs_overrides.job_properties.consul ))
-      metron_agent:
-        zone: z2
-
-  - name: database_z3
-    templates: (( bbs_overrides.job_templates ))
-    instances: (( instance_count_overrides.database_z3.instances || 1 ))
-    persistent_disk_pool: database_disks
-    resource_pool: database_z3
-    networks:
-      - name: diego3
-    update:
-      serial: true
-      max_in_flight: 1
-    properties:
-      consul: (( bbs_overrides.job_properties.consul ))
-      metron_agent:
-        zone: z3
-
-  - name: brain_z1
-    templates: (( base_job_templates.brain ))
-    instances: (( instance_count_overrides.brain_z1.instances || 1 ))
-    resource_pool: brain_z1
-    networks:
-      - name: diego1
-    update:
-      serial: true
-      max_in_flight: 1
-    properties:
-      metron_agent:
-        zone: z1
-
-  - name: cell_z1
-    templates: (( base_job_templates.cell volman_overrides.driver_templates ))
-    instances: (( instance_count_overrides.cell_z1.instances || 1 ))
-    resource_pool: cell_z1
-    networks:
-      - name: diego1
-    update:
-      serial: false
-      max_in_flight: (( instance_count_overrides.cell_z1.max_in_flight || 1 ))
-    properties:
-      metron_agent:
-        zone: z1
-      diego:
-        rep:
-          use_azure_fault_domains: (( property_overrides.cell_z1.use_azure_fault_domains || nil ))
-          zone: (( property_overrides.cell_z1.zone || "z1" ))
-
-  - name: cc_bridge_z1
-    templates: (( base_job_templates.cc_bridge ))
-    instances: (( instance_count_overrides.cc_bridge_z1.instances || 1 ))
-    resource_pool: cc_bridge_z1
-    networks:
-      - name: diego1
-    update:
-      serial: false
-      max_in_flight: (( instance_count_overrides.cc_bridge_z1.max_in_flight || 1 ))
-    properties:
-      metron_agent:
-        zone: z1
-
-  - name: route_emitter_z1
-    templates: (( base_job_templates.route_emitter ))
-    instances: (( instance_count_overrides.route_emitter_z1.instances || 1 ))
-    resource_pool: route_emitter_z1
-    networks:
-      - name: diego1
-    update:
-      serial: false
-      max_in_flight: (( instance_count_overrides.route_emitter_z1.max_in_flight || 1 ))
-    properties:
-      metron_agent:
-        zone: z1
-
-  - name: access_z1
-    templates: (( base_job_templates.access ))
-    instances: (( instance_count_overrides.access_z1.instances || 1 ))
-    resource_pool: access_z1
-    networks:
-      - name: diego1
-    update:
-      serial: false
-      max_in_flight: (( instance_count_overrides.access_z1.max_in_flight || 1 ))
-    properties:
-      metron_agent:
-        zone: z1
-
-  - name: brain_z2
-    templates: (( base_job_templates.brain ))
-    instances: (( instance_count_overrides.brain_z2.instances || 1 ))
-    resource_pool: brain_z2
-    networks:
-      - name: diego2
-    update:
-      serial: true
-      max_in_flight: 1
-    properties:
-      metron_agent:
-        zone: z2
-
-  - name: cell_z2
-    templates: (( base_job_templates.cell volman_overrides.driver_templates ))
-    instances: (( instance_count_overrides.cell_z2.instances || 1 ))
-    resource_pool: cell_z2
-    networks:
-      - name: diego2
-    update:
-      serial: false
-      max_in_flight: (( instance_count_overrides.cell_z2.max_in_flight || 1 ))
-    properties:
-      metron_agent:
-        zone: z2
-      diego:
-        rep:
-          use_azure_fault_domains: (( property_overrides.cell_z2.use_azure_fault_domains || nil ))
-          zone: (( property_overrides.cell_z2.zone || "z2" ))
-
-  - name: cc_bridge_z2
-    templates: (( base_job_templates.cc_bridge ))
-    instances: (( instance_count_overrides.cc_bridge_z2.instances || 1 ))
-    resource_pool: cc_bridge_z2
-    networks:
-      - name: diego2
-    update:
-      serial: false
-      max_in_flight: (( instance_count_overrides.cc_bridge_z2.max_in_flight || 1 ))
-    properties:
-      metron_agent:
-        zone: z2
-
-  - name: route_emitter_z2
-    templates: (( base_job_templates.route_emitter ))
-    instances: (( instance_count_overrides.route_emitter_z2.instances || 1 ))
-    resource_pool: route_emitter_z2
-    networks:
-      - name: diego2
-    update:
-      serial: false
-      max_in_flight: (( instance_count_overrides.route_emitter_z2.max_in_flight || 1 ))
-    properties:
-      metron_agent:
-        zone: z2
-
-  - name: access_z2
-    templates: (( base_job_templates.access ))
-    instances: (( instance_count_overrides.access_z2.instances || 1 ))
-    resource_pool: access_z2
-    networks:
-      - name: diego2
-    update:
-      serial: false
-      max_in_flight: (( instance_count_overrides.access_z2.max_in_flight || 1))
-    properties:
-      metron_agent:
-        zone: z2
-
-  - name: brain_z3
-    templates: (( base_job_templates.brain ))
-    instances: (( instance_count_overrides.brain_z3.instances || 0 ))
-    resource_pool: brain_z3
-    networks:
-      - name: diego3
-    update:
-      serial: true
-      max_in_flight: 1
-    properties:
-      metron_agent:
-        zone: z3
-
-  - name: cell_z3
-    templates: (( base_job_templates.cell volman_overrides.driver_templates ))
-    instances: (( instance_count_overrides.cell_z3.instances || 0 ))
-    resource_pool: cell_z3
-    networks:
-      - name: diego3
-    update:
-      serial: false
-      max_in_flight: (( instance_count_overrides.cell_z3.max_in_flight || 1 ))
-    properties:
-      metron_agent:
-        zone: z3
-      diego:
-        rep:
-          use_azure_fault_domains: (( property_overrides.cell_z3.use_azure_fault_domains || nil ))
-          zone: (( property_overrides.cell_z3.zone || "z3" ))
-
-  - name: cc_bridge_z3
-    templates: (( base_job_templates.cc_bridge ))
-    instances: (( instance_count_overrides.cc_bridge_z3.instances || 0 ))
-    resource_pool: cc_bridge_z3
-    networks:
-      - name: diego3
-    update:
-      serial: false
-      max_in_flight: (( instance_count_overrides.cc_bridge_z3.max_in_flight || 1 ))
-    properties:
-      metron_agent:
-        zone: z3
-
-  - name: route_emitter_z3
-    templates: (( base_job_templates.route_emitter ))
-    instances: (( instance_count_overrides.route_emitter_z3.instances || 0 ))
-    resource_pool: route_emitter_z3
-    networks:
-      - name: diego3
-    update:
-      serial: false
-      max_in_flight: (( instance_count_overrides.route_emitter_z3.max_in_flight || 1 ))
-    properties:
-      metron_agent:
-        zone: z3
-
-  - name: access_z3
-    templates: (( base_job_templates.access ))
-    instances: (( instance_count_overrides.access_z3.instances || 0 ))
-    resource_pool: access_z3
-    networks:
-      - name: diego3
-    update:
-      serial: false
-      max_in_flight: (( instance_count_overrides.access_z3.max_in_flight || 1))
-    properties:
-      metron_agent:
-        zone: z3
-
-  - name: colocated_z1
-    templates: (( base_job_templates.colocated bbs_overrides.job_templates ))
-    instances: (( instance_count_overrides.colocated_z1.instances || 0 ))
-    persistent_disk_pool: database_disks
-    resource_pool: colocated_z1
-    networks:
-      - name: diego1
-    update:
-      serial: true
-      max_in_flight: 1
-    properties:
-      consul: (( bbs_overrides.job_properties.consul ))
-      diego:
-        rep:
+base:
+  jobs:
+    - name: database_z1
+      templates: (( bbs_overrides.job_templates ))
+      instances: (( instance_count_overrides.database_z1.instances || 1 ))
+      persistent_disk_pool: database_disks
+      resource_pool: database_z1
+      networks:
+        - name: diego1
+      update:
+        serial: true
+        max_in_flight: 1
+      properties:
+        consul: (( bbs_overrides.job_properties.consul ))
+        metron_agent:
           zone: z1
-      metron_agent:
-        zone: z1
 
-  - name: colocated_z2
-    templates: (( base_job_templates.colocated bbs_overrides.job_templates ))
-    instances: (( instance_count_overrides.colocated_z2.instances || 0 ))
-    persistent_disk_pool: database_disks
-    resource_pool: colocated_z2
-    networks:
-      - name: diego2
-    update:
-      serial: true
-      max_in_flight: 1
-    properties:
-      consul: (( bbs_overrides.job_properties.consul ))
-      diego:
-        rep:
+    - name: database_z2
+      templates: (( bbs_overrides.job_templates ))
+      instances: (( instance_count_overrides.database_z2.instances || 1 ))
+      persistent_disk_pool: database_disks
+      resource_pool: database_z2
+      networks:
+        - name: diego2
+      update:
+        serial: true
+        max_in_flight: 1
+      properties:
+        consul: (( bbs_overrides.job_properties.consul ))
+        metron_agent:
           zone: z2
-      metron_agent:
-        zone: z2
 
-  - name: colocated_z3
-    templates: (( base_job_templates.colocated bbs_overrides.job_templates ))
-    instances: (( instance_count_overrides.colocated_z3.instances || 0 ))
-    persistent_disk_pool: database_disks
-    resource_pool: colocated_z3
-    networks:
-      - name: diego3
-    update:
-      serial: true
-      max_in_flight: 1
-    properties:
-      consul: (( bbs_overrides.job_properties.consul ))
-      diego:
-        rep:
+    - name: database_z3
+      templates: (( bbs_overrides.job_templates ))
+      instances: (( instance_count_overrides.database_z3.instances || 1 ))
+      persistent_disk_pool: database_disks
+      resource_pool: database_z3
+      networks:
+        - name: diego3
+      update:
+        serial: true
+        max_in_flight: 1
+      properties:
+        consul: (( bbs_overrides.job_properties.consul ))
+        metron_agent:
           zone: z3
-      metron_agent:
-        zone: z3
+
+    - name: brain_z1
+      templates: (( base_job_templates.brain ))
+      instances: (( instance_count_overrides.brain_z1.instances || 1 ))
+      resource_pool: brain_z1
+      networks:
+        - name: diego1
+      update:
+        serial: true
+        max_in_flight: 1
+      properties:
+        metron_agent:
+          zone: z1
+
+    - name: cell_z1
+      templates: (( base_job_templates.cell volman_overrides.driver_templates netman_overrides.driver_templates ))
+      instances: (( instance_count_overrides.cell_z1.instances || 1 ))
+      resource_pool: cell_z1
+      networks:
+        - name: diego1
+      update:
+        serial: false
+        max_in_flight: (( instance_count_overrides.cell_z1.max_in_flight || 1 ))
+      properties:
+        metron_agent:
+          zone: z1
+        diego:
+          rep:
+            use_azure_fault_domains: (( property_overrides.cell_z1.use_azure_fault_domains || nil ))
+            zone: (( property_overrides.cell_z1.zone || "z1" ))
+
+    - name: cc_bridge_z1
+      templates: (( base_job_templates.cc_bridge ))
+      instances: (( instance_count_overrides.cc_bridge_z1.instances || 1 ))
+      resource_pool: cc_bridge_z1
+      networks:
+        - name: diego1
+      update:
+        serial: false
+        max_in_flight: (( instance_count_overrides.cc_bridge_z1.max_in_flight || 1 ))
+      properties:
+        metron_agent:
+          zone: z1
+
+    - name: route_emitter_z1
+      templates: (( base_job_templates.route_emitter ))
+      instances: (( instance_count_overrides.route_emitter_z1.instances || 1 ))
+      resource_pool: route_emitter_z1
+      networks:
+        - name: diego1
+      update:
+        serial: false
+        max_in_flight: (( instance_count_overrides.route_emitter_z1.max_in_flight || 1 ))
+      properties:
+        metron_agent:
+          zone: z1
+
+    - name: access_z1
+      templates: (( base_job_templates.access ))
+      instances: (( instance_count_overrides.access_z1.instances || 1 ))
+      resource_pool: access_z1
+      networks:
+        - name: diego1
+      update:
+        serial: false
+        max_in_flight: (( instance_count_overrides.access_z1.max_in_flight || 1 ))
+      properties:
+        metron_agent:
+          zone: z1
+
+    - name: brain_z2
+      templates: (( base_job_templates.brain ))
+      instances: (( instance_count_overrides.brain_z2.instances || 1 ))
+      resource_pool: brain_z2
+      networks:
+        - name: diego2
+      update:
+        serial: true
+        max_in_flight: 1
+      properties:
+        metron_agent:
+          zone: z2
+
+    - name: cell_z2
+      templates: (( base_job_templates.cell volman_overrides.driver_templates  netman_overrides.driver_templates ))
+      instances: (( instance_count_overrides.cell_z2.instances || 1 ))
+      resource_pool: cell_z2
+      networks:
+        - name: diego2
+      update:
+        serial: false
+        max_in_flight: (( instance_count_overrides.cell_z2.max_in_flight || 1 ))
+      properties:
+        metron_agent:
+          zone: z2
+        diego:
+          rep:
+            use_azure_fault_domains: (( property_overrides.cell_z2.use_azure_fault_domains || nil ))
+            zone: (( property_overrides.cell_z2.zone || "z2" ))
+
+    - name: cc_bridge_z2
+      templates: (( base_job_templates.cc_bridge ))
+      instances: (( instance_count_overrides.cc_bridge_z2.instances || 1 ))
+      resource_pool: cc_bridge_z2
+      networks:
+        - name: diego2
+      update:
+        serial: false
+        max_in_flight: (( instance_count_overrides.cc_bridge_z2.max_in_flight || 1 ))
+      properties:
+        metron_agent:
+          zone: z2
+
+    - name: route_emitter_z2
+      templates: (( base_job_templates.route_emitter ))
+      instances: (( instance_count_overrides.route_emitter_z2.instances || 1 ))
+      resource_pool: route_emitter_z2
+      networks:
+        - name: diego2
+      update:
+        serial: false
+        max_in_flight: (( instance_count_overrides.route_emitter_z2.max_in_flight || 1 ))
+      properties:
+        metron_agent:
+          zone: z2
+
+    - name: access_z2
+      templates: (( base_job_templates.access ))
+      instances: (( instance_count_overrides.access_z2.instances || 1 ))
+      resource_pool: access_z2
+      networks:
+        - name: diego2
+      update:
+        serial: false
+        max_in_flight: (( instance_count_overrides.access_z2.max_in_flight || 1))
+      properties:
+        metron_agent:
+          zone: z2
+
+    - name: brain_z3
+      templates: (( base_job_templates.brain ))
+      instances: (( instance_count_overrides.brain_z3.instances || 0 ))
+      resource_pool: brain_z3
+      networks:
+        - name: diego3
+      update:
+        serial: true
+        max_in_flight: 1
+      properties:
+        metron_agent:
+          zone: z3
+
+    - name: cell_z3
+      templates: (( base_job_templates.cell volman_overrides.driver_templates netman_overrides.driver_templates ))
+      instances: (( instance_count_overrides.cell_z3.instances || 0 ))
+      resource_pool: cell_z3
+      networks:
+        - name: diego3
+      update:
+        serial: false
+        max_in_flight: (( instance_count_overrides.cell_z3.max_in_flight || 1 ))
+      properties:
+        metron_agent:
+          zone: z3
+        diego:
+          rep:
+            use_azure_fault_domains: (( property_overrides.cell_z3.use_azure_fault_domains || nil ))
+            zone: (( property_overrides.cell_z3.zone || "z3" ))
+
+    - name: cc_bridge_z3
+      templates: (( base_job_templates.cc_bridge ))
+      instances: (( instance_count_overrides.cc_bridge_z3.instances || 0 ))
+      resource_pool: cc_bridge_z3
+      networks:
+        - name: diego3
+      update:
+        serial: false
+        max_in_flight: (( instance_count_overrides.cc_bridge_z3.max_in_flight || 1 ))
+      properties:
+        metron_agent:
+          zone: z3
+
+    - name: route_emitter_z3
+      templates: (( base_job_templates.route_emitter ))
+      instances: (( instance_count_overrides.route_emitter_z3.instances || 0 ))
+      resource_pool: route_emitter_z3
+      networks:
+        - name: diego3
+      update:
+        serial: false
+        max_in_flight: (( instance_count_overrides.route_emitter_z3.max_in_flight || 1 ))
+      properties:
+        metron_agent:
+          zone: z3
+
+    - name: access_z3
+      templates: (( base_job_templates.access ))
+      instances: (( instance_count_overrides.access_z3.instances || 0 ))
+      resource_pool: access_z3
+      networks:
+        - name: diego3
+      update:
+        serial: false
+        max_in_flight: (( instance_count_overrides.access_z3.max_in_flight || 1))
+      properties:
+        metron_agent:
+          zone: z3
+
+    - name: colocated_z1
+      templates: (( base_job_templates.colocated bbs_overrides.job_templates ))
+      instances: (( instance_count_overrides.colocated_z1.instances || 0 ))
+      persistent_disk_pool: database_disks
+      resource_pool: colocated_z1
+      networks:
+        - name: diego1
+      update:
+        serial: true
+        max_in_flight: 1
+      properties:
+        consul: (( bbs_overrides.job_properties.consul ))
+        diego:
+          rep:
+            zone: z1
+        metron_agent:
+          zone: z1
+
+    - name: colocated_z2
+      templates: (( base_job_templates.colocated bbs_overrides.job_templates ))
+      instances: (( instance_count_overrides.colocated_z2.instances || 0 ))
+      persistent_disk_pool: database_disks
+      resource_pool: colocated_z2
+      networks:
+        - name: diego2
+      update:
+        serial: true
+        max_in_flight: 1
+      properties:
+        consul: (( bbs_overrides.job_properties.consul ))
+        diego:
+          rep:
+            zone: z2
+        metron_agent:
+          zone: z2
+
+    - name: colocated_z3
+      templates: (( base_job_templates.colocated bbs_overrides.job_templates ))
+      instances: (( instance_count_overrides.colocated_z3.instances || 0 ))
+      persistent_disk_pool: database_disks
+      resource_pool: colocated_z3
+      networks:
+        - name: diego3
+      update:
+        serial: true
+        max_in_flight: 1
+      properties:
+        consul: (( bbs_overrides.job_properties.consul ))
+        diego:
+          rep:
+            zone: z3
+        metron_agent:
+          zone: z3
 
 properties:
   # -- Properties below are used by the metron_agent job from cf-release --
@@ -469,8 +472,18 @@ properties:
   # -- Properties below are used by the etcd from etcd-release --
   etcd: (( bbs_overrides.etcd_properties ))
 
+  # cf etcd used by netman
+  cf_etcd:
+    advertise_urls_dns_suffix: (( config_from_cf.etcd.advertise_urls_dns_suffix ))
+
   cflinuxfs2-rootfs:
     trusted_certs: (( property_overrides.rootfs_cflinuxfs2.trusted_certs || nil ))
+
+  # -- Properties used by netman processes on the cell and the policy-server job --
+  vxlan-policy-agent: (( netman_overrides.properties.vxlan-policy-agent || nil ))
+  garden-cni: (( netman_overrides.properties.garden-cni || nil ))
+  cni-flannel: (( netman_overrides.properties.cni-flannel || nil ))
+  policy-server: (( netman_overrides.properties.policy-server || nil ))
 
   # -- Properties below are used by the jobs from diego-release --
   diego:
@@ -666,7 +679,8 @@ properties:
     max_containers: (( property_overrides.garden.max_containers || nil ))
     network_pool: (( property_overrides.garden.network_pool || nil ))
     persistent_image_list: (( property_overrides.garden.persistent_image_list || ["/var/vcap/packages/cflinuxfs2/rootfs"] ))
-
+    network_plugin: (( netman_overrides.garden_properties.network_plugin || nil ))
+    network_plugin_extra_args: (( netman_overrides.garden_properties.network_plugin_extra_args || nil ))
 
 # The keys below should not be included in the final stub
 config_from_cf: (( merge ))
@@ -742,6 +756,13 @@ empty_hash: {}
 volman_overrides:
   releases: (( merge || [] ))
   driver_templates: (( merge || [] ))
+
+netman_overrides:
+  releases: (( merge || [] ))
+  driver_templates: (( merge || [] ))
+  properties: (( merge || [] ))
+  garden_properties: (( merge || [] ))
+  jobs: (( merge || [] ))
 
 base_releases:
   - name: diego

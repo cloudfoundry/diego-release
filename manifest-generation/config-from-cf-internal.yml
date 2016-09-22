@@ -17,6 +17,8 @@ config_from_cf:
     encrypt_keys: (( properties.consul.encrypt_keys ))
     server_cert: (( properties.consul.server_cert ))
     server_key: (( properties.consul.server_key ))
+  etcd:
+    advertise_urls_dns_suffix: (( properties.etcd.advertise_urls_dns_suffix ))
   loggregator:
     etcd_machines: (( properties.loggregator.etcd.machines ))
     etcd_require_ssl: (( properties.loggregator.etcd.require_ssl ))
@@ -44,6 +46,7 @@ config_from_cf:
     port: (( properties.nats.port ))
     machines: (( properties.nats.machines ))
   syslog_daemon_config: (( properties.syslog_daemon_config ))
+  system_domain: (( properties.system_domain ))
   uaa:
     ssh_proxy_client_secret: (( properties.uaa.clients.ssh-proxy.secret ))
     token_url: (( properties.uaa.url "/oauth/token" ))
@@ -71,6 +74,8 @@ properties:
     encrypt_keys: (( merge ))
     server_cert: (( merge ))
     server_key: (( merge ))
+  etcd:
+    advertise_urls_dns_suffix: (( merge ))
   loggregator:
     etcd:
       ca_cert: null

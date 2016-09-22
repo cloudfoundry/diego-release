@@ -25,6 +25,7 @@ OPTIONAL ARGUMENTS:
     -g                  Opt into using garden-runc-release for cells.
     -b                  Opt into using capi-release for bridge components.
     -d <voldriver-path> Path to voldriver stub file.
+    -N <netman-path>    Path to netman stub file
 
 EXAMPLE:
     $0 \\
@@ -46,7 +47,7 @@ base_releases="${manifest_generation}/base-releases.yml"
 garden_properties=""
 bridge_properties=""
 
-while getopts "c:i:p:n:k:v:s:d:krbgx" opt; do
+while getopts "c:i:p:n:k:v:s:d:N:krbgx" opt; do
   case $opt in
     c)
       cf_deployment_manifest=$OPTARG
@@ -80,6 +81,9 @@ while getopts "c:i:p:n:k:v:s:d:krbgx" opt; do
       ;;
     d)
       voldriver_settings=$OPTARG
+      ;;
+    N)
+      netman_settings=$OPTARG
       ;;
     x)
       bbs_properties="${manifest_generation}/bbs-overrides-no-etcd.yml"
@@ -132,6 +136,16 @@ if [[ ! -z "${voldriver_settings}" && ! -f "${voldriver_settings}" ]]; then
   argument_error=true
 fi
 
+if [[ ! -z "${netman_settings}" && ! -f "${netman_settings}" ]]; then
+  >&2 echo "ERROR: Netman Setting stub '${netman_settings}' is not a regular file"
+  argument_error=true
+fi
+
+if [[ ! -z "${netman_settings}" && -z "${garden_properties}" ]]; then
+  >&2 echo "ERROR: Netman Setting stub '${netman_settings}' is set but Garden-Runc not selected"
+  argument_error=true
+fi
+
 if [[ ! -z "${instance_counts}" && ! -f "${instance_counts}" ]]; then
   >&2 echo "ERROR: Instance-count-overrides stub '${instance_counts}' is not a regular file"
   argument_error=true
@@ -156,6 +170,11 @@ spiff merge \
   > ${tmpdir}/config-from-cf.yml
 
 spiff merge \
+  ${netman_settings} \
+  ${tmpdir}/config-from-cf.yml \
+  > ${tmpdir}/netman-merged.yml
+
+spiff merge \
   ${manifest_generation}/diego.yml \
   ${garden_properties} \
   ${release_versions} \
@@ -165,6 +184,7 @@ spiff merge \
   ${instance_counts} \
   ${sql_settings} \
   ${voldriver_settings} \
+  ${tmpdir}/netman-merged.yml \
   ${iaas_settings} \
   ${tmpdir}/config-from-cf.yml \
   > ${tmpdir}/diego.yml
