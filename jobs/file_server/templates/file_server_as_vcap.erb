@@ -11,6 +11,7 @@ export GODEBUG=netdns=cgo
 /var/vcap/packages/file_server/bin/file-server \
       -address=<%= p("diego.file_server.listen_addr") %> \
       -consulCluster=http://127.0.0.1:8500 \
+      -consulTTL=<%= p("consul.ttl_in_seconds") %> \
       -debugAddr=<%= p("diego.file_server.debug_addr") %> \
       -staticDirectory=<%= p("diego.file_server.static_directory") %> \
       -dropsondePort=<%= p("diego.file_server.dropsonde_port") %> \

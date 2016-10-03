@@ -28,3 +28,7 @@ properties:
   diego.file_server.dropsonde_port:
     description: "local metron agent's port"
     default: 3457
+
+  consul.ttl_in_seconds:
+    description: "TTL value for consul registration in seconds"
+    default: 3

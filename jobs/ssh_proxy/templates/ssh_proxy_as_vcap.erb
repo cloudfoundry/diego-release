@@ -50,6 +50,7 @@ export GODEBUG=netdns=cgo
       ${uaa_flags} \
       -address=<%= p("diego.ssh_proxy.listen_addr") %> \
       -consulCluster=http://127.0.0.1:8500 \
+      -consulTTL=<%= p("consul.ttl_in_seconds") %> \
       -hostKey="$HOST_KEY" \
       <% if_p("diego.ssh_proxy.allowed_ciphers") do |value| %> \
         -allowedCiphers=<%= value %> \
