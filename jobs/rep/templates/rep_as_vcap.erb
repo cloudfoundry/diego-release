@@ -30,6 +30,15 @@ export GODEBUG=netdns=cgo
   bbs_api_url="<%= "http://" + p("diego.rep.bbs.api_location") %>"
 <% end %>
 
+<% if p("diego.rep.require_tls") %>
+  rep_sec_flags=" \
+   -caFile=${CONF_DIR}/certs/ca.crt \
+   -certFile=${CONF_DIR}/certs/server.crt \
+   -keyFile=${CONF_DIR}/certs/server.key"
+<% else %>
+  rep_sec_flags=""
+<% end %>
+
 zone=<%= Shellwords.shellescape(spec.az || p("diego.rep.zone")) %>
 <% if p("diego.rep.use_azure_fault_domains") %> \
 set +e
@@ -42,7 +51,7 @@ set -e
 
 echo $$ > $PIDFILE
 
-exec /var/vcap/packages/rep/bin/rep ${bbs_sec_flags} \
+exec /var/vcap/packages/rep/bin/rep ${bbs_sec_flags} ${rep_sec_flags} \
   -bbsAddress=${bbs_api_url} \
   <% if_p("diego.rep.bbs.client_session_cache_size") do |value| %> \
     -bbsClientSessionCacheSize=<%= value %> \
@@ -54,6 +63,8 @@ exec /var/vcap/packages/rep/bin/rep ${bbs_sec_flags} \
   -consulCluster=http://127.0.0.1:8500 \
   -debugAddr=<%= p("diego.rep.debug_addr") %> \
   -listenAddr=<%= p("diego.rep.listen_addr") %> \
+  -listenAddrSecurable=<%= p("diego.rep.listen_addr_securable") %> \
+  -requireTLS=<%= p("diego.rep.require_tls") %> \
   <%= p("diego.rep.preloaded_rootfses").map { |rootfs| "-preloadedRootFS #{rootfs}" }.join(" ") %> \
   <%= p("diego.rep.rootfs_providers").map { |provider| "-rootFSProvider #{provider}" }.join(" ") %> \
   <%= p("diego.rep.placement_tags").map { |tag| "-placementTag #{Shellwords.shellescape(tag)}" }.join(" ") %> \

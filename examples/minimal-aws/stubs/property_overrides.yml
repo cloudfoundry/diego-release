@@ -16,6 +16,8 @@ property_overrides:
     client_key: ""
     peer_require_ssl: false
     require_ssl: false
+  rep:
+    require_tls: false
   skip_cert_verify: true
   ssh_proxy:
     enable_cf_auth: true
