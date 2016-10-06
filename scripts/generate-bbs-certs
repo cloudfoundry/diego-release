@@ -2,7 +2,7 @@
 
 set -e -x
 
-function usage() {
+usage() {
   >&2 echo "    Usage:
     $0 DIEGO_CA_NAME DIEGO_CA_CERT_DIRECTORY
 
