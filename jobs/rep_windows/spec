@@ -8,6 +8,9 @@ templates:
   trusted_certs.crt.erb: config/certs/rep/trusted_certs.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
+  rep_ca.crt.erb: config/certs/ca.crt
+  rep_server.crt.erb: config/certs/server.crt
+  rep_server.key.erb: config/certs/server.key
 
 packages:
   - rep_windows
