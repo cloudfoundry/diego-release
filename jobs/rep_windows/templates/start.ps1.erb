@@ -15,7 +15,7 @@
     %{-preloadedRootFS="#{rootfs}"}
   }.join(" ")
 
-  if p("diego.rep.require_tls") %>
+  if p("diego.rep.require_tls")
     rep_sec_flags=%{ \
     -caFile="#{CONF_DIR}/certs/ca.crt" \
     -certFile="#{CONF_DIR}/certs/server.crt" \
