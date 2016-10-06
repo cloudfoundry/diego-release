@@ -15,7 +15,16 @@
     %{-preloadedRootFS="#{rootfs}"}
   }.join(" ")
 
-  %{/var/vcap/packages/rep_windows/rep.exe #{bbs_sec_flags} \
+  if p("diego.rep.require_tls") %>
+    rep_sec_flags=%{ \
+    -caFile="#{CONF_DIR}/certs/ca.crt" \
+    -certFile="#{CONF_DIR}/certs/server.crt" \
+    -keyFile="#{CONF_DIR}/certs/server.key"}
+  else
+    rep_sec_flags=""
+  end
+
+  %{/var/vcap/packages/rep_windows/rep.exe #{bbs_sec_flags} #{rep_sec_flags} \
   -bbsAddress="#{bbs_api_url}" \
   -consulCluster="http://127.0.0.1:#{p("diego.rep.consul_agent_port")}" \
   -debugAddr="#{p("diego.rep.debug_addr")}" \
