@@ -26,6 +26,7 @@
 
   %{/var/vcap/packages/rep_windows/rep.exe #{bbs_sec_flags} #{rep_sec_flags} \
   -bbsAddress="#{bbs_api_url}" \
+  -requireTLS="#{p("diego.rep.require_tls")}" \
   -consulCluster="http://127.0.0.1:#{p("diego.rep.consul_agent_port")}" \
   -debugAddr="#{p("diego.rep.debug_addr")}" \
   -listenAddr="#{p("diego.rep.listen_addr")}" \
