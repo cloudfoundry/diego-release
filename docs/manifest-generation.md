@@ -34,16 +34,16 @@ This document is for describing options to Diego manifest generation.
     -N <netman-path>    Path to netman stub file.
 
 #### EXAMPLE:
-    scripts/generate-deployment-manifest \\
-      -c ../cf-release/bosh-lite/deployments/cf.yml \\
-      -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \\
-      -p manifest-generation/bosh-lite-stubs/property-overrides.yml \\
-      -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
-      -v manifest-generation/bosh-lite-stubs/release-versions.yml \\
-      -s manifest-generation/bosh-lite-stubs/diego-sql.yml \\
-      -x \\
-      -d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml \\
-      -g \\
+    scripts/generate-deployment-manifest \
+      -c ../cf-release/bosh-lite/deployments/cf.yml \
+      -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \
+      -p manifest-generation/bosh-lite-stubs/property-overrides.yml \
+      -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
+      -v manifest-generation/bosh-lite-stubs/release-versions.yml \
+      -s manifest-generation/bosh-lite-stubs/mysql/diego-sql.yml \
+      -x \
+      -d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml \
+      -g \
       -b
 
 ### Options
