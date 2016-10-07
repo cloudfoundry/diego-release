@@ -57,6 +57,23 @@ properties:
     description: "Concatenation of trusted CA certificates to be made available on the cell."
     default: null
 
+  diego.rep.listen_addr_securable:
+    description: "address where rep listens for LRP and task start auction requests"
+    default: "0.0.0.0:1801"
+
+  diego.rep.require_tls:
+    description: "Whether to require mutual TLS for communication to the securable rep API server"
+    default: true
+
+  diego.rep.ca_cert:
+    description: "PEM-encoded CA certificate"
+
+  diego.rep.server_cert:
+    description: "PEM-encoded server certificate"
+
+  diego.rep.server_key:
+    description: "PEM-encoded server key"
+
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
