@@ -176,6 +176,10 @@ properties:
       evacuation_timeout_in_seconds: (( property_overrides.rep.evacuation_timeout_in_seconds || nil ))
       trusted_certs: (( property_overrides.rep.trusted_certs || nil ))
       log_level: (( property_overrides.rep.log_level || nil ))
+      require_tls: (( property_overrides.rep.require_tls || nil ))
+      ca_cert: (( property_overrides.rep.ca_cert || nil ))
+      server_cert: (( property_overrides.rep.server_cert || nil ))
+      server_key: (( property_overrides.rep.server_key || nil ))
 
 # The keys below should not be included in the final stub
 config_from_cf: (( merge ))
