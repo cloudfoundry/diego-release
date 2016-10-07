@@ -31,6 +31,7 @@ This document is for describing options to Diego manifest generation.
     -g                  Opt into using garden-runc-release for cells.
     -b                  Opt into using capi-release for bridge components.
     -d <voldriver-path> Path to voldriver stub file.
+    -N <netman-path>    Path to netman stub file.
 
 #### EXAMPLE:
     scripts/generate-deployment-manifest \\
@@ -132,3 +133,7 @@ volman_overrides:
   - name: cephdriver
     release: cephfs-bosh-release
 ```
+
+##### **Experimental** Container Networking Stub File
+
+The optional -N flag is used to specify the path for the [netman](https://github.com/cloudfoundry-incubator/netman-release) stub file.
