@@ -472,10 +472,6 @@ properties:
   # -- Properties below are used by the etcd from etcd-release --
   etcd: (( bbs_overrides.etcd_properties ))
 
-  # cf etcd used by netman
-  cf_etcd:
-    advertise_urls_dns_suffix: (( config_from_cf.etcd.advertise_urls_dns_suffix ))
-
   cflinuxfs2-rootfs:
     trusted_certs: (( property_overrides.rootfs_cflinuxfs2.trusted_certs || nil ))
 

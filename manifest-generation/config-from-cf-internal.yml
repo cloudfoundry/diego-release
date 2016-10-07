@@ -19,6 +19,10 @@ config_from_cf:
     server_key: (( properties.consul.server_key ))
   etcd:
     advertise_urls_dns_suffix: (( properties.etcd.advertise_urls_dns_suffix ))
+    ca_cert: (( properties.etcd.ca_cert ))
+    client_cert: (( properties.etcd.client_cert ))
+    client_key: (( properties.etcd.client_key ))
+    require_ssl: (( properties.etcd.require_ssl ))
   loggregator:
     etcd_machines: (( properties.loggregator.etcd.machines ))
     etcd_require_ssl: (( properties.loggregator.etcd.require_ssl ))
@@ -76,6 +80,10 @@ properties:
     server_key: (( merge ))
   etcd:
     advertise_urls_dns_suffix: (( merge ))
+    ca_cert: (( merge || nil ))
+    client_cert: (( merge || nil ))
+    client_key: (( merge || nil ))
+    require_ssl: (( merge || nil ))
   loggregator:
     etcd:
       ca_cert: null
