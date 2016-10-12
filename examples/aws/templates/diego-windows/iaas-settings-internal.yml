@@ -1,0 +1,73 @@
+iaas_settings:
+  stemcell:
+    name: bosh-aws-xen-hvm-windows-stemcell-go_agent
+    version: latest
+  subnet_configs:
+    - name: diego1_windows
+      subnets:
+        - range:    (( Resources.SubnetCIDR.DiegoWindowsZ1 ))
+          reserved: (( [Resources.SubnetOctets.DiegoWindowsZ1.[2] ".2 - " Resources.SubnetOctets.DiegoWindowsZ1.[2] ".9"] ))
+          static:   (( [Resources.SubnetOctets.DiegoWindowsZ1.[2] ".10 - " Resources.SubnetOctets.DiegoWindowsZ1.[2] ".63"] ))
+          gateway:  (( Resources.SubnetOctets.DiegoWindowsZ1.[2] ".1" ))
+          dns:      (( [Resources.SubnetOctets.DiegoWindowsZ1.[1] ".0.2"] ))
+          cloud_properties:
+            security_groups: (( [Resources.SecurityGroupName.Internal] ))
+            subnet: (( Resources.Subnet.DiegoWindowsZ1 ))
+    - name: diego2_windows
+      subnets:
+        - range:    (( Resources.SubnetCIDR.DiegoWindowsZ2 ))
+          reserved: (( [Resources.SubnetOctets.DiegoWindowsZ2.[2] ".2 - " Resources.SubnetOctets.DiegoWindowsZ2.[2] ".9"] ))
+          static:   (( [Resources.SubnetOctets.DiegoWindowsZ2.[2] ".10 - " Resources.SubnetOctets.DiegoWindowsZ2.[2] ".63"] ))
+          gateway:  (( Resources.SubnetOctets.DiegoWindowsZ2.[2] ".1" ))
+          dns:      (( [Resources.SubnetOctets.DiegoWindowsZ2.[1] ".0.2"] ))
+          cloud_properties:
+            security_groups: (( [Resources.SecurityGroupName.Internal] ))
+            subnet: (( Resources.Subnet.DiegoWindowsZ2 ))
+    - name: diego3_windows
+      subnets:
+        - range:    (( Resources.SubnetCIDR.DiegoWindowsZ3 ))
+          reserved: (( [Resources.SubnetOctets.DiegoWindowsZ3.[2] ".2 - " Resources.SubnetOctets.DiegoWindowsZ3.[2] ".9"] ))
+          static:   (( [Resources.SubnetOctets.DiegoWindowsZ3.[2] ".10 - " Resources.SubnetOctets.DiegoWindowsZ3.[2] ".63"] ))
+          gateway:  (( Resources.SubnetOctets.DiegoWindowsZ3.[2] ".1" ))
+          dns:      (( [Resources.SubnetOctets.DiegoWindowsZ3.[1] ".0.2"] ))
+          cloud_properties:
+            security_groups: (( [Resources.SecurityGroupName.Internal] ))
+            subnet: (( Resources.Subnet.DiegoWindowsZ3 ))
+  compilation_cloud_properties:
+    instance_type: c3.large
+    availability_zone: (( Resources.SubnetAvailabilityZone.DiegoWindowsZ1 ))
+  resource_pool_cloud_properties:
+    - name: cell_windows_z1
+      cloud_properties:
+        instance_type: r3.xlarge
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoWindowsZ1 ))
+    - name: cell_windows_z2
+      cloud_properties:
+        instance_type: r3.xlarge
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoWindowsZ2 ))
+    - name: cell_windows_z3
+      cloud_properties:
+        instance_type: r3.xlarge
+        availability_zone: (( Resources.SubnetAvailabilityZone.DiegoWindowsZ3 ))
+
+Resources:
+  Subnet:
+    DiegoWindowsZ1: (( merge ))
+    DiegoWindowsZ2: (( merge ))
+    DiegoWindowsZ3: (( merge ))
+  SubnetAvailabilityZone:
+    DiegoWindowsZ1: (( merge ))
+    DiegoWindowsZ2: (( merge ))
+    DiegoWindowsZ3: (( merge ))
+  SubnetOctets:
+    DiegoWindowsZ1: (( merge ))
+    DiegoWindowsZ2: (( merge ))
+    DiegoWindowsZ3: (( merge ))
+  SubnetCIDR:
+    DiegoWindowsZ1: (( merge ))
+    DiegoWindowsZ2: (( merge ))
+    DiegoWindowsZ3: (( merge ))
+  SecurityGroupName:
+    Internal: (( merge ))
+  LoadBalancer:
+    SSHProxyELB: (( merge ))

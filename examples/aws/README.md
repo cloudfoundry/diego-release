@@ -46,7 +46,6 @@ Before proceeding with setup, select a domain name you intend to use for your CF
 This domain name will be the base domain for all apps deployed to your Cloud Foundry instance, as well as the base domain for the Cloud Foundry system components.
 You will later create a Route 53 Hosted Zone for this domain to set up DNS entries for the deployment, so you should make sure you have access at your domain registrar to integrate these DNS settings into your domain.
 
-
 ### Exporting Directory Locations and Configuration as Environment Variables
 
 Change into the directory you just created for the deployment and run the following to produce the `deployment-env` file:
@@ -70,7 +69,6 @@ EOF
 Edit the `deployment-env` file to replace `REPLACE_WITH_DEPLOYMENT_DOMAIN` with the domain selected above. If you have not checked out cf-release and diego-release as subdirectories of `~/workspace`, also replace those default locations.
 
 Run `source deployment-env` to export these variables to your environment. They will be used extensively as `$DEPLOYMENT_DIR`, `$CF_RELEASE_DIR`, `$DIEGO_RELEASE_DIR`, and `$CF_DOMAIN` in commands and references below.
-
 
 ### AWS Requirements
 
@@ -206,7 +204,7 @@ This file is the private key pair generated as the [AWS keypair for the BOSH dir
 ####<a name="elb-cfrouter"></a> `certs/elb-cfrouter.key` and `certs/elb-cfrouter.pem`
 
 An SSL certificate for the domain where Cloud Foundry will be accessible is required.
-If you do not already provide a certificate, you can generate a self-signed certificate following the commands below. 
+If you do not already provide a certificate, you can generate a self-signed certificate following the commands below.
 
 ```
 cd $DEPLOYMENT_DIR/certs
@@ -469,6 +467,8 @@ DEPLOYMENT_DIR
 | |-diego
 | | |- property-overrides.yml # stub to parametrize with Diego manifest property overrides
 | | |- iaas-settings.yml # networks, zones for the Diego deployment
+| |-diego-windows
+| | |- iaas-settings.yml #networks, zones for the Diego Windows deployment
 | |-infrastructure
 |   |- certificates.yml # certificates for the cfrouter ELB
 |   |- cloudformation.json # CloudFormation JSON deployed to AWS
@@ -498,7 +498,12 @@ as well as for setting the log levels of components.
 
 ### `stubs/diego/iaas-settings.yml`
 
-This stub is during Diego manifest generation.
+This stub is used during Diego manifest generation.
+It contains settings specific to your AWS environment.
+
+### `stubs/diego-windows/iaas-settings.yml`
+
+This stub is used during Diego Windows Cells manifest generation.
 It contains settings specific to your AWS environment.
 
 ## Set up Public DNS for BOSH Director (optional)
@@ -699,7 +704,6 @@ cd $DIEGO_RELEASE_DIR
   > $DEPLOYMENT_DIR/deployments/diego.yml
 ```
 
-
 ### Upload Garden-Linux, etcd, and cflinuxfs2 releases
 
 1. Upload the latest garden-linux-release:
@@ -734,3 +738,8 @@ bosh --parallel 10 create release --force
 bosh upload release
 bosh deploy
 ```
+
+### Deploy Diego Windows Cells (optional)
+
+To deploy a set of Diego cells using [garden-windows](https://github.com/cloudfoundry-incubator/garden-windows-bosh-release),
+follow the directions in [Setup Garden Windows for Diego](OPTIONAL.md#setup-garden-windows-for-diego).

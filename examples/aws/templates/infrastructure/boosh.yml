@@ -127,6 +127,24 @@ subnets:
     route_table:
       instance: NATZ1
 
+  - name: DiegoWindowsZ1
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      instance: NATZ1
+
+  - name: DiegoWindowsZ2
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      instance: NATZ1
+
+  - name: DiegoWindowsZ3
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      instance: NATZ1
+
 buckets:
   - name: AppBits
   - name: AppResources
@@ -152,7 +170,7 @@ load_balancers:
     security_groups:
       - Web
     cross_zone: true
-  
+
   - name: SSHProxyELB
     dns_record: "ssh"
     listeners: (( merge ))

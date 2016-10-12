@@ -1,19 +1,22 @@
-# MySQL Backend for Diego
-
-These instructions allow you to either:
-
-* Provision an RDS MySQL Instance as a backend
-* Provision a stand-alone CF-MySQL release
-* Configure Diego to use one of the above configurations
+# Optional Configurations for Diego
 
 ## Table of Contents
 
 1. [Setup a SQL database for Diego](#setup-a-sql-database-for-diego)
   * [Setup RDS MySQL](#setup-aws-rds-mysql) *OR*
   * [Deploy Standalone CF-MySQL](#deploy-standalone-cf-mysql)
-1. [Deploying Diego](#deploy-diego)
+  * [Deploying Diego](#deploy-diego)
+1. [Setup Volume Drivers for Diego](#setup-volume-drivers-for-diego)
+1. [Setup Garden RunC for Diego](#setup-garden-runc-for-diego)
+1. [Setup Garden Windows for Diego](#setup-garden-windows-for-diego)
 
 ## Setup a SQL database for Diego
+
+These instructions allow you to either:
+
+* Provision an RDS MySQL Instance as a backend
+* Provision a stand-alone CF-MySQL release
+* Configure Diego to use one of the above configurations
 
 We support two ways of providing a SQL database. They are:
 
@@ -63,45 +66,45 @@ configurations. All configurations have the same starting steps:
   ```
 
 1. Clone the CF-MySQL release `release-candidate` branch:
-  
+
   ```bash
   git clone -b release-candidate https://github.com/cloudfoundry/cf-mysql-release.git
   export CF_MYSQL_RELEASE_DIR=$PWD/cf-mysql-release
   ```
-  
+
 1. Copy over relevant stubs from the CF-MySQL release to deployment directory:
-  
+
   ```bash
   cp $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/property-overrides.yml \
      $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/instance-count-overrides.yml \
   $DEPLOYMENT_DIR/stubs/cf-mysql/
   ```
-  
+
 1. Copy over CF-based manifest stub:
-  
+
   ```bash
   cp $DEPLOYMENT_DIR/deployments/cf.yml $DEPLOYMENT_DIR/stubs/cf-mysql/cf.yml
   ```
-  
+
 1. Edit `property-overrides.yml`:
   1. Rename the deployment:
-    
+
     ```yaml
     property_overrides:
       deployment_name: diego-mysql
     ```
-    
+
   1. Fill in all `REPLACE_WITH_` properties with appropriate values. Ignore all `UNUSED_VALUE` properties.
   1. Set the `host` property to `null`. Do not remove it entirely, since the
      current manifest-generation scripts for CF-MySQL depend on its presence:
-    
+
     ```yaml
     property_overrides:
       host: null
     ```
-    
+
   1. Add the following `seeded_databases` property to configure a database for Diego to use. Replace `REPLACE_ME_WITH_DB_PASSWORD` with the desired password for the database:
-    
+
     ```yaml
     property_overrides:
       mysql:
@@ -122,7 +125,7 @@ After that you can deploy the CF-MySQL release in either mode:
 #### Single Node CF-MySQL
 
 1. Edits to `instance-count-overrides.yml`:
-  
+
   ```yaml
   instance_count_overrides:
     - name: cf-mysql-broker_z1
@@ -138,9 +141,9 @@ After that you can deploy the CF-MySQL release in either mode:
     - name: proxy_z2
       instances: 0
   ```
-  
+
 1. Generate deployment manifest:
-  
+
   ```bash
   $CF_MYSQL_RELEASE_DIR/scripts/generate-deployment-manifest \
       -c $DEPLOYMENT_DIR/stubs/cf-mysql/cf.yml \
@@ -149,9 +152,9 @@ After that you can deploy the CF-MySQL release in either mode:
       -n $DEPLOYMENT_DIR/stubs/cf-mysql/instance-count-overrides.yml \
   > $DEPLOYMENT_DIR/deployments/cf-mysql.yml
   ```
-  
+
 1. Deploy the CF-MySQL cluster
-  
+
   ```bash
   cd $CF_MYSQL_RELEASE_DIR
   bosh create release && bosh upload release && bosh -d $DEPLOYMENT_DIR/deployments/cf-mysql.yml deploy
@@ -160,14 +163,14 @@ After that you can deploy the CF-MySQL release in either mode:
 #### Highly Available CF-MySQL
 
 1. Copy additional `job-overrides-consul.yml`:
-  
+
   ```bash
   cp $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/job-overrides-consul.yml \
   $DEPLOYMENT_DIR/stubs/cf-mysql/
   ```
-  
+
 1. Edits to `property-overrides.yml`, add the following properties:
-  
+
   ```yaml
   property_overrides:
     proxy:
@@ -175,9 +178,9 @@ After that you can deploy the CF-MySQL release in either mode:
       consul_enabled: true
       consul_service_name: mysql
   ```
-  
+
 1. Generate deployment manifest:
-  
+
   ```bash
   $CF_MYSQL_RELEASE_DIR/scripts/generate-deployment-manifest \
       -c $DEPLOYMENT_DIR/stubs/cf-mysql/cf.yml \
@@ -187,9 +190,9 @@ After that you can deploy the CF-MySQL release in either mode:
       -n $DEPLOYMENT_DIR/stubs/cf-mysql/instance-count-overrides.yml \
   > $DEPLOYMENT_DIR/deployments/cf-mysql.yml
   ```
-  
+
 1. Deploy the CF-MySQL cluster
-  
+
   ```bash
   bosh -d $DEPLOYMENT_DIR/deployments/cf-mysql.yml deploy
   ```
@@ -265,7 +268,7 @@ cd $DIEGO_RELEASE_DIR
   > $DEPLOYMENT_DIR/deployments/diego.yml
 ```
 
-### Fill in Drivers stub
+## Setup Volume Drivers for Diego
 
 To co-locate a driver on the Diego cells, first create a Drivers stub file at `$DEPLOYMENT_DIR/stubs/diego/drivers.yml` with the following contents:
 
@@ -326,7 +329,7 @@ Diego volume services use Docker Volume Plugins to manage volume mounts on each 
     ...
 ```
 
-### Garden RunC
+## Setup Garden RunC for Diego
 
 Generate the Diego manifest with an additional `-g` flag that specifies opting into the Garden-RunC implementation on the Diego Cells.
 
@@ -347,4 +350,46 @@ When deploying Garden-RunC on a previously deployed Diego with Garden-linux you 
 
 ```bash
 bosh -n deploy --recreate
+```
+
+## Setup Garden Windows for Diego
+
+### Upload Windows Stemcell
+
+You will need to download the windows bosh stemcell and upload it to the bosh director with the following:
+
+```
+wget https://s3.amazonaws.com/bosh-windows-stemcells/light-bosh-stemcell-0.0.50-aws-xen-hvm-windows2012R2-go_agent.tgz
+bosh upload stemcell light-bosh-stemcell-0.0.50-aws-xen-hvm-windows2012R2-go_agent.tgz
+```
+
+### Upload Garden Windows Bosh Release
+
+In order to successfully deploy Diego Windows cells, you will need to upload the following bosh release:
+
+```
+bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-windows-release
+```
+
+### Generate Diego Windows Cell Deployment Manifest
+
+See the full [manifest generation documentation](https://github.com/cloudfoundry/diego-release/docs/manifest-generation.md) for more generation instructions.
+Remember that the `-n` instance-count-overrides flag and the `-v` release-versions flags are optional.
+
+```bash
+cd $DIEGO_RELEASE_DIR
+./scripts/generate-windows-cell-deployment-manifest \
+  -c $DEPLOYMENT_DIR/deployments/cf.yml \
+  -i $DEPLOYMENT_DIR/stubs/diego-windows/iaas-settings.yml \
+  -p $DEPLOYMENT_DIR/stubs/diego/property-overrides.yml \
+  -n $DEPLOYMENT_DIR/stubs/diego-windows/instance-count-overrides.yml \
+  -v $DEPLOYMENT_DIR/stubs/diego-windows/release-versions.yml \
+  > $DEPLOYMENT_DIR/deployments/diego-windows.yml
+```
+
+### Deploy
+
+```bash
+bosh deployment $DEPLOYMENT_DIR/deployments/diego-windows.yml
+bosh deploy
 ```

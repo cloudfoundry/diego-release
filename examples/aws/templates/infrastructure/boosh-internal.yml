@@ -83,6 +83,18 @@ subnets:
     cidr: (( meta.vpc.base ".13.0/24" ))
     availability_zone: (( meta.availability_zones.[2] ))
 
+  - name: DiegoWindowsZ1
+    cidr: (( meta.vpc.base ".14.0/24" ))
+    availability_zone: (( meta.availability_zones.[0] ))
+
+  - name: DiegoWindowsZ2
+    cidr: (( meta.vpc.base ".15.0/24" ))
+    availability_zone: (( meta.availability_zones.[1] ))
+
+  - name: DiegoWindowsZ3
+    cidr: (( meta.vpc.base ".16.0/24" ))
+    availability_zone: (( meta.availability_zones.[2] ))
+
 load_balancers:
   - name: CFELB
     listeners:
