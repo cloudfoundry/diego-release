@@ -136,20 +136,20 @@ You can also use the provided stubs to generate a diego manifest.
 
 You will need to make the following changes to the example stubs provided:
 
-- `stubs/iaas-settings.yml`
+- `stubs/diego/iaas-settings.yml`
   - Replace REPLACE_WITH_DIEGO_SUBNET_AZ with the availability zone for the diego subnet
   - Replace REPLACE_WITH_BOSH_STEMCELL_VERSION with the version of the bosh stemcell uploaded to the director
   - Replace REPLACE_WITH_DIEGO_SUBNET_ID with the subnet-id for the diego subnet
-- `stubs/property_overrides.yml`
+- `stubs/diego/property_overrides.yml`
   - Replace REPLACE_WITH_SSH_HOST_KEY with the contents of `ssh-proxy-host-key.pem`.
 
 After replacing these values you can generate the diego manifest by running:
 ```
 pushd $DIEGO_RELEASE_DIR
   ./scripts/generate-deployment-manifest -c $CF_RELEASE_DIR/example_manifests/minimal-aws.yml \
-    -i $DIEGO_RELEASE_DIR/examples/minimal-aws/stubs/iaas-settings.yml \
-    -p $DIEGO_RELEASE_DIR/examples/minimal-aws/stubs/property_overrides.yml \
-    -n $DIEGO_RELEASE_DIR/examples/minimal-aws/stubs/instance_count_overrides.yml
+    -i $DIEGO_RELEASE_DIR/examples/minimal-aws/stubs/diego/iaas-settings.yml \
+    -p $DIEGO_RELEASE_DIR/examples/minimal-aws/stubs/diego/property_overrides.yml \
+    -n $DIEGO_RELEASE_DIR/examples/minimal-aws/stubs/diego/instance_count_overrides.yml
 popd
 ```
 
@@ -169,5 +169,94 @@ bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-rel
 ```
 pushd $DIEGO_RELEASE_DIR
 bosh -d examples/minimal-aws/diego.yml deploy
+popd
+```
+
+### Deploy Diego Windows Cells (optional)
+
+### Create a Diego Windows Subnet
+
+- Click on "Subnets" from the VPC Dashboard
+- Click "Create Subnet"
+- Fill in
+  - Name tag: diego_windows
+  - VPC: bosh
+  - Availability Zone: Pick the same Availability Zone as the bosh Subnet
+    - Replace REPLACE_WITH_DIEGO_WINDOWS_SUBNET_AZ in the example manifest with the Availability Zone you chose
+  - CIDR block: 10.0.20.0/24
+  - Click "Yes, Create"
+- Replace REPLACE_WITH_DIEGO_WINDOWS_SUBNET_ID in the example manifest with the Subnet ID for the diego Subnet
+- Select the `diego_windows` Subnet from the Subnet list
+- Click the name of the "Route table:" to view the route tables
+- Select the route table from the list
+- Click "Routes" in the bottom window
+- Click "Edit"
+- Fill in a new route
+  - Destination: 0.0.0.0/0
+  - Target: Select the NAT instance from the list
+    - Update the security group for this NAT instance to add the following rule:
+      - Type: All traffic
+      - Protocol: All
+      - Port Range: 0 - 65535
+      - Source: Custom IP / 10.0.20.0/24
+- Click "Save"
+
+### Upload Windows Stemcell
+
+You will need to download the windows bosh stemcell and upload it to the bosh director with the following:
+
+```
+wget https://s3.amazonaws.com/bosh-windows-stemcells/light-bosh-stemcell-0.0.50-aws-xen-hvm-windows2012R2-go_agent.tgz
+bosh upload stemcell light-bosh-stemcell-0.0.50-aws-xen-hvm-windows2012R2-go_agent.tgz
+```
+
+
+### Fill in the Needed Values in the Diego Windows Cells Manifest
+
+You will need to make the following changes to the example `diego_windows_cells.yml` file provided:
+
+- Replace REPLACE_WITH_BOSH_WINDOWS_STEMCELL_VERSION with the version of the BOSH stemcell uploaded to the director.
+- Replace REPLACE_WITH_DIRECTOR_ID with the UUID obtained from running `bosh status`.
+
+Some of the values come from the CF manifest constructed by modifying [minimal-aws.yml](https://github.com/cloudfoundry/cf-release/blob/master/example_manifests/minimal-aws.yml):
+
+- Replace the `properties.consul` properties that begin with REPLACE_WITH with the values of `properties.consul` from your CF manifest.
+- Replace the REPLACE_WITH_ETCD_MACHINES_FROM_CF value in the `properties.loggregator.etcd.machines` property with the value of `properties.loggregator.etcd.machines` from your CF manifest.
+
+
+### Generate Diego Windows Cells Manifest from Stubs (optional)
+
+You can also use the provided stubs to generate a diego windows cells deployment manifest.
+
+You will need to make the following changes to the example stubs provided:
+
+- `stubs/diego-windows/iaas-settings.yml`
+  - Replace REPLACE_WITH_DIEGO_WINDOWS_SUBNET_AZ with the availability zone for the diego_windows subnet
+  - Replace REPLACE_WITH_BOSH_WINDOWS_STEMCELL_VERSION with the version of the bosh stemcell uploaded to the director
+  - Replace REPLACE_WITH_DIEGO_WINDOWS_SUBNET_ID with the subnet-id for the diego_windows subnet
+
+After replacing these values you can generate the diego windows cell manifest by running:
+```
+pushd $DIEGO_RELEASE_DIR
+  ./scripts/generate-windows-cell-deployment-manifest -c $CF_RELEASE_DIR/example_manifests/minimal-aws.yml \
+    -i $DIEGO_RELEASE_DIR/examples/minimal-aws/stubs/diego-windows/iaas-settings.yml \
+    -p $DIEGO_RELEASE_DIR/examples/minimal-aws/stubs/diego/property-overrides.yml \
+    -n $DIEGO_RELEASE_DIR/examples/minimal-aws/stubs/diego-windows/instance-count-overrides.yml
+popd
+```
+
+### Upload Garden Windows Bosh Release
+
+In order to successfully deploy Diego Windows cells, you will need to upload the following bosh release:
+
+```
+bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-windows-release
+```
+
+### Deploy Diego Windows Cells
+
+```
+pushd $DIEGO_RELEASE_DIR
+bosh -d examples/minimal-aws/diego_windows_cells.yml deploy
 popd
 ```
