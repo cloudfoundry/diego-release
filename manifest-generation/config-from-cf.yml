@@ -19,6 +19,10 @@ config_from_cf:
     server_key: (( merge ))
   etcd:
     advertise_urls_dns_suffix: (( merge ))
+    ca_cert: (( merge ))
+    client_cert: (( merge ))
+    client_key: (( merge ))
+    require_ssl: (( merge ))
   loggregator:
     etcd_ca_cert: (( merge ))
     etcd_require_ssl: (( merge ))
