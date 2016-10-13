@@ -44,6 +44,7 @@ This document is for describing options to Diego manifest generation.
       -x \
       -d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml \
       -g \
+      -N manifest-generation/bosh-lite-stubs/experimental/netman/stub.yml \
       -b
 
 ### Options
@@ -136,4 +137,4 @@ volman_overrides:
 
 ##### **Experimental** Container Networking Stub File
 
-The optional -N flag is used to specify the path for the [netman](https://github.com/cloudfoundry-incubator/netman-release) stub file.
+The optional -N flag is used to specify the path for the [netman](https://github.com/cloudfoundry-incubator/netman-release) stub file.  Netman requires Garden-runC, therefore the -g flag must also be set.
