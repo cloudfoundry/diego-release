@@ -19,7 +19,7 @@ These instructions allow you to:
 
 As part of the deployment process, you must install the following dependencies:
 
-* [Go 1.6](https://golang.org/doc/install)
+* [Go 1.7.1](https://golang.org/doc/install)
 * [godep](https://github.com/tools/godep)
 * [boosh](https://github.com/vito/boosh)
 * [spiff](https://github.com/cloudfoundry-incubator/spiff)
