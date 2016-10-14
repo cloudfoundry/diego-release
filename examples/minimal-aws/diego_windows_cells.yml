@@ -1,5 +1,5 @@
 ---
-name: diego
+name: diego-windows
 director_uuid: REPLACE_WITH_DIRECTOR_ID
 
 releases:
@@ -102,6 +102,6 @@ properties:
     etcd:
       machines: REPLACE_WITH_ETCD_MACHINES_FROM_CF
   metron_agent:
-    deployment: diego
+    deployment: diego-windows
   metron_endpoint:
     shared_secret: PASSWORD

@@ -368,7 +368,49 @@ bosh upload stemcell light-bosh-stemcell-0.0.50-aws-xen-hvm-windows2012R2-go_age
 In order to successfully deploy Diego Windows cells, you will need to upload the following bosh release:
 
 ```
-bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-windows-release
+ bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-windows-bosh-release
+```
+
+### Edit the Instance-Count-Overrides Stub
+
+Copy the example stub to `$DEPLOYMENT_DIR/stubs/diego/instance-count-overrides.yml`:
+
+```bash
+cp $DIEGO_RELEASE_DIR/examples/aws/stubs/diego/instance-count-overrides-example.yml $DEPLOYMENT_DIR/stubs/diego-windows/instance-count-overrides.yml
+```
+
+Edit that file to change the instance counts of the deployed Diego VMs.
+
+And example instance count overrides stub is below:
+
+```yaml
+---
+instance_count_overrides:
+  cell_windows_z1:
+    instances: 5
+  cell_windows_z2:
+    instances: 0
+```
+
+### Edit the Release-Versions Stub
+
+Copy the example release-versions stub to the correct location:
+
+```bash
+cp $DIEGO_RELEASE_DIR/examples/aws/stubs/diego/release-versions.yml $DEPLOYMENT_DIR/stubs/diego-windows/release-versions.yml
+```
+
+Edit it to change the versions of the Diego and Garden-Windows in
+the Diego Windows cell deployment, instead of using the latest versions uploaded to the BOSH
+director.
+
+An example release versions stub is below:
+
+```yaml
+---
+release-versions:
+  diego: latest
+  garden-windows: latest
 ```
 
 ### Generate Diego Windows Cell Deployment Manifest

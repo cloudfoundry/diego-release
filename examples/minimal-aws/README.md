@@ -250,7 +250,7 @@ popd
 In order to successfully deploy Diego Windows cells, you will need to upload the following bosh release:
 
 ```
-bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-windows-release
+bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-windows-bosh-release
 ```
 
 ### Deploy Diego Windows Cells

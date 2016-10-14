@@ -39,6 +39,8 @@ properties:
         secret: REPLACE_WITH_CC_ROUTING_PASSWORD
       cloud_controller_username_lookup:
         secret: REPLACE_WITH_CLOUD_CONTROLLER_USERNAME_LOOKUP_PASSWORD
+      cc-service-dashboards:
+        secret: REPLACE_WITH_CC_SERVICE_DASHBOARDS_PASSWORD
       doppler:
         secret: REPLACE_WITH_DOPPLER_PASSWORD
       login:
@@ -55,7 +57,14 @@ properties:
         secret: REPLACE_WITH_TCP_ROUTER_PASSWORD
     scim:
       users:
-      - admin|REPLACE_WITH_ADMIN_PASSWORD|scim.write,scim.read,openid,cloud_controller.admin,doppler.firehose
+      - name: admin
+        password: REPLACE_WITH_ADMIN_PASSWORD
+        groups:
+        - scim.write
+        - scim.read
+        - openid
+        - cloud_controller.admin
+        - doppler.firehose
   smoke_tests:
     api: REPLACE_WITH_API_DOMAIN
     apps_domain: REPLACE_WITH_APPS_DOMAIN
