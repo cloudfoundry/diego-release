@@ -32,6 +32,7 @@ export GODEBUG=netdns=cgo
         -bbsMaxIdleConnsPerHost=<%= value %> \
       <% end %> \
       -consulCluster=http://127.0.0.1:8500 \
+      -consulTTL=<%= p("consul.ttl_in_seconds") %> \
       -debugAddr=<%= p("diego.auctioneer.debug_addr") %> \
       -listenAddr=<%= p("diego.auctioneer.listen_addr") %> \
       -dropsondePort=<%= p("diego.auctioneer.dropsonde_port") %> \

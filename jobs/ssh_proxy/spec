@@ -76,4 +76,6 @@ properties:
   diego.ssh_proxy.bbs.max_idle_conns_per_host:
     description: "maximum number of idle http connections"
 
-
+  consul.ttl_in_seconds:
+    description: "TTL value for consul registration in seconds"
+    default: 3
