@@ -104,9 +104,9 @@ To be able to run unit tests, you'll also need to install the following binaries
 
     # Install consul
     if uname -a | grep Darwin; then os=darwin; else os=linux; fi
-    curl -L -o $TMPDIR/consul-0.6.4.zip "https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_${os}_amd64.zip"
-    unzip $TMPDIR/consul-0.6.4.zip -d $GOPATH/bin
-    rm $TMPDIR/consul-0.6.4.zip
+    curl -L -o $TMPDIR/consul-0.7.0.zip "https://releases.hashicorp.com/consul/0.7.0/consul_0.7.0_${os}_amd64.zip"
+    unzip $TMPDIR/consul-0.7.0.zip -d $GOPATH/bin
+    rm $TMPDIR/consul-0.7.0.zip
 
 To be able to run the integration test suite ("inigo"), you'll need to have a local [Concourse](http://concourse.ci) VM. Follow the instructions on the Concourse [README](https://github.com/concourse/concourse/blob/master/README.md) to set it up locally using [vagrant](https://www.vagrantup.com/). Download the fly CLI as instructed and move it somewhere visible to your `$PATH`.
 
