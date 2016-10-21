@@ -7,6 +7,9 @@ templates:
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
+  rep_ca.crt.erb: config/certs/rep/ca.crt
+  rep_client.crt.erb: config/certs/rep/client.crt
+  rep_client.key.erb: config/certs/rep/client.key
 
 packages:
   - pid_utils
@@ -48,3 +51,20 @@ properties:
     description: "capacity of the tls client cache"
   diego.auctioneer.bbs.max_idle_conns_per_host:
     description: "maximum number of idle http connections"
+
+
+  diego.auctioneer.rep.require_tls:
+    description: "Whether to require TLS for communication to the securable rep API server"
+    default: false
+  diego.auctioneer.rep.ca_cert:
+    description: "CA cert for communication to the rep."
+    default: ""
+  diego.auctioneer.rep.client_cert:
+    description: "Client cert for communication to the rep."
+    default: ""
+  diego.auctioneer.rep.client_key:
+    description: "Client key for communication to the rep."
+    default: ""
+  diego.auctioneer.rep.client_session_cache_size:
+    description: "capacity of the tls client cache"
+    default: 0

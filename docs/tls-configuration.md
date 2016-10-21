@@ -1,4 +1,4 @@
-##<a name="tls-configuration"></a>TLS Configuration
+## <a name="tls-configuration"></a>TLS Configuration
 
 Diego Release can be configured to require TLS for communication with etcd.
 To enable or disable TLS communication with etcd, the `etcd.require_ssl`
@@ -21,6 +21,11 @@ the BBS server, via the `diego.bbs.require_ssl` and
 `true`. When enabled, the operator must provide TLS certificates and keys for
 the BBS server and its clients (other components in the Diego deployment).
 
+Finally, TLS with mutual authentication can be enabled for communication to
+the rep servers on the cell vms, via the `diego.rep.require_tls` and
+`diego.CLIENT.rep.require_tls` BOSH properties. These properties default to
+`false`. When enabled, the operator must provide TLS certificates and keys for
+the rep server and its clients (other components in the Diego deployment).
 
 ### Generating TLS Certificates
 
@@ -32,7 +37,7 @@ following steps to successfully generate the required certificates.
 > [scripts/generate-diego-ca-certs](scripts/generate-diego-ca-certs),
 > [scripts/generate-etcd-certs](scripts/generate-etcd-certs), and
 > [scripts/generate-bbs-certs](scripts/generate-bbs-certs)
-
+> [scripts/generate-rep-certs](scripts/generate-rep-certs)
 
 1. Get certstrap
    ```bash
@@ -128,7 +133,45 @@ following steps to successfully generate the required certificates.
    `properties.diego.CLIENT.bbs.client_key` should be set to the certificate in
    `out/clientName.key`.
 
-7. (Optional) Initialize a new peer certificate authority.
+7. Create and sign a certificate for the Rep server.
+   ```
+   $ ./certstrap request-cert --common-name "cell.service.cf.internal" --domain "*.cell.service.cf.internal,cell.service.cf.internal"
+   Enter passphrase (empty for no passphrase): <hit enter for no password>
+
+   Enter same passphrase again: <hit enter for no password>
+
+   Created out/cell.service.cf.internal.key
+   Created out/cell.service.cf.internal.csr
+
+   $ ./certstrap sign cell.service.cf.internal --CA diegoCA
+   Created out/cell.service.cf.internal.crt from out/cell.service.cf.internal.csr signed by out/diegoCA.key
+   ```
+
+   The manifest property `properties.diego.rep.server_cert` should be set to the certificate in `out/cell.service.cf.internal.crt`.
+   The manifest property `properties.diego.rep.server_key` should be set to the certificate in `out/cell.service.cf.internal.key`.
+
+8. Create and sign a certificate for Rep clients.
+   ```
+   $ ./certstrap request-cert --common-name "clientName"
+   Enter passphrase (empty for no passphrase): <hit enter for no password>
+
+   Enter same passphrase again: <hit enter for no password>
+
+   Created out/clientName.key
+   Created out/clientName.csr
+
+   $ ./certstrap sign clientName --CA diegoCA
+   Created out/clientName.crt from out/clientName.csr signed by out/diegoCA.key
+   ```
+
+   For each client of the rep (i.e. `auctioneer` and `bbs`), the manifest
+   properties `properties.diego.CLIENT.rep.client_cert` should be set to the
+   certificate in `out/clientName.crt`, and the manifest properties
+   `properties.diego.CLIENT.rep.client_key` should be set to the certificate in
+   `out/clientName.key`. Where possible values for `CLIENT` are `auctioneer`
+   and `bbs`.
+
+9. (Optional) Initialize a new peer certificate authority.
    ```
    $ ./certstrap --depot-path peer init --common-name "peerCA"
    Enter passphrase (empty for no passphrase): <hit enter for no password>
@@ -141,22 +184,22 @@ following steps to successfully generate the required certificates.
 
    The manifest property `properties.etcd.peer_ca_cert` should be set to the certificate in `peer/peerCA.crt`.
 
-8. (Optional) Create and sign a certificate for the etcd peers.
-   ```
-   $ ./certstrap --depot-path peer request-cert --common-name "etcd.service.cf.internal" --domain "*.etcd.service.cf.internal,etcd.service.cf.internal"
-   Enter passphrase (empty for no passphrase): <hit enter for no password>
+10. (Optional) Create and sign a certificate for the etcd peers.
+    ```
+    $ ./certstrap --depot-path peer request-cert --common-name "etcd.service.cf.internal" --domain "*.etcd.service.cf.internal,etcd.service.cf.internal"
+    Enter passphrase (empty for no passphrase): <hit enter for no password>
 
-   Enter same passphrase again: <hit enter for no password>
+    Enter same passphrase again: <hit enter for no password>
 
-   Created peer/etcd.service.cf.internal.key
-   Created peer/etcd.service.cf.internal.csr
+    Created peer/etcd.service.cf.internal.key
+    Created peer/etcd.service.cf.internal.csr
 
-   $ ./certstrap --depot-path peer sign etcd.service.cf.internal --CA diegoCA
-   Created peer/etcd.service.cf.internal.crt from peer/etcd.service.cf.internal.csr signed by peer/peerCA.key
-   ```
+    $ ./certstrap --depot-path peer sign etcd.service.cf.internal --CA diegoCA
+    Created peer/etcd.service.cf.internal.crt from peer/etcd.service.cf.internal.csr signed by peer/peerCA.key
+    ```
 
-   The manifest property `properties.etcd.peer_cert` should be set to the certificate in `peer/etcd.service.cf.internal.crt`.
-   The manifest property `properties.etcd.peer_key` should be set to the certificate in `peer/etcd.service.cf.internal.key`.
+    The manifest property `properties.etcd.peer_cert` should be set to the certificate in `peer/etcd.service.cf.internal.crt`.
+    The manifest property `properties.etcd.peer_key` should be set to the certificate in `peer/etcd.service.cf.internal.key`.
 
 
 ### Custom TLS Certificate Generation

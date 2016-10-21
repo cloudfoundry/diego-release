@@ -53,6 +53,7 @@ In order to deploy Diego to AWS, follow the instructions in [examples/aws](examp
   - [Supported Data Stores for Diego](docs/data-stores.md)
   - [Data Store Encryption](docs/data-store-encryption.md)
   - [TLS Configuration](docs/tls-configuration.md)
+  - [Upgrading insecure deployment of rep](docs/upgrading-to-secure-deployment.md)
   - [Diego's Pivotal Tracker project](https://www.pivotaltracker.com/n/projects/1003146) shows what we're working on these days.
   - [Diego Metrics](docs/metrics.md) lists the various metrics that Diego emits through the Loggregator system.
 

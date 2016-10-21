@@ -55,7 +55,18 @@ etcd_flags=""
   "
 <% end %>
 
-/var/vcap/packages/bbs/bin/bbs ${etcd_flags} ${bbs_sec_flags} ${sql_sec_flags} \
+rep_sec_flags=" \
+   -repRequireTLS=<%= p("diego.bbs.rep.require_tls") %> \
+   -repClientSessionCacheSize=<%= p("diego.bbs.rep.client_session_cache_size") %>"
+
+<% if p("diego.bbs.rep.ca_cert") != "" && p("diego.bbs.rep.client_key") != "" && p("diego.bbs.rep.client_cert") != "" %>
+ rep_sec_flags="${rep_sec_flags} \
+   -repClientCert=${CONF_DIR}/certs/rep/client.crt \
+   -repClientKey=${CONF_DIR}/certs/rep/client.key \
+   -repCACert=${CONF_DIR}/certs/rep/ca.crt"
+<% end %>
+
+/var/vcap/packages/bbs/bin/bbs ${etcd_flags} ${bbs_sec_flags} ${rep_sec_flags} ${sql_sec_flags} \
   -activeKeyLabel=<%= Shellwords.shellescape(p("diego.bbs.active_key_label")) %> \
   -advertiseURL=${ad_url_scheme}<%="://#{name.gsub('_', '-')}-#{spec.index}.#{p("diego.bbs.advertisement_base_hostname")}:#{p("diego.bbs.listen_addr").split(':')[1]}" %> \
   -auctioneerAddress=<%= p("diego.bbs.auctioneer.api_url") %> \

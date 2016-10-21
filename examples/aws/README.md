@@ -379,6 +379,11 @@ DEPLOYMENT_DIR/certs
 |  |- client.key
 |  |- server.crt
 |  |- server.key
+|-rep-certs         # generated via diego-release/scripts/generate-diego-certs
+|  |- client.crt
+|  |- client.key
+|  |- server.crt
+|  |- server.key
 |-consul-certs      # generated via cf-release/scripts/generate-consul-certs
 |  |- agent.crt
 |  |- agent.key
@@ -397,9 +402,9 @@ DEPLOYMENT_DIR/certs
 
 You can ignore any files with a `crl` or `csr` extension.
 
-The certificates in `consul-certs` are used to set SSL properties for the consul VMs, and the certificates in `bbs-certs` and `etcd-certs` are used to set SSL properties on the Diego etcd cluster and BBS API servers.
+The certificates in `consul-certs` are used to set SSL properties for the consul VMs, and the certificates in `bbs-certs` and `etcd-certs` are used to set SSL properties on the Diego etcd cluster and BBS API servers. Finally, certificates in `rep-certs` are used to secure communication between the `Auctioneer`, `BBS` and the `Rep`
 
-####<a name="generating-ssh-proxy-host-key"></a>Generating SSH Proxy Host Key and Fingerprint
+#### <a name="generating-ssh-proxy-host-key"></a>Generating SSH Proxy Host Key and Fingerprint
 
 To enable SSH access to CF instances running on Diego, generate a host key and fingerprint for the SSH proxy as follows, entering an empty string for the passphrase when prompted:
 

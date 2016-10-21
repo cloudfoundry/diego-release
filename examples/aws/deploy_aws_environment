@@ -70,6 +70,11 @@ $(block client_cert certs/bbs-certs/client.crt  | indent | indent)
 $(block client_key  certs/bbs-certs/client.key  | indent | indent)
 $(block server_cert certs/bbs-certs/server.crt  | indent | indent)
 $(block server_key  certs/bbs-certs/server.key  | indent | indent)
+  rep:
+$(block client_cert certs/rep-certs/client.crt  | indent | indent)
+$(block client_key  certs/rep-certs/client.key  | indent | indent)
+$(block server_cert certs/rep-certs/server.crt  | indent | indent)
+$(block server_key  certs/rep-certs/server.key  | indent | indent)
   etcd:
 $(block client_cert certs/etcd-certs/client.crt | indent | indent)
 $(block client_key  certs/etcd-certs/client.key | indent | indent)

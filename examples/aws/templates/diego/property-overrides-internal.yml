@@ -1,4 +1,10 @@
 property_overrides:
+  rep:
+    ca_cert: (( diego_credentials.diego_ca ))
+    client_cert: (( diego_credentials.rep.client_cert ))
+    client_key: (( diego_credentials.rep.client_key ))
+    server_cert: (( diego_credentials.rep.server_cert ))
+    server_key: (( diego_credentials.rep.server_key ))
   bbs:
     ca_cert: (( diego_credentials.diego_ca ))
     client_cert: (( diego_credentials.bbs.client_cert ))

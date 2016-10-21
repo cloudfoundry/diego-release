@@ -497,6 +497,12 @@ properties:
         require_ssl: (( property_overrides.bbs.require_ssl || nil ))
         client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
+      rep:
+        ca_cert: (( property_overrides.rep.ca_cert || nil ))
+        client_cert: (( property_overrides.rep.client_cert || nil ))
+        client_key: (( property_overrides.rep.client_key || nil ))
+        require_tls: (( property_overrides.auctioneer.rep.require_tls || nil ))
+        client_session_cache_size: (( property_overrides.rep.client_session_cache_size || nil ))
       cell_state_timeout: (( property_overrides.auctioneer.cell_state_timeout || nil ))
       starting_container_weight: (( property_overrides.auctioneer.starting_container_weight || nil ))
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
@@ -531,6 +537,12 @@ properties:
         kick_task_duration_in_seconds: (( property_overrides.bbs.convergence.kick_task_duration_in_seconds || nil ))
         expire_completed_task_duration_in_seconds: (( property_overrides.bbs.convergence.expire_completed_task_duration_in_seconds || nil ))
         expire_pending_task_duration_in_seconds: (( property_overrides.bbs.convergence.expire_pending_task_duration_in_seconds || nil ))
+      rep:
+        ca_cert: (( property_overrides.rep.ca_cert || nil ))
+        client_cert: (( property_overrides.rep.client_cert || nil  ))
+        client_key: (( property_overrides.rep.client_key || nil ))
+        require_tls: (( property_overrides.bbs.rep.require_tls || nil ))
+        client_session_cache_size: (( property_overrides.rep.client_session_cache_size || nil ))
     executor:
       disk_capacity_mb: (( property_overrides.executor.disk_capacity_mb || nil ))
       max_cache_size_in_bytes: (( property_overrides.executor.max_cache_size_in_bytes || nil ))
