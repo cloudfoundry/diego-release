@@ -56,6 +56,9 @@
   -gardenHealthcheckProcessUser=#{p("diego.executor.garden_healthcheck.process.user")} \
   -gardenHealthcheckProcessPath=C:\\windows\\system32\\cmd.exe \
   -gardenHealthcheckProcessArgs="/c,dir" \
-  -logLevel=#{p("diego.rep.log_level")}
-  }
+  -logLevel=#{p("diego.rep.log_level")} \
+  } +
+  " #{p("diego.rep.placement_tags").map { |tag| "-placementTag #{Shellwords.shellescape(tag)}" }.join(" ")} " +
+  " #{p("diego.rep.optional_placement_tags").map { |tag| "-optionalPlacementTag #{Shellwords.shellescape(tag)}" }.join(" ")} "
+
   %>
