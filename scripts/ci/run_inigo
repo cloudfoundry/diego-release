@@ -7,6 +7,10 @@ export PATH=${GOROOT}/bin:${PATH}
 
 apt-get install -y resolvconf
 
+# Adds the cell announced urls to the /etc/hosts file. We cannot use consul
+# reliably since there could be multiple consuls running on multiple ginkgo
+# nodes. Adding all of them to the /etc/resolv.conf will lead potential to
+# cross talking across the different tests.
 function setup_localhost_hosts() {
   local hosts_file
   hosts_file=/etc/hosts
@@ -15,6 +19,10 @@ function setup_localhost_hosts() {
           echo "127.0.0.1 the-cell-id-${ginkgoNode}-${repN}.cell.service.cf.internal" >> "${hosts_file}"
       done
   done
+
+  # The following rep cell ids are used in the evacuation test :(
+  echo "127.0.0.1 cell-a.cell.service.cf.internal" >> "${hosts_file}"
+  echo "127.0.0.1 cell-b.cell.service.cf.internal" >> "${hosts_file}"
 }
 
 build_gardenlinux () {
