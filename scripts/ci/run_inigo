@@ -5,6 +5,19 @@ set -e -x
 export GOROOT=/usr/local/go
 export PATH=${GOROOT}/bin:${PATH}
 
+apt-get install -y resolvconf
+
+function setup_localhost_resolvconf() {
+  local resolvconf_file
+  resolvconf_file=/etc/resolvconf/resolv.conf.d/head
+
+  if ! grep -qE '127.0.0.1\b' "${resolvconf_file}"; then
+    echo 'nameserver 127.0.0.1' > "${resolvconf_file}"
+  fi
+
+  resolvconf -u
+}
+
 build_gardenlinux () {
   echo "Building garden-linux"
   export GARDEN_GOPATH=$PWD/garden-linux-release
@@ -48,6 +61,8 @@ build_gardenrunc () {
     popd
   popd
 }
+
+setup_localhost_resolvconf
 
 if [ -z "${USE_GARDEN_RUNC}" ]; then
   build_gardenlinux
