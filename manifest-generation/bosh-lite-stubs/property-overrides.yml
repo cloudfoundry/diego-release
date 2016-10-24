@@ -234,7 +234,7 @@ property_overrides:
     etcd:
       machines: ["etcd.service.cf.internal"]
     rep:
-      require_tls: true
+      require_tls: false
     require_ssl: true
     ca_cert: |
       -----BEGIN CERTIFICATE-----
@@ -392,7 +392,7 @@ property_overrides:
   rep:
     evacuation_timeout_in_seconds: 60
     log_level: debug
-    require_tls: true
+    require_tls: false
     ca_cert: |
       -----BEGIN CERTIFICATE-----
       MIIE/TCCAuegAwIBAgIBATALBgkqhkiG9w0BAQswEDEOMAwGA1UEAxMFYmJzQ0Ew
@@ -569,4 +569,4 @@ property_overrides:
     diego_credentials: "bosh-lite-ssh-secret"
   auctioneer:
     rep:
-      require_tls: true
+      require_tls: false
