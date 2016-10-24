@@ -1,7 +1,0 @@
-# vim: set ft=sh
-
-set -e -x
-
-
-cd code.cloudfoundry.org/diegocanaryapp
-cp -a . ${BOSH_INSTALL_TARGET}
