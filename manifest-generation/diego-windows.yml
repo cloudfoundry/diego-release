@@ -45,6 +45,8 @@ resource_pools:
 jobs:
   - name: cell_windows_z1
     templates:
+      - name: hakim
+        release: garden-windows
       - name: rep_windows
         release: diego
       - name: garden-windows
@@ -69,6 +71,8 @@ jobs:
 
   - name: cell_windows_z2
     templates:
+      - name: hakim
+        release: garden-windows
       - name: rep_windows
         release: diego
       - name: garden-windows
@@ -93,6 +97,8 @@ jobs:
 
   - name: cell_windows_z3
     templates:
+      - name: hakim
+        release: garden-windows
       - name: rep_windows
         release: diego
       - name: garden-windows
