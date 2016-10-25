@@ -36,7 +36,7 @@ base_releases="${manifest_generation}/base-releases.yml"
 garden_properties=""
 bridge_properties=""
 
-while getopts "c:i:p:n:v" opt; do
+while getopts "c:i:p:n:v:" opt; do
   case $opt in
     c)
       cf_deployment_manifest=$OPTARG
