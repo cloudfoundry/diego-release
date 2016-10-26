@@ -49,8 +49,13 @@ property_overrides:
   stager:
     log_level: debug
   rep:
+    ca_cert: (( merge ))
+    client_cert: (( merge ))
+    client_key: (( merge ))
     log_level: debug
-    require_tls: false
+    require_tls: true
+    server_cert: (( merge ))
+    server_key: (( merge ))
   garden:
     log_level: debug
   skip_cert_verify: true
