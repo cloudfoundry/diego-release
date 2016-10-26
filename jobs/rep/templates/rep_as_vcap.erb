@@ -66,6 +66,7 @@ exec /var/vcap/packages/rep/bin/rep ${bbs_sec_flags} ${rep_sec_flags} \
   -listenAddrSecurable=<%= p("diego.rep.listen_addr_securable") %> \
   -requireTLS=<%= p("diego.rep.require_tls") %> \
   -advertiseDomain=<%= p("diego.rep.advertise_domain") %> \
+  -enableInsecurableApiServer=<%= p("diego.rep.enable_insecurable_api_server") %> \
   <%= p("diego.rep.preloaded_rootfses").map { |rootfs| "-preloadedRootFS #{rootfs}" }.join(" ") %> \
   <%= p("diego.rep.rootfs_providers").map { |provider| "-rootFSProvider #{provider}" }.join(" ") %> \
   <%= p("diego.rep.placement_tags").map { |tag| "-placementTag #{Shellwords.shellescape(tag)}" }.join(" ") %> \

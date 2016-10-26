@@ -31,6 +31,7 @@
   -debugAddr="#{p("diego.rep.debug_addr")}" \
   -listenAddr="#{p("diego.rep.listen_addr")}" \
   -advertiseDomain="#{p("diego.rep.advertise_domain")}" \
+  -enableInsecurableApiServer="#{p("diego.rep.enable_insecurable_api_server")}" \
   #{preloaded_rootfses} \
   -cellID=#{spec.job.name}-#{spec.index}-#{spec.id} \
   -zone="#{spec.az || p("diego.rep.zone")}" \
