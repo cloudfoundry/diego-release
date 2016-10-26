@@ -7,3 +7,4 @@
 - [Diego Manifest Generation](manifest-generation.md)
 - [Diego Metrics](metrics.md)
 - [TLS Configuration](tls-configuration.md)
+- [Upgrade the cell rep API to mutual TLS](upgrade-to-secure-cell-rep-api.md) without downtime.
