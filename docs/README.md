@@ -8,8 +8,7 @@
 - [Deployment Constraints](deployment-constraints.md)
 - [Diego Manifest Generation](manifest-generation.md)
 - [Diego Metrics](metrics.md)
-- [Pushing a CF Application to the Diego Runtime](push-cf-app-to-diego.md)
 - [Release Compatibility](release-compatibility.md)
 - [Required BOSH Versions](required-bosh-versions.md)
 - [TLS Configuration](tls-configuration.md)
-- [Upgrade the cell rep API to mutual TLS](upgrade-to-secure-cell-rep-api.md) without downtime.
+- [Upgrading to a TLS-Secured Cell Rep API](upgrading-secure-cell-rep-api.md) without downtime.
