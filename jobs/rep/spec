@@ -76,13 +76,10 @@ properties:
     default: false
   diego.rep.ca_cert:
     description: "PEM-encoded CA certificate"
-    default: ""
   diego.rep.server_cert:
     description: "PEM-encoded server certificate"
-    default: ""
   diego.rep.server_key:
     description: "PEM-encoded server key"
-    default: ""
 
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
