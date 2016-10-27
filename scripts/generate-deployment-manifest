@@ -22,10 +22,10 @@ OPTIONAL ARGUMENTS:
     -v <versions-path>  Path to release-versions stub file.
     -s <sql-db-path>    Path to SQL stub file.
     -x                  Opt out of deploying etcd with the database vms (requires sql)
-    -g                  Opt into using garden-runc-release for cells.
     -b                  Opt into using capi-release for bridge components.
     -d <voldriver-path> Path to voldriver stub file.
     -N <netman-path>    Path to netman stub file
+    -L                  Opt into using garden-linux-release for cells. (DEPRECATED)
 
 EXAMPLE:
     $0 \\
@@ -37,7 +37,6 @@ EXAMPLE:
       -s manifest-generation/bosh-lite-stubs/diego-sql.yml \\
       -x \\
       -d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml \\
-      -g \\
       -b
 EOF
   exit 1
@@ -47,7 +46,7 @@ base_releases="${manifest_generation}/base-releases.yml"
 garden_properties=""
 bridge_properties=""
 
-while getopts "c:i:p:n:k:v:s:d:N:krbgx" opt; do
+while getopts "c:i:p:n:k:v:s:d:N:krbgxL" opt; do
   case $opt in
     c)
       cf_deployment_manifest=$OPTARG
@@ -62,7 +61,8 @@ while getopts "c:i:p:n:k:v:s:d:N:krbgx" opt; do
       instance_counts=$OPTARG
       ;;
     g)
-      garden_properties="${manifest_generation}/garden-runc-properties.yml";
+      >&2 echo "DEPRECATED -g flag: garden-runc is now the default backend and -g is not needed."
+      dash_g_provided="true"
       ;;
     b)
       bridge_properties="${manifest_generation}/capi-bridge-properties.yml";
@@ -85,6 +85,10 @@ while getopts "c:i:p:n:k:v:s:d:N:krbgx" opt; do
     N)
       netman_settings=$OPTARG
       ;;
+    L)
+      >&2 echo "DEPRECATED -L flag: Support for garden-linux is being deprecated. Please migrate to garden-runc."
+      garden_properties="${manifest_generation}/garden-linux-properties.yml";
+      ;;
     x)
       bbs_properties="${manifest_generation}/bbs-overrides-no-etcd.yml"
       ;;
@@ -94,6 +98,14 @@ while getopts "c:i:p:n:k:v:s:d:N:krbgx" opt; do
       ;;
   esac
 done
+
+if [ "${dash_g_provided}x" != "x" ]; then
+  if [ "${garden_properties}x" != "x" ]; then
+    >&2 echo "ERROR: Only one of -g or -L may be specified."
+    >&2 echo
+    usage
+  fi
+fi
 
 if [ -z ${cf_deployment_manifest} ]; then
   >&2 echo "ERROR: CF manifest file is missing"

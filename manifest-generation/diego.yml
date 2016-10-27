@@ -760,10 +760,10 @@ base_etcd_properties:
     election_timeout_in_milliseconds: (( property_overrides.etcd.election_timeout_in_milliseconds || nil ))
 
 garden_overrides:
-  job_release: garden-linux
+  job_release: garden-runc
   release:
-    name: garden-linux
-    version: (( release_versions.garden-linux || release_versions.garden_linux || "latest" ))
+    name: garden-runc
+    version: (( release_versions.garden-runc || "latest" ))
 
 empty_hash: {}
 
