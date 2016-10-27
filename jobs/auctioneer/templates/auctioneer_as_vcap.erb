@@ -27,7 +27,7 @@ rep_sec_flags=" \
    -repRequireTLS=<%= p("diego.auctioneer.rep.require_tls") %> \
    -repClientSessionCacheSize=<%= p("diego.auctioneer.rep.client_session_cache_size") %>"
 
-<% if p("diego.auctioneer.rep.ca_cert") != "" && p("diego.auctioneer.rep.client_key") != "" && p("diego.auctioneer.rep.client_cert") != "" %>
+<% if_p("diego.auctioneer.rep.ca_cert", "diego.auctioneer.rep.client_key", "diego.auctioneer.rep.client_cert") do %>
  rep_sec_flags="${rep_sec_flags} \
    -repClientCert=${CONF_DIR}/certs/rep/client.crt \
    -repClientKey=${CONF_DIR}/certs/rep/client.key \

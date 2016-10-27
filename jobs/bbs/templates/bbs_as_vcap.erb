@@ -59,7 +59,7 @@ rep_sec_flags=" \
    -repRequireTLS=<%= p("diego.bbs.rep.require_tls") %> \
    -repClientSessionCacheSize=<%= p("diego.bbs.rep.client_session_cache_size") %>"
 
-<% if p("diego.bbs.rep.ca_cert") != "" && p("diego.bbs.rep.client_key") != "" && p("diego.bbs.rep.client_cert") != "" %>
+<% if_p("diego.bbs.rep.ca_cert", "diego.bbs.rep.client_key", "diego.bbs.rep.client_cert") do %>
  rep_sec_flags="${rep_sec_flags} \
    -repClientCert=${CONF_DIR}/certs/rep/client.crt \
    -repClientKey=${CONF_DIR}/certs/rep/client.key \

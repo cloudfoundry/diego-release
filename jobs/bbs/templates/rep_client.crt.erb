@@ -1,4 +1,7 @@
 <% if p("diego.bbs.rep.require_tls") %>
 <%= p("diego.bbs.rep.client_cert") %>
+<% else %>
+  <% if_p("diego.bbs.rep.client_cert") do |value| %>
+<%= value %>
+  <% end %>
 <% end %>
-
