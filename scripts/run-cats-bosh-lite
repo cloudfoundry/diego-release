@@ -8,17 +8,32 @@ eval $($scripts_path/get_paths.sh)
 cat > /tmp/diego_cats_integration_config.json <<EOF
 {
   "api": "api.bosh-lite.com",
+  "apps_domain": "bosh-lite.com",
   "admin_user": "admin",
   "admin_password": "admin",
-  "apps_domain": "bosh-lite.com",
+  "backend": "diego",
   "skip_ssl_validation": true,
   "use_http": true,
-  "backend": "diego"
+  "include_apps": true,
+  "include_backend_compatibility": true,
+  "include_detect": true,
+  "include_docker": true,
+  "include_internet_dependent": true,
+  "include_privileged_container_support": false,
+  "include_route_services": false,
+  "include_routing": false,
+  "include_zipkin": false,
+  "include_security_groups": true,
+  "include_services": false,
+  "include_ssh": true,
+  "include_sso": false,
+  "include_tasks": false,
+  "include_v3": false
 }
 EOF
 
 pushd ${CF_RELEASE_DIR}/src/github.com/cloudfoundry/cf-acceptance-tests/
-  CONFIG=/tmp/diego_cats_integration_config.json ./bin/diego_test_default -skip=NO_DIEGO_SUPPORT -nodes=4 "$@"
+  CONFIG=/tmp/diego_cats_integration_config.json ./bin/test -nodes=4 "$@"
 popd
 
 
