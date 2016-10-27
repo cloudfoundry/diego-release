@@ -39,7 +39,10 @@ In the property-overrides stub file supplied to the `-p` flag on the manifest-ge
 1. `property_overrides.rep.client_cert`
 1. `property_overrides.rep.client_key`
 
-Set the `property_overrides.rep.require_tls` property to `true`.
+Set the following properties to `true`:
+
+1. `property_overrides.rep.require_tls`
+1. `property_overrides.rep.enable_legacy_api_endpoints`
 
 Set the following properties to `false`:
 
@@ -56,6 +59,10 @@ In the property-overrides stub file, now set the following properties to `true`:
 
 1. `property_overrides.bbs.rep.require_tls`
 1. `property_overrides.auctioneer.rep.require_tls`
+
+Set the following properties to `false`:
+
+1. `property_overrides.rep.enable_legacy_api_endpoints`
 
 With this configuration, the BBS and auctioneer instances will connect to the cell rep APIs only via TLS.
 
@@ -86,7 +93,6 @@ With this configuration, the updated cell reps will also serve their APIs on por
 
 After setting these values, regenerate the deployment manifest and deploy the new version of Diego with this configuration.
 
-
 ## <a name="switch-plain-http-tls-0-1488"></a>Switching from plain HTTP to TLS on v0.1488.0 or later
 
 It is also possible to switch a Diego deployment on v0.1488.0 or later between plain HTTP communication and mutual TLS, although to avoid downtime it requires three separate deploy steps. We detail the steps for switching from plain HTTP to mutual TLS below; reverse them to switch back.
@@ -100,6 +106,10 @@ In the property-overrides stub file supplied to the `-p` flag on the manifest-ge
 1. `property_overrides.rep.server_key`
 1. `property_overrides.rep.client_cert`
 1. `property_overrides.rep.client_key`
+
+Set the following properties to `true`:
+
+1. `property_overrides.rep.enable_legacy_api_endpoints`
 
 Set the following properties to `false`:
 
@@ -127,6 +137,7 @@ In the property-overrides stub file, now set the following properties to `false`
 
 1. `property_overrides.bbs.rep.require_tls`
 1. `property_overrides.auctioneer.rep.require_tls`
+1. `property_overrides.rep.enable_legacy_api_endpoints`
 
 With this configuration, the BBS and auctioneers will connect to the cell reps only via mutual TLS. From the previous deploy, all the cell reps already serve their APIs only over TLS.
 
