@@ -476,6 +476,8 @@ properties:
     trusted_certs: (( property_overrides.rootfs_cflinuxfs2.trusted_certs || nil ))
 
   # -- Properties used by netman processes on the cell and the policy-server job --
+  netman:
+    disable: (( netman_overrides.properties.netman.disable || nil ))
   vxlan-policy-agent: (( netman_overrides.properties.vxlan-policy-agent || nil ))
   garden-cni: (( netman_overrides.properties.garden-cni || nil ))
   cni-flannel: (( netman_overrides.properties.cni-flannel || nil ))
