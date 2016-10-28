@@ -1,7 +1,7 @@
 $SERVICE_NAME="rep_windows"
 $LOG_DIR="/var/vcap/sys/log/rep_windows"
 $LOGFILE="${LOG_DIR}/drain.log"
-$ADDRESS="http://<%= p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") %>"
+$ADDRESS="http://<%= p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") : p("diego.rep.listen_addr_admin")%>"
 
 New-Item -ItemType "directory" -Force "${LOG_DIR}" 2>&1 >> $LOGFILE
 

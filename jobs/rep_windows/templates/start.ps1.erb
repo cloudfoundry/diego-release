@@ -29,9 +29,9 @@
   -requireTLS="#{p("diego.rep.require_tls")}" \
   -consulCluster="http://127.0.0.1:#{p("diego.rep.consul_agent_port")}" \
   -debugAddr="#{p("diego.rep.debug_addr")}" \
-  -listenAddr="#{p("diego.rep.listen_addr")}" \
+  -listenAddr="#{p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr") : p("diego.rep.listen_addr_admin")}" \
   -advertiseDomain="#{p("diego.rep.advertise_domain")}" \
-  -enableInsecurableApiServer="#{p("diego.rep.enable_insecurable_api_server")}" \
+  -enableLegacyApiServer="#{p("diego.rep.enable_legacy_api_endpoints")}" \
   #{preloaded_rootfses} \
   -cellID=#{spec.job.name}-#{spec.index}-#{spec.id} \
   -zone="#{spec.az || p("diego.rep.zone")}" \

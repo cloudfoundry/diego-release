@@ -62,9 +62,12 @@ properties:
     description: "Array of optional tags used for scheduling Tasks and LRPs"
     default: []
 
-  diego.rep.enable_insecurable_api_server:
+  diego.rep.enable_legacy_api_endpoints:
     description: "Whether to enable the auction, LRP, and Task endpoints on the legacy, insecurable API server"
     default: true
+  diego.rep.listen_addr_admin:
+    description: "When enable_legacy_api_endpoints is set to false, serve (insecure) ping and evacuate requests on this address and port"
+    default: "127.0.0.1:1800"
   diego.rep.advertise_domain:
     description: "base domain at which the rep should advertise its secure API"
     default: "cell.service.cf.internal"

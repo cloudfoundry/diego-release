@@ -6,7 +6,7 @@ RUN_DIR=/var/vcap/sys/run/rep
 PIDFILE=$RUN_DIR/rep.pid
 LOG_DIR=/var/vcap/sys/log/rep
 LOGFILE=$LOG_DIR/drain.log
-ADDRESS=<%= p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") %>
+ADDRESS=<%= p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") : p("diego.rep.listen_addr_admin")%>
 
 mkdir -p $LOG_DIR
 

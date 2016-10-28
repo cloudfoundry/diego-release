@@ -62,11 +62,11 @@ exec /var/vcap/packages/rep/bin/rep ${bbs_sec_flags} ${rep_sec_flags} \
   -dropsondePort=<%= p("diego.rep.dropsonde_port") %> \
   -consulCluster=http://127.0.0.1:8500 \
   -debugAddr=<%= p("diego.rep.debug_addr") %> \
-  -listenAddr=<%= p("diego.rep.listen_addr") %> \
+  -listenAddr=<%= p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr") : p("diego.rep.listen_addr_admin") %> \
   -listenAddrSecurable=<%= p("diego.rep.listen_addr_securable") %> \
   -requireTLS=<%= p("diego.rep.require_tls") %> \
   -advertiseDomain=<%= p("diego.rep.advertise_domain") %> \
-  -enableInsecurableApiServer=<%= p("diego.rep.enable_insecurable_api_server") %> \
+  -enableLegacyApiServer=<%= p("diego.rep.enable_legacy_api_endpoints") %> \
   <%= p("diego.rep.preloaded_rootfses").map { |rootfs| "-preloadedRootFS #{rootfs}" }.join(" ") %> \
   <%= p("diego.rep.rootfs_providers").map { |provider| "-rootFSProvider #{provider}" }.join(" ") %> \
   <%= p("diego.rep.placement_tags").map { |tag| "-placementTag #{Shellwords.shellescape(tag)}" }.join(" ") %> \
