@@ -66,9 +66,9 @@ This BOSH release doubles as a `$GOPATH`. It will automatically be set up for yo
     ./scripts/update
     popd
 
-    # clone garden-linux-release
-    git clone https://github.com/cloudfoundry-incubator/garden-linux-release.git
-    pushd garden-linux-release
+    # clone garden-runc-release
+    git clone https://github.com/cloudfoundry-incubator/garden-runc-release.git
+    pushd garden-runc-release
     git checkout master && git submodule update --init --recursive
     popd
 
@@ -242,12 +242,9 @@ On OS X, follow these steps to install and configure MySQL and Postgres:
         bosh -n upload release &&
         bosh -n deploy
 
-1. Upload the latest garden-linux-release OR garden-runc-release:
+1. Upload the latest garden-runc-release:
 
-        bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
-
-        # if you specified [-g] when you generated your manifest:
-        # bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-runc-release
+        bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-runc-release
 
 1. Upload the latest etcd-release:
 
@@ -300,7 +297,7 @@ Once you've followed the steps [above](#initial-setup) to install ginkgo and the
 
 ### Running Integration Tests
 
-If your local concourse VM is up and running, you have the `fly` CLI visible on your `$PATH`, and you've cloned garden-linux-release (see [Initial Setup](#initial-setup) for details), you can run
+If your local concourse VM is up and running, you have the `fly` CLI visible on your `$PATH`, and you've cloned garden-runc-release (see [Initial Setup](#initial-setup) for details), you can run
 
     ./scripts/run-inigo
 from the root of diego-release to run the integration tests.

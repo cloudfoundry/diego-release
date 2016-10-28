@@ -25,16 +25,6 @@ function setup_localhost_hosts() {
   echo "127.0.0.1 cell-b.cell.service.cf.internal" >> "${hosts_file}"
 }
 
-build_gardenlinux () {
-  echo "Building garden-linux"
-  export GARDEN_GOPATH=$PWD/garden-linux-release
-
-  pushd "${GARDEN_GOPATH}/src/code.cloudfoundry.org/garden-linux"
-    GOPATH=${GARDEN_GOPATH} make # compile wshd/etc.
-    export GARDEN_BINPATH=$PWD/linux_backend/bin
-  popd
-}
-
 build_gardenrunc () {
   echo "Building garden-runc"
   export GARDEN_GOPATH=$PWD/garden-runc-release
@@ -71,11 +61,7 @@ build_gardenrunc () {
 
 setup_localhost_hosts
 
-if [ -z "${USE_GARDEN_RUNC}" ]; then
-  build_gardenlinux
-else
-  build_gardenrunc
-fi
+build_gardenrunc
 
 cd diego-release/
 

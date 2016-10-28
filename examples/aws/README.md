@@ -671,18 +671,18 @@ Copy the example release-versions stub to the correct location:
 cp $DIEGO_RELEASE_DIR/examples/aws/stubs/diego/release-versions.yml $DEPLOYMENT_DIR/stubs/diego/release-versions.yml
 ```
 
-Edit it to fix the versions of the Diego, Garden-Linux, and etcd releases in
+Edit it to fix the versions of the diego, garden-runc, etcd, and cflinuxfs2 releases in
 the Diego deployment, instead of using the latest versions uploaded to the BOSH
 director.
 
-For example, to use version 22 of etcd-release and version 0.331.0 of garden-linux-release, edit the stub to read:
+For example, to use version 22 of etcd-release, version 1.0.0 of garden-runc-release, edit the stub to read:
 
 ```yaml
 release-versions:
   diego: latest
+  cflinuxfs2-rootfs: latest
   etcd: 22
-  garden_linux: 0.331.0
-  cflinuxfs2_rootfs: 0.2.0
+  garden-runc: 1.0.0
 ```
 
 ### Fill in `diego-sql` Stub (optional)
@@ -696,7 +696,7 @@ If you enabled volume services, follow these directions to [fill in the drivers 
 ### Generate the Diego manifest
 
 See the full [manifest generation documentation](https://github.com/cloudfoundry/diego-release/docs/manifest-generation.md) for more generation instructions.
-Remember that the `-n` instance-count-overrides flag and the `-v` release-versions flags are optional. If using a non-standard deployment (SQL, Volume Drivers, Garden-RunC, etc) follow the [generate the Diego manifest optional instructions](OPTIONAL.md#generate-the-diego-manifest).
+Remember that the `-n` instance-count-overrides flag and the `-v` release-versions flags are optional. If using a non-standard deployment (SQL, Volume Drivers, etc) follow the [generate the Diego manifest optional instructions](OPTIONAL.md#generate-the-diego-manifest).
 
 ```bash
 cd $DIEGO_RELEASE_DIR
@@ -709,14 +709,14 @@ cd $DIEGO_RELEASE_DIR
   > $DEPLOYMENT_DIR/deployments/diego.yml
 ```
 
-### Upload Garden-Linux, etcd, and cflinuxfs2 releases
+### Upload garden-runc, etcd, and cflinuxfs2 releases
 
-1. Upload the latest garden-linux-release:
+1. Upload the latest garden-runc-release:
     ```bash
-    bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
+    bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-runc-release
     ```
 
-    To upload a specific version of garden-linux-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-linux-release).
+    To upload a specific version of garden-runc-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-runc-release).
 
 1. Upload the latest etcd-release:
     ```bash

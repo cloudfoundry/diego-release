@@ -6,7 +6,7 @@ releases:
 - {name: diego, version: latest}
 - {name: cf, version: latest}
 - {name: etcd, version: latest}
-- {name: garden-linux, version: latest}
+- {name: garden-runc, version: latest}
 - {name: cflinuxfs2-rootfs , version: latest}
 
 networks:
@@ -109,7 +109,7 @@ jobs:
   - name: rep
     release: diego
   - name: garden
-    release: garden-linux
+    release: garden-runc
   - name: cflinuxfs2-rootfs-setup
     release: cflinuxfs2-rootfs
   - name: metron_agent

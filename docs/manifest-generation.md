@@ -20,10 +20,10 @@ This document is for describing options to Diego manifest generation.
     -v <versions-path>  Path to release-versions stub file.
     -s <sql-db-path>    Path to SQL stub file.
     -x                  Opt out of deploying etcd with the database vms (requires sql)
-    -g                  Opt into using garden-runc-release for cells.
     -b                  Opt into using capi-release for bridge components.
     -d <voldriver-path> Path to voldriver stub file.
     -N <netman-path>    Path to netman stub file.
+    -L                  Opt into using garden-linux-release for cells. (DEPRECATED)
 
 #### EXAMPLE:
     scripts/generate-deployment-manifest \
@@ -35,7 +35,6 @@ This document is for describing options to Diego manifest generation.
       -s manifest-generation/bosh-lite-stubs/mysql/diego-sql.yml \
       -x \
       -d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml \
-      -g \
       -N manifest-generation/bosh-lite-stubs/experimental/netman/stub.yml \
       -b
 
@@ -44,10 +43,10 @@ This document is for describing options to Diego manifest generation.
 #### -x Opt out of deploying etcd with the database VMs
 When fully migrated data from an etcd release to SQL, or a fresh install using SQL use the -x flag to not deploy etcd to the database VMs.
 
-#### -g Opt into using garden-runc-release for cells
-To use garden-runc release instead of garden-linux.
+#### -L Opt into using garden-linux-release for cells (DEPRECATED)
+Use garden-linux-release instead of garden-runc as the container backend.
 
-**Note**: Migration from garden-linux based cells to garden-runc cells is not supported.  Cells must be recreated if previously deployed using garden-linux.
+**Note**: garden-runc is the replacement for garden-linux-release, and we strongly recommend migrating to garden-runc.
 
 #### -b Opt into using capi-release for bridge components
 Use the cc-bridge components (e.g., stager, nsync, tps, etc.) from capi-release instead of cf-release.
@@ -83,9 +82,8 @@ The file is used to override the default (latest) release version for the releas
 release-versions:
   etcd: 35
   cflinuxfs2-rootfs: 1.12.0
-  garden-linux: 0.336.0
   diego: 1.1450.0
-  garden-runc: 0.2.0
+  garden-runc: 1.0.0
 ```
 
 ##### -s SQL stub file

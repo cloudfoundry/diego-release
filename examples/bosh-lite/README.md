@@ -3,7 +3,7 @@
 1. Install and start [BOSH-Lite](https://github.com/cloudfoundry/bosh-lite),
    following its
    [README](https://github.com/cloudfoundry/bosh-lite/blob/master/README.md).
-   For garden-linux to function properly in the Diego deployment,
+   For garden-runc to function properly in the Diego deployment,
    we recommend using version 9000.69.0 or later of the BOSH-Lite Vagrant box image.
 
 1. Upload the latest version of the Warden BOSH-Lite stemcell directly to BOSH-Lite:
@@ -110,16 +110,13 @@
 
     Then commands such as `SELECT * FROM desired_lrps` can be run to show all the desired lrps in the system.
 
-1. Upload the latest garden-linux-release OR garden-runc-release:
+1. Upload the latest garden-runc-release:
 
   ```bash
-  bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
-
-  # if you specified [-g] when you generated your manifest:
-  # bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-runc-release
+  bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-runc-release
   ```
 
-  If you wish to upload a specific version of garden-linux-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-linux-release).
+  If you wish to upload a specific version of garden-runc-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-runc-release).
 
 1. Upload the latest etcd-release:
 

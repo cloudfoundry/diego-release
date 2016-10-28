@@ -68,7 +68,7 @@ The Diego deployment requires several additional BOSH releases to be uploaded to
 
 The releases to upload can be found at [bosh.io/releases](https://bosh.io/releases) and include the following:
 
-* Container runtime: [garden-linux](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-linux-release?all=1) or [garden-runc](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-runc-release?all=1)
+* Container runtime: [garden-runc](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-runc-release?all=1)
 * [cflinuxfs2-rootfs](http://bosh.io/releases/github.com/cloudfoundry/cflinuxfs2-rootfs-release?all=1)
 
 If using etcd as the BBS data store instead of a relational data store, also upload [etcd-release](http://bosh.io/releases/github.com/cloudfoundry-incubator/etcd-release?all=1).

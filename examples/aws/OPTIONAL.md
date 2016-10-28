@@ -7,7 +7,6 @@
   * [Deploy Standalone CF-MySQL](#deploy-standalone-cf-mysql)
   * [Deploying Diego](#deploy-diego)
 1. [Setup Volume Drivers for Diego](#setup-volume-drivers-for-diego)
-1. [Setup Garden RunC for Diego](#setup-garden-runc-for-diego)
 1. [Setup Garden Windows for Diego](#setup-garden-windows-for-diego)
 
 ## Setup a SQL database for Diego
@@ -327,29 +326,6 @@ Diego volume services use Docker Volume Plugins to manage volume mounts on each 
     metron_agent:
       zone: z1
     ...
-```
-
-## Setup Garden RunC for Diego
-
-Generate the Diego manifest with an additional `-g` flag that specifies opting into the Garden-RunC implementation on the Diego Cells.
-
-```bash
-cd $DIEGO_RELEASE_DIR
-./scripts/generate-deployment-manifest \
-  -c $DEPLOYMENT_DIR/deployments/cf.yml \
-  -i $DEPLOYMENT_DIR/stubs/diego/iaas-settings.yml \
-  -p $DEPLOYMENT_DIR/stubs/diego/property-overrides.yml \
-  -s $DEPLOYMENT_DIR/stubs/diego/diego-sql.yml \
-  -n $DEPLOYMENT_DIR/stubs/diego/instance-count-overrides.yml \
-  -v $DEPLOYMENT_DIR/stubs/diego/release-versions.yml \
-  -g
-  > $DEPLOYMENT_DIR/deployments/diego.yml
-```
-
-When deploying Garden-RunC on a previously deployed Diego with Garden-linux you must recreate the cells as upgrade is not supported by Garden-RunC.
-
-```bash
-bosh -n deploy --recreate
 ```
 
 ## Setup Garden Windows for Diego

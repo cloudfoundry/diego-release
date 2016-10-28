@@ -674,7 +674,7 @@ properties:
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
       log_level: (( property_overrides.tps.log_level || nil ))
 
-  # -- Proerties below are used by jobs from garden-linux-release --
+  # -- Properties below are used by jobs from garden-runc-release --
   garden:
     allow_host_access: (( property_overrides.garden.allow_host_access || nil ))
     allow_networks: (( property_overrides.garden.allow_networks || nil ))
@@ -825,7 +825,7 @@ base_job_templates:
     - name: rep
       release: diego
     - name: garden
-      release: (( garden_overrides.job_release || "garden-linux" ))
+      release: (( garden_overrides.job_release || "garden-runc" ))
     - name: cflinuxfs2-rootfs-setup
       release: cflinuxfs2-rootfs
     - name: metron_agent
@@ -862,7 +862,7 @@ base_job_templates:
     - name: file_server
       release: diego
     - name: garden
-      release: (( garden_overrides.job_release || "garden-linux" ))
+      release: (( garden_overrides.job_release || "garden-runc" ))
     - name: nsync
       release: cf
     - name: cflinuxfs2-rootfs-setup
