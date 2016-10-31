@@ -28,6 +28,7 @@ config_from_cf:
     etcd_require_ssl: (( merge ))
     etcd_machines: (( merge ))
     shared_secret: (( merge ))
+    traffic_controller_url: (( merge ))
     dropsonde_incoming_port: (( merge ))
     tls:
       ca_cert: (( merge ))

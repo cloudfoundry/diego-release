@@ -28,6 +28,7 @@ config_from_cf:
     etcd_require_ssl: (( properties.loggregator.etcd.require_ssl ))
     etcd_ca_cert: (( properties.loggregator.etcd.ca_cert ))
     shared_secret: (( properties.loggregator_endpoint.shared_secret ))
+    traffic_controller_url: (( "wss://doppler." properties.system_domain ":443" ))
     dropsonde_incoming_port: (( properties.loggregator.dropsonde_incoming_port ))
     tls:
       ca_cert: (( properties.loggregator.tls.ca_cert ))

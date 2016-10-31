@@ -673,6 +673,7 @@ properties:
         client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
       log_level: (( property_overrides.tps.log_level || nil ))
+      traffic_controller_url: (( config_from_cf.loggregator.traffic_controller_url ))
 
   # -- Properties below are used by jobs from garden-runc-release --
   garden:
