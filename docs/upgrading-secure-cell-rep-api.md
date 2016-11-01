@@ -42,7 +42,6 @@ In the property-overrides stub file supplied to the `-p` flag on the manifest-ge
 Set the following properties to `true`:
 
 1. `property_overrides.rep.require_tls`
-1. `property_overrides.rep.enable_legacy_api_endpoints`
 
 Set the following properties to `false`:
 
@@ -133,10 +132,13 @@ After setting these values, regenerate the deployment manifest and deploy the ne
 
 ### <a name="switch-plain-http-tls-0-1488-deploy-3"></a>Third deploy
 
-In the property-overrides stub file, now set the following properties to `false`:
+In the property-overrides stub file, now set the following properties to `true`:
 
 1. `property_overrides.bbs.rep.require_tls`
 1. `property_overrides.auctioneer.rep.require_tls`
+
+Set the following properties to `false`:
+
 1. `property_overrides.rep.enable_legacy_api_endpoints`
 
 With this configuration, the BBS and auctioneers will connect to the cell reps only via mutual TLS. From the previous deploy, all the cell reps already serve their APIs only over TLS.
