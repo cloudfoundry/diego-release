@@ -24,6 +24,8 @@
     rep_sec_flags=""
   end
 
+  zone= Shellwords.shellescape(spec.az || p("diego.rep.zone"))
+
   %{/var/vcap/packages/rep_windows/rep.exe #{bbs_sec_flags} #{rep_sec_flags} \
   -bbsAddress="#{bbs_api_url}" \
   -requireTLS="#{p("diego.rep.require_tls")}" \
@@ -34,7 +36,7 @@
   -enableLegacyApiServer="#{p("diego.rep.enable_legacy_api_endpoints")}" \
   #{preloaded_rootfses} \
   -cellID=#{spec.job.name}-#{spec.index}-#{spec.id} \
-  -zone="#{spec.az || p("diego.rep.zone")}" \
+  -zone="#{zone}" \
   -pollingInterval="#{p("diego.rep.polling_interval_in_seconds")}s" \
   -evacuationPollingInterval="#{p("diego.rep.evacuation_polling_interval_in_seconds")}s" \
   -evacuationTimeout="#{p("diego.rep.evacuation_timeout_in_seconds")}s" \
