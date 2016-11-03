@@ -160,7 +160,7 @@ In order to successfully deploy diego, you will need to upload the following bos
 ```
 bosh upload release https://bosh.io/d/github.com/cloudfoundry/diego-release
 bosh upload release https://bosh.io/d/github.com/cloudfoundry/cflinuxfs2-rootfs-release
-bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-runc-release
+bosh upload release https://bosh.io/d/github.com/cloudfoundry/garden-runc-release
 bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release
 ```
 

@@ -975,7 +975,7 @@ cd $DIEGO_RELEASE_DIR
 
 1. Upload the latest garden-runc-release:
     ```bash
-    bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-runc-release
+    bosh upload release https://bosh.io/d/github.com/cloudfoundry/garden-runc-release
     ```
 
     To upload a specific version of garden-runc-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-runc-release).

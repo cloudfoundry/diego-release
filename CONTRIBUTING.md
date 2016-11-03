@@ -67,7 +67,7 @@ This BOSH release doubles as a `$GOPATH`. It will automatically be set up for yo
     popd
 
     # clone garden-runc-release
-    git clone https://github.com/cloudfoundry-incubator/garden-runc-release.git
+    git clone https://github.com/cloudfoundry/garden-runc-release.git
     pushd garden-runc-release
     git checkout master && git submodule update --init --recursive
     popd
