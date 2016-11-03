@@ -14,22 +14,6 @@ property_overrides:
     server_cert: (( merge ))
     server_key: (( merge ))
     log_level: debug
-  etcd:
-    heartbeat_interval_in_milliseconds: 200
-    election_timeout_in_milliseconds: 2000
-    require_ssl: true
-    peer_require_ssl: true
-    # if etcd.require_ssl and etcd.peer_require_ssl are set to false, the following certs
-    # and keys must be set to nil.
-    ca_cert: (( merge ))
-    client_cert: (( merge ))
-    client_key: (( merge ))
-    peer_ca_cert: (( merge ))
-    peer_cert: (( merge ))
-    peer_key: (( merge ))
-    server_cert: (( merge ))
-    server_key: (( merge ))
-    log_level: debug
   nsync:
     log_level: debug
   converger:

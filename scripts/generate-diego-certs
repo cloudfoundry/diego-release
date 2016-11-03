@@ -6,7 +6,6 @@ pushd `dirname "$0"`/..
   scripts/generate-diego-ca-certs
   scripts/generate-bbs-certs diego-ca diego-certs
   scripts/generate-rep-certs diego-ca diego-certs
-  scripts/generate-etcd-certs etcd-peer-ca diego-certs diego-ca diego-certs
 popd
 
 echo "Outputted certs to diego-certs"

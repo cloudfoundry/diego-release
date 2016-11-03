@@ -1,7 +1,8 @@
 ## Release Compatibility
 
-Diego releases are tested against Cloud Foundry, Garden, and ETCD. Compatible versions
-of Garden and ETCD are listed with Diego on the [Github releases page](https://github.com/cloudfoundry/diego-release/releases).
+Diego releases are tested against Cloud Foundry, Garden. Compatible versions of
+Garden are listed with Diego on the
+[Github releases page](https://github.com/cloudfoundry/diego-release/releases).
 
 ### Checking out a release of Diego
 
@@ -18,15 +19,18 @@ git clean -ffd
 
 ### From a final release of CF
 
-On the CF Release [GitHub Releases](https://github.com/cloudfoundry/cf-release/releases) page,
-recommended versions of Diego, Garden, and ETCD are listed with each CF Release.
+On the CF Release
+[GitHub Releases](https://github.com/cloudfoundry/cf-release/releases) page,
+recommended versions of Diego, and Garden are listed with each CF Release.
 This is the easiest way to correlate releases.
 
 Alternatively, you can use records of CF and Diego compatibility captured from
 automated testing. First look up the release candidate SHA for your CF release.
 This is listed as the `commit_hash` in the release yaml file. Find the SHA in
 [diego-cf-compatibility/compatibility-v2.csv](https://github.com/cloudfoundry/diego-cf-compatibility/blob/master/compatibility-v2.csv)
-to look up tested versions of Diego Release, Garden, and ETCD.
+to look up tested versions of Diego Release, Garden. For old versions of
+diego-release, you have to make sure you are using a compatible version of ETCD
+as well.
 
 Example: Let's say you want to deploy Diego alongside CF final release `222`. The release file
 [`releases/cf-222.yml`](https://github.com/cloudfoundry/cf-release/blob/master/releases/cf-222.yml)

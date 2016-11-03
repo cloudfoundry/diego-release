@@ -75,14 +75,6 @@ $(block client_cert certs/rep-certs/client.crt  | indent | indent)
 $(block client_key  certs/rep-certs/client.key  | indent | indent)
 $(block server_cert certs/rep-certs/server.crt  | indent | indent)
 $(block server_key  certs/rep-certs/server.key  | indent | indent)
-  etcd:
-$(block client_cert certs/etcd-certs/client.crt | indent | indent)
-$(block client_key  certs/etcd-certs/client.key | indent | indent)
-$(block server_cert certs/etcd-certs/server.crt | indent | indent)
-$(block server_key  certs/etcd-certs/server.key | indent | indent)
-$(block peer_ca     certs/etcd-peer-ca.crt      | indent | indent)
-$(block peer_cert   certs/etcd-certs/peer.crt   | indent | indent)
-$(block peer_key    certs/etcd-certs/peer.key   | indent | indent)
 EOF
 }
 
@@ -219,7 +211,7 @@ mkdir -p stubs/diego-windows
 
 # generate Diego property-override stub with certs
 if [ -f stubs/diego/property-overrides.yml ]; then
-  # update BBS, etcd certs and keys in existing property-overrides stub
+  # update BBS certs and keys in existing property-overrides stub
   temp_property_overrides=$(mktemp stubs/diego/property-overrides.yml.XXXXX)
 
   spiff merge \

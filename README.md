@@ -51,13 +51,13 @@ The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) pre
 
 ### <a name="security-configuration"></a>Security Configuration
 
-- [TLS Configuration](docs/tls-configuration.md) describes how to generate TLS certificates for secure communication with Consul, etcd, the Diego BBS, and the Diego cell reps.
+- [TLS Configuration](docs/tls-configuration.md) describes how to generate TLS certificates for secure communication with Consul, the Diego BBS, and the Diego cell reps.
 - [Upgrading the cell rep API to mutual TLS](docs/upgrading-secure-cell-rep-api.md) explains how to transition an existing Diego deployment to use mutual TLS for communication to the cell rep API without incurring downtime.
 
 
 ### <a name="data-store-configuration"></a>Data Store Configuration
 
-- [Supported Data Stores for Diego](docs/data-stores.md) describes how to configure Diego to use either etcd or SQL for its data store and how to arrange automatic migration of data from etcd to MySQL or Postgres.
+- [Supported Data Stores for Diego](docs/data-stores.md) describes how to configure Diego to use either SQL for its data store and how to arrange automatic migration of data from etcd to MySQL or Postgres for old deployment that are using etcd.
 - [Data Store Encryption](docs/data-store-encryption.md) explains how to manage the ring of encryption keys that Diego uses to secure data at rest.
 
 

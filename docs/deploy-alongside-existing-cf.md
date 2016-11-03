@@ -8,7 +8,7 @@ This document describes a high-level overview for deploying a new Diego deployme
 1. [Configure CF Manifest for Diego](#configure-cf-manifest-for-diego)
 1. [Generate Diego Deployment Manifest](#generate-diego-deployment-manifest)
 1. [Upload Additional Releases](#upload-additional-releases)
-1. [Deploy Relational Datastore (Optional)](#deploy-relational-datastore-optional)
+1. [Deploy Relational Datastore](#deploy-relational-datastore)
 1. [Create and Upload Diego Release](#create-and-upload-diego-release)
 1. [Deploy Diego](#deploy-diego)
 
@@ -71,11 +71,9 @@ The releases to upload can be found at [bosh.io/releases](https://bosh.io/releas
 * Container runtime: [garden-runc](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-runc-release?all=1)
 * [cflinuxfs2-rootfs](http://bosh.io/releases/github.com/cloudfoundry/cflinuxfs2-rootfs-release?all=1)
 
-If using etcd as the BBS data store instead of a relational data store, also upload [etcd-release](http://bosh.io/releases/github.com/cloudfoundry-incubator/etcd-release?all=1).
+### <a name="deploy-relational-datastore"></a>Deploy Relational Datastore
 
-### <a name="deploy-relational-datastore-optional"></a>Deploy Relational Datastore (Optional)
-
-See documentation on [data stores](data-stores.md) to select and deploy a relational data store instead of etcd to back the BBS server.
+See documentation on [data stores](data-stores.md) to select and deploy a relational data store to be used by BBS
 
 ### <a name="create-and-upload-diego-release"></a>Create and Upload Diego Release
 
