@@ -1,6 +1,38 @@
 <%=
   CONF_DIR="/var/vcap/jobs/rep_windows/config"
 
+  class ::String
+    def wrap s
+      s + self + s
+    end
+  end
+
+  def escape_string s
+    # From http://www.rlmueller.net/PowerShellEscape.htm
+    # Escaping rules:
+    # 1. replace backtick with double backticks (since backtick is the escape char in powershell)
+    # 2. replace double quotes with two double quotes, this is how it is escaped in powershell
+    # 3. add backslack before every double quote. looks like golang flag parser doesn't like to see dangling double quotes
+    # 4. wrap the entire value in double quotes
+    s = s.sub('`', '``').sub('"', '\""').wrap('"')
+  end
+
+  def placement_tag arg_name, arg_value
+    %Q{-#{arg_name}=#{escape_string arg_value}}
+  end
+
+  def tags_args arg_name, args
+    args.map { |arg| placement_tag arg_name, arg}.join(" ")
+  end
+
+  def placement_tags args
+    tags_args "placementTag", args
+  end
+
+  def optional_placement_tags args
+    tags_args "optionalPlacementTag", args
+  end
+
   if p("diego.rep.bbs.require_ssl")
     bbs_sec_flags=%{ \
    -bbsClientCert="#{CONF_DIR}/certs/bbs/client.crt" \
@@ -62,7 +94,7 @@
   -gardenHealthcheckProcessArgs="/c,dir" \
   -logLevel=#{p("diego.rep.log_level")} \
   } +
-  " #{p("diego.rep.placement_tags").map { |tag| "-placementTag #{Shellwords.shellescape(tag)}" }.join(" ")} " +
-  " #{p("diego.rep.optional_placement_tags").map { |tag| "-optionalPlacementTag #{Shellwords.shellescape(tag)}" }.join(" ")} "
-
+    placement_tags(p("diego.rep.placement_tags")) +
+    " " +
+    optional_placement_tags(p("diego.rep.optional_placement_tags"))
   %>
