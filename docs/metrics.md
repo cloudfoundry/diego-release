@@ -113,6 +113,7 @@
 | `RoutesSynced`                                 | Cumulative number of route registrations emitted from the route-emitter during its periodic route-table synchronization.                                         | number           |
 | `RoutesTotal`                                  | Number of routes in the route-emitter's routing table. Emitted periodically.                                                                                     | number           |
 | `RoutesUnregistered`                           | Cumulative number of route unregistrations emitted from the route-emitter as it reacts to changes to LRPs.                                                       | number           |
+| `ConsulDownMode`                               | Whether the route-emitter is able to connect with the consul correctly                                                                                           | 0 or 1 boolean   |
 
 ## SSH Proxy
 
