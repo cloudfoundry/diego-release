@@ -1,7 +1,13 @@
 #!/bin/bash
 
 scripts_path=./$(dirname $0)
+eval $($scripts_path/get_paths.sh)
+
 DIEGO_RELEASE_DIR=${DIEGO_RELEASE_DIR:-$(cd $scripts_path/.. && pwd)}
+
+set -e
+${scripts_path}/check-metrics-documentation
+set +e
 
 SKIP_PACKAGES="./inigo"
 SKIP_PACKAGES="$SKIP_PACKAGES,./auction/simulation"
