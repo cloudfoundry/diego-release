@@ -83,7 +83,7 @@ Support for migration from etcd to a relational datastore will be maintained thr
 
 ### <a name="choosing-relational-datastore-deployment"></a>Choosing a Relational Data Store Deployment
 
-Operators have a choice of deployment styles for both MySQL and PostgreSQL data stores. When Diego is deployed to accompany a CF deployment, operators will already have made a choice of database for the Cloud Controller and UAA databases, and it is expected that the same choice will be appropiate for the Diego data store.
+Operators have a choice of deployment styles for both MySQL and PostgreSQL data stores. When Diego is deployed to accompany a CF deployment, operators will already have made a choice of database for the Cloud Controller and UAA databases, and it is expected that the same choice will be appropriate for the Diego data store.
 
 #### MySQL
 
@@ -92,7 +92,8 @@ For MySQL, operators have at least the following options:
 * Use the [CF-MySQL release](http://bosh.io/releases/github.com/cloudfoundry/cf-mysql-release?all=1) in standalone mode as a separate BOSH deployment, either as a single node, or as a highly available (HA) cluster.
 * Use an infrastructure-specific database deployment, such as an RDS MySQL instance on AWS.
 
-At present, the latest final CF-MySQL release, v26, will be acceptable in an HA configuration to back Diego. The next major version, v27, will contain additional improvements for operating an HA deployment to support a large-scale Diego deployment. These features are already available on the release-candidate branch of the cf-mysql-release repository.
+We recommend using at least version v27 of the CF-MySQL release.
+
 
 #### PostgreSQL
 

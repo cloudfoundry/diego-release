@@ -29,7 +29,7 @@ pushd ${DIEGO_RELEASE_DIR}
 			-i manifest-generation/bosh-lite-stubs/iaas-settings.yml \
 			-p manifest-generation/bosh-lite-stubs/property-overrides.yml \
 			-n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
-      -x \
+			-x \
 			${sql_option} \
 			${voldriver_option} \
 			-v manifest-generation/bosh-lite-stubs/release-versions.yml \
