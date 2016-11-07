@@ -83,7 +83,7 @@ release-versions:
   etcd: 35
   cflinuxfs2-rootfs: 1.12.0
   diego: 1.1450.0
-  garden-runc: 1.0.0
+  garden-runc: 1.0.2
 ```
 
 ##### -s SQL stub file

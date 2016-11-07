@@ -244,7 +244,7 @@ On OS X, follow these steps to install and configure MySQL and Postgres:
 
 1. Upload the latest garden-runc-release:
 
-        bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/garden-runc-release
+        bosh upload release https://bosh.io/d/github.com/cloudfoundry/garden-runc-release
 
 1. Upload the latest etcd-release:
 

@@ -978,7 +978,7 @@ cd $DIEGO_RELEASE_DIR
     bosh upload release https://bosh.io/d/github.com/cloudfoundry/garden-runc-release
     ```
 
-    To upload a specific version of garden-runc-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-runc-release).
+    To upload a specific version of garden-runc-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry/garden-runc-release).
 
 1. Upload the latest cflinuxfs2-rootfs-release:
     ```bash

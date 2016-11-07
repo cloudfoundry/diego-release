@@ -116,7 +116,7 @@
   bosh upload release https://bosh.io/d/github.com/cloudfoundry/garden-runc-release
   ```
 
-  If you wish to upload a specific version of garden-runc-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/garden-runc-release).
+  If you wish to upload a specific version of garden-runc-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry/garden-runc-release).
 
 1. Upload the latest etcd-release:
 
