@@ -25,7 +25,7 @@ fi
 if grep -q 'git-hooks/pre-push' ${PRE_PUSH}; then
   echo "pre-push already installed."
 else
-  echo >> ${PRE_COMMIT}
+  echo >> ${PRE_PUSH}
   echo './git-hooks/pre-push' >> ${PRE_PUSH}
   echo "pre-push installed."
 fi
