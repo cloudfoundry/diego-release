@@ -46,7 +46,7 @@ ulimit -n 100000
 
 <%
     def db_params
-      ['username', 'password', 'host', 'port', 'schema'].map {|name| "diego.bbs.sql.db_#{name}"}
+      ['username', 'password', 'host', 'port', 'schema'].map {|name| "benchmark-bbs.bbs.sql.db_#{name}"}
     end
 
     def param_exists? param
@@ -62,7 +62,7 @@ ulimit -n 100000
 
       values = db_params.map {|param| p(param)}
       # Note: order of the params is important here, it has to be username, password, host, port, schema in that order
-      driver = p("diego.bbs.sql.db_driver")
+      driver = p("benchmark-bbs.bbs.sql.db_driver")
       case driver
       when 'mysql'
         sprintf "%s:%s@tcp(%s:%s)/%s", *values
@@ -73,10 +73,10 @@ ulimit -n 100000
       end
     end
 
-    connection_string = p('diego.bbs.sql.db_connection_string')
+    connection_string = p('benchmark-bbs.bbs.sql.db_connection_string')
 
     if connection_string != "" && connection_string_from_db_params != ""
-       raise "You can only specify 'diego.bbs.sql.db_connection_string' or '#{db_params.join(",")}'"
+       raise "You can only specify 'benchmark-bbs.bbs.sql.db_connection_string' or '#{db_params.join(",")}'"
     end
 
     if connection_string == ""
