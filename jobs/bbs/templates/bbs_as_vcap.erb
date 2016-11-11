@@ -66,27 +66,43 @@ rep_sec_flags=" \
    -repCACert=${CONF_DIR}/certs/rep/ca.crt"
 <% end %>
 
-<% use_new_db_properties = ['host', 'port', 'schema', 'username', 'password'].any?{|prop| p("diego.bbs.sql.db_#{prop}") != ""} %>
-<% invalid_db_properties = ['host', 'port', 'schema', 'username', 'password'].any?{|prop| p("diego.bbs.sql.db_#{prop}") == ""} %>
 <%
-    if p('diego.bbs.sql.db_connection_string') != "" && use_new_db_properties
-      raise "cannot specify diego.bbs.sql.db_connection_string and diego.bbs.sql.db_{host,port,username,password}"
+    def db_params
+      ['username', 'password', 'host', 'port', 'schema'].map {|name| "diego.bbs.sql.db_#{name}"}
     end
 
-    if p('diego.bbs.sql.db_connection_string') == "" && use_new_db_properties && invalid_db_properties
-      raise "should specify all properties: diego.bbs.sql.db_{host,port,username,password}"
+    def param_exists? param
+      p(param) != ""
+    end
+
+    def connection_string_from_db_params
+      return "" unless db_params.any? {|p| param_exists?(p)}
+
+      unless db_params.all? {|p| param_exists?(p)}
+        raise "all of the following parameters must be specified #{db_params.join(",")}"
+      end
+
+      values = db_params.map {|param| p(param)}
+      # Note: order of the params is important here, it has to be username, password, host, port, schema in that order
+      driver = p("diego.bbs.sql.db_driver")
+      case driver
+      when 'mysql'
+        sprintf "%s:%s@tcp(%s:%s)/%s", *values
+      when 'postgres'
+        sprintf "postgres://%s:%s@%s:%s/%s", *values
+      else
+        raise "unknown driver #{driver}"
+      end
     end
 
     connection_string = p('diego.bbs.sql.db_connection_string')
-    if !invalid_db_properties
-      case p('diego.bbs.sql.db_driver')
-      when 'mysql'
-        connection_string = "#{p('diego.bbs.sql.db_username')}:#{p('diego.bbs.sql.db_password')}@tcp(#{p('diego.bbs.sql.db_host')}:#{p('diego.bbs.sql.db_port')})/#{p('diego.bbs.sql.db_schema')}"
-      when 'postgres'
-        connection_string = "postgres://#{p('diego.bbs.sql.db_username')}:#{p('diego.bbs.sql.db_password')}@#{p('diego.bbs.sql.db_host')}:#{p('diego.bbs.sql.db_port')}/#{p('diego.bbs.sql.db_schema')}"
-      else
-        raise "unknown driver"
-      end
+
+    if connection_string != "" && connection_string_from_db_params != ""
+       raise "You can only specify 'diego.bbs.sql.db_connection_string' or '#{db_params.join(",")}'"
+    end
+
+    if connection_string == ""
+       connection_string = connection_string_from_db_params
     end
 %>
 
