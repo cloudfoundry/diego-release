@@ -803,6 +803,31 @@ After that you can deploy the CF-MySQL release in either mode:
 
 ### Fill in Diego-SQL stub
 
+
+#### Use of `db_connection_string` - (Deprecated) 
+
+To configure Diego to communicate with the SQL instance, first create a Diego-SQL stub file at `$DEPLOYMENT_DIR/stubs/diego/diego-sql.yml` with the following contents:
+
+```yaml
+sql_overrides:
+  bbs:
+    db_connection_string: 'diego:REPLACE_ME_WITH_DB_PASSWORD@tcp(<sql-instance-endpoint>)/diego'
+    max_open_connections: 500
+    require_ssl: null
+    ca_cert: null
+```
+Fill in the bracketed parameters in the `db_connection_string` with the following values:
+
+- `REPLACE_ME_WITH_DB_PASSWORD`: The password chosen when you created the SQL instance.
+- `<sql-instance-endpoint>`:
+  - For AWS RDS: The endpoint displayed at the top of the DB instance details page in AWS, including the port.
+  - For Standalone CF-MySQL:
+    - If configuring a Single Node CF-MySQL the internal IP address and port of the single MySQL node. (e.g. `10.10.5.222:3306`).
+    - If configuring an Highly Available CF-MySQL with Consul use the consul service address (e.g. `mysql.service.cf.internal:3306`).
+    - *In both cases the port will be `3306` by default.*
+
+#### Use of Granular Database Properties
+
 To configure Diego to communicate with the SQL instance, first create a Diego-SQL stub file at `$DEPLOYMENT_DIR/stubs/diego/diego-sql.yml` with the following contents:
 
 ```yaml
@@ -828,6 +853,8 @@ Fill in the bracketed parameters in the `db_host`, `db_port` and `db_password` w
   - If configuring a Single Node CF-MySQL, `<sql-instance-endpoint>` would be the internal IP address and `<port>` would take on the port of the single MySQL node.
   - If configuring an Highly Available CF-MySQL with Consul use the consul service address (e.g. `mysql.service.cf.internal` for `<sql-instance-endpoint>` and `3306` for `<port>`).
 - `<REPLACE_ME_WITH_DB_PASSWORD>`: The password chosen when you created the SQL instance.
+
+#### SSL support
 
 **Note:** The `sql_overrides.bbs.ca_cert` and `sql_overrides.bbs.require_ssl` properties should be provided only when deploying with an SSL-supported MySQL cluster. Set the `require_ssl` property to `true` to ensure that the BBS uses SSL to connect to the store, and set the `ca_cert` property to the contents of a certificate bundle containing the correct CA certificates to verify the certificate that the SQL server presents.
 
