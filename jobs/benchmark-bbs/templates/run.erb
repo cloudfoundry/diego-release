@@ -43,6 +43,31 @@ etcd_sec_flags=""
 # Allowed number of open file descriptors
 ulimit -n 100000
 
+<% use_new_db_properties = ['host', 'port', 'schema', 'username', 'password'].any?{|prop| p("diego.bbs.sql.db_#{prop}") != ""} %>
+<% invalid_db_properties = ['host', 'port', 'schema', 'username', 'password'].any?{|prop| p("diego.bbs.sql.db_#{prop}") == ""} %>
+<%
+    if p('diego.bbs.sql.db_connection_string') != "" && use_new_db_properties
+      raise "cannot specify diego.bbs.sql.db_connection_string and diego.bbs.sql.db_{host,port,username,password}"
+    end
+
+    if p('diego.bbs.sql.db_connection_string') == "" && use_new_db_properties && invalid_db_properties
+      raise "should specify all properties: diego.bbs.sql.db_{host,port,username,password}"
+    end
+
+    connection_string = p('diego.bbs.sql.db_connection_string')
+    if !invalid_db_properties
+      case p('diego.bbs.sql.db_driver')
+      when 'mysql'
+        connection_string = "#{p('diego.bbs.sql.db_username')}:#{p('diego.bbs.sql.db_password')}@tcp(#{p('diego.bbs.sql.db_host')}:#{p('diego.bbs.sql.db_port')})/#{p('diego.bbs.sql.db_schema')}"
+      when 'postgres'
+        connection_string = "postgres://#{p('diego.bbs.sql.db_username')}:#{p('diego.bbs.sql.db_password')}@#{p('diego.bbs.sql.db_host')}:#{p('diego.bbs.sql.db_port')}/#{p('diego.bbs.sql.db_schema')}"
+      else
+        raise "unknown driver"
+      end
+    end
+%>
+
+
 ginkgo -- ${bbs_sec_flags} ${etcd_sec_flags} \
   -desiredLRPs=<%= p("benchmark-bbs.desired_lrps") %> \
   -numTrials=<%= p("benchmark-bbs.num_trials") %> \
@@ -68,9 +93,7 @@ ginkgo -- ${bbs_sec_flags} ${etcd_sec_flags} \
   -awsSecretAccessKey=<%= p("benchmark-bbs.aws_secret_access_key") %> \
   -awsBucketName=<%= p("benchmark-bbs.aws_bucket_name") %> \
   -bbsClientHTTPTimeout=<%= p("benchmark-bbs.client_timeout") %> \
-  <% if_p("benchmark-bbs.sql.db_connection_string") do |value| %> \
-    -databaseConnectionString='<%= value %>' \
-  <% end %> \
+  -databaseConnectionString=<%= Shellwords.shellescape(connection_string) %> \
   <% if_p("benchmark-bbs.sql.db_driver") do |value| %> \
     -databaseDriver='<%= value %>' \
   <% end %> \

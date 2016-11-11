@@ -530,6 +530,11 @@ properties:
       sql:
         db_connection_string: (( sql_overrides.bbs.db_connection_string || nil ))
         db_driver: (( sql_overrides.bbs.db_driver || nil ))
+        db_host: (( sql_overrides.bbs.db_host || nil ))
+        db_port: (( sql_overrides.bbs.db_port || nil ))
+        db_username: (( sql_overrides.bbs.db_username || nil ))
+        db_password: (( sql_overrides.bbs.db_password || nil ))
+        db_schema: (( sql_overrides.bbs.db_schema || nil ))
         max_open_connections: (( sql_overrides.bbs.max_open_connections || nil ))
         require_ssl: (( sql_overrides.bbs.require_ssl || nil ))
         ca_cert: (( sql_overrides.bbs.ca_cert || nil ))

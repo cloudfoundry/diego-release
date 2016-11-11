@@ -95,8 +95,12 @@ The optional -s flag is used to specify the stub for SQL and needs to be specifi
 ```yaml
 sql_overrides:
   bbs:
-    db_connection_string: 'diego:diego@tcp(10.244.7.2:3306)/diego'
     db_driver: mysql
+    db_host: 10.244.7.2
+    db_port: 3306
+    db_username: diego
+    db_password: diego
+    db_schema: diego
     max_open_connections: 500
 ```
 
@@ -104,8 +108,12 @@ sql_overrides:
 ```yaml
 sql_overrides:
   bbs:
-    db_connection_string: 'postgres://diego:admin@10.244.0.30:5524/diego'
     db_driver: postgres
+    db_host: 10.244.0.30
+    db_port: 5524
+    db_username: diego
+    db_password: admin
+    db_schema: diego
     max_open_connections: 500
 ```
 

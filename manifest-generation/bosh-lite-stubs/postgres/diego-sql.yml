@@ -1,5 +1,9 @@
 sql_overrides:
   bbs:
-    db_connection_string: 'postgres://diego:admin@10.244.0.30:5524/diego'
     db_driver: postgres
+    db_host: 10.244.0.30
+    db_port: 5524
+    db_username: diego
+    db_password: admin
+    db_schema: diego
     max_open_connections: 500

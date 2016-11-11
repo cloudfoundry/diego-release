@@ -38,10 +38,25 @@ properties:
     description: "enable ssl for all communication with the bbs (false unsupported)"
     default: true
 
-  benchmark-bbs.sql.db_connection_string:
-    description: "Connection string to use for SQL backend [username:password@tcp(1.1.1.1:1234)/database]"
+  diego.bbs.sql.db_host:
+    description: "Host for SQL backend"
+    default: ""
+  diego.bbs.sql.db_port:
+    description: "Port for SQL backend"
+    default: ""
+  diego.bbs.sql.db_schema:
+    description: "Database name to use for connecting to SQL backend"
+    default: ""
+  diego.bbs.sql.db_username:
+    description: "Username to use for connecting to SQL backend"
+    default: ""
+  diego.bbs.sql.db_password:
+    description: "Password to use for connecting to SQL backend"
+    default: ""
   benchmark-bbs.sql.db_driver:
     description: "driver to use, e.g. postgres or mysql"
+  benchmark-bbs.sql.db_connection_string:
+    description: "Connection string to use for SQL backend [username:password@tcp(1.1.1.1:1234)/database]"
 
   benchmark-bbs.etcd.machines:
     description: "Addresses pointing to the ETCD cluster"

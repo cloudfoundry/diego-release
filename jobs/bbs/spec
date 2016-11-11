@@ -79,11 +79,27 @@ properties:
   diego.bbs.etcd.max_idle_conns_per_host:
     description: "maximum number of idle http connections"
 
-  diego.bbs.sql.db_connection_string:
-    description: "Connection string to use for SQL backend (for example, username:password@tcp(1.1.1.1:1234)/database)"
+  diego.bbs.sql.db_host:
+    description: "Host for SQL backend"
+    default: ""
+  diego.bbs.sql.db_port:
+    description: "Port for SQL backend"
+    default: ""
+  diego.bbs.sql.db_schema:
+    description: "Database name to use for connecting to SQL backend"
+    default: ""
+  diego.bbs.sql.db_username:
+    description: "Username to use for connecting to SQL backend"
+    default: ""
+  diego.bbs.sql.db_password:
+    description: "Password to use for connecting to SQL backend"
+    default: ""
   diego.bbs.sql.db_driver:
     description: "Database driver to use for SQL backend (for example: mysql,postgres)"
     default: mysql
+  diego.bbs.sql.db_connection_string:
+    description: "Connection string to use for SQL backend. DEPRECATED, use db_{host,port,schema,username,password} instead"
+    default: ""
   diego.bbs.sql.max_open_connections:
     description: "Maximum number of open connections to the SQL database"
   diego.bbs.sql.require_ssl:
