@@ -185,3 +185,13 @@ properties:
   diego.rep.optional_placement_tags:
     description: "Array of optional tags used for scheduling Tasks and LRPs"
     default: []
+
+  syslog_daemon_config.address:
+    description: "Syslog host"
+    default: ""
+  syslog_daemon_config.port:
+    description: "Syslog port"
+    default: ""
+  syslog_daemon_config.transport:
+    description: "Syslog transport protocol (tcp or udp)"
+    default: "udp"
