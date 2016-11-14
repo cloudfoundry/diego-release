@@ -52,9 +52,9 @@ jobs:
       - name: garden-windows
         release: garden-windows
       - name: consul_agent_windows
-        release: garden-windows
+        release: cf
       - name: metron_agent_windows
-        release: garden-windows
+        release: cf
     instances: (( instance_count_overrides.cell_windows_z1.instances || 1 ))
     resource_pool: cell_windows_z1
     networks:
@@ -78,9 +78,9 @@ jobs:
       - name: garden-windows
         release: garden-windows
       - name: consul_agent_windows
-        release: garden-windows
+        release: cf
       - name: metron_agent_windows
-        release: garden-windows
+        release: cf
     instances: (( instance_count_overrides.cell_windows_z2.instances || 1 ))
     resource_pool: cell_windows_z2
     networks:
@@ -104,9 +104,9 @@ jobs:
       - name: garden-windows
         release: garden-windows
       - name: consul_agent_windows
-        release: garden-windows
+        release: cf
       - name: metron_agent_windows
-        release: garden-windows
+        release: cf
     instances: (( instance_count_overrides.cell_windows_z3.instances || 0 ))
     resource_pool: cell_windows_z3
     networks:
@@ -194,6 +194,8 @@ instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
 
 base_releases:
+  - name: cf
+    version: (( release_versions.cf || "latest" ))
   - name: diego
     version: (( release_versions.diego || "latest" ))
   - name: garden-windows
