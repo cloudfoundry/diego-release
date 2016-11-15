@@ -65,6 +65,12 @@ properties:
         - openid
         - cloud_controller.admin
         - doppler.firehose
+
+  databases:
+    roles:
+      diego:
+        password: REPLACE_WITH_DB_PASSWORD
+
   smoke_tests:
     api: REPLACE_WITH_API_DOMAIN
     apps_domain: REPLACE_WITH_APPS_DOMAIN

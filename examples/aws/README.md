@@ -614,16 +614,12 @@ From here, follow the documentation on [deploying a Cloud Foundry with BOSH](htt
 
 ## Setup a SQL database for Diego
 
-These instructions allow you to either:
+These instructions allow you to configure Diego to use a relational database as the backing data store using one of the following methods:
 
-* Provision an RDS MySQL Instance as a backend
-* Provision a stand-alone CF-MySQL release
-* Configure Diego to use one of the above configurations
-
-We support two ways of providing a SQL database. They are:
-
-* [Setup RDS MySQL](#setup-aws-rds-mysql) *OR*
-* [Deploy Standalone CF-MySQL](#deploy-standalone-cf-mysql)
+* [Setting up an RDS MySQL](#setup-aws-rds-mysql)
+* [Setting up an RDS PostgreSQL](#setup-aws-rds-postgresql)
+* [Deploying a standalone CF-MySQL](#deploy-standalone-cf-mysql)
+* [Using the PostgreSQL job from CF-Release](#use-the-postgresql-job-from-cf-release)
 
 ### Setup AWS RDS MySQL
 
@@ -632,7 +628,7 @@ known to work with Diego.
 
 1. From the AWS console homepage, click on `RDS` in the `Database` section.
 1. Click on `Launch DB Instance` under Instances.
-1. Click on the `MariaDB` Tab and click the `Select` button.
+1. Click on the `MariaDB` tab and click the `Select` button.
 1. Select Production or Dev/Test version of MariaDB depending on your use case and click the `Next Step` button.
 1. Select the DB Instance Class required. For performance testing the Diego team uses db.m4.4xlarge.
 1. Optionally tune the other parameters based on your deployment requirements.
@@ -655,6 +651,10 @@ curl -o $DEPLOYMENT_DIR/certs/rds-combined-ca-bundle.pem http://s3.amazonaws.com
 ```
 
 The contents of this file will be supplied in the `sql_overrides.bbs.ca_cert` field in the Diego-SQL stub below.
+
+### Setup AWS RDS PostgreSQL
+
+To setup a PostgreSQL instance on RDS in AWS, follow the instructions above describing the setup of a MySQL AWS RDS instance, but select the `PostgreSQL` tab instead of the `MariaDB` tab in step 3.  Make sure to pick a version of PostgreSQL that is 9.4 or higher.
 
 ### Deploy Standalone CF-MySQL
 
@@ -799,12 +799,58 @@ After that you can deploy the CF-MySQL release in either mode:
   bosh -d $DEPLOYMENT_DIR/deployments/cf-mysql.yml deploy
   ```
 
+### Use the PostgreSQL job from CF-Release
+
+The PostgreSQL job in CF Release can be used as the database for Diego. Replace `REPLACE_ME_WITH_DB_PASSWORD` in your `stubs/cf/properties.yml` with your desired password, and [configure Diego to use this database](#use-of-granular-database-properties-for-mysql-or-postgresql).
+
+```yaml
+databases:
+  roles:
+    - tag: admin
+      name: diego
+      password: REPLACE_ME_WITH_DB_PASSWORD
+  databases:
+    - tag: diego
+      name: diego
+      citext: false
+```
+
 ## Deploy Diego
 
 ### Fill in Diego-SQL stub
 
+#### Use of Granular Database Properties for MySQL or PostgreSQL
 
-#### Use of `db_connection_string` - (Deprecated) 
+To configure Diego to communicate with the SQL instance, first create a Diego-SQL stub file at `$DEPLOYMENT_DIR/stubs/diego/diego-sql.yml` with the following contents:
+
+```yaml
+sql_overrides:
+  bbs:
+    db_driver: <driver>
+    db_host: <sql-instance-endpoint>
+    db_port: <port>
+    db_username: diego
+    db_password: <REPLACE_ME_WITH_DB_PASSWORD>
+    db_schema: diego
+    max_open_connections: 500
+    require_ssl: null
+    ca_cert: null
+```
+
+Fill in the bracketed parameters in the `db_driver`, `db_host`, `db_port` and `db_password` with the following values:
+
+- `<driver>` could be either `mysql` or `postgres` depending on  the flavor of your backing data store.
+- For AWS RDS:
+  - The endpoint displayed at the top of the DB instance would replace `<sql-instance-endpoint>` in details page
+  - `<port>` will take on the value of the port for the given DB instance.
+- For Standalone CF-MySQL:
+  - If configuring a Single Node CF-MySQL, `<sql-instance-endpoint>` would be the internal IP address and `<port>` would take on the port of the single MySQL node.
+  - If configuring an Highly Available CF-MySQL with Consul use the consul service address (e.g. `mysql.service.cf.internal` for `<sql-instance-endpoint>` and `3306` for `<port>`).
+- `<REPLACE_ME_WITH_DB_PASSWORD>`: The password chosen when you created the SQL instance.
+
+#### Use of `db_connection_string` for MySQL (Deprecated)
+
+**Note:** these instructions are deprecated, and we suggest using the properties described [above](#use-of-granular-database-properties-for-mysql-or-postgresql) instead of providing a connection string.
 
 To configure Diego to communicate with the SQL instance, first create a Diego-SQL stub file at `$DEPLOYMENT_DIR/stubs/diego/diego-sql.yml` with the following contents:
 
@@ -826,33 +872,6 @@ Fill in the bracketed parameters in the `db_connection_string` with the followin
     - If configuring an Highly Available CF-MySQL with Consul use the consul service address (e.g. `mysql.service.cf.internal:3306`).
     - *In both cases the port will be `3306` by default.*
 
-#### Use of Granular Database Properties
-
-To configure Diego to communicate with the SQL instance, first create a Diego-SQL stub file at `$DEPLOYMENT_DIR/stubs/diego/diego-sql.yml` with the following contents:
-
-```yaml
-sql_overrides:
-  bbs:
-    db_driver: mysql
-    db_host: <sql-instance-endpoint>
-    db_port: <port>
-    db_username: diego
-    db_password: <REPLACE_ME_WITH_DB_PASSWORD>
-    db_schema: diego
-    max_open_connections: 500
-    require_ssl: null
-    ca_cert: null
-```
-
-Fill in the bracketed parameters in the `db_host`, `db_port` and `db_password` with the following values:
-
-- For AWS RDS:
-  - The endpoint displayed at the top of the DB instance would replace `<sql-instance-endpoint>` in details page
-  - `<port>` will take on the value of the port for the given DB instance.
-- For Standalone CF-MySQL:
-  - If configuring a Single Node CF-MySQL, `<sql-instance-endpoint>` would be the internal IP address and `<port>` would take on the port of the single MySQL node.
-  - If configuring an Highly Available CF-MySQL with Consul use the consul service address (e.g. `mysql.service.cf.internal` for `<sql-instance-endpoint>` and `3306` for `<port>`).
-- `<REPLACE_ME_WITH_DB_PASSWORD>`: The password chosen when you created the SQL instance.
 
 #### SSL support
 

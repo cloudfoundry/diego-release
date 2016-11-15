@@ -100,4 +100,6 @@ We recommend using at least version v27 of the CF-MySQL release.
 For PostgreSQL, operators have at least the following options:
 
 * Use the [PostgreSQL job](https://github.com/cloudfoundry/cf-release/tree/master/jobs/postgres) from the CF release, either sharing an existing instance that houses the CC and UAA databases, or deploying a separate node specifically for Diego.
-* Use an infrastructure-specific database deployment, such as an RDS PostgresQL instance on AWS.
+* Use an infrastructure-specific database deployment, such as an RDS PostgreSQL instance on AWS.
+
+**Note**: Diego requires a PostgreSQL version of 9.4 or higher for its data store.

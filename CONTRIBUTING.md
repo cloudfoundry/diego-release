@@ -295,6 +295,8 @@ Once you've followed the steps [above](#initial-setup) to install ginkgo and the
 
     ./scripts/run-unit-tests
 
+We recommend running the unit tests against both a local MySQL and a local PostgreSQL database as described [above](#running-the-sql-unit-tests). That is, the script should be invoked with the `RUN_SQL_TESTS` environment variable set to `TRUE`.
+
 ### Running Integration Tests
 
 If your local concourse VM is up and running, you have the `fly` CLI visible on your `$PATH`, and you've cloned garden-runc-release (see [Initial Setup](#initial-setup) for details), you can run
