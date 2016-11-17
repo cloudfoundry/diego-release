@@ -52,12 +52,12 @@ jobs:
     nats:
       address: 127.0.0.1
       user: nats
-      password: nats-password
+      password: (( BoshInitCreds.NatsPassword ))
 
     postgres: &db
       host: 127.0.0.1
       user: postgres
-      password: postgres-password
+      password: (( BoshInitCreds.PostgresPassword ))
       database: bosh
       adapter: postgres
 
@@ -65,17 +65,17 @@ jobs:
       address: ((Resources.SubnetOctets.BOSHZ1.[2] ".6" ))
       host: ((Resources.SubnetOctets.BOSHZ1.[2] ".6" ))
       db: *db
-      http: {user: admin, password: admin, port: 25777}
+      http: {user: admin, password: (( BoshInitCreds.RegistryPassword )), port: 25777}
       username: admin
-      password: admin
+      password: (( BoshInitCreds.RegistryPassword ))
       port: 25777
 
     blobstore:
       address: ((Resources.SubnetOctets.BOSHZ1.[2] ".6" ))
       port: 25250
       provider: dav
-      director: {user: director, password: director-password}
-      agent: {user: agent, password: agent-password}
+      director: {user: director, password: (( BoshInitCreds.BlobStoreDirectorPassword )) }
+      agent: {user: agent, password: (( BoshInitCreds.BlobStoreAgentPassword )) }
 
     director:
       address: 127.0.0.1
@@ -85,7 +85,7 @@ jobs:
       max_threads: 10
 
     hm:
-      director_account: {user: hm, password: hm-password}
+      director_account: {user: hm, password: (( BoshInitCreds.HMPassword )) }
     resurrector_enabled: true
 
     aws: &aws
@@ -96,7 +96,7 @@ jobs:
       region: (( Region ))
 
     agent:
-      mbus: (( "nats://nats:nats-password@" Resources.SubnetOctets.BOSHZ1.[2] ".6:4222" ))
+      mbus: (( "nats://nats:" BoshInitCreds.NatsPassword "@" Resources.SubnetOctets.BOSHZ1.[2] ".6:4222" ))
 
     ntp: &ntp [0.pool.ntp.org, 1.pool.ntp.org]
 
@@ -104,12 +104,12 @@ cloud_provider:
   ssh_tunnel:
     host: (( Resources.EIP.BoshInit ))
 
-  mbus: (( "https://mbus:mbus-password@" Resources.EIP.BoshInit ":6868" ))
+  mbus: (( "https://mbus:" BoshInitCreds.MBusPassword "@" Resources.EIP.BoshInit ":6868" ))
 
   properties:
     aws: *aws
     agent:
-      mbus: "https://mbus:mbus-password@0.0.0.0:6868"
+      mbus: (( "https://mbus:" BoshInitCreds.MBusPassword "@0.0.0.0:6868" ))
     blobstore:
       provider: local
       path: /var/vcap/micro_bosh/data/cache
@@ -129,3 +129,4 @@ SecretAccessKey: (( merge ))
 BoshInitStemcell: (( merge ))
 BoshInitUsers: (( merge ))
 BoshKeypairName: (( merge ))
+BoshInitCreds: (( merge ))

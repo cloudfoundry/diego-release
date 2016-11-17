@@ -145,6 +145,12 @@ subnets:
     route_table:
       instance: NATZ1
 
+  - name: DatadogFirehoseNozzle
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      instance: NATZ1
+
 buckets:
   - name: AppBits
   - name: AppResources
@@ -194,11 +200,20 @@ security_groups:
   - name: BOSH
     ingress:
       - protocol: tcp
-        ports: 0-65535
+        ports: 22
+        cidr: 0.0.0.0/0
+      - protocol: tcp
+        ports: 6868
+        cidr: 0.0.0.0/0
+      - protocol: tcp
+        ports: 25555
         cidr: 0.0.0.0/0
       - protocol: udp
         ports: 0-65535
-        cidr: 0.0.0.0/0
+        cidr: (( vpc.cidr ))
+      - protocol: tcp
+        ports: 0-65535
+        cidr: (( vpc.cidr ))
 
   - name: Open
     ingress:
@@ -213,10 +228,10 @@ security_groups:
     ingress:
       - protocol: tcp
         ports: 0-65535
-        cidr: 0.0.0.0/0
+        cidr: (( vpc.cidr ))
       - protocol: udp
         ports: 0-65535
-        cidr: 0.0.0.0/0
+        cidr: (( vpc.cidr ))
 
   - name: Web
     ingress:

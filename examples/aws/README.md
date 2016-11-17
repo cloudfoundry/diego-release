@@ -322,6 +322,28 @@ EOF
 
 Next, edit this file to replace the `REPLACE_WITH_BOSH_ADMIN_PASSWORD` with the password you intend to use for the 'admin' BOSH user.
 
+#### `stubs/bosh-init/creds.yml`
+
+Run the following to create the `stubs/bosh-init/creds.yml` file, which defines passwords for different bosh users:
+
+```yaml
+cat <<EOF > $DEPLOYMENT_DIR/stubs/bosh-init/creds.yml
+---
+BoshInitCreds:
+  NatsPassword: REPLACE_ME
+  PostgresPassword: REPLACE_ME
+  BlobStoreDirectorPassword: REPLACE_ME
+  BlobStoreAgentPassword: REPLACE_ME
+  MBusPassword: REPLACE_ME
+  HMPassword: REPLACE_ME
+  RegistryPassword: REPLACE_ME
+EOF
+```
+
+Next, edit this file to replace each `REPLACE_ME` with a password. **Note**
+each one of these passwords is meant to be unique. Do not share the same
+password.
+
 #### `stubs/bosh-init/stemcell.yml`
 
 Run the following to create the `stubs/bosh-init/stemcell.yml` file, which defines the stemcell to use to create the BOSH director. 
