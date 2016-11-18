@@ -148,7 +148,7 @@ properties:
         password: admin
       - tag: admin
         name: diego
-        password: (( merge ))
+        password: "admin"
     databases:
       - tag: cc
         name: ccdb

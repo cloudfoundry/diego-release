@@ -70,6 +70,10 @@ properties:
     roles:
       diego:
         password: REPLACE_WITH_DB_PASSWORD
+      ccadmin:
+        password: REPLACE_WITH_CC_DB_PASSWORD
+      uaaadmin:
+        password: REPLACE_WITH_UAA_DB_PASSWORD
 
   smoke_tests:
     api: REPLACE_WITH_API_DOMAIN
