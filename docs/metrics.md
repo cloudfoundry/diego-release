@@ -99,6 +99,7 @@
 | `VolmanUnmountDuration`                              | Time volman took to unmount a volume. Emitted by each rep when volumes are mounted.                                                                        | ns               |
 | `VolmanUnmountDurationFor`                           | Time volman took to unmount a volume with a specifc volume driver. Emitted by each rep when volumes are mounted.                                           | ns               |
 | `VolmanUnmountErrors`                                | Count of failed volume unmounts. Emitted periodically by each rep.                                                                                         | number           |
+| `CellTasksFailed`                                    | Cumulative number of failed Tasks on a cell.  Emitted on each Task Failure                                                                                 | number           |
 
 ## Route Emitter
 
