@@ -1,5 +1,0 @@
-set -e
-
-cp docker/docker-1.8.3 ${BOSH_INSTALL_TARGET}/docker
-
-chmod +x ${BOSH_INSTALL_TARGET}/docker

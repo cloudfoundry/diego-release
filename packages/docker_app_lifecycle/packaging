@@ -4,9 +4,6 @@ mkdir -p ${BOSH_INSTALL_TARGET}/src
 cp -a . ${BOSH_INSTALL_TARGET}/src
 export GOPATH=$BOSH_INSTALL_TARGET
 
-cp /var/vcap/packages/docker/docker ./docker
-cp code.cloudfoundry.org/dockerapplifecycle/mount_cgroups ./mount_cgroups
-
 export GOROOT=$(readlink -nf /var/vcap/packages/golang)
 export PATH=$GOROOT/bin:$PATH
 
@@ -20,7 +17,7 @@ done
 tar -xzf /var/vcap/packages/diego-sshd/diego-sshd.tgz
 tar -xzf /var/vcap/packages/healthcheck/healthcheck.tgz
 
-tar -czf ${BOSH_INSTALL_TARGET}/docker_app_lifecycle.tgz builder launcher healthcheck docker diego-sshd mount_cgroups
+tar -czf ${BOSH_INSTALL_TARGET}/docker_app_lifecycle.tgz builder launcher healthcheck diego-sshd
 
 # clean up source artifacts
 rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg
