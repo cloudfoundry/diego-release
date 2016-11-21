@@ -49,83 +49,90 @@ iaas_settings:
   resource_pool_cloud_properties:
     - name: access_z1
       cloud_properties:
-        instance_type: m3.medium
+        instance_type: (( instance_types.access ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
         elbs:
         - (( Resources.LoadBalancer.SSHProxyELB ))
     - name: access_z2
       cloud_properties:
-        instance_type: m3.medium
+        instance_type: (( instance_types.access ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ2 ))
         elbs:
         - (( Resources.LoadBalancer.SSHProxyELB ))
     - name: access_z3
       cloud_properties:
-        instance_type: m3.medium
+        instance_type: (( instance_types.access ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ3 ))
         elbs:
         - (( Resources.LoadBalancer.SSHProxyELB ))
     - name: brain_z1
       cloud_properties:
-        instance_type: m3.medium
+        instance_type: (( instance_types.brain ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
     - name: brain_z2
       cloud_properties:
-        instance_type: m3.medium
+        instance_type: (( instance_types.brain ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ2 ))
     - name: brain_z3
       cloud_properties:
-        instance_type: m3.medium
+        instance_type: (( instance_types.brain ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ3 ))
     - name: cc_bridge_z1
       cloud_properties:
-        instance_type: m3.medium
+        instance_type: (( instance_types.cc_bridge ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
     - name: cc_bridge_z2
       cloud_properties:
-        instance_type: m3.medium
+        instance_type: (( instance_types.cc_bridge ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ2 ))
     - name: cc_bridge_z3
       cloud_properties:
-        instance_type: m3.medium
+        instance_type: (( instance_types.cc_bridge ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ3 ))
     - name: cell_z1
       cloud_properties:
-        instance_type: r3.xlarge
+        instance_type: (( instance_types.cell ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
     - name: cell_z2
       cloud_properties:
-        instance_type: r3.xlarge
+        instance_type: (( instance_types.cell ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ2 ))
     - name: cell_z3
       cloud_properties:
-        instance_type: r3.xlarge
+        instance_type: (( instance_types.cell ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ3 ))
     - name: database_z1
       cloud_properties:
-        instance_type: m3.large
+        instance_type: (( instance_types.database ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
     - name: database_z2
       cloud_properties:
-        instance_type: m3.large
+        instance_type: (( instance_types.database ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ2 ))
     - name: database_z3
       cloud_properties:
-        instance_type: m3.large
+        instance_type: (( instance_types.database ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ3 ))
     - name: route_emitter_z1
       cloud_properties:
-        instance_type: m3.medium
+        instance_type: (( instance_types.route_emitter ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ1 ))
     - name: route_emitter_z2
       cloud_properties:
-        instance_type: m3.medium
+        instance_type: (( instance_types.route_emitter ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ2 ))
     - name: route_emitter_z3
       cloud_properties:
-        instance_type: m3.medium
+        instance_type: (( instance_types.route_emitter ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoZ3 ))
 
+instance_types:
+  access: (( merge || "m3.medium" ))
+  brain: (( merge || "m3.medium" ))
+  cc_bridge: (( merge || "m3.medium" ))
+  cell: (( merge || "r3.xlarge" ))
+  database: (( merge || "m3.large" ))
+  route_emitter: (( merge || "m3.medium" ))
 Resources:
   Subnet:
     DiegoZ1: (( merge ))

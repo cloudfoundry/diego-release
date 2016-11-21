@@ -159,6 +159,7 @@ DEPLOYMENT_DIR
 | |-(elb-cfrouter.pem)
 |-stubs
 | |-(domain.yml)
+| |-(aws-instance-types.yml) [OPTIONAL]
 | |-infrastructure
 | | |-(availablity_zones.yml)
 | |-bosh-init
@@ -229,6 +230,26 @@ cat <<EOF > $DEPLOYMENT_DIR/stubs/domain.yml
 domain: $CF_DOMAIN
 EOF
 ```
+
+#### `stubs/aws-instance-types.yml` [OPTIONAL]
+
+To override the instance sizes for the Diego VMS, you may optionally create a stubs/aws-instance-types.yml file. For example, to make all Diego VMs use the t2.micro instance type, run the following command:
+
+```yaml
+cat <<EOF > $DEPLOYMENT_DIR/stubs/aws-instance-types.yml
+instance_types:
+  access: t2.micro
+  brain: t2.micro
+  cc_bridge: t2.micro
+  cell: t2.micro
+  cell_windows: t2.micro
+  database: t2.micro
+  route_emitter: t2.micro
+EOF
+```
+
+If this file does not exist, the default sizes will be used. If the file does exist, but not all types are provided, the default sizes will be used for anything not explicitly overridden.
+Note: this file needs to be created before `deploy_aws_environment` script described below is run.
 
 #### `stubs/infrastructure/availability_zones.yml`
 

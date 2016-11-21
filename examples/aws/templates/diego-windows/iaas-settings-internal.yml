@@ -39,17 +39,20 @@ iaas_settings:
   resource_pool_cloud_properties:
     - name: cell_windows_z1
       cloud_properties:
-        instance_type: r3.xlarge
+        instance_type: (( instance_types.cell_windows ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoWindowsZ1 ))
     - name: cell_windows_z2
       cloud_properties:
-        instance_type: r3.xlarge
+        instance_type: (( instance_types.cell_windows ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoWindowsZ2 ))
     - name: cell_windows_z3
       cloud_properties:
-        instance_type: r3.xlarge
+        instance_type: (( instance_types.cell_windows ))
         availability_zone: (( Resources.SubnetAvailabilityZone.DiegoWindowsZ3 ))
 
+
+instance_types:
+  cell_windows: (( merge || "r3.xlarge" ))
 Resources:
   Subnet:
     DiegoWindowsZ1: (( merge ))

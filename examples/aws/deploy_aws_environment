@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -e
-set -o
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
@@ -231,17 +230,22 @@ else
 fi
 
 # generate Diego IaaS-settings stub
+aws_instance_types=""
+if [ -f stubs/aws-instance-types.yml ]; then
+  aws_instance_types="stubs/aws-instance-types.yml"
+fi
+
 spiff merge \
   $SCRIPT_DIR/../../manifest-generation/misc-templates/aws-iaas-settings.yml \
   $SCRIPT_DIR/templates/diego/iaas-settings-internal.yml \
-  stubs/aws-resources.yml \
+  $aws_instance_types stubs/aws-resources.yml \
   > stubs/diego/iaas-settings.yml
 
 # generate Diego Windows IaaS-settings stub
 spiff merge \
   $SCRIPT_DIR/../../manifest-generation/misc-templates/windows-iaas-settings.yml \
   $SCRIPT_DIR/templates/diego-windows/iaas-settings-internal.yml \
-  stubs/aws-resources.yml \
+  $aws_instance_types stubs/aws-resources.yml \
   > stubs/diego-windows/iaas-settings.yml
 
 mkdir -p stubs/cf-mysql
