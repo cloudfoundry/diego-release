@@ -1,0 +1,87 @@
+compilation:
+  cloud_properties:
+    availability_zone: (( Resources.SubnetAvailabilityZone.DatadogFirehoseNozzle ))
+    instance_type: c3.xlarge
+  network: datadog-firehose-nozzle-net
+  reuse_compilation_vms: true
+  workers: 1
+director_uuid: (( merge ))
+jobs:
+- instances: 1
+  name: datadog-firehose-nozzle
+  networks:
+  - name: datadog-firehose-nozzle-net
+    static_ips: (( static_ips(0) ))
+  resource_pool: datadog-firehose-nozzle
+  templates:
+  - name: datadog-firehose-nozzle
+    release: datadog-firehose-nozzle
+meta:
+  availability_zone: (( Resources.SubnetAvailabilityZone.DatadogFirehoseNozzle ))
+  environment: (( merge ))
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: latest
+name: datadog-firehose-nozzle
+networks:
+- name: datadog-firehose-nozzle-net
+  subnets:
+  - cloud_properties:
+      security_groups: (( [Resources.SecurityGroupName.Internal] ))
+      subnet: (( Resources.Subnet.DatadogFirehoseNozzle ))
+    gateway:  (( Resources.SubnetOctets.DatadogFirehoseNozzle.[2] ".1" ))
+    range:    (( Resources.SubnetCIDR.DatadogFirehoseNozzle ))
+    reserved: (( [Resources.SubnetOctets.DatadogFirehoseNozzle.[2] ".2 - " Resources.SubnetOctets.DatadogFirehoseNozzle.[2] ".9"] ))
+    static:   (( [Resources.SubnetOctets.DatadogFirehoseNozzle.[2] ".64 - " Resources.SubnetOctets.DatadogFirehoseNozzle.[2] ".67"] ))
+properties:
+  domain: (( merge ))
+  datadog:
+    api_key: (( merge ))
+    api_url: https://app.datadoghq.com/api/v1/series
+    deployment: (( meta.environment ))
+    flush_duration_seconds: 15
+    metric_prefix: datadog.nozzle.
+  loggregator:
+    traffic_controller_url: (( "wss://doppler." domain ":4443"))
+  nozzle:
+    deployment: (( meta.environment ))
+    insecure_ssl_skip_verify: true
+    subscription_id: datadog-nozzle
+    disable_access_control: (( merge || false ))
+  uaa:
+    client: datadog-firehose-nozzle
+    client_secret: nozzle-secret
+    url: (( "https://uaa." domain ))
+releases:
+- name: datadog-firehose-nozzle
+  version: latest
+- name: cf
+  version: latest
+resource_pools:
+- cloud_properties:
+    availability_zone: (( Resources.SubnetAvailabilityZone.DatadogFirehoseNozzle ))
+    instance_type: m3.medium
+  name: datadog-firehose-nozzle
+  network: datadog-firehose-nozzle-net
+  size: 1
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: latest
+update:
+  canaries: 1
+  canary_watch_time: 30000-100000
+  max_errors: 1
+  max_in_flight: 1
+  update_watch_time: 30000-100000
+
+Resources:
+  Subnet:
+    DatadogFirehoseNozzle: (( merge ))
+  SubnetAvailabilityZone:
+    DatadogFirehoseNozzle: (( merge ))
+  SubnetOctets:
+    DatadogFirehoseNozzle: (( merge ))
+  SubnetCIDR:
+    DatadogFirehoseNozzle: (( merge ))
+  SecurityGroupName:
+    Internal: (( merge ))

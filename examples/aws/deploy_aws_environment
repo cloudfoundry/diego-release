@@ -253,4 +253,16 @@ spiff merge \
   stubs/aws-resources.yml \
   > stubs/cf-mysql/iaas-settings.yml
 
+# generate datadog firehose nozzle manifest if the user stubs exist
+if [ -d stubs/datadog-firehose-nozzle ]; then
+    spiff merge \
+          $SCRIPT_DIR/templates/datadog-firehose-nozzle/datadog-firehose-nozzle.yml \
+          stubs/aws-resources.yml \
+          stubs/cf/properties.yml \
+          stubs/cf/domain.yml \
+          stubs/director-uuid.yml \
+          stubs/datadog-firehose-nozzle/datadog.yml \
+          stubs/datadog-firehose-nozzle/property-overrides.yml \
+          > deployments/datadog-firehose-nozzle.yml
+fi
 popd
