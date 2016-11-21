@@ -120,7 +120,7 @@ properties:
     user_management:
       provider: local
       local:
-        users: (( BoshInitUsers ))
+        users: (( [HmUser] BoshInitUsers ))
 
 Region: (( merge ))
 Resources: (( merge ))
@@ -130,3 +130,6 @@ BoshInitStemcell: (( merge ))
 BoshInitUsers: (( merge ))
 BoshKeypairName: (( merge ))
 BoshInitCreds: (( merge ))
+HmUser:
+  name: hm
+  password: (( BoshInitCreds.HMPassword ))
