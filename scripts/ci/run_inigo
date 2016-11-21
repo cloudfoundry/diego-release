@@ -149,9 +149,4 @@ pushd "${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo"
   fi
 
   ginkgo $nodes_flag -r -skipPackage="${PACKAGES_TO_SKIP}" -skip="${SKIP_REGEX}" -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing $@
-
-  if [[ -z "$@" || "$@" =~ "docker" ]]; then
-    # always run docker tests serially
-    ginkgo -r -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=10 -keepGoing docker/
-  fi
 popd
