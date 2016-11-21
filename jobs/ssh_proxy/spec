@@ -7,6 +7,7 @@ templates:
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
+  ssh_proxy.json.erb: config/ssh_proxy.json
 
 packages:
   - pid_utils

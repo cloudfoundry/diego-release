@@ -1,0 +1,57 @@
+<%=
+  config = {
+    address: p("diego.ssh_proxy.listen_addr"),
+    health_check_address: p("diego.ssh_proxy.healthcheck_listen_addr"),
+    host_key: p("diego.ssh_proxy.host_key"),
+    consul_cluster: "http://127.0.0.1:8500",
+    cc_api_url: "http://#{p("diego.ssh_proxy.cc.internal_service_hostname")}:#{p("diego.ssh_proxy.cc.external_port")}",
+    dropsonde_port: p("diego.ssh_proxy.dropsonde_port"),
+    skip_cert_verify:  p("diego.ssl.skip_cert_verify"),
+    log_level: p("diego.ssh_proxy.log_level"),
+    debug_address: p("diego.ssh_proxy.debug_addr"),
+  }
+
+  if p("diego.ssh_proxy.bbs.require_ssl") then
+    config[:bbs_address] = "https://" + p("diego.ssh_proxy.bbs.api_location")
+    config[:bbs_client_cert] = "/var/vcap/jobs/ssh_proxy/config/certs/bbs/client.crt"
+    config[:bbs_client_key] = "/var/vcap/jobs/ssh_proxy/config/certs/bbs/client.key"
+    config[:bbs_ca_cert] = "/var/vcap/jobs/ssh_proxy/config/certs/bbs/ca.crt"
+  else
+    config[:bbs_address] ="http://" + p("diego.ssh_proxy.bbs.api_location")
+  end
+
+  if p("diego.ssh_proxy.enable_diego_auth") then
+    config[:enable_diego_auth] = true
+    config[:diego_credentials] =p("diego.ssh_proxy.diego_credentials")
+  else
+    config[:enable_diego_auth] = false
+  end
+
+  if p("diego.ssh_proxy.enable_cf_auth") then
+    config[:enable_cf_auth] = true
+    config[:uaa_token_url] = p("diego.ssh_proxy.uaa_token_url")
+    config[:uaa_password] =  p("diego.ssh_proxy.uaa_secret")
+    config[:uaa_username] = "ssh-proxy"
+  else
+    config[:enable_cf_auth] = false
+  end
+
+  if_p("diego.ssh_proxy.allowed_ciphers") do |value|
+    config[:allowed_ciphers] = value
+  end
+  if_p("diego.ssh_proxy.allowed_macs") do |value|
+    config[:allowed_macs] = value
+  end
+  if_p("diego.ssh_proxy.allowed_keyexchanges") do |value|
+    config[:allowed_key_exchanges] = value
+  end
+  if_p("diego.ssh_proxy.bbs.client_session_cache_size") do |value|
+    config[:bbs_client_session_cache_size] = value
+  end
+  if_p("diego.ssh_proxy.bbs.max_idle_conns_per_host") do |value|
+    config[:bbs_max_idle_conns_per_host] = value
+  end
+
+  config.to_json
+%>
+
