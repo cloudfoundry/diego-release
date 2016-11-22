@@ -14,6 +14,14 @@ properties:
     encrypt_keys:
       - REPLACE_WITH_CONSUL_ENCRYPTION_KEY
 
+  loggregator:
+    tls:
+      doppler:
+        cert: REPLACE_WITH_DOPPLER_CERT
+        key: REPLACE_WITH_DOPPLER_KEY
+      trafficcontroller:
+        cert: REPLACE_WITH_TRAFFICCONTROLLER_CERT
+        key: REPLACE_WITH_TRAFFICCONTROLLER_KEY
   loggregator_endpoint:
     shared_secret: REPLACE_WITH_LOGGREGATOR_PASSWORD
 
