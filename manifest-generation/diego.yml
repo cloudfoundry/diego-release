@@ -431,6 +431,7 @@ base:
 
 properties:
   # -- Properties below are used by the metron_agent job from cf-release --
+  <<: (( merge ))
   metron_agent:
     deployment: (( name ))
     protocols: (( config_from_cf.metron_agent.protocols ))
