@@ -1,9 +1,5 @@
 ---
-meta:
-  vpc:
-    base: "10.10"
-
-  availability_zones: (( merge ))
+meta: (( merge ))
 
 vpc:
   cidr: (( meta.vpc.base ".0.0/16" ))
@@ -12,7 +8,9 @@ dns:
   - (( meta.vpc.base ".0.2" ))
   - (( meta.vpc.base ".0.6" ))
 
-subnets:
+default_subnets:
+  - <<: (( merge ))
+
   - name: BOSHZ1
     cidr: (( meta.vpc.base ".0.0/24" ))
     availability_zone: (( meta.availability_zones.[0] ))

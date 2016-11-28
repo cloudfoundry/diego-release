@@ -128,6 +128,19 @@ EOF
 aws iam get-server-certificate --server-certificate-name cfrouter \
   >> stubs/infrastructure/certificates.yml
 
+function extra_subnets {
+  cat <<EOF
+---
+EOF
+
+  if [ -f stubs/infrastructure/extra_subnets.yml ]; then
+    spiff merge \
+        stubs/infrastructure/extra_subnets.yml \
+        $SCRIPT_DIR/templates/infrastructure/meta.yml \
+        stubs/infrastructure/availability_zones.yml
+  fi
+}
+
 # generate cloudformation template
 spiff merge \
   $SCRIPT_DIR/templates/infrastructure/boosh.yml \
@@ -135,7 +148,9 @@ spiff merge \
   stubs/bosh-init/keypair.yml \
   stubs/domain.yml \
   stubs/infrastructure/certificates.yml \
+  $SCRIPT_DIR/templates/infrastructure/meta.yml \
   stubs/infrastructure/availability_zones.yml \
+  <(extra_subnets) \
   | boosh generate | jq -c -S . \
   > stubs/infrastructure/cloudformation.json
 

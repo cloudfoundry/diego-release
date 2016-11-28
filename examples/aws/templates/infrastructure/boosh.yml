@@ -18,7 +18,11 @@ elastic_ips:
 
 dns: (( merge ))
 
-subnets:
+subnets: (( default_subnets extra_subnets ))
+
+extra_subnets: (( merge || [] ))
+
+default_subnets:
   - name: BOSHZ1
     cidr: (( merge ))
     availability_zone: (( merge ))
