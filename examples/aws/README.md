@@ -848,8 +848,10 @@ The PostgreSQL job in CF Release can be used as the database for Diego. Replace 
 
 ```yaml
 databases:
+  ...
   roles:
-    diego:
+    ...
+    - name: diego:
       password: REPLACE_WITH_DB_PASSWORD
 ```
 

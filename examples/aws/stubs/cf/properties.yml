@@ -102,6 +102,24 @@ properties:
         name: diego
         citext: false
 
+  uaadb:
+    db_scheme: postgresql
+    port: (( properties.databases.port ))
+    address: (( properties.databases.address ))
+    databases:
+    - (( properties.databases.databases.uaadb ))
+    roles:
+    - (( properties.databases.roles.uaaadmin ))
+
+  ccdb:
+    db_scheme: postgres
+    port: (( properties.databases.port ))
+    address: (( properties.databases.address ))
+    databases:
+    - (( properties.databases.databases.ccdb ))
+    roles:
+    - (( properties.databases.roles.ccadmin ))
+
   smoke_tests:
     api: REPLACE_WITH_API_DOMAIN
     apps_domain: REPLACE_WITH_APPS_DOMAIN

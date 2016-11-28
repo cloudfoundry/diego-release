@@ -104,36 +104,10 @@ properties:
     buildpacks:
       buildpack_directory_key: (( merge ))
 
-  ccdb:
-    db_scheme: postgres
-    address: (( merge ))
-    port: 5524
-    roles:
-      - tag: admin
-        name: ccadmin
-        password: admin
-    databases:
-      - tag: cc
-        name: ccdb
-        citext: true
-
   uaa:
     jwt:
       signing_key: (( merge ))
       verification_key: (( merge ))
-
-  uaadb:
-    db_scheme: postgresql
-    address: (( merge ))
-    port: 5524
-    roles:
-      - tag: admin
-        name: uaaadmin
-        password: admin
-    databases:
-      - tag: uaa
-        name: uaadb
-        citext: true
 
   databases:
     address: (( merge ))
