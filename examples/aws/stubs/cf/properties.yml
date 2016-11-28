@@ -22,6 +22,7 @@ properties:
       trafficcontroller:
         cert: REPLACE_WITH_TRAFFICCONTROLLER_CERT
         key: REPLACE_WITH_TRAFFICCONTROLLER_KEY
+      ca_cert: REPLACE_WITH_LOGGREGATOR_CA_CERT
   loggregator_endpoint:
     shared_secret: REPLACE_WITH_LOGGREGATOR_PASSWORD
 
@@ -38,7 +39,6 @@ properties:
     skip_cert_verify: true
 
   uaa:
-    ca_cert: REPLACE_WITH_UAA_CA_CERT
     sslPrivateKey: REPLACE_WITH_UAA_SSL_PRIVATE_KEY
     sslCertificate: REPLACE_WITH_UAA_SSL_CERTIFICATE
     admin:
