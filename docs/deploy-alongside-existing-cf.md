@@ -59,7 +59,7 @@ cd $DIEGO_RELEASE_DIR
 
 The `cf.yml` file specified is the CF manifest as updated above.
 
-See the [manifest-generation script documentation](manifest-generation.md) for more information about the script arguments. For examples of these input stubs, see the [BOSH-Lite deployment stubs](../manifest-generation/bosh-lite-stubs), [minimal AWS stubs](../examples/minimal-aws/stubs), or [full AWS documentation](../examples/aws).
+See the [manifest-generation script documentation](manifest-generation.md) for more information about the script arguments. For examples of these input stubs, see the [BOSH-Lite deployment stubs](../manifest-generation/bosh-lite-stubs) or the [full AWS documentation](../examples/aws).
 
 
 ### <a name="upload-additional-releases"></a>Upload Additional Releases

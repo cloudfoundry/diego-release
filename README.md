@@ -32,7 +32,7 @@ The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) pre
 ### <a name="deployment-examples"></a>Deployment Examples: BOSH-Lite and AWS
 
 - [Deploying CF and Diego to BOSH-Lite](examples/bosh-lite) provides detailed instructions for deploying a Diego-backed CF to a BOSH-Lite instance.
-- [Deploying CF and Diego to AWS](examples/aws) provides detailed instructions to deploy BOSH, CF, and Diego to a new CloudFormation stack. Alternately, follow the instructions in [examples/minimal-aws](examples/minimal-aws/README.md) to deploy Diego alongside a [minimal CF deployment](https://github.com/cloudfoundry/cf-release/tree/master/example_manifests).
+- [Deploying CF and Diego to AWS](examples/aws) provides detailed instructions to deploy BOSH, CF, and Diego to a new CloudFormation stack. Alternately, follow the [instructions in cf-release](https://github.com/cloudfoundry/cf-release/tree/master/example_manifests) to deploy Diego alongside a minimal CF deployment.
 
 
 ### <a name="deployment-requirements-constraints"></a>Deployment Requirements and Constraints
