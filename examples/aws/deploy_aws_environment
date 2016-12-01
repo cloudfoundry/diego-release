@@ -215,7 +215,8 @@ EOF
 spiff merge \
   $SCRIPT_DIR/templates/cf/stub.yml \
   $SCRIPT_DIR/templates/cf/stub-internal.yml \
-  $aws_instance_types stubs/aws-resources.yml \
+  $aws_instance_types \
+  stubs/aws-resources.yml \
   stubs/cf/domain.yml \
   stubs/director-uuid.yml \
   <(cf_credentials) \
@@ -279,6 +280,7 @@ if [ -d stubs/datadog-firehose-nozzle ]; then
           $SCRIPT_DIR/templates/datadog-firehose-nozzle/datadog-firehose-nozzle.yml \
           stubs/aws-resources.yml \
           stubs/cf/properties.yml \
+          stubs/cf/stub.yml \
           stubs/cf/domain.yml \
           stubs/director-uuid.yml \
           stubs/datadog-firehose-nozzle/datadog.yml \
