@@ -201,6 +201,12 @@ spiff merge $SCRIPT_DIR/templates/cf/domain.yml \
   stubs/domain.yml \
   >> stubs/cf/domain.yml
 
+# override cf and diego instance types
+aws_instance_types=""
+if [ -f stubs/aws-instance-types.yml ]; then
+  aws_instance_types="stubs/aws-instance-types.yml"
+fi
+
 # generate deployment stub
 cat > stubs/cf/stub.yml <<EOF
 # GENERATED: NO TOUCHING
@@ -209,7 +215,7 @@ EOF
 spiff merge \
   $SCRIPT_DIR/templates/cf/stub.yml \
   $SCRIPT_DIR/templates/cf/stub-internal.yml \
-  stubs/aws-resources.yml \
+  $aws_instance_types stubs/aws-resources.yml \
   stubs/cf/domain.yml \
   stubs/director-uuid.yml \
   <(cf_credentials) \
@@ -245,11 +251,6 @@ else
 fi
 
 # generate Diego IaaS-settings stub
-aws_instance_types=""
-if [ -f stubs/aws-instance-types.yml ]; then
-  aws_instance_types="stubs/aws-instance-types.yml"
-fi
-
 spiff merge \
   $SCRIPT_DIR/../../manifest-generation/misc-templates/aws-iaas-settings.yml \
   $SCRIPT_DIR/templates/diego/iaas-settings-internal.yml \

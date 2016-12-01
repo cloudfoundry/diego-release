@@ -233,11 +233,18 @@ EOF
 
 #### `stubs/aws-instance-types.yml` [OPTIONAL]
 
-To override the instance sizes for the Diego VMS, you may optionally create a stubs/aws-instance-types.yml file. For example, to make all Diego VMs use the t2.micro instance type, run the following command:
+To override the existing resource pool instance sizes for the CF and Diego VMS, you may optionally create a stubs/aws-instance-types.yml file. For example, to make all CF and Diego VMs use the t2.micro instance type, run the following command:
 
 ```yaml
 cat <<EOF > $DEPLOYMENT_DIR/stubs/aws-instance-types.yml
 instance_types:
+  small: t2.micro
+  medium: t2.micro
+  large: t2.micro
+  runner: t2.micro
+  router: t2.micro
+  small_errand: t2.micro
+  xlarge_errand: t2.micro
   access: t2.micro
   brain: t2.micro
   cc_bridge: t2.micro
