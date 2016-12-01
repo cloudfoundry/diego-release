@@ -35,12 +35,12 @@ Converting Diego from standalone etcd to standalone relational requires two depl
 2. Deploy Diego and verify that the BBS nodes have migrated the etcd data to the relational store.
    1. Verifying BBS is using SQL backend
       ```shell
-      bosh -d /path/to/diego.yml instances | grep database | awk '{print $2}' | xargs -n1 -P5 -I{} bosh -d /path/to/diego.yml ssh {} "grep bbs.migration-manager.finished-migrations /var/vcap/sys/log/bbs/bbs.stdout" 2>&1 | grep migration | grep -v Executing | wc -l
+      bosh -d /path/to/diego.yml instances | grep database | awk '{print $2}' | xargs -n1 -P5 -I{} bosh -d /path/to/diego.yml ssh {} "grep bbs.migration-manager.finished-migrations /var/vcap/sys/log/bbs/bbs.stdout.log" 2>&1 | grep migration | grep -v Executing | wc -l
       ```
 
       Or manually by sshing into all database_z* vms and running the following:
       ```shell
-      grep bbs.migration-manager.finished-migrations /var/vcap/sys/log/bbs/bbs.stdout | wc -l
+      grep bbs.migration-manager.finished-migrations /var/vcap/sys/log/bbs/bbs.stdout.log | wc -l
       ```
 
       The output from the command should larger than `1` on at least one
