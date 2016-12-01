@@ -48,20 +48,94 @@ networks:
           subnet: (( merge ))
 
 resource_pools:
+
+  - name: small_z1
+    cloud_properties:
+      instance_type: (( merge ))
+      availability_zone: (( merge ))
+
+  - name: medium_z1
+    cloud_properties:
+      instance_type: (( merge ))
+      availability_zone: (( merge ))
+
+  - name: large_z1
+    cloud_properties:
+      instance_type: (( merge ))
+      availability_zone: (( merge ))
+
+  - name: runner_z1
+    cloud_properties:
+      instance_type: (( merge ))
+      availability_zone: (( merge ))
+
   - name: router_z1
     cloud_properties:
+      instance_type: (( merge ))
       availability_zone: (( merge ))
       elbs: (( merge ))
+
+  - name: small_z2
+    cloud_properties:
+      instance_type: (( merge ))
+      availability_zone: (( merge ))
+
+  - name: medium_z2
+    cloud_properties:
+      instance_type: (( merge ))
+      availability_zone: (( merge ))
+
+  - name: large_z2
+    cloud_properties:
+      instance_type: (( merge ))
+      availability_zone: (( merge ))
+
+  - name: runner_z2
+    cloud_properties:
+      instance_type: (( merge ))
+      availability_zone: (( merge ))
 
   - name: router_z2
     cloud_properties:
+      instance_type: (( merge ))
       availability_zone: (( merge ))
       elbs: (( merge ))
 
+  - name: small_z3
+    cloud_properties:
+      instance_type: (( merge ))
+      availability_zone: (( merge ))
+
+  - name: medium_z3
+    cloud_properties:
+      instance_type: (( merge ))
+      availability_zone: (( merge ))
+
+  - name: large_z3
+    cloud_properties:
+      instance_type: (( merge ))
+      availability_zone: (( merge ))
+
+  - name: runner_z3
+    cloud_properties:
+      instance_type: (( merge ))
+      availability_zone: (( merge ))
+
   - name: router_z3
     cloud_properties:
+      instance_type: (( merge ))
       availability_zone: (( merge ))
       elbs: (( merge ))
+
+  - name: small_errand
+    cloud_properties:
+      instance_type: (( merge ))
+      availability_zone: (( merge ))
+
+  - name: xlarge_errand
+    cloud_properties:
+      instance_type: (( merge ))
+      availability_zone: (( merge ))
 
 jobs:
   - name: postgres_z1
