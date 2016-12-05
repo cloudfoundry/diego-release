@@ -104,6 +104,10 @@ rep_sec_flags=" \
     if connection_string == ""
        connection_string = connection_string_from_db_params
     end
+
+    if connection_string == ""
+       raise "#{db_params.join(",")} are required fields"
+    end
 %>
 
 /var/vcap/packages/bbs/bin/bbs ${etcd_flags} ${bbs_sec_flags} ${rep_sec_flags} ${sql_sec_flags} \
