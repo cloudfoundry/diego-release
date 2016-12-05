@@ -10,10 +10,14 @@ cat << EOF > /etc/my.cnf
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 EOF
 
-if [ "${USE_SQL}" = "mysql" ]; then
+if [ "${SQL_FLAVOR}" = "mysql" ]; then
   service mysql start
-elif [ "${USE_SQL}" = "postgres" ]; then
+elif [ "${SQL_FLAVOR}" = "postgres" ]; then
+  service postgresql start
+else
+  service mysql start
   service postgresql start
 fi
+
 
 su diego -p -c ./diego-release/scripts/ci/run_unit_internal

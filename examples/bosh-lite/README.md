@@ -70,14 +70,14 @@
 
      ```bash
      cd ~/workspace/diego-release
-     USE_SQL='mysql' ./scripts/generate-bosh-lite-manifests
+     SQL_FLAVOR='mysql' ./scripts/generate-bosh-lite-manifests
      ```
 
   1. If using Postgres run the following to enable it on Diego:
 
      ```bash
      cd ~/workspace/diego-release
-     USE_SQL='postgres' ./scripts/generate-bosh-lite-manifests
+     SQL_FLAVOR='postgres' ./scripts/generate-bosh-lite-manifests
      ```
 
 1. Create, upload, and deploy the CF release:

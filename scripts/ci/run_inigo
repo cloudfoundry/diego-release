@@ -107,16 +107,14 @@ cp -rp /opt/inigo/rootfs/* "${GARDEN_ROOTFS}"
 EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\s/\1/;tx;d;:x')
 export EXTERNAL_ADDRESS
 
-if [ "${USE_SQL}" = "mysql" ]; then
+if [ "${SQL_FLAVOR}" = "mysql" ]; then
   cat << EOF > /etc/my.cnf
 [mysqld]
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 EOF
-
   sed -i 's/#max_connections.*= 100/max_connections = 2000/g' /etc/mysql/my.cnf
-
   service mysql start
-elif [ "${USE_SQL}" = "postgres" ]; then
+elif [ "${SQL_FLAVOR}" = "postgres" ]; then
   sed -i 's/max_connections = 100/max_connections = 2000/g' /etc/postgresql/9.4/main/postgresql.conf
   service postgresql start
 fi

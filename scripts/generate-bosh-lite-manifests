@@ -11,7 +11,7 @@ fi
 
 mkdir -p ${DIEGO_MANIFESTS_DIR}
 
-if [ "${USE_SQL}" = "mysql" ]; then
+if [ "${SQL_FLAVOR}" = "mysql" ]; then
   sql_option="-s manifest-generation/bosh-lite-stubs/mysql/diego-sql.yml"
 else
   sql_option="-s manifest-generation/bosh-lite-stubs/postgres/diego-sql.yml"
