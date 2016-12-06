@@ -1,0 +1,16 @@
+$ErrorActionPreference = "Stop";
+trap { $host.SetShouldExit(1) }
+
+Write-Host "Running pre-start"
+
+$PORT="<%= p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "") : p("diego.rep.listen_addr_admin").sub(/^127\.0\.0\.1:/, "")%>"
+
+if ($PORT -eq "") {
+  Write-Error "Unable to find the port for rep_windows"
+}
+if (-Not (Get-NetFirewallRule | Where-Object { $_.DisplayName -eq "RepPort" })) {
+  New-NetFirewallRule -DisplayName "RepPort" -Action Allow -Direction Inbound -Enabled True -LocalPort $PORT -Protocol TCP
+  if (-Not (Get-NetFirewallRule | Where-Object { $_.DisplayName -eq "RepPort" })) {
+    Write-Error "Unable to add RepPort firewall rule"
+  }
+}

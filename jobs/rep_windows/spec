@@ -3,6 +3,7 @@ name: rep_windows
 
 templates:
   drain.ps1.erb: bin/drain.ps1
+  pre-start.ps1.erb: bin/pre-start.ps1
   start.ps1.erb: bin/start.ps1
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   trusted_certs.crt.erb: config/certs/rep/trusted_certs.crt
