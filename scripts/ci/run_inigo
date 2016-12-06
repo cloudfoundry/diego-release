@@ -87,7 +87,7 @@ export ROUTER_GOPATH=${GOPATH_ROOT}
 
 # install application dependencies
 echo "Installing go dependencies ..."
-for package in github.com/coreos/etcd github.com/apcera/gnatsd; do
+for package in github.com/apcera/gnatsd; do
   go install $package
 done
 

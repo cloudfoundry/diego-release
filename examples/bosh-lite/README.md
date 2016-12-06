@@ -118,14 +118,6 @@
 
   If you wish to upload a specific version of garden-runc-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry/garden-runc-release).
 
-1. Upload the latest etcd-release:
-
-  ```bash
-  bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release
-  ```
-
-  If you wish to upload a specific version of etcd-release, or to download the release locally before uploading it, please consult directions at [bosh.io](http://bosh.io/releases/github.com/cloudfoundry-incubator/etcd-release).
-
 1. Upload the latest cflinuxfs2-rootfs-release:
 
   ```bash

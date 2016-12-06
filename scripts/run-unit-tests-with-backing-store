@@ -25,6 +25,7 @@ pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/ > /dev/null
     bbs/db/migrations \
     converger/cmd/converger \
     rep/cmd/rep \
+    rep/generator/internal \
     route-emitter/cmd/route-emitter \
     ${DB_UNITS}
 
