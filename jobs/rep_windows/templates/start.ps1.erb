@@ -67,7 +67,7 @@
   -advertiseDomain="#{p("diego.rep.advertise_domain")}" \
   -enableLegacyApiServer="#{p("diego.rep.enable_legacy_api_endpoints")}" \
   #{preloaded_rootfses} \
-  -cellID=#{spec.job.name}-#{spec.index}-#{spec.id} \
+  -cellID="#{p("diego.rep.cell_id", "#{spec.job.name}-#{spec.index}-#{spec.id}")}" \
   -zone="#{zone}" \
   -pollingInterval="#{p("diego.rep.polling_interval_in_seconds")}s" \
   -evacuationPollingInterval="#{p("diego.rep.evacuation_polling_interval_in_seconds")}s" \
