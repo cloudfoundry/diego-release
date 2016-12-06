@@ -99,7 +99,7 @@ To be able to run unit tests, you'll also need to install the following binaries
     # Install gnatsd
     go install github.com/apcera/gnatsd
 
-    # Install etcd
+    # Install etcd. This is only required for the bbs migration test suite.
     go install github.com/coreos/etcd
 
     # Install consul
