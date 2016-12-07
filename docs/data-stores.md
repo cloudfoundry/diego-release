@@ -6,26 +6,41 @@ This document describes the different types of data store supported by Diego acr
 
 1. [Supported Data Stores](#supported-data-stores)
 1. [Choosing a Relational Data Store Deployment](#choosing-relational-datastore-deployment)
+1. [Automatic Migration of BBS Data from etcd to SQL](#automatic-migration-bbs-data-etcd-sql)
 
 
 ### <a name="supported-data-stores"></a>Supported Data Stores
 
-At present, Diego supports the following types of data store to back the BBS API server:
+Diego v1.0 and later support only a relational database as the data store for the BBS API server. Both the MySQL and PostgreSQL dialects of SQL are supported on Diego v0.1480.0 and later.
 
-* Relational database: MySQL or PostgreSQL
 
-#### etcd
+### <a name="choosing-relational-datastore-deployment"></a>Choosing a Relational Data Store Deployment
 
-Support for ETCD is now deprecated. Please see the next section on how to
-configure Diego to use relational database as the backend.
+Operators have a choice of deployment styles for both MySQL and PostgreSQL data stores. When Diego is deployed to accompany a CF deployment, operators will already have made a choice of database for the Cloud Controller and UAA databases, and it is expected that the same choice will be appropriate for the Diego data store.
 
-#### Relational Databases
+#### MySQL
 
-Diego supports two SQL dialects, MySQL and PostgreSQL, when configured to use a
-relational data store to back the BBS. Official support for them will start
-with a forthcoming Diego release version.
+For MySQL, operators have at least the following options:
 
-#### Migration of BBS Data from etcd to SQL
+* Use the [CF-MySQL release](http://bosh.io/releases/github.com/cloudfoundry/cf-mysql-release?all=1) in standalone mode as a separate BOSH deployment, either as a single node, or as a highly available (HA) cluster.
+* Use an infrastructure-specific database deployment, such as an RDS MySQL instance on AWS.
+
+We recommend using at least version v27 of the CF-MySQL release.
+
+
+#### PostgreSQL
+
+For PostgreSQL, operators have at least the following options:
+
+* Use the [PostgreSQL job](https://github.com/cloudfoundry/cf-release/tree/master/jobs/postgres) from the CF release, either sharing an existing instance that houses the CC and UAA databases, or deploying a separate node specifically for Diego.
+* Use an infrastructure-specific database deployment, such as an RDS PostgreSQL instance on AWS.
+
+**Note**: Diego requires a PostgreSQL version of 9.4 or higher for its data store.
+
+
+### <a name="automatic-migration-bbs-data-etcd-sql"></a>Automatic Migration of BBS Data from etcd to SQL
+
+Versions of Diego prior to v1.0 also supported etcd as a data store, and Diego will automatically  migrate this data from etcd to a relational data store through major version 1.
 
 For a Diego deployment that has previously been configured to use etcd as its data store, configuring it also to connect to a relational store will cause the BBS to migrate the etcd data to the relational store automatically. After the migration, the data in etcd is marked as invalid, and Diego will not revert to using its data without manual intervention in the etcd key-value store to reset the version.
 
@@ -80,26 +95,3 @@ Converting Diego from standalone etcd to standalone relational requires two depl
    this command should output `0`. A number larger than `0` means that `ETCD` is still running.
 
 Support for migration from etcd to a relational datastore will be maintained through all 1.x versions of Diego.
-
-### <a name="choosing-relational-datastore-deployment"></a>Choosing a Relational Data Store Deployment
-
-Operators have a choice of deployment styles for both MySQL and PostgreSQL data stores. When Diego is deployed to accompany a CF deployment, operators will already have made a choice of database for the Cloud Controller and UAA databases, and it is expected that the same choice will be appropriate for the Diego data store.
-
-#### MySQL
-
-For MySQL, operators have at least the following options:
-
-* Use the [CF-MySQL release](http://bosh.io/releases/github.com/cloudfoundry/cf-mysql-release?all=1) in standalone mode as a separate BOSH deployment, either as a single node, or as a highly available (HA) cluster.
-* Use an infrastructure-specific database deployment, such as an RDS MySQL instance on AWS.
-
-We recommend using at least version v27 of the CF-MySQL release.
-
-
-#### PostgreSQL
-
-For PostgreSQL, operators have at least the following options:
-
-* Use the [PostgreSQL job](https://github.com/cloudfoundry/cf-release/tree/master/jobs/postgres) from the CF release, either sharing an existing instance that houses the CC and UAA databases, or deploying a separate node specifically for Diego.
-* Use an infrastructure-specific database deployment, such as an RDS PostgreSQL instance on AWS.
-
-**Note**: Diego requires a PostgreSQL version of 9.4 or higher for its data store.
