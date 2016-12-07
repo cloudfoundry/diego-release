@@ -15,12 +15,24 @@ templates:
   rep_ca.crt.erb: config/certs/rep/ca.crt
   rep_client.crt.erb: config/certs/rep/client.crt
   rep_client.key.erb: config/certs/rep/client.key
+  auctioneer_ca.crt.erb: config/certs/auctioneer/ca.crt
+  auctioneer_client.crt.erb: config/certs/auctioneer/client.crt
+  auctioneer_client.key.erb: config/certs/auctioneer/client.key
 
 packages:
   - pid_utils
   - bbs
 
 properties:
+  diego.bbs.auctioneer.api_location:
+    description: "Hostname and port of the auctioneer API."
+  diego.bbs.auctioneer.ca_cert:
+    description: "CA cert for communication to the auctioneer."
+  diego.bbs.auctioneer.client_cert:
+    description: "Client cert for communication to the auctioneer."
+  diego.bbs.auctioneer.client_key:
+    description: "Client key for communication to the auctioneer."
+
   diego.bbs.debug_addr:
     description: "address at which to serve debug info"
     default: "127.0.0.1:17017"

@@ -6,11 +6,20 @@ properties. These properties default to `true`. When enabled, the operator must
 provide TLS certificates and keys for the BBS server and its clients (other
 components in the Diego deployment).
 
-Also, TLS with mutual authentication can be enabled for communication to
+TLS with mutual authentication can be enabled for communication to
 the rep servers on the cell vms, via the `diego.rep.require_tls` and
 `diego.CLIENT.rep.require_tls` BOSH properties. These properties default to
 `false`. When enabled, the operator must provide TLS certificates and keys for
 the rep server and its clients (other components in the Diego deployment).
+
+TLS with mutual authentication can be enabled for communication to the Auctioneer
+server, via the presence of any of the following properties: `diego.auctioneer.ca_cert`,
+`diego.auctioneer.server_cert`, `diego.auctioneer.server_key`. If TLS enabled for
+the Auctioneer, the operator must also specify the client certificates and keys
+required for mutual authentication in the following properties: `diego.bbs.auctioneer.ca_cert`,
+`diego.bbs.auctioneer.client_cert`, `diego.bbs.auctioneer.client_key`.
+**Note**: Currently TLS should only be enabled for the Auctioneer server on new deployments
+and deployments that are willing to incur some amount of downtime during the upgrade.
 
 ### Generating TLS Certificates
 
@@ -22,6 +31,7 @@ following steps to successfully generate the required certificates.
 > [scripts/generate-diego-ca-certs](scripts/generate-diego-ca-certs),
 > [scripts/generate-bbs-certs](scripts/generate-bbs-certs)
 > [scripts/generate-rep-certs](scripts/generate-rep-certs)
+> [scripts/generate-auctioneer-certs](scripts/generate-auctioneer-certs)
 
 1. Get certstrap
    ```bash
@@ -119,6 +129,41 @@ following steps to successfully generate the required certificates.
    `properties.diego.CLIENT.rep.client_key` should be set to the certificate in
    `out/clientName.key`. Where possible values for `CLIENT` are `auctioneer`
    and `bbs`.
+
+7. Create and sign a certificate for the Auctioneer server.
+   ```
+   $ ./certstrap request-cert --common-name "auctioneer.service.cf.internal" --domain "auctioneer.service.cf.internal"
+   Enter passphrase (empty for no passphrase): <hit enter for no password>
+
+   Enter same passphrase again: <hit enter for no password>
+
+   Created out/auctioneer.service.cf.internal.key
+   Created out/auctioneer.service.cf.internal.csr
+
+   $ ./certstrap sign auctioneer.service.cf.internal --CA diegoCA
+   Created out/auctioneer.service.cf.internal.crt from out/auctioneer.service.cf.internal.csr signed by out/diegoCA.key
+   ```
+
+   The manifest property `properties.diego.auctioneer.server_cert` should be set to the certificate in `out/auctioneer.service.cf.internal.crt`.
+   The manifest property `properties.diego.auctioneer.server_key` should be set to the certificate in `out/auctioneer.service.cf.internal.key`.
+
+8. Create and sign a certificate for Auctioneer clients.
+   ```
+   $ ./certstrap request-cert --common-name "clientName"
+   Enter passphrase (empty for no passphrase): <hit enter for no password>
+
+   Enter same passphrase again: <hit enter for no password>
+
+   Created out/clientName.key
+   Created out/clientName.csr
+
+   $ ./certstrap sign clientName --CA diegoCA
+   Created out/clientName.crt from out/clientName.csr signed by out/diegoCA.key
+   ```
+
+   For the BBS, the manifest property `properties.diego.bbs.auctioneer.client_cert` should be set to the
+   certificate in `out/clientName.crt`, and the manifest property `properties.diego.bbs.auctioneer.client_key`
+   should be set to the certificate in `out/clientName.key`.
 
 ### Custom TLS Certificate Generation
 

@@ -34,8 +34,14 @@ rep_sec_flags=" \
    -repCACert=${CONF_DIR}/certs/rep/ca.crt"
 <% end %>
 
+auctioneer_sec_flags=""
+<% if p("diego.auctioneer.ca_cert", "") != "" || p("diego.auctioneer.server_cert", "") != "" || p("diego.auctioneer.server_key", "") != "" %>
+ auctioneer_sec_flags=" -caCertFile=${CONF_DIR}/certs/auctioneer/ca.crt \
+   -serverCertFile=${CONF_DIR}/certs/auctioneer/server.crt \
+   -serverKeyFile=${CONF_DIR}/certs/auctioneer/server.key"
+<% end %>
 
-/var/vcap/packages/auctioneer/bin/auctioneer ${bbs_sec_flags} ${rep_sec_flags} \
+/var/vcap/packages/auctioneer/bin/auctioneer ${auctioneer_sec_flags} ${bbs_sec_flags} ${rep_sec_flags} \
       -bbsAddress=${bbs_api_url} \
       <% if_p("diego.auctioneer.bbs.client_session_cache_size") do |value| %> \
         -bbsClientSessionCacheSize=<%= value %> \

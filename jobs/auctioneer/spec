@@ -4,6 +4,9 @@ name: auctioneer
 templates:
   auctioneer_ctl.erb: bin/auctioneer_ctl
   auctioneer_as_vcap.erb: bin/auctioneer_as_vcap
+  auctioneer_ca.crt.erb: config/certs/auctioneer/ca.crt
+  auctioneer_server.crt.erb: config/certs/auctioneer/server.crt
+  auctioneer_server.key.erb: config/certs/auctioneer/server.key
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
@@ -16,6 +19,13 @@ packages:
   - auctioneer
 
 properties:
+  diego.auctioneer.ca_cert:
+    description: "PEM-encoded CA certificate for the auctioneer API server."
+  diego.auctioneer.server_cert:
+    description: "PEM-encoded certificate for the auctioneer API server."
+  diego.auctioneer.server_key:
+    description: "PEM-encoded key for the auctioneer API server."
+
   diego.auctioneer.debug_addr:
     description: "address at which to serve debug info"
     default: "127.0.0.1:17001"

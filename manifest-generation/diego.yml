@@ -491,6 +491,9 @@ properties:
 
     # -- Job-specific properties --
     auctioneer:
+      ca_cert: (( property_overrides.auctioneer.ca_cert || nil ))
+      server_cert: (( property_overrides.auctioneer.server_cert || nil ))
+      server_key: (( property_overrides.auctioneer.server_key || nil ))
       bbs:
         api_location: (( property_overrides.bbs.api_location || nil ))
         ca_cert: (( property_overrides.bbs.ca_cert ))
@@ -526,6 +529,10 @@ properties:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       auctioneer:
         api_url: (( property_overrides.bbs.auctioneer.api_url || nil ))
+        api_location: (( property_overrides.bbs.auctioneer.api_location || nil ))
+        ca_cert: (( property_overrides.auctioneer.ca_cert || nil ))
+        client_cert: (( property_overrides.auctioneer.client_cert || nil ))
+        client_key: (( property_overrides.auctioneer.client_key || nil ))
       etcd: (( bbs_overrides.bbs_properties.etcd ))
       sql:
         db_connection_string: (( sql_overrides.bbs.db_connection_string || nil ))
