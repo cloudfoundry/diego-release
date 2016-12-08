@@ -32,6 +32,9 @@ properties:
     description: "Client cert for communication to the auctioneer."
   diego.bbs.auctioneer.client_key:
     description: "Client key for communication to the auctioneer."
+  diego.bbs.auctioneer.require_tls:
+    description: "Whether to use mutual TLS for communication with the auctioneer API."
+    default: false
 
   diego.bbs.debug_addr:
     description: "address at which to serve debug info"

@@ -1,4 +1,10 @@
 property_overrides:
+  auctioneer:
+    ca_cert: (( diego_credentials.diego_ca ))
+    client_cert: (( diego_credentials.auctioneer.client_cert ))
+    client_key: (( diego_credentials.auctioneer.client_key ))
+    server_cert: (( diego_credentials.auctioneer.server_cert ))
+    server_key: (( diego_credentials.auctioneer.server_key ))
   rep:
     ca_cert: (( diego_credentials.diego_ca ))
     client_cert: (( diego_credentials.rep.client_cert ))

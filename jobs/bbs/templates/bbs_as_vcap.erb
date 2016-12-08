@@ -79,6 +79,7 @@ rep_sec_flags=" \
 auctioneer_sec_flags="-auctioneerAddress=http://<%= auctioneer_address %>"
 <% if p("diego.bbs.auctioneer.ca_cert", "") != "" || p("diego.bbs.auctioneer.client_cert", "") != "" || p("diego.bbs.auctioneer.client_key", "") != "" %>
   auctioneer_sec_flags=" -auctioneerAddress=https://<%= auctioneer_address %> \
+   -auctioneerRequireTLS=<%= p("diego.bbs.auctioneer.require_tls") %> \
    -auctioneerClientCert=${CONF_DIR}/certs/auctioneer/client.crt \
    -auctioneerClientKey=${CONF_DIR}/certs/auctioneer/client.key \
    -auctioneerCACert=${CONF_DIR}/certs/auctioneer/ca.crt"

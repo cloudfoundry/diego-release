@@ -74,6 +74,11 @@ $(block client_cert certs/rep-certs/client.crt  | indent | indent)
 $(block client_key  certs/rep-certs/client.key  | indent | indent)
 $(block server_cert certs/rep-certs/server.crt  | indent | indent)
 $(block server_key  certs/rep-certs/server.key  | indent | indent)
+  auctioneer:
+$(block client_cert certs/auctioneer-certs/client.crt  | indent | indent)
+$(block client_key  certs/auctioneer-certs/client.key  | indent | indent)
+$(block server_cert certs/auctioneer-certs/server.crt  | indent | indent)
+$(block server_key  certs/auctioneer-certs/server.key  | indent | indent)
 EOF
 }
 

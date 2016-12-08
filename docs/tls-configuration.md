@@ -18,8 +18,16 @@ server, via the presence of any of the following properties: `diego.auctioneer.c
 the Auctioneer, the operator must also specify the client certificates and keys
 required for mutual authentication in the following properties: `diego.bbs.auctioneer.ca_cert`,
 `diego.bbs.auctioneer.client_cert`, `diego.bbs.auctioneer.client_key`.
-**Note**: Currently TLS should only be enabled for the Auctioneer server on new deployments
-and deployments that are willing to incur some amount of downtime during the upgrade.
+The operator may also set `diego.bbs.auctioneer.require_tls` to `true` to ensure
+that all communication between the BBS and the Auctioneer server is secured using TLS
+with mutual authentication.
+**Note**: On existing deployments, `diego.bbs.auctioneer.require_tls` should be
+set to its default value, `false`, when enabling TLS with mutual authentication. This
+property will allow the BBS to fall back to HTTP communication with the Auctioneer
+if the Auctioneer server has not been updated yet. If the value of this property
+is set to `true`, you may incur some downtime when enabling TLS with mutual authentication
+for existing deployments. For new deployments, the operator should set
+`diego.bbs.auctioneer.require_tls` to `true` as it will have no effect on the deploy.
 
 ### Generating TLS Certificates
 
@@ -169,7 +177,7 @@ following steps to successfully generate the required certificates.
 
 If you already have a CA, or wish to use your own names for clients and
 servers, please note that the common-names "diegoCA" and "clientName" are
-placeholders and can be renamed provided that all clients client certificate.
+placeholders and can be renamed.
 The server certificate must have the common names. For example
 `cell.service.cf.internal` and must specify `cell.service.cf.internal` and
 `*.cell.service.cf.internal` as Subject Alternative Names (SANs).
