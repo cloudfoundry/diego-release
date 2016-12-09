@@ -533,6 +533,7 @@ properties:
         ca_cert: (( property_overrides.auctioneer.ca_cert || nil ))
         client_cert: (( property_overrides.auctioneer.client_cert || nil ))
         client_key: (( property_overrides.auctioneer.client_key || nil ))
+        require_tls: (( property_overrides.bbs.auctioneer.require_tls || nil ))
       etcd: (( bbs_overrides.bbs_properties.etcd ))
       sql:
         db_connection_string: (( sql_overrides.bbs.db_connection_string || nil ))
