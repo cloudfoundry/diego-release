@@ -19,6 +19,11 @@ property_overrides:
   converger:
     log_level: debug
   auctioneer:
+    ca_cert: (( merge ))
+    client_cert: (( merge ))
+    client_key: (( merge ))
+    server_cert: (( merge ))
+    server_key: (( merge ))
     log_level: debug
   cc_uploader:
     log_level: debug
