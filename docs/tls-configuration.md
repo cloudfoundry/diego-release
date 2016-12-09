@@ -21,27 +21,22 @@ required for mutual authentication in the following properties: `diego.bbs.aucti
 The operator may also set `diego.bbs.auctioneer.require_tls` to `true` to ensure
 that all communication between the BBS and the Auctioneer server is secured using TLS
 with mutual authentication.
-**Note**: On existing deployments, `diego.bbs.auctioneer.require_tls` should be
-set to its default value, `false`, when enabling TLS with mutual authentication. This
-property will allow the BBS to fall back to HTTP communication with the Auctioneer
-if the Auctioneer server has not been updated yet. If the value of this property
-is set to `true`, you may incur some downtime when enabling TLS with mutual authentication
-for existing deployments. For new deployments, the operator should set
-`diego.bbs.auctioneer.require_tls` to `true` as it will have no effect on the deploy.
+
 
 ### Generating TLS Certificates
 
 For generating TLS certificates, we recommend
-[certstrap](https://github.com/square/certstrap).  An operator can follow the
+[certstrap](https://github.com/square/certstrap). An operator can follow the
 following steps to successfully generate the required certificates.
 
 > Most of these commands can be found in
+> [scripts/generate-diego-certs](scripts/generate-diego-certs) as it calls
 > [scripts/generate-diego-ca-certs](scripts/generate-diego-ca-certs),
-> [scripts/generate-bbs-certs](scripts/generate-bbs-certs)
-> [scripts/generate-rep-certs](scripts/generate-rep-certs)
-> [scripts/generate-auctioneer-certs](scripts/generate-auctioneer-certs)
+> [scripts/generate-bbs-certs](scripts/generate-bbs-certs),
+> [scripts/generate-rep-certs](scripts/generate-rep-certs), and
+> [scripts/generate-auctioneer-certs](scripts/generate-auctioneer-certs).
 
-1. Get certstrap
+1. Install certstrap from source.
    ```bash
    go get github.com/square/certstrap
    cd $GOPATH/src/github.com/square/certstrap

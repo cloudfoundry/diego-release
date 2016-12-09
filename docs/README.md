@@ -11,4 +11,5 @@
 - [Release Compatibility](release-compatibility.md)
 - [Required BOSH Versions](required-bosh-versions.md)
 - [TLS Configuration](tls-configuration.md)
+- [Upgrading to a TLS-Secured Auctioneer API](upgrading-secure-auctioneer-api.md) without downtime.
 - [Upgrading to a TLS-Secured Cell Rep API](upgrading-secure-cell-rep-api.md) without downtime.
