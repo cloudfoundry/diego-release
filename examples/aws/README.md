@@ -374,7 +374,7 @@ password.
 
 #### `stubs/bosh-init/stemcell.yml`
 
-Run the following to create the `stubs/bosh-init/stemcell.yml` file, which defines the stemcell to use to create the BOSH director. 
+Run the following to create the `stubs/bosh-init/stemcell.yml` file, which defines the stemcell to use to create the BOSH director.
 
 ```yaml
 cat <<EOF > $DEPLOYMENT_DIR/stubs/bosh-init/stemcell.yml
@@ -399,6 +399,24 @@ stemcell locally and calcuate the SHA1 hash manually. On Mac OS X, this can be d
 
 ```
 shasum /path/to/downloaded/stemcell
+```
+
+#### `stubs/bosh-init/datadog.yml` (optional)
+
+In order to configure the BOSH director to report instance and deployment metrics to DataDog,
+you must supply a stub that provides the DataDog API and application keys.
+Run the following to create the `stubs/bosh-init/datadog.yml` file:
+
+```yaml
+cat <<EOF > $DEPLOYMENT_DIR/stubs/bosh-init/datadog.yml
+---
+properties:
+  hm:
+    datadog:
+      api_key: REPLACE_WITH_DATADOG_API_KEY
+      application_key: REPLACE_WITH_DATADOG_APPLICATION_KEY
+    datadog_enabled: true
+EOF
 ```
 
 ### Configuring Security
