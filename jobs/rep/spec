@@ -13,6 +13,7 @@ templates:
   rep_ca.crt.erb: config/certs/ca.crt
   rep_server.crt.erb: config/certs/server.crt
   rep_server.key.erb: config/certs/server.key
+  rep.json.erb: config/rep.json
   post-start.erb: bin/post-start
 
 packages:

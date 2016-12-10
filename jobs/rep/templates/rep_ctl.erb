@@ -36,14 +36,11 @@ case $1 in
     mkdir -p $DRIVERS_PATHS
     chown vcap:vcap $DRIVERS_PATHS
 
-    export trusted_certs_flag=""
     TRUSTED_CERTS_DIR=${DATA_DIR}/trusted_certs
     rm -rf "$TRUSTED_CERTS_DIR"
     <% if_p("diego.rep.trusted_certs") do |value| %>
       mkdir -p "$TRUSTED_CERTS_DIR"
       chown -R vcap:vcap $TRUSTED_CERTS_DIR
-
-      trusted_certs_flag="--trustedSystemCertificatesPath=$TRUSTED_CERTS_DIR"
 
       # Split files on '----END CERTIFICATE-----' and increment our file counter by 1
       pushd $TRUSTED_CERTS_DIR
