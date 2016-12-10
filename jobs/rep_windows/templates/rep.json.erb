@@ -21,7 +21,7 @@ config = {
  "polling_interval" => "#{p("diego.rep.polling_interval_in_seconds")}s",
  "evacuation_polling_interval" => "#{p("diego.rep.evacuation_polling_interval_in_seconds")}s",
  "evacuation_timeout" => "#{p("diego.rep.evacuation_timeout_in_seconds")}s",
- "skipCertVerify" => p("diego.ssl.skip_cert_verify"),
+ "skip_cert_verify" => p("diego.ssl.skip_cert_verify"),
  "garden_network" => "tcp",
  "garden_addr" => "127.0.0.1:9241",
  "memory_mb" => p("diego.executor.memory_capacity_mb"),
@@ -45,9 +45,9 @@ config = {
 }
 
 if p("diego.rep.bbs.require_ssl")
-	config[:bbs_ca_cert] = "#{CONF_DIR}/certs/bbs/ca.crt"
-	config[:bbs_client_cert] = "#{CONF_DIR}/certs/bbs/client.crt"
-	config[:bbs_client_key] = "#{CONF_DIR}/certs/bbs/client.key"
+	config[:bbs_ca_cert_file] = "#{CONF_DIR}/certs/bbs/ca.crt"
+	config[:bbs_client_cert_file] = "#{CONF_DIR}/certs/bbs/client.crt"
+	config[:bbs_client_key_file] = "#{CONF_DIR}/certs/bbs/client.key"
 	config[:bbs_api_url] = "https://#{p("diego.rep.bbs.api_location")}"
 else
 	config[:bbs_api_url] = "http://#{p("diego.rep.bbs.api_location")}"
