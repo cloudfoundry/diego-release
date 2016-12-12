@@ -44,8 +44,7 @@ properties:
       - windows2012R2:/tmp/windows2012R2
   diego.rep.rootfs_providers:
     description: "Array of schemes for which the underlying garden can support arbitrary root filesystems"
-    default:
-      - docker
+    default: []
   diego.rep.log_level:
     description: "Log level"
     default: "info"
