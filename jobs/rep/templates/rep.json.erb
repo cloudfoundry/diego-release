@@ -1,6 +1,5 @@
 <%=
-# Make sure these values stay in sync with the ctl file
-CONF_DIR = "/var/vcap/jobs/rep/config"
+CONF_DIR = "/var/vcap/jobs/#{p("diego.rep.job_name")}/config"
 TMP_DIR = "/var/vcap/data/executor/tmp"
 TRUSTED_CERTS_DIR = "/var/vcap/data/executor/trusted_certs"
 
@@ -41,7 +40,6 @@ config = {
  "healthcheck_work_pool_size" => p("diego.executor.healthcheck_work_pool_size"),
  "max_concurrent_downloads" => p("diego.executor.max_concurrent_downloads"),
  "temp_dir" => "#{TMP_DIR}",
- "volman_driver_paths" => p("diego.executor.volman.driver_paths"),
  "log_level" => p("diego.rep.log_level"),
  "garden_healthcheck_interval" => p("diego.executor.garden_healthcheck.interval"),
  "garden_healthcheck_timeout" => p("diego.executor.garden_healthcheck.timeout"),
@@ -49,6 +47,10 @@ config = {
  "garden_healthcheck_process_path" => p("diego.executor.garden_healthcheck.process.path"),
  "garden_healthcheck_process_user" => p("diego.executor.garden_healthcheck.process.user"),
 }
+
+if_p("diego.executor.volman.driver_paths") do |value|
+	config[:volman_driver_paths] = value
+end
 
 if p("diego.rep.bbs.require_ssl")
 	config[:bbs_ca_cert_file] = "#{CONF_DIR}/certs/bbs/ca.crt"

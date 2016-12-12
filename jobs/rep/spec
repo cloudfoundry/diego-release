@@ -154,7 +154,7 @@ properties:
     default: "10m"
   diego.executor.garden_healthcheck.command_retry_pause:
     description: "Time to wait between retrying garden commands"
-    default: "5s"
+    default: "1s"
   diego.executor.garden_healthcheck.process.path:
     description: "Path of the command to run to perform a container healthcheck"
     default: "/bin/sh"
@@ -193,3 +193,7 @@ properties:
     description: "capacity of the tls client cache"
   diego.rep.bbs.max_idle_conns_per_host:
     description: "maximum number of idle http connections"
+
+  diego.rep.job_name:
+    description: "The name of the Diego job referenced by this spec (DO NOT override)"
+    default: "rep"
