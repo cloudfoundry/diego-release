@@ -425,10 +425,12 @@ In order to secure your Cloud Foundry deployment properly, you must generate SSL
 
 The CF and Diego release repositories provide scripts to generate the necessary SSL certificates.
 
-1. To generate certificates for consul, run:
+1. To generate certificates for consul, loggregator, and uaa run:
 ```bash
 cd $DEPLOYMENT_DIR/certs
 $CF_RELEASE_DIR/scripts/generate-consul-certs
+$CF_RELEASE_DIR/scripts/generate-loggregator-certs
+$CF_RELEASE_DIR/scripts/generate-uaa-certs
 ```
 1. To generate certificates for BBS servers in the Diego deployment, run:
 ```bash
@@ -456,6 +458,18 @@ DEPLOYMENT_DIR/certs
 |  |- client.key
 |  |- server.crt
 |  |- server.key
+|-loggregator-certs # generated via cf-release/scripts/generate-loggregator-certs
+|  |- loggregator-ca.crt
+|  |- loggregator-ca.key
+|  |- doppler.crt
+|  |- doppler.key
+|  |- trafficcontroller.crt
+|  |- trafficcontroller.key
+|-uaa-certs # generated via cf-release/scripts/generate-loggregator-certs
+|  |- server-ca.crt
+|  |- server-ca.key
+|  |- server.crt
+|  |- server.key
 |-consul-certs      # generated via cf-release/scripts/generate-consul-certs
 |  |- agent.crt
 |  |- agent.key
@@ -467,7 +481,10 @@ DEPLOYMENT_DIR/certs
 
 You can ignore any files with a `crl` or `csr` extension.
 
-The certificates in `consul-certs` are used to set SSL properties for the consul VMs, and the certificates in `bbs-certs` are used to set SSL properties on the BBS API servers.
+The certificates in `consul-certs` are used to set SSL properties for the consul VMs.
+The certificates in `loggregator-certs` are used to set SSL properties for the Loggregator subsystem.
+The certificates in `uaa-certs` are used to set SSL properties for the UAA subsystem.
+The certificates in `bbs-certs` are used to set SSL properties on the BBS API servers.
 The certificates in `rep-certs` are used to secure communication between the `Auctioneer`, `BBS` and the `Rep`.
 Finally the certificates in `auctioneer-certs` are used to secure communication between the `BBS` and the `Auctioneer`.
 
