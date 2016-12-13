@@ -57,6 +57,10 @@ config_from_cf:
     ssh_proxy_client_secret: (( properties.uaa.clients.ssh-proxy.secret ))
     token_url: (( properties.uaa.url "/oauth/token" ))
   app_domains: (( properties.app_domains ))
+  sql:
+    host: (( properties.databases.address ))
+    port: (( properties.databases.port ))
+    password: (( properties.databases.roles.diego.password ))
 
 # The keys below should not be included in the final stub
 name: (( merge ))
@@ -80,6 +84,12 @@ properties:
     encrypt_keys: (( merge ))
     server_cert: (( merge ))
     server_key: (( merge ))
+  databases:
+    address: (( merge ))
+    port: (( merge ))
+    roles:
+    - name: diego
+      password: (( merge ))
   etcd:
     advertise_urls_dns_suffix: (( merge ))
     ca_cert: (( merge || nil ))
