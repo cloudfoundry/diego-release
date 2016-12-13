@@ -56,3 +56,8 @@ config_from_cf:
     ssh_proxy_client_secret: (( merge ))
     token_url: (( merge ))
   app_domains: (( merge ))
+  sql:
+    host: (( merge ))
+    port: (( merge ))
+    password: (( merge ))
+
