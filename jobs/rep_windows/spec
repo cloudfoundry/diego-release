@@ -18,6 +18,9 @@ packages:
   - rep_windows
 
 properties:
+  diego.rep.listen_addr:
+    description: "address to serve auction and LRP stop requests on"
+    default: "0.0.0.0:1800"
   diego.rep.debug_addr:
     description: "address at which to serve debug info"
     default: "127.0.0.1:17008"
