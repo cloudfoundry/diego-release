@@ -13,6 +13,9 @@ packages:
   - route_emitter
 
 properties:
+  diego.route_emitter.local_mode:
+    description: "EXPERIMENTAL: turn on local mode. in this mode route-emitter only handles events for the local cell"
+    default: false
   diego.route_emitter.nats.user:
     description: "Username for server authentication."
   diego.route_emitter.nats.password:
