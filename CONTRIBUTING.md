@@ -158,7 +158,7 @@ On OS X, follow these steps to install and configure MySQL and Postgres:
 9. Create a self-signed certificate as described in the [PostgreSQL documentation](https://www.postgresql.org/docs/9.4/static/ssl-tcp.html#SSL-CERTIFICATE-CREATION). 
    Save the certificate and key to a local directory of your choosing.
 
-10. Edit the `/usr/local/var/postgres/postgres.conf` file to set `ssl = on` and to refer to the certificate and key created above. For example:
+10. Edit the `/usr/local/var/postgres/postgresql.conf` file to set `ssl = on` and to refer to the certificate and key created above. For example:
 
         ssl = on
         ssl_cert_file = '/path/to/server.crt'
