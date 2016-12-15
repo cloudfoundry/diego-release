@@ -1,6 +1,9 @@
 # Setting up the `cfdot` CLI tool
 
-1. `bosh ssh` into a Diego deployment vm
-1. Run `source /var/vcap/jobs/cfdot/bin/setup` to add the `cfdot` command to your path as well as setting default environment variables for BBS certs
+The BOSH release for Diego contains a `cfdot` job template that deploys `cfdot` and `jq` binaries as well as a `setup` script to make them easy to invoke. If you use the [`generate-deployment-manifest`](../scripts/generate-deployment-manifest) script to generate your Diego manifest, `cfdot` is already available on the BOSH-deployed Diego VMs. To use it:
 
-See the [`cfdot` documentation](https://github.com/cloudfoundry/cfdot) for more information on how to use the tool or run `cfdot -h` to show the help command.
+1. Run `bosh ssh <DIEGO_JOB>/<INDEX>` to start an SSH session on a Diego deployment VM.
+
+1. Run `source /var/vcap/jobs/cfdot/bin/setup` to add the `cfdot` and `jq` executables to your PATH as well as to set environment variables for communication to the BBS API server.
+
+See the [`cfdot` documentation](https://github.com/cloudfoundry/cfdot) for more information on how to use the tool or run `cfdot --help` to show usage.
