@@ -8,12 +8,15 @@ export GOROOT=$(readlink -nf /var/vcap/packages/golang)
 export PATH=$GOROOT/bin:$PATH
 
 CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/diego-ssh/cmd/sshd
+GOOS=windows CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/diego-ssh/cmd/sshd
 
 ldd sshd && echo 'diego-sshd must be statically linked' && false
 
 mv sshd diego-sshd
-
 tar -czf ${BOSH_INSTALL_TARGET}/diego-sshd.tgz diego-sshd
+
+mv sshd.exe diego-sshd.exe
+tar -czf ${BOSH_INSTALL_TARGET}/diego-sshd-windows.tgz diego-sshd.exe
 
 # clean up source artifacts
 rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg
