@@ -3,7 +3,8 @@
 Deploying diego-release requires the following minimum versions of BOSH dependencies:
 
 * BOSH release v255.4+ (Director version 1.3213.0).
-* BOSH stemcell 3125+.
+* BOSH stemcell 3263+.
+* garden-runc 1.0.4+
 
 These versions ensure that the following 
 
