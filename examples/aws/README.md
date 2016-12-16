@@ -425,13 +425,26 @@ In order to secure your Cloud Foundry deployment properly, you must generate SSL
 
 The CF and Diego release repositories provide scripts to generate the necessary SSL certificates.
 
-1. To generate certificates for consul, loggregator, and uaa run:
+1. To generate certificates for consul, loggregator run:
 ```bash
 cd $DEPLOYMENT_DIR/certs
 $CF_RELEASE_DIR/scripts/generate-consul-certs
 $CF_RELEASE_DIR/scripts/generate-loggregator-certs
-$CF_RELEASE_DIR/scripts/generate-uaa-certs
 ```
+
+1. To generate certificates for uaa run:
+
+``` shell
+pushd $CF_RELEASE_DIR
+./scripts/generate-uaa-certs
+cp uaa-certs/server.* $DEPLOYMENT_DIR/certs/uaa-certs/
+popd
+pushd $DIEGO_RELEASE_DIR
+./scripts/generate-uaa-saml-certs # output will be in diego-certs/uaa-saml-certs
+cp diego-certs/uaa-certs/saml.* $DEPLOYMENT_DIR/certs/uaa-certs/
+popd
+```
+
 1. To generate certificates for BBS servers in the Diego deployment, run:
 ```bash
 $DIEGO_RELEASE_DIR/scripts/generate-diego-certs
@@ -460,16 +473,16 @@ DEPLOYMENT_DIR/certs
 |  |- server.key
 |-loggregator-certs # generated via cf-release/scripts/generate-loggregator-certs
 |  |- loggregator-ca.crt
-|  |- loggregator-ca.key
 |  |- doppler.crt
 |  |- doppler.key
 |  |- trafficcontroller.crt
 |  |- trafficcontroller.key
-|-uaa-certs # generated via cf-release/scripts/generate-loggregator-certs
-|  |- server-ca.crt
-|  |- server-ca.key
-|  |- server.crt
+|-uaa-certs
+|  |- server.crt   # generated via cf-release/scripts/generate-uaa-certs
 |  |- server.key
+|  |- saml.crt     # generated via diego-release/scripts/generate-uaa-saml-certs
+|  |- saml.key
+|  |- saml.key.password
 |-consul-certs      # generated via cf-release/scripts/generate-consul-certs
 |  |- agent.crt
 |  |- agent.key

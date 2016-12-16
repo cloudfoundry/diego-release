@@ -175,12 +175,21 @@ properties:
   ccdb:
     address: (( properties.databases.address ))
 
+  login:
+    saml:
+      serviceProviderCertificate: (( cf_credentials.uaa.saml_cert ))
+      serviceProviderKey: (( cf_credentials.uaa.saml_key ))
+      serviceProviderKeyPassword: (( cf_credentials.uaa.saml_key_password ))
   uaa:
     sslPrivateKey: (( cf_credentials.uaa.server_key ))
     sslCertificate: (( cf_credentials.uaa.server_cert ))
     jwt:
-      signing_key: (( cf_credentials.uaa.signing_key ))
       verification_key: (( cf_credentials.uaa.verification_key ))
+      policy:
+        active_key_id: key-1
+        keys:
+          key-1:
+            signingKey: (( cf_credentials.uaa.signing_key ))
 
   uaadb:
     address: (( properties.databases.address ))
@@ -197,6 +206,7 @@ properties:
 
   loggregator:
     tls:
+      ca_cert: (( cf_credentials.loggregator.ca_cert ))
       doppler:
         cert: (( cf_credentials.loggregator.doppler_cert ))
         key: (( cf_credentials.loggregator.doppler_key ))

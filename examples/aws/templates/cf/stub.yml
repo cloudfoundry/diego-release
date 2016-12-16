@@ -178,10 +178,28 @@ properties:
     buildpacks:
       buildpack_directory_key: (( merge ))
 
+  loggregator:
+    tls:
+      ca_cert: (( merge ))
+      doppler:
+        cert: (( merge ))
+        key: (( merge ))
+      trafficcontroller:
+        cert: (( merge ))
+        key: (( merge ))
+  login:
+    saml:
+      serviceProviderCertificate: (( merge ))
+      serviceProviderKey: (( merge ))
+      serviceProviderKeyPassword: (( merge ))
   uaa:
+    sslPrivateKey: (( merge ))
+    sslCertificate: (( merge ))
     jwt:
-      signing_key: (( merge ))
       verification_key: (( merge ))
+      policy:
+        active_key_id: (( merge ))
+        keys: (( merge ))
 
   databases:
     address: (( merge ))

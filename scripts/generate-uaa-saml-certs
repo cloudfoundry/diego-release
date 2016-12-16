@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e -x
+
+# Install certstrap
+go get -v github.com/square/certstrap
+
+# Place keys and certificates here
+output_path="diego-certs/uaa-saml-certs"
+mkdir -p ${output_path}
+
+# CA Cert
+certstrap --depot-path ${output_path} init --passphrase '' --common-name uaaCA
+mv -f ${output_path}/uaaCA.crt ${output_path}/uaa-ca.crt
+mv -f ${output_path}/uaaCA.key ${output_path}/uaa-ca.key
+
+# Server certificate to share across the bbs cluster
+saml_cn=uaa-saml.service.cf.internal
+saml_domain='*.uaa-saml.service.cf.internal,uaa-saml.service.cf.internal'
+certstrap --depot-path ${output_path} request-cert --passphrase '' --common-name $saml_cn --domain $saml_domain
+certstrap --depot-path ${output_path} sign $saml_cn --CA uaa-ca
+mv -f ${output_path}/$saml_cn.key ${output_path}/saml.key
+mv -f ${output_path}/$saml_cn.csr ${output_path}/saml.csr
+mv -f ${output_path}/$saml_cn.crt ${output_path}/saml.crt
+echo > ${output_path}/saml.key.password
