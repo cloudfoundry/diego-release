@@ -297,12 +297,19 @@ Once you've followed the steps [above](#initial-setup) to install ginkgo and the
 
 We recommend running the unit tests against both a local MySQL and a local PostgreSQL database as described [above](#running-the-sql-unit-tests). That is, the script should be invoked with the `RUN_SQL_TESTS` environment variable set to `TRUE`.
 
+If your want to run the entire unit test suite on concourse and have the `fly` CLI on your path, you can run
+
+    ./scripts/run-unit-tests-concourse
+
+from the root of diego-release. By default this script will attempt to run the unit tests on your local concourse installation, but you can change your concourse target by setting the `DIEGO_CI_TARGET` environment variable.
+
 ### Running Integration Tests
 
 If your local concourse VM is up and running, you have the `fly` CLI visible on your `$PATH`, and you've cloned garden-runc-release (see [Initial Setup](#initial-setup) for details), you can run
 
     ./scripts/run-inigo
-from the root of diego-release to run the integration tests.
+
+from the root of diego-release to run the integration tests. You can also run the integration tests against another concourse deployment by setting the `DIEGO_CI_TARGET` environment variable.
 
 ###<a name="smokes-and-cats"></a> Running Smoke Tests, and CATs
 
