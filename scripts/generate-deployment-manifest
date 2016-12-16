@@ -34,7 +34,7 @@ EXAMPLE:
       -p manifest-generation/bosh-lite-stubs/property-overrides.yml \\
       -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
       -v manifest-generation/bosh-lite-stubs/release-versions.yml \\
-      -s manifest-generation/bosh-lite-stubs/diego-sql.yml \\
+      -s manifest-generation/bosh-lite-stubs/postgres/diego-sql.yml \\
       -x \\
       -d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml \\
       -b
