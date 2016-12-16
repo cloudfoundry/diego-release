@@ -8,12 +8,14 @@ export GOROOT=$(readlink -nf /var/vcap/packages/golang)
 export PATH=$GOROOT/bin:$PATH
 
 CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/healthcheck/cmd/healthcheck
+GOOS=windows CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/healthcheck/cmd/healthcheck
 
 for binary in healthcheck; do
     ldd $binary && echo "$binary must be statically linked" && false
 done
 
 tar -czf ${BOSH_INSTALL_TARGET}/healthcheck.tgz healthcheck
+tar -czf ${BOSH_INSTALL_TARGET}/healthcheck-windows.tgz healthcheck.exe
 
 # clean up source artifacts
 rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg
