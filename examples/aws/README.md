@@ -436,12 +436,13 @@ $CF_RELEASE_DIR/scripts/generate-loggregator-certs
 
 ``` shell
 pushd $CF_RELEASE_DIR
-./scripts/generate-uaa-certs
-cp uaa-certs/server.* $DEPLOYMENT_DIR/certs/uaa-certs/
+  ./scripts/generate-uaa-certs
+  cp uaa-certs/server.* $DEPLOYMENT_DIR/certs/uaa-certs/
 popd
+
 pushd $DIEGO_RELEASE_DIR
-./scripts/generate-uaa-saml-certs # output will be in diego-certs/uaa-saml-certs
-cp diego-certs/uaa-certs/saml.* $DEPLOYMENT_DIR/certs/uaa-certs/
+  ./scripts/generate-uaa-saml-certs   # output will be in diego-certs/uaa-saml-certs
+  cp diego-certs/uaa-saml-certs/saml.* $DEPLOYMENT_DIR/certs/uaa-certs/
 popd
 ```
 
@@ -456,39 +457,39 @@ After running these scripts, you should see the following files in `$DEPLOYMENT_
 DEPLOYMENT_DIR/certs
 |- diego-ca.crt
 |- diego-ca.key
-|-bbs-certs         # generated via diego-release/scripts/generate-diego-certs
-|  |- client.crt
-|  |- client.key
-|  |- server.crt
-|  |- server.key
-|-rep-certs         # generated via diego-release/scripts/generate-diego-certs
-|  |- client.crt
-|  |- client.key
-|  |- server.crt
-|  |- server.key
 |-auctioneer-certs  # generated via diego-release/scripts/generate-diego-certs
 |  |- client.crt
 |  |- client.key
 |  |- server.crt
 |  |- server.key
-|-loggregator-certs # generated via cf-release/scripts/generate-loggregator-certs
-|  |- loggregator-ca.crt
-|  |- doppler.crt
-|  |- doppler.key
-|  |- trafficcontroller.crt
-|  |- trafficcontroller.key
-|-uaa-certs
-|  |- server.crt   # generated via cf-release/scripts/generate-uaa-certs
+|-bbs-certs         # generated via diego-release/scripts/generate-diego-certs
+|  |- client.crt
+|  |- client.key
+|  |- server.crt
 |  |- server.key
-|  |- saml.crt     # generated via diego-release/scripts/generate-uaa-saml-certs
-|  |- saml.key
-|  |- saml.key.password
-|-consul-certs      # generated via cf-release/scripts/generate-consul-certs
+|-consul-certs     # generated via cf-release/scripts/generate-consul-certs
 |  |- agent.crt
 |  |- agent.key
 |  |- server-ca.crt
 |  |- server-ca.key
 |  |- server.crt
+|  |- server.key
+|-loggregator-certs # generated via cf-release/scripts/generate-loggregator-certs
+|  |- doppler.crt
+|  |- doppler.key
+|  |- loggregator-ca.crt
+|  |- trafficcontroller.crt
+|  |- trafficcontroller.key
+|-rep-certs         # generated via diego-release/scripts/generate-diego-certs
+|  |- client.crt
+|  |- client.key
+|  |- server.crt
+|  |- server.key
+|-uaa-certs
+|  |- saml.crt     # generated via diego-release/scripts/generate-uaa-saml-certs
+|  |- saml.key
+|  |- saml.key.password
+|  |- server.crt   # generated via cf-release/scripts/generate-uaa-certs
 |  |- server.key
 ```
 
