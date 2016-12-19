@@ -204,3 +204,5 @@ spiff merge \
 spiff merge \
   ${manifest_generation}/misc-templates/bosh.yml \
   ${tmpdir}/diego.yml
+
+rm -r $tmpdir
