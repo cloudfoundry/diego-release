@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+if ! diff -u jobs/rep{,_windows}/templates/rep.json.erb; then
+    echo "rep json have drifted"
+    exit 1
+fi
+
+rep_properties=$(cat jobs/rep/spec | sed -n '/properties/,$P' | grep -E '^  [a-z].*$' | tr -d '[:blank:]' | grep -v volman | sort)
+rep_windows_properties=$(cat jobs/rep_windows/spec | sed -n '/properties/,$P' | grep -E '^  diego.*$' | tr -d '[:blank:]' | sort)
+
+if ! diff -u <(echo -e "$rep_properties") <(echo -e "$rep_windows_properties"); then
+    echo "rep specs have drifted"
+    exit 1
+fi

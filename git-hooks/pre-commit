@@ -1,7 +1,15 @@
 #!/bin/bash
 
+diff_output=$(./scripts/check-for-rep-drift)
+if [ $? -ne 0 ] ; then
+  echo $'\e[31mrep and rep_windows have diverged. output:\e[0m'
+  echo
+  echo "$diff_output"
+  exit 1
+fi
+
 modified_packages=$(./scripts/sync-package-specs)
-  
+
 if [ -n "$modified_packages" ]; then
   echo $'\e[31mthe following package specs are not staged:\e[0m'
   echo
