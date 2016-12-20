@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+cd `dirname $0`/..
+
 if ! diff -u jobs/rep{,_windows}/templates/rep.json.erb; then
     echo "rep json have drifted"
     exit 1
