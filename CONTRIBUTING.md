@@ -99,9 +99,6 @@ To be able to run unit tests, you'll also need to install the following binaries
     # Install gnatsd
     go install github.com/apcera/gnatsd
 
-    # Install etcd. This is only required for the bbs migration test suite.
-    go install github.com/coreos/etcd
-
     # Install consul
     if uname -a | grep Darwin; then os=darwin; else os=linux; fi
     curl -L -o $TMPDIR/consul-0.7.0.zip "https://releases.hashicorp.com/consul/0.7.0/consul_0.7.0_${os}_amd64.zip"
@@ -112,7 +109,7 @@ To be able to run the integration test suite ("inigo"), you'll need to have a lo
 
 ### Running the SQL unit tests
 
-To run the SQL unit tests locally requires running MySQL and Postgres with the correct configuration.
+As of Diego 1.0, SQL unit tests are the default unit tests for Diego. To run the SQL unit tests locally requires running MySQL and Postgres with the correct configuration.
 
 On OS X, follow these steps to install and configure MySQL and Postgres:
 
@@ -148,7 +145,7 @@ On OS X, follow these steps to install and configure MySQL and Postgres:
         CREATE USER 'diego'@'localhost' IDENTIFIED BY 'diego_password';
         GRANT ALL PRIVILEGES ON `diego\_%`.* TO 'diego'@'localhost';
 
-8. Install Postgres:
+8. Install Postgres (version 9.4 or higher is required):
 
         brew install postgresql
 
@@ -181,11 +178,10 @@ On OS X, follow these steps to install and configure MySQL and Postgres:
     tests, run the following command from
     the root of diego-release:
 
-        RUN_SQL_TESTS=true ./scripts/run-unit-tests
+        ./scripts/run-unit-tests
 
    This command will run all regular unit tests, as well as BBS and component
-   integration tests where a backing store is required in both etcd-backed,
-   MySQL-backed, and Postgres-backed modes.
+   integration tests where a backing store is required in MySQL-backed and Postgres-backed modes.
 
 ## <a name="deploy-bosh-lite"></a> Deploying Diego to BOSH-Lite
 
@@ -246,10 +242,6 @@ On OS X, follow these steps to install and configure MySQL and Postgres:
 
         bosh upload release https://bosh.io/d/github.com/cloudfoundry/garden-runc-release
 
-1. Upload the latest etcd-release:
-
-        bosh upload release https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release
-
 1. Create, upload, and deploy the Diego release:
 
         cd ~/workspace/diego-release
@@ -295,9 +287,9 @@ Once you've followed the steps [above](#initial-setup) to install ginkgo and the
 
     ./scripts/run-unit-tests
 
-We recommend running the unit tests against both a local MySQL and a local PostgreSQL database as described [above](#running-the-sql-unit-tests). That is, the script should be invoked with the `RUN_SQL_TESTS` environment variable set to `TRUE`.
+We recommend running the unit tests against both a local MySQL and a local PostgreSQL database as described [above](#running-the-sql-unit-tests).
 
-If your want to run the entire unit test suite on concourse and have the `fly` CLI on your path, you can run
+If you want to run the entire unit test suite on concourse and have the `fly` CLI on your path, you can run
 
     ./scripts/run-unit-tests-concourse
 
