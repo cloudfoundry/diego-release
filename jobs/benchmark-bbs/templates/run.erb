@@ -90,6 +90,9 @@ ginkgo -- ${bbs_sec_flags} ${etcd_sec_flags} \
   -numReps=<%= p("benchmark-bbs.num_reps") %> \
   -percentWrites=<%= p("benchmark-bbs.percent_writes") %> \
   -numPopulateWorkers=<%= p("benchmark-bbs.num_populate_workers") %> \
+  <% if p("benchmark-bbs.local_route_emitters") %> \
+    -localRouteEmitters \
+  <% end %> \
   -bbsAddress=${bbs_api_url} \
   <% p("benchmark-bbs.encryption_keys").each do |encryption_key| %> \
     -encryptionKey=<%= Shellwords.shellescape("#{encryption_key["label"]}:#{encryption_key["passphrase"]}") %> \
