@@ -1,8 +1,30 @@
 #!/bin/bash
 
+function convert_to_seconds {
+  hours_in_seconds=0
+  minutes_in_seconds=0
+  seconds=0
+
+  if echo "$1" | grep -q '[0-9]\+h'; then
+    hours_in_seconds=$(($(echo "$1" | grep -o '[0-9]\+h' | grep -o "[0-9]\+")*3600))
+  fi
+
+  if echo "$1" | grep -q '[0-9]\+m'; then
+    minutes_in_seconds=$(($(echo "$1" | grep -o '[0-9]\+m' | grep -o "[0-9]\+")*60))
+  fi
+
+  if echo "$1" | grep -q '[0-9]\+s'; then
+    seconds=$(echo "$1" | grep -o '[0-9]\+s' | grep -o "[0-9]\+")
+  fi
+
+  total_seconds=$(($hours_in_seconds + $minutes_in_seconds + $seconds))
+
+  echo $total_seconds
+}
+
 address=<%= p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") %>
 start=`date +%s`
-timeout=300
+timeout=$(convert_to_seconds <%= p("diego.executor.garden_healthcheck.timeout") %>)
 
 echo "$(date): Pinging rep..."
 i=1
