@@ -1,0 +1,174 @@
+<%=
+require 'uri'
+
+
+CONF_DIR = "/var/vcap/jobs/bbs/config"
+TMP_DIR = "/var/vcap/data/executor/tmp"
+TRUSTED_CERTS_DIR = "/var/vcap/data/executor/trusted_certs"
+LOG_DIR = "/var/vcap/sys/log/bbs"
+
+config = {
+ "require_ssl" => p("diego.bbs.require_ssl"),
+ "listen_address" => p("diego.bbs.listen_addr"),
+ "health_address" => p("diego.bbs.health_addr"),
+ "consul_cluster" => "http://127.0.0.1:8500",
+ "rep_client_session_cache_size" => p("diego.bbs.rep.client_session_cache_size"),
+ "rep_require_tls" => p("diego.bbs.rep.require_tls"),
+ "log_level" => p("diego.bbs.log_level"),
+ "active_key_label" => p("diego.bbs.active_key_label"),
+ "debug_address" => p("diego.bbs.debug_addr")
+}
+
+def db_params
+  ['username', 'password', 'host', 'port', 'schema'].map {|name| "diego.bbs.sql.db_#{name}"}
+end
+
+def param_exists? param
+  p(param) != ""
+end
+
+def connection_string_from_db_params
+  return "" unless db_params.any? {|p| param_exists?(p)}
+
+  unless db_params.all? {|p| param_exists?(p)}
+    raise "all of the following parameters must be specified #{db_params.join(",")}"
+  end
+
+  values = db_params.map {|param| p(param)}
+  # Note: order of the params is important here, it has to be username, password, host, port, schema in that order
+  driver = p("diego.bbs.sql.db_driver")
+  case driver
+  when 'mysql'
+    sprintf "%s:%s@tcp(%s:%s)/%s", *values
+  when 'postgres'
+    sprintf "postgres://%s:%s@%s:%s/%s", *values
+  else
+    raise "unknown driver #{driver}"
+  end
+end
+
+connection_string = p('diego.bbs.sql.db_connection_string')
+
+if connection_string != "" && connection_string_from_db_params != ""
+  raise "You can only specify 'diego.bbs.sql.db_connection_string' or '#{db_params.join(",")}'"
+end
+
+if connection_string == ""
+  connection_string = connection_string_from_db_params
+end
+
+if connection_string == ""
+  raise "#{db_params.join(",")} are required fields"
+end
+
+config[:database_connection_string] = connection_string
+
+def advertise_url scheme
+  base = p("diego.bbs.advertisement_base_hostname")
+  port = p("diego.bbs.listen_addr").split(':')[1]
+  "#{scheme}://#{name.gsub('_', '-')}-#{spec.index}.#{base}:#{port}"
+end
+
+config[:encryption_keys] = {}
+p("diego.bbs.encryption_keys").each do |encryption_key|
+  label = encryption_key["label"]
+  key   = encryption_key["passphrase"]
+  config[:encryption_keys][label] = key
+end
+
+if p("diego.bbs.auctioneer.api_location", "") != ""
+  auctioneer_address = p("diego.bbs.auctioneer.api_location")
+else
+  auctioneer_uri = URI(p("diego.bbs.auctioneer.api_url"))
+  auctioneer_address = auctioneer_uri.host + ":" + auctioneer_uri.port.to_s
+end
+
+config[:auctioneer_address] = "http://#{auctioneer_address}"
+if p("diego.bbs.auctioneer.ca_cert", "") != "" ||
+   p("diego.bbs.auctioneer.client_cert", "") != "" ||
+   p("diego.bbs.auctioneer.client_key", "") != "" then
+  config[:auctioneer_address] = "https://#{auctioneer_address}"
+  config[:auctioneer_require_tls] = p("diego.bbs.auctioneer.require_tls")
+  config[:auctioneer_client_cert] = "#{CONF_DIR}/certs/auctioneer/client.crt"
+  config[:auctioneer_client_key] = "#{CONF_DIR}/certs/auctioneer/client.key"
+  config[:auctioneer_ca_cert] = "#{CONF_DIR}/certs/auctioneer/ca.crt"
+end
+
+if_p("diego.bbs.rep.ca_cert", "diego.bbs.rep.client_key", "diego.bbs.rep.client_cert") do
+  config[:rep_client_cert] = "#{CONF_DIR}/certs/rep/client.crt"
+  config[:rep_client_key] = "#{CONF_DIR}/certs/rep/client.key"
+  config[:rep_ca_cert] = "#{CONF_DIR}/certs/rep/ca.crt"
+end
+
+
+if p("diego.bbs.etcd.machines").size > 0
+  scheme = "http"
+  if p("diego.bbs.etcd.require_ssl")
+    scheme = "https"
+    config[:etcd_cert_file] = "#{CONF_DIR}/certs/etcd/client.crt"
+    config[:etcd_key_file] = "#{CONF_DIR}/certs/etcd/client.key"
+    config[:etcd_ca_file] = "#{CONF_DIR}/certs/etcd/ca.crt"
+  end
+
+  config[:etcd_cluster_urls] = p("diego.bbs.etcd.machines").map{|addr| "#{scheme}://#{addr}:4001"}
+  if_p("diego.bbs.etcd.client_session_cache_size") do |value|
+    config[:etcd_client_session_cache_size] = value
+  end
+  if_p("diego.bbs.etcd.max_idle_conns_per_host") do |value|
+    config[:etcd_max_idle_conns_per_host] = value
+  end
+end
+
+
+
+if p("diego.bbs.sql.require_ssl")
+   config[:sql_ca_cert_file] = "#{CONF_DIR}/certs/sql/ca.crt"
+end
+
+if_p("diego.bbs.sql.max_open_connections") do |value|
+  config[:max_database_connections] = value
+end
+
+if_p("diego.bbs.sql.db_driver") do |value|
+  config[:database_driver] = value
+end
+
+if_p("diego.bbs.dropsonde_port") do |value|
+ config[:dropsonde_port] = value
+end
+
+if_p("diego.bbs.convergence.expire_completed_task_duration_in_seconds") do |value|
+  config[:expire_completed_task_duration] = "#{value}s" # add time unit
+end
+
+if_p("diego.bbs.convergence.expire_pending_task_duration_in_seconds") do |value|
+  config[:expire_pending_task_duration] = "#{value}s" # add time unit
+end
+
+if_p("diego.bbs.convergence.repeat_interval_in_seconds") do |value|
+  config[:converge_repeat_interval] = "#{value}s" # add time unit
+end
+
+if_p("diego.bbs.convergence.kick_task_duration_in_seconds") do |value|
+  config[:kick_task_duration] = "#{value}s" # add time unit
+end
+
+if_p("diego.bbs.desired_lrp_creation_timeout") do |value|
+  config[:desired_lrp_creation_timeout] = value # add time unit
+end
+
+if p("diego.bbs.require_ssl")
+  config[:advertise_url] = advertise_url "https"
+  config[:ca_file] = "#{CONF_DIR}/certs/ca.crt"
+  config[:cert_file] = "#{CONF_DIR}/certs/server.crt"
+  config[:key_file] = "#{CONF_DIR}/certs/server.key"
+else
+  config[:advertise_url] = advertise_url "http"
+end
+
+if p("diego.bbs.enable_access_log")
+  config[:access_log_path] = "#{LOG_DIR}/bbs.access.log"
+end
+
+config.to_json
+%>

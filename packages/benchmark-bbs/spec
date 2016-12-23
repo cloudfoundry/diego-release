@@ -7,6 +7,7 @@ dependencies:
 files:
   - code.cloudfoundry.org/auctioneer/*.go # gosub
   - code.cloudfoundry.org/bbs/*.go # gosub
+  - code.cloudfoundry.org/bbs/cmd/bbs/config/*.go # gosub
   - code.cloudfoundry.org/bbs/cmd/bbs/testrunner/*.go # gosub
   - code.cloudfoundry.org/bbs/db/*.go # gosub
   - code.cloudfoundry.org/bbs/db/etcd/*.go # gosub
@@ -19,6 +20,7 @@ files:
   - code.cloudfoundry.org/bbs/models/*.go # gosub
   - code.cloudfoundry.org/bbs/models/test/model_helpers/*.go # gosub
   - code.cloudfoundry.org/benchmarkbbs/*.go # gosub
+  - code.cloudfoundry.org/benchmarkbbs/config/*.go # gosub
   - code.cloudfoundry.org/benchmarkbbs/generator/*.go # gosub
   - code.cloudfoundry.org/benchmarkbbs/reporter/*.go # gosub
   - code.cloudfoundry.org/cfhttp/*.go # gosub
@@ -26,8 +28,10 @@ files:
   - code.cloudfoundry.org/clock/*.go # gosub
   - code.cloudfoundry.org/consuladapter/*.go # gosub
   - code.cloudfoundry.org/consuladapter/consulrunner/*.go # gosub
+  - code.cloudfoundry.org/debugserver/*.go # gosub
   - code.cloudfoundry.org/executor/*.go # gosub
   - code.cloudfoundry.org/lager/*.go # gosub
+  - code.cloudfoundry.org/lager/lagerflags/*.go # gosub
   - code.cloudfoundry.org/lager/lagertest/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
   - code.cloudfoundry.org/operationq/*.go # gosub
@@ -114,6 +118,7 @@ files:
   - github.com/onsi/gomega/types/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/ginkgomon/*.go # gosub
+  - github.com/tedsuo/ifrit/http_server/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
   - github.com/ugorji/go/codec/*.go # gosub
   - github.com/vaughan0/go-ini/*.go # gosub

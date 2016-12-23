@@ -6,6 +6,7 @@ packages:
 
 templates:
   run.erb: bin/run
+  benchmark.json.erb: config/benchmark.json
   etcd_ca.crt.erb: config/certs/etcd/ca.crt
   etcd_client.crt.erb: config/certs/etcd/client.crt
   etcd_client.key.erb: config/certs/etcd/client.key
@@ -36,7 +37,7 @@ properties:
   benchmark-bbs.bbs.client_key:
     description: "PEM-encoded client key"
   benchmark-bbs.client_timeout:
-    description: "the http timeout for bbs client requests"
+    description: "the http timeout for bbs client requests in seconds (golang duration formatted string)"
   benchmark-bbs.bbs.require_ssl:
     description: "enable ssl for all communication with the bbs (false unsupported)"
     default: true

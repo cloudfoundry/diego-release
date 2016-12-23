@@ -1,8 +1,8 @@
-#!/bin/bash -l
-
-CONF_DIR=/var/vcap/jobs/benchmark-bbs/config
-
+#!/bin/bash -e
 set -e -x
+
+LOG_DIR=/var/vcap/sys/log/benchmark-bbs
+CONF_DIR=/var/vcap/jobs/benchmark-bbs/config
 
 export GOROOT=$(readlink -nf /var/vcap/packages/golang)
 export PATH=${GOROOT}/bin:${PATH}
@@ -12,114 +12,19 @@ export PATH=${GOPATH}/bin:${PATH}
 
 export CF_COLOR=false
 
-LOG_DIR=/var/vcap/sys/log/benchmark-bbs
 mkdir -p $LOG_DIR
 chown -R vcap:vcap $LOG_DIR
 
+
 cd /var/vcap/packages/benchmark-bbs/src/code.cloudfoundry.org/benchmarkbbs
 
-EXITSTATUS=0
-GODEBUG=netdns=cgo
-
-<% if p("benchmark-bbs.etcd.require_ssl") %>
-etcd_sec_flags=" \
-   -etcdCertFile=${CONF_DIR}/certs/etcd/client.crt \
-   -etcdKeyFile=${CONF_DIR}/certs/etcd/client.key \
-   -etcdCaFile=${CONF_DIR}/certs/etcd/ca.crt "
-<% else %>
-etcd_sec_flags=""
-<% end %>
-
-<% if p("benchmark-bbs.bbs.require_ssl") %>
-  bbs_sec_flags=" \
-   -bbsClientCert=${CONF_DIR}/certs/bbs/client.crt \
-   -bbsClientKey=${CONF_DIR}/certs/bbs/client.key "
-  bbs_api_url="<%= "https://" + p("benchmark-bbs.bbs.api_location") %>"
-<% else %>
-  bbs_sec_flags=""
-  bbs_api_url="<%= "http://" + p("benchmark-bbs.bbs.api_location") %>"
-<% end %>
+# Work around for GOLANG 1.5.3 DNS bug
+export GODEBUG=netdns=cgo
 
 # Allowed number of open file descriptors
 ulimit -n 100000
 
-
-<%
-    def db_params
-      ['username', 'password', 'host', 'port', 'schema'].map {|name| "benchmark-bbs.sql.db_#{name}"}
-    end
-
-    def param_exists? param
-      p(param) != ""
-    end
-
-    def connection_string_from_db_params
-      return "" unless db_params.any? {|p| param_exists?(p)}
-
-      unless db_params.all? {|p| param_exists?(p)}
-        raise "all of the following parameters must be specified #{db_params.join(",")}"
-      end
-
-      values = db_params.map {|param| p(param)}
-      # Note: order of the params is important here, it has to be username, password, host, port, schema in that order
-      driver = p("benchmark-bbs.sql.db_driver")
-      case driver
-      when 'mysql'
-        sprintf "%s:%s@tcp(%s:%s)/%s", *values
-      when 'postgres'
-        sprintf "postgres://%s:%s@%s:%s/%s", *values
-      else
-        raise "unknown driver #{driver}"
-      end
-    end
-
-    connection_string = p('benchmark-bbs.sql.db_connection_string')
-
-    if connection_string != "" && connection_string_from_db_params != ""
-       raise "You can only specify 'benchmark-bbs.sql.db_connection_string' or '#{db_params.join(",")}'"
-    end
-
-    if connection_string == ""
-       connection_string = connection_string_from_db_params
-    end
-%>
-
-ginkgo -- ${bbs_sec_flags} ${etcd_sec_flags} \
-  -desiredLRPs=<%= p("benchmark-bbs.desired_lrps") %> \
-  -numTrials=<%= p("benchmark-bbs.num_trials") %> \
-  -numReps=<%= p("benchmark-bbs.num_reps") %> \
-  -percentWrites=<%= p("benchmark-bbs.percent_writes") %> \
-  -numPopulateWorkers=<%= p("benchmark-bbs.num_populate_workers") %> \
-  <% if p("benchmark-bbs.local_route_emitters") %> \
-    -localRouteEmitters \
-  <% end %> \
-  -bbsAddress=${bbs_api_url} \
-  <% p("benchmark-bbs.encryption_keys").each do |encryption_key| %> \
-    -encryptionKey=<%= Shellwords.shellescape("#{encryption_key["label"]}:#{encryption_key["passphrase"]}") %> \
-  <% end %> \
-  -etcdCluster=<%= p("benchmark-bbs.etcd.machines").map{|addr| "\"#{p("benchmark-bbs.etcd.require_ssl") ? "https" : "http"}://#{addr}:4001\""}.join(",")%> \
-  <% if_p("benchmark-bbs.etcd.client_session_cache_size") do |value| %> \
-    -etcdSessionCacheSize=<%= value %> \
-  <% end %> \
-  <% if_p("benchmark-bbs.etcd.max_idle_conns_per_host") do |value| %> \
-    -etcdMaxIdleConnsPerHost=<%= value %> \
-  <% end %> \
-  -activeKeyLabel='<%= Shellwords.shellescape(p("benchmark-bbs.active_key_label")) %>' \
-  -dataDogAPIKey=<%= p("benchmark-bbs.datadog_api_key") %> \
-  -dataDogAppKey=<%= p("benchmark-bbs.datadog_app_key") %> \
-  -metricPrefix=<%= p("benchmark-bbs.datadog_metric_prefix") %> \
-  -awsAccessKeyID=<%= p("benchmark-bbs.aws_access_key_id") %> \
-  -awsSecretAccessKey=<%= p("benchmark-bbs.aws_secret_access_key") %> \
-  -awsBucketName=<%= p("benchmark-bbs.aws_bucket_name") %> \
-  -bbsClientHTTPTimeout=<%= p("benchmark-bbs.client_timeout") %> \
-  -databaseConnectionString=<%= Shellwords.shellescape(connection_string) %> \
-  <% if_p("benchmark-bbs.sql.db_driver") do |value| %> \
-    -databaseDriver='<%= value %>' \
-  <% end %> \
-  <% if_p("benchmark-bbs.log_level") do |value| %> \
-    -logLevel=<%= value %> \
-  <% end %> \
-  <% if_p("benchmark-bbs.log_file") do |value| %> \
-    -logFilename=$LOG_DIR/<%= value %> \
-  <% end %> \
-  1> >(tee -a $LOG_DIR/benchmark-bbs.stdout.log)
+ginkgo -- \
+    -config=$CONF_DIR/benchmark.json \
+    1> >(tee -a $LOG_DIR/benchmark-bbs.stdout.log) \
+    2> >(tee -a $LOG_DIR/benchmark-bbs.stderr.log)

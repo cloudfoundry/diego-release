@@ -4,6 +4,7 @@ name: bbs
 templates:
   bbs_ctl.erb: bin/bbs_ctl
   bbs_as_vcap.erb: bin/bbs_as_vcap
+  bbs.json.erb: config/bbs.json
   etcd_ca.crt.erb: config/certs/etcd/ca.crt
   etcd_client.crt.erb: config/certs/etcd/client.crt
   etcd_client.key.erb: config/certs/etcd/client.key
@@ -75,7 +76,7 @@ properties:
   diego.bbs.server_key:
     description: "PEM-encoded client key"
   diego.bbs.desired_lrp_creation_timeout:
-    description: "expected maximum time to create all components of a desired LRP"
+    description: "expected maximum time to create all components of a desired LRP (golang duration formatted string)"
 
   diego.bbs.etcd.machines:
     description: "Addresses pointing to the ETCD cluster"
