@@ -31,6 +31,9 @@ config_from_cf:
     dropsonde_incoming_port: (( properties.loggregator.dropsonde_incoming_port ))
     tls:
       ca_cert: (( properties.loggregator.tls.ca_cert ))
+      metron:
+        cert: (( properties.loggregator.tls.metron.cert ))
+        key: (( properties.loggregator.tls.metron.key ))
   metron_endpoint:
     shared_secret: (( properties.metron_endpoint.shared_secret ))
   metron_agent:
@@ -91,6 +94,9 @@ properties:
     dropsonde_incoming_port: (( merge || nil ))
     tls:
       ca_cert: (( merge || nil ))
+      metron:
+        cert: (( merge || nil ))
+        key: (( merge || nil ))
   loggregator_endpoint:
     shared_secret: (( merge ))
   metron_endpoint:
