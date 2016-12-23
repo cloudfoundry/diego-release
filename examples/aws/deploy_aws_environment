@@ -70,6 +70,8 @@ $(block doppler_cert           certs/loggregator-certs/doppler.crt           | i
 $(block doppler_key            certs/loggregator-certs/doppler.key           | indent | indent)
 $(block trafficcontroller_cert certs/loggregator-certs/trafficcontroller.crt | indent | indent)
 $(block trafficcontroller_key  certs/loggregator-certs/trafficcontroller.key | indent | indent)
+$(block metron_cert            certs/loggregator-certs/metron.crt            | indent | indent)
+$(block metron_key             certs/loggregator-certs/metron.key            | indent | indent)
 EOF
 }
 
@@ -202,7 +204,7 @@ spiff merge \
   stubs/bosh-init/*.yml \
   >> deployments/bosh-init/bosh-init.yml
 
-bosh-init deploy deployments/bosh-init/bosh-init.yml
+#bosh-init deploy deployments/bosh-init/bosh-init.yml
 bosh -n target $(cat stubs/aws-resources.yml | grep BoshInit | awk '{ gsub(/"/, "", $NF); print $NF }')
 
 # generate director uuid stub for template to create deployment stub

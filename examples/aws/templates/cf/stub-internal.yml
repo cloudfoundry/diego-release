@@ -213,6 +213,9 @@ properties:
       trafficcontroller:
         cert: (( cf_credentials.loggregator.trafficcontroller_cert ))
         key: (( cf_credentials.loggregator.trafficcontroller_key ))
+      metron:
+        cert: (( cf_credentials.loggregator.metron_cert ))
+        key: (( cf_credentials.loggregator.metron_key ))
 
 Resources: (( merge ))
 Region: (( merge ))

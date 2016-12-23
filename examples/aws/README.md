@@ -480,6 +480,8 @@ DEPLOYMENT_DIR/certs
 |  |- loggregator-ca.crt
 |  |- trafficcontroller.crt
 |  |- trafficcontroller.key
+|  |- metron.crt
+|  |- metron.key
 |-rep-certs         # generated via diego-release/scripts/generate-diego-certs
 |  |- client.crt
 |  |- client.key

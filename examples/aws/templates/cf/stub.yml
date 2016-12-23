@@ -187,6 +187,9 @@ properties:
       trafficcontroller:
         cert: (( merge ))
         key: (( merge ))
+      metron:
+        cert: (( merge ))
+        key: (( merge ))
   login:
     saml:
       serviceProviderCertificate: (( merge ))
