@@ -204,7 +204,7 @@ spiff merge \
   stubs/bosh-init/*.yml \
   >> deployments/bosh-init/bosh-init.yml
 
-#bosh-init deploy deployments/bosh-init/bosh-init.yml
+bosh-init deploy deployments/bosh-init/bosh-init.yml
 bosh -n target $(cat stubs/aws-resources.yml | grep BoshInit | awk '{ gsub(/"/, "", $NF); print $NF }')
 
 # generate director uuid stub for template to create deployment stub
