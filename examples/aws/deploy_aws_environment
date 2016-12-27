@@ -10,13 +10,17 @@ function usage() {
     Create a CloudFormation stack, deploy BOSH, and create initial CF and Diego stubs.
 
   USAGE:
-    $0 (create|update|skip) CF_RELEASE_DIR DEPLOYMENT_DIR [STACK_NAME]
+    $0 (create|update|skip) [skip-bosh-init] CF_RELEASE_DIR DEPLOYMENT_DIR [STACK_NAME]
 
   MANDATORY ARGUMENTS:
+    create:             Create the aws stack. It is an error to use create if the stack STACK_NAME already exists
+    update:             Updates the aws stack. It is an error to use update if the stack STACK_NAME does not exist or if there are no changes to apply
+    skip:               Skips aws stack create/update
     CF_RELEASE_DIR:     Path to the local cf-release repository.
     DEPLOYMENT_DIR:     Directory to store files for this deployment.
 
   OPTIONAL ARGUMENTS:
+    skip-bosh-init:     skips deploying the bosh director using bosh-init
     STACK_NAME:         Name of the CloudFormation stack to create (default: cf-diego-stack)
 EOF
   exit 1
@@ -112,9 +116,17 @@ else
   exit 1
 fi
 
-cf_release_dir=$2
-deployment_dir=$3
-stack_name=${4:-cf-diego-stack}
+shift
+
+SKIP_BOSH_INIT='false'
+if [ "$1" == "skip-bosh-init" ]; then
+    SKIP_BOSH_INIT='true'
+    shift
+fi
+
+cf_release_dir=$1
+deployment_dir=$2
+stack_name=${3:-cf-diego-stack}
 
 if [ -z ${deployment_dir} ]; then
   usage
@@ -204,7 +216,9 @@ spiff merge \
   stubs/bosh-init/*.yml \
   >> deployments/bosh-init/bosh-init.yml
 
-bosh-init deploy deployments/bosh-init/bosh-init.yml
+if [ "x$SKIP_BOSH_INIT" == 'xfalse' ]; then
+    bosh-init deploy deployments/bosh-init/bosh-init.yml
+fi
 bosh -n target $(cat stubs/aws-resources.yml | grep BoshInit | awk '{ gsub(/"/, "", $NF); print $NF }')
 
 # generate director uuid stub for template to create deployment stub
