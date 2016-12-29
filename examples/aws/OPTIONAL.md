@@ -138,7 +138,7 @@ cd $DIEGO_RELEASE_DIR
 ./scripts/generate-windows-cell-deployment-manifest \
   -c $DEPLOYMENT_DIR/deployments/cf.yml \
   -i $DEPLOYMENT_DIR/stubs/diego-windows/iaas-settings.yml \
-  -p $DEPLOYMENT_DIR/stubs/diego/property-overrides.yml \
+  -p $DEPLOYMENT_DIR/stubs/diego-windows/property-overrides.yml \
   -n $DEPLOYMENT_DIR/stubs/diego-windows/instance-count-overrides.yml \
   -v $DEPLOYMENT_DIR/stubs/diego-windows/release-versions.yml \
   > $DEPLOYMENT_DIR/deployments/diego-windows.yml
