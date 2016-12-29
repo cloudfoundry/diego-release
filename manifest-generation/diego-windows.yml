@@ -123,6 +123,8 @@ jobs:
 
 properties:
   # -- Properties below are used by the metron_agent job from cf-release --
+  doppler:
+    addr: (( property_overrides.doppler.addr || "doppler.service.cf.internal" ))
   metron_agent:
     deployment: (( name ))
     protocols: (( config_from_cf.metron_agent.protocols ))
