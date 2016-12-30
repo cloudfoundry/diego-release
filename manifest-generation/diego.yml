@@ -802,6 +802,19 @@ base_releases:
     version: (( release_versions.cflinuxfs2-rootfs || "latest" ))
 
 release_versions: (( merge || nil ))
+default_bridge_jobs:
+  - name: consul_agent
+    release: cf
+  - name: stager
+    release: (( bridge_overrides.job_release || "cf" ))
+  - name: nsync
+    release: (( bridge_overrides.job_release || "cf" ))
+  - name: tps
+    release: (( bridge_overrides.job_release || "cf" ))
+  - name: cc_uploader
+    release: (( bridge_overrides.job_release || "cf" ))
+  - name: metron_agent
+    release: cf
 
 base_job_templates:
   access:
@@ -824,19 +837,7 @@ base_job_templates:
       release: cf
     - name: cfdot
       release: diego
-  cc_bridge:
-    - name: consul_agent
-      release: cf
-    - name: stager
-      release: (( bridge_overrides.job_release || "cf" ))
-    - name: nsync
-      release: (( bridge_overrides.job_release || "cf" ))
-    - name: tps
-      release: (( bridge_overrides.job_release || "cf" ))
-    - name: cc_uploader
-      release: (( bridge_overrides.job_release || "cf" ))
-    - name: metron_agent
-      release: cf
+  cc_bridge: (( merge || default_bridge_jobs ))
   cell:
     - name: consul_agent
       release: cf

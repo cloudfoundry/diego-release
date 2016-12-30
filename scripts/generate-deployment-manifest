@@ -25,6 +25,7 @@ OPTIONAL ARGUMENTS:
     -b                  Opt into using capi-release for bridge components.
     -d <voldriver-path> Path to voldriver stub file.
     -N <netman-path>    Path to netman stub file
+    -B                  Opt out of deprecated CC bridge components.
     -L                  Opt into using garden-linux-release for cells. (DEPRECATED)
 
 EXAMPLE:
@@ -45,8 +46,9 @@ EOF
 base_releases="${manifest_generation}/base-releases.yml"
 garden_properties=""
 bridge_properties=""
+bridge_jobs=""
 
-while getopts "c:i:p:n:k:v:s:d:N:krbgxL" opt; do
+while getopts "c:i:p:n:k:v:s:d:N:krbgxLB" opt; do
   case $opt in
     c)
       cf_deployment_manifest=$OPTARG
@@ -91,6 +93,9 @@ while getopts "c:i:p:n:k:v:s:d:N:krbgxL" opt; do
       ;;
     x)
       bbs_properties="${manifest_generation}/bbs-overrides-no-etcd.yml"
+      ;;
+    B)
+      bridge_jobs="${manifest_generation}/disable-deprecated-bridge-jobs.yml";
       ;;
     *)
       echo "Unknown arguments"
@@ -196,6 +201,7 @@ spiff merge \
   ${instance_counts} \
   ${sql_settings} \
   ${voldriver_settings} \
+  ${bridge_jobs} \
   ${tmpdir}/netman-merged.yml \
   ${iaas_settings} \
   ${tmpdir}/config-from-cf.yml \

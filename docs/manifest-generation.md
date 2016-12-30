@@ -23,6 +23,7 @@ This document is for describing options to Diego manifest generation.
     -b                  Opt into using capi-release for bridge components.
     -d <voldriver-path> Path to voldriver stub file.
     -N <netman-path>    Path to netman stub file.
+    -B                  Opt out of deprecated CC bridge components.
     -L                  Opt into using garden-linux-release for cells. (DEPRECATED)
 
 #### EXAMPLE:
@@ -137,6 +138,14 @@ volman_overrides:
 
 The optional -N flag is used to specify the path for the [netman](https://github.com/cloudfoundry-incubator/netman-release) stub file.
 Netman requires Garden-runC, therefore the -g flag must also be set.
+
+##### **Experimental** -B Opt out of deprecated CC bridge components
+
+The optional flag -B will disable deprecated CC bridge components. At the
+moment those components are NSync and Stager. Those components are now part of
+the Cloud Controller. Keep in mind that in order to use this flag and still
+have CF working properly you will need to first enable this feature in
+cf-release via Cloud Controller properties.
 
 ## diego-release/scripts/generate-windows-cell-deployment-manifest
 
