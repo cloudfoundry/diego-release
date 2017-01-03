@@ -10,16 +10,15 @@ function usage() {
     Create a CloudFormation stack, deploy BOSH, and create initial CF and Diego stubs.
 
   USAGE:
-    $0 (create|update|skip) CF_RELEASE_DIR DEPLOYMENT_DIR [STACK_NAME]
+    $0 <AWS_ACTION> <BOSH_ACTION> <BOSH_DEPLOYMENT_DIR> <DEPLOYMENT_DIR> <STACK_NAME>
 
   MANDATORY ARGUMENTS:
-    CF_RELEASE_DIR:     Path to the local cf-release repository.
-    DEPLOYMENT_DIR:     Directory to store files for this deployment.
-
-  OPTIONAL ARGUMENTS:
-    STACK_NAME:         Name of the CloudFormation stack to create (default: cf-diego-stack)
+    AWS_ACTION:           Action to take on AWS CloudFormation stack: create, update, or skip.
+    BOSH_ACTION:          Action to take on BOSH director deployment: bosh-deploy or bosh-skip.
+    BOSH_DEPLOYMENT_DIR:  Path to local copy of the bosh-deployment repository.
+    DEPLOYMENT_DIR:       Directory to store files for this deployment.
+    STACK_NAME:           Name of the CloudFormation stack to create.
 EOF
-  exit 1
 }
 
 
@@ -100,30 +99,65 @@ $(block server_key  certs/auctioneer-certs/server.key  | indent | indent)
 EOF
 }
 
+case "$1" in
+  "create")
+    stack_action="create-stack"
+    ;;
 
-if [ "$1" == "create" ]; then
-  UPDATE_OR_CREATE=create-stack
-elif [ "$1" == "update" ]; then
-  UPDATE_OR_CREATE=update-stack
-elif [ "$1" == "skip" ]; then
-  UPDATE_OR_CREATE="skip"
-else
+  "update")
+    stack_action="update-stack"
+    ;;
+
+  "skip")
+    stack_action=""
+    ;;
+
+  *)
+    usage
+    exit 1
+    ;;
+esac
+
+shift
+
+case "$1" in
+  "bosh-deploy")
+    bosh_action="deploy"
+    ;;
+
+  "bosh-skip")
+    bosh_action="skip"
+    ;;
+
+  *)
+    usage
+    exit 1
+    ;;
+esac
+
+shift
+bosh_deployment_dir="$1"
+
+shift
+deployment_dir="$1"
+
+shift
+stack_name="$1"
+
+
+if [ -z "${stack_name}" ]; then
   usage
   exit 1
 fi
 
-cf_release_dir=$2
-deployment_dir=$3
-stack_name=${4:-cf-diego-stack}
-
-if [ -z ${deployment_dir} ]; then
-  usage
-fi
+# name of BOSH CLI v2 executable
+gobosh="${gobosh:-bosh}"
 
 command -v aws >/dev/null || { echo "aws is required"; exit 1; }
 command -v jq >/dev/null || { echo "jq is required"; exit 1; }
 command -v spiff >/dev/null || { echo "spiff is required"; exit 1; }
-command -v bosh-init >/dev/null || { echo "bosh-init is required"; exit 1; }
+command -v "${gobosh}" >/dev/null || { echo "BOSH CLI v2 is required"; exit 1; }
+"${gobosh}" env --help >/dev/null 2>/dev/null || { echo "BOSH CLI v2 is required"; exit 1; }
 
 set -x
 
@@ -131,7 +165,7 @@ pushd ${deployment_dir}
 
 mkdir -p stubs/cf
 mkdir -p stubs/infrastructure
-mkdir -p deployments/bosh-init
+mkdir -p deployments/bosh
 
 source bootstrap_environment
 
@@ -178,8 +212,8 @@ spiff merge \
   > stubs/infrastructure/cloudformation.json
 
 # deploy infrastructure
-if [ $UPDATE_OR_CREATE != "skip" ]; then
-  aws cloudformation $UPDATE_OR_CREATE \
+if [[ -n "$stack_action" ]]; then
+  aws cloudformation "$stack_action" \
     --stack-name $stack_name \
     --template-body file://stubs/infrastructure/cloudformation.json
 
@@ -193,25 +227,75 @@ EOF
   boosh resources --name $stack_name >> stubs/aws-resources.yml
 fi
 
-cat > deployments/bosh-init/bosh-init.yml <<EOF
+cat > "${deployment_dir}/stubs/bosh/aws.yml" <<EOF
 # GENERATED: NO TOUCHING
 EOF
 
 spiff merge \
-  $SCRIPT_DIR/templates/bosh-init/bosh-init.yml \
-  $SCRIPT_DIR/templates/bosh-init/bosh-init-internal.yml \
-  stubs/aws-resources.yml \
-  stubs/bosh-init/*.yml \
-  >> deployments/bosh-init/bosh-init.yml
+  "${SCRIPT_DIR}/templates/bosh/aws.yml" \
+  "${SCRIPT_DIR}/templates/bosh/aws-internal.yml" \
+  "${deployment_dir}/stubs/aws-resources.yml" \
+  >> "${deployment_dir}/stubs/bosh/aws.yml"
 
-bosh-init deploy deployments/bosh-init/bosh-init.yml
-bosh -n target $(cat stubs/aws-resources.yml | grep BoshInit | awk '{ gsub(/"/, "", $NF); print $NF }')
+custom_ops_file_args=$(for i in ${deployment_dir}/ops-files/bosh/*.yml; do echo -n "--ops-file \"$i\" "; done)
+
+bosh_datadog_args=""
+
+if [[ -f "${deployment_dir}/stubs/bosh/datadog.yml" ]]; then
+  bosh_datadog_args="
+    --ops-file \"${SCRIPT_DIR}/ops-files/bosh/datadog.yml\" \
+    --vars-file \"${deployment_dir}/stubs/bosh/datadog.yml\""
+fi
+
+bosh_domain_args=""
+
+if [[ -f "${deployment_dir}/stubs/bosh/domain.yml" ]]; then
+  bosh_domain_args="
+    --ops-file \"${SCRIPT_DIR}/ops-files/bosh/domain.yml\" \
+    --vars-file \"${deployment_dir}/stubs/bosh/domain.yml\""
+fi
+
+cat > "${deployment_dir}/deployments/bosh/bosh.yml" <<EOF
+# GENERATED: NO TOUCHING
+EOF
+
+"${gobosh}" interpolate \
+  --var-errs \
+  --var-errs-unused \
+  "${bosh_deployment_dir}/bosh.yml" \
+  --vars-store "${deployment_dir}/deployments/bosh/creds.yml" \
+  --ops-file "${bosh_deployment_dir}/aws/cpi.yml" \
+  --ops-file "${bosh_deployment_dir}/external-ip-with-registry-not-recommended.yml" \
+  $custom_ops_file_args \
+  $bosh_datadog_args \
+  $bosh_domain_args \
+  --vars-file "${deployment_dir}/stubs/bosh/aws.yml" \
+  --vars-file "${deployment_dir}/stubs/bosh/vars.yml" \
+  --var "private_key=${deployment_dir}/keypair/id_rsa_bosh" \
+  >> "${deployment_dir}/deployments/bosh/bosh.yml"
+
+if [[ "$bosh_action" == "deploy" ]]; then
+  "${gobosh}" create-env \
+    --state "${deployment_dir}/deployments/bosh/state.json" \
+    --vars-store "${deployment_dir}/deployments/bosh/creds.yml" \
+    "${deployment_dir}/deployments/bosh/bosh.yml"
+elif [[ "$bosh_action" == "skip" ]]; then
+  >&2 echo "Skipping deployment of BOSH director"
+fi
 
 # generate director uuid stub for template to create deployment stub
+bosh_ip=$(${gobosh} interpolate "${deployment_dir}/stubs/bosh/aws.yml" --path /external_ip)
+director_uuid=$("${gobosh}" \
+  -e ${bosh_ip} \
+  --ca-cert "$("${gobosh}" interpolate "${deployment_dir}/deployments/bosh/creds.yml" --path /director_ssl/ca)" \
+  env \
+  | grep UUID \
+  | cut -f2)
+
 cat > stubs/director-uuid.yml <<EOF
 # GENERATED: NO TOUCHING
 ---
-director_uuid: $(bosh status --uuid | tr -d '\n')
+director_uuid: ${director_uuid}
 EOF
 
 # generate stub with deployment base domain

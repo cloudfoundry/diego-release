@@ -27,11 +27,11 @@ As part of the deployment process, you must install the following dependencies:
 * [AWS CLI](https://aws.amazon.com/cli/)
 * [jq](https://stedolan.github.io/jq/)
 * [ruby](https://www.ruby-lang.org/en/documentation/installation/)
-* [BOSH CLI](http://bosh.io/docs/bosh-cli.html)
-* [bosh-init](https://bosh.io/docs/install-bosh-init.html)
+* [BOSH CLI v2](http://bosh.io/docs/cli-v2.html)
 
 You must also clone the following git repositories from GitHub:
 
+* [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment)
 * [cf-release](https://github.com/cloudfoundry/cf-release)
 * [diego-release](https://github.com/cloudfoundry/diego-release)
 
@@ -55,21 +55,28 @@ Change into the directory you just created for the deployment and run the follow
 cat <<"EOF" > deployment-env
 export DEPLOYMENT_DIR="$(cd $(dirname "$BASH_SOURCE[0]") && pwd)"
 
+export BOSH_DEPLOYMENT_DIR="$HOME/workspace/bosh-deployment"
 export CF_RELEASE_DIR="$HOME/workspace/cf-release"
 export DIEGO_RELEASE_DIR="$HOME/workspace/diego-release"
 
 export CF_DOMAIN=REPLACE_WITH_DEPLOYMENT_DOMAIN
+export STACK_NAME=REPLACE_WITH_STACK_NAME
+export gobosh=bosh
 
 echo "DEPLOYMENT_DIR set to '$DEPLOYMENT_DIR'"
+echo "BOSH_DEPLOYMENT_DIR set to '$BOSH_DEPLOYMENT_DIR'"
 echo "CF_RELEASE_DIR set to '$CF_RELEASE_DIR'"
 echo "DIEGO_RELEASE_DIR set to '$DIEGO_RELEASE_DIR'"
 echo "CF_DOMAIN set to '$CF_DOMAIN'"
+echo "v2 BOSH CLI located at '$(which "${gobosh}")'"
 EOF
 ```
 
-Edit the `deployment-env` file to replace `REPLACE_WITH_DEPLOYMENT_DOMAIN` with the domain selected above. If you have not checked out cf-release and diego-release as subdirectories of `~/workspace`, also replace those default locations.
+Edit the `deployment-env` file to replace `REPLACE_WITH_DEPLOYMENT_DOMAIN` with the domain selected above and to replace `REPLACE_WITH_STACK_NAME` with an identifying name to give to the CloudFormation stack. If you have not checked out cf-release and diego-release as subdirectories of `~/workspace`, also replace those default locations.
 
-Run `source deployment-env` to export these variables to your environment. They will be used extensively as `$DEPLOYMENT_DIR`, `$CF_RELEASE_DIR`, `$DIEGO_RELEASE_DIR`, and `$CF_DOMAIN` in commands and references below.
+If the v2 BOSH CLI executable is not available on your PATH at `bosh`, set the `gobosh` environment variable above to its name or path.
+
+Run `source deployment-env` to export these variables to your environment. They will be used extensively as `$DEPLOYMENT_DIR`, `$BOSH_DEPLOYMENT_DIR`, `$CF_RELEASE_DIR`, `$DIEGO_RELEASE_DIR`,  `$CF_DOMAIN`, and `$STACK_NAME` in commands and references below. The deploy script will also respect the `gobosh` environment variable to locate the v2 BOSH CLI.
 
 ### AWS Requirements
 
@@ -157,26 +164,31 @@ DEPLOYMENT_DIR
 |-certs
 | |-(elb-cfrouter.key)
 | |-(elb-cfrouter.pem)
+|-ops-files
+| |-bosh
+|   |-(aws-cpi-version.yml) [OPTIONAL]
+|   |-(bosh-version.yml) [OPTIONAL]
+|   |-(stemcell.yml) [OPTIONAL]
 |-stubs
 | |-(domain.yml)
 | |-(aws-instance-types.yml) [OPTIONAL]
+| |-bosh
+| | |-(datadog.yml) [OPTIONAL]
+| | |-(domain.yml) [OPTIONAL]
+| | |-(vars.yml)
 | |-infrastructure
-| | |-(availablity_zones.yml)
-| |-bosh-init
-|   |-(keypair.yml)
-|   |-(releases.yml)
-|   |-(users.yml)
-|   |-(stemcell.yml)
+|   |-(availablity_zones.yml)
 ```
 
 To create the directories, run the following commands:
 
 ```bash
 cd $DEPLOYMENT_DIR
-mkdir -p keypair
 mkdir -p certs
+mkdir -p keypair
+mkdir -p ops-files/bosh
+mkdir -p stubs/bosh
 mkdir -p stubs/infrastructure
-mkdir -p stubs/bosh-init
 ```
 
 #### `bootstrap_environment`
@@ -235,7 +247,7 @@ EOF
 
 To override the existing resource pool instance sizes for the CF and Diego VMS, you may optionally create a stubs/aws-instance-types.yml file. For example, to make all CF and Diego VMs use the t2.micro instance type, run the following command:
 
-```yaml
+```bash
 cat <<EOF > $DEPLOYMENT_DIR/stubs/aws-instance-types.yml
 instance_types:
   small: t2.micro
@@ -262,7 +274,7 @@ Note: this file needs to be created before `deploy_aws_environment` script descr
 
 Run the following to produce the `stubs/infrastructure/availability_zones.yml` file, which defines the three availability zones to host your Cloud Foundry deployment.
 
-```yaml
+```bash
 cat <<EOF > $DEPLOYMENT_DIR/stubs/infrastructure/availability_zones.yml
 ---
 meta:
@@ -284,140 +296,157 @@ Value (us-east-1b) for parameter availabilityZone is invalid Subnets can current
 
 then update this file with acceptable availability zone values.
 
-#### `stubs/bosh-init/keypair.yml`
 
-Run the following to create the `stubs/bosh-init/keypair.yml` file:
+#### `stubs/bosh/vars.yml`
 
-```yaml
-cat <<EOF > $DEPLOYMENT_DIR/stubs/bosh-init/keypair.yml
+To configure the SSH keypair and director name used for the BOSH deployment, run the following:
+
+```bash
+cat <<EOF > $DEPLOYMENT_DIR/stubs/bosh/vars.yml
 ---
-BoshKeypairName: REPLACE_WITH_BOSH_KEYPAIR_NAME
+default_key_name: REPLACE_WITH_BOSH_SSH_KEYPAIR_NAME
+director_name: REPLACE_WITH_DIRECTOR_NAME
 EOF
 ```
 
-Next, edit this file to replace `REPLACE_WITH_BOSH_KEYPAIR_NAME` with the name of the keypair created on [AWS keypair for the
-BOSH director](#aws-keypair-for-the-bosh-director). For example:
+Next, edit this file to replace `REPLACE_WITH_BOSH_SSH_KEYPAIR_NAME` with the
+name of the keypair created on
+[AWS keypair for the BOSH director](#aws-keypair-for-the-bosh-director) and to
+replace `REPLACE_WITH_DIRECTOR_NAME` with the desired name for the director.
 
-```yaml
+#### `stubs/bosh/datadog.yml` [OPTIONAL]
+
+To configure BOSH to report instance and deployment metrics to Datadog, run the following:
+
+```bash
+cat <<EOF > $DEPLOYMENT_DIR/stubs/bosh/datadog.yml
 ---
-BoshKeypairName: bosh_keypair
-```
-
-#### `stubs/bosh-init/releases.yml`
-
-Run the following to create the `stubs/bosh-init/releases.yml` file, which specifies the  `bosh` and `bosh-aws-cpi` releases for `bosh-init` to use to deploy the BOSH VM.
-
-```yaml
-cat <<EOF > $DEPLOYMENT_DIR/stubs/bosh-init/releases.yml
----
-releases:
-- name: bosh
-  url: REPLACE_WITH_URL_TO_LATEST_BOSH_BOSH_RELEASE
-  sha1: REPLACE_WITH_SHA1_OF_LATEST_BOSH_BOSH_RELEASE
-- name: bosh-aws-cpi
-  url: REPLACE_WITH_URL_TO_LATEST_BOSH_AWS_CPI_BOSH_RELEASE
-  sha1: REPLACE_WITH_SHA1_OF_LATEST_BOSH_AWS_CPI_BOSH_RELEASE
+datadog_api_key: REPLACE_WITH_DATADOG_API_KEY
+datadog_application_key: REPLACE_WITH_DATADOG_APPLICATION_KEY
 EOF
 ```
 
-Next, replace the values in this file with the URLs and SHA1 checksums of the `bosh` and `bosh-aws-cpi` releases.
-Releases for `bosh` can be found [here](https://bosh.io/releases/github.com/cloudfoundry/bosh?all=1), and 
-releases for `bosh-aws-cpi` can be found [here](https://bosh.io/releases/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?all=1).
-For example:
+Next, edit the resulting file to replace the `REPLACE_` placeholder values with a Datadog API key and application key.
 
-```yaml
-releases:
-- name: bosh
-  url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=255
-  sha1: 923dfb8c26fab7041c0a3e591f0e92f3c4bca29e
-- name: bosh-aws-cpi
-  url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=44
-  sha1: a1fe03071e8b9bf1fa97a4022151081bf144c8bc
-```
 
-#### `stubs/bosh-init/users.yml`
+#### `stubs/bosh/domain.yml` [OPTIONAL]
 
-Run the following to create the `stubs/bosh-init/users.yml` file, which defines the admin users for the BOSH director. 
+To use a DNS name to access the BOSH director, run the following:
 
-```yaml
-cat <<EOF > $DEPLOYMENT_DIR/stubs/bosh-init/users.yml
+```bash
+cat <<EOF > $DEPLOYMENT_DIR/stubs/bosh/domain.yml
 ---
-BoshInitUsers:
-- name: admin
-  password: REPLACE_WITH_BOSH_ADMIN_PASSWORD
+director_domain: REPLACE_WITH_DIRECTOR_DOMAIN_NAME
 EOF
 ```
 
-Next, edit this file to replace the `REPLACE_WITH_BOSH_ADMIN_PASSWORD` with the password you intend to use for the 'admin' BOSH user.
+Next, edit the resulting file to replace the `REPLACE_WITH_DIRECTOR_DOMAIN_NAME` value with the desired domain name. This domain name will be used in the director's certificate for TLS communication.
 
-#### `stubs/bosh-init/creds.yml`
 
-Run the following to create the `stubs/bosh-init/creds.yml` file, which defines passwords for different bosh users:
+#### `ops-files/bosh/aws-cpi-version.yml` [OPTIONAL]
 
-```yaml
-cat <<EOF > $DEPLOYMENT_DIR/stubs/bosh-init/creds.yml
+Run the following to use a different version of the AWS CPI than the one in the [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment) repository. Final releases for the `bosh-aws-cpi` release can be found on [bosh.io](https://bosh.io/releases/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?all=1).
+
+```bash
+cat <<EOF > $DEPLOYMENT_DIR/ops-files/bosh/aws-cpi-version.yml
 ---
-BoshInitCreds:
-  NatsPassword: REPLACE_ME
-  PostgresPassword: REPLACE_ME
-  BlobStoreDirectorPassword: REPLACE_ME
-  BlobStoreAgentPassword: REPLACE_ME
-  MBusPassword: REPLACE_ME
-  HMPassword: REPLACE_ME
-  RegistryPassword: REPLACE_ME
+- type: replace
+  path: /releases/name=bosh-aws-cpi/url
+  value: REPLACE_WITH_URL_TO_BOSH_AWS_CPI_BOSH_RELEASE
+
+- type: replace
+  path: /releases/name=bosh-aws-cpi/sha1
+  value: REPLACE_WITH_SHA1_OF_BOSH_AWS_CPI_BOSH_RELEASE
+
+- type: replace
+  path: /releases/name=bosh-aws-cpi/version
+  value: REPLACE_WITH_VERSION_OF_BOSH_AWS_CPI_BOSH_RELEASE
 EOF
 ```
 
-Next, edit this file to replace each `REPLACE_ME` with a password. **Note**
-each one of these passwords is meant to be unique. Do not share the same
-password.
-
-#### `stubs/bosh-init/stemcell.yml`
-
-Run the following to create the `stubs/bosh-init/stemcell.yml` file, which defines the stemcell to use to create the BOSH director.
+Next, edit the resulting file to replace the `REPLACE_` placeholder values. For example:
 
 ```yaml
-cat <<EOF > $DEPLOYMENT_DIR/stubs/bosh-init/stemcell.yml
 ---
-BoshInitStemcell:
-  url: REPLACE_WITH_URL_TO_LATEST_BOSH_AWS_HVM_STEMCELL
-  sha1: REPLACE_WITH_URL_TO_LATEST_BOSH_AWS_HVM_STEMCELL
+- type: replace
+  path: /releases/name=bosh-aws-cpi/url
+  value: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=62
+
+- type: replace
+  path: /releases/name=bosh-aws-cpi/sha1
+  value: f36967927ceae09e5663a41fdda199edfe649dc6
+
+- type: replace
+  path: /releases/name=bosh-aws-cpi/version
+  value: 62
+```
+
+
+#### `ops-files/bosh/bosh-version.yml` [OPTIONAL]
+
+Run the following to use a different version of BOSH than the one in the [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment) repository. Final releases for the `bosh` release can be found [here](https://bosh.io/releases/github.com/cloudfoundry/bosh?all=1).
+
+```bash
+cat <<EOF > $DEPLOYMENT_DIR/ops-files/bosh/bosh-version.yml
+---
+- type: replace
+  path: /releases/name=bosh/url
+  value: REPLACE_WITH_URL_TO_BOSH_RELEASE
+
+- type: replace
+  path: /releases/name=bosh/sha1
+  value: REPLACE_WITH_SHA1_OF_BOSH_RELEASE
 EOF
 ```
 
-Next, select an [AWS Xen-HVM Light stemcell](https://bosh.io/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent) and edit the file to replace the `url` and `sha1` fields for that stemcell. For example:
+Next, edit the resulting file to replace the `REPLACE_` placeholder values. For example:
 
 ```yaml
 ---
-BoshInitStemcell:
-  url: https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=3232.6
-  sha1: 971e869bd825eb0a7bee36a02fe2f61e930aaf29
+- type: replace
+  path: /releases/name=bosh/url
+  value: https://s3.amazonaws.com/bosh-compiled-release-tarballs/release-bosh-260-on-ubuntu-trusty-stemcell-3312.12-20161220201002.tgz
+
+- type: replace
+  path: /releases/name=bosh/sha1
+  value: bc569944975482889084addda9be36fca8dafad2
 ```
 
-The [bosh.io](https://bosh.io) site does not currently provide the SHA1 hash of stemcells. You must download the
-stemcell locally and calcuate the SHA1 hash manually. On Mac OS X, this can be done by running:
 
-```
-shasum /path/to/downloaded/stemcell
-```
+#### `ops-files/bosh/stemcell.yml` [OPTIONAL]
 
-#### `stubs/bosh-init/datadog.yml` (optional)
+Run the following to use a different version of the AWS HVM stemcell than the one in the [bosh-deployment](https://github.com/cloudfoundry/bosh-deployment) repository:
 
-In order to configure the BOSH director to report instance and deployment metrics to DataDog,
-you must supply a stub that provides the DataDog API and application keys.
-Run the following to create the `stubs/bosh-init/datadog.yml` file:
-
-```yaml
-cat <<EOF > $DEPLOYMENT_DIR/stubs/bosh-init/datadog.yml
+```bash
+cat <<EOF > $DEPLOYMENT_DIR/ops-files/bosh/stemcell.yml
 ---
-properties:
-  hm:
-    datadog:
-      api_key: REPLACE_WITH_DATADOG_API_KEY
-      application_key: REPLACE_WITH_DATADOG_APPLICATION_KEY
-    datadog_enabled: true
+- type: replace
+  path: /resource_pools/name=vms/stemcell/url
+  value: REPLACE_WITH_URL_TO_BOSH_AWS_HVM_STEMCELL
+
+- type: replace
+  path: /resource_pools/name=vms/stemcell/sha1
+  value: REPLACE_WITH_SHA1_OF_BOSH_AWS_HVM_STEMCELL
 EOF
 ```
+
+Next, select an [AWS Xen-HVM Light stemcell](https://bosh.io/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent) and replace the `REPLACE_WITH_` values with the URL and SHA1 checksum. For example:
+
+```yaml
+---
+- type: replace
+  path: /resource_pools/name=vms/stemcell/url
+  value: https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=3312.12
+
+- type: replace
+  path: /resource_pools/name=vms/stemcell/sha1
+  value: 336160ec113edf6f019f997ead2ee586ac716ae6
+```
+
+#### Additional Ops Files [OPTIONAL]
+
+Any other files in the `$DEPLOYMENT_DIR/ops-files/bosh` directory will be applied to the BOSH deployment manifest as ops-files when it is generated. If those ops files require additional variables, they can be specified as additional entries in the `vars.yml` file above.
+
 
 ### Configuring Security
 
@@ -538,33 +567,39 @@ openssl rsa -in $DEPLOYMENT_DIR/keypair/uaa -pubout > $DEPLOYMENT_DIR/keypair/ua
 ## Creating the AWS environment
 
 To create the AWS environment and two VMs essential to the Cloud Foundry infrastructure,
-run `./deploy_aws_environment create "$CF_RELEASE_DIR" "$DEPLOYMENT_DIR"`
+run `./deploy_aws_environment create bosh-deploy "$BOSH_DEPLOYMENT_DIR" "$DEPLOYMENT_DIR" "$STACK_NAME"`
 **from the directory containing these instructions** (`$DIEGO_RELEASE_DIR/examples/aws`).
 This process may take up to 30 minutes.
 
 ```bash
 cd "$DIEGO_RELEASE_DIR/examples/aws"
-./deploy_aws_environment create "$CF_RELEASE_DIR" "$DEPLOYMENT_DIR"
+./deploy_aws_environment create bosh-deploy "$CF_RELEASE_DIR" "$DEPLOYMENT_DIR" "$STACK_NAME"
 ```
 
-The `./deploy_aws_environment` script takes three required arguments and a fourth, optional argument:
+The `./deploy_aws_environment` script takes five required arguments:
 
 - The first argument is one of three directives, which you'll need if our script doesn't succeed the first time:
   - `create` creates an AWS CloudFormation stack based off of the stubs filled out above.
   - `update` updates the CloudFormation stack. Run the script with this command after changing the stubs in `$DEPLOYMENT_DIR/stubs/infrastructure`, or after an update to this example directory. If there are **no** changes to the stack, instead run the `skip` command below, as otherwise the script will fail.
   - `skip` upgrades the BOSH director without affecting the CloudFormation stack.
 
-- The second argument is the **absolute path** to `$CF_RELEASE_DIR`.
-- The third argument is the **absolute path** to `$DEPLOYMENT_DIR`, which must be structured as defined above.
-- The fourth (optional) argument is the **stack name** for the deployment environment which, if provided, overrides the default environment name `cf-diego-stack`.
+- The second argument is the action to take on the BOSH deployment:
+  - `bosh-deploy` uses the BOSH CLI to deploy a new or to re-deploy an existing BOSH director.
+  - `bosh-skip` leaves the existing BOSH deployment unchanged.
+
+- The third argument is the **absolute path** to `$BOSH_DEPLOYMENT_DIR`, the local directory containing the bosh-deployment repository.
+- The fourth argument is the **absolute path** to `$DEPLOYMENT_DIR`, the directory containing the configuration files discussed above.
+- The fifth argument is the name for the CloudFormation stack that the script creates or updates.
 
 The deployment process generates a collection of stubs, in the following directory structure. Some of the stubs start with the line `GENERATED: NO TOUCHING`, and are not intended for hand-editing.
 
 ```
 DEPLOYMENT_DIR
 |-stubs
-| |- director-uuid.yml # the unique id of the BOSH directory
+| |- director-uuid.yml # the unique id of the BOSH director
 | |- aws-resources.yml  # general metadata about the CloudFormation stack
+| |-bosh
+| | |- aws.yml # AWS resource information for the BOSH deployment
 | |-cf
 | | |- stub.yml # networks, zones, s3 buckets for the Cloud Foundry deployment
 | | |- properties.yml # consul configuration and shared secrets
@@ -578,8 +613,9 @@ DEPLOYMENT_DIR
 |   |- certificates.yml # certificates for the cfrouter ELB
 |   |- cloudformation.json # CloudFormation JSON deployed to AWS
 |-deployments
-| |-bosh-init
-|   |- bosh-init.yml # bosh director deployment
+| |-bosh
+|   |- bosh.yml # BOSH director deployment
+|   |- creds.yml # auto-generated credentials and other variables
 ```
 
 ### `stubs/cf/stub.yml`
