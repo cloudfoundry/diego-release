@@ -26,6 +26,7 @@ OPTIONAL ARGUMENTS:
     -d <voldriver-path> Path to voldriver stub file.
     -N <netman-path>    Path to netman stub file
     -B                  Opt out of deprecated CC bridge components.
+    -R                  Opt into using local route-emitter configuration for cells.
     -L                  Opt into using garden-linux-release for cells. (DEPRECATED)
 
 EXAMPLE:
@@ -38,7 +39,8 @@ EXAMPLE:
       -s manifest-generation/bosh-lite-stubs/postgres/diego-sql.yml \\
       -x \\
       -d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml \\
-      -b
+      -b \\
+      -R
 EOF
   exit 1
 }
@@ -46,9 +48,10 @@ EOF
 base_releases="${manifest_generation}/base-releases.yml"
 garden_properties=""
 bridge_properties=""
+local_route_emitter_properties=""
 bridge_jobs=""
 
-while getopts "c:i:p:n:k:v:s:d:N:krbgxLB" opt; do
+while getopts "c:i:p:n:k:v:s:d:N:krbgxLBR" opt; do
   case $opt in
     c)
       cf_deployment_manifest=$OPTARG
@@ -96,6 +99,9 @@ while getopts "c:i:p:n:k:v:s:d:N:krbgxLB" opt; do
       ;;
     B)
       bridge_jobs="${manifest_generation}/disable-deprecated-bridge-jobs.yml";
+      ;;
+    R)
+      local_route_emitter_properties="${manifest_generation}/enable-local-route-emitters.yml";
       ;;
     *)
       echo "Unknown arguments"
@@ -197,6 +203,7 @@ spiff merge \
   ${release_versions} \
   ${bbs_properties} \
   ${bridge_properties} \
+  ${local_route_emitter_properties} \
   ${property_overrides} \
   ${instance_counts} \
   ${sql_settings} \

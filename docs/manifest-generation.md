@@ -24,6 +24,7 @@ This document is for describing options to Diego manifest generation.
     -d <voldriver-path> Path to voldriver stub file.
     -N <netman-path>    Path to netman stub file.
     -B                  Opt out of deprecated CC bridge components.
+    -R                  Opt into using local route-emitter configuration for cells.
     -L                  Opt into using garden-linux-release for cells. (DEPRECATED)
 
 #### EXAMPLE:
@@ -37,7 +38,8 @@ This document is for describing options to Diego manifest generation.
       -x \
       -d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml \
       -N manifest-generation/bosh-lite-stubs/experimental/netman/stub.yml \
-      -b
+      -b \
+      -R
 
 ### Options
 
@@ -51,6 +53,19 @@ Use garden-linux-release instead of garden-runc as the container backend.
 
 #### -b Opt into using capi-release for bridge components
 Use the cc-bridge components (e.g., stager, nsync, tps, etc.) from capi-release instead of cf-release.
+
+#### -R Opt into using local route-emitter configuration for cells
+Use the local route-emitter on the cell VMs.
+
+**Note**: This option can be safely used on a fresh deploy. We recommend that you disable the global route-emitter
+configuration when opting into the local route-emitter configuration on fresh deploys. To remove the global
+route-emitter configuration, you can specify 0 instances for the `route_emitter_z1`, `route_emitter_z2`,
+and `route_emitter_z3` VMs in the instance-count-overrides stubs.
+
+**Note**: To ensure zero downtime when upgrading an existing environment using the global route-emitter, you will need
+to perform two deploys: one to enable the local route-emitter configuration, and one to remove the global route-emitter
+configuration. To remove the global route-emitter configuration, you can specify 0 instances for the `route_emitter_z1`,
+`route_emitter_z2`, and `route_emitter_z3` VMs in the instance-count-overrides stubs.
 
 ### Stubs
 
