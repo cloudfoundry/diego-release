@@ -1,7 +1,6 @@
 <%=
 require 'uri'
 
-
 CONF_DIR = "/var/vcap/jobs/benchmark-bbs/config"
 TMP_DIR = "/var/vcap/data/executor/tmp"
 TRUSTED_CERTS_DIR = "/var/vcap/data/executor/trusted_certs"
@@ -19,11 +18,11 @@ config = {
  "datadog_app_key" => p("benchmark-bbs.datadog_app_key"),
  "metric_prefix" => p("benchmark-bbs.datadog_metric_prefix"),
  "aws_access_key_id" => p("benchmark-bbs.aws_access_key_id"),
- "aws_secret_acess_key" => p("benchmark-bbs.aws_secret_access_key"),
+ "aws_secret_access_key" => p("benchmark-bbs.aws_secret_access_key"),
  "aws_bucket_name" => p("benchmark-bbs.aws_bucket_name"),
+ "aws_region" => p("benchmark-bbs.aws_region"),
  "bbs_client_http_timeout" => p("benchmark-bbs.client_timeout"),
- "log_level" => p("benchmark-bbs.log_level"),
- "log_filename" => p("benchmark-bbs.log_file")
+ "log_level" => p("benchmark-bbs.log_level")
 }
 
 def db_params
@@ -79,6 +78,10 @@ p("benchmark-bbs.encryption_keys").each do |encryption_key|
   label = encryption_key["label"]
   key   = encryption_key["passphrase"]
   config[:encryption_keys][label] = key
+end
+
+if_p("benchmark-bbs.log_file") do |value|
+  config[:log_filename] = "#{LOG_DIR}/#{value}"
 end
 
 if p("benchmark-bbs.etcd.machines").size > 0
