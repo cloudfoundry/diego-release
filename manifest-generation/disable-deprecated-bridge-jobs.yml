@@ -3,8 +3,10 @@ base_job_templates:
     - name: consul_agent
       release: cf
     - name: tps
-      release: (( bridge_overrides.job_release || "cf" ))
+      release: (( bridge_overrides.job_release ))
     - name: cc_uploader
-      release: (( bridge_overrides.job_release || "cf" ))
+      release: (( bridge_overrides.job_release ))
     - name: metron_agent
       release: cf
+bridge_overrides:
+  job_release: (( merge || "cf" ))
