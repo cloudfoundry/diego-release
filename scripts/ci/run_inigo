@@ -2,6 +2,7 @@
 
 set -e -x
 
+export TMP_HOME=${PWD}
 export GOROOT=/usr/local/go
 export PATH=${GOROOT}/bin:${PATH}
 
@@ -59,9 +60,85 @@ build_gardenrunc () {
   popd
 }
 
+# source: cloudfoundry/grootfs/ci/scripts/test/utils.sh
+mount_btrfs() {
+  # Configure cgroup
+  mount -tcgroup -odevices cgroup:devices /sys/fs/cgroup
+  devices_mount_info=$(cat /proc/self/cgroup | grep devices)
+  devices_subdir=$(echo $devices_mount_info | cut -d: -f3)
+  echo 'b 7:* rwm' > /sys/fs/cgroup/devices.allow
+  echo 'b 7:* rwm' > /sys/fs/cgroup${devices_subdir}/devices.allow
+
+  # Setup loop devices
+  for i in {0..256}
+  do
+    mknod -m777 /dev/loop$i b 7 $i
+  done
+
+  # Make BTRFS volume
+  truncate -s 2G /btrfs_volume
+  mkfs.btrfs /btrfs_volume
+
+  # Mount BTRFS
+  mkdir /mnt/btrfs
+  mount -t btrfs -o user_subvol_rm_allowed,rw /btrfs_volume /mnt/btrfs
+  chmod 777 -R /mnt/btrfs
+  btrfs quota enable /mnt/btrfs
+}
+
+build_grootfs () {
+  echo "Building grootfs..."
+  export GARDEN_GOPATH=${PWD}/garden-runc-release
+
+  mkdir -p ${GARDEN_GOPATH}/src/code.cloudfoundry.org
+  cp -r grootfs ${GARDEN_GOPATH}/src/code.cloudfoundry.org
+
+  pushd ${GARDEN_GOPATH}/src/code.cloudfoundry.org/grootfs
+    export GOPATH=${GARDEN_GOPATH}
+    export PATH=${GOPATH}/bin:${PATH}
+
+    # Set up btrfs volume and loopback devices in environment
+    mount_btrfs
+    umount /sys/fs/cgroup || true
+
+    make
+
+    mv grootfs ${GARDEN_GOPATH}/bin
+    mv drax /usr/local/bin
+    chown root:root /usr/local/bin/drax
+    chmod u+s /usr/local/bin/drax
+
+    echo "grootfs installed."
+
+    groupadd iamgroot -g 4294967294
+    useradd iamgroot -u 4294967294 -g 4294967294
+    echo "iamgroot:1:4294967293" > /etc/subuid
+    echo "iamgroot:1:4294967293" > /etc/subgid
+  popd
+}
+
+set_garden_rootfs () {
+  # use the 1.29 version of tar that's installed in the inigo-ci docker image
+  ln -s /usr/local/bin/tar "${GARDEN_BINPATH}"
+
+  if [ "x${USE_GROOTFS}" = "xtrue" ]; then
+    tar cpf /tmp/rootfs.tar -C /opt/inigo/rootfs .
+    export GARDEN_ROOTFS=/tmp/rootfs.tar
+  else
+    export GARDEN_ROOTFS=/tmp/opt/inigo/rootfs
+    mkdir -p "${GARDEN_ROOTFS}"
+    mount -t tmpfs tmpfs "${GARDEN_ROOTFS}"
+    cp -rp /opt/inigo/rootfs/* "${GARDEN_ROOTFS}"
+  fi
+}
+
 setup_localhost_hosts
 
 build_gardenrunc
+
+if [ "x${USE_GROOTFS}" = "xtrue" ]; then
+	build_grootfs
+fi
 
 cd diego-release/
 
@@ -92,16 +169,9 @@ for package in github.com/apcera/gnatsd; do
 done
 
 cd "${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo"
-
 go install github.com/onsi/ginkgo/ginkgo
 
-# use the 1.28 version of tar that's installed in the inigo-ci docker image
-ln -s /usr/local/bin/tar "${GARDEN_BINPATH}"
-
-export GARDEN_ROOTFS=/tmp/opt/inigo/rootfs
-mkdir -p "${GARDEN_ROOTFS}"
-mount -t tmpfs tmpfs "${GARDEN_ROOTFS}"
-cp -rp /opt/inigo/rootfs/* "${GARDEN_ROOTFS}"
+set_garden_rootfs
 
 # used for routing to apps; same logic that Garden uses.
 EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\s/\1/;tx;d;:x')

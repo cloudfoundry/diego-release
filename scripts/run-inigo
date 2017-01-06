@@ -22,8 +22,17 @@ else
   target="-t ci"
 fi
 
-fly ${target} execute -p -x \
-  -c $DIEGO_RELEASE_DIR/scripts/ci/run_inigo.build.yml \
-  -i diego-release=$PWD \
-  -i garden-runc-release=$HOME/workspace/garden-runc-release \
-  -- "$@"
+if [ "x${USE_GROOTFS}" = "xtrue" ]; then
+  fly ${target} execute -p -x \
+    -c $DIEGO_RELEASE_DIR/scripts/ci/run_inigo_grootfs.build.yml \
+    -i diego-release=$PWD \
+    -i garden-runc-release=$HOME/workspace/garden-runc-release \
+    -i grootfs=$HOME/workspace/grootfs \
+    -- "$@"
+else
+  fly ${target} execute -p -x \
+    -c $DIEGO_RELEASE_DIR/scripts/ci/run_inigo.build.yml \
+    -i diego-release=$PWD \
+    -i garden-runc-release=$HOME/workspace/garden-runc-release \
+    -- "$@"
+fi

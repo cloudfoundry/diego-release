@@ -6,6 +6,7 @@ image: docker:///cloudfoundry/inigo-ci
 inputs:
 - name: diego-release
 - name: garden-runc-release
+- name: grootfs
 
 params:
   GINKGO_PARALLEL: "true" # we check for the literal string "true" in the run_inigo script
@@ -13,6 +14,8 @@ params:
   INIGO_REPEAT_COUNT: 1
   SKIP_PACKAGES:
   SKIP_REGEX:
+  SQL_FLAVOR:
+  USE_GROOTFS:
 
 run:
   path: diego-release/scripts/ci/run_inigo
