@@ -4,4 +4,7 @@ if [ -z $1 ]; then
   exit 1
 fi
 
-spiff m examples/stub-sql.yml manifest-generation/config-from-cf-internal.yml $1
+spiff merge manifest-generation/misc-templates/cf-sql-stub.yml \
+  manifest-generation/misc-templates/cf-sql-stub-internal.yml \
+  manifest-generation/config-from-cf-internal.yml \
+  $1
