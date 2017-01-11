@@ -171,6 +171,10 @@ properties:
       droplet_directory_key: (( Resources.Bucket.Droplets ))
     buildpacks:
       buildpack_directory_key: (( Resources.Bucket.Buildpacks ))
+    mutual_tls:
+      ca_cert: (( cf_credentials.cc.ca_cert ))
+      public_cert: (( cf_credentials.cc.public_cert ))
+      private_key: (( cf_credentials.cc.private_key ))
 
   ccdb:
     address: (( properties.databases.address ))

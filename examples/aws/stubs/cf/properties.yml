@@ -14,11 +14,6 @@ properties:
     encrypt_keys:
       - REPLACE_WITH_CONSUL_ENCRYPTION_KEY
 
-  mutual_tls:
-    ca_cert: REPLACE_WITH_CF_DIEGO_CA_CERT
-    public_cert: REPLACE_WITH_CLOUD_CONTROLLER_CERT
-    private_key: REPLACE_WITH_CLOUD_CONTROLLER_KEY
-
   loggregator:
     tls:
       doppler:

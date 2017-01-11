@@ -49,6 +49,10 @@ cf_credentials() {
 ---
 cf_credentials:
   ssh_host_key_fingerprint: "$(cat keypair/ssh-proxy-host-key-fingerprint)"
+  cc:
+$(block ca_cert      certs/cf-diego-certs/cf-diego-ca.crt      | indent | indent)
+$(block public_cert  certs/cf-diego-certs/cloud-controller.crt | indent | indent)
+$(block private_key  certs/cf-diego-certs/cloud-controller.key | indent | indent)
   consul:
 $(block ca_cert     certs/consul-certs/server-ca.crt | indent | indent)
 $(block agent_cert  certs/consul-certs/agent.crt     | indent | indent)
