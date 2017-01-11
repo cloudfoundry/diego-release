@@ -19,7 +19,7 @@ echo "compilation done"
 if [ -n "${DIEGO_CI_TARGET}" ]; then
   target="-t ${DIEGO_CI_TARGET}"
 else
-  target="-t local"
+  target="-t ci"
 fi
 
 fly ${target} execute -p -x \
