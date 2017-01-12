@@ -5,7 +5,6 @@ TRUSTED_CERTS_DIR = "/var/vcap/data/executor/trusted_certs"
 
 config = {
  "dropsonde_port" => p("diego.rep.dropsonde_port"),
- "consul_cluster" => "http://127.0.0.1:8500",
  "debug_address" => p("diego.rep.debug_addr"),
  "listen_addr" => p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr") : p("diego.rep.listen_addr_admin"),
  "listen_addr_securable" => p("diego.rep.listen_addr_securable"),
@@ -65,6 +64,15 @@ if p("diego.rep.require_tls")
 	config[:ca_cert_file] =  "#{CONF_DIR}/certs/ca.crt"
 	config[:server_cert_file] =  "#{CONF_DIR}/certs/server.crt"
 	config[:server_key_file] =  "#{CONF_DIR}/certs/server.key"
+end
+
+if p("diego.rep.consul.require_tls")
+ config[:consul_cluster] = "https://127.0.0.1:8500"
+ config[:consul_ca_cert] = "#{CONF_DIR}/certs/consul/ca.crt"
+ config[:consul_client_cert] = "#{CONF_DIR}/certs/consul/client.crt"
+ config[:consul_client_key] = "#{CONF_DIR}/certs/consul/client.key"
+else
+ config[:consul_cluster] = "http://127.0.0.1:8500"
 end
 
 if_p("diego.rep.bbs.client_session_cache_size") do |value|

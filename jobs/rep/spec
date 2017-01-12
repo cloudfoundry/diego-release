@@ -13,6 +13,9 @@ templates:
   rep_ca.crt.erb: config/certs/ca.crt
   rep_server.crt.erb: config/certs/server.crt
   rep_server.key.erb: config/certs/server.key
+  consul_ca.crt.erb: config/certs/consul/ca.crt
+  consul_client.crt.erb: config/certs/consul/client.crt
+  consul_client.key.erb: config/certs/consul/client.key
   rep.json.erb: config/rep.json
   post-start.erb: bin/post-start
 
@@ -91,6 +94,16 @@ properties:
   diego.executor.ca_certs_for_downloads:
     description: "Concatenation of trusted CA certificates to be used when downloading assets."
     default: null
+
+  diego.rep.consul.require_tls:
+    description: "Require mutual TLS to talk to the local consul API"
+    default: false
+  diego.rep.consul.ca_cert:
+    description: "PEM-encoded CA certificate"
+  diego.rep.consul.client_cert:
+    description: "PEM-encoded client certificate"
+  diego.rep.consul.client_key:
+    description: "PEM-encoded client key"
 
   diego.executor.memory_capacity_mb:
     description: "the memory capacity the executor should manage.  this should not be greater than the actual memory on the VM"
