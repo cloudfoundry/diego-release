@@ -62,6 +62,7 @@ $(block   verification_key  keypair/uaa.pub                   | indent | indent)
 $(block   saml_cert         certs/uaa-certs/saml.crt          | indent | indent)
 $(block   saml_key          certs/uaa-certs/saml.key          | indent | indent)
 $(oneline saml_key_password certs/uaa-certs/saml.key.password | indent | indent)
+$(block   ca_cert           certs/uaa-certs/server-ca.crt     | indent | indent)
 $(block   server_key        certs/uaa-certs/server.key        | indent | indent)
 $(block   server_cert       certs/uaa-certs/server.crt        | indent | indent)
   loggregator:

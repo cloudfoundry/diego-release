@@ -196,6 +196,7 @@ properties:
       serviceProviderKey: (( merge ))
       serviceProviderKeyPassword: (( merge ))
   uaa:
+    ca_cert: (( merge ))
     sslPrivateKey: (( merge ))
     sslCertificate: (( merge ))
     jwt:

@@ -437,7 +437,7 @@ $CF_RELEASE_DIR/scripts/generate-loggregator-certs
 ``` shell
 pushd $CF_RELEASE_DIR
   ./scripts/generate-uaa-certs
-  cp uaa-certs/server.* $DEPLOYMENT_DIR/certs/uaa-certs/
+  cp -r uaa-certs/ $DEPLOYMENT_DIR/certs/
 popd
 
 pushd $DIEGO_RELEASE_DIR

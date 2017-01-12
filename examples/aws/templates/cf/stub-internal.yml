@@ -181,6 +181,7 @@ properties:
       serviceProviderKey: (( cf_credentials.uaa.saml_key ))
       serviceProviderKeyPassword: (( cf_credentials.uaa.saml_key_password ))
   uaa:
+    ca_cert: (( cf_credentials.uaa.ca_cert ))
     sslPrivateKey: (( cf_credentials.uaa.server_key ))
     sslCertificate: (( cf_credentials.uaa.server_cert ))
     jwt:
