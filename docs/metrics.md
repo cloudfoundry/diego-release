@@ -99,9 +99,9 @@
 | `VolmanUnmountDuration`                              | Time volman took to unmount a volume. Emitted by each rep when volumes are mounted.                                                                        | ns               |
 | `VolmanUnmountDurationFor`                           | Time volman took to unmount a volume with a specifc volume driver. Emitted by each rep when volumes are mounted.                                           | ns               |
 | `VolmanUnmountErrors`                                | Count of failed volume unmounts. Emitted periodically by each rep.                                                                                         | number           |
-| `CellTasksFailed`                                    | Cumulative number of failed Tasks on a cell.  Emitted on each Task Failure                                                                                 | number           |
-| `CellTasksSucceeded`                                 | Cumulative number of successful Tasks on a cell.  Emitted on each Task Succes                                                                             | number           |
-| `CellTasksStarted`                                   | Cumulative number of started Tasks on a cell.  Emitted on each Task Start                                                                                   | number           |
+| `CellTasksFailed`                                    | Cumulative number of failed Tasks on a cell.  Emitted on each Task Failure.                                                                                 | number           |
+| `CellTasksSucceeded`                                 | Cumulative number of successful Tasks on a cell.  Emitted on each Task Success.                                                                             | number           |
+| `CellTasksStarted`                                   | Cumulative number of started Tasks on a cell.  Emitted on each Task Start.                                                                                   | number           |
 
 ## Route Emitter
 
