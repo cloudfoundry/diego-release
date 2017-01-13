@@ -63,6 +63,7 @@ properties:
     datadog_app_key: (( merge || nil ))
     datadog_metric_prefix: (( merge || nil ))
     log_level: (( merge || nil ))
+    local_route_emitters: (( merge || false ))
     log_file: (( merge || nil ))
 
 iaas_settings: (( merge ))
