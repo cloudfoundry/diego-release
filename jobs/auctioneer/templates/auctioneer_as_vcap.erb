@@ -49,6 +49,9 @@ auctioneer_sec_flags=""
       <% if_p("diego.auctioneer.bbs.max_idle_conns_per_host") do |value| %> \
         -bbsMaxIdleConnsPerHost=<%= value %> \
       <% end %> \
+      <% if_p("diego.auctioneer.communication_timeout") do |value| %> \
+        -communicationTimeout=<%= value %> \
+      <% end %> \
       -consulCluster=http://127.0.0.1:8500 \
       -debugAddr=<%= p("diego.auctioneer.debug_addr") %> \
       -listenAddr=<%= p("diego.auctioneer.listen_addr") %> \

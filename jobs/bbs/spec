@@ -77,6 +77,8 @@ properties:
     description: "PEM-encoded client key"
   diego.bbs.desired_lrp_creation_timeout:
     description: "expected maximum time to create all components of a desired LRP (golang duration formatted string)"
+  diego.bbs.communication_timeout:
+    description: "Timeout for HTTP communication"
 
   diego.bbs.etcd.machines:
     description: "Addresses pointing to the ETCD cluster"

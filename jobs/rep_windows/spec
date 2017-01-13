@@ -53,6 +53,8 @@ properties:
   diego.rep.trusted_certs:
     description: "Concatenation of trusted CA certificates to be made available on the cell."
     default: null
+  diego.rep.communication_timeout:
+    description: "Timeout for HTTP communication"
 
   diego.rep.advertise_domain:
     description: "base domain at which the rep should advertise its secure API"

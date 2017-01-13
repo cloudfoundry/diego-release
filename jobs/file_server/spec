@@ -28,3 +28,5 @@ properties:
   diego.file_server.dropsonde_port:
     description: "local metron agent's port"
     default: 3457
+  diego.file_server.communication_timeout:
+    description: "Timeout for HTTP communication"

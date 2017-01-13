@@ -35,6 +35,9 @@ export GODEBUG=netdns=cgo
 <% if p("diego.route_emitter.local_mode") %> \
   -cellID=<%= spec.job.name %>-<%= spec.index %>-<%= spec.id %> \
 <% end %> \
+  <% if_p("diego.route_emitter.communication_timeout") do |value| %> \
+    -communicationTimeout=<%= value %> \
+  <% end %> \
   <% if_p("diego.route_emitter.bbs.client_session_cache_size") do |value| %> \
     -bbsClientSessionCacheSize=<%= value %> \
   <% end %> \
