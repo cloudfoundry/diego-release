@@ -126,7 +126,11 @@ if p("diego.bbs.sql.require_ssl")
 end
 
 if_p("diego.bbs.sql.max_open_connections") do |value|
-  config[:max_database_connections] = value
+  config[:max_open_database_connections] = value
+end
+
+if_p("diego.bbs.sql.max_idle_connections") do |value|
+  config[:max_idle_database_connections] = value
 end
 
 if_p("diego.bbs.sql.db_driver") do |value|

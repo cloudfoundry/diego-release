@@ -118,6 +118,8 @@ properties:
     default: ""
   diego.bbs.sql.max_open_connections:
     description: "Maximum number of open connections to the SQL database"
+  diego.bbs.sql.max_idle_connections:
+    description: "Maximum number of idle connections to the SQL database"
   diego.bbs.sql.require_ssl:
     description: "Whether to require SSL for BBS communication to the SQL backend"
     default: false
