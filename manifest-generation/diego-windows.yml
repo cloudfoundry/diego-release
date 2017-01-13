@@ -152,6 +152,7 @@ properties:
   # -- Properties below are used by the consul_agent job from cf-release --
   consul:
     agent:
+      require_ssl: false
       datacenter: (( config_from_cf.consul.datacenter ))
       domain: (( config_from_cf.consul.domain ))
       log_level: (( config_from_cf.consul.log_level ))
