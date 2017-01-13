@@ -23,6 +23,7 @@ export GODEBUG=netdns=cgo
 
 # Allowed number of open file descriptors
 ulimit -n 100000
+echo 1024 65535 > /proc/sys/net/ipv4/ip_local_port_range
 
 ginkgo -- \
     -config=$CONF_DIR/benchmark.json \
