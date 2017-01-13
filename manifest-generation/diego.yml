@@ -721,6 +721,7 @@ properties:
   garden:
     allow_host_access: (( property_overrides.garden.allow_host_access || nil ))
     allow_networks: (( property_overrides.garden.allow_networks || nil ))
+    apparmor_profile: (( property_overrides.garden.apparmor_profile || nil ))
     default_container_grace_time: (( property_overrides.garden.default_container_grace_time || 0 ))
     deny_networks: (( property_overrides.garden.deny_networks || ["0.0.0.0/0"] ))
     destroy_containers_on_start: (( property_overrides.garden.destroy_containers_on_start || true ))
