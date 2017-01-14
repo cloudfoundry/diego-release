@@ -85,11 +85,11 @@ properties:
     server_cert: (( merge ))
     server_key: (( merge ))
   databases:
-    address: (( merge ))
-    port: (( merge ))
+    address: (( merge || nil ))
+    port: (( merge || nil ))
     roles:
     - name: diego
-      password: (( merge ))
+      password: (( merge || nil ))
   etcd:
     advertise_urls_dns_suffix: (( merge ))
     ca_cert: (( merge || nil ))
