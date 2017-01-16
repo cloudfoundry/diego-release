@@ -152,7 +152,7 @@ properties:
   # -- Properties below are used by the consul_agent job from cf-release --
   consul:
     agent:
-      require_ssl: false
+      require_ssl: (( property_overrides.consul.agent.require_ssl || nil ))
       datacenter: (( config_from_cf.consul.datacenter ))
       domain: (( config_from_cf.consul.domain ))
       log_level: (( config_from_cf.consul.log_level ))
@@ -190,6 +190,11 @@ properties:
       ca_cert: (( property_overrides.rep.ca_cert || nil ))
       server_cert: (( property_overrides.rep.server_cert || nil ))
       server_key: (( property_overrides.rep.server_key || nil ))
+      consul:
+        require_tls: (( property_overrides.rep.consul.require_tls || nil ))
+        ca_cert: (( config_from_cf.consul.ca_cert ))
+        client_cert: (( property_overrides.rep.consul.client_cert || nil ))
+        client_key: (( property_overrides.rep.consul.client_key || nil ))
 
 # The keys below should not be included in the final stub
 config_from_cf: (( merge ))
