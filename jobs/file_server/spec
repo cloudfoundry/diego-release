@@ -2,6 +2,7 @@
 name: file_server
 
 templates:
+  file_server.json.erb: config/file_server.json
   file_server_ctl.erb: bin/file_server_ctl
   file_server_as_vcap.erb: bin/file_server_as_vcap
 

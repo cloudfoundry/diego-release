@@ -1,0 +1,39 @@
+<%=
+  CONF_DIR = "/var/vcap/jobs/route_emitter/config"
+
+  config = {
+    nats_username: p("diego.route_emitter.nats.user"),
+    nats_password: p("diego.route_emitter.nats.password"),
+    nats_address: p("diego.route_emitter.nats.machines").collect { |addr|
+      "#{addr}:#{p("diego.route_emitter.nats.port")}"
+    }.join(","),
+    consul_cluster: "https://127.0.0.1:8500",
+    sync_interval: "#{p("diego.route_emitter.sync_interval_in_seconds")}s",
+    debug_address: p("diego.route_emitter.debug_addr"),
+    dropsonde_port: p("diego.route_emitter.dropsonde_port"),
+    log_level: p("diego.route_emitter.log_level"),
+  }
+
+  if p("diego.route_emitter.bbs.require_ssl")
+    config[:bbs_ca_cert_file] = "#{CONF_DIR}/certs/bbs/ca.crt"
+    config[:bbs_client_cert_file] = "#{CONF_DIR}/certs/bbs/client.crt"
+    config[:bbs_client_key_file] = "#{CONF_DIR}/certs/bbs/client.key"
+    config[:bbs_api_url] = "https://#{p("diego.route_emitter.bbs.api_location")}"
+  else
+    config[:bbs_api_url] = "http://#{p("diego.route_emitter.bbs.api_location")}"
+  end
+
+  if_p("diego.route_emitter.bbs.client_session_cache_size") do |value|
+    config[:bbs_client_session_cache_size] = value
+  end
+
+  if_p("diego.route_emitter.bbs.max_idle_conns_per_host") do |value|
+    config[:bbs_max_idle_conns_per_host] = value
+  end
+
+  if p("diego.route_emitter.local_mode")
+    config[:cell_id] = spec.id
+  end
+
+  config.to_json
+%>
