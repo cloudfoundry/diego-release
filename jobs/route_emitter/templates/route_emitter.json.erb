@@ -18,9 +18,9 @@
     config[:bbs_ca_cert_file] = "#{CONF_DIR}/certs/bbs/ca.crt"
     config[:bbs_client_cert_file] = "#{CONF_DIR}/certs/bbs/client.crt"
     config[:bbs_client_key_file] = "#{CONF_DIR}/certs/bbs/client.key"
-    config[:bbs_api_url] = "https://#{p("diego.route_emitter.bbs.api_location")}"
+    config[:bbs_address] = "https://#{p("diego.route_emitter.bbs.api_location")}"
   else
-    config[:bbs_api_url] = "http://#{p("diego.route_emitter.bbs.api_location")}"
+    config[:bbs_address] = "http://#{p("diego.route_emitter.bbs.api_location")}"
   end
 
   if_p("diego.route_emitter.bbs.client_session_cache_size") do |value|

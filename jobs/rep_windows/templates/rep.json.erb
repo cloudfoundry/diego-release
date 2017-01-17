@@ -56,9 +56,9 @@ if p("diego.rep.bbs.require_ssl")
 	config[:bbs_ca_cert_file] = "#{CONF_DIR}/certs/bbs/ca.crt"
 	config[:bbs_client_cert_file] = "#{CONF_DIR}/certs/bbs/client.crt"
 	config[:bbs_client_key_file] = "#{CONF_DIR}/certs/bbs/client.key"
-	config[:bbs_api_url] = "https://#{p("diego.rep.bbs.api_location")}"
+	config[:bbs_address] = "https://#{p("diego.rep.bbs.api_location")}"
 else
-	config[:bbs_api_url] = "http://#{p("diego.rep.bbs.api_location")}"
+	config[:bbs_address] = "http://#{p("diego.rep.bbs.api_location")}"
 end
 
 if p("diego.rep.require_tls")
