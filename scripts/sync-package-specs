@@ -43,6 +43,7 @@ sync_package file_server             -app  code.cloudfoundry.org/fileserver/cmd/
 sync_package rep                     -app  code.cloudfoundry.org/rep/cmd/rep &
 sync_package rep_windows             -app  code.cloudfoundry.org/rep/cmd/rep &
 sync_package route_emitter           -app  code.cloudfoundry.org/route-emitter/cmd/route-emitter &
+sync_package route_emitter_windows   -app  code.cloudfoundry.org/route-emitter/cmd/route-emitter &
 sync_package ssh_proxy               -app  code.cloudfoundry.org/diego-ssh/cmd/ssh-proxy &
 
 sync_package docker_app_lifecycle    -app  code.cloudfoundry.org/dockerapplifecycle/builder \

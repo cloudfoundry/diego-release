@@ -44,17 +44,7 @@ resource_pools:
 
 jobs:
   - name: cell_windows_z1
-    templates:
-      - name: hakim
-        release: garden-windows
-      - name: rep_windows
-        release: diego
-      - name: garden-windows
-        release: garden-windows
-      - name: consul_agent_windows
-        release: cf
-      - name: metron_agent_windows
-        release: cf
+    templates: (( base_templates.cell_windows route_emitter_overrides.templates ))
     instances: (( instance_count_overrides.cell_windows_z1.instances || 1 ))
     resource_pool: cell_windows_z1
     networks:
@@ -68,19 +58,11 @@ jobs:
       diego:
         rep:
           zone: z1
+        route_emitter:
+          local_mode: (( route_emitter_overrides.local_mode_enabled ))
 
   - name: cell_windows_z2
-    templates:
-      - name: hakim
-        release: garden-windows
-      - name: rep_windows
-        release: diego
-      - name: garden-windows
-        release: garden-windows
-      - name: consul_agent_windows
-        release: cf
-      - name: metron_agent_windows
-        release: cf
+    templates: (( base_templates.cell_windows route_emitter_overrides.templates ))
     instances: (( instance_count_overrides.cell_windows_z2.instances || 1 ))
     resource_pool: cell_windows_z2
     networks:
@@ -94,19 +76,11 @@ jobs:
       diego:
         rep:
           zone: z2
+        route_emitter:
+          local_mode: (( route_emitter_overrides.local_mode_enabled ))
 
   - name: cell_windows_z3
-    templates:
-      - name: hakim
-        release: garden-windows
-      - name: rep_windows
-        release: diego
-      - name: garden-windows
-        release: garden-windows
-      - name: consul_agent_windows
-        release: cf
-      - name: metron_agent_windows
-        release: cf
+    templates: (( base_templates.cell_windows route_emitter_overrides.templates ))
     instances: (( instance_count_overrides.cell_windows_z3.instances || 0 ))
     resource_pool: cell_windows_z3
     networks:
@@ -120,6 +94,8 @@ jobs:
       diego:
         rep:
           zone: z3
+        route_emitter:
+          local_mode: (( route_emitter_overrides.local_mode_enabled ))
 
 properties:
   # -- Properties below are used by the metron_agent job from cf-release --
@@ -191,11 +167,41 @@ properties:
       server_cert: (( property_overrides.rep.server_cert || nil ))
       server_key: (( property_overrides.rep.server_key || nil ))
 
+    route_emitter:
+      dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
+      bbs:
+        api_location: (( property_overrides.bbs.api_location || nil ))
+        ca_cert: (( property_overrides.bbs.ca_cert ))
+        client_cert: (( property_overrides.bbs.client_cert ))
+        client_key: (( property_overrides.bbs.client_key ))
+        require_ssl: (( property_overrides.bbs.require_ssl || nil ))
+        client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
+        max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
+      nats:
+        machines: (( config_from_cf.nats.machines ))
+        user: (( config_from_cf.nats.user ))
+        password: (( config_from_cf.nats.password ))
+        port: (( config_from_cf.nats.port ))
+      log_level: (( property_overrides.route_emitter.log_level || nil ))
+
 # The keys below should not be included in the final stub
 config_from_cf: (( merge ))
 iaas_settings: (( merge ))
 instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
+
+base_templates:
+  cell_windows:
+  - name: hakim
+    release: garden-windows
+  - name: rep_windows
+    release: diego
+  - name: garden-windows
+    release: garden-windows
+  - name: consul_agent_windows
+    release: cf
+  - name: metron_agent_windows
+    release: cf
 
 base_releases:
   - name: cf
@@ -206,3 +212,7 @@ base_releases:
     version: (( release_versions.garden-windows || "latest" ))
 
 release_versions: (( merge || nil ))
+
+route_emitter_overrides:
+  templates: (( merge || [] ))
+  local_mode_enabled: false

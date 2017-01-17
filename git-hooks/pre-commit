@@ -1,8 +1,8 @@
 #!/bin/bash
 
-diff_output=$(./scripts/check-for-rep-drift)
+diff_output=$(./scripts/check-for-windows-drift)
 if [ $? -ne 0 ] ; then
-  echo $'\e[31mrep and rep_windows have diverged. output:\e[0m'
+  echo $'\e[31mdiego and diego windows have diverged. output:\e[0m'
   echo
   echo "$diff_output"
   exit 1

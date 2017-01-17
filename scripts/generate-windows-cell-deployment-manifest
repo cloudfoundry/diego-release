@@ -20,6 +20,7 @@ MANDATORY ARGUMENTS:
 OPTIONAL ARGUMENTS:
     -n <count-path>     Path to instance-count-overrides stub file.
     -v <versions-path>  Path to release-versions stub file.
+    -R                  Opt into using local route-emitter configuration for cells.
 
 EXAMPLE:
     $0 \\
@@ -27,16 +28,15 @@ EXAMPLE:
       -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \\
       -p manifest-generation/bosh-lite-stubs/property-overrides.yml \\
       -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
-      -v manifest-generation/bosh-lite-stubs/release-versions.yml
+      -v manifest-generation/bosh-lite-stubs/release-versions.yml \\
+      -R
 EOF
   exit 1
 }
 
-base_releases="${manifest_generation}/base-releases.yml"
-garden_properties=""
-bridge_properties=""
+local_route_emitter_properties=""
 
-while getopts "c:i:p:n:v:" opt; do
+while getopts "c:i:p:n:v:R" opt; do
   case $opt in
     c)
       cf_deployment_manifest=$OPTARG
@@ -52,6 +52,9 @@ while getopts "c:i:p:n:v:" opt; do
       ;;
     v)
       release_versions=$OPTARG
+      ;;
+    R)
+      local_route_emitter_properties="${manifest_generation}/enable-local-route-emitters-windows.yml";
       ;;
     *)
       echo "Unknown arguments"
@@ -117,6 +120,7 @@ spiff merge \
 spiff merge \
   ${manifest_generation}/diego-windows.yml \
   ${release_versions} \
+  ${local_route_emitter_properties} \
   ${property_overrides} \
   ${instance_counts} \
   ${iaas_settings} \

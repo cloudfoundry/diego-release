@@ -178,6 +178,7 @@ cf-release via Cloud Controller properties.
 #### OPTIONAL ARGUMENTS:
     -n <count-path>     Path to instance-count-overrides stub file.
     -v <versions-path>  Path to release-versions stub file.
+    -R                  Opt into using local route-emitter configuration for cells.
 
 #### EXAMPLE:
     generate-windows-cell-deployment-manifest \
@@ -185,7 +186,8 @@ cf-release via Cloud Controller properties.
       -i manifest-generation/bosh-lite-stubs/iaas-settings.yml \
       -p manifest-generation/bosh-lite-stubs/property-overrides.yml \
       -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \
-      -v manifest-generation/bosh-lite-stubs/release-versions.yml
+      -v manifest-generation/bosh-lite-stubs/release-versions.yml \
+      -R
 
 ### Stubs
 
@@ -203,3 +205,16 @@ The file is used override the instance count for jobs in the Diego Windows manif
 
 #### -v Release versions override stub file (optional)
 The file is used to override the default (latest) release version for the releases used in the manifest
+
+#### -R Opt into using local route-emitter configuration for cells
+Use the local route-emitter on the windows cell VMs.
+
+**Note**: This option can be safely used on a fresh deploy. We recommend that you disable the global route-emitter
+configuration in your diego deployment when opting into the local route-emitter configuration on fresh deploys.
+To remove the global route-emitter configuration, you can specify 0 instances for the `route_emitter_z1`, `route_emitter_z2`,
+and `route_emitter_z3` VMs in the instance-count-overrides stubs for the diego deployment.
+
+**Note**: To ensure zero downtime when upgrading an existing environment using the global route-emitter, you will need
+to perform two deploys: one to enable the local route-emitter configuration for windows cells, and one to remove the global route-emitter
+configuration from your diego deployment. To remove the global route-emitter configuration, you can specify 0 instances for the `route_emitter_z1`,
+`route_emitter_z2`, and `route_emitter_z3` VMs in the instance-count-overrides stubs for the diego deployment.

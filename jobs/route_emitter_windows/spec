@@ -1,17 +1,14 @@
 ---
-name: route_emitter
+name: route_emitter_windows
 
 templates:
-  route_emitter_ctl.erb: bin/route_emitter_ctl
-  route_emitter_as_vcap.erb: bin/route_emitter_as_vcap
   route_emitter.json.erb: config/route_emitter.json
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
 
 packages:
-  - pid_utils
-  - route_emitter
+  - route_emitter_windows
 
 properties:
   diego.route_emitter.local_mode:
@@ -59,4 +56,14 @@ properties:
 
   diego.route_emitter.job_name:
     description: "The name of the Diego job referenced by this spec (DO NOT override)"
-    default: "route_emitter"
+    default: "route_emitter_windows"
+
+  syslog_daemon_config.address:
+    description: "Syslog host"
+    default: ""
+  syslog_daemon_config.port:
+    description: "Syslog port"
+    default: ""
+  syslog_daemon_config.transport:
+    description: "Syslog transport protocol (tcp or udp)"
+    default: "udp"

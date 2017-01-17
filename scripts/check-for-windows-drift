@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+cd `dirname $0`/..
+
+if ! diff -u jobs/rep{,_windows}/templates/rep.json.erb; then
+    echo "rep json have drifted"
+    exit 1
+fi
+
+rep_properties=$(cat jobs/rep/spec | sed -n '/properties/,$P' | grep -E '^  [a-z].*$' | tr -d '[:blank:]' | grep -v volman | sort)
+rep_windows_properties=$(cat jobs/rep_windows/spec | sed -n '/properties/,$P' | grep -E '^  diego.*$' | tr -d '[:blank:]' | sort)
+
+if ! diff -u <(echo -e "$rep_properties") <(echo -e "$rep_windows_properties"); then
+    echo "rep specs have drifted"
+    exit 1
+fi
+
+if ! diff -u jobs/route_emitter{,_windows}/templates/route_emitter.json.erb; then
+    echo "route emitter json have drifted"
+    exit 1
+fi
+
+route_emitter_properties=$(cat jobs/route_emitter/spec | sed -n '/properties/,$P' | grep -E '^  [a-z].*$' | tr -d '[:blank:]' | sort)
+route_emitter_windows_properties=$(cat jobs/route_emitter_windows/spec | sed -n '/properties/,$P' | grep -E '^  diego.*$' | tr -d '[:blank:]' | sort)
+
+if ! diff -u <(echo -e "$route_emitter_properties") <(echo -e "$route_emitter_windows_properties"); then
+    echo "route emitter specs have drifted"
+    exit 1
+fi
