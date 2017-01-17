@@ -4,10 +4,10 @@
   config = {
     nats_username: p("diego.route_emitter.nats.user"),
     nats_password: p("diego.route_emitter.nats.password"),
-    nats_address: p("diego.route_emitter.nats.machines").collect { |addr|
+    nats_addresses: p("diego.route_emitter.nats.machines").collect { |addr|
       "#{addr}:#{p("diego.route_emitter.nats.port")}"
     }.join(","),
-    consul_cluster: "https://127.0.0.1:8500",
+    consul_cluster: "http://127.0.0.1:8500",
     sync_interval: "#{p("diego.route_emitter.sync_interval_in_seconds")}s",
     debug_address: p("diego.route_emitter.debug_addr"),
     dropsonde_port: p("diego.route_emitter.dropsonde_port"),
