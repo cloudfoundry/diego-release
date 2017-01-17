@@ -42,6 +42,9 @@ properties:
   diego.auctioneer.starting_container_weight:
     description: "Factor to bias against cells with starting containers (0.0 - 1.0)"
     default: 0.25
+  diego.auctioneer.starting_container_count_maximum:
+    description: "Maximum number of inflight container starts allowed globally; values of less than 0 indicate unlimited container starts"
+    default: 0
   diego.auctioneer.dropsonde_port:
     description: "local metron agent's port"
     default: 3457
