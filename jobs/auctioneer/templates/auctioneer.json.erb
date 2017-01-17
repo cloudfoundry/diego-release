@@ -1,0 +1,46 @@
+<%=
+  CONF_DIR = "/var/vcap/jobs/auctioneer/config"
+
+  config = {
+    dropsonde_port: p("diego.auctioneer.dropsonde_port"),
+    consul_cluster: "http://127.0.0.1:8500",
+    debug_address: p("diego.auctioneer.debug_addr"),
+    listen_addr: p("diego.auctioneer.listen_addr"),
+    log_level: p("diego.auctioneer.log_level"),
+    rep_client_session_cache_size: p("diego.auctioneer.rep.client_session_cache_size"),
+    rep_require_tls: p("diego.auctioneer.rep.require_tls"),
+    cell_state_timeout: p("diego.auctioneer.cell_state_timeout"),
+    starting_container_weight: p("diego.auctioneer.starting_container_weight"),
+  }
+
+  if p("diego.auctioneer.bbs.require_ssl")
+    config[:bbs_ca_cert_file] = "#{CONF_DIR}/certs/bbs/ca.crt"
+    config[:bbs_client_cert_file] = "#{CONF_DIR}/certs/bbs/client.crt"
+    config[:bbs_client_key_file] = "#{CONF_DIR}/certs/bbs/client.key"
+    config[:bbs_address] = "https://#{p("diego.auctioneer.bbs.api_location")}"
+  else
+    config[:bbs_address] = "http://#{p("diego.auctioneer.bbs.api_location")}"
+  end
+
+  if_p("diego.auctioneer.bbs.client_session_cache_size") do |value|
+    config[:bbs_client_session_cache_size] = value
+  end
+
+  if_p("diego.auctioneer.bbs.max_idle_conns_per_host") do |value|
+    config[:bbs_max_idle_conns_per_host] = value
+  end
+
+  if_p("diego.auctioneer.rep.ca_cert", "diego.auctioneer.rep.client_key", "diego.auctioneer.rep.client_cert") do
+    config[:rep_client_cert] = "#{CONF_DIR}/certs/rep/client.crt"
+    config[:rep_client_key] = "#{CONF_DIR}/certs/rep/client.key"
+    config[:rep_ca_cert] = "#{CONF_DIR}/certs/rep/ca.crt"
+  end
+
+  if p("diego.auctioneer.ca_cert", "") != "" || p("diego.auctioneer.server_cert", "") != "" || p("diego.auctioneer.server_key", "") != ""
+    config[:ca_cert_file] = "#{CONF_DIR}/certs/auctioneer/ca.crt"
+    config[:server_cert_file] = "#{CONF_DIR}/certs/auctioneer/server.crt"
+    config[:server_key_file] = "#{CONF_DIR}/certs/auctioneer/server.key"
+  end
+
+  config.to_json
+%>

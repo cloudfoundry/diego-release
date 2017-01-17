@@ -4,6 +4,7 @@ name: auctioneer
 templates:
   auctioneer_ctl.erb: bin/auctioneer_ctl
   auctioneer_as_vcap.erb: bin/auctioneer_as_vcap
+  auctioneer.json.erb: config/auctioneer.json
   auctioneer_ca.crt.erb: config/certs/auctioneer/ca.crt
   auctioneer_server.crt.erb: config/certs/auctioneer/server.crt
   auctioneer_server.key.erb: config/certs/auctioneer/server.key
