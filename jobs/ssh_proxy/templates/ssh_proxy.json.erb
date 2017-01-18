@@ -51,6 +51,9 @@
   if_p("diego.ssh_proxy.bbs.max_idle_conns_per_host") do |value|
     config[:bbs_max_idle_conns_per_host] = value
   end
+  if_p("diego.ssh_proxy.communication_timeout") do |value|
+    config[:communication_timeout] = value
+  end
 
   config.to_json
 %>

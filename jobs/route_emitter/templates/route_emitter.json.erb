@@ -35,5 +35,8 @@
     config[:cell_id] = spec.id
   end
 
+  if_p("diego.route_emitter.communication_timeout") do |value|
+    config[:communication_timeout] = value
+  end
   config.to_json
 %>

@@ -46,6 +46,9 @@ properties:
     description: "local metron agent's port"
     default: 3457
 
+  diego.auctioneer.communication_timeout:
+    description: "Timeout for HTTP communication"
+
   diego.auctioneer.bbs.api_location:
     description: "Address to the BBS Server"
     default: "bbs.service.cf.internal:8889"
