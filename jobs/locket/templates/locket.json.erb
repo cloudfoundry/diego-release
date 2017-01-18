@@ -35,6 +35,8 @@ def connection_string_from_db_params
     sprintf "%s:%s@tcp(%s:%s)/%s", *values
   when 'postgres'
     sprintf "postgres://%s:%s@%s:%s/%s", *values
+  when 'mssql'
+    sprintf "user id=%s;password=%s;server=%s;port=%s;database=%s;", *values
   else
     raise "unknown driver #{driver}"
   end

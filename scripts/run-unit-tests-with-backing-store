@@ -11,6 +11,9 @@ if [ "${SQL_FLAVOR}" = "mysql" ]; then
 elif [ "${SQL_FLAVOR}" = "postgres" ]; then
   echo "Running store-dependent test suites against a Postgres database..."
   DB_UNITS="./bbs/db/sqldb"
+elif [ "${SQL_FLAVOR}" = "mssql" ]; then
+  echo "Running store-dependent test suites against a Microsoft SQL database..."
+  DB_UNITS="./bbs/db/sqldb"
 else
   echo "Running store-dependent test suites against ETCD..."
   DB_UNITS="./bbs/db/etcd"
