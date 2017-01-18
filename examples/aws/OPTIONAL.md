@@ -128,6 +128,38 @@ release-versions:
   garden-windows: latest
 ```
 
+### Add the Windows Stack to the CF Deployment Manifest
+
+The CF deployment needs to be configured with the `windows2012R2` stack in its list of
+installed stacks. In order to do so, you can regenerate your CF manifest using the
+following stub:
+
+```yaml
+---
+properties:
+  cc:
+    stacks:
+      - name: "cflinuxfs2"
+        description: "Cloud Foundry Linux-based filesystem"
+      - name: "windows2012R2"
+        description: "Windows Server 2012 R2"
+```
+
+This template is provided in diego-release and can be used to regenerate your manifest:
+
+```bash
+cd $CF_RELEASE_DIR
+./scripts/generate_deployment_manifest aws \
+  $DEPLOYMENT_DIR/stubs/director-uuid.yml \
+  $DIEGO_RELEASE_DIR/examples/aws/stubs/cf/diego.yml \
+  $DIEGO_RELEASE_DIR/manifest-generation/stubs-for-cf-release/enable_diego_windows_in_cc.yml \
+  $DEPLOYMENT_DIR/stubs/cf/properties.yml \
+  $DEPLOYMENT_DIR/stubs/cf/stub.yml \
+  > $DEPLOYMENT_DIR/deployments/cf.yml
+```
+
+You will need to redeploy your CF deployment after regenerating the deployment manifest.
+
 ### Generate Diego Windows Cell Deployment Manifest
 
 See the full [manifest generation documentation](https://github.com/cloudfoundry/diego-release/docs/manifest-generation.md) for more generation instructions.
