@@ -13,7 +13,7 @@ function usage() {
     $0 <AWS_ACTION> <BOSH_ACTION> <BOSH_DEPLOYMENT_DIR> <DEPLOYMENT_DIR> <STACK_NAME>
 
   MANDATORY ARGUMENTS:
-    AWS_ACTION:           Action to take on AWS CloudFormation stack: create, update, or skip.
+    AWS_ACTION:           Action to take on AWS CloudFormation stack: create-stack, update-stack, or skip.
     BOSH_ACTION:          Action to take on BOSH director deployment: bosh-deploy or bosh-skip.
     BOSH_DEPLOYMENT_DIR:  Path to local copy of the bosh-deployment repository.
     DEPLOYMENT_DIR:       Directory to store files for this deployment.
@@ -238,7 +238,7 @@ spiff merge \
   "${deployment_dir}/stubs/aws-resources.yml" \
   >> "${deployment_dir}/stubs/bosh/aws.yml"
 
-custom_ops_file_args=$(for i in ${deployment_dir}/ops-files/bosh/*.yml; do echo -n "--ops-file \"$i\" "; done)
+custom_ops_file_args=$(for i in $(ls ${deployment_dir}/ops-files/bosh/*.yml); do echo -n "--ops-file \"$i\" "; done)
 
 bosh_datadog_args=""
 
