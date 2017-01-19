@@ -203,7 +203,7 @@ EOF
 spiff merge \
   $SCRIPT_DIR/templates/infrastructure/boosh.yml \
   $SCRIPT_DIR/templates/infrastructure/boosh-internal.yml \
-  stubs/bosh-init/keypair.yml \
+  stubs/bosh/vars.yml \
   stubs/domain.yml \
   stubs/infrastructure/certificates.yml \
   $SCRIPT_DIR/templates/infrastructure/meta.yml \

@@ -32,7 +32,7 @@ default_subnets:
       name: NATZ1
       type: m1.small
       ip: (( merge ))
-      key_pair_name: (( BoshKeypairName ))
+      key_pair_name: (( default_key_name ))
       security_group: Open
 
   - name: CFELBZ1
@@ -258,4 +258,4 @@ security_groups:
         cidr: 0.0.0.0/0
         ports: 2222
 
-BoshKeypairName: (( merge ))
+default_key_name: (( merge ))
