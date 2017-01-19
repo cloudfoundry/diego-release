@@ -1,0 +1,25 @@
+diff --git a/cf-deployment.yml b/cf-deployment.yml
+index 5bea319..011ea83 100644
+--- a/cf-deployment.yml
++++ b/cf-deployment.yml
+@@ -288,6 +288,10 @@ instance_groups:
+             ca_cert: nil
+             client_cert: nil
+             client_key: nil
++          auctioneer: &diego_auctioneer_client_properties
++            ca_cert: "((diego_auctioneer.ca))"
++            client_cert: "((diego_auctioneer.client.certificate))"
++            client_key: "((diego_auctioneer.client.private_key))"
+           ca_cert: "((diego_bbs.ca))"
+           server_cert: "((diego_bbs_server.certificate))"
+           server_key: "((diego_bbs_server.private_key))"
+@@ -491,6 +495,9 @@ instance_groups:
+       diego:
+         auctioneer:
+           bbs: *diego_bbs_client_properties
++          ca_cert: "((diego_auctioneer.ca))"
++          server_cert: "((diego_auctioneer.server.certificate))"
++          server_key: "((diego_auctioneer.server.private_key))"
+   - name: metron_agent
+     release: loggregator
+     properties: *metron_agent_properties
