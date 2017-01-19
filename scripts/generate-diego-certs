@@ -2,11 +2,22 @@
 
 set -e -x
 
+existing_ca="$1"
+existing_depot="$2"
+
 pushd `dirname "$0"`/..
-  scripts/generate-diego-ca-certs
-  scripts/generate-bbs-certs diego-ca diego-certs
-  scripts/generate-rep-certs diego-ca diego-certs
-  scripts/generate-auctioneer-certs diego-ca diego-certs
+  if [ -z "$existing_ca" ]; then
+    scripts/generate-diego-ca-certs
+    existing_ca=diego-ca
+  fi
+
+  if [ -z "$existing_depot" ]; then
+    existing_depot=diego-certs
+  fi
+
+  scripts/generate-bbs-certs "$existing_ca" "$existing_depot"
+  scripts/generate-rep-certs "$existing_ca" "$existing_depot"
+  scripts/generate-auctioneer-certs "$existing_ca" "$existing_depot"
 popd
 
 echo "Outputted certs to diego-certs"
