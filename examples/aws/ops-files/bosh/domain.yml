@@ -1,0 +1,8 @@
+---
+- type: replace
+  path: /variables/name=director_ssl/options/alternative_names/-
+  value: ((director_domain))
+
+- type: replace
+  path: /variables/name=director_ssl/options/common_name
+  value: ((director_domain))

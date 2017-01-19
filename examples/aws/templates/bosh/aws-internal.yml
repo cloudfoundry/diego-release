@@ -1,0 +1,15 @@
+access_key_id: (( AccessKeyID ))
+az: (( Resources.SubnetAvailabilityZone.BOSHZ1 ))
+default_security_groups: [ (( Resources.SecurityGroupName.BOSH )) ]
+external_ip: (( Resources.EIP.BoshInit ))
+internal_cidr: (( Resources.SubnetCIDR.BOSHZ1 ))
+internal_gw: (( Resources.SubnetOctets.BOSHZ1.[2] ".1" ))
+internal_ip: (( Resources.SubnetOctets.BOSHZ1.[2] ".6" ))
+region: (( Region ))
+secret_access_key: (( SecretAccessKey ))
+subnet_id: (( Resources.Subnet.BOSHZ1 ))
+
+AccessKeyID: (( merge ))
+Region: (( merge ))
+Resources: (( merge ))
+SecretAccessKey: (( merge ))
