@@ -13,8 +13,8 @@ function usage() {
     $0 <AWS_ACTION> <BOSH_ACTION> <BOSH_DEPLOYMENT_DIR> <DEPLOYMENT_DIR> <STACK_NAME>
 
   MANDATORY ARGUMENTS:
-    AWS_ACTION:           Action to take on AWS CloudFormation stack: create-stack, update-stack, or skip.
-    BOSH_ACTION:          Action to take on BOSH director deployment: bosh-deploy or bosh-skip.
+    AWS_ACTION:           Action to take on AWS CloudFormation stack: create-stack, update-stack, or skip-stack.
+    BOSH_ACTION:          Action to take on BOSH director deployment: deploy-bosh or skip-bosh.
     BOSH_DEPLOYMENT_DIR:  Path to local copy of the bosh-deployment repository.
     DEPLOYMENT_DIR:       Directory to store files for this deployment.
     STACK_NAME:           Name of the CloudFormation stack to create.
@@ -101,15 +101,15 @@ EOF
 }
 
 case "$1" in
-  "create")
+  "create-stack")
     stack_action="create-stack"
     ;;
 
-  "update")
+  "update-stack")
     stack_action="update-stack"
     ;;
 
-  "skip")
+  "skip-stack")
     stack_action=""
     ;;
 
@@ -122,11 +122,11 @@ esac
 shift
 
 case "$1" in
-  "bosh-deploy")
+  "deploy-bosh")
     bosh_action="deploy"
     ;;
 
-  "bosh-skip")
+  "skip-bosh")
     bosh_action="skip"
     ;;
 
