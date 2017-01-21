@@ -567,21 +567,21 @@ openssl rsa -in $DEPLOYMENT_DIR/keypair/uaa -pubout > $DEPLOYMENT_DIR/keypair/ua
 ## Creating the AWS environment
 
 To create the AWS environment and two VMs essential to the Cloud Foundry infrastructure,
-run `./deploy_aws_environment create bosh-deploy "$BOSH_DEPLOYMENT_DIR" "$DEPLOYMENT_DIR" "$STACK_NAME"`
+run `./deploy_aws_environment create-stack bosh-deploy "$BOSH_DEPLOYMENT_DIR" "$DEPLOYMENT_DIR" "$STACK_NAME"`
 **from the directory containing these instructions** (`$DIEGO_RELEASE_DIR/examples/aws`).
 This process may take up to 30 minutes.
 
 ```bash
 cd "$DIEGO_RELEASE_DIR/examples/aws"
-./deploy_aws_environment create bosh-deploy "$CF_RELEASE_DIR" "$DEPLOYMENT_DIR" "$STACK_NAME"
+./deploy_aws_environment create-stack bosh-deploy "$CF_RELEASE_DIR" "$DEPLOYMENT_DIR" "$STACK_NAME"
 ```
 
 The `./deploy_aws_environment` script takes five required arguments:
 
 - The first argument is one of three directives, which you'll need if our script doesn't succeed the first time:
-  - `create` creates an AWS CloudFormation stack based off of the stubs filled out above.
-  - `update` updates the CloudFormation stack. Run the script with this command after changing the stubs in `$DEPLOYMENT_DIR/stubs/infrastructure`, or after an update to this example directory. If there are **no** changes to the stack, instead run the `skip` command below, as otherwise the script will fail.
-  - `skip` upgrades the BOSH director without affecting the CloudFormation stack.
+  - `create-stack` creates an AWS CloudFormation stack based off of the stubs filled out above.
+  - `update-stack` updates the CloudFormation stack. Run the script with this command after changing the stubs in `$DEPLOYMENT_DIR/stubs/infrastructure`, or after an update to this example directory. If there are **no** changes to the stack, instead run the `skip-stack` command below, as otherwise the script will fail.
+  - `skip-stack` upgrades the BOSH director without affecting the CloudFormation stack.
 
 - The second argument is the action to take on the BOSH deployment:
   - `bosh-deploy` uses the BOSH CLI to deploy a new or to re-deploy an existing BOSH director.
