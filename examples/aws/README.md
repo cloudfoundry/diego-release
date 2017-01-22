@@ -3,7 +3,7 @@
 These instructions allow you to:
 
 * Provision an AWS account with preliminary resources and secrets,
-* Deploy BOSH to AWS via `bosh-init`, and
+* Deploy BOSH to AWS via the v2 BOSH CLI, and
 * Deploy CF and Diego via the deployed BOSH.
 
 ## Table of Contents
@@ -567,13 +567,13 @@ openssl rsa -in $DEPLOYMENT_DIR/keypair/uaa -pubout > $DEPLOYMENT_DIR/keypair/ua
 ## Creating the AWS environment
 
 To create the AWS environment and two VMs essential to the Cloud Foundry infrastructure,
-run `./deploy_aws_environment create-stack bosh-deploy "$BOSH_DEPLOYMENT_DIR" "$DEPLOYMENT_DIR" "$STACK_NAME"`
+run `./deploy_aws_environment create-stack deploy-bosh "$BOSH_DEPLOYMENT_DIR" "$DEPLOYMENT_DIR" "$STACK_NAME"`
 **from the directory containing these instructions** (`$DIEGO_RELEASE_DIR/examples/aws`).
 This process may take up to 30 minutes.
 
 ```bash
 cd "$DIEGO_RELEASE_DIR/examples/aws"
-./deploy_aws_environment create-stack bosh-deploy "$CF_RELEASE_DIR" "$DEPLOYMENT_DIR" "$STACK_NAME"
+./deploy_aws_environment create-stack deploy-bosh "$CF_RELEASE_DIR" "$DEPLOYMENT_DIR" "$STACK_NAME"
 ```
 
 The `./deploy_aws_environment` script takes five required arguments:
@@ -584,8 +584,8 @@ The `./deploy_aws_environment` script takes five required arguments:
   - `skip-stack` upgrades the BOSH director without affecting the CloudFormation stack.
 
 - The second argument is the action to take on the BOSH deployment:
-  - `bosh-deploy` uses the BOSH CLI to deploy a new or to re-deploy an existing BOSH director.
-  - `bosh-skip` leaves the existing BOSH deployment unchanged.
+  - `deploy-bosh` uses the BOSH CLI to deploy a new or to re-deploy an existing BOSH director.
+  - `skip-bosh` leaves the existing BOSH director deployment unchanged.
 
 - The third argument is the **absolute path** to `$BOSH_DEPLOYMENT_DIR`, the local directory containing the bosh-deployment repository.
 - The fourth argument is the **absolute path** to `$DEPLOYMENT_DIR`, the directory containing the configuration files discussed above.
@@ -758,7 +758,7 @@ From here, follow the documentation on [deploying a Cloud Foundry with BOSH](htt
 
 ## Setup a SQL database for Diego
 
-These instructions allow you to configure Diego to use a relational database as the backing data store using one of the following methods:
+These instructions configure Diego to use a relational database as the backing data store using one of the following methods:
 
 * [Setting up an RDS MySQL](#setup-aws-rds-mysql)
 * [Setting up an RDS PostgreSQL](#setup-aws-rds-postgresql)
@@ -960,8 +960,6 @@ databases:
 
 ### Fill in Diego-SQL stub
 
-#### Use of Granular Database Properties for MySQL or PostgreSQL
-
 To configure Diego to communicate with the SQL instance, first create a Diego-SQL stub file at `$DEPLOYMENT_DIR/stubs/diego/diego-sql.yml` with the following contents:
 
 ```yaml
@@ -989,30 +987,6 @@ Fill in the bracketed parameters in the `db_driver`, `db_host`, `db_port` and `d
   - If configuring an Highly Available CF-MySQL with Consul use the consul service address (e.g. `mysql.service.cf.internal` for `<sql-instance-endpoint>` and `3306` for `<port>`).
 - `<REPLACE_ME_WITH_DB_PASSWORD>`: The password chosen when you created the SQL instance.
 
-#### Use of `db_connection_string` for MySQL (Deprecated)
-
-**Note:** these instructions are deprecated, and we suggest using the properties described [above](#use-of-granular-database-properties-for-mysql-or-postgresql) instead of providing a connection string.
-
-To configure Diego to communicate with the SQL instance, first create a Diego-SQL stub file at `$DEPLOYMENT_DIR/stubs/diego/diego-sql.yml` with the following contents:
-
-```yaml
-sql_overrides:
-  bbs:
-    db_connection_string: 'diego:REPLACE_ME_WITH_DB_PASSWORD@tcp(<sql-instance-endpoint>)/diego'
-    max_open_connections: 500
-    require_ssl: null
-    ca_cert: null
-```
-Fill in the bracketed parameters in the `db_connection_string` with the following values:
-
-- `REPLACE_ME_WITH_DB_PASSWORD`: The password chosen when you created the SQL instance.
-- `<sql-instance-endpoint>`:
-  - For AWS RDS: The endpoint displayed at the top of the DB instance details page in AWS, including the port.
-  - For Standalone CF-MySQL:
-    - If configuring a Single Node CF-MySQL the internal IP address and port of the single MySQL node. (e.g. `10.10.5.222:3306`).
-    - If configuring an Highly Available CF-MySQL with Consul use the consul service address (e.g. `mysql.service.cf.internal:3306`).
-    - *In both cases the port will be `3306` by default.*
-
 
 #### SSL support
 
@@ -1027,59 +1001,11 @@ sql_overrides:
       REPLACE_WITH_CONTENTS_OF_(DEPLOYMENT_DIR/certs/rds-combined-ca-bundle.pem)
 ```
 
-### Generate the Diego manifest
-
-**Note** Assuming you are migrating from an etcd deployment, you need to follow
-steps in this section in order to ensure data is migrated successfully from
-etcd to the new sql backend. Otherwise, feel free to skip to the next section.
-
-Genereate the Diego manifest with an additional `-s` flag that specifies
-the location of the Diego-SQL stub, as shown below. Remember that the `-n`
-instance-count-overrides flag and the `-v` release-versions flags are optional.
-
-```bash
-cd $DIEGO_RELEASE_DIR
-./scripts/generate-deployment-manifest \
-  -c $DEPLOYMENT_DIR/deployments/cf.yml \
-  -i $DEPLOYMENT_DIR/stubs/diego/iaas-settings.yml \
-  -p $DEPLOYMENT_DIR/stubs/diego/property-overrides.yml \
-  -s $DEPLOYMENT_DIR/stubs/diego/diego-sql.yml \
-  -n $DEPLOYMENT_DIR/stubs/diego/instance-count-overrides.yml \
-  -v $DEPLOYMENT_DIR/stubs/diego/release-versions.yml \
-  > $DEPLOYMENT_DIR/deployments/diego.yml
-```
-
-### Disable etcd
-
-This step will disable etcd as the backend store and enable SQL (unless already
-enabled). Make sure to follow the steps in the previous section if you are
-migrating from etcd.
-
-To enable sql and remove etcd from your deployment, invoke the
-manifest-generation script with the `-x` and `-s` flags as shown below:
-
-```bash
-cd $DIEGO_RELEASE_DIR
-./scripts/generate-deployment-manifest \
-  -c $DEPLOYMENT_DIR/deployments/cf.yml \
-  -i $DEPLOYMENT_DIR/stubs/diego/iaas-settings.yml \
-  -p $DEPLOYMENT_DIR/stubs/diego/property-overrides.yml \
-  -s $DEPLOYMENT_DIR/stubs/diego/diego-sql.yml \
-  -x \
-  -n $DEPLOYMENT_DIR/stubs/diego/instance-count-overrides.yml \
-  -v $DEPLOYMENT_DIR/stubs/diego/release-versions.yml \
-  > $DEPLOYMENT_DIR/deployments/diego.yml
-```
-
 ### Verifying data migration
 
 Follow steps in
 [Migration of BBS Data from etcd to SQL](../../docs/data-stores.md#migration-of-bbs-data-from-etcd-to-sql)
 to verify that the migration ran successfully.
-
-## Using etcd
-
-Support for etcd is deprecated.
 
 ## Create and Upload Volume Driver Release (experimental) (optional)
 
@@ -1139,10 +1065,6 @@ release-versions:
   garden-runc: 1.0.0
 ```
 
-### Fill in `diego-sql` Stub (optional)
-
-If using a SQL store for the BBS, follow the directions to [fill in the Diego-SQL Stub](OPTIONAL.md#fill-in-diego-sql-stub) with the SQL database configuration.
-
 ### Fill in `Drivers` Stub (experimental) (optional)
 
 If you enabled volume services, follow these directions to [fill in the drivers Stub](OPTIONAL.md#fill-in-drivers-stub) with your driver configuration.
@@ -1160,10 +1082,29 @@ cd $DIEGO_RELEASE_DIR
   -p $DEPLOYMENT_DIR/stubs/diego/property-overrides.yml \
   -n $DEPLOYMENT_DIR/stubs/diego/instance-count-overrides.yml \
   -v $DEPLOYMENT_DIR/stubs/diego/release-versions.yml \
+  -s $DEPLOYMENT_DIR/stubs/diego/diego-sql.yml \
   > $DEPLOYMENT_DIR/deployments/diego.yml
 ```
 
-### Upload garden-runc, and cflinuxfs2 releases
+#### Remove Colocated Diego etcd [optional]
+
+The manifest generated above leaves etcd colocated with the BBS servers on the Diego `database_zN` instances, so that existing data in etcd can be migrated to the SQL database. Once that data is [migrated successfully](../../docs/data-stores.md#migration-of-bbs-data-from-etcd-to-sql), though, there is no reason to keep etcd in the deployment, and you may specify the `-x` flag on the manifest-generation script to remove it:
+
+```bash
+cd $DIEGO_RELEASE_DIR
+./scripts/generate-deployment-manifest \
+  -c $DEPLOYMENT_DIR/deployments/cf.yml \
+  -i $DEPLOYMENT_DIR/stubs/diego/iaas-settings.yml \
+  -p $DEPLOYMENT_DIR/stubs/diego/property-overrides.yml \
+  -n $DEPLOYMENT_DIR/stubs/diego/instance-count-overrides.yml \
+  -v $DEPLOYMENT_DIR/stubs/diego/release-versions.yml \
+  -s $DEPLOYMENT_DIR/stubs/diego/diego-sql.yml \
+  -x \
+  > $DEPLOYMENT_DIR/deployments/diego.yml
+```
+
+
+### Upload garden-runc and cflinuxfs2-rootfs releases
 
 1. Upload the latest garden-runc-release:
     ```bash
