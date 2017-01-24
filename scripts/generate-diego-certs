@@ -18,6 +18,7 @@ pushd `dirname "$0"`/..
   scripts/generate-bbs-certs "$existing_ca" "$existing_depot"
   scripts/generate-rep-certs "$existing_ca" "$existing_depot"
   scripts/generate-auctioneer-certs "$existing_ca" "$existing_depot"
+  scripts/generate-tps-certs "$existing_ca" "$existing_depot"
 popd
 
 echo "Outputted certs to diego-certs"
