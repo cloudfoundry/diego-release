@@ -1,38 +1,39 @@
-From 84af8c54d47ce2c470120324f963e0f0f9837195 Mon Sep 17 00:00:00 2001
+From 2f6d9e8d43b455809105e0dd3ff5326de09db953 Mon Sep 17 00:00:00 2001
 From: Brandon Shroyer <bshroyer@pivotal.io>
-Date: Mon, 23 Jan 2017 12:24:41 -0500
-Subject: [PATCH] Add TLS credentials to bbs-auctioneer communication.
+Date: Tue, 24 Jan 2017 09:45:35 -0500
+Subject: [PATCH] Add TLS to auctioneer-bbs communication.
 
+[#136553151]
 ---
  cf-deployment.yml | 28 ++++++++++++++++++++++++++++
  1 file changed, 28 insertions(+)
 
 diff --git a/cf-deployment.yml b/cf-deployment.yml
-index 8f610d5..674f2f6 100644
+index 7ac65b4..ab6e61c 100644
 --- a/cf-deployment.yml
 +++ b/cf-deployment.yml
-@@ -288,6 +288,10 @@ instance_groups:
+@@ -290,6 +290,10 @@ instance_groups:
              ca_cert: nil
              client_cert: nil
              client_key: nil
 +          auctioneer: &diego_auctioneer_client_properties
 +            ca_cert: "((diego_auctioneer.ca))"
-+            client_cert: "((diego_auctioneer.client.certificate))"
-+            client_key: "((diego_auctioneer.client.private_key))"
++            client_cert: "((diego_auctioneer_client.certificate))"
++            client_key: "((diego_auctioneer_client.private_key))"
            ca_cert: "((diego_bbs.ca))"
            server_cert: "((diego_bbs_server.certificate))"
            server_key: "((diego_bbs_server.private_key))"
-@@ -491,6 +495,9 @@ instance_groups:
+@@ -493,6 +497,9 @@ instance_groups:
        diego:
          auctioneer:
            bbs: *diego_bbs_client_properties
 +          ca_cert: "((diego_auctioneer.ca))"
-+          server_cert: "((diego_auctioneer.server.certificate))"
-+          server_key: "((diego_auctioneer.server.private_key))"
++          server_cert: "((diego_auctioneer_server.certificate))"
++          server_key: "((diego_auctioneer_server.private_key))"
    - name: metron_agent
      release: loggregator
      properties: *metron_agent_properties
-@@ -1358,6 +1365,27 @@ variables:
+@@ -1360,6 +1367,27 @@ variables:
      ext_key_usage:
      - client_auth
      - server_auth
