@@ -25,8 +25,12 @@ packages:
   - bbs
 
 properties:
+  diego.bbs.auctioneer.api_url:
+    description: "URL of the auctioneer API. Deprecated in favor of api_location, but in use through Diego v1."
+    default: "http://auctioneer.service.cf.internal:9016"
   diego.bbs.auctioneer.api_location:
-    description: "Hostname and port of the auctioneer API."
+    description: "Hostname and port of the auctioneer API, without URI scheme. Recommended in favor of api_url."
+    example: "auctioneer.service.cf.internal:9016"
   diego.bbs.auctioneer.ca_cert:
     description: "CA cert for communication to the auctioneer."
   diego.bbs.auctioneer.client_cert:
@@ -58,9 +62,6 @@ properties:
   diego.bbs.advertisement_base_hostname:
     description: "Suffix for the BBS advertised hostname"
     default: "bbs.service.cf.internal"
-  diego.bbs.auctioneer.api_url:
-    description: "Address of the auctioneer API"
-    default: "http://auctioneer.service.cf.internal:9016"
   diego.bbs.active_key_label:
     description: "Label of the encryption key to be used when writing to the database"
   diego.bbs.encryption_keys:
