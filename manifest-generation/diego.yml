@@ -688,6 +688,9 @@ properties:
       cc:
         basic_auth_username: (( config_from_cf.cc.internal_api_user ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
+        ca_cert: (( property_overrides.tps.cc.ca_cert ))
+        client_cert: (( property_overrides.tps.cc.client_cert ))
+        client_key: (( property_overrides.tps.cc.client_key ))
       bbs:
         api_location: (( property_overrides.bbs.api_location || nil ))
         ca_cert: (( property_overrides.bbs.ca_cert ))

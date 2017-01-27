@@ -51,3 +51,8 @@ property_overrides:
   ssh_proxy:
     enable_cf_auth: true
     host_key: (( merge ))
+  tps:
+    cc:
+      client_cert: (( merge ))
+      client_key: (( merge ))
+      ca_cert: (( merge ))
