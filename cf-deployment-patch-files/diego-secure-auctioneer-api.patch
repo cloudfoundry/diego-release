@@ -1,57 +1,53 @@
-From 2f6d9e8d43b455809105e0dd3ff5326de09db953 Mon Sep 17 00:00:00 2001
+From 34d93f50ad883ebe315d5ecc8da9c2e73f3e7f38 Mon Sep 17 00:00:00 2001
 From: Brandon Shroyer <bshroyer@pivotal.io>
 Date: Tue, 24 Jan 2017 09:45:35 -0500
 Subject: [PATCH] Add TLS to auctioneer-bbs communication.
 
 [#136553151]
 ---
- cf-deployment.yml | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ cf-deployment.yml | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
 diff --git a/cf-deployment.yml b/cf-deployment.yml
-index 7ac65b4..ab6e61c 100644
+index da8b1c6..72e19b2 100644
 --- a/cf-deployment.yml
 +++ b/cf-deployment.yml
-@@ -290,6 +290,10 @@ instance_groups:
-             ca_cert: nil
+@@ -291,6 +291,10 @@ instance_groups:
              client_cert: nil
              client_key: nil
+           ca_cert: "((diego_bbs_server.ca))"
 +          auctioneer: &diego_auctioneer_client_properties
-+            ca_cert: "((diego_auctioneer.ca))"
++            ca_cert: "((diego_auctioneer_client.ca))"
 +            client_cert: "((diego_auctioneer_client.certificate))"
 +            client_key: "((diego_auctioneer_client.private_key))"
-           ca_cert: "((diego_bbs.ca))"
            server_cert: "((diego_bbs_server.certificate))"
            server_key: "((diego_bbs_server.private_key))"
+   - name: metron_agent
 @@ -493,6 +497,9 @@ instance_groups:
        diego:
          auctioneer:
            bbs: *diego_bbs_client_properties
-+          ca_cert: "((diego_auctioneer.ca))"
++          ca_cert: "((diego_auctioneer_server.ca))"
 +          server_cert: "((diego_auctioneer_server.certificate))"
 +          server_key: "((diego_auctioneer_server.private_key))"
    - name: metron_agent
      release: loggregator
      properties: *metron_agent_properties
-@@ -1360,6 +1367,27 @@ variables:
+@@ -1365,6 +1372,23 @@ variables:
      ext_key_usage:
      - client_auth
      - server_auth
-+- name: diego_auctioneer
-+  type: certificate
-+  options:
-+    common_name: auctioneerCA
 +- name: diego_auctioneer_client
 +  type: certificate
 +  options:
-+    ca: diego_auctioneer
++    ca: service_cf_internal_ca
 +    common_name: auctioneer client
 +    ext_key_usage:
 +    - client_auth
 +- name: diego_auctioneer_server
 +  type: certificate
 +  options:
-+    ca: diego_auctioneer
++    ca: service_cf_internal_ca
 +    common_name: auctioneer.service.cf.internal
 +    ext_key_usage:
 +    - server_auth
