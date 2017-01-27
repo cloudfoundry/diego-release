@@ -573,7 +573,7 @@ This process may take up to 30 minutes.
 
 ```bash
 cd "$DIEGO_RELEASE_DIR/examples/aws"
-./deploy_aws_environment create-stack deploy-bosh "$CF_RELEASE_DIR" "$DEPLOYMENT_DIR" "$STACK_NAME"
+./deploy_aws_environment create-stack deploy-bosh "$BOSH_DEPLOYMENT_DIR" "$DEPLOYMENT_DIR" "$STACK_NAME"
 ```
 
 The `./deploy_aws_environment` script takes five required arguments:
