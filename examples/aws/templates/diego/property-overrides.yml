@@ -53,6 +53,6 @@ property_overrides:
     host_key: (( merge ))
   tps:
     cc:
+      ca_cert: (( merge ))
       client_cert: (( merge ))
       client_key: (( merge ))
-      ca_cert: (( merge ))

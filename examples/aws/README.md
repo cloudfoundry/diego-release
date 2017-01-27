@@ -478,33 +478,36 @@ popd
 
 1. To generate certificates for BBS servers in the Diego deployment, run:
 ```bash
-$DIEGO_RELEASE_DIR/scripts/generate-diego-certs cf-diego-ca $CF_RELEASE_DIR/cf-diego-certs
+$DIEGO_RELEASE_DIR/scripts/generate-diego-certs $DEPLOYMENT_DIR/certs/cf-diego-certs
 mv $DIEGO_RELEASE_DIR/diego-certs/* $DEPLOYMENT_DIR/certs
 ```
 
 After running these scripts, you should see the following files in `$DEPLOYMENT_DIR/certs`:
 ```
 DEPLOYMENT_DIR/certs
-|- diego-ca.crt
-|- diego-ca.key
-|-auctioneer-certs  # generated via diego-release/scripts/generate-diego-certs
+|- cf-diego-certs
+|  |- cf-diego-ca.crt
+|  |- cf-diego-ca.key
+|  |- cloud-controller.crt
+|  |- cloud-controller.key
+|- auctioneer-certs  # generated via diego-release/scripts/generate-diego-certs
 |  |- client.crt
 |  |- client.key
 |  |- server.crt
 |  |- server.key
-|-bbs-certs         # generated via diego-release/scripts/generate-diego-certs
+|- bbs-certs         # generated via diego-release/scripts/generate-diego-certs
 |  |- client.crt
 |  |- client.key
 |  |- server.crt
 |  |- server.key
-|-consul-certs     # generated via cf-release/scripts/generate-consul-certs
+|- consul-certs     # generated via cf-release/scripts/generate-consul-certs
 |  |- agent.crt
 |  |- agent.key
 |  |- server-ca.crt
 |  |- server-ca.key
 |  |- server.crt
 |  |- server.key
-|-loggregator-certs # generated via cf-release/scripts/generate-loggregator-certs
+|- loggregator-certs # generated via cf-release/scripts/generate-loggregator-certs
 |  |- doppler.crt
 |  |- doppler.key
 |  |- loggregator-ca.crt
@@ -512,12 +515,12 @@ DEPLOYMENT_DIR/certs
 |  |- trafficcontroller.key
 |  |- metron.crt
 |  |- metron.key
-|-rep-certs         # generated via diego-release/scripts/generate-diego-certs
+|- rep-certs         # generated via diego-release/scripts/generate-diego-certs
 |  |- client.crt
 |  |- client.key
 |  |- server.crt
 |  |- server.key
-|-uaa-certs
+|- uaa-certs
 |  |- saml.crt     # generated via diego-release/scripts/generate-uaa-saml-certs
 |  |- saml.key
 |  |- saml.key.password
