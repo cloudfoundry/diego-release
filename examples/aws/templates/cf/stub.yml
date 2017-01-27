@@ -177,6 +177,10 @@ properties:
       droplet_directory_key: (( merge ))
     buildpacks:
       buildpack_directory_key: (( merge ))
+    mutual_tls:
+      ca_cert: (( merge ))
+      public_cert: (( merge ))
+      private_key: (( merge ))
 
   loggregator:
     tls:

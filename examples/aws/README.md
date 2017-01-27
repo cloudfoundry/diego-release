@@ -457,6 +457,7 @@ The CF and Diego release repositories provide scripts to generate the necessary 
 1. To generate certificates for consul, loggregator run:
 ```bash
 cd $DEPLOYMENT_DIR/certs
+$CF_RELEASE_DIR/scripts/generate-cf-diego-certs
 $CF_RELEASE_DIR/scripts/generate-consul-certs
 $CF_RELEASE_DIR/scripts/generate-loggregator-certs
 ```
@@ -477,7 +478,7 @@ popd
 
 1. To generate certificates for BBS servers in the Diego deployment, run:
 ```bash
-$DIEGO_RELEASE_DIR/scripts/generate-diego-certs
+$DIEGO_RELEASE_DIR/scripts/generate-diego-certs cf-diego-ca $CF_RELEASE_DIR/cf-diego-certs
 mv $DIEGO_RELEASE_DIR/diego-certs/* $DEPLOYMENT_DIR/certs
 ```
 
@@ -526,6 +527,7 @@ DEPLOYMENT_DIR/certs
 
 You can ignore any files with a `crl` or `csr` extension.
 
+The certificates in `cf-diego-certs` are used to set SSL properties for the communication between CF and Diego.
 The certificates in `consul-certs` are used to set SSL properties for the consul VMs.
 The certificates in `loggregator-certs` are used to set SSL properties for the Loggregator subsystem.
 The certificates in `uaa-certs` are used to set SSL properties for the UAA subsystem.
