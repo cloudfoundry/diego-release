@@ -685,6 +685,7 @@ properties:
       insecure_docker_registry_list: (( property_overrides.stager.insecure_docker_registry_list || nil ))
     tps:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
+      listener_enabled: (( bridge_overrides.listener_enabled ))
       cc:
         basic_auth_username: (( config_from_cf.cc.internal_api_user ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
@@ -728,6 +729,7 @@ sql_overrides: (( merge  || nil ))
 bridge_overrides:
   job_release: cf
   releases: (( merge || [] ))
+  listener_enabled: (( merge || nil ))
 
 bbs_overrides:
   job_properties:
