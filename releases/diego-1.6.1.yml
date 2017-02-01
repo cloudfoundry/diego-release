@@ -1,0 +1,171 @@
+---
+packages:
+- name: auctioneer
+  version: 5c367ae527fb88325ecad6bba4ff646c9430766a
+  fingerprint: 5c367ae527fb88325ecad6bba4ff646c9430766a
+  sha1: 421289bae93a9ed8e47f40d4020c47ae262bbb73
+  dependencies:
+  - golang
+- name: bbs
+  version: d31e1a9fdf2b5d9a59c75c5462fb82f58c9eedb6
+  fingerprint: d31e1a9fdf2b5d9a59c75c5462fb82f58c9eedb6
+  sha1: 8da1b4334e4cd0c2f7103d72293f41f6c35f646c
+  dependencies:
+  - golang
+- name: benchmark-bbs
+  version: d23618ed0760a489d067fa880d8ea105c94e3c22
+  fingerprint: d23618ed0760a489d067fa880d8ea105c94e3c22
+  sha1: 85dfacdde72dc19232ce8f3e0a928cdbf1568891
+  dependencies:
+  - golang
+- name: buildpack_app_lifecycle
+  version: 9d1b5cdbc9e7cc7c25ef3467ffc9a126bdf132f1
+  fingerprint: 9d1b5cdbc9e7cc7c25ef3467ffc9a126bdf132f1
+  sha1: b6434be05582b9034a0bcef446502eb163e7675f
+  dependencies:
+  - diego-sshd
+  - golang
+  - healthcheck
+- name: cfdot
+  version: 6fadefe4b046e2fd68a9aace24147d9d4ed0ad3d
+  fingerprint: 6fadefe4b046e2fd68a9aace24147d9d4ed0ad3d
+  sha1: 6a3bcf806fac2474d7558f9aa4148277ac7076c0
+  dependencies:
+  - golang
+- name: diego-sshd
+  version: cf463e50a6b5491ca0687d599864427894d2830f
+  fingerprint: cf463e50a6b5491ca0687d599864427894d2830f
+  sha1: 191235613a8af547fe05bcf4a85956218b911f7d
+  dependencies:
+  - golang
+- name: docker_app_lifecycle
+  version: e688803858baf2752aca81c88ba4c4e2b74e69ce
+  fingerprint: e688803858baf2752aca81c88ba4c4e2b74e69ce
+  sha1: 01acfebc9e28ccf8ab808305abf174e54e1d4189
+  dependencies:
+  - diego-sshd
+  - golang
+  - healthcheck
+- name: file_server
+  version: 263bee9d238aa659c41b3b965325fa4b27395c6c
+  fingerprint: 263bee9d238aa659c41b3b965325fa4b27395c6c
+  sha1: b3a4db5c73056697f1380393bb6c4b1316475b55
+  dependencies:
+  - golang
+- name: golang-windows
+  version: d88bdb2fc7cece01dc797628017cdeb6d9d1ca58
+  fingerprint: d88bdb2fc7cece01dc797628017cdeb6d9d1ca58
+  sha1: f19cd75d12be590d7f829a4d77d3143138eb4efc
+  dependencies: []
+- name: golang
+  version: 46105d4480ca083a6cafb8ca307d5e5084c655c4
+  fingerprint: 46105d4480ca083a6cafb8ca307d5e5084c655c4
+  sha1: c8d7b4f860f62a9e25f099cfd9c05dc8632ef5b2
+  dependencies: []
+- name: healthcheck
+  version: 4ab1bd602de38dadc388d21e8deeb69a044e60d4
+  fingerprint: 4ab1bd602de38dadc388d21e8deeb69a044e60d4
+  sha1: 71dcc4bb4d7d6d40f92cd2b5655ac30a4c8eb0ba
+  dependencies:
+  - golang
+- name: pid_utils
+  version: df9c92d8d2daa1806afe7a38d332a6fd59a8abc0
+  fingerprint: df9c92d8d2daa1806afe7a38d332a6fd59a8abc0
+  sha1: 6ada005648f7f631cd9fef1685574e27be88c913
+  dependencies: []
+- name: rep
+  version: 976fa1b2661a015fc48e565ef225fb6e10fca02c
+  fingerprint: 976fa1b2661a015fc48e565ef225fb6e10fca02c
+  sha1: 4e90da45cba13992d98b7c43a3ce69f54fb5af47
+  dependencies:
+  - golang
+- name: rep_windows
+  version: 4d9102d51f7761b02a0bb79f898214db522953fd
+  fingerprint: 4d9102d51f7761b02a0bb79f898214db522953fd
+  sha1: d116777f5a4b77afd27cd3f8f369ffa06d6dfb90
+  dependencies:
+  - golang-windows
+- name: route_emitter
+  version: a5cd213aa40c45cf271ebb70d27f3d34a1318667
+  fingerprint: a5cd213aa40c45cf271ebb70d27f3d34a1318667
+  sha1: aa2da3b4cc1a2f535b3a851e5e97d4451cdd510b
+  dependencies:
+  - golang
+- name: route_emitter_windows
+  version: b324c2eab267173f58ca2634f3d23949da03cda0
+  fingerprint: b324c2eab267173f58ca2634f3d23949da03cda0
+  sha1: 93e8fc628183fbcaaf26019187ece2eb91ab8349
+  dependencies:
+  - golang-windows
+- name: ssh_proxy
+  version: 78dbfd809091a14c2ddca5f0a26a4357692c509e
+  fingerprint: 78dbfd809091a14c2ddca5f0a26a4357692c509e
+  sha1: 5f48bdbfc57674599ef15c1bc6045bb3500e27e1
+  dependencies:
+  - golang
+- name: vizzini
+  version: a357619d6c03088e054d554a5973725a5176a367
+  fingerprint: a357619d6c03088e054d554a5973725a5176a367
+  sha1: 986b39b063f19e44fca6a8fa3889425cf093da17
+  dependencies:
+  - golang
+- name: windows_app_lifecycle
+  version: 3f5b31ffcbe1866e1812ed7d5acaf03f7e613f10
+  fingerprint: 3f5b31ffcbe1866e1812ed7d5acaf03f7e613f10
+  sha1: d10572144c7d1326d5feb89e917129ced7147e76
+  dependencies:
+  - diego-sshd
+  - healthcheck
+jobs:
+- name: auctioneer
+  version: 8cc85a738e8aa2179b2d10e6c71214a95b0afaad
+  fingerprint: 8cc85a738e8aa2179b2d10e6c71214a95b0afaad
+  sha1: 43939bc726a4cd2cb849ddf550e9ff4819e4e478
+- name: bbs
+  version: 174d3b144925515bcc75bcf9d2d61fe94aa10e25
+  fingerprint: 174d3b144925515bcc75bcf9d2d61fe94aa10e25
+  sha1: 34131fc9574e339429c74f1bd2b95f468fff0e8f
+- name: benchmark-bbs
+  version: 2218b2145fa74fca26cf0905ae5cd35e879ce47e
+  fingerprint: 2218b2145fa74fca26cf0905ae5cd35e879ce47e
+  sha1: 66ec12951b9a30de7f125cb4a60159c63f53af69
+- name: cfdot
+  version: 7d9851cfe9e1c074ae93d983cefb44f5a2134c55
+  fingerprint: 7d9851cfe9e1c074ae93d983cefb44f5a2134c55
+  sha1: 1769abba8effee5275f510a9dd0e2e191b167d63
+- name: file_server
+  version: 4e93b830cd138ee5123d2f138baeb2127fb988d5
+  fingerprint: 4e93b830cd138ee5123d2f138baeb2127fb988d5
+  sha1: 1064b5984069d12bc2d152f9846d40c0a5976600
+- name: rep
+  version: 36e70a0e648286d828d856534ec403abfe8b56d3
+  fingerprint: 36e70a0e648286d828d856534ec403abfe8b56d3
+  sha1: 6bef005c3de1b5a2e7e0fe25c5f712779ede43b3
+- name: rep_windows
+  version: 4a8ddd389f2013e3ca02bd7acdcbc5427c2a4400
+  fingerprint: 4a8ddd389f2013e3ca02bd7acdcbc5427c2a4400
+  sha1: 4b14d91814edeb05b5f41f4f34a6c685e229ca18
+- name: route_emitter
+  version: 6e2124b4cbb6844769881b9eadbe006298193d09
+  fingerprint: 6e2124b4cbb6844769881b9eadbe006298193d09
+  sha1: 012e1861b3a98c47f29c72d1a9b7e223d82a4c81
+- name: route_emitter_windows
+  version: edde5e3ca5d73d9a44776ebbbfb9fae65dde0829
+  fingerprint: edde5e3ca5d73d9a44776ebbbfb9fae65dde0829
+  sha1: 61e2dcfe30bec757e5099e778e893a76211852e7
+- name: ssh_proxy
+  version: 3f5295466d54e49691ddc7d61c833652ca1514ea
+  fingerprint: 3f5295466d54e49691ddc7d61c833652ca1514ea
+  sha1: 93fbc200935c92792b9f59b24d7a8b2eac12e1ab
+- name: vizzini
+  version: e24ffc01a9df55f1538c655e71e97e710eacd1e7
+  fingerprint: e24ffc01a9df55f1538c655e71e97e710eacd1e7
+  sha1: 1243f4bd562314579c3a2f6d7400eeb2d243fe03
+license:
+  version: 62afca73e44f065731bb106885309c23ac5e0522
+  fingerprint: 62afca73e44f065731bb106885309c23ac5e0522
+  sha1: 49e5d8cd41c5fe9d01906bba027de679cbfb33c7
+commit_hash: e6e441c6
+uncommitted_changes: false
+name: diego
+version: 1.6.1
