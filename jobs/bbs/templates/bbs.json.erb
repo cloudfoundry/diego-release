@@ -174,5 +174,9 @@ if p("diego.bbs.enable_access_log")
   config[:access_log_path] = "#{LOG_DIR}/bbs.access.log"
 end
 
+if_p("diego.bbs.communication_timeout") do |value|
+  config[:communication_timeout] = value # add time unit
+end
+
 config.to_json
 %>

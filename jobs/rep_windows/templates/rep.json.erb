@@ -117,5 +117,9 @@ if_p("diego.executor.container_metrics_report_interval") do |value|
 	config[:container_metrics_report_interval] = value
 end
 
+if_p("diego.rep.communication_timeout") do |value|
+	config[:communication_timeout] = value
+end
+
 config.to_json
 %>

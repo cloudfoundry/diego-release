@@ -43,5 +43,8 @@
     config[:server_key_file] = "#{CONF_DIR}/certs/auctioneer/server.key"
   end
 
+  if_p("diego.auctioneer.communication_timeout") do |value|
+    config[:communication_timeout] = value
+  end
   config.to_json
 %>
