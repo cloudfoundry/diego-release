@@ -1,0 +1,16 @@
+---
+sql_lock_overrides:
+  templates:
+  - name: locket
+    release: diego
+  bbs:
+    locket:
+      api_location: "localhost:8891"
+  locket:
+    sql:
+      db_driver: mysql
+      db_host: 10.244.7.2
+      db_port: 3306
+      db_username: diego
+      db_password: diego
+      db_schema: diego

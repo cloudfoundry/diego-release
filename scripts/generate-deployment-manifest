@@ -18,16 +18,17 @@ MANDATORY ARGUMENTS:
     -p <property-path>  Path to property-overrides stub file.
 
 OPTIONAL ARGUMENTS:
-    -n <count-path>     Path to instance-count-overrides stub file.
-    -v <versions-path>  Path to release-versions stub file.
-    -s <sql-db-path>    Path to SQL stub file.
-    -x                  Opt out of deploying etcd with the database vms (requires sql)
-    -b                  Opt into using capi-release for bridge components.
-    -d <voldriver-path> Path to voldriver stub file.
-    -N <netman-path>    Path to netman stub file
-    -B                  Opt out of deprecated CC bridge components.
-    -R                  Opt into using local route-emitter configuration for cells.
-    -L                  Opt into using garden-linux-release for cells. (DEPRECATED)
+    -n <count-path>             Path to instance-count-overrides stub file.
+    -v <versions-path>          Path to release-versions stub file.
+    -s <sql-db-path>            Path to SQL stub file.
+    -x                          Opt out of deploying etcd with the database vms (requires sql)
+    -b                          Opt into using capi-release for bridge components.
+    -d <voldriver-path>         Path to voldriver stub file.
+    -N <netman-path>            Path to netman stub file
+    -B                          Opt out of deprecated CC bridge components.
+    -R                          Opt into using local route-emitter configuration for cells.
+    -Q <sql-lock-overrides.yml> Opt into using sql locket service (EXPERIMENTAL).
+    -L                          Opt into using garden-linux-release for cells. (DEPRECATED)
 
 EXAMPLE:
     $0 \\
@@ -51,7 +52,7 @@ bridge_properties=""
 local_route_emitter_properties=""
 bridge_jobs=""
 
-while getopts "c:i:p:n:k:v:s:d:N:krbgxLBR" opt; do
+while getopts "c:i:p:n:k:v:s:d:N:Q:krbgxLBR" opt; do
   case $opt in
     c)
       cf_deployment_manifest=$OPTARG
@@ -103,6 +104,9 @@ while getopts "c:i:p:n:k:v:s:d:N:krbgxLBR" opt; do
     R)
       local_route_emitter_properties="${manifest_generation}/enable-local-route-emitters.yml";
       ;;
+    Q)
+      sql_lock_overrides=$OPTARG
+      ;;
     *)
       echo "Unknown arguments"
       usage
@@ -151,6 +155,11 @@ fi
 
 if [[ ! -z "${sql_settings}" && ! -f "${sql_settings}" ]]; then
   >&2 echo "ERROR: SQL Setting stub '${sql_settings}' is not a regular file"
+  argument_error=true
+fi
+
+if [[ ! -z "${sql_lock_overrides}" && ! -f "${sql_lock_overrides}" ]]; then
+  >&2 echo "ERROR: SQL Setting stub '${sql_lock_overrides}' is not a regular file"
   argument_error=true
 fi
 
@@ -209,6 +218,7 @@ spiff merge \
   ${instance_counts} \
   ${sql_settings} \
   ${voldriver_settings} \
+  ${sql_lock_overrides} \
   ${tmpdir}/netman-merged.yml \
   ${iaas_settings} \
   ${tmpdir}/config-from-cf.yml \

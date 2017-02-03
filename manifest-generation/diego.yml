@@ -124,7 +124,7 @@ jobs: (( netman_overrides.jobs base.jobs ))
 base:
   jobs:
     - name: database_z1
-      templates: (( bbs_overrides.job_templates ))
+      templates: (( bbs_overrides.job_templates sql_lock_overrides.templates ))
       instances: (( instance_count_overrides.database_z1.instances || 1 ))
       persistent_disk_pool: database_disks
       resource_pool: database_z1
@@ -139,7 +139,7 @@ base:
           zone: z1
 
     - name: database_z2
-      templates: (( bbs_overrides.job_templates ))
+      templates: (( bbs_overrides.job_templates sql_lock_overrides.templates ))
       instances: (( instance_count_overrides.database_z2.instances || 1 ))
       persistent_disk_pool: database_disks
       resource_pool: database_z2
@@ -154,7 +154,7 @@ base:
           zone: z2
 
     - name: database_z3
-      templates: (( bbs_overrides.job_templates ))
+      templates: (( bbs_overrides.job_templates sql_lock_overrides.templates ))
       instances: (( instance_count_overrides.database_z3.instances || 1 ))
       persistent_disk_pool: database_disks
       resource_pool: database_z3
@@ -568,6 +568,17 @@ properties:
         client_key: (( property_overrides.rep.client_key || nil ))
         require_tls: (( property_overrides.bbs.rep.require_tls || nil ))
         client_session_cache_size: (( property_overrides.rep.client_session_cache_size || nil ))
+      locket:
+        api_location: (( sql_lock_overrides.bbs.locket.api_location ))
+      skip_consul_lock: (( property_overrides.bbs.skip_consul_lock || nil))
+    locket:
+      sql:
+        db_driver:   (( sql_lock_overrides.locket.sql.db_driver   || nil ))
+        db_host:     (( sql_lock_overrides.locket.sql.db_host     || nil ))
+        db_port:     (( sql_lock_overrides.locket.sql.db_port     || nil ))
+        db_username: (( sql_lock_overrides.locket.sql.db_username || nil ))
+        db_password: (( sql_lock_overrides.locket.sql.db_password || nil ))
+        db_schema:   (( sql_lock_overrides.locket.sql.db_schema   || nil ))
     executor:
       disk_capacity_mb: (( property_overrides.executor.disk_capacity_mb || nil ))
       max_cache_size_in_bytes: (( property_overrides.executor.max_cache_size_in_bytes || nil ))
@@ -729,6 +740,7 @@ config_from_cf: (( merge ))
 iaas_settings: (( merge ))
 instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
+sql_lock_overrides: (( merge ))
 sql_overrides: (( merge  || nil ))
 bridge_overrides:
   job_release: cf

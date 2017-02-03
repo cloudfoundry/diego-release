@@ -1,0 +1,16 @@
+---
+sql_lock_overrides:
+  templates:
+  - name: locket
+    release: diego
+  bbs:
+    locket:
+      api_location: "localhost:8891"
+  locket:
+    sql:
+      db_driver: postgres
+      db_host: 10.244.0.30
+      db_port: 5524
+      db_username: diego
+      db_password: admin
+      db_schema: diego
