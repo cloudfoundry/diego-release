@@ -742,6 +742,8 @@ instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
 sql_lock_overrides:
   templates: (( merge || [] ))
+  bbs: (( merge || nil ))
+  locket: (( merge || nil ))
 sql_overrides: (( merge  || nil ))
 bridge_overrides:
   job_release: cf

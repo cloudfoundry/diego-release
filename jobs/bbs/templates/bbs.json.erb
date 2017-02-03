@@ -180,9 +180,9 @@ if_p("diego.bbs.locket.api_location") do |value|
   locket_address_set = true
 end
 
-if_p("diego.bbs.skip_consul_lock") do |value|
-  config[:skip_consul_lock] = value
-  raise "locket.api_location must be set if skip_consul_lock is true" unless locket_address_set
+if_p("diego.bbs.skip_consul_lock") do |skip_consul_lock|
+  config[:skip_consul_lock] = skip_consul_lock
+  raise "locket.api_location must be set if skip_consul_lock is true" if skip_consul_lock && !locket_address_set
 end
 
 config.to_json
