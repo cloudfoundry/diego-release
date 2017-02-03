@@ -569,7 +569,7 @@ properties:
         require_tls: (( property_overrides.bbs.rep.require_tls || nil ))
         client_session_cache_size: (( property_overrides.rep.client_session_cache_size || nil ))
       locket:
-        api_location: (( sql_lock_overrides.bbs.locket.api_location ))
+        api_location: (( sql_lock_overrides.bbs.locket.api_location || nil ))
       skip_consul_lock: (( property_overrides.bbs.skip_consul_lock || nil))
     locket:
       sql:
@@ -740,7 +740,8 @@ config_from_cf: (( merge ))
 iaas_settings: (( merge ))
 instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
-sql_lock_overrides: (( merge ))
+sql_lock_overrides:
+  templates: (( merge || [] ))
 sql_overrides: (( merge  || nil ))
 bridge_overrides:
   job_release: cf
