@@ -10,3 +10,4 @@ base_job_templates:
       release: cf
 bridge_overrides:
   job_release: (( merge || "cf" ))
+  listener_enabled: false
