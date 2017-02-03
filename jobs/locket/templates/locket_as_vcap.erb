@@ -1,0 +1,17 @@
+#!/bin/bash -e
+
+RUN_DIR=/var/vcap/sys/run/locket
+LOG_DIR=/var/vcap/sys/log/locket
+CONF_DIR=/var/vcap/jobs/locket/config
+
+PIDFILE=$RUN_DIR/locket.pid
+
+export GOMAXPROCS=$(nproc)
+
+# Work around for GOLANG 1.5.3 DNS bug
+export GODEBUG=netdns=cgo
+
+/var/vcap/packages/locket/bin/locket \
+    -config=$CONF_DIR/locket.json \
+    2> >(tee -a $LOG_DIR/locket.stderr.log | logger -p user.error -t vcap.locket) \
+    1> >(tee -a $LOG_DIR/locket.stdout.log | logger -p user.info -t vcap.locket) & echo $! > $PIDFILE

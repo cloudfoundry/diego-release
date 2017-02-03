@@ -174,5 +174,16 @@ if p("diego.bbs.enable_access_log")
   config[:access_log_path] = "#{LOG_DIR}/bbs.access.log"
 end
 
+locket_address_set = false
+if_p("diego.bbs.locket.api_location") do |value|
+  config[:locket_address] = value
+  locket_address_set = true
+end
+
+if_p("diego.bbs.skip_consul_lock") do |value|
+  config[:skip_consul_lock] = value
+  raise "locket.api_location must be set if skip_consul_lock is true" unless locket_address_set
+end
+
 config.to_json
 %>

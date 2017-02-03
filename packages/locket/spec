@@ -1,0 +1,40 @@
+---
+name: locket
+
+dependencies:
+  - golang
+
+files:
+  - code.cloudfoundry.org/bbs/db/sqldb/helpers/*.go # gosub
+  - code.cloudfoundry.org/lager/*.go # gosub
+  - code.cloudfoundry.org/lager/lagerflags/*.go # gosub
+  - code.cloudfoundry.org/locket/cmd/locket/*.go # gosub
+  - code.cloudfoundry.org/locket/cmd/locket/config/*.go # gosub
+  - code.cloudfoundry.org/locket/db/*.go # gosub
+  - code.cloudfoundry.org/locket/grpcserver/*.go # gosub
+  - code.cloudfoundry.org/locket/handlers/*.go # gosub
+  - code.cloudfoundry.org/locket/models/*.go # gosub
+  - github.com/go-sql-driver/mysql/*.go # gosub
+  - github.com/gogo/protobuf/proto/*.go # gosub
+  - github.com/golang/protobuf/proto/*.go # gosub
+  - github.com/lib/pq/*.go # gosub
+  - github.com/lib/pq/oid/*.go # gosub
+  - github.com/tedsuo/ifrit/*.go # gosub
+  - github.com/tedsuo/ifrit/grouper/*.go # gosub
+  - github.com/tedsuo/ifrit/sigmon/*.go # gosub
+  - golang.org/x/net/context/*.go # gosub
+  - golang.org/x/net/http2/*.go # gosub
+  - golang.org/x/net/http2/hpack/*.go # gosub
+  - golang.org/x/net/internal/timeseries/*.go # gosub
+  - golang.org/x/net/trace/*.go # gosub
+  - google.golang.org/grpc/*.go # gosub
+  - google.golang.org/grpc/codes/*.go # gosub
+  - google.golang.org/grpc/credentials/*.go # gosub
+  - google.golang.org/grpc/grpclog/*.go # gosub
+  - google.golang.org/grpc/internal/*.go # gosub
+  - google.golang.org/grpc/metadata/*.go # gosub
+  - google.golang.org/grpc/naming/*.go # gosub
+  - google.golang.org/grpc/peer/*.go # gosub
+  - google.golang.org/grpc/stats/*.go # gosub
+  - google.golang.org/grpc/tap/*.go # gosub
+  - google.golang.org/grpc/transport/*.go # gosub

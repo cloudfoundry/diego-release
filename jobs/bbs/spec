@@ -152,3 +152,9 @@ properties:
   diego.bbs.rep.client_session_cache_size:
     description: "capacity of the tls client cache"
     default: 0
+
+  diego.bbs.locket.api_location:
+    description: "EXPERIMENTAL: hostname and port of the locket server"
+  diego.bbs.skip_consul_lock:
+    default: false
+    description: "EXPERIMENTAL: true to skip consul lock. locket.api_location must be set"

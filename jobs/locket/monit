@@ -1,0 +1,5 @@
+check process locket
+  with pidfile /var/vcap/sys/run/locket/locket.pid
+  start program "/var/vcap/jobs/locket/bin/locket_ctl start"
+  stop program "/var/vcap/jobs/locket/bin/locket_ctl stop"
+  group vcap

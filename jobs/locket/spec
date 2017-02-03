@@ -1,0 +1,37 @@
+---
+name: locket
+
+templates:
+  locket_ctl.erb: bin/locket_ctl
+  locket_as_vcap.erb: bin/locket_as_vcap
+  locket.json.erb: config/locket.json
+
+packages:
+  - pid_utils
+  - locket
+
+properties:
+  diego.locket.listen_addr:
+    description: "address at which to serve API requests"
+    default: "0.0.0.0:8891"
+  diego.locket.log_level:
+    description: "Log level"
+    default: "info"
+  diego.locket.sql.db_host:
+    description: "Host for SQL backend"
+    default: ""
+  diego.locket.sql.db_port:
+    description: "Port for SQL backend"
+    default: ""
+  diego.locket.sql.db_schema:
+    description: "Database name to use for connecting to SQL backend"
+    default: ""
+  diego.locket.sql.db_username:
+    description: "Username to use for connecting to SQL backend"
+    default: ""
+  diego.locket.sql.db_password:
+    description: "Password to use for connecting to SQL backend"
+    default: ""
+  diego.locket.sql.db_driver:
+    description: "Database driver to use for SQL backend (for example: mysql,postgres)"
+    default: mysql
