@@ -16,16 +16,16 @@ This document is for describing options to Diego manifest generation.
     -p <property-path>  Path to property-overrides stub file.
 
 #### OPTIONAL ARGUMENTS:
-    -n <count-path>     Path to instance-count-overrides stub file.
-    -v <versions-path>  Path to release-versions stub file.
-    -s <sql-db-path>    Path to SQL stub file.
-    -x                  Opt out of deploying etcd with the database vms (requires sql)
-    -b                  Opt into using capi-release for bridge components.
-    -d <voldriver-path> Path to voldriver stub file.
-    -N <netman-path>    Path to netman stub file.
-    -B                  Opt out of deprecated CC bridge components.
-    -R                  Opt into using local route-emitter configuration for cells.
-    -L                  Opt into using garden-linux-release for cells. (DEPRECATED)
+    -n <count-path>         Path to instance-count-overrides stub file.
+    -v <versions-path>      Path to release-versions stub file.
+    -s <sql-db-path>        Path to SQL stub file.
+    -x                      Opt out of deploying etcd with the database vms (requires sql)
+    -b                      Opt into using capi-release for bridge components.
+    -d <voldriver-path>     Path to voldriver stub file.
+    -N <cf-networking-path> Path to CF Networking stub file.
+    -B                      Opt out of deprecated CC bridge components.
+    -R                      Opt into using local route-emitter configuration for cells.
+    -L                      Opt into using garden-linux-release for cells. (DEPRECATED)
 
 #### EXAMPLE:
     scripts/generate-deployment-manifest \
@@ -37,7 +37,7 @@ This document is for describing options to Diego manifest generation.
       -s manifest-generation/bosh-lite-stubs/mysql/diego-sql.yml \
       -x \
       -d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml \
-      -N manifest-generation/bosh-lite-stubs/experimental/netman/stub.yml \
+      -N ../cf-networking-release/manifest-generation/stubs/cf-networking.yml \
       -b \
       -R
 
@@ -151,8 +151,7 @@ volman_overrides:
 
 ##### **Experimental** -N Container Networking Stub File
 
-The optional -N flag is used to specify the path for the [netman](https://github.com/cloudfoundry-incubator/netman-release) stub file.
-Netman requires Garden-runC, therefore the -g flag must also be set.
+The optional -N flag is used to specify the path for the [CF Networking](https://github.com/cloudfoundry-incubator/cf-networking-release) stub file.
 
 ##### **Experimental** -B Opt out of deprecated CC bridge components
 
