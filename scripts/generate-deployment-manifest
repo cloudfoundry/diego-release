@@ -24,7 +24,7 @@ OPTIONAL ARGUMENTS:
     -x                          Opt out of deploying etcd with the database vms (requires sql)
     -b                          Opt into using capi-release for bridge components.
     -d <voldriver-path>         Path to voldriver stub file.
-    -N <netman-path>            Path to netman stub file
+    -N <cf-networking-path>     Path to CF Networking stub file
     -B                          Opt out of deprecated CC bridge components.
     -R                          Opt into using local route-emitter configuration for cells.
     -Q <sql-lock-overrides.yml> Opt into using sql locket service (EXPERIMENTAL).
@@ -89,7 +89,7 @@ while getopts "c:i:p:n:k:v:s:d:N:Q:krbgxLBR" opt; do
       voldriver_settings=$OPTARG
       ;;
     N)
-      netman_settings=$OPTARG
+      cf_networking_settings=$OPTARG
       ;;
     L)
       >&2 echo "DEPRECATED -L flag: Support for garden-linux is being deprecated. Please migrate to garden-runc."
@@ -168,13 +168,13 @@ if [[ ! -z "${voldriver_settings}" && ! -f "${voldriver_settings}" ]]; then
   argument_error=true
 fi
 
-if [[ ! -z "${netman_settings}" && ! -f "${netman_settings}" ]]; then
-  >&2 echo "ERROR: Netman Setting stub '${netman_settings}' is not a regular file"
+if [[ ! -z "${cf_networking_settings}" && ! -f "${cf_networking_settings}" ]]; then
+  >&2 echo "ERROR: CF Networking Setting stub '${cf_networking_settings}' is not a regular file"
   argument_error=true
 fi
 
-if [[ ! -z "${netman_settings}" && "${garden_properties}x" != "x" ]]; then
-  >&2 echo "ERROR: Netman Setting stub '${netman_settings}' is set but Garden-Runc not selected"
+if [[ ! -z "${cf_networking_settings}" && "${garden_properties}x" != "x" ]]; then
+  >&2 echo "ERROR: CF Networking Setting stub '${cf_networking_settings}' is set but Garden-Runc not selected"
   argument_error=true
 fi
 
@@ -202,9 +202,9 @@ spiff merge \
   > ${tmpdir}/config-from-cf.yml
 
 spiff merge \
-  ${netman_settings} \
+  ${cf_networking_settings} \
   ${tmpdir}/config-from-cf.yml \
-  > ${tmpdir}/netman-merged.yml
+  > ${tmpdir}/cf-networking-merged.yml
 
 spiff merge \
   ${manifest_generation}/diego.yml \
@@ -219,7 +219,7 @@ spiff merge \
   ${sql_settings} \
   ${voldriver_settings} \
   ${sql_lock_overrides} \
-  ${tmpdir}/netman-merged.yml \
+  ${tmpdir}/cf-networking-merged.yml \
   ${iaas_settings} \
   ${tmpdir}/config-from-cf.yml \
   > ${tmpdir}/diego.yml
