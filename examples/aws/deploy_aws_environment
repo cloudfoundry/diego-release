@@ -76,6 +76,8 @@ $(block trafficcontroller_cert certs/loggregator-certs/trafficcontroller.crt | i
 $(block trafficcontroller_key  certs/loggregator-certs/trafficcontroller.key | indent | indent)
 $(block metron_cert            certs/loggregator-certs/metron.crt            | indent | indent)
 $(block metron_key             certs/loggregator-certs/metron.key            | indent | indent)
+$(block syslogdrainbinder_cert certs/syslogdrainbinder-certs/server.crt      | indent | indent)
+$(block syslogdrainbinder_key  certs/syslogdrainbinder-certs/server.key      | indent | indent)
 EOF
 }
 

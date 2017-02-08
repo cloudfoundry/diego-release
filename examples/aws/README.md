@@ -476,6 +476,12 @@ pushd $DIEGO_RELEASE_DIR
 popd
 ```
 
+1. To generate certificates for syslog drain binder
+```bash
+$DIEGO_RELEASE_DIR/scripts/generate-syslogdrainbinder-certs $DEPLOYMENT_DIR/certs/cf-diego-certs
+mv $DIEGO_RELEASE_DIR/diego-certs/* $DEPLOYMENT_DIR/certs
+```
+
 1. To generate certificates for BBS servers in the Diego deployment, run:
 ```bash
 $DIEGO_RELEASE_DIR/scripts/generate-diego-certs $DEPLOYMENT_DIR/certs/cf-diego-certs

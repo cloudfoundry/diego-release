@@ -221,6 +221,9 @@ properties:
       metron:
         cert: (( cf_credentials.loggregator.metron_cert ))
         key: (( cf_credentials.loggregator.metron_key ))
+      syslogdrainbinder:
+        cert: (( cf_credentials.loggregator.syslogdrainbinder_cert ))
+        key: (( cf_credentials.loggregator.syslogdrainbinder_key ))
 
 Resources: (( merge ))
 Region: (( merge ))
