@@ -16,6 +16,8 @@ jobs:
   templates:
   - name: datadog-firehose-nozzle
     release: datadog-firehose-nozzle
+  - name: consul_agent
+    release: cf
 meta:
   availability_zone: (( Resources.SubnetAvailabilityZone.DatadogFirehoseNozzle ))
   environment: (( merge ))
@@ -52,6 +54,14 @@ properties:
     client: datadog-firehose-nozzle
     client_secret: nozzle-secret
     url: (( "https://uaa." domain ))
+  consul:
+    ca_cert:      (( merge ))
+    server_cert:  (( merge ))
+    server_key:   (( merge ))
+    agent_cert:   (( merge ))
+    agent_key:    (( merge ))
+    agent:        (( merge ))
+    encrypt_keys: (( merge ))
 releases:
 - name: datadog-firehose-nozzle
   version: latest

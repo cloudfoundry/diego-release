@@ -396,13 +396,13 @@ spiff merge \
 if [ -d stubs/datadog-firehose-nozzle ]; then
     spiff merge \
           $SCRIPT_DIR/templates/datadog-firehose-nozzle/datadog-firehose-nozzle.yml \
+          stubs/datadog-firehose-nozzle/datadog.yml \
+          stubs/datadog-firehose-nozzle/property-overrides.yml \
           stubs/aws-resources.yml \
           stubs/cf/properties.yml \
           stubs/cf/stub.yml \
           stubs/cf/domain.yml \
           stubs/director-uuid.yml \
-          stubs/datadog-firehose-nozzle/datadog.yml \
-          stubs/datadog-firehose-nozzle/property-overrides.yml \
           > deployments/datadog-firehose-nozzle.yml
 fi
 popd
