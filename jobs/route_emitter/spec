@@ -13,6 +13,11 @@ packages:
   - pid_utils
   - route_emitter
 
+consumes:
+- name: nats
+  type: nats
+  optional: true
+
 properties:
   diego.route_emitter.local_mode:
     description: "EXPERIMENTAL: turn on local mode. in this mode route-emitter only handles events for the local cell"

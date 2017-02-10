@@ -1,11 +1,39 @@
 <%=
   CONF_DIR = "/var/vcap/jobs/#{p("diego.route_emitter.job_name")}/config"
 
+  nats_machines = nil
+  if_p('diego.route_emitter.nats.machines') do |ips|
+    nats_machines = ips.compact
+  end.else do
+    nats_machines = link('nats').instances.map { |instance| instance.address }
+  end
+
+  nats_port = nil
+  if_p('diego.route_emitter.nats.port') do |prop|
+    nats_port = prop
+  end.else do
+    nats_port = link('nats').p("nats.port")
+  end
+
+  nats_user = nil
+  if_p('diego.route_emitter.nats.user') do |prop|
+    nats_user = prop
+  end.else do
+    nats_user = link('nats').p("nats.user")
+  end
+
+  nats_password = nil
+  if_p('diego.route_emitter.nats.password') do |prop|
+    nats_password = prop
+  end.else do
+    nats_password = link('nats').p("nats.password")
+  end
+
   config = {
-    nats_username: p("diego.route_emitter.nats.user"),
-    nats_password: p("diego.route_emitter.nats.password"),
-    nats_addresses: p("diego.route_emitter.nats.machines").collect { |addr|
-      "#{addr}:#{p("diego.route_emitter.nats.port")}"
+    nats_username: nats_user,
+    nats_password: nats_password,
+    nats_addresses: nats_machines.collect { |addr|
+      "#{addr}:#{nats_port}"
     }.join(","),
     consul_cluster: "http://127.0.0.1:8500",
     sync_interval: "#{p("diego.route_emitter.sync_interval_in_seconds")}s",
