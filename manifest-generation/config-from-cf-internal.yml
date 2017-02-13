@@ -54,8 +54,9 @@ config_from_cf:
   syslog_daemon_config: (( properties.syslog_daemon_config ))
   system_domain: (( properties.system_domain ))
   uaa:
+    tls_port: (( properties.uaa.ssl.port ))
+    ca_cert: (( properties.uaa.ca_cert ))
     ssh_proxy_client_secret: (( properties.uaa.clients.ssh-proxy.secret ))
-    token_url: (( properties.uaa.url "/oauth/token" ))
   app_domains: (( properties.app_domains ))
   sql:
     host: (( properties.databases.address ))
@@ -135,3 +136,6 @@ properties:
       ssh-proxy:
         secret: (( merge || nil ))
     url: (( merge ))
+    ca_cert: (( merge ))
+    ssl:
+      port: (( merge ))

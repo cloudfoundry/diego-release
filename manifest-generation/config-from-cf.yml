@@ -56,8 +56,9 @@ config_from_cf:
   syslog_daemon_config: (( merge ))
   system_domain: (( merge ))
   uaa:
+    tls_port: (( merge ))
+    ca_cert: (( merge ))
     ssh_proxy_client_secret: (( merge ))
-    token_url: (( merge ))
   app_domains: (( merge ))
   sql:
     host: (( merge ))

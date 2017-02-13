@@ -7,6 +7,7 @@ templates:
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
+  uaa_ca.crt.erb: config/certs/uaa/ca.crt
   ssh_proxy.json.erb: config/ssh_proxy.json
 
 packages:
@@ -55,6 +56,14 @@ properties:
     description: URL of the UAA token endpoint
   diego.ssh_proxy.uaa_secret:
     description: The oauth client secret used to authenticate the ssh-proxy with the uaa
+
+  diego.ssh_proxy.uaa.url:
+    description: The domain name of the UAA
+    default: "https://uaa.service.cf.internal"
+  diego.ssh_proxy.uaa.port:
+    description: The port to contact UAA on
+  diego.ssh_proxy.uaa.ca_cert:
+    description: The CA certificate of the UAA
 
   diego.ssh_proxy.cc.internal_service_hostname:
     description: Internal service hostname of Cloud Controller Api
