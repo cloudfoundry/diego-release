@@ -13,6 +13,8 @@ templates:
   rep_ca.crt.erb: config/certs/ca.crt
   rep_server.crt.erb: config/certs/server.crt
   rep_server.key.erb: config/certs/server.key
+  instance_identity.crt.erb: config/certs/rep/instance_identity.crt
+  instance_identity.key.erb: config/certs/rep/instance_identity.key
   consul_ca.crt.erb: config/certs/consul/ca.crt
   consul_client.crt.erb: config/certs/consul/client.crt
   consul_client.key.erb: config/certs/consul/client.key
@@ -188,6 +190,10 @@ properties:
   diego.executor.volman.driver_paths:
     description: "Experimental: OS style path string containing the directories volman will look in for voldriver specs (delimited by : or ; depending on the OS)"
     default: "/var/vcap/data/voldrivers"
+  diego.executor.instance_identity_ca_cert:
+    description: "Experimental: PEM-encoded CA used to sign instance identity credentials. Enables instance identity if set along with instance_identity_key"
+  diego.executor.instance_identity_key:
+    description: "Experimental: PEM-encoded key used to sign instance identity credentials. Enables instance identity if set along with instance_identity_ca_cert"
 
   diego.rep.bbs.api_location:
     description: "Address to the BBS Server"

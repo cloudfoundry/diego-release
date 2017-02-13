@@ -2,6 +2,7 @@
 CONF_DIR = "/var/vcap/jobs/#{p("diego.rep.job_name")}/config"
 TMP_DIR = "/var/vcap/data/executor/tmp"
 TRUSTED_CERTS_DIR = "/var/vcap/data/executor/trusted_certs"
+INSTANCE_IDENTITY_DIR = "/var/vcap/data/executor/instance_identity"
 
 config = {
  "dropsonde_port" => p("diego.rep.dropsonde_port"),
@@ -115,6 +116,14 @@ end
 
 if_p("diego.executor.container_metrics_report_interval") do |value|
 	config[:container_metrics_report_interval] = value
+end
+
+if_p("diego.executor.instance_identity_ca_cert", "diego.executor.instance_identity_key") do |cert, key|
+	if !(cert.empty? || key.empty?)
+		config[:instance_identity_ca_path] = "#{CONF_DIR}/certs/rep/instance_identity.crt"
+		config[:instance_identity_private_key_path] = "#{CONF_DIR}/certs/rep/instance_identity.key"
+		config[:instance_identity_cred_dir] = INSTANCE_IDENTITY_DIR
+	end
 end
 
 config.to_json

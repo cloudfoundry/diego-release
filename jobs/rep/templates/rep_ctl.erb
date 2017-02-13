@@ -36,6 +36,11 @@ case $1 in
     mkdir -p $DRIVERS_PATHS
     chown vcap:vcap $DRIVERS_PATHS
 
+    INSTANCE_IDENTITY_DIR=${DATA_DIR}/instance_identity
+    rm -rf "$INSTANCE_IDENTITY_DIR"
+    mkdir -p "$INSTANCE_IDENTITY_DIR"
+    chown -R vcap:vcap "$INSTANCE_IDENTITY_DIR"
+
     TRUSTED_CERTS_DIR=${DATA_DIR}/trusted_certs
     rm -rf "$TRUSTED_CERTS_DIR"
     <% if_p("diego.rep.trusted_certs") do |value| %>

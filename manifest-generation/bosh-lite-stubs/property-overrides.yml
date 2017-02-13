@@ -381,6 +381,53 @@ property_overrides:
       network: tcp
       address: 127.0.0.1:7777
     log_level: debug
+    instance_identity_ca_cert: |+
+      -----BEGIN CERTIFICATE-----
+      MIIC9jCCAd6gAwIBAgIBATANBgkqhkiG9w0BAQsFADAbMRkwFwYDVQQDExBpbnN0
+      YW5jZWlkZW50aXR5MB4XDTE3MDIxMDAxMTcyMVoXDTI3MDIxMDAxMTcyM1owGzEZ
+      MBcGA1UEAxMQaW5zdGFuY2VpZGVudGl0eTCCASIwDQYJKoZIhvcNAQEBBQADggEP
+      ADCCAQoCggEBAMEkB+YV4UL70k4lqMEU5eQAJcaBjVq6vSqAIcorupSYZwSXaHe2
+      rkat7BPbvq3YdOOBs9LaSLDat2MIOPXrB/gyGV+DqMY3oKDAxrdiRWmJ3ybs42fK
+      MJkUyB7/rpIr8bCo6oAmJ4bThj9cNOwpKPyo40Paz8bnMiQbnRjOs1K7SGUpn6Ls
+      TbQJxCeThbTkgCF04uGhadB2DD+uKhgShirXPGIn/JAgznRGVrOKhCm6XFnaHSKN
+      ebXTi+8lvyh2MIj/laO4YIFFA7oIjflxn1Rxt09V2qdkvb7kA2JUmeAx55xqWkZf
+      jSmCjrx4Jhd6VafoZVecCiQ8+6E/Sy4NhzsCAwEAAaNFMEMwDgYDVR0PAQH/BAQD
+      AgEGMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFElBI3woAcgiYOnY/tV7
+      kRR8YwruMA0GCSqGSIb3DQEBCwUAA4IBAQBpe8BRyvIkV/QG0iNqZhV42FQtDrf1
+      PpDXqrI/4LsLP+g6987+Zq0WCyibe5dMOr0KpL8QcY7InAANDcfG8ADrxD0J918+
+      OrFhGO4E3WP5qj16PqFd/qwdUCiPRnbHwLCiyBYnZA89z8re6/NSEwpxL3jIHyeY
+      RKcFTo0Y7NGNbg5tgR0Su8EABLivMsztFJO8UCXVDFWQSfG9rjWSqsWvVaYkHFDa
+      3qu4QyXrdvdHlJcxhAWsp9MjwFOvJCt72jOq1FIOhOO7KozFhiUpugOTvegG8fkg
+      bV0t57BCS3ztf6mpev3Y8hdbOsm5mYRTXPTqDXBA9D9mWFqOArqV+edE
+      -----END CERTIFICATE-----
+    instance_identity_key: |+
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEpAIBAAKCAQEAwSQH5hXhQvvSTiWowRTl5AAlxoGNWrq9KoAhyiu6lJhnBJdo
+      d7auRq3sE9u+rdh044Gz0tpIsNq3Ywg49esH+DIZX4OoxjegoMDGt2JFaYnfJuzj
+      Z8owmRTIHv+ukivxsKjqgCYnhtOGP1w07Cko/KjjQ9rPxucyJBudGM6zUrtIZSmf
+      ouxNtAnEJ5OFtOSAIXTi4aFp0HYMP64qGBKGKtc8Yif8kCDOdEZWs4qEKbpcWdod
+      Io15tdOL7yW/KHYwiP+Vo7hggUUDugiN+XGfVHG3T1Xap2S9vuQDYlSZ4DHnnGpa
+      Rl+NKYKOvHgmF3pVp+hlV5wKJDz7oT9LLg2HOwIDAQABAoIBABtIpb0BFkNKI5la
+      hI5SD2+3/Z4fKwLIInTgiOVwa/kV1me1o9JVgiUF6LWdc0BHtat15RtCLsac/w8E
+      WFeVDhknqqHtjWgC77QFx4ycW0XfbiCnkjBVRaw6XVLTt6t6fbgBBK95tFe9hddp
+      hShfYCThDsnFHVjxzAmBxR1+BaMIBw0mvyEv09UgL8JZHlaI8DpHPMGdhslGCN7T
+      peWC52i2vhpyUZ2rwBY7uO7HfFol15NJ83VhUZBfDhsWnPsBz1cvVp8NApWJMqAp
+      1ts9PUotVm7JREXNoMBstB3VkmWHfpT11FDZn0nPdYPJnSVC/hs1Jt4lIjlGwroX
+      KdU8VeECgYEA3em4mjhG70TvqEzaQwCFAwnUXqEN164BlrLOjsn24fvXi88EfBpf
+      h2OZPAOyRKcP7oogSlfN0qNYgG/tKNXN0MWPpN7Oc4/jjwB3KhVse0vjXd11Rzds
+      q0P1lrA4GKhGI91wUCbO5+0fcGKu8GgANj4e6tsElbOPeZIRx3FwX1kCgYEA3s7m
+      bDpIwznYG3PVuRBOtekhrVG2dM01oWHVPrHooESB9lW9dw8EwSz/Mp6UFTaeNutH
+      tinLPYGfpISQy16U16JKq9mprEcpmE1981F2jbwNzqEricj0hHWU+9yX00IntehV
+      FtMG00OcfKoAC4UcWGz1uB0/kT3v7W9osQTyPLMCgYEAzGnr21u1s9frbzuD3i5P
+      WBIo5xYyGxe1bOy+qvdNjLMgxS9n8S2WC6/qSkcZYnYFjfT8c57YAIzpDD6N1ozD
+      7ujdPcDjqb3En0iNfF2JtTWddix2SKi8WDLcufcPZV80ZPso5xwogamCyVKN1PPo
+      Jg8pCavAWGmz4wdziyVqntkCgYBZ8J0VPSXYIMZ6tnSkos+TIQumIiEL3zZx8cMZ
+      7skfwOfRX2T+5YIe1KIjdd4C/iw5sRoej5pqNqQRzi2A2qosrWeFHXUfhQ5mW4mn
+      KdA4gJv2OBsSIJuLyMceMDrdXYwYIzQN5ZuQtm8554njHJWHoFxEORJK9/ydFObm
+      5j8+fwKBgQDIiVWRC9FAEPrM8xPGDW3iKMI9Tvykvs0+iEFOWBrKtZCCXKE4PHbM
+      zWxIsWloLiojfP3/02WAq2uludQNdSCcLVaWOFOLB3DZ/Zd10LNXtFk7KM1FL18r
+      HKkgvOkIyeksTDEbInSxAbaWEqlUpqp8bfgI7KbnyY7/eT90beOCpg==
+      -----END RSA PRIVATE KEY-----
   garden:
     listen_network: tcp
     listen_address: 0.0.0.0:7777
