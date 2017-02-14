@@ -228,7 +228,7 @@ On OS X, follow these steps to install and configure MySQL and Postgres:
 1. Generate the Diego manifests:
 
         cd ~/workspace/diego-release
-        ./scripts/generate-bosh-lite-manifests # specify [-g] for garden-runc-release
+        ./scripts/generate-bosh-lite-manifests
 
 1. Create, upload, and deploy the CF release:
 
