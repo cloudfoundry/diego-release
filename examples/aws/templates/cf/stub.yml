@@ -194,6 +194,9 @@ properties:
       metron:
         cert: (( merge ))
         key: (( merge ))
+      statsd_injector:
+        cert: (( merge ))
+        key: (( merge ))
       syslogdrainbinder:
         cert: (( merge ))
         key: (( merge ))

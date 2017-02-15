@@ -454,12 +454,11 @@ In order to secure your Cloud Foundry deployment properly, you must generate SSL
 
 The CF and Diego release repositories provide scripts to generate the necessary SSL certificates.
 
-1. To generate certificates for consul, loggregator run:
+1. To generate certificates for consul, and cloud controller run:
 ```bash
 cd $DEPLOYMENT_DIR/certs
 $CF_RELEASE_DIR/scripts/generate-cf-diego-certs
 $CF_RELEASE_DIR/scripts/generate-consul-certs
-$CF_RELEASE_DIR/scripts/generate-loggregator-certs
 ```
 
 1. To generate certificates for uaa run:
@@ -467,19 +466,24 @@ $CF_RELEASE_DIR/scripts/generate-loggregator-certs
 ``` shell
 pushd $CF_RELEASE_DIR
   ./scripts/generate-uaa-certs
-  cp -r uaa-certs/ $DEPLOYMENT_DIR/certs/
+  mv -r uaa-certs/ $DEPLOYMENT_DIR/certs/
 popd
 
 pushd $DIEGO_RELEASE_DIR
   ./scripts/generate-uaa-saml-certs   # output will be in diego-certs/uaa-saml-certs
-  cp diego-certs/uaa-saml-certs/saml.* $DEPLOYMENT_DIR/certs/uaa-certs/
+  mv diego-certs/uaa-saml-certs/saml.* $DEPLOYMENT_DIR/certs/uaa-certs/
 popd
 ```
 
-1. To generate certificates for syslog drain binder
+1. To generate certificates for loggregator run:
 ```bash
-$DIEGO_RELEASE_DIR/scripts/generate-syslogdrainbinder-certs $DEPLOYMENT_DIR/certs/cf-diego-certs
-mv $DIEGO_RELEASE_DIR/diego-certs/* $DEPLOYMENT_DIR/certs
+$CF_RELEASE_DIR/scripts/generate-loggregator-certs $DEPLOYMENT_DIR/certs/cf-diego-certs/cf-diego-ca.crt $DEPLOYMENT_DIR/certs/cf-diego-certs/cf-diego-ca.key
+mv $CF_RELEASE_DIR/loggregator-certs $DEPLOYMENT_DIR/certs/
+
+pushd $CF_RELEASE_DIR
+  $CF_RELEASE_DIR/scripts/generate-statsd-injector-certs $DEPLOYMENT_DIR/certs/loggregator-certs/loggregator-ca.crt $DEPLOYMENT_DIR/certs/loggregator-certs/loggregator-ca.key
+  mv $CF_RELEASE_DIR/statsd-injector-certs $DEPLOYMENT_DIR/certs
+popd
 ```
 
 1. To generate certificates for BBS servers in the Diego deployment, run:
@@ -491,7 +495,7 @@ mv $DIEGO_RELEASE_DIR/diego-certs/* $DEPLOYMENT_DIR/certs
 After running these scripts, you should see the following files in `$DEPLOYMENT_DIR/certs`:
 ```
 DEPLOYMENT_DIR/certs
-|- cf-diego-certs
+|- cf-diego-certs # generated via cf-release/scripts/generate-cf-diego-certs
 |  |- cf-diego-ca.crt
 |  |- cf-diego-ca.key
 |  |- cloud-controller.crt
@@ -521,11 +525,19 @@ DEPLOYMENT_DIR/certs
 |  |- trafficcontroller.key
 |  |- metron.crt
 |  |- metron.key
+|  |- syslogdrainbinder.crt
+|  |- syslogdrainbinder.key
 |- rep-certs         # generated via diego-release/scripts/generate-diego-certs
 |  |- client.crt
 |  |- client.key
 |  |- server.crt
 |  |- server.key
+|- statsd-injector-certs # generated via cf-release/scripts/generate-statsd-injector-certs
+|  |- statsdinjector.crt
+|  |- statsdinjector.key
+|- tps-certs # generated via diego-release/scripts/generate-diego-certs
+|  |- client.crt
+|  |- client.key
 |- uaa-certs
 |  |- saml.crt     # generated via diego-release/scripts/generate-uaa-saml-certs
 |  |- saml.key

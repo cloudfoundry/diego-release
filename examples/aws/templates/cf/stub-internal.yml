@@ -221,6 +221,9 @@ properties:
       metron:
         cert: (( cf_credentials.loggregator.metron_cert ))
         key: (( cf_credentials.loggregator.metron_key ))
+      statsd_injector:
+        cert: (( cf_credentials.loggregator.statsd_injector_cert ))
+        key: (( cf_credentials.loggregator.statsd_injector_key ))
       syslogdrainbinder:
         cert: (( cf_credentials.loggregator.syslogdrainbinder_cert ))
         key: (( cf_credentials.loggregator.syslogdrainbinder_key ))
