@@ -10,6 +10,10 @@ templates:
   uaa_ca.crt.erb: config/certs/uaa/ca.crt
   ssh_proxy.json.erb: config/ssh_proxy.json
 
+provides:
+- name: ssh_proxy
+  type: conn
+
 packages:
   - pid_utils
   - ssh_proxy
