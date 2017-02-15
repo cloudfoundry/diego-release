@@ -1,0 +1,22 @@
+---
+grootfs_overrides:
+  garden:
+    image_plugin: "/var/vcap/packages/grootfs/bin/grootfs"
+    image_plugin_extra_args: ["--config=/var/vcap/jobs/grootfs/config/grootfs_config.yml"]
+    privileged_image_plugin: "/var/vcap/packages/grootfs/bin/grootfs"
+    privileged_image_plugin_extra_args: ["--config=/var/vcap/jobs/grootfs/config/privileged_grootfs_config.yml"]
+  rep:
+    preloaded_rootfses: ["cflinuxfs2:/var/vcap/packages/cflinuxfs2/rootfs.tar"]
+  grootfs:
+    graph_cleanup_threshold_in_mb: (( property_overrides.garden.graph_cleanup_threshold_in_mb || 0 ))
+    insecure_docker_registry_list: (( property_overrides.garden.insecure_docker_registry_list || nil ))
+    persistent_image_list: (( property_overrides.garden.persistent_image_list || ["/var/vcap/packages/cflinuxfs2/rootfs.tar"] ))
+  templates:
+  - name: grootfs
+    release: grootfs
+  releases:
+  - name: grootfs
+    version: (( release_versions.grootfs || "latest" ))
+
+property_overrides: (( merge || nil ))
+release_versions: (( merge || nil ))

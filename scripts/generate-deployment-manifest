@@ -28,6 +28,7 @@ OPTIONAL ARGUMENTS:
     -B                          Opt out of deprecated CC bridge components.
     -R                          Opt into using local route-emitter configuration for cells.
     -Q <sql-lock-overrides.yml> Opt into using sql locket service (EXPERIMENTAL).
+    -G                          Opt into using grootfs release (EXPERIMENTAL).
     -L                          Opt into using garden-linux-release for cells. (DEPRECATED)
 
 EXAMPLE:
@@ -52,7 +53,7 @@ bridge_properties=""
 local_route_emitter_properties=""
 bridge_jobs=""
 
-while getopts "c:i:p:n:k:v:s:d:N:Q:krbgxLBR" opt; do
+while getopts "c:i:p:n:k:v:s:d:N:Q:krbgxLBRG" opt; do
   case $opt in
     c)
       cf_deployment_manifest=$OPTARG
@@ -106,6 +107,9 @@ while getopts "c:i:p:n:k:v:s:d:N:Q:krbgxLBR" opt; do
       ;;
     Q)
       sql_lock_overrides=$OPTARG
+      ;;
+    G)
+      grootfs_properties="${manifest_generation}/enable-grootfs.yml"
       ;;
     *)
       echo "Unknown arguments"
@@ -209,6 +213,7 @@ spiff merge \
 spiff merge \
   ${manifest_generation}/diego.yml \
   ${garden_properties} \
+  ${grootfs_properties} \
   ${release_versions} \
   ${bbs_properties} \
   ${bridge_jobs} \

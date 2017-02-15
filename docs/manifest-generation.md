@@ -202,6 +202,10 @@ sql_lock_overrides:
       db_schema: diego
 ```
 
+##### **Experimental** -G Opt into using GrootFS for garden
+
+The optional -G flag is used to enable [GrootFS](https://github.com/cloudfoundry/grootfs) as the container image orchestrator.
+
 ## diego-release/scripts/generate-windows-cell-deployment-manifest
 
 #### SYNOPSIS:

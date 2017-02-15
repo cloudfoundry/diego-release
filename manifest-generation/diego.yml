@@ -1,6 +1,6 @@
 name: (( config_from_cf.cf_deployment_name "-diego" ))
 
-releases: (( base_releases bbs_overrides.releases volman_overrides.releases cf_networking_overrides.releases [garden_overrides.release] [config_from_cf.cf_release] bridge_overrides.releases ))
+releases: (( base_releases bbs_overrides.releases volman_overrides.releases cf_networking_overrides.releases [garden_overrides.release] [config_from_cf.cf_release] bridge_overrides.releases grootfs_overrides.releases ))
 
 director_uuid: (( config_from_cf.cf_director_uuid ))
 
@@ -182,7 +182,7 @@ base:
           zone: z1
 
     - name: cell_z1
-      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates ))
+      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates grootfs_overrides.templates ))
       instances: (( instance_count_overrides.cell_z1.instances || 1 ))
       resource_pool: cell_z1
       networks:
@@ -253,7 +253,7 @@ base:
           zone: z2
 
     - name: cell_z2
-      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates ))
+      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates grootfs_overrides.templates ))
       instances: (( instance_count_overrides.cell_z2.instances || 1 ))
       resource_pool: cell_z2
       networks:
@@ -324,7 +324,7 @@ base:
           zone: z3
 
     - name: cell_z3
-      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates ))
+      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates grootfs_overrides.templates ))
       instances: (( instance_count_overrides.cell_z3.instances || 0 ))
       resource_pool: cell_z3
       networks:
@@ -606,7 +606,7 @@ properties:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       log_level: (( property_overrides.file_server.log_level || nil ))
     rep:
-      preloaded_rootfses: (( property_overrides.diego.rep.preloaded_rootfses || ["cflinuxfs2:/var/vcap/packages/cflinuxfs2/rootfs"] ))
+      preloaded_rootfses: (( grootfs_overrides.rep.preloaded_rootfses ))
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       bbs:
         api_location: (( property_overrides.bbs.api_location || nil ))
@@ -737,6 +737,13 @@ properties:
     persistent_image_list: (( property_overrides.garden.persistent_image_list || ["/var/vcap/packages/cflinuxfs2/rootfs"] ))
     network_plugin: (( cf_networking_overrides.garden_properties.network_plugin || nil ))
     network_plugin_extra_args: (( cf_networking_overrides.garden_properties.network_plugin_extra_args || nil ))
+    image_plugin: (( grootfs_overrides.garden.image_plugin || nil ))
+    image_plugin_extra_args: (( grootfs_overrides.garden.image_plugin_extra_args || nil ))
+    privileged_image_plugin_extra_args: (( grootfs_overrides.garden.privileged_image_plugin_extra_args || nil ))
+    privileged_image_plugin_extra_args: (( grootfs_overrides.garden.privileged_image_plugin_extra_args || nil ))
+
+  # -- Properties below are used by jobs from grootfs-release --
+  grootfs: (( grootfs_overrides.grootfs || nil ))
 
 # The keys below should not be included in the final stub
 config_from_cf: (( merge ))
@@ -811,6 +818,21 @@ garden_overrides:
   release:
     name: garden-runc
     version: (( release_versions.garden-runc || "latest" ))
+
+grootfs_overrides:
+  grootfs: (( merge || nil ))
+  garden:
+    image_plugin: (( merge || nil ))
+    image_plugin_extra_args: (( merge || nil ))
+    privileged_image_plugin: (( merge || nil ))
+    privileged_image_plugin_extra_args: (( merge || nil ))
+    graph_cleanup_threshold_in_mb: (( merge || nil ))
+    insecure_docker_registry_list: (( merge || nil ))
+    persistent_image_list: (( merge || nil ))
+  rep:
+    preloaded_rootfses: (( property_overrides.diego.rep.preloaded_rootfses || ["cflinuxfs2:/var/vcap/packages/cflinuxfs2/rootfs"] ))
+  releases: (( merge || [] ))
+  templates: (( merge || [] ))
 
 empty_hash: {}
 
