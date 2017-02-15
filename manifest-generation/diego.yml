@@ -169,7 +169,7 @@ base:
           zone: z3
 
     - name: brain_z1
-      templates: (( base_job_templates.brain ))
+      templates: (( base_job_templates.brain sql_lock_overrides.templates ))
       instances: (( instance_count_overrides.brain_z1.instances || 1 ))
       resource_pool: brain_z1
       networks:
@@ -240,7 +240,7 @@ base:
           zone: z1
 
     - name: brain_z2
-      templates: (( base_job_templates.brain ))
+      templates: (( base_job_templates.brain sql_lock_overrides.templates ))
       instances: (( instance_count_overrides.brain_z2.instances || 1 ))
       resource_pool: brain_z2
       networks:
@@ -311,7 +311,7 @@ base:
           zone: z2
 
     - name: brain_z3
-      templates: (( base_job_templates.brain ))
+      templates: (( base_job_templates.brain sql_lock_overrides.templates ))
       instances: (( instance_count_overrides.brain_z3.instances || 0 ))
       resource_pool: brain_z3
       networks:
@@ -506,6 +506,9 @@ properties:
         require_ssl: (( property_overrides.bbs.require_ssl || nil ))
         client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
+      locket:
+        api_location: (( sql_lock_overrides.locket.api_location || nil ))
+      skip_consul_lock: (( property_overrides.auctioneer.skip_consul_lock || nil))
       rep:
         ca_cert: (( property_overrides.rep.ca_cert || nil ))
         client_cert: (( property_overrides.rep.client_cert || nil ))
@@ -564,7 +567,7 @@ properties:
         require_tls: (( property_overrides.bbs.rep.require_tls || nil ))
         client_session_cache_size: (( property_overrides.rep.client_session_cache_size || nil ))
       locket:
-        api_location: (( sql_lock_overrides.bbs.locket.api_location || nil ))
+        api_location: (( sql_lock_overrides.locket.api_location || nil ))
       skip_consul_lock: (( property_overrides.bbs.skip_consul_lock || nil))
     locket:
       sql:

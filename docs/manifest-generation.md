@@ -165,7 +165,7 @@ cf-release via Cloud Controller properties.
 ##### **Experimental** -Q Opt into using sql locket service
 
 The optional -Q flag is used to specify the stub for the SQL backend for the locket server.
-Specifying this stub will configure the BBS to use the locket server for it's SQL lock.
+Specifying this stub will configure the BBS and Auctioneer to use the locket server for it's SQL lock.
 
 ##### MySQL Example:
 
@@ -174,10 +174,8 @@ sql_lock_overrides:
   templates:
   - name: locket
     release: diego
-  bbs:
-    locket:
-      api_location: "localhost:8891"
   locket:
+    api_location: "localhost:8891"
     sql:
       db_driver: mysql
       db_host: 10.244.7.2
@@ -193,10 +191,8 @@ sql_lock_overrides:
   templates:
   - name: locket
     release: diego
-  bbs:
-    locket:
-      api_location: "localhost:8891"
   locket:
+    api_location: "localhost:8891"
     sql:
       db_driver: postgres
       db_host: 10.244.0.30

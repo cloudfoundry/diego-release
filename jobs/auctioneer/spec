@@ -66,7 +66,6 @@ properties:
   diego.auctioneer.bbs.max_idle_conns_per_host:
     description: "maximum number of idle http connections"
 
-
   diego.auctioneer.rep.require_tls:
     description: "Whether to require TLS for communication to the securable rep API server"
     default: false
@@ -79,3 +78,9 @@ properties:
   diego.auctioneer.rep.client_session_cache_size:
     description: "capacity of the tls client cache"
     default: 0
+
+  diego.auctioneer.locket.api_location:
+    description: "EXPERIMENTAL: hostname and port of the locket server"
+  diego.auctioneer.skip_consul_lock:
+    default: false
+    description: "EXPERIMENTAL: true to skip consul lock. locket.api_location must be set"
