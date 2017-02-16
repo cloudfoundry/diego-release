@@ -54,7 +54,7 @@ The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) pre
 - [TLS Configuration](docs/tls-configuration.md) describes how to generate TLS certificates for secure communication with Consul, the Diego BBS, and the Diego cell reps.
 - [Upgrading the cell rep API to mutual TLS](docs/upgrading-secure-cell-rep-api.md) explains how to transition an existing Diego deployment to use mutual TLS for communication to the cell rep API without incurring downtime.
 - [Upgrading the auctioneer API to mutual TLS](docs/upgrading-secure-auctioneer-api.md) explains how to transition an existing Diego deployment to use mutual TLS for communication from the BBS to the auctioneer API without incurring downtime.
-- [Instance Identity](docs/instance-identity.md) explains how to enable instance identity.
+- (**Experimental**) [Instance Identity](docs/instance-identity.md) explains how to enable instance identity.
 
 
 ### <a name="data-store-configuration"></a>Data Store Configuration
