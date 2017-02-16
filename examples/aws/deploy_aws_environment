@@ -76,8 +76,8 @@ $(block trafficcontroller_cert certs/loggregator-certs/trafficcontroller.crt  | 
 $(block trafficcontroller_key  certs/loggregator-certs/trafficcontroller.key  | indent | indent)
 $(block metron_cert            certs/loggregator-certs/metron.crt             | indent | indent)
 $(block metron_key             certs/loggregator-certs/metron.key             | indent | indent)
-$(block statsd_injector_cert    certs/statsd-injector-certs/statsdinjector.crt | indent | indent)
-$(block statsd_injector_key     certs/statsd-injector-certs/statsdinjector.key | indent | indent)
+$(block statsd_injector_cert   certs/statsd-injector-certs/statsdinjector.crt | indent | indent)
+$(block statsd_injector_key    certs/statsd-injector-certs/statsdinjector.key | indent | indent)
 $(block syslogdrainbinder_cert certs/loggregator-certs/syslogdrainbinder.crt  | indent | indent)
 $(block syslogdrainbinder_key  certs/loggregator-certs/syslogdrainbinder.key  | indent | indent)
 EOF
