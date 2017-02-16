@@ -478,11 +478,6 @@ popd
 1. To generate certificates for loggregator run:
 ```bash
 $CF_RELEASE_DIR/scripts/generate-loggregator-certs $DEPLOYMENT_DIR/certs/cf-diego-certs/cf-diego-ca.crt $DEPLOYMENT_DIR/certs/cf-diego-certs/cf-diego-ca.key
-
-pushd $CF_RELEASE_DIR
-  $CF_RELEASE_DIR/scripts/generate-statsd-injector-certs $DEPLOYMENT_DIR/certs/loggregator-certs/loggregator-ca.crt $DEPLOYMENT_DIR/certs/loggregator-certs/loggregator-ca.key
-  mv $CF_RELEASE_DIR/statsd-injector-certs $DEPLOYMENT_DIR/certs
-popd
 ```
 
 1. To generate certificates for BBS servers in the Diego deployment, run:
