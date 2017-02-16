@@ -48,7 +48,7 @@ properties:
     description: "address at which to serve API requests"
     default: "0.0.0.0:8889"
   diego.bbs.health_addr:
-    description: "address at which to serve API requests"
+    description: "address at which BBS serves '/ping' health-check endpoint"
     default: "127.0.0.1:8890"
   diego.bbs.log_level:
     description: "Log level"
