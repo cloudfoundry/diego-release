@@ -38,6 +38,7 @@ jobs:
   - name: vizzini
     release: diego
   - name: consul_agent
+    consumes: {consul: nil}
     release: cf
   lifecycle: errand
   instances: 1

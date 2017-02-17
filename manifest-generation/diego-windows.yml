@@ -204,6 +204,7 @@ base_templates:
   - name: garden-windows
     release: garden-windows
   - name: consul_agent_windows
+    consumes: {consul: nil}
     release: cf
   - name: metron_agent_windows
     release: cf

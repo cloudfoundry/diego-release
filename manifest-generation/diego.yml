@@ -860,6 +860,7 @@ base_releases:
 release_versions: (( merge || nil ))
 default_bridge_jobs:
   - name: consul_agent
+    consumes: {consul: nil}
     release: cf
   - name: stager
     release: (( bridge_overrides.job_release || "cf" ))
@@ -875,6 +876,7 @@ default_bridge_jobs:
 base_job_templates:
   access:
     - name: consul_agent
+      consumes: {consul: nil}
       release: cf
     - name: ssh_proxy
       release: diego
@@ -886,6 +888,7 @@ base_job_templates:
       release: diego
   brain:
     - name: consul_agent
+      consumes: {consul: nil}
       release: cf
     - name: auctioneer
       release: diego
@@ -896,6 +899,7 @@ base_job_templates:
   cc_bridge: (( merge || default_bridge_jobs ))
   cell:
     - name: consul_agent
+      consumes: {consul: nil}
       release: cf
     - name: rep
       release: diego
@@ -909,6 +913,7 @@ base_job_templates:
       release: diego
   database:
     - name: consul_agent
+      consumes: {consul: nil}
       release: cf
     - name: etcd
       release: etcd
@@ -920,6 +925,7 @@ base_job_templates:
       release: diego
   route_emitter:
     - name: consul_agent
+      consumes: {consul: nil}
       release: cf
     - name: route_emitter
       release: diego
