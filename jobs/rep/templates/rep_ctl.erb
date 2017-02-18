@@ -36,9 +36,18 @@ case $1 in
     mkdir -p $DRIVERS_PATHS
     chown vcap:vcap $DRIVERS_PATHS
 
+    # Key and Cert are generally ~2048 bytes. Add an extra 2048 for extra space
+    instance_cert_and_key_size=6144
+    instance_ca_size=$(wc -c ${CONF_DIR}/certs/rep/instance_identity.crt | cut -d' ' -f1)
+    max_containers=250
+    instance_tmpfs_size=$((($instance_ca_size + $instance_cert_and_key_size) * $max_containers))
+
     INSTANCE_IDENTITY_DIR=${DATA_DIR}/instance_identity
-    rm -rf "$INSTANCE_IDENTITY_DIR"
+    if [ -d $INSTANCE_IDENTITY_DIR ]; then
+      umount -f $INSTANCE_IDENTITY_DIR
+    fi
     mkdir -p "$INSTANCE_IDENTITY_DIR"
+    mount -t tmpfs -o size=$instance_tmpfs_size tmpfs $INSTANCE_IDENTITY_DIR
     chown -R vcap:vcap "$INSTANCE_IDENTITY_DIR"
 
     TRUSTED_CERTS_DIR=${DATA_DIR}/trusted_certs
