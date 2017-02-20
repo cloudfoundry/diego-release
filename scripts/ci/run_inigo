@@ -41,12 +41,10 @@ build_gardenrunc () {
         go install github.com/cloudfoundry-incubator/guardian/cmd/kawasaki/
         go install github.com/cloudfoundry-incubator/guardian/cmd/init/
         go install github.com/cloudfoundry-incubator/guardian/cmd/dadoo/
-        go install github.com/cloudfoundry-incubator/guardian/cmd/inspector-garden/
     else
         NSTAR_PATH=src/code.cloudfoundry.org/guardian/rundmc/nstar
         go install code.cloudfoundry.org/guardian/cmd/init/
         go install code.cloudfoundry.org/guardian/cmd/dadoo/
-        go install code.cloudfoundry.org/guardian/cmd/inspector-garden/
     fi
 
     pushd src/github.com/opencontainers/runc
