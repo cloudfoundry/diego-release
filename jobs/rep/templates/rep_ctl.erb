@@ -43,7 +43,7 @@ case $1 in
     instance_tmpfs_size=$((($instance_ca_size + $instance_cert_and_key_size) * $max_containers))
 
     INSTANCE_IDENTITY_DIR=${DATA_DIR}/instance_identity
-    if [ -d $INSTANCE_IDENTITY_DIR ]; then
+    if mount | grep -q $INSTANCE_IDENTITY_DIR; then
       umount -f $INSTANCE_IDENTITY_DIR
     fi
     mkdir -p "$INSTANCE_IDENTITY_DIR"
