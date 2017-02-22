@@ -12,3 +12,7 @@ sql_lock_overrides:
       db_username: diego
       db_password: admin
       db_schema: diego
+  auctioneer:
+    skip_consul_lock: true
+  bbs:
+    skip_consul_lock: true

@@ -508,7 +508,7 @@ properties:
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
       locket:
         api_location: (( sql_lock_overrides.locket.api_location || nil ))
-      skip_consul_lock: (( property_overrides.auctioneer.skip_consul_lock || nil))
+      skip_consul_lock: (( sql_lock_overrides.auctioneer.skip_consul_lock || nil))
       rep:
         ca_cert: (( property_overrides.rep.ca_cert || nil ))
         client_cert: (( property_overrides.rep.client_cert || nil ))
@@ -568,7 +568,7 @@ properties:
         client_session_cache_size: (( property_overrides.rep.client_session_cache_size || nil ))
       locket:
         api_location: (( sql_lock_overrides.locket.api_location || nil ))
-      skip_consul_lock: (( property_overrides.bbs.skip_consul_lock || nil))
+      skip_consul_lock: (( sql_lock_overrides.bbs.skip_consul_lock || nil))
     locket:
       sql:
         db_driver:   (( sql_lock_overrides.locket.sql.db_driver   || nil ))
@@ -752,6 +752,7 @@ instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
 sql_lock_overrides:
   templates: (( merge || [] ))
+  auctioneer: (( merge || nil ))
   bbs: (( merge || nil ))
   locket: (( merge || nil ))
 sql_overrides: (( merge  || nil ))
