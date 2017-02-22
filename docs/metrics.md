@@ -2,7 +2,6 @@
 
 * [Auctioneer](#auctioneer)
 * [BBS](#bbs)
-* [Converger](#converger)
 * [Rep](#rep)
 * [Route Emitter](#route-emitter)
 * [SSH Proxy](#ssh-proxy)
