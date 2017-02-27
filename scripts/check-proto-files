@@ -23,7 +23,7 @@ install_protoc() {
 
 test_proto_files() {
   pushd src/code.cloudfoundry.org/bbs
-    go generate ./...
+    go generate -run generate_proto ./...
 
     git diff --exit-code
   popd
