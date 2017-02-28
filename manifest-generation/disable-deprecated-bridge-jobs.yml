@@ -1,6 +1,7 @@
 base_job_templates:
   cc_bridge:
     - name: consul_agent
+      consumes: {consul: nil}
       release: cf
     - name: tps
       release: (( bridge_overrides.job_release ))

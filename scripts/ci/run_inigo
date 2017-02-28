@@ -41,12 +41,10 @@ build_gardenrunc () {
         go install github.com/cloudfoundry-incubator/guardian/cmd/kawasaki/
         go install github.com/cloudfoundry-incubator/guardian/cmd/init/
         go install github.com/cloudfoundry-incubator/guardian/cmd/dadoo/
-        go install github.com/cloudfoundry-incubator/guardian/cmd/inspector-garden/
     else
         NSTAR_PATH=src/code.cloudfoundry.org/guardian/rundmc/nstar
         go install code.cloudfoundry.org/guardian/cmd/init/
         go install code.cloudfoundry.org/guardian/cmd/dadoo/
-        go install code.cloudfoundry.org/guardian/cmd/inspector-garden/
     fi
 
     pushd src/github.com/opencontainers/runc
@@ -177,15 +175,42 @@ set_garden_rootfs
 EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\s/\1/;tx;d;:x')
 export EXTERNAL_ADDRESS
 
+ca_file="${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo/fixtures/certs/sql-certs/server-ca.crt"
+cert_file="${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo/fixtures/certs/sql-certs/server.crt"
+key_file="${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo/fixtures/certs/sql-certs/server.key"
+
+chmod 0600 "$ca_file"
+chmod 0600 "$cert_file"
+chmod 0600 "$key_file"
+
 if [ "${SQL_FLAVOR}" = "mysql" ]; then
   cat << EOF > /etc/my.cnf
 [mysqld]
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 EOF
-  sed -i 's/#max_connections.*= 100/max_connections = 2000/g' /etc/mysql/my.cnf
+  sed -i 's/#max_connections.*= 100/max_connections = 2000/g' /etc/mysql/mysql.conf.d/mysqld.cnf
+
+  chown mysql:mysql "$ca_file"
+  chown mysql:mysql "$cert_file"
+  chown mysql:mysql "$key_file"
+
+  sed -i "s%# ssl-cert=/etc/mysql/server-cert.pem%ssl-cert=$cert_file%g" /etc/mysql/mysql.conf.d/mysqld.cnf
+  sed -i "s%# ssl-key=/etc/mysql/server-key.pem%ssl-key=$key_file%g" /etc/mysql/mysql.conf.d/mysqld.cnf
+  sed -i "s%# ssl-ca=/etc/mysql/cacert.pem%ssl-ca=$ca_file%g" /etc/mysql/mysql.conf.d/mysqld.cnf
+
   service mysql start
 else
   sed -i 's/max_connections = 100/max_connections = 2000/g' /etc/postgresql/9.4/main/postgresql.conf
+
+  chown postgres:postgres "$ca_file"
+  chown postgres:postgres "$cert_file"
+  chown postgres:postgres "$key_file"
+
+  sed -i 's/ssl = false/ssl = true/g' /etc/postgresql/9.4/main/postgresql.conf
+  sed -i "s%ssl_cert_file = '/etc/ssl/certs/ssl-cert-snakeoil.pem'%ssl_cert_file = '$cert_file'%g" /etc/postgresql/9.4/main/postgresql.conf
+  sed -i "s%ssl_key_file = '/etc/ssl/private/ssl-cert-snakeoil.key'%ssl_key_file = '$key_file'%g" /etc/postgresql/9.4/main/postgresql.conf
+  sed -i "s%#ssl_ca_file = ''%ssl_ca_file = '$ca_file'%g" /etc/postgresql/9.4/main/postgresql.conf
+
   service postgresql start
 fi
 

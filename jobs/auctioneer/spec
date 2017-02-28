@@ -11,6 +11,7 @@ templates:
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
+  drain.erb: bin/drain
   rep_ca.crt.erb: config/certs/rep/ca.crt
   rep_client.crt.erb: config/certs/rep/client.crt
   rep_client.key.erb: config/certs/rep/client.key
@@ -66,7 +67,6 @@ properties:
   diego.auctioneer.bbs.max_idle_conns_per_host:
     description: "maximum number of idle http connections"
 
-
   diego.auctioneer.rep.require_tls:
     description: "Whether to require TLS for communication to the securable rep API server"
     default: false
@@ -79,3 +79,9 @@ properties:
   diego.auctioneer.rep.client_session_cache_size:
     description: "capacity of the tls client cache"
     default: 0
+
+  diego.auctioneer.locket.api_location:
+    description: "EXPERIMENTAL: hostname and port of the locket server"
+  diego.auctioneer.skip_consul_lock:
+    default: false
+    description: "EXPERIMENTAL: true to skip consul lock. locket.api_location must be set"

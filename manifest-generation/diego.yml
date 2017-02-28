@@ -1,6 +1,6 @@
 name: (( config_from_cf.cf_deployment_name "-diego" ))
 
-releases: (( base_releases bbs_overrides.releases volman_overrides.releases cf_networking_overrides.releases [garden_overrides.release] [config_from_cf.cf_release] bridge_overrides.releases ))
+releases: (( base_releases bbs_overrides.releases volman_overrides.releases cf_networking_overrides.releases [garden_overrides.release] [config_from_cf.cf_release] bridge_overrides.releases grootfs_overrides.releases ))
 
 director_uuid: (( config_from_cf.cf_director_uuid ))
 
@@ -169,7 +169,7 @@ base:
           zone: z3
 
     - name: brain_z1
-      templates: (( base_job_templates.brain ))
+      templates: (( base_job_templates.brain sql_lock_overrides.templates ))
       instances: (( instance_count_overrides.brain_z1.instances || 1 ))
       resource_pool: brain_z1
       networks:
@@ -182,7 +182,7 @@ base:
           zone: z1
 
     - name: cell_z1
-      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates ))
+      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates grootfs_overrides.templates ))
       instances: (( instance_count_overrides.cell_z1.instances || 1 ))
       resource_pool: cell_z1
       networks:
@@ -240,7 +240,7 @@ base:
           zone: z1
 
     - name: brain_z2
-      templates: (( base_job_templates.brain ))
+      templates: (( base_job_templates.brain sql_lock_overrides.templates ))
       instances: (( instance_count_overrides.brain_z2.instances || 1 ))
       resource_pool: brain_z2
       networks:
@@ -253,7 +253,7 @@ base:
           zone: z2
 
     - name: cell_z2
-      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates ))
+      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates grootfs_overrides.templates ))
       instances: (( instance_count_overrides.cell_z2.instances || 1 ))
       resource_pool: cell_z2
       networks:
@@ -311,7 +311,7 @@ base:
           zone: z2
 
     - name: brain_z3
-      templates: (( base_job_templates.brain ))
+      templates: (( base_job_templates.brain sql_lock_overrides.templates ))
       instances: (( instance_count_overrides.brain_z3.instances || 0 ))
       resource_pool: brain_z3
       networks:
@@ -324,7 +324,7 @@ base:
           zone: z3
 
     - name: cell_z3
-      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates ))
+      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates grootfs_overrides.templates ))
       instances: (( instance_count_overrides.cell_z3.instances || 0 ))
       resource_pool: cell_z3
       networks:
@@ -506,6 +506,9 @@ properties:
         require_ssl: (( property_overrides.bbs.require_ssl || nil ))
         client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
+      locket:
+        api_location: (( sql_lock_overrides.locket.api_location || nil ))
+      skip_consul_lock: (( sql_lock_overrides.auctioneer.skip_consul_lock || nil))
       rep:
         ca_cert: (( property_overrides.rep.ca_cert || nil ))
         client_cert: (( property_overrides.rep.client_cert || nil ))
@@ -564,8 +567,8 @@ properties:
         require_tls: (( property_overrides.bbs.rep.require_tls || nil ))
         client_session_cache_size: (( property_overrides.rep.client_session_cache_size || nil ))
       locket:
-        api_location: (( sql_lock_overrides.bbs.locket.api_location || nil ))
-      skip_consul_lock: (( property_overrides.bbs.skip_consul_lock || nil))
+        api_location: (( sql_lock_overrides.locket.api_location || nil ))
+      skip_consul_lock: (( sql_lock_overrides.bbs.skip_consul_lock || nil))
     locket:
       sql:
         db_driver:   (( sql_lock_overrides.locket.sql.db_driver   || nil ))
@@ -603,7 +606,7 @@ properties:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       log_level: (( property_overrides.file_server.log_level || nil ))
     rep:
-      preloaded_rootfses: (( property_overrides.diego.rep.preloaded_rootfses || ["cflinuxfs2:/var/vcap/packages/cflinuxfs2/rootfs"] ))
+      preloaded_rootfses: (( grootfs_overrides.rep.preloaded_rootfses ))
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       bbs:
         api_location: (( property_overrides.bbs.api_location || nil ))
@@ -718,6 +721,7 @@ properties:
   garden:
     allow_host_access: (( property_overrides.garden.allow_host_access || nil ))
     allow_networks: (( property_overrides.garden.allow_networks || nil ))
+    apparmor_profile: (( property_overrides.garden.apparmor_profile || nil ))
     default_container_grace_time: (( property_overrides.garden.default_container_grace_time || 0 ))
     deny_networks: (( property_overrides.garden.deny_networks || ["0.0.0.0/0"] ))
     destroy_containers_on_start: (( property_overrides.garden.destroy_containers_on_start || true ))
@@ -734,6 +738,13 @@ properties:
     persistent_image_list: (( property_overrides.garden.persistent_image_list || ["/var/vcap/packages/cflinuxfs2/rootfs"] ))
     network_plugin: (( cf_networking_overrides.garden_properties.network_plugin || nil ))
     network_plugin_extra_args: (( cf_networking_overrides.garden_properties.network_plugin_extra_args || nil ))
+    image_plugin: (( grootfs_overrides.garden.image_plugin || nil ))
+    image_plugin_extra_args: (( grootfs_overrides.garden.image_plugin_extra_args || nil ))
+    privileged_image_plugin_extra_args: (( grootfs_overrides.garden.privileged_image_plugin_extra_args || nil ))
+    privileged_image_plugin_extra_args: (( grootfs_overrides.garden.privileged_image_plugin_extra_args || nil ))
+
+  # -- Properties below are used by jobs from grootfs-release --
+  grootfs: (( grootfs_overrides.grootfs || nil ))
 
 # The keys below should not be included in the final stub
 config_from_cf: (( merge ))
@@ -742,6 +753,7 @@ instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
 sql_lock_overrides:
   templates: (( merge || [] ))
+  auctioneer: (( merge || nil ))
   bbs: (( merge || nil ))
   locket: (( merge || nil ))
 sql_overrides: (( merge  || nil ))
@@ -809,6 +821,21 @@ garden_overrides:
     name: garden-runc
     version: (( release_versions.garden-runc || "latest" ))
 
+grootfs_overrides:
+  grootfs: (( merge || nil ))
+  garden:
+    image_plugin: (( merge || nil ))
+    image_plugin_extra_args: (( merge || nil ))
+    privileged_image_plugin: (( merge || nil ))
+    privileged_image_plugin_extra_args: (( merge || nil ))
+    graph_cleanup_threshold_in_mb: (( merge || nil ))
+    insecure_docker_registry_list: (( merge || nil ))
+    persistent_image_list: (( merge || nil ))
+  rep:
+    preloaded_rootfses: (( property_overrides.diego.rep.preloaded_rootfses || ["cflinuxfs2:/var/vcap/packages/cflinuxfs2/rootfs"] ))
+  releases: (( merge || [] ))
+  templates: (( merge || [] ))
+
 empty_hash: {}
 
 volman_overrides:
@@ -835,6 +862,7 @@ base_releases:
 release_versions: (( merge || nil ))
 default_bridge_jobs:
   - name: consul_agent
+    consumes: {consul: nil}
     release: cf
   - name: stager
     release: (( bridge_overrides.job_release || "cf" ))
@@ -850,6 +878,7 @@ default_bridge_jobs:
 base_job_templates:
   access:
     - name: consul_agent
+      consumes: {consul: nil}
       release: cf
     - name: ssh_proxy
       release: diego
@@ -861,6 +890,7 @@ base_job_templates:
       release: diego
   brain:
     - name: consul_agent
+      consumes: {consul: nil}
       release: cf
     - name: auctioneer
       release: diego
@@ -871,6 +901,7 @@ base_job_templates:
   cc_bridge: (( merge || default_bridge_jobs ))
   cell:
     - name: consul_agent
+      consumes: {consul: nil}
       release: cf
     - name: rep
       release: diego
@@ -884,6 +915,7 @@ base_job_templates:
       release: diego
   database:
     - name: consul_agent
+      consumes: {consul: nil}
       release: cf
     - name: etcd
       release: etcd
@@ -895,6 +927,7 @@ base_job_templates:
       release: diego
   route_emitter:
     - name: consul_agent
+      consumes: {consul: nil}
       release: cf
     - name: route_emitter
       release: diego

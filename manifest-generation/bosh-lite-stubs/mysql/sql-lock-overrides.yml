@@ -3,10 +3,8 @@ sql_lock_overrides:
   templates:
   - name: locket
     release: diego
-  bbs:
-    locket:
-      api_location: "localhost:8891"
   locket:
+    api_location: "localhost:8891"
     sql:
       db_driver: mysql
       db_host: 10.244.7.2

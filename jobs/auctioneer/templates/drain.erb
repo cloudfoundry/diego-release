@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -e
+
+RUN_DIR=/var/vcap/sys/run/auctioneer
+PIDFILE=$RUN_DIR/auctioneer.pid
+LOG_DIR=/var/vcap/sys/log/auctioneer
+LOGFILE=$LOG_DIR/drain.log
+
+mkdir -p $LOG_DIR
+
+exec 3>&1
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+exec 1>> $LOGFILE
+exec 2>> $LOGFILE
+
+output_for_bosh() {
+  exit_code=$?
+
+  if [ $exit_code -eq 0 ]; then
+    echo "$(date): auctioneer exited"
+  else
+    echo "$(date): drain failed"
+  fi
+
+  echo $exit_code >&3
+}
+
+trap output_for_bosh EXIT
+
+if [ ! -f $PIDFILE ]; then
+  echo "$(date): PIDFILE does not exist"
+  exit 0
+fi
+
+pid=$(cat $PIDFILE)
+
+if [ ! -e /proc/$pid ]; then
+  echo "$(date): auctioneer process not running"
+  exit 0
+fi
+
+echo "$(date): drain triggered"
+kill_and_wait $PIDFILE

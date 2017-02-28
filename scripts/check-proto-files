@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -e -x
+
+tmpdir="/tmp"
+
+setup_golang_dependencies() {
+  export GOROOT=/usr/local/go
+  export PATH=$GOROOT/bin:$PATH
+  export GOPATH=$PWD
+  export PATH=$PWD/bin:$PATH
+}
+
+install_protoc() {
+  pushd $tmpdir
+    wget "https://github.com/google/protobuf/releases/download/v3.1.0/protoc-3.1.0-linux-x86_64.zip"
+    unzip -o "protoc-3.1.0-linux-x86_64.zip" -d protoc/
+    export PATH=$PATH:$PWD/protoc/bin/
+  popd
+
+  go install github.com/gogo/protobuf/protoc-gen-gogoslick
+}
+
+test_proto_files() {
+  pushd src/code.cloudfoundry.org/bbs
+    go generate -run generate_proto ./...
+
+    git diff --exit-code
+  popd
+}
+
+cd `dirname $0`/..
+
+setup_golang_dependencies
+install_protoc
+test_proto_files

@@ -2,7 +2,6 @@
 
 * [Auctioneer](#auctioneer)
 * [BBS](#bbs)
-* [Converger](#converger)
 * [Rep](#rep)
 * [Route Emitter](#route-emitter)
 * [SSH Proxy](#ssh-proxy)
@@ -59,12 +58,6 @@
 | `TasksResolving`                                      | Total number of Tasks locked for deletion. Emitted periodically.                                                                                                                                                                 | number            |
 | `TasksRunning`                                        | Total number of Tasks running on cells. Emitted periodically.                                                                                                                                                                    | number            |
 
-## Converger
-
-| Metric                                      | Description                                                                                                                                                | Unit             |
-| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----             |
-| `LockHeld.` `v1-locks-converge_lock`           | Whether a converger holds the convergence lock: 1 means the lock is held, and 0 means the lock was lost. Emitted periodically by the active converger.     | 0 or 1 (boolean) |
-| `LockHeldDuration.` `v1-locks-converge_lock`   | Time the active converger has held the convergence lock. Emitted periodically by the active converger.                                                     | ns               |
 
 ## Rep
 

@@ -1,0 +1,10 @@
+---
+platform: linux
+
+image: docker:///cloudfoundry/diego-units-ci#latest
+
+inputs:
+  - name: diego-release
+
+run:
+  path: diego-release/scripts/ci/run_route_emitter_benchmarks

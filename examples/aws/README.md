@@ -454,7 +454,7 @@ In order to secure your Cloud Foundry deployment properly, you must generate SSL
 
 The CF and Diego release repositories provide scripts to generate the necessary SSL certificates.
 
-1. To generate certificates for consul, and cloud controller run:
+1. To generate certificates for consul and cloud controller run:
 ```bash
 cd $DEPLOYMENT_DIR/certs
 $CF_RELEASE_DIR/scripts/generate-cf-diego-certs
@@ -463,10 +463,10 @@ $CF_RELEASE_DIR/scripts/generate-consul-certs
 
 1. To generate certificates for uaa run:
 
-``` shell
+```bash
 pushd $CF_RELEASE_DIR
   ./scripts/generate-uaa-certs
-  mv -r uaa-certs/ $DEPLOYMENT_DIR/certs/
+  mv uaa-certs/ $DEPLOYMENT_DIR/certs/
 popd
 
 pushd $DIEGO_RELEASE_DIR
@@ -478,7 +478,6 @@ popd
 1. To generate certificates for loggregator run:
 ```bash
 $CF_RELEASE_DIR/scripts/generate-loggregator-certs $DEPLOYMENT_DIR/certs/cf-diego-certs/cf-diego-ca.crt $DEPLOYMENT_DIR/certs/cf-diego-certs/cf-diego-ca.key
-mv $CF_RELEASE_DIR/loggregator-certs $DEPLOYMENT_DIR/certs/
 
 pushd $CF_RELEASE_DIR
   $CF_RELEASE_DIR/scripts/generate-statsd-injector-certs $DEPLOYMENT_DIR/certs/loggregator-certs/loggregator-ca.crt $DEPLOYMENT_DIR/certs/loggregator-certs/loggregator-ca.key

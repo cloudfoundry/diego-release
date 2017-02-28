@@ -21,6 +21,7 @@ The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) pre
   1. [Deploying Diego-Backed Cloud Foundry](#deploying-diego-backed-cloud-foundry)
   1. [Security Configuration](#security-configuration)
   1. [Data Store Configuration](#data-store-configuration)
+  1. [Component Coordination](#component-coordination)
   1. [Monitoring and Inspection](#monitoring-inspection)
 1. [CF App Developer Resources](#cf-app-developer-resources)
 1. [Diego Contributor Resources](#diego-contributor-resources)
@@ -54,13 +55,18 @@ The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) pre
 - [TLS Configuration](docs/tls-configuration.md) describes how to generate TLS certificates for secure communication with Consul, the Diego BBS, and the Diego cell reps.
 - [Upgrading the cell rep API to mutual TLS](docs/upgrading-secure-cell-rep-api.md) explains how to transition an existing Diego deployment to use mutual TLS for communication to the cell rep API without incurring downtime.
 - [Upgrading the auctioneer API to mutual TLS](docs/upgrading-secure-auctioneer-api.md) explains how to transition an existing Diego deployment to use mutual TLS for communication from the BBS to the auctioneer API without incurring downtime.
-- [Instance Identity](docs/instance-identity.md) explains how to enable instance identity.
+- (**Experimental**) [Instance Identity](docs/instance-identity.md) explains how to enable instance identity.
 
 
 ### <a name="data-store-configuration"></a>Data Store Configuration
 
 - [Supported Data Stores for Diego](docs/data-stores.md) describes how to configure Diego to use either SQL for its data store and how to arrange automatic migration of data from etcd to MySQL or Postgres for old deployment that are using etcd.
 - [Data Store Encryption](docs/data-store-encryption.md) explains how to manage the ring of encryption keys that Diego uses to secure data at rest.
+
+
+### <a name="component-coordination"></a>Component Coordination
+
+- (**Experimental**) [Migrating from Consul to SQL Locks](docs/migrating-from-consul-to-sql-locks.md) explains how to migrate the BBS and auctioneer from coordinating around a lock in Consul to coordinating around one stored in the Diego relational database.
 
 
 ### <a name="monitoring-inspection"></a>Monitoring and Inspection
