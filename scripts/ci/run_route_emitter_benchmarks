@@ -16,7 +16,7 @@ go install github.com/onsi/ginkgo/ginkgo
 ERROR_CODE=1
 
 pushd src/code.cloudfoundry.org/route-emitter > /dev/null
-  ginkgo -r -keepGoing -trace -randomizeAllSpecs -progress \
+  ginkgo -r -p -keepGoing -trace -randomizeAllSpecs -progress \
     routing_table/benchmarks
 
   ERROR_CODE=$?
