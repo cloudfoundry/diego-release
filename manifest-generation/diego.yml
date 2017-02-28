@@ -579,6 +579,7 @@ properties:
         db_schema:   (( sql_lock_overrides.locket.sql.db_schema   || nil ))
     executor:
       disk_capacity_mb: (( property_overrides.executor.disk_capacity_mb || nil ))
+      auto_disk_capacity_overhead_mb: (( property_overrides.executor.auto_disk_capacity_overhead_mb || nil ))
       max_cache_size_in_bytes: (( property_overrides.executor.max_cache_size_in_bytes || nil ))
       memory_capacity_mb: (( property_overrides.executor.memory_capacity_mb || nil ))
       drain_timeout_in_seconds: (( property_overrides.executor.drain_timeout_in_seconds || nil ))

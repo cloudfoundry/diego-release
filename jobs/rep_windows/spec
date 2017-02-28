@@ -102,6 +102,9 @@ properties:
   diego.executor.disk_capacity_mb:
     description: "the container disk capacity the executor should manage.  this should not be greater than the actual disk quota on the VM"
     default: "auto"
+  diego.executor.auto_disk_capacity_overhead_mb:
+    description: "the amount of overhead that should be added to the container disk capacity, this only applies when disk_capacity_mb is set to auto"
+    default: 0
   diego.executor.max_concurrent_downloads:
     description: "the max concurrent download steps that can be active"
     default: 5

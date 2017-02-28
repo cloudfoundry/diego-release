@@ -26,6 +26,7 @@ config = {
  "garden_addr" => p("diego.executor.garden.address"),
  "memory_mb" => p("diego.executor.memory_capacity_mb").to_s,
  "disk_mb" => p("diego.executor.disk_capacity_mb").to_s,
+ "auto_disk_capacity_overhead_mb" => p("diego.executor.auto_disk_capacity_overhead_mb"),
  "container_inode_limit" => p("diego.executor.container_inode_limit"),
  "container_max_cpu_shares" => p("diego.executor.container_max_cpu_shares"),
  "cache_path" => p("diego.executor.cache_path"),
