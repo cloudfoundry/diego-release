@@ -25,7 +25,7 @@ This document is for describing options to Diego manifest generation.
     -N <cf-networking-path> Path to CF Networking stub file.
     -B                      Opt out of deprecated CC bridge components.
     -R                      Opt into using local route-emitter configuration for cells.
-    -Q <sql-lock-overrides.yml> Opt into using sql locket service (EXPERIMENTAL).
+    -Q                      Opt into using sql locket service (EXPERIMENTAL).
     -L                      Opt into using garden-linux-release for cells. (DEPRECATED)
 
 #### EXAMPLE:
@@ -67,6 +67,10 @@ and `route_emitter_z3` VMs in the instance-count-overrides stubs.
 to perform two deploys: one to enable the local route-emitter configuration, and one to remove the global route-emitter
 configuration. To remove the global route-emitter configuration, you can specify 0 instances for the `route_emitter_z1`,
 `route_emitter_z2`, and `route_emitter_z3` VMs in the instance-count-overrides stubs.
+
+##### **Experimental** -Q Opt into using sql locket service
+
+The optional -Q flag is used to enable the BBS and Auctioneer to use the locket server for it's SQL lock.
 
 ### Stubs
 
@@ -161,46 +165,6 @@ moment those components are NSync and Stager. Those components are now part of
 the Cloud Controller. Keep in mind that in order to use this flag and still
 have CF working properly you will need to first enable this feature in
 cf-release via Cloud Controller properties.
-
-##### **Experimental** -Q Opt into using sql locket service
-
-The optional -Q flag is used to specify the stub for the SQL backend for the locket server.
-Specifying this stub will configure the BBS and Auctioneer to use the locket server for it's SQL lock.
-
-##### MySQL Example:
-
-```yaml
-sql_lock_overrides:
-  templates:
-  - name: locket
-    release: diego
-  locket:
-    api_location: "localhost:8891"
-    sql:
-      db_driver: mysql
-      db_host: 10.244.7.2
-      db_port: 3306
-      db_username: diego
-      db_password: diego
-      db_schema: diego
-```
-
-##### Postgres Example:
-```yaml
-sql_lock_overrides:
-  templates:
-  - name: locket
-    release: diego
-  locket:
-    api_location: "localhost:8891"
-    sql:
-      db_driver: postgres
-      db_host: 10.244.0.30
-      db_port: 5524
-      db_username: diego
-      db_password: admin
-      db_schema: diego
-```
 
 ##### **Experimental** -G Opt into using GrootFS for garden
 

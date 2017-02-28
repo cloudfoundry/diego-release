@@ -508,7 +508,7 @@ properties:
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
       locket:
         api_location: (( sql_lock_overrides.locket.api_location || nil ))
-      skip_consul_lock: (( sql_lock_overrides.auctioneer.skip_consul_lock || nil))
+      skip_consul_lock: (( property_overrides.auctioneer.skip_consul_lock || nil))
       rep:
         ca_cert: (( property_overrides.rep.ca_cert || nil ))
         client_cert: (( property_overrides.rep.client_cert || nil ))
@@ -568,15 +568,15 @@ properties:
         client_session_cache_size: (( property_overrides.rep.client_session_cache_size || nil ))
       locket:
         api_location: (( sql_lock_overrides.locket.api_location || nil ))
-      skip_consul_lock: (( sql_lock_overrides.bbs.skip_consul_lock || nil))
+      skip_consul_lock: (( property_overrides.bbs.skip_consul_lock || nil))
     locket:
       sql:
-        db_driver:   (( sql_lock_overrides.locket.sql.db_driver   || nil ))
-        db_host:     (( sql_lock_overrides.locket.sql.db_host     || nil ))
-        db_port:     (( sql_lock_overrides.locket.sql.db_port     || nil ))
-        db_username: (( sql_lock_overrides.locket.sql.db_username || nil ))
-        db_password: (( sql_lock_overrides.locket.sql.db_password || nil ))
-        db_schema:   (( sql_lock_overrides.locket.sql.db_schema   || nil ))
+        db_driver: (( sql_overrides.bbs.db_driver || nil ))
+        db_host: (( sql_overrides.bbs.db_host || nil ))
+        db_port: (( sql_overrides.bbs.db_port || nil ))
+        db_username: (( sql_overrides.bbs.db_username || nil ))
+        db_password: (( sql_overrides.bbs.db_password || nil ))
+        db_schema: (( sql_overrides.bbs.db_schema || nil ))
     executor:
       disk_capacity_mb: (( property_overrides.executor.disk_capacity_mb || nil ))
       auto_disk_capacity_overhead_mb: (( property_overrides.executor.auto_disk_capacity_overhead_mb || nil ))
@@ -754,8 +754,6 @@ instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
 sql_lock_overrides:
   templates: (( merge || [] ))
-  auctioneer: (( merge || nil ))
-  bbs: (( merge || nil ))
   locket: (( merge || nil ))
 sql_overrides: (( merge  || nil ))
 bridge_overrides:

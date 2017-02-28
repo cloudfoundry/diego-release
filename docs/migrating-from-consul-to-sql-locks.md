@@ -6,7 +6,7 @@ The second deploy will remove the consul backed lock, and exclusively use the SQ
 
 ## Deploy with both Consul and SQL
 
-As a first step to enable the SQL backed lock, run the manifest generation script with the flag `-Q` and the required stub as mentioned [here](manifest-generation.md#experimental--q-opt-into-using-sql-locket-service).
+As a first step to enable the SQL backed lock, run the manifest generation script with the flag `-Q` as mentioned [here](manifest-generation.md#experimental--q-opt-into-using-sql-locket-service).
 After deploying the generated manifest, the locket server will be deployed co-located on the brain and database VM.
 Also, the BBS and Auctioneer will obtain both the Consul lock through its local consul agent and the SQL lock through the co-located locket server.
 
