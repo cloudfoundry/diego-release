@@ -26,6 +26,7 @@ This document is for describing options to Diego manifest generation.
     -B                      Opt out of deprecated CC bridge components.
     -R                      Opt into using local route-emitter configuration for cells.
     -Q                      Opt into using sql locket service (EXPERIMENTAL).
+    -G                      Opt into using GrootFS container image orchestrator (EXPERIMENTAL).
     -L                      Opt into using garden-linux-release for cells. (DEPRECATED)
 
 #### EXAMPLE:
@@ -168,7 +169,9 @@ cf-release via Cloud Controller properties.
 
 ##### **Experimental** -G Opt into using GrootFS for garden
 
-The optional -G flag is used to enable [GrootFS](https://github.com/cloudfoundry/grootfs) as the container image orchestrator.
+The optional -G flag is used to enable GrootFS as the container image orchestrator. The garden-runc BOSH properties that are related to container images will be converted to the appropriate GrootFS BOSH properties.
+
+**Note**: If you are overriding the `garden.persistent_image_list` BOSH property and include the default [cflinuxfs2](https://github.com/cloudfoundry/stacks) stack (`/var/vcap/packages/cflinuxfs2/rootfs`), you will need to convert that to `/var/vcap/packages/cflinuxfs2/rootfs.tar`. GrootFS is only accepting tarballs instead of directory root filesystems. Similarly, if you are using a custom stack, you will need to provide a tarball version of that stack to the `garden.persistent_image_list` and `rep.preloaded_rootfses` BOSH properties.
 
 ## diego-release/scripts/generate-windows-cell-deployment-manifest
 
