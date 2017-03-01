@@ -74,7 +74,7 @@ mount_btrfs() {
   done
 
   # Make BTRFS volume
-  truncate -s 2G /btrfs_volume
+  truncate -s 8G /btrfs_volume
   mkfs.btrfs /btrfs_volume
 
   # Mount BTRFS
