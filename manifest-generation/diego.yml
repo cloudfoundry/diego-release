@@ -741,7 +741,7 @@ properties:
     network_plugin_extra_args: (( cf_networking_overrides.garden_properties.network_plugin_extra_args || nil ))
     image_plugin: (( grootfs_overrides.garden.image_plugin || nil ))
     image_plugin_extra_args: (( grootfs_overrides.garden.image_plugin_extra_args || nil ))
-    privileged_image_plugin_extra_args: (( grootfs_overrides.garden.privileged_image_plugin_extra_args || nil ))
+    privileged_image_plugin: (( grootfs_overrides.garden.privileged_image_plugin || nil ))
     privileged_image_plugin_extra_args: (( grootfs_overrides.garden.privileged_image_plugin_extra_args || nil ))
 
   # -- Properties below are used by jobs from grootfs-release --
