@@ -6,7 +6,7 @@ $ADDRESS="http://<%= p("diego.route_emitter.healthcheck_address") %>"
 $MAX_RETRY_ATTEMPTS=5
 
 
-function healthcheck {
+function heartbeat {
     try {
         Invoke-WebRequest -URI -UseBasicParsing "${ADDRESS}/ping"
     } catch {
