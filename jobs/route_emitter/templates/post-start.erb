@@ -1,7 +1,5 @@
 #!/bin/bash -e
 
-LOG_DIR=/var/vcap/sys/log/bbs
-
 address=<%= p("diego.route_emitter.healthcheck_address") %>
 start=`date +%s`
 i=0
