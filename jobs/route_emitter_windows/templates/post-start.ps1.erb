@@ -8,7 +8,7 @@ $MAX_RETRY_ATTEMPTS=5
 
 function heartbeat {
     try {
-        Invoke-WebRequest -URI -UseBasicParsing "${ADDRESS}/ping"
+        Invoke-WebRequest -UseBasicParsing -URI "${ADDRESS}/ping"
     } catch {
         return $false
     }
