@@ -253,6 +253,7 @@ base:
           rep:
             use_azure_fault_domains: (( property_overrides.cell_z1.use_azure_fault_domains || nil ))
             zone: (( property_overrides.cell_z1.zone || "z1" ))
+            placement_tags: (( property_overrides.rep.placement_tags || [] ))
           route_emitter:
             local_mode: (( route_emitter_overrides.local_mode_enabled ))
         tcp:
@@ -338,6 +339,7 @@ base:
           rep:
             use_azure_fault_domains: (( property_overrides.cell_z2.use_azure_fault_domains || nil ))
             zone: (( property_overrides.cell_z2.zone || "z2" ))
+            placement_tags: (( property_overrides.rep.placement_tags || [] ))
           route_emitter:
             local_mode: (( route_emitter_overrides.local_mode_enabled ))
         tcp:
@@ -417,6 +419,7 @@ base:
           rep:
             use_azure_fault_domains: (( property_overrides.cell_z3.use_azure_fault_domains || nil ))
             zone: (( property_overrides.cell_z3.zone || "z3" ))
+            placement_tags: (( property_overrides.rep.placement_tags || [] ))
           route_emitter:
             local_mode: (( route_emitter_overrides.local_mode_enabled ))
         tcp:
