@@ -16,3 +16,11 @@ if [ -n "$modified_packages" ]; then
   echo "$modified_packages"
   exit 1
 fi
+
+canonical_import_paths_enforced=$(./scripts/sync-canonical-import-paths)
+if [ -n "$canonical_import_paths_enforced" ]; then
+  echo $'\e[31mthe following submodules are not properly enforcing canonical import paths:\e[0m'
+  echo
+  echo "$canonical_import_paths_enforced"
+  exit 1
+fi

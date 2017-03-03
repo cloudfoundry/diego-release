@@ -1,0 +1,46 @@
+#!/bin/bash
+
+packages() {
+  cat <<EOF
+code.cloudfoundry.org/archiver
+code.cloudfoundry.org/auction
+code.cloudfoundry.org/auctioneer
+code.cloudfoundry.org/bbs
+code.cloudfoundry.org/benchmarkbbs
+code.cloudfoundry.org/buildpackapplifecycle
+code.cloudfoundry.org/bytefmt
+code.cloudfoundry.org/cacheddownloader
+code.cloudfoundry.org/debugserver
+code.cloudfoundry.org/cfhttp
+code.cloudfoundry.org/clock
+code.cloudfoundry.org/consuladapter
+code.cloudfoundry.org/diego-ssh
+code.cloudfoundry.org/dockerapplifecycle
+code.cloudfoundry.org/eventhub
+code.cloudfoundry.org/executor
+code.cloudfoundry.org/fileserver
+code.cloudfoundry.org/healthcheck
+code.cloudfoundry.org/inigo
+code.cloudfoundry.org/lager
+code.cloudfoundry.org/localip
+code.cloudfoundry.org/locket
+code.cloudfoundry.org/operationq
+code.cloudfoundry.org/rep
+code.cloudfoundry.org/route-emitter
+code.cloudfoundry.org/runtimeschema
+code.cloudfoundry.org/vizzini
+code.cloudfoundry.org/cflager
+EOF
+}
+
+check_package() {
+  pkg=$1
+  pushd src/$pkg
+    package_name=$(basename $pkg | tr '-' '_')
+    grep -E --silent 'package main$' *.go && package_name=main
+    echo "package $package_name // import \"$pkg\"" > package.go
+  popd
+}
+
+go list -f '{{.ImportPath}}' code.cloudfoundry.org/... | grep -f <(packages) | while read pkg; do check_package $pkg > /dev/null; done
+git diff --name-only src/code.cloudfoundry.org
