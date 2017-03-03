@@ -4,4 +4,4 @@ sql_lock_overrides:
   - name: locket
     release: diego
   locket:
-    api_location: "localhost:8891"
+    api_location: "locket.service.cf.internal:8891"

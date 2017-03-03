@@ -222,3 +222,6 @@ properties:
   diego.rep.job_name:
     description: "The name of the Diego job referenced by this spec (DO NOT override)"
     default: "rep_windows"
+
+  diego.rep.locket.api_location:
+    description: "EXPERIMENTAL: hostname and port of the locket server"

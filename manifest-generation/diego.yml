@@ -169,7 +169,7 @@ base:
           zone: z3
 
     - name: brain_z1
-      templates: (( base_job_templates.brain sql_lock_overrides.templates ))
+      templates: (( base_job_templates.brain ))
       instances: (( instance_count_overrides.brain_z1.instances || 1 ))
       resource_pool: brain_z1
       networks:
@@ -626,6 +626,8 @@ properties:
       ca_cert: (( property_overrides.rep.ca_cert || nil ))
       server_cert: (( property_overrides.rep.server_cert || nil ))
       server_key: (( property_overrides.rep.server_key || nil ))
+      locket:
+        api_location: (( sql_lock_overrides.locket.api_location || nil ))
     route_emitter:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       bbs:

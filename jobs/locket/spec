@@ -13,7 +13,7 @@ packages:
 properties:
   diego.locket.listen_addr:
     description: "address at which to serve API requests"
-    default: "127.0.0.1:8891"
+    default: "0.0.0.0:8891"
   diego.locket.debug_addr:
     description: "address at which to serve debug info"
     default: "127.0.0.1:17018"

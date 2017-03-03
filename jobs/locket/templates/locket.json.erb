@@ -7,9 +7,10 @@ TMP_DIR = "/var/vcap/data/executor/tmp"
 LOG_DIR = "/var/vcap/sys/log/locket"
 
 config = {
- "listen_address" => p("diego.locket.listen_addr"),
- "log_level" => p("diego.locket.log_level"),
- "debug_address" => p("diego.locket.debug_addr"),
+ listen_address: p("diego.locket.listen_addr"),
+ log_level: p("diego.locket.log_level"),
+ consul_cluster: "http://127.0.0.1:8500",
+ debug_address: p("diego.locket.debug_addr"),
 }
 
 def db_params
