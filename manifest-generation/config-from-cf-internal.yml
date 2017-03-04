@@ -37,6 +37,7 @@ config_from_cf:
   metron_endpoint:
     shared_secret: (( properties.metron_endpoint.shared_secret ))
   metron_agent:
+    grpc_port: (( properties.metron_agent.grpc_port ))
     dropsonde_incoming_port: (( properties.metron_agent.dropsonde_incoming_port ))
     protocols: (( properties.metron_agent.protocols ))
     preferred_protocol: (( properties.metron_agent.preferred_protocol ))
@@ -113,6 +114,7 @@ properties:
   metron_endpoint:
     shared_secret: (( merge ))
   metron_agent:
+    grpc_port: (( merge || nil ))
     dropsonde_incoming_port: (( merge || nil ))
     protocols: (( merge || nil ))
     preferred_protocol: (( merge || nil ))

@@ -191,6 +191,12 @@ base:
         serial: false
         max_in_flight: (( instance_count_overrides.cell_z1.max_in_flight || 1 ))
       properties:
+        loggregator: &cell-loggregator
+          use_v2_api:  (( property_overrides.loggregator.use_v2_api || nil ))
+          v2_api_port: (( config_from_cf.metron_agent.grpc_port || nil ))
+          ca_cert:     (( property_overrides.loggregator.tls.ca_cert || nil ))
+          cert:        (( property_overrides.loggregator.tls.cert || nil ))
+          key:         (( property_overrides.loggregator.tls.key || nil))
         metron_agent:
           zone: z1
         diego:
@@ -262,6 +268,7 @@ base:
         serial: false
         max_in_flight: (( instance_count_overrides.cell_z2.max_in_flight || 1 ))
       properties:
+        loggregator: *cell-loggregator
         metron_agent:
           zone: z2
         diego:
@@ -333,6 +340,7 @@ base:
         serial: false
         max_in_flight: (( instance_count_overrides.cell_z3.max_in_flight || 1 ))
       properties:
+        loggregator: *cell-loggregator
         metron_agent:
           zone: z3
         diego:

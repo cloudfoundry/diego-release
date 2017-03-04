@@ -131,5 +131,13 @@ if_p("diego.executor.instance_identity_ca_cert", "diego.executor.instance_identi
 	end
 end
 
+config[:loggregator_use_v2_api] = p("loggregator.use_v2_api")
+if p("loggregator.use_v2_api") == true
+  config[:loggregator_api_port] = p("loggregator.v2_api_port")
+  config[:loggregator_ca_path] = "#{CONF_DIR}/certs/loggregator/ca.crt"
+  config[:loggregator_cert_path] = "#{CONF_DIR}/certs/loggregator/client.crt"
+  config[:loggregator_key_path] = "#{CONF_DIR}/certs/loggregator/client.key"
+end
+
 config.to_json
 %>
