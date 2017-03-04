@@ -73,14 +73,22 @@ func (grpcRunner *GrpcRunner) Run(signals <-chan os.Signal, ready chan<- struct{
 		return nil
 	}
 	loggregator_v2.RegisterIngressServer(server, senderServer)
+
 	listener, err := net.Listen("tcp4", fmt.Sprintf("localhost:%d", grpcRunner.port))
 	if err != nil {
 		return err
 	}
 
-	go server.Serve(listener)
+	errCh := make(chan error)
+	go func() {
+		errCh <- server.Serve(listener)
+	}()
 	close(ready)
-	<-signals
-	server.Stop()
-	return nil
+	select {
+	case <-signals:
+		server.Stop()
+		return nil
+	case err := <-errCh:
+		return err
+	}
 }
