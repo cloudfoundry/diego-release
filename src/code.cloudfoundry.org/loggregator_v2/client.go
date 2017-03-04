@@ -37,8 +37,8 @@ func NewClient(logger lager.Logger, config MetronConfig) (Client, error) {
 	if !config.UseV2API {
 		return &dropsondeClient{}, nil
 	}
-	logger.Info("creating-grpc-client", lager.Data{"config": config})
 	address := fmt.Sprintf("localhost:%d", config.APIPort)
+	logger.Info("creating-grpc-client", lager.Data{"address": address})
 	cert, err := tls.LoadX509KeyPair(config.CertPath, config.KeyPath)
 	if err != nil {
 		logger.Error("cannot-load-certs", err)

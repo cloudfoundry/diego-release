@@ -106,7 +106,6 @@ func (c *grpcClient) SendAppErrorLog(appID, message, sourceType, sourceInstance 
 }
 
 func (c *grpcClient) SendAppMetrics(m *events.ContainerMetric) error {
-	c.logger.Info("grpc-logger-send-metric", lager.Data{"app-id": m.GetApplicationId()})
 	return c.send(&Envelope{
 		Timestamp: int64(time.Now().UnixNano()),
 		SourceId:  m.GetApplicationId(),
