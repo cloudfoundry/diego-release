@@ -174,14 +174,28 @@ On OS X, follow these steps to install and configure MySQL and Postgres:
 
         createuser -d -P -r -s diego
 
-14. You should now be able to run the SQL unit tests. To run all the SQL-backed
+14. Install SQL Server:
+
+        sudo docker pull microsoft/mssql-server-linux
+        docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=<YourStrong!Passw0rd>' -p 1433:1433 -d microsoft/mssql-server-linux
+
+15. Log in to mssql console as SA, using the password you just specified in step 14:
+
+        mssql -p
+
+16. Run the following SQL commands to create a diego user with the correct permissions:
+
+        CREATE LOGIN diego WITH PASSWORD = 'Password-123';
+        EXEC sp_addsrvrolemember @loginame = 'diego', @rolename = 'sysadmin';
+
+17. You should now be able to run the SQL unit tests. To run all the SQL-backed
     tests, run the following command from
     the root of diego-release:
 
         ./scripts/run-unit-tests
 
    This command will run all regular unit tests, as well as BBS and component
-   integration tests where a backing store is required in MySQL-backed and Postgres-backed modes.
+   integration tests where a backing store is required in MySQL-backed, Postgres-backed and MSSQL-backed modes.
 
 ## <a name="deploy-bosh-lite"></a> Deploying Diego to BOSH-Lite
 

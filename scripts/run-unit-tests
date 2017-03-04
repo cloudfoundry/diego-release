@@ -11,6 +11,9 @@ ERROR_CODE=$?
 SQL_FLAVOR=postgres $scripts_path/run-unit-tests-with-backing-store
 let ERROR_CODE+=$?
 
+SQL_FLAVOR=mssql MSSQL_BASE_CONNECTION_STRING=${MSSQL_BASE_CONNECTION_STRING:-"server=localhost;user id=diego;password=Password-123;port=1433"} $scripts_path/run-unit-tests-with-backing-store
+let ERROR_CODE+=$?
+
 $scripts_path/run-unit-tests-no-backing-store
 let ERROR_CODE+=$?
 
