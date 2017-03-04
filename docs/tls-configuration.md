@@ -168,6 +168,29 @@ following steps to successfully generate the required certificates.
    certificate in `out/clientName.crt`, and the manifest property `properties.diego.bbs.auctioneer.client_key`
    should be set to the certificate in `out/clientName.key`.
 
+#### Experimental: TLS Certificates for Loggregator V2 API
+
+Since [loggregaor release
+version 75](https://github.com/cloudfoundry/loggregator/releases/tag/v75) metron
+supports the loggregaor V2 API which uses GRPC and supports TLS.
+In order to enable the loggregaor V2 API you need to set the
+`loggregator.tls.use_v2_api` property to `true` and configure the following
+properties:
+
+ * `loggregator.v2_api_port`: Set this to the loggregator GRPC port
+   (`metron_agent.grpc_port`), this property has a default value that matches
+   the default value of `metron`'s
+ * `loggregator.tls.ca_cert`: Set this to the CA used to sign `metron`'s TLS
+   certificates
+ * `loggregator.tls.cert`: Generate and sign a certificate using the same CA
+   used above. This field is reserved for the public certificate.
+ * `loggregator.tls.key`: Generate and sign a certificate using the same CA
+   used above. This field is reserved for the private key.
+
+**NOTE:** The properties listed above need to be configured on the `rep`
+template of Diego. Differently to the other properties referenced in this
+document these are not global as that way of configuring BOSH is deprecated.
+
 ### Custom TLS Certificate Generation
 
 If you already have a CA, or wish to use your own names for clients and
