@@ -49,4 +49,6 @@ go install github.com/vito/gosub
 
 } > /tmp/packages
 
+echo "code.cloudfoundry.org/loggregator-api" >> /tmp/packages
+
 cat /tmp/packages | xargs gosub sync
