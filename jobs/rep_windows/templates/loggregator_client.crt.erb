@@ -1,2 +1,3 @@
-<%= p("loggregator.cert") %>
-
+<% if_p("loggregator.cert") do |value| %>
+<%= value %>
+<% end %>
