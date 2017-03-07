@@ -1,4 +1,9 @@
 property_overrides:
+  locket:
+    tls:
+      ca_cert: (( diego_credentials.diego_ca ))
+      cert:    (( diego_credentials.locket.server_cert ))
+      key:     (( diego_credentials.locket.server_key ))
   auctioneer:
     ca_cert: (( diego_credentials.diego_ca ))
     client_cert: (( diego_credentials.auctioneer.client_cert ))

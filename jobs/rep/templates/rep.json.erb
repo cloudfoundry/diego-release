@@ -1,143 +1,146 @@
 <%=
-CONF_DIR = "/var/vcap/jobs/#{p("diego.rep.job_name")}/config"
-TMP_DIR = "/var/vcap/data/executor/tmp"
-TRUSTED_CERTS_DIR = "/var/vcap/data/executor/trusted_certs"
-INSTANCE_IDENTITY_DIR = "/var/vcap/data/executor/instance_identity"
+  CONF_DIR = "/var/vcap/jobs/#{p("diego.rep.job_name")}/config"
+  TMP_DIR = "/var/vcap/data/executor/tmp"
+  TRUSTED_CERTS_DIR = "/var/vcap/data/executor/trusted_certs"
+  INSTANCE_IDENTITY_DIR = "/var/vcap/data/executor/instance_identity"
 
-config = {
- dropsonde_port: p("diego.rep.dropsonde_port"),
- debug_address: p("diego.rep.debug_addr"),
- listen_addr: p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr") : p("diego.rep.listen_addr_admin"),
- listen_addr_securable: p("diego.rep.listen_addr_securable"),
- require_tls: p("diego.rep.require_tls"),
- advertise_domain: p("diego.rep.advertise_domain"),
- enable_legacy_api_endpoints: p("diego.rep.enable_legacy_api_endpoints"),
- preloaded_root_fs: p("diego.rep.preloaded_rootfses"),
- supported_providers: p("diego.rep.rootfs_providers"),
- placement_tags: p("diego.rep.placement_tags"),
- optional_placement_tags: p("diego.rep.optional_placement_tags"),
- cell_id: spec.id,
- zone: spec.az || p("diego.rep.zone"),
- polling_interval: "#{p("diego.rep.polling_interval_in_seconds")}s",
- evacuation_polling_interval: "#{p("diego.rep.evacuation_polling_interval_in_seconds")}s",
- evacuation_timeout: "#{p("diego.rep.evacuation_timeout_in_seconds")}s",
- skip_cert_verify: p("diego.ssl.skip_cert_verify"),
- garden_network: p("diego.executor.garden.network"),
- garden_addr: p("diego.executor.garden.address"),
- memory_mb: p("diego.executor.memory_capacity_mb").to_s,
- disk_mb: p("diego.executor.disk_capacity_mb").to_s,
- auto_disk_capacity_overhead_mb: p("diego.executor.auto_disk_capacity_overhead_mb"),
- container_inode_limit: p("diego.executor.container_inode_limit"),
- container_max_cpu_shares: p("diego.executor.container_max_cpu_shares"),
- cache_path: p("diego.executor.cache_path"),
- max_cache_size_in_bytes: p("diego.executor.max_cache_size_in_bytes"),
- export_network_env_vars: p("diego.executor.export_network_env_vars"),
- healthy_monitoring_interval: "#{p("diego.executor.healthy_monitoring_interval_in_seconds")}s",
- unhealthy_monitoring_interval: "#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s",
- create_work_pool_size: p("diego.executor.create_work_pool_size"),
- delete_work_pool_size: p("diego.executor.delete_work_pool_size"),
- read_work_pool_size: p("diego.executor.read_work_pool_size"),
- metrics_work_pool_size: p("diego.executor.metrics_work_pool_size"),
- healthcheck_work_pool_size: p("diego.executor.healthcheck_work_pool_size"),
- max_concurrent_downloads: p("diego.executor.max_concurrent_downloads"),
- temp_dir: "#{TMP_DIR}",
- log_level: p("diego.rep.log_level"),
- garden_healthcheck_interval: p("diego.executor.garden_healthcheck.interval"),
- garden_healthcheck_timeout: p("diego.executor.garden_healthcheck.timeout"),
- garden_healthcheck_command_retry_pause: p("diego.executor.garden_healthcheck.command_retry_pause"),
- garden_healthcheck_process_path: p("diego.executor.garden_healthcheck.process.path"),
- garden_healthcheck_process_user: p("diego.executor.garden_healthcheck.process.user"),
-}
+  config = {
+    advertise_domain: p("diego.rep.advertise_domain"),
+    auto_disk_capacity_overhead_mb: p("diego.executor.auto_disk_capacity_overhead_mb"),
+    cache_path: p("diego.executor.cache_path"),
+    cell_id: spec.id,
+    container_inode_limit: p("diego.executor.container_inode_limit"),
+    container_max_cpu_shares: p("diego.executor.container_max_cpu_shares"),
+    create_work_pool_size: p("diego.executor.create_work_pool_size"),
+    debug_address: p("diego.rep.debug_addr"),
+    delete_work_pool_size: p("diego.executor.delete_work_pool_size"),
+    disk_mb: p("diego.executor.disk_capacity_mb").to_s,
+    dropsonde_port: p("diego.rep.dropsonde_port"),
+    enable_legacy_api_endpoints: p("diego.rep.enable_legacy_api_endpoints"),
+    evacuation_polling_interval: "#{p("diego.rep.evacuation_polling_interval_in_seconds")}s",
+    evacuation_timeout: "#{p("diego.rep.evacuation_timeout_in_seconds")}s",
+    export_network_env_vars: p("diego.executor.export_network_env_vars"),
+    garden_addr: p("diego.executor.garden.address"),
+    garden_healthcheck_command_retry_pause: p("diego.executor.garden_healthcheck.command_retry_pause"),
+    garden_healthcheck_interval: p("diego.executor.garden_healthcheck.interval"),
+    garden_healthcheck_process_path: p("diego.executor.garden_healthcheck.process.path"),
+    garden_healthcheck_process_user: p("diego.executor.garden_healthcheck.process.user"),
+    garden_healthcheck_timeout: p("diego.executor.garden_healthcheck.timeout"),
+    garden_network: p("diego.executor.garden.network"),
+    healthcheck_work_pool_size: p("diego.executor.healthcheck_work_pool_size"),
+    healthy_monitoring_interval: "#{p("diego.executor.healthy_monitoring_interval_in_seconds")}s",
+    listen_addr: p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr") : p("diego.rep.listen_addr_admin"),
+    listen_addr_securable: p("diego.rep.listen_addr_securable"),
+    log_level: p("diego.rep.log_level"),
+    max_cache_size_in_bytes: p("diego.executor.max_cache_size_in_bytes"),
+    max_concurrent_downloads: p("diego.executor.max_concurrent_downloads"),
+    memory_mb: p("diego.executor.memory_capacity_mb").to_s,
+    metrics_work_pool_size: p("diego.executor.metrics_work_pool_size"),
+    optional_placement_tags: p("diego.rep.optional_placement_tags"),
+    placement_tags: p("diego.rep.placement_tags"),
+    polling_interval: "#{p("diego.rep.polling_interval_in_seconds")}s",
+    preloaded_root_fs: p("diego.rep.preloaded_rootfses"),
+    read_work_pool_size: p("diego.executor.read_work_pool_size"),
+    require_tls: p("diego.rep.require_tls"),
+    skip_cert_verify: p("diego.ssl.skip_cert_verify"),
+    supported_providers: p("diego.rep.rootfs_providers"),
+    temp_dir: "#{TMP_DIR}",
+    unhealthy_monitoring_interval: "#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s",
+    zone: spec.az || p("diego.rep.zone"),
+  }
 
-if_p("diego.executor.volman.driver_paths") do |value|
-	config[:volman_driver_paths] = value
-end
+  if_p("diego.executor.volman.driver_paths") do |value|
+    config[:volman_driver_paths] = value
+  end
 
-if p("diego.rep.bbs.require_ssl")
-	config[:bbs_ca_cert_file] = "#{CONF_DIR}/certs/bbs/ca.crt"
-	config[:bbs_client_cert_file] = "#{CONF_DIR}/certs/bbs/client.crt"
-	config[:bbs_client_key_file] = "#{CONF_DIR}/certs/bbs/client.key"
-	config[:bbs_address] = "https://#{p("diego.rep.bbs.api_location")}"
-else
-	config[:bbs_address] = "http://#{p("diego.rep.bbs.api_location")}"
-end
+  if p("diego.rep.bbs.require_ssl")
+    config[:bbs_ca_cert_file] = "#{CONF_DIR}/certs/bbs/ca.crt"
+    config[:bbs_client_cert_file] = "#{CONF_DIR}/certs/bbs/client.crt"
+    config[:bbs_client_key_file] = "#{CONF_DIR}/certs/bbs/client.key"
+    config[:bbs_address] = "https://#{p("diego.rep.bbs.api_location")}"
+  else
+    config[:bbs_address] = "http://#{p("diego.rep.bbs.api_location")}"
+  end
 
-if p("diego.rep.require_tls")
-	config[:ca_cert_file] =  "#{CONF_DIR}/certs/ca.crt"
-	config[:server_cert_file] =  "#{CONF_DIR}/certs/server.crt"
-	config[:server_key_file] =  "#{CONF_DIR}/certs/server.key"
-end
+  if p("diego.rep.require_tls")
+    config[:ca_cert_file] =  "#{CONF_DIR}/certs/ca.crt"
+    config[:server_cert_file] =  "#{CONF_DIR}/certs/server.crt"
+    config[:server_key_file] =  "#{CONF_DIR}/certs/server.key"
+  end
 
-if p("diego.rep.consul.require_tls")
- config[:consul_cluster] = "https://127.0.0.1:8500"
- config[:consul_ca_cert] = "#{CONF_DIR}/certs/consul/ca.crt"
- config[:consul_client_cert] = "#{CONF_DIR}/certs/consul/client.crt"
- config[:consul_client_key] = "#{CONF_DIR}/certs/consul/client.key"
-else
- config[:consul_cluster] = "http://127.0.0.1:8500"
-end
+  if p("diego.rep.consul.require_tls")
+    config[:consul_cluster] = "https://127.0.0.1:8500"
+    config[:consul_ca_cert] = "#{CONF_DIR}/certs/consul/ca.crt"
+    config[:consul_client_cert] = "#{CONF_DIR}/certs/consul/client.crt"
+    config[:consul_client_key] = "#{CONF_DIR}/certs/consul/client.key"
+  else
+    config[:consul_cluster] = "http://127.0.0.1:8500"
+  end
 
-if_p("diego.rep.bbs.client_session_cache_size") do |value|
-	config[:bbs_client_session_cache_size] = value
-end
+  if_p("diego.rep.bbs.client_session_cache_size") do |value|
+    config[:bbs_client_session_cache_size] = value
+  end
 
-if_p("diego.rep.bbs.max_idle_conns_per_host") do |value|
-	config[:bbs_max_idle_conns_per_host] = value
-end
+  if_p("diego.rep.bbs.max_idle_conns_per_host") do |value|
+    config[:bbs_max_idle_conns_per_host] = value
+  end
 
-if_p("diego.rep.trusted_certs") do |value|
-	config[:trusted_system_certificates_path] = "#{TRUSTED_CERTS_DIR}"
-end
+  if_p("diego.rep.trusted_certs") do |value|
+    config[:trusted_system_certificates_path] = "#{TRUSTED_CERTS_DIR}"
+  end
 
-if_p("diego.executor.ca_certs_for_downloads") do |value|
-	if !value.empty?
-	 config[:path_to_ca_certs_for_downloads] = "#{CONF_DIR}/certs/rep/ca_certs_for_downloads.crt"
-	end
-end
+  if_p("diego.executor.ca_certs_for_downloads") do |value|
+    if !value.empty?
+      config[:path_to_ca_certs_for_downloads] = "#{CONF_DIR}/certs/rep/ca_certs_for_downloads.crt"
+    end
+  end
 
-if_p("diego.executor.garden_healthcheck.process.dir") do |value|
-	config[:garden_healthcheck_process_dir] = value
-end
+  if_p("diego.executor.garden_healthcheck.process.dir") do |value|
+    config[:garden_healthcheck_process_dir] = value
+  end
 
-if_p("diego.executor.garden_healthcheck.process.args") do |value|
-	config[:garden_healthcheck_process_args] = value.split(',').map(&:strip)
-end
+  if_p("diego.executor.garden_healthcheck.process.args") do |value|
+    config[:garden_healthcheck_process_args] = value.split(',').map(&:strip)
+  end
 
-if_p("diego.executor.garden_healthcheck.process.env") do |value|
-	config[:garden_healthcheck_process_env] = value.split(',').map(&:strip)
-end
+  if_p("diego.executor.garden_healthcheck.process.env") do |value|
+    config[:garden_healthcheck_process_env] = value.split(',').map(&:strip)
+  end
 
-if_p("diego.executor.post_setup_user") do |value|
-	config[:post_setup_user] = value
-end
+  if_p("diego.executor.post_setup_user") do |value|
+    config[:post_setup_user] = value
+  end
 
-if_p("diego.executor.post_setup_hook") do |value|
-	config[:post_setup_hook] = value
-end
+  if_p("diego.executor.post_setup_hook") do |value|
+    config[:post_setup_hook] = value
+  end
 
-if_p("diego.executor.container_metrics_report_interval") do |value|
-	config[:container_metrics_report_interval] = value
-end
+  if_p("diego.executor.container_metrics_report_interval") do |value|
+    config[:container_metrics_report_interval] = value
+  end
 
-if_p("diego.rep.locket.api_location") do |value|
-	config[:locket_address] = value
-end
+  if_p("diego.rep.locket.api_location") do |value|
+    config[:locket_address] = value
+    config[:locket_ca_cert_file] = "#{CONF_DIR}/certs/bbs/ca.crt"
+    config[:locket_client_cert_file] = "#{CONF_DIR}/certs/bbs/client.crt"
+    config[:locket_client_key_file] = "#{CONF_DIR}/certs/bbs/client.key"
+  end
 
-if_p("diego.executor.instance_identity_ca_cert", "diego.executor.instance_identity_key") do |cert, key|
-	if !(cert.empty? || key.empty?)
-		config[:instance_identity_ca_path] = "#{CONF_DIR}/certs/rep/instance_identity.crt"
-		config[:instance_identity_private_key_path] = "#{CONF_DIR}/certs/rep/instance_identity.key"
-		config[:instance_identity_cred_dir] = INSTANCE_IDENTITY_DIR
-	end
-end
+  if_p("diego.executor.instance_identity_ca_cert", "diego.executor.instance_identity_key") do |cert, key|
+    if !(cert.empty? || key.empty?)
+      config[:instance_identity_ca_path] = "#{CONF_DIR}/certs/rep/instance_identity.crt"
+      config[:instance_identity_private_key_path] = "#{CONF_DIR}/certs/rep/instance_identity.key"
+      config[:instance_identity_cred_dir] = INSTANCE_IDENTITY_DIR
+    end
+  end
 
-config[:loggregator_use_v2_api] = p("loggregator.use_v2_api")
-if p("loggregator.use_v2_api") == true
-  config[:loggregator_api_port] = p("loggregator.v2_api_port")
-  config[:loggregator_ca_path] = "#{CONF_DIR}/certs/loggregator/ca.crt"
-  config[:loggregator_cert_path] = "#{CONF_DIR}/certs/loggregator/client.crt"
-  config[:loggregator_key_path] = "#{CONF_DIR}/certs/loggregator/client.key"
-end
+  config[:loggregator_use_v2_api] = p("loggregator.use_v2_api")
+  if p("loggregator.use_v2_api") == true
+    config[:loggregator_api_port] = p("loggregator.v2_api_port")
+    config[:loggregator_ca_path] = "#{CONF_DIR}/certs/loggregator/ca.crt"
+    config[:loggregator_cert_path] = "#{CONF_DIR}/certs/loggregator/client.crt"
+    config[:loggregator_key_path] = "#{CONF_DIR}/certs/loggregator/client.key"
+  end
 
-config.to_json
+  config.to_json
 %>

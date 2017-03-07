@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e -x
+
+usage() {
+  >&2 echo "    Usage:
+    $0 DIEGO_CA_NAME DIEGO_CA_CERT_DIRECTORY
+
+    Ex:
+    $0 diegoCA ~/workspace/diego-release/diego-certs/
+"
+  exit 1
+}
+
+ca_name=$1
+ca_cert_directory=$2
+
+if [ -z "${ca_name}" ]; then
+  >&2 echo "Specify a CA"
+  usage
+fi
+
+if [ ! -d "${ca_cert_directory}" ]; then
+  >&2 echo "Specify location of CA cert and key"
+  usage
+fi
+
+# Install certstrap
+go get -v github.com/square/certstrap
+
+# Place keys and certificates here
+output_path="diego-certs/locket-certs"
+mkdir -p ${output_path}
+
+# Server certificate to share across the locket cluster
+server_cn=locket.service.cf.internal
+server_domain=$server_cn
+certstrap --depot-path ${ca_cert_directory} request-cert --passphrase '' --common-name $server_cn --domain $server_domain
+certstrap --depot-path ${ca_cert_directory} sign $server_cn --CA $ca_name
+mv -f ${ca_cert_directory}/$server_cn.key ${output_path}/server.key
+mv -f ${ca_cert_directory}/$server_cn.csr ${output_path}/server.csr
+mv -f ${ca_cert_directory}/$server_cn.crt ${output_path}/server.crt

@@ -509,6 +509,9 @@ DEPLOYMENT_DIR/certs
 |  |- client.key
 |  |- server.crt
 |  |- server.key
+|- locket-certs      # generated via diego-release/scripts/generate-diego-certs
+|  |- server.crt
+|  |- server.key
 |- consul-certs     # generated via cf-release/scripts/generate-consul-certs
 |  |- agent.crt
 |  |- agent.key
@@ -552,6 +555,7 @@ The certificates in `consul-certs` are used to set SSL properties for the consul
 The certificates in `loggregator-certs` are used to set SSL properties for the Loggregator subsystem.
 The certificates in `uaa-certs` are used to set SSL properties for the UAA subsystem.
 The certificates in `bbs-certs` are used to set SSL properties on the BBS API servers.
+The certificates in `locket-certs` are used to set SSL properties on the Locket API servers.
 The certificates in `rep-certs` are used to secure communication between the `Auctioneer`, `BBS` and the `Rep`.
 Finally the certificates in `auctioneer-certs` are used to secure communication between the `BBS` and the `Auctioneer`.
 

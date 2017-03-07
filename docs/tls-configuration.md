@@ -95,6 +95,27 @@ following steps to successfully generate the required certificates.
    `properties.diego.CLIENT.bbs.client_key` should be set to the certificate in
    `out/clientName.key`.
 
+4. Create and sign a certificate for the Locket server.
+   ```
+   $ ./certstrap request-cert --common-name "locket.service.cf.internal" --domain "locket.service.cf.internal"
+   Enter passphrase (empty for no passphrase): <hit enter for no password>
+
+   Enter same passphrase again: <hit enter for no password>
+
+   Created out/locket.service.cf.internal.key
+   Created out/locket.service.cf.internal.csr
+
+   $ ./certstrap sign locket.service.cf.internal --CA diegoCA
+   Created out/locket.service.cf.internal.crt from out/locket.service.cf.internal.csr signed by out/diegoCA.key
+   ```
+
+   The manifest property `tls.ca_cert` for the `locket` job should be set to
+   the certificate in `out/diegoCA.crt`.
+   The manifest property `tls.cert` for the `locket` job should be set to
+   the certificate in `out/locket.service.cf.internal.crt`.
+   The manifest property `tls.key` for the `locket` job should be set to
+   the certificate in `out/locket.service.cf.internal.key`.
+
 5. Create and sign a certificate for the Rep server.
    ```
    $ ./certstrap request-cert --common-name "cell.service.cf.internal" --domain "*.cell.service.cf.internal,cell.service.cf.internal"

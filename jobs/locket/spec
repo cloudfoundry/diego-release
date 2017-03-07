@@ -5,12 +5,21 @@ templates:
   locket_ctl.erb: bin/locket_ctl
   locket_as_vcap.erb: bin/locket_as_vcap
   locket.json.erb: config/locket.json
+  locket_ca.crt.erb: config/certs/ca.crt
+  locket_server.crt.erb: config/certs/server.crt
+  locket_server.key.erb: config/certs/server.key
 
 packages:
   - pid_utils
   - locket
 
 properties:
+  tls.ca_cert:
+    description: "ca cert for locket server mutual auth tls"
+  tls.cert:
+    description: "server cert for locket server mutual auth tls"
+  tls.key:
+    description: "server key for locket server mutual auth tls"
   diego.locket.listen_addr:
     description: "address at which to serve API requests"
     default: "0.0.0.0:8891"

@@ -1,4 +1,9 @@
 property_overrides:
+  locket:
+    tls:
+      ca_cert: (( merge ))
+      cert:    (( merge ))
+      key:     (( merge ))
   bbs:
     active_key_label: REPLACE_WITH_ACTIVE_KEY_LABEL
     encryption_keys:
