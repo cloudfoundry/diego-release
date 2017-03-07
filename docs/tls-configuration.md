@@ -191,26 +191,38 @@ following steps to successfully generate the required certificates.
 
 #### Experimental: TLS Certificates for Loggregator V2 API
 
-Since [loggregaor release
-version 75](https://github.com/cloudfoundry/loggregator/releases/tag/v75) metron
-supports the loggregaor V2 API which uses GRPC and supports TLS.
-In order to enable the loggregaor V2 API you need to set the
-`loggregator.tls.use_v2_api` property to `true` and configure the following
+Since
+[loggregator release version 75](https://github.com/cloudfoundry/loggregator/releases/tag/v75) metron
+supports the loggregator V2 API which uses gRPC and supports TLS.
+
+In order to enable the loggregator V2 API you need to set the following
 properties:
 
- * `loggregator.v2_api_port`: Set this to the loggregator GRPC port
+ * `loggregator.use_v2_api`: Set this to true
+ * `loggregator.v2_api_port`: Set this to the loggregator gRPC port
    (`metron_agent.grpc_port`), this property has a default value that matches
    the default value of `metron`'s
- * `loggregator.tls.ca_cert`: Set this to the CA used to sign `metron`'s TLS
+ * `loggregator.ca_cert`: Set this to the CA used to sign `metron`'s TLS
    certificates
- * `loggregator.tls.cert`: Generate and sign a certificate using the same CA
-   used above. This field is reserved for the public certificate.
- * `loggregator.tls.key`: Generate and sign a certificate using the same CA
-   used above. This field is reserved for the private key.
+ * `loggregator.cert`: Generate and sign a certificate using the same CA used
+   above. This field is reserved for the public certificate. Instructions on
+   how to generate the certs are given below.
+ * `loggregator.key`: Generate and sign a certificate using the same CA
+   used above. This field is reserved for the private key. Instructions on
+   how to generate the certs are given below.
 
 **NOTE:** The properties listed above need to be configured on the `rep`
 template of Diego. Differently to the other properties referenced in this
 document these are not global as that way of configuring BOSH is deprecated.
+
+Assuming the loggregator ca cert and key are located at
+`/path/to/loggregator-ca.crt` and `/path/to/loggregator-ca.key`, respectively.  Run
+the following commands to generate the client cert/key used by the rep:
+
+``` shell
+certstrap --depot-path /path/to --cn metron-client
+certstrap --depot-path /tmp sign --CA loggregator-ca metron-client
+```
 
 ### Custom TLS Certificate Generation
 
