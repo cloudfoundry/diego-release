@@ -258,7 +258,7 @@ base:
           zone: z1
 
     - name: brain_z2
-      templates: (( base_job_templates.brain sql_lock_overrides.templates ))
+      templates: (( base_job_templates.brain ))
       instances: (( instance_count_overrides.brain_z2.instances || 1 ))
       resource_pool: brain_z2
       networks:
@@ -330,7 +330,7 @@ base:
           zone: z2
 
     - name: brain_z3
-      templates: (( base_job_templates.brain sql_lock_overrides.templates ))
+      templates: (( base_job_templates.brain))
       instances: (( instance_count_overrides.brain_z3.instances || 0 ))
       resource_pool: brain_z3
       networks:
