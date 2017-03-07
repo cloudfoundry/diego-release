@@ -25,13 +25,15 @@ type grpcClient struct {
 	sender        Ingress_SenderClient
 	envelopes     chan *envelopeWithResponseChannel
 	connector     Connector
+	config        *MetronConfig
 }
 
-func NewGrpcClient(logger lager.Logger, ingressClient IngressClient) *grpcClient {
+func NewGrpcClient(logger lager.Logger, config *MetronConfig, ingressClient IngressClient) *grpcClient {
 	client := &grpcClient{
 		logger: logger.Session("grpc-client"),
 		// connector: connector,
 		ingressClient: ingressClient,
+		config:        config,
 		envelopes:     make(chan *envelopeWithResponseChannel),
 	}
 	go client.start()
@@ -60,9 +62,31 @@ func (c *grpcClient) start() {
 	}
 }
 
-func createLogEnvelope(appID, message, sourceType, sourceInstance string, logType Log_Type) *Envelope {
-	return &Envelope{
-		Timestamp: int64(time.Now().UnixNano()),
+func newTextValue(t string) *Value {
+	return &Value{Data: &Value_Text{Text: t}}
+}
+
+func newGaugeValue(f float64) *GaugeValue {
+	return &GaugeValue{Value: f}
+}
+
+func newGaugeValueFromUInt64(i uint64) *GaugeValue {
+	return newGaugeValue(float64(i))
+}
+
+func (c *grpcClient) addEnvelopeTags(env *Envelope) {
+	if env.Tags == nil {
+		env.Tags = make(map[string]*Value)
+	}
+	env.Tags["deployment"] = newTextValue(c.config.JobDeployment)
+	env.Tags["job"] = newTextValue(c.config.JobName)
+	env.Tags["index"] = newTextValue(c.config.JobIndex)
+	env.Tags["ip"] = newTextValue(c.config.JobIP)
+}
+
+func (c *grpcClient) createLogEnvelope(appID, message, sourceType, sourceInstance string, logType Log_Type) *Envelope {
+	env := &Envelope{
+		Timestamp: time.Now().UnixNano(),
 		SourceId:  appID,
 		Message: &Envelope_Log{
 			Log: &Log{
@@ -71,18 +95,12 @@ func createLogEnvelope(appID, message, sourceType, sourceInstance string, logTyp
 			},
 		},
 		Tags: map[string]*Value{
-			"source_type": &Value{
-				Data: &Value_Text{
-					Text: sourceType,
-				},
-			},
-			"source_instance": &Value{
-				Data: &Value_Text{
-					Text: sourceInstance,
-				},
-			},
+			"source_type":     newTextValue(sourceType),
+			"source_instance": newTextValue(sourceInstance),
 		},
 	}
+	c.addEnvelopeTags(env)
+	return env
 }
 
 func (c *grpcClient) send(envelope *Envelope) error {
@@ -98,40 +116,30 @@ func (c *grpcClient) send(envelope *Envelope) error {
 }
 
 func (c *grpcClient) SendAppLog(appID, message, sourceType, sourceInstance string) error {
-	return c.send(createLogEnvelope(appID, message, sourceType, sourceInstance, Log_OUT))
+	return c.send(c.createLogEnvelope(appID, message, sourceType, sourceInstance, Log_OUT))
 }
 
 func (c *grpcClient) SendAppErrorLog(appID, message, sourceType, sourceInstance string) error {
-	return c.send(createLogEnvelope(appID, message, sourceType, sourceInstance, Log_ERR))
+	return c.send(c.createLogEnvelope(appID, message, sourceType, sourceInstance, Log_ERR))
 }
 
 func (c *grpcClient) SendAppMetrics(m *events.ContainerMetric) error {
-	return c.send(&Envelope{
-		Timestamp: int64(time.Now().UnixNano()),
+	env := &Envelope{
+		Timestamp: time.Now().UnixNano(),
 		SourceId:  m.GetApplicationId(),
 		Message: &Envelope_Gauge{
 			Gauge: &Gauge{
 				Metrics: map[string]*GaugeValue{
-					"instance_index": &GaugeValue{
-						Value: float64(m.GetInstanceIndex()),
-					},
-					"cpu": &GaugeValue{
-						Value: float64(m.GetCpuPercentage()),
-					},
-					"memory": &GaugeValue{
-						Value: float64(m.GetMemoryBytes()),
-					},
-					"disk": &GaugeValue{
-						Value: float64(m.GetDiskBytes()),
-					},
-					"memory_quota": &GaugeValue{
-						Value: float64(m.GetMemoryBytesQuota()),
-					},
-					"disk_quota": &GaugeValue{
-						Value: float64(m.GetDiskBytesQuota()),
-					},
+					"instance_index": newGaugeValue(float64(m.GetInstanceIndex())),
+					"cpu":            newGaugeValue(m.GetCpuPercentage()),
+					"memory":         newGaugeValueFromUInt64(m.GetMemoryBytes()),
+					"disk":           newGaugeValueFromUInt64(m.GetDiskBytes()),
+					"memory_quota":   newGaugeValueFromUInt64(m.GetMemoryBytesQuota()),
+					"disk_quota":     newGaugeValueFromUInt64(m.GetDiskBytesQuota()),
 				},
 			},
 		},
-	})
+	}
+	c.addEnvelopeTags(env)
+	return c.send(env)
 }

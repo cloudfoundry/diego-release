@@ -85,11 +85,12 @@ var _ = Describe("Client", func() {
 			grpcProcess = ginkgomon.Invoke(grpcRunner)
 
 			config = loggregator_v2.MetronConfig{
-				UseV2API:   true,
-				APIPort:    grpcRunner.Port(),
-				CACertPath: "fixtures/CA.crt",
-				CertPath:   "fixtures/client.crt",
-				KeyPath:    "fixtures/client.key",
+				UseV2API:      true,
+				APIPort:       grpcRunner.Port(),
+				JobDeployment: "cf-warden-diego",
+				JobName:       "rep",
+				JobIndex:      "0",
+				JobIP:         "10.244.34.6",
 			}
 			receivers = grpcRunner.Receivers()
 		})
@@ -130,7 +131,14 @@ var _ = Describe("Client", func() {
 
 		Context("cannot connect to the server", func() {
 			BeforeEach(func() {
+				config.CACertPath = "fixtures/CA.crt"
+				config.CertPath = "fixtures/client.crt"
+				config.KeyPath = "fixtures/client.key"
 				config.APIPort = 1234
+			})
+
+			JustBeforeEach(func() {
+				Expect(clientErr).NotTo(HaveOccurred())
 			})
 
 			It("returns an error", func() {
@@ -139,6 +147,12 @@ var _ = Describe("Client", func() {
 		})
 
 		Context("when valid configuration is used", func() {
+			BeforeEach(func() {
+				config.CACertPath = "fixtures/CA.crt"
+				config.CertPath = "fixtures/client.crt"
+				config.KeyPath = "fixtures/client.key"
+			})
+
 			JustBeforeEach(func() {
 				Expect(clientErr).NotTo(HaveOccurred())
 				Expect(client).NotTo(BeNil())
@@ -152,6 +166,12 @@ var _ = Describe("Client", func() {
 				Eventually(receivers).Should(Receive(&recv))
 				env, err := recv.Recv()
 				Expect(err).NotTo(HaveOccurred())
+
+				Expect(env.Tags["deployment"].GetText()).To(Equal("cf-warden-diego"))
+				Expect(env.Tags["job"].GetText()).To(Equal("rep"))
+				Expect(env.Tags["index"].GetText()).To(Equal("0"))
+				Expect(env.Tags["ip"].GetText()).To(Equal("10.244.34.6"))
+
 				ts := time.Unix(0, env.GetTimestamp())
 				Expect(ts).Should(BeTemporally("~", time.Now(), time.Second))
 				log := env.GetLog()
@@ -168,6 +188,12 @@ var _ = Describe("Client", func() {
 				Eventually(receivers).Should(Receive(&recv))
 				env, err := recv.Recv()
 				Expect(err).NotTo(HaveOccurred())
+
+				Expect(env.Tags["deployment"].GetText()).To(Equal("cf-warden-diego"))
+				Expect(env.Tags["job"].GetText()).To(Equal("rep"))
+				Expect(env.Tags["index"].GetText()).To(Equal("0"))
+				Expect(env.Tags["ip"].GetText()).To(Equal("10.244.34.6"))
+
 				ts := time.Unix(0, env.GetTimestamp())
 				Expect(ts).Should(BeTemporally("~", time.Now(), time.Second))
 				log := env.GetLog()
@@ -193,6 +219,12 @@ var _ = Describe("Client", func() {
 				Eventually(receivers).Should(Receive(&recv))
 				env, err := recv.Recv()
 				Expect(err).NotTo(HaveOccurred())
+
+				Expect(env.Tags["deployment"].GetText()).To(Equal("cf-warden-diego"))
+				Expect(env.Tags["job"].GetText()).To(Equal("rep"))
+				Expect(env.Tags["index"].GetText()).To(Equal("0"))
+				Expect(env.Tags["ip"].GetText()).To(Equal("10.244.34.6"))
+
 				ts := time.Unix(0, env.GetTimestamp())
 				Expect(ts).Should(BeTemporally("~", time.Now(), time.Second))
 				metrics := env.GetGauge()

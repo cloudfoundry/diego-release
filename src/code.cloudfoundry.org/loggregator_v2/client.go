@@ -30,6 +30,10 @@ type MetronConfig struct {
 	CACertPath    string `json:"loggregator_ca_path"`
 	CertPath      string `json:"loggregator_cert_path"`
 	KeyPath       string `json:"loggregator_key_path"`
+	JobDeployment string `json:"loggregator_job_deployment"`
+	JobName       string `json:"loggregator_job_name"`
+	JobIndex      string `json:"loggregator_job_index"`
+	JobIP         string `json:"loggregator_job_ip"`
 	DropsondePort int    `json:"dropsonde_port"`
 }
 
@@ -74,5 +78,5 @@ func NewClient(logger lager.Logger, config MetronConfig) (Client, error) {
 		return nil, err
 	}
 
-	return NewGrpcClient(logger, ingressClient), nil
+	return NewGrpcClient(logger, &config, ingressClient), nil
 }

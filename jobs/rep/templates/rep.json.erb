@@ -145,6 +145,11 @@
     config[:loggregator_ca_path] = "#{CONF_DIR}/certs/loggregator/ca.crt"
     config[:loggregator_cert_path] = "#{CONF_DIR}/certs/loggregator/client.crt"
     config[:loggregator_key_path] = "#{CONF_DIR}/certs/loggregator/client.key"
+
+	  config[:loggregator_job_deployment] = spec.deployment
+	  config[:loggregator_job_name] = spec.name
+	  config[:loggregator_job_index] = spec.id
+	  config[:loggregator_job_ip] = spec.address
   end
 
   config.to_json
