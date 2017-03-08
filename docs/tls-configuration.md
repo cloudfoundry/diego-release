@@ -220,8 +220,8 @@ Assuming the loggregator ca cert and key are located at
 the following commands to generate the client cert/key used by the rep:
 
 ``` shell
-certstrap --depot-path /path/to --cn metron-client
-certstrap --depot-path /tmp sign --CA loggregator-ca metron-client
+certstrap --depot-path /path/to request-cert --cn metron-client
+certstrap --depot-path /path/to sign --CA loggregator-ca metron-client
 ```
 
 ### Custom TLS Certificate Generation
