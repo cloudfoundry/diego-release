@@ -249,7 +249,9 @@ var _ = Describe("Client", func() {
 					ginkgomon.Interrupt(grpcProcess)
 
 					// wait for the client to detect the error
-					Eventually(client.SendAppErrorLog("app-id", "message", "source-type", "source-instance")).ShouldNot(Succeed())
+					Eventually(func() error {
+						return client.SendAppErrorLog("app-id", "message", "source-type", "source-instance")
+					}).ShouldNot(Succeed())
 					grpcProcess = ginkgomon.Invoke(grpcRunner)
 
 					// make sure the server stays up
