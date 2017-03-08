@@ -82,6 +82,7 @@ func (c *grpcClient) addEnvelopeTags(env *Envelope) {
 	env.Tags["job"] = newTextValue(c.config.JobName)
 	env.Tags["index"] = newTextValue(c.config.JobIndex)
 	env.Tags["ip"] = newTextValue(c.config.JobIP)
+	env.Tags["origin"] = newTextValue(c.config.JobOrigin)
 }
 
 func (c *grpcClient) createLogEnvelope(appID, message, sourceType, sourceInstance string, logType Log_Type) *Envelope {

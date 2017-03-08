@@ -34,6 +34,7 @@ type MetronConfig struct {
 	JobName       string `json:"loggregator_job_name"`
 	JobIndex      string `json:"loggregator_job_index"`
 	JobIP         string `json:"loggregator_job_ip"`
+	JobOrigin     string `json:"loggregator_job_origin"`
 	DropsondePort int    `json:"dropsonde_port"`
 }
 

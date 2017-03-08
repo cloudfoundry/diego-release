@@ -91,6 +91,7 @@ var _ = Describe("Client", func() {
 				JobName:       "rep",
 				JobIndex:      "0",
 				JobIP:         "10.244.34.6",
+				JobOrigin:     "test-origin",
 			}
 			receivers = grpcRunner.Receivers()
 		})
@@ -171,6 +172,7 @@ var _ = Describe("Client", func() {
 				Expect(env.Tags["job"].GetText()).To(Equal("rep"))
 				Expect(env.Tags["index"].GetText()).To(Equal("0"))
 				Expect(env.Tags["ip"].GetText()).To(Equal("10.244.34.6"))
+				Expect(env.Tags["origin"].GetText()).To(Equal("test-origin"))
 
 				ts := time.Unix(0, env.GetTimestamp())
 				Expect(ts).Should(BeTemporally("~", time.Now(), time.Second))
@@ -193,6 +195,7 @@ var _ = Describe("Client", func() {
 				Expect(env.Tags["job"].GetText()).To(Equal("rep"))
 				Expect(env.Tags["index"].GetText()).To(Equal("0"))
 				Expect(env.Tags["ip"].GetText()).To(Equal("10.244.34.6"))
+				Expect(env.Tags["origin"].GetText()).To(Equal("test-origin"))
 
 				ts := time.Unix(0, env.GetTimestamp())
 				Expect(ts).Should(BeTemporally("~", time.Now(), time.Second))
@@ -224,6 +227,7 @@ var _ = Describe("Client", func() {
 				Expect(env.Tags["job"].GetText()).To(Equal("rep"))
 				Expect(env.Tags["index"].GetText()).To(Equal("0"))
 				Expect(env.Tags["ip"].GetText()).To(Equal("10.244.34.6"))
+				Expect(env.Tags["origin"].GetText()).To(Equal("test-origin"))
 
 				ts := time.Unix(0, env.GetTimestamp())
 				Expect(ts).Should(BeTemporally("~", time.Now(), time.Second))
