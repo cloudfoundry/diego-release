@@ -10,6 +10,7 @@ templates:
   etcd_ca.crt.erb: config/certs/etcd/ca.crt
   etcd_client.crt.erb: config/certs/etcd/client.crt
   etcd_client.key.erb: config/certs/etcd/client.key
+  bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
 
@@ -32,6 +33,8 @@ properties:
   benchmark-bbs.bbs.api_location:
     description: "the address of the BBS"
     default: "bbs.service.cf.internal:8889"
+  benchmark-bbs.bbs.ca_cert:
+    description: "PEM-encoded CA certificate"
   benchmark-bbs.bbs.client_cert:
     description: "PEM-encoded client certificate"
   benchmark-bbs.bbs.client_key:
@@ -41,6 +44,9 @@ properties:
   benchmark-bbs.bbs.require_ssl:
     description: "enable ssl for all communication with the bbs (false unsupported)"
     default: true
+  benchmark-bbs.locket.api_location:
+    description: "the address of the locket"
+    default: "locket.service.cf.internal:8891"
 
   benchmark-bbs.sql.db_host:
     description: "Host for SQL backend"
