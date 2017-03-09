@@ -689,6 +689,10 @@ properties:
     cc_uploader:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
       log_level: (( property_overrides.cc_uploader.log_level || nil ))
+      cc:
+        ca_cert: (( property_overrides.cc_uploader.cc.ca_cert ))
+        client_cert: (( property_overrides.cc_uploader.cc.client_cert ))
+        client_key: (( property_overrides.cc_uploader.cc.client_key ))
     nsync:
       diego_privileged_containers: (( property_overrides.nsync.diego_privileged_containers || nil ))
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
