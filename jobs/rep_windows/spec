@@ -201,7 +201,7 @@ properties:
     description: "Experimental: PEM-encoded key used to sign instance identity credentials. Enables instance identity if set along with instance_identity_ca_cert"
   diego.executor.instance_identity_validity_period_in_hours:
     description: "Experimental: Validity period for the generated instance identity certificate"
-    default: 1
+    default: 24
 
   diego.rep.bbs.api_location:
     description: "Address to the BBS Server"

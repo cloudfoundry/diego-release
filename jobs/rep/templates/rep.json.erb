@@ -129,7 +129,7 @@
   if_p("diego.executor.instance_identity_ca_cert",
        "diego.executor.instance_identity_key",
        "diego.executor.instance_identity_validity_period_in_hours") do |cert, key, validity_period|
-     if !(cert.empty? || key.empty? || validity_period <= 0)
+     if !(cert.empty? || key.empty? || validity_period < 1)
        config[:instance_identity_ca_path] = "#{CONF_DIR}/certs/rep/instance_identity.crt"
        config[:instance_identity_private_key_path] = "#{CONF_DIR}/certs/rep/instance_identity.key"
        config[:instance_identity_cred_dir] = INSTANCE_IDENTITY_DIR
