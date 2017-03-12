@@ -206,7 +206,7 @@ base:
         loggregator: &cell-loggregator
           use_v2_api:  (( property_overrides.loggregator.use_v2_api || nil ))
           v2_api_port: (( config_from_cf.metron_agent.grpc_port || nil ))
-          ca_cert:     (( property_overrides.loggregator.tls.ca_cert || nil ))
+          ca_cert:     (( property_overrides.loggregator.tls.ca_cert || config_from_cf.loggregator.tls.ca_cert || nil ))
           cert:        (( property_overrides.loggregator.tls.cert || nil ))
           key:         (( property_overrides.loggregator.tls.key || nil))
         metron_agent:
