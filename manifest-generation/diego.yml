@@ -203,6 +203,14 @@ base:
         serial: false
         max_in_flight: (( instance_count_overrides.cell_z1.max_in_flight || 1 ))
       properties:
+        # Properties below are currently used for download/upload actions but
+        # should eventually replace all other client/server certs for the rep.
+        # for now we will use the bbs client certs if the user doesn't specify
+        # the certs
+        tls: &cell-tls-configuration
+          cert: (( property_overrides.cell.tls.cert || property_overrides.rep.server_cert || nil ))
+          key: (( property_overrides.cell.tls.key || property_overrides.rep.server_key || nil ))
+          ca_cert: (( property_overrides.cell.tls.ca_cert || property_overrides.rep.ca_cert || nil ))
         loggregator: &cell-loggregator
           use_v2_api:  (( property_overrides.loggregator.use_v2_api || nil ))
           v2_api_port: (( config_from_cf.metron_agent.grpc_port || nil ))
@@ -281,6 +289,7 @@ base:
         max_in_flight: (( instance_count_overrides.cell_z2.max_in_flight || 1 ))
       properties:
         loggregator: *cell-loggregator
+        tls: *cell-tls-configuration
         metron_agent:
           zone: z2
         diego:
@@ -352,6 +361,7 @@ base:
         serial: false
         max_in_flight: (( instance_count_overrides.cell_z3.max_in_flight || 1 ))
       properties:
+        tls: *cell-tls-configuration
         loggregator: *cell-loggregator
         metron_agent:
           zone: z3

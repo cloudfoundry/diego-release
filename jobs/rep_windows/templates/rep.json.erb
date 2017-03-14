@@ -89,6 +89,24 @@
     config[:trusted_system_certificates_path] = "#{TRUSTED_CERTS_DIR}"
   end
 
+  if_p("tls.cert") do |value|
+    if !value.empty?
+      config[:path_to_tls_cert] = "#{CONF_DIR}/certs/tls.crt"
+    end
+  end
+
+  if_p("tls.key") do |value|
+    if !value.empty?
+      config[:path_to_tls_key] = "#{CONF_DIR}/certs/tls.key"
+    end
+  end
+
+  if_p("tls.ca_cert") do |value|
+    if !value.empty?
+      config[:path_to_tls_ca_cert] = "#{CONF_DIR}/certs/tls_ca.crt"
+    end
+  end
+
   if_p("diego.executor.ca_certs_for_downloads") do |value|
     if !value.empty?
       config[:path_to_ca_certs_for_downloads] = "#{CONF_DIR}/certs/rep/ca_certs_for_downloads.crt"

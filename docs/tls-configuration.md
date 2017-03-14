@@ -14,7 +14,7 @@ the rep server and its clients (other components in the Diego deployment).
 
 TLS with mutual authentication can be enabled for communication to the Auctioneer
 server, via the presence of any of the following properties: `diego.auctioneer.ca_cert`,
-`diego.auctioneer.server_cert`, `diego.auctioneer.server_key`. If TLS enabled for
+`diego.auctioneer.server_cert`, `diego.auctioneer.server_key`. If TLS is enabled for
 the Auctioneer, the operator must also specify the client certificates and keys
 required for mutual authentication in the following properties: `diego.bbs.auctioneer.ca_cert`,
 `diego.bbs.auctioneer.client_cert`, `diego.bbs.auctioneer.client_key`.
@@ -22,6 +22,10 @@ The operator may also set `diego.bbs.auctioneer.require_tls` to `true` to ensure
 that all communication between the BBS and the Auctioneer server is secured using TLS
 with mutual authentication.
 
+TLS with mutual authentication can be enabled for upload and download of assets
+into the containers, via the presence of the following properties:
+`tls.ca_cert`, `tls.cert`, `tls.key`. See below for instructions on how to
+generate those certs and keys.
 
 ### Generating TLS Certificates
 
@@ -153,6 +157,33 @@ following steps to successfully generate the required certificates.
    `properties.diego.CLIENT.rep.client_key` should be set to the certificate in
    `out/clientName.key`. Where possible values for `CLIENT` are `auctioneer`
    and `bbs`.
+
+6. Create and sign a certificate for Rep component.
+
+   The following set of properties are currently used by the
+   uploader/downloader to authenticate with the blobstore and CC. If you signed
+   the Rep server certificate in the previous step using the CF/Diego mutual
+   TLS certificate authority, then you will be able to use the same cert/key
+   for the following properties. Otherwise, you will have to generate a new
+   certificate by running:
+
+   ```
+   $ ./certstrap request-cert --common-name "clientName"
+   Enter passphrase (empty for no passphrase): <hit enter for no password>
+
+   Enter same passphrase again: <hit enter for no password>
+
+   Created out/clientName.key
+   Created out/clientName.csr
+
+   $ ./certstrap sign clientName --CA cf-diego-ca # cf-diego-ca is the mutual CF/Diego CA
+   Created out/clientName.crt from out/clientName.csr signed by out/cf-diego-ca.key
+   ```
+
+   **Note** the following properties must be set in the cell job spec:
+   - `properties.tls.ca_cert`: The CF/Diego mutual TLS certificate authority
+   - `properties.tls.cert`
+   - `properties.tls.key`
 
 7. Create and sign a certificate for the Auctioneer server.
    ```

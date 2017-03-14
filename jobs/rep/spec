@@ -23,6 +23,9 @@ templates:
   loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
   loggregator_client.crt.erb: config/certs/loggregator/client.crt
   loggregator_client.key.erb: config/certs/loggregator/client.key
+  tls.crt.erb: config/certs/tls.crt
+  tls.key.erb: config/certs/tls.key
+  tls_ca.crt.erb: config/certs/tls_ca.crt
 
 packages:
   - pid_utils
@@ -110,8 +113,14 @@ properties:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
   diego.executor.ca_certs_for_downloads:
-    description: "Concatenation of trusted CA certificates to be used when downloading assets."
+    description: "Concatenation of trusted CA certificates to be used when downloading assets. Deprecated in favor of configuration with tls.{cert,key,ca_cert}"
     default: null
+  tls.cert:
+    description: "PEM-encoded tls certificate that can be used for client or server auth"
+  tls.key:
+    description: "PEM-encoded tls client key"
+  tls.ca_cert:
+    description: "PEM-encoded tls client CA certificate for asset upload/download"
 
   diego.rep.consul.require_tls:
     description: "Require mutual TLS to talk to the local consul API"
