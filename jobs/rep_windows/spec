@@ -21,7 +21,7 @@ templates:
   loggregator_client.key.erb: config/certs/loggregator/client.key
   tls.crt.erb: config/certs/tls.crt
   tls.key.erb: config/certs/tls.key
-  tls_ca.crt.erb: config/certs/ca.crt
+  tls_ca.crt.erb: config/certs/tls_ca.crt
 
 packages:
   - rep_windows

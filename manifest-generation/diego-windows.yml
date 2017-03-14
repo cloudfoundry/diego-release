@@ -53,6 +53,10 @@ jobs:
       serial: false
       max_in_flight: (( instance_count_overrides.cell_windows_z1.max_in_flight || 1 ))
     properties:
+      tls: &cell-tls-configuration
+        cert: (( property_overrides.cell.tls.cert || property_overrides.rep.server_cert || nil ))
+        key: (( property_overrides.cell.tls.key || property_overrides.rep.server_key || nil ))
+        ca_cert: (( property_overrides.cell.tls.ca_cert || property_overrides.rep.ca_cert || nil ))
       loggregator: &cell-loggregator
         use_v2_api:  (( property_overrides.loggregator.use_v2_api || nil ))
         v2_api_port: (( config_from_cf.metron_agent.grpc_port || nil ))
@@ -77,6 +81,7 @@ jobs:
       serial: false
       max_in_flight: (( instance_count_overrides.cell_windows_z2.max_in_flight || 1 ))
     properties:
+      tls: *cell-tls-configuration
       loggregator: *cell-loggregator
       metron_agent:
         zone: z2
@@ -96,6 +101,7 @@ jobs:
       serial: false
       max_in_flight: (( instance_count_overrides.cell_windows_z3.max_in_flight || 1 ))
     properties:
+      tls: *cell-tls-configuration
       loggregator: *cell-loggregator
       metron_agent:
         zone: z3
