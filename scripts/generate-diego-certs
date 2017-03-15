@@ -5,11 +5,12 @@ set -e -x
 existing_depot="$1"
 
 pushd `dirname "$0"`/..
-  scripts/generate-bbs-certs        cf-diego-ca "$existing_depot"
-  scripts/generate-locket-certs     cf-diego-ca "$existing_depot"
-  scripts/generate-rep-certs        cf-diego-ca "$existing_depot"
-  scripts/generate-auctioneer-certs cf-diego-ca "$existing_depot"
-  scripts/generate-tps-certs        cf-diego-ca "$existing_depot"
+  scripts/generate-bbs-certs         cf-diego-ca "$existing_depot"
+  scripts/generate-locket-certs      cf-diego-ca "$existing_depot"
+  scripts/generate-rep-certs         cf-diego-ca "$existing_depot"
+  scripts/generate-auctioneer-certs  cf-diego-ca "$existing_depot"
+  scripts/generate-tps-certs         cf-diego-ca "$existing_depot"
+  scripts/generate-cc-uploader-certs cf-diego-ca "$existing_depot"
 popd
 
 echo "Outputted certs to diego-certs"
