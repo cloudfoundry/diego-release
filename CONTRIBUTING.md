@@ -144,6 +144,7 @@ On OS X, follow these steps to install and configure MySQL and Postgres:
 
         CREATE USER 'diego'@'localhost' IDENTIFIED BY 'diego_password';
         GRANT ALL PRIVILEGES ON `diego\_%`.* TO 'diego'@'localhost';
+        GRANT ALL PRIVILEGES ON `routingapi\_%`.* TO 'diego'@'localhost';
 
 8. Install Postgres (version 9.4 or higher is required):
 

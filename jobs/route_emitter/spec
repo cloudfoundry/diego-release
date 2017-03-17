@@ -69,3 +69,16 @@ properties:
   diego.route_emitter.job_name:
     description: "The name of the Diego job referenced by this spec (DO NOT override)"
     default: "route_emitter"
+
+  tcp.enabled:
+    description: "EXPERIMENTAL. Turn on tcp route emitter"
+    default: false
+  routing_api.uri:
+    description: "Routing API uri to be used by the tcp route-emitter"
+    default: http://routing-api.service.cf.internal
+  routing_api.port:
+    description: "Routing API port to be used by the tcp route-emitter"
+    default: 3000
+  routing_api.auth_disabled:
+    description: "Bypass UAA authentication when communicating with the Routing API"
+    default: true

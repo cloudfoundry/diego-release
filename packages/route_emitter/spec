@@ -26,12 +26,23 @@ files:
   - code.cloudfoundry.org/route-emitter/consuldownchecker/*.go # gosub
   - code.cloudfoundry.org/route-emitter/consuldownmodenotifier/*.go # gosub
   - code.cloudfoundry.org/route-emitter/diegonats/*.go # gosub
-  - code.cloudfoundry.org/route-emitter/nats_emitter/*.go # gosub
-  - code.cloudfoundry.org/route-emitter/routing_table/*.go # gosub
+  - code.cloudfoundry.org/route-emitter/emitter/*.go # gosub
+  - code.cloudfoundry.org/route-emitter/routehandlers/*.go # gosub
+  - code.cloudfoundry.org/route-emitter/routingtable/*.go # gosub
+  - code.cloudfoundry.org/route-emitter/routingtable/schema/endpoint/*.go # gosub
+  - code.cloudfoundry.org/route-emitter/routingtable/schema/event/*.go # gosub
+  - code.cloudfoundry.org/route-emitter/routingtable/util/*.go # gosub
   - code.cloudfoundry.org/route-emitter/syncer/*.go # gosub
   - code.cloudfoundry.org/route-emitter/watcher/*.go # gosub
+  - code.cloudfoundry.org/routing-api/*.go # gosub
+  - code.cloudfoundry.org/routing-api/models/*.go # gosub
   - code.cloudfoundry.org/routing-info/cfroutes/*.go # gosub
+  - code.cloudfoundry.org/routing-info/tcp_routes/*.go # gosub
   - code.cloudfoundry.org/runtimeschema/metric/*.go # gosub
+  - code.cloudfoundry.org/trace-logger/*.go # gosub
+  - code.cloudfoundry.org/uaa-go-client/*.go # gosub
+  - code.cloudfoundry.org/uaa-go-client/config/*.go # gosub
+  - code.cloudfoundry.org/uaa-go-client/schema/*.go # gosub
   - code.cloudfoundry.org/workpool/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
@@ -50,6 +61,7 @@ files:
   - github.com/cloudfoundry/gosteno/*.go # gosub
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
   - github.com/cloudfoundry/sonde-go/events/*.go # gosub
+  - github.com/dgrijalva/jwt-go/*.go # gosub
   - github.com/gogo/protobuf/gogoproto/*.go # gosub
   - github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/gogo/protobuf/protoc-gen-gogo/descriptor/*.go # gosub
