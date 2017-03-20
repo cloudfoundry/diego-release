@@ -17,7 +17,7 @@ ERROR_CODE=1
 
 pushd src/code.cloudfoundry.org/route-emitter > /dev/null
   ginkgo -r -p -keepGoing -trace -randomizeAllSpecs -progress \
-    routing_table/benchmarks
+    routingtable/benchmarks
 
   ERROR_CODE=$?
 popd > /dev/null
