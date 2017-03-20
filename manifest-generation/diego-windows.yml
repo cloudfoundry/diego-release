@@ -70,6 +70,11 @@ jobs:
           zone: z1
         route_emitter:
           local_mode: (( route_emitter_overrides.local_mode_enabled ))
+      tcp:
+        enabled: (( property_overrides.tcp_emitter.enabled || nil ))
+      routing_api:
+        uri: (( property_overrides.tcp_emitter.routing_api_uri || nil ))
+        port:  (( property_overrides.tcp_emitter.routing_api_port || nil ))
 
   - name: cell_windows_z2
     templates: (( base_templates.cell_windows route_emitter_overrides.templates ))
@@ -90,6 +95,11 @@ jobs:
           zone: z2
         route_emitter:
           local_mode: (( route_emitter_overrides.local_mode_enabled ))
+      tcp:
+        enabled: (( property_overrides.tcp_emitter.enabled || nil ))
+      routing_api:
+        uri: (( property_overrides.tcp_emitter.routing_api_uri || nil ))
+        port:  (( property_overrides.tcp_emitter.routing_api_port || nil ))
 
   - name: cell_windows_z3
     templates: (( base_templates.cell_windows route_emitter_overrides.templates ))
@@ -110,6 +120,11 @@ jobs:
           zone: z3
         route_emitter:
           local_mode: (( route_emitter_overrides.local_mode_enabled ))
+      tcp:
+        enabled: (( property_overrides.tcp_emitter.enabled || nil ))
+      routing_api:
+        uri: (( property_overrides.tcp_emitter.routing_api_uri || nil ))
+        port:  (( property_overrides.tcp_emitter.routing_api_port || nil ))
 
 properties:
   # -- Properties below are used by the metron_agent job from cf-release --
