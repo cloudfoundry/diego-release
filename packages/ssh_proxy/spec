@@ -64,6 +64,9 @@ files:
   - github.com/vito/go-sse/sse/*.go # gosub
   - golang.org/x/crypto/curve25519/*.go # gosub
   - golang.org/x/crypto/curve25519/*.s # gosub
+  - golang.org/x/crypto/curve25519/*.h # gosub
+  - golang.org/x/crypto/ed25519/*.go # gosub
+  - golang.org/x/crypto/ed25519/internal/edwards25519/*.go # gosub
   - golang.org/x/crypto/ssh/*.go # gosub
   - golang.org/x/net/context/*.go # gosub
   - golang.org/x/net/http2/*.go # gosub
