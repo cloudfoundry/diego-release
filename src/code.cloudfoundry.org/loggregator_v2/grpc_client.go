@@ -30,8 +30,7 @@ type grpcClient struct {
 
 func NewGrpcClient(logger lager.Logger, config *MetronConfig, ingressClient IngressClient) *grpcClient {
 	client := &grpcClient{
-		logger: logger.Session("grpc-client"),
-		// connector: connector,
+		logger:        logger.Session("grpc-client"),
 		ingressClient: ingressClient,
 		config:        config,
 		envelopes:     make(chan *envelopeWithResponseChannel),
@@ -87,8 +86,9 @@ func (c *grpcClient) addEnvelopeTags(env *Envelope) {
 
 func (c *grpcClient) createLogEnvelope(appID, message, sourceType, sourceInstance string, logType Log_Type) *Envelope {
 	env := &Envelope{
-		Timestamp: time.Now().UnixNano(),
-		SourceId:  appID,
+		Timestamp:  time.Now().UnixNano(),
+		SourceId:   appID,
+		InstanceId: sourceInstance,
 		Message: &Envelope_Log{
 			Log: &Log{
 				Payload: []byte(message),
