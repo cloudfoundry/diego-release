@@ -173,6 +173,8 @@ var _ = Describe("Client", func() {
 				Expect(env.Tags["index"].GetText()).To(Equal("0"))
 				Expect(env.Tags["ip"].GetText()).To(Equal("10.244.34.6"))
 				Expect(env.Tags["origin"].GetText()).To(Equal("test-origin"))
+				Expect(env.SourceId).To(Equal("app-id"))
+				Expect(env.InstanceId).To(Equal("source-instance"))
 
 				ts := time.Unix(0, env.GetTimestamp())
 				Expect(ts).Should(BeTemporally("~", time.Now(), time.Second))
@@ -196,6 +198,8 @@ var _ = Describe("Client", func() {
 				Expect(env.Tags["index"].GetText()).To(Equal("0"))
 				Expect(env.Tags["ip"].GetText()).To(Equal("10.244.34.6"))
 				Expect(env.Tags["origin"].GetText()).To(Equal("test-origin"))
+				Expect(env.SourceId).To(Equal("app-id"))
+				Expect(env.InstanceId).To(Equal("source-instance"))
 
 				ts := time.Unix(0, env.GetTimestamp())
 				Expect(ts).Should(BeTemporally("~", time.Now(), time.Second))
