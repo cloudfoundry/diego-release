@@ -117,11 +117,11 @@ func (c *grpcClient) send(envelope *Envelope) error {
 }
 
 func (c *grpcClient) SendAppLog(appID, message, sourceType, sourceInstance string) error {
-	return c.send(c.createLogEnvelope(appID, message, sourceType, sourceInstance, Log_OUT))
+	return c.send(c.createLogEnvelope(appID, message, sourceType, sourceInstance, OUT))
 }
 
 func (c *grpcClient) SendAppErrorLog(appID, message, sourceType, sourceInstance string) error {
-	return c.send(c.createLogEnvelope(appID, message, sourceType, sourceInstance, Log_ERR))
+	return c.send(c.createLogEnvelope(appID, message, sourceType, sourceInstance, ERR))
 }
 
 func (c *grpcClient) SendAppMetrics(m *events.ContainerMetric) error {

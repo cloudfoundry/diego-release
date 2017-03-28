@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
-//go:generate bash -c "protoc ../loggregator-api/v2/*.proto --go_out=plugins=grpc:. --proto_path=../loggregator-api/v2"
+//go:generate bash scripts/generate_protos.sh
 
 //go:generate counterfeiter -o fakes/fake_client.go . Client
 

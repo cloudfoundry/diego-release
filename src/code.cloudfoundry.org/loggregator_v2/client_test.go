@@ -179,7 +179,7 @@ var _ = Describe("Client", func() {
 				log := env.GetLog()
 				Expect(log).NotTo(BeNil())
 				Expect(log.GetPayload()).To(Equal([]byte("message")))
-				Expect(log.Type).To(Equal(loggregator_v2.Log_OUT))
+				Expect(log.Type).To(Equal(loggregator_v2.OUT))
 			})
 
 			It("sends app error logs", func() {
@@ -202,7 +202,7 @@ var _ = Describe("Client", func() {
 				log := env.GetLog()
 				Expect(log).NotTo(BeNil())
 				Expect(log.GetPayload()).To(Equal([]byte("message")))
-				Expect(log.Type).To(Equal(loggregator_v2.Log_ERR))
+				Expect(log.Type).To(Equal(loggregator_v2.ERR))
 			})
 
 			It("sends app metrics", func() {
