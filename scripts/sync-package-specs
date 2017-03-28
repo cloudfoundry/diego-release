@@ -28,6 +28,9 @@ function sync_package() {
         if ls ../../src/${package}/*.s >/dev/null 2>&1; then
           echo ${package} | sed -e 's/\(.*\)/  - \1\/*.s # gosub/g'
         fi
+        if ls ../../src/${package}/*.h >/dev/null 2>&1; then
+          echo ${package} | sed -e 's/\(.*\)/  - \1\/*.h # gosub/g'
+        fi
       done
     } > spec.new
 
