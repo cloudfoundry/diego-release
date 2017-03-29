@@ -74,6 +74,16 @@
   end
   if_p("routing_api.auth_disabled") do |value|
     config[:routing_api][:auth_disabled] = value
+
+    if !value then
+      config[:oauth] = {}
+      config[:oauth][:uaa_url] = p("uaa.url") + ":" + p("uaa.port").to_s
+      config[:oauth][:client_name] = p("uaa.client_name")
+      config[:oauth][:client_secret] = p("uaa.client_secret")
+      config[:oauth][:skip_cert_verify] = p("uaa.skip_cert_verify")
+      config[:oauth][:ca_certs] = "#{CONF_DIR}/certs/uaa/ca.crt"
+    end
+
   end
 
   config.to_json

@@ -9,6 +9,7 @@ templates:
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
+  uaa_ca.crt.erb: config/certs/uaa/ca.crt
 
 packages:
   - pid_utils
@@ -81,4 +82,21 @@ properties:
     default: 3000
   routing_api.auth_disabled:
     description: "Bypass UAA authentication when communicating with the Routing API"
-    default: true
+    default: false
+
+  uaa.url:
+    description: "UAA service url"
+    default: "https://uaa.service.cf.internal"
+  uaa.port:
+    description: "The port on which UAA accepts TLS connections"
+    default: 8443
+  uaa.client_name:
+    description: "UAA client id"
+    default: "tcp_emitter"
+  uaa.client_secret:
+    description: "UAA client secret"
+  uaa.skip_cert_verify:
+    description: "Skip certificate verification when communicating with UAA"
+    default: false
+  uaa.ca_cert:
+    description: "UAA ca certificate"
