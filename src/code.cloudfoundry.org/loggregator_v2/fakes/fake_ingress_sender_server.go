@@ -18,10 +18,17 @@ type FakeIngress_SenderServer struct {
 	sendAndCloseReturns struct {
 		result1 error
 	}
+	sendAndCloseReturnsOnCall map[int]struct {
+		result1 error
+	}
 	RecvStub        func() (*loggregator_v2.Envelope, error)
 	recvMutex       sync.RWMutex
 	recvArgsForCall []struct{}
 	recvReturns     struct {
+		result1 *loggregator_v2.Envelope
+		result2 error
+	}
+	recvReturnsOnCall map[int]struct {
 		result1 *loggregator_v2.Envelope
 		result2 error
 	}
@@ -33,12 +40,18 @@ type FakeIngress_SenderServer struct {
 	setHeaderReturns struct {
 		result1 error
 	}
+	setHeaderReturnsOnCall map[int]struct {
+		result1 error
+	}
 	SendHeaderStub        func(metadata.MD) error
 	sendHeaderMutex       sync.RWMutex
 	sendHeaderArgsForCall []struct {
 		arg1 metadata.MD
 	}
 	sendHeaderReturns struct {
+		result1 error
+	}
+	sendHeaderReturnsOnCall map[int]struct {
 		result1 error
 	}
 	SetTrailerStub        func(metadata.MD)
@@ -52,12 +65,18 @@ type FakeIngress_SenderServer struct {
 	contextReturns     struct {
 		result1 context.Context
 	}
+	contextReturnsOnCall map[int]struct {
+		result1 context.Context
+	}
 	SendMsgStub        func(m interface{}) error
 	sendMsgMutex       sync.RWMutex
 	sendMsgArgsForCall []struct {
 		m interface{}
 	}
 	sendMsgReturns struct {
+		result1 error
+	}
+	sendMsgReturnsOnCall map[int]struct {
 		result1 error
 	}
 	RecvMsgStub        func(m interface{}) error
@@ -68,12 +87,16 @@ type FakeIngress_SenderServer struct {
 	recvMsgReturns struct {
 		result1 error
 	}
+	recvMsgReturnsOnCall map[int]struct {
+		result1 error
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
 func (fake *FakeIngress_SenderServer) SendAndClose(arg1 *loggregator_v2.IngressResponse) error {
 	fake.sendAndCloseMutex.Lock()
+	ret, specificReturn := fake.sendAndCloseReturnsOnCall[len(fake.sendAndCloseArgsForCall)]
 	fake.sendAndCloseArgsForCall = append(fake.sendAndCloseArgsForCall, struct {
 		arg1 *loggregator_v2.IngressResponse
 	}{arg1})
@@ -81,9 +104,11 @@ func (fake *FakeIngress_SenderServer) SendAndClose(arg1 *loggregator_v2.IngressR
 	fake.sendAndCloseMutex.Unlock()
 	if fake.SendAndCloseStub != nil {
 		return fake.SendAndCloseStub(arg1)
-	} else {
-		return fake.sendAndCloseReturns.result1
 	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fake.sendAndCloseReturns.result1
 }
 
 func (fake *FakeIngress_SenderServer) SendAndCloseCallCount() int {
@@ -105,16 +130,31 @@ func (fake *FakeIngress_SenderServer) SendAndCloseReturns(result1 error) {
 	}{result1}
 }
 
+func (fake *FakeIngress_SenderServer) SendAndCloseReturnsOnCall(i int, result1 error) {
+	fake.SendAndCloseStub = nil
+	if fake.sendAndCloseReturnsOnCall == nil {
+		fake.sendAndCloseReturnsOnCall = make(map[int]struct {
+			result1 error
+		})
+	}
+	fake.sendAndCloseReturnsOnCall[i] = struct {
+		result1 error
+	}{result1}
+}
+
 func (fake *FakeIngress_SenderServer) Recv() (*loggregator_v2.Envelope, error) {
 	fake.recvMutex.Lock()
+	ret, specificReturn := fake.recvReturnsOnCall[len(fake.recvArgsForCall)]
 	fake.recvArgsForCall = append(fake.recvArgsForCall, struct{}{})
 	fake.recordInvocation("Recv", []interface{}{})
 	fake.recvMutex.Unlock()
 	if fake.RecvStub != nil {
 		return fake.RecvStub()
-	} else {
-		return fake.recvReturns.result1, fake.recvReturns.result2
 	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fake.recvReturns.result1, fake.recvReturns.result2
 }
 
 func (fake *FakeIngress_SenderServer) RecvCallCount() int {
@@ -131,8 +171,23 @@ func (fake *FakeIngress_SenderServer) RecvReturns(result1 *loggregator_v2.Envelo
 	}{result1, result2}
 }
 
+func (fake *FakeIngress_SenderServer) RecvReturnsOnCall(i int, result1 *loggregator_v2.Envelope, result2 error) {
+	fake.RecvStub = nil
+	if fake.recvReturnsOnCall == nil {
+		fake.recvReturnsOnCall = make(map[int]struct {
+			result1 *loggregator_v2.Envelope
+			result2 error
+		})
+	}
+	fake.recvReturnsOnCall[i] = struct {
+		result1 *loggregator_v2.Envelope
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeIngress_SenderServer) SetHeader(arg1 metadata.MD) error {
 	fake.setHeaderMutex.Lock()
+	ret, specificReturn := fake.setHeaderReturnsOnCall[len(fake.setHeaderArgsForCall)]
 	fake.setHeaderArgsForCall = append(fake.setHeaderArgsForCall, struct {
 		arg1 metadata.MD
 	}{arg1})
@@ -140,9 +195,11 @@ func (fake *FakeIngress_SenderServer) SetHeader(arg1 metadata.MD) error {
 	fake.setHeaderMutex.Unlock()
 	if fake.SetHeaderStub != nil {
 		return fake.SetHeaderStub(arg1)
-	} else {
-		return fake.setHeaderReturns.result1
 	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fake.setHeaderReturns.result1
 }
 
 func (fake *FakeIngress_SenderServer) SetHeaderCallCount() int {
@@ -164,8 +221,21 @@ func (fake *FakeIngress_SenderServer) SetHeaderReturns(result1 error) {
 	}{result1}
 }
 
+func (fake *FakeIngress_SenderServer) SetHeaderReturnsOnCall(i int, result1 error) {
+	fake.SetHeaderStub = nil
+	if fake.setHeaderReturnsOnCall == nil {
+		fake.setHeaderReturnsOnCall = make(map[int]struct {
+			result1 error
+		})
+	}
+	fake.setHeaderReturnsOnCall[i] = struct {
+		result1 error
+	}{result1}
+}
+
 func (fake *FakeIngress_SenderServer) SendHeader(arg1 metadata.MD) error {
 	fake.sendHeaderMutex.Lock()
+	ret, specificReturn := fake.sendHeaderReturnsOnCall[len(fake.sendHeaderArgsForCall)]
 	fake.sendHeaderArgsForCall = append(fake.sendHeaderArgsForCall, struct {
 		arg1 metadata.MD
 	}{arg1})
@@ -173,9 +243,11 @@ func (fake *FakeIngress_SenderServer) SendHeader(arg1 metadata.MD) error {
 	fake.sendHeaderMutex.Unlock()
 	if fake.SendHeaderStub != nil {
 		return fake.SendHeaderStub(arg1)
-	} else {
-		return fake.sendHeaderReturns.result1
 	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fake.sendHeaderReturns.result1
 }
 
 func (fake *FakeIngress_SenderServer) SendHeaderCallCount() int {
@@ -193,6 +265,18 @@ func (fake *FakeIngress_SenderServer) SendHeaderArgsForCall(i int) metadata.MD {
 func (fake *FakeIngress_SenderServer) SendHeaderReturns(result1 error) {
 	fake.SendHeaderStub = nil
 	fake.sendHeaderReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeIngress_SenderServer) SendHeaderReturnsOnCall(i int, result1 error) {
+	fake.SendHeaderStub = nil
+	if fake.sendHeaderReturnsOnCall == nil {
+		fake.sendHeaderReturnsOnCall = make(map[int]struct {
+			result1 error
+		})
+	}
+	fake.sendHeaderReturnsOnCall[i] = struct {
 		result1 error
 	}{result1}
 }
@@ -223,14 +307,17 @@ func (fake *FakeIngress_SenderServer) SetTrailerArgsForCall(i int) metadata.MD {
 
 func (fake *FakeIngress_SenderServer) Context() context.Context {
 	fake.contextMutex.Lock()
+	ret, specificReturn := fake.contextReturnsOnCall[len(fake.contextArgsForCall)]
 	fake.contextArgsForCall = append(fake.contextArgsForCall, struct{}{})
 	fake.recordInvocation("Context", []interface{}{})
 	fake.contextMutex.Unlock()
 	if fake.ContextStub != nil {
 		return fake.ContextStub()
-	} else {
-		return fake.contextReturns.result1
 	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fake.contextReturns.result1
 }
 
 func (fake *FakeIngress_SenderServer) ContextCallCount() int {
@@ -246,8 +333,21 @@ func (fake *FakeIngress_SenderServer) ContextReturns(result1 context.Context) {
 	}{result1}
 }
 
+func (fake *FakeIngress_SenderServer) ContextReturnsOnCall(i int, result1 context.Context) {
+	fake.ContextStub = nil
+	if fake.contextReturnsOnCall == nil {
+		fake.contextReturnsOnCall = make(map[int]struct {
+			result1 context.Context
+		})
+	}
+	fake.contextReturnsOnCall[i] = struct {
+		result1 context.Context
+	}{result1}
+}
+
 func (fake *FakeIngress_SenderServer) SendMsg(m interface{}) error {
 	fake.sendMsgMutex.Lock()
+	ret, specificReturn := fake.sendMsgReturnsOnCall[len(fake.sendMsgArgsForCall)]
 	fake.sendMsgArgsForCall = append(fake.sendMsgArgsForCall, struct {
 		m interface{}
 	}{m})
@@ -255,9 +355,11 @@ func (fake *FakeIngress_SenderServer) SendMsg(m interface{}) error {
 	fake.sendMsgMutex.Unlock()
 	if fake.SendMsgStub != nil {
 		return fake.SendMsgStub(m)
-	} else {
-		return fake.sendMsgReturns.result1
 	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fake.sendMsgReturns.result1
 }
 
 func (fake *FakeIngress_SenderServer) SendMsgCallCount() int {
@@ -279,8 +381,21 @@ func (fake *FakeIngress_SenderServer) SendMsgReturns(result1 error) {
 	}{result1}
 }
 
+func (fake *FakeIngress_SenderServer) SendMsgReturnsOnCall(i int, result1 error) {
+	fake.SendMsgStub = nil
+	if fake.sendMsgReturnsOnCall == nil {
+		fake.sendMsgReturnsOnCall = make(map[int]struct {
+			result1 error
+		})
+	}
+	fake.sendMsgReturnsOnCall[i] = struct {
+		result1 error
+	}{result1}
+}
+
 func (fake *FakeIngress_SenderServer) RecvMsg(m interface{}) error {
 	fake.recvMsgMutex.Lock()
+	ret, specificReturn := fake.recvMsgReturnsOnCall[len(fake.recvMsgArgsForCall)]
 	fake.recvMsgArgsForCall = append(fake.recvMsgArgsForCall, struct {
 		m interface{}
 	}{m})
@@ -288,9 +403,11 @@ func (fake *FakeIngress_SenderServer) RecvMsg(m interface{}) error {
 	fake.recvMsgMutex.Unlock()
 	if fake.RecvMsgStub != nil {
 		return fake.RecvMsgStub(m)
-	} else {
-		return fake.recvMsgReturns.result1
 	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fake.recvMsgReturns.result1
 }
 
 func (fake *FakeIngress_SenderServer) RecvMsgCallCount() int {
@@ -308,6 +425,18 @@ func (fake *FakeIngress_SenderServer) RecvMsgArgsForCall(i int) interface{} {
 func (fake *FakeIngress_SenderServer) RecvMsgReturns(result1 error) {
 	fake.RecvMsgStub = nil
 	fake.recvMsgReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeIngress_SenderServer) RecvMsgReturnsOnCall(i int, result1 error) {
+	fake.RecvMsgStub = nil
+	if fake.recvMsgReturnsOnCall == nil {
+		fake.recvMsgReturnsOnCall = make(map[int]struct {
+			result1 error
+		})
+	}
+	fake.recvMsgReturnsOnCall[i] = struct {
 		result1 error
 	}{result1}
 }

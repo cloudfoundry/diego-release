@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"time"
 
 	"code.cloudfoundry.org/lager"
 
@@ -18,7 +19,28 @@ import (
 
 //go:generate counterfeiter -o fakes/fake_client.go . Client
 
+//go:generate counterfeiter -o fakes/fake_batcher.go . Batcher
+type Batcher interface {
+	ComponentMetricsClient
+	Send() error
+}
+
+type ComponentClient interface {
+	ComponentMetricsClient
+	Batcher() Batcher
+	IncrementCounter(name string) error
+}
+
+type ComponentMetricsClient interface {
+	SendDuration(name string, value time.Duration) error
+	SendMebiBytes(name string, value int) error
+	SendMetric(name string, value int) error
+	SendBytesPerSecond(name string, value float64) error
+	SendRequestsPerSecond(name string, value float64) error
+}
+
 type Client interface {
+	ComponentClient
 	SendAppLog(appID, message, sourceType, sourceInstance string) error
 	SendAppErrorLog(appID, message, sourceType, sourceInstance string) error
 	SendAppMetrics(metrics *events.ContainerMetric) error

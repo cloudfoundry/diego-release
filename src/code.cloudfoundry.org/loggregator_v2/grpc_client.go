@@ -116,6 +116,69 @@ func (c *grpcClient) send(envelope *Envelope) error {
 	return err
 }
 
+type grpcBatcher struct {
+	c       *grpcClient
+	metrics map[string]*GaugeValue
+}
+
+func (gb *grpcBatcher) Send() error {
+	return gb.c.send(&Envelope{
+		Timestamp: time.Now().UnixNano(),
+		Message: &Envelope_Gauge{
+			Gauge: &Gauge{
+				Metrics: gb.metrics,
+			},
+		},
+	})
+}
+
+func (c *grpcBatcher) SendDuration(name string, duration time.Duration) error {
+	c.metrics[name] = &GaugeValue{
+		Unit:  "nanos",
+		Value: float64(duration),
+	}
+	return nil
+}
+
+func (c *grpcBatcher) SendMebiBytes(name string, mebibytes int) error {
+	c.metrics[name] = &GaugeValue{
+		Unit:  "MiB",
+		Value: float64(mebibytes),
+	}
+	return nil
+}
+
+func (c *grpcBatcher) SendMetric(name string, value int) error {
+	c.metrics[name] = &GaugeValue{
+		Unit:  "Metric",
+		Value: float64(value),
+	}
+	return nil
+}
+
+func (c *grpcBatcher) SendBytesPerSecond(name string, value float64) error {
+	c.metrics[name] = &GaugeValue{
+		Unit:  "B/s",
+		Value: value,
+	}
+	return nil
+}
+
+func (c *grpcBatcher) SendRequestsPerSecond(name string, value float64) error {
+	c.metrics[name] = &GaugeValue{
+		Unit:  "Req/s",
+		Value: value,
+	}
+	return nil
+}
+
+func (c *grpcClient) Batcher() Batcher {
+	return &grpcBatcher{
+		c:       c,
+		metrics: make(map[string]*GaugeValue),
+	}
+}
+
 func (c *grpcClient) SendAppLog(appID, message, sourceType, sourceInstance string) error {
 	return c.send(c.createLogEnvelope(appID, message, sourceType, sourceInstance, OUT))
 }
@@ -142,5 +205,50 @@ func (c *grpcClient) SendAppMetrics(m *events.ContainerMetric) error {
 		},
 	}
 	c.addEnvelopeTags(env)
+	return c.send(env)
+}
+
+func (c *grpcClient) SendDuration(name string, duration time.Duration) error {
+	b := c.Batcher()
+	b.SendDuration(name, duration)
+	return b.Send()
+}
+
+func (c *grpcClient) SendMebiBytes(name string, mebibytes int) error {
+	b := c.Batcher()
+	b.SendMebiBytes(name, mebibytes)
+	return b.Send()
+}
+
+func (c *grpcClient) SendMetric(name string, value int) error {
+	b := c.Batcher()
+	b.SendMetric(name, value)
+	return b.Send()
+}
+
+func (c *grpcClient) SendBytesPerSecond(name string, value float64) error {
+	b := c.Batcher()
+	b.SendBytesPerSecond(name, value)
+	return b.Send()
+}
+
+func (c *grpcClient) SendRequestsPerSecond(name string, value float64) error {
+	b := c.Batcher()
+	b.SendRequestsPerSecond(name, value)
+	return b.Send()
+}
+
+func (c *grpcClient) IncrementCounter(name string) error {
+	env := &Envelope{
+		Timestamp: time.Now().UnixNano(),
+		Message: &Envelope_Counter{
+			Counter: &Counter{
+				Name: name,
+				Value: &Counter_Delta{
+					Delta: uint64(1),
+				},
+			},
+		},
+	}
 	return c.send(env)
 }

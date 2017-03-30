@@ -16,12 +16,16 @@ type FakeIngressServer struct {
 	senderReturns struct {
 		result1 error
 	}
+	senderReturnsOnCall map[int]struct {
+		result1 error
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
 func (fake *FakeIngressServer) Sender(arg1 loggregator_v2.Ingress_SenderServer) error {
 	fake.senderMutex.Lock()
+	ret, specificReturn := fake.senderReturnsOnCall[len(fake.senderArgsForCall)]
 	fake.senderArgsForCall = append(fake.senderArgsForCall, struct {
 		arg1 loggregator_v2.Ingress_SenderServer
 	}{arg1})
@@ -29,9 +33,11 @@ func (fake *FakeIngressServer) Sender(arg1 loggregator_v2.Ingress_SenderServer) 
 	fake.senderMutex.Unlock()
 	if fake.SenderStub != nil {
 		return fake.SenderStub(arg1)
-	} else {
-		return fake.senderReturns.result1
 	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fake.senderReturns.result1
 }
 
 func (fake *FakeIngressServer) SenderCallCount() int {
@@ -49,6 +55,18 @@ func (fake *FakeIngressServer) SenderArgsForCall(i int) loggregator_v2.Ingress_S
 func (fake *FakeIngressServer) SenderReturns(result1 error) {
 	fake.SenderStub = nil
 	fake.senderReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeIngressServer) SenderReturnsOnCall(i int, result1 error) {
+	fake.SenderStub = nil
+	if fake.senderReturnsOnCall == nil {
+		fake.senderReturnsOnCall = make(map[int]struct {
+			result1 error
+		})
+	}
+	fake.senderReturnsOnCall[i] = struct {
 		result1 error
 	}{result1}
 }
