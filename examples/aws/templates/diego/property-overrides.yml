@@ -32,6 +32,13 @@ property_overrides:
     log_level: debug
   cc_uploader:
     log_level: debug
+    cc:
+      ca_cert: (( merge ))
+      server_cert: (( merge ))
+      server_key: (( merge ))
+    ca_cert: (( merge ))
+    server_cert: (( merge ))
+    server_key: (( merge ))
   file_server:
     log_level: debug
   executor:
