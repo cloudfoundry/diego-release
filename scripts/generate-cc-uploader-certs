@@ -28,13 +28,26 @@ fi
 # Install certstrap
 go get -v github.com/square/certstrap
 
-# Place keys and certificates here
-output_path="diego-certs/cc-uploader-certs"
-mkdir -p ${output_path}
 
+output_path="diego-certs/cc-uploader-certs"
+
+# CC Uploader client certificate to communicate with CC
 client_cn='cc_uploader'
 certstrap --depot-path ${ca_cert_directory} request-cert --passphrase '' --common-name $client_cn
 certstrap --depot-path ${ca_cert_directory} sign $client_cn --CA $ca_name
-mv -f "${ca_cert_directory}/${client_cn}.key" "${output_path}/client.key"
-mv -f "${ca_cert_directory}/${client_cn}.csr" "${output_path}/client.csr"
-mv -f "${ca_cert_directory}/${client_cn}.crt" "${output_path}/client.crt"
+mv -f "${ca_cert_directory}/${client_cn}.key" "${output_path}/cc/client.key"
+mv -f "${ca_cert_directory}/${client_cn}.csr" "${output_path}/cc/client.csr"
+mv -f "${ca_cert_directory}/${client_cn}.crt" "${output_path}/cc/client.crt"
+
+
+# Place keys and certificates here
+mkdir -p ${output_path}
+
+# CC Uploader server certificate
+server_cn=cell.service.cf.internal
+server_domain='cc-uploader.service.cf.internal'
+certstrap --depot-path ${ca_cert_directory} request-cert --passphrase '' --common-name $server_cn --domain $server_domain
+certstrap --depot-path ${ca_cert_directory} sign $server_cn --CA $ca_name
+mv -f "${ca_cert_directory}/$server_cn.key" "${output_path}/server.key"
+mv -f "${ca_cert_directory}/$server_cn.csr" "${output_path}/server.csr"
+mv -f "${ca_cert_directory}/$server_cn.crt" "${output_path}/server.crt"

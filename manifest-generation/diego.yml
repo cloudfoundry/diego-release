@@ -736,6 +736,10 @@ properties:
         ca_cert: (( property_overrides.cc_uploader.cc.ca_cert ))
         client_cert: (( property_overrides.cc_uploader.cc.client_cert ))
         client_key: (( property_overrides.cc_uploader.cc.client_key ))
+      mutual_tls:
+        ca_cert: (( property_overrides.cc_uploader.ca_cert ))
+        server_cert: (( property_overrides.cc_uploader.server_cert ))
+        server_key: (( property_overrides.cc_uploader.server_key ))
     nsync:
       diego_privileged_containers: (( property_overrides.nsync.diego_privileged_containers || nil ))
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
