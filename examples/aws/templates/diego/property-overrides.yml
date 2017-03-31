@@ -34,8 +34,8 @@ property_overrides:
     log_level: debug
     cc:
       ca_cert: (( merge ))
-      server_cert: (( merge ))
-      server_key: (( merge ))
+      client_cert: (( merge ))
+      client_key: (( merge ))
     ca_cert: (( merge ))
     server_cert: (( merge ))
     server_key: (( merge ))
