@@ -112,6 +112,14 @@ $(block server_key  certs/auctioneer-certs/server.key  | indent | indent)
 $(block ca_cert     certs/cf-diego-certs/cf-diego-ca.crt  | indent | indent)
 $(block client_cert certs/tps-certs/client.crt            | indent | indent)
 $(block client_key  certs/tps-certs/client.key            | indent | indent)
+  cc_uploader:
+$(block ca_cert     certs/cf-diego-certs/cf-diego-ca.crt    | indent | indent)
+$(block server_cert certs/cc_uploader/server.crt            | indent | indent)
+$(block server_key  certs/cc_uploader/server.key            | indent | indent)
+    cc:
+$(block ca_cert     certs/cf-diego-certs/cf-diego-ca.crt      | indent | indent | indent)
+$(block client_cert certs/cc_uploader/cc/client.crt           | indent | indent | indent)
+$(block client_key  certs/cc_uploader/cc/client.key           | indent | indent | indent)
 EOF
 }
 

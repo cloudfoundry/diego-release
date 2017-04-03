@@ -485,7 +485,7 @@ pushd $CF_RELEASE_DIR
 popd
 ```
 
-1. To generate certificates for BBS servers in the Diego deployment, run:
+1. To generate certificates for BBS servers and CC bridge jobs in the Diego deployment, run:
 ```bash
 $DIEGO_RELEASE_DIR/scripts/generate-diego-certs $DEPLOYMENT_DIR/certs/cf-diego-certs
 mv $DIEGO_RELEASE_DIR/diego-certs/* $DEPLOYMENT_DIR/certs
@@ -519,6 +519,12 @@ DEPLOYMENT_DIR/certs
 |  |- server-ca.key
 |  |- server.crt
 |  |- server.key
+|- cc-uploader-certs     # generated via cf-release/scripts/generate-cc-uploader-certs
+|  |- server.crt
+|  |- server.key
+|  |- cc
+|  |  |- client.crt
+|  |  |- client.key
 |- loggregator-certs # generated via cf-release/scripts/generate-loggregator-certs
 |  |- doppler.crt
 |  |- doppler.key
