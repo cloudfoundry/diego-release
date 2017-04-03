@@ -331,6 +331,12 @@ var _ = Describe("Client", func() {
 					env, err := recv.Recv()
 					Expect(err).NotTo(HaveOccurred())
 
+					Expect(env.Tags["deployment"].GetText()).To(Equal("cf-warden-diego"))
+					Expect(env.Tags["job"].GetText()).To(Equal("rep"))
+					Expect(env.Tags["index"].GetText()).To(Equal("0"))
+					Expect(env.Tags["ip"].GetText()).To(Equal("10.244.34.6"))
+					Expect(env.Tags["origin"].GetText()).To(Equal("test-origin"))
+
 					ts := time.Unix(0, env.GetTimestamp())
 					Expect(ts).Should(BeTemporally("~", time.Now(), time.Second))
 					message := env.GetGauge()
@@ -347,6 +353,12 @@ var _ = Describe("Client", func() {
 					Eventually(receivers).Should(Receive(&recv))
 					env, err := recv.Recv()
 					Expect(err).NotTo(HaveOccurred())
+
+					Expect(env.Tags["deployment"].GetText()).To(Equal("cf-warden-diego"))
+					Expect(env.Tags["job"].GetText()).To(Equal("rep"))
+					Expect(env.Tags["index"].GetText()).To(Equal("0"))
+					Expect(env.Tags["ip"].GetText()).To(Equal("10.244.34.6"))
+					Expect(env.Tags["origin"].GetText()).To(Equal("test-origin"))
 
 					ts := time.Unix(0, env.GetTimestamp())
 					Expect(ts).Should(BeTemporally("~", time.Now(), time.Second))

@@ -100,11 +100,12 @@ func (c *grpcClient) createLogEnvelope(appID, message, sourceType, sourceInstanc
 			"source_instance": newTextValue(sourceInstance),
 		},
 	}
-	c.addEnvelopeTags(env)
 	return env
 }
 
 func (c *grpcClient) send(envelope *Envelope) error {
+	c.addEnvelopeTags(envelope)
+
 	e := &envelopeWithResponseChannel{
 		envelope: envelope,
 		errCh:    make(chan error),
@@ -204,7 +205,6 @@ func (c *grpcClient) SendAppMetrics(m *events.ContainerMetric) error {
 			},
 		},
 	}
-	c.addEnvelopeTags(env)
 	return c.send(env)
 }
 
