@@ -37,7 +37,8 @@ case $1 in
     chown vcap:vcap $DRIVERS_PATHS
 
     # Key and Cert are generally ~2048 bytes. Add an extra 2048 for extra space
-    instance_cert_and_key_size=6144
+    # add another 4096 to account for the temp files used to do atomic replacement #141163257
+    instance_cert_and_key_size=10240
     instance_ca_size=$(wc -c ${CONF_DIR}/certs/rep/instance_identity.crt | cut -d' ' -f1)
     max_containers=250
     instance_tmpfs_size=$((($instance_ca_size + $instance_cert_and_key_size) * $max_containers))
