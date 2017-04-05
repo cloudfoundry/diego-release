@@ -75,7 +75,7 @@
   if_p("routing_api.auth_enabled") do |value|
     config[:routing_api][:auth_enabled] = value
 
-    if p("tcp.enabled") && !value then
+    if p("tcp.enabled") && value then
       config[:oauth] = {}
       config[:oauth][:uaa_url] = "https://" + p("uaa.hostname") + ":" + p("uaa.port").to_s
       config[:oauth][:client_name] = p("uaa.client_name")
