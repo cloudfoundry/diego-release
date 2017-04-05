@@ -73,8 +73,15 @@ jobs:
       tcp:
         enabled: (( property_overrides.tcp_emitter.enabled || nil ))
       routing_api:
-        uri: (( property_overrides.tcp_emitter.routing_api_uri || nil ))
+        url: (( property_overrides.tcp_emitter.routing_api_url || nil ))
         port:  (( property_overrides.tcp_emitter.routing_api_port || nil ))
+      uaa: &route_emitter_uaa_configuration
+        skip_cert_verify: (( property_overrides.tcp_emitter.uaa_skip_cert_verify || nil ))
+        hostname: (( property_overrides.tcp_emitter.uaa_hostname || nil ))
+        port: (( config_from_cf.uaa.tls_port ))
+        ca_cert: (( config_from_cf.uaa.ca_cert ))
+        client_secret: (( config_from_cf.uaa.tcp_emitter_client_secret ))
+        client_name: (( property_overrides.tcp_emitter.uaa_client_name || nil ))
 
   - name: cell_windows_z2
     templates: (( base_templates.cell_windows route_emitter_overrides.templates ))
@@ -100,6 +107,7 @@ jobs:
       routing_api:
         uri: (( property_overrides.tcp_emitter.routing_api_uri || nil ))
         port:  (( property_overrides.tcp_emitter.routing_api_port || nil ))
+      uaa: *route_emitter_uaa_configuration
 
   - name: cell_windows_z3
     templates: (( base_templates.cell_windows route_emitter_overrides.templates ))
@@ -125,6 +133,7 @@ jobs:
       routing_api:
         uri: (( property_overrides.tcp_emitter.routing_api_uri || nil ))
         port:  (( property_overrides.tcp_emitter.routing_api_port || nil ))
+      uaa: *route_emitter_uaa_configuration
 
 properties:
   # -- Properties below are used by the metron_agent job from cf-release --

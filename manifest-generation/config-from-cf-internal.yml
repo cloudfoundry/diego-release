@@ -58,6 +58,7 @@ config_from_cf:
     tls_port: (( properties.uaa.ssl.port ))
     ca_cert: (( properties.uaa.ca_cert ))
     ssh_proxy_client_secret: (( properties.uaa.clients.ssh-proxy.secret ))
+    tcp_emitter_client_secret: (( properties.uaa.clients.tcp_emitter.secret ))
   app_domains: (( properties.app_domains ))
   sql:
     host: (( properties.databases.address ))
@@ -136,6 +137,8 @@ properties:
   uaa:
     clients:
       ssh-proxy:
+        secret: (( merge || nil ))
+      tcp_emitter:
         secret: (( merge || nil ))
     url: (( merge ))
     ca_cert: (( merge ))

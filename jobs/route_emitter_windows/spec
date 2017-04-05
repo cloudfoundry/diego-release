@@ -81,19 +81,19 @@ properties:
   tcp.enabled:
     description: "EXPERIMENTAL. Turn on tcp route emitter"
     default: false
-  routing_api.uri:
+  routing_api.url:
     description: "Routing API uri to be used by the tcp route-emitter"
     default: http://routing-api.service.cf.internal
   routing_api.port:
     description: "Routing API port to be used by the tcp route-emitter"
     default: 3000
-  routing_api.auth_disabled:
-    description: "Bypass UAA authentication when communicating with the Routing API"
-    default: false
+  routing_api.auth_enabled:
+    description: "Enable UAA authentication when communicating with the Routing API"
+    default: true
 
-  uaa.url:
-    description: "UAA service url"
-    default: "https://uaa.service.cf.internal"
+  uaa.hostname:
+    description: "UAA hostname"
+    default: "uaa.service.cf.internal"
   uaa.port:
     description: "The port on which UAA accepts TLS connections"
     default: 8443

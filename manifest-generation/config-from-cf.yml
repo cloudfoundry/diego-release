@@ -60,6 +60,7 @@ config_from_cf:
     tls_port: (( merge ))
     ca_cert: (( merge ))
     ssh_proxy_client_secret: (( merge ))
+    tcp_emitter_client_secret: (( merge ))
   app_domains: (( merge ))
   sql:
     host: (( merge ))

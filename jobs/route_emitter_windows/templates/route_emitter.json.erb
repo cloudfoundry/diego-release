@@ -66,24 +66,23 @@
 
   config[:enable_tcp_emitter] = p("tcp.enabled")
   config[:routing_api] = {}
-  if_p("routing_api.uri") do |value|
-    config[:routing_api][:uri] = value
+  if_p("routing_api.url") do |value|
+    config[:routing_api][:url] = value
   end
   if_p("routing_api.port") do |value|
     config[:routing_api][:port] = value
   end
-  if_p("routing_api.auth_disabled") do |value|
-    config[:routing_api][:auth_disabled] = value
+  if_p("routing_api.auth_enabled") do |value|
+    config[:routing_api][:auth_enabled] = value
 
     if p("tcp.enabled") && !value then
       config[:oauth] = {}
-      config[:oauth][:uaa_url] = p("uaa.url") + ":" + p("uaa.port").to_s
+      config[:oauth][:uaa_url] = "https://" + p("uaa.hostname") + ":" + p("uaa.port").to_s
       config[:oauth][:client_name] = p("uaa.client_name")
       config[:oauth][:client_secret] = p("uaa.client_secret")
       config[:oauth][:skip_cert_verify] = p("uaa.skip_cert_verify")
       config[:oauth][:ca_certs] = "#{CONF_DIR}/certs/uaa/ca.crt"
     end
-
   end
 
   config.to_json
