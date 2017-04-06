@@ -34,11 +34,11 @@ For generating TLS certificates, we recommend
 following steps to successfully generate the required certificates.
 
 > Most of these commands can be found in
-> [scripts/generate-diego-certs](scripts/generate-diego-certs) as it calls
-> [scripts/generate-diego-ca-certs](scripts/generate-diego-ca-certs),
-> [scripts/generate-bbs-certs](scripts/generate-bbs-certs),
-> [scripts/generate-rep-certs](scripts/generate-rep-certs), and
-> [scripts/generate-auctioneer-certs](scripts/generate-auctioneer-certs).
+> [scripts/generate-diego-certs](/scripts/generate-diego-certs) as it calls
+> [scripts/generate-diego-ca-certs](/scripts/generate-diego-ca-certs),
+> [scripts/generate-bbs-certs](/scripts/generate-bbs-certs),
+> [scripts/generate-rep-certs](/scripts/generate-rep-certs), and
+> [scripts/generate-auctioneer-certs](/scripts/generate-auctioneer-certs).
 
 1. Install certstrap from source.
    ```bash
