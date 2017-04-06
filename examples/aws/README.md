@@ -494,76 +494,78 @@ mv $DIEGO_RELEASE_DIR/diego-certs/* $DEPLOYMENT_DIR/certs
 After running these scripts, you should see the following files in `$DEPLOYMENT_DIR/certs`:
 ```
 DEPLOYMENT_DIR/certs
-|- cf-diego-certs # generated via cf-release/scripts/generate-cf-diego-certs
+|- auctioneer-certs       # generated via diego-release/scripts/generate-diego-certs
+|  |- client.crt
+|  |- client.key
+|  |- server.crt
+|  |- server.key
+|- bbs-certs              # generated via diego-release/scripts/generate-diego-certs
+|  |- client.crt
+|  |- client.key
+|  |- server.crt
+|  |- server.key
+|- cc-uploader-certs      # generated via diego-release/scripts/generate-diego-certs
+|  |- cc
+|  |  |- client.crt
+|  |  |- client.key
+|  |- server.crt
+|  |- server.key
+|- cf-diego-certs         # generated via cf-release/scripts/generate-cf-diego-certs
 |  |- cf-diego-ca.crt
 |  |- cf-diego-ca.key
 |  |- cloud-controller.crt
 |  |- cloud-controller.key
-|- auctioneer-certs  # generated via diego-release/scripts/generate-diego-certs
-|  |- client.crt
-|  |- client.key
-|  |- server.crt
-|  |- server.key
-|- bbs-certs         # generated via diego-release/scripts/generate-diego-certs
-|  |- client.crt
-|  |- client.key
-|  |- server.crt
-|  |- server.key
-|- locket-certs      # generated via diego-release/scripts/generate-diego-certs
-|  |- server.crt
-|  |- server.key
-|- consul-certs     # generated via cf-release/scripts/generate-consul-certs
+|- consul-certs           # generated via cf-release/scripts/generate-consul-certs
 |  |- agent.crt
 |  |- agent.key
 |  |- server-ca.crt
 |  |- server-ca.key
 |  |- server.crt
 |  |- server.key
-|- cc-uploader-certs     # generated via diego-release/scripts/generate-cc-uploader-certs
+|- locket-certs           # generated via diego-release/scripts/generate-diego-certs
 |  |- server.crt
 |  |- server.key
-|  |- cc
-|  |  |- client.crt
-|  |  |- client.key
-|- loggregator-certs # generated via cf-release/scripts/generate-loggregator-certs
+|- loggregator-certs      # generated via cf-release/scripts/generate-loggregator-certs
 |  |- doppler.crt
 |  |- doppler.key
 |  |- loggregator-ca.crt
-|  |- trafficcontroller.crt
-|  |- trafficcontroller.key
 |  |- metron.crt
 |  |- metron.key
 |  |- syslogdrainbinder.crt
 |  |- syslogdrainbinder.key
-|- rep-certs         # generated via diego-release/scripts/generate-diego-certs
+|  |- trafficcontroller.crt
+|  |- trafficcontroller.key
+|- rep-certs              # generated via diego-release/scripts/generate-diego-certs
 |  |- client.crt
 |  |- client.key
 |  |- server.crt
 |  |- server.key
-|- statsd-injector-certs # generated via cf-release/scripts/generate-statsd-injector-certs
+|- statsd-injector-certs  # generated via cf-release/scripts/generate-statsd-injector-certs
 |  |- statsdinjector.crt
 |  |- statsdinjector.key
-|- tps-certs # generated via diego-release/scripts/generate-diego-certs
+|- tps-certs              # generated via diego-release/scripts/generate-diego-certs
 |  |- client.crt
 |  |- client.key
 |- uaa-certs
-|  |- saml.crt     # generated via diego-release/scripts/generate-uaa-saml-certs
+|  |- saml.crt            # generated via diego-release/scripts/generate-uaa-saml-certs
 |  |- saml.key
 |  |- saml.key.password
-|  |- server.crt   # generated via cf-release/scripts/generate-uaa-certs
+|  |- server.crt          # generated via cf-release/scripts/generate-uaa-certs
 |  |- server.key
 ```
 
 You can ignore any files with a `crl` or `csr` extension.
 
-The certificates in `cf-diego-certs` are used to set SSL properties for the communication between CF and Diego.
-The certificates in `consul-certs` are used to set SSL properties for the consul VMs.
-The certificates in `loggregator-certs` are used to set SSL properties for the Loggregator subsystem.
-The certificates in `uaa-certs` are used to set SSL properties for the UAA subsystem.
-The certificates in `bbs-certs` are used to set SSL properties on the BBS API servers.
-The certificates in `locket-certs` are used to set SSL properties on the Locket API servers.
-The certificates in `rep-certs` are used to secure communication between the `Auctioneer`, `BBS` and the `Rep`.
-Finally the certificates in `auctioneer-certs` are used to secure communication between the `BBS` and the `Auctioneer`.
+- The certificates in `auctioneer-certs` are used to secure communication between the BBS and the Auctioneer.
+- The certificates in `bbs-certs` are used to set TLS properties on the BBS API servers.
+- The certificates in `cc-uploader-certs` are used to set TLS properties for the CC-Uploader component on the CC-Bridge.
+- The certificates in `cf-diego-certs` are used to set TLS properties for communication between CF and Diego.
+- The certificates in `consul-certs` are used to set TLS properties for the Consul servers and agents.
+- The certificates in `locket-certs` are used to set TLS properties on the Locket API servers.
+- The certificates in `loggregator-certs` and `statsd-injector-certs` are used to set TLS properties for the Loggregator subsystem.
+- The certificates in `rep-certs` are used to secure communication between the Auctioneer, the BBS, and the Cell Rep.
+- The certificates in `tps-certs` are used to set TLS properties for the TPS-Watcher component on the CC-Bridge.
+- The certificates in `uaa-certs` are used to set TLS properties for the UAA subsystem.
 
 #### <a name="generating-ssh-proxy-host-key"></a>Generating SSH Proxy Host Key and Fingerprint
 
