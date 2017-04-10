@@ -20,6 +20,9 @@ properties:
     description: "server cert for locket server mutual auth tls"
   tls.key:
     description: "server key for locket server mutual auth tls"
+  database.max_open_connections:
+    description: "maximum number of open connections to the database"
+    default: 200
   diego.locket.listen_addr:
     description: "address at which to serve API requests"
     default: "0.0.0.0:8891"

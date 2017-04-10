@@ -141,6 +141,8 @@ base:
           ca_cert: (( property_overrides.locket.tls.ca_cert || nil))
           cert:    (( property_overrides.locket.tls.cert || nil ))
           key:     (( property_overrides.locket.tls.key || nil ))
+        database:
+          max_open_connections: (( property_overrides.locket.database.max_open_connections || nil ))
 
     - name: database_z2
       templates: (( bbs_overrides.job_templates sql_lock_overrides.templates ))
@@ -160,6 +162,8 @@ base:
           ca_cert: (( property_overrides.locket.tls.ca_cert || nil))
           cert:    (( property_overrides.locket.tls.cert || nil ))
           key:     (( property_overrides.locket.tls.key || nil ))
+        database:
+          max_open_connections: (( property_overrides.locket.database.max_open_connections || nil ))
 
     - name: database_z3
       templates: (( bbs_overrides.job_templates sql_lock_overrides.templates ))
@@ -179,6 +183,8 @@ base:
           ca_cert: (( property_overrides.locket.tls.ca_cert || nil))
           cert:    (( property_overrides.locket.tls.cert || nil ))
           key:     (( property_overrides.locket.tls.key || nil ))
+        database:
+          max_open_connections: (( property_overrides.locket.database.max_open_connections || nil ))
 
     - name: brain_z1
       templates: (( base_job_templates.brain ))
