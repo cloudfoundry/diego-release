@@ -987,6 +987,7 @@ base_job_templates:
       consumes: {consul: nil}
       release: cf
     - name: etcd
+      consumes: {etcd: nil}
       release: etcd
     - name: bbs
       release: diego
