@@ -11,6 +11,7 @@ config = {
   cert_file: "#{CONF_DIR}/certs/server.crt",
   consul_cluster: "http://127.0.0.1:8500",
   debug_address: p("diego.locket.debug_addr"),
+  dropsonde_port: p("dropsonde_port"),
   key_file: "#{CONF_DIR}/certs/server.key",
   listen_address: p("diego.locket.listen_addr"),
   log_level: p("diego.locket.log_level"),

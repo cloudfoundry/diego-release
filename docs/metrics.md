@@ -2,6 +2,7 @@
 
 * [Auctioneer](#auctioneer)
 * [BBS](#bbs)
+* [Locket](#locket)
 * [Rep](#rep)
 * [Route Emitter](#route-emitter)
 * [SSH Proxy](#ssh-proxy)
@@ -58,6 +59,13 @@
 | `TasksResolving`                                      | Total number of Tasks locked for deletion. Emitted periodically.                                                                                                                                                                 | number            |
 | `TasksRunning`                                        | Total number of Tasks running on cells. Emitted periodically.                                                                                                                                                                    | number            |
 
+## Locket
+
+| Metric                                               | Description                                                                                                                                                | Unit             |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----             |
+| `ActiveLocks`                                        | Total number of active locks. Emitted periodically.                                                                                                        | number           |
+| `ActivePresences`                                    | Total number of active presences.  Emitted periodically.                                                                                                   | number           |
+| `LocksExpired`                                       | Cumulative number of locks/presences that have expired.  Emitted when a lock or presence is expired.                                                       | number           |
 
 ## Rep
 

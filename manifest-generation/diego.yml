@@ -135,6 +135,7 @@ base:
         max_in_flight: 1
       properties:
         consul: (( bbs_overrides.job_properties.consul ))
+        dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
         metron_agent:
           zone: z1
         tls:
@@ -156,6 +157,7 @@ base:
         max_in_flight: 1
       properties:
         consul: (( bbs_overrides.job_properties.consul ))
+        dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
         metron_agent:
           zone: z2
         tls:
@@ -177,6 +179,7 @@ base:
         max_in_flight: 1
       properties:
         consul: (( bbs_overrides.job_properties.consul ))
+        dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
         metron_agent:
           zone: z3
         tls:

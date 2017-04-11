@@ -20,10 +20,24 @@ files:
   - code.cloudfoundry.org/locket/expiration/*.go # gosub
   - code.cloudfoundry.org/locket/grpcserver/*.go # gosub
   - code.cloudfoundry.org/locket/handlers/*.go # gosub
+  - code.cloudfoundry.org/locket/metrics/*.go # gosub
   - code.cloudfoundry.org/locket/models/*.go # gosub
   - code.cloudfoundry.org/runtimeschema/metric/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/envelope_sender/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/envelopes/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/factories/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/instrumented_handler/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/instrumented_round_tripper/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/log_sender/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/logs/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metric_sender/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/metricbatcher/*.go # gosub
   - github.com/cloudfoundry/dropsonde/metrics/*.go # gosub
+  - github.com/cloudfoundry/dropsonde/runtime_stats/*.go # gosub
+  - github.com/cloudfoundry/gosteno/*.go # gosub
+  - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
   - github.com/cloudfoundry/sonde-go/events/*.go # gosub
   - github.com/go-sql-driver/mysql/*.go # gosub
   - github.com/gogo/protobuf/gogoproto/*.go # gosub
