@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+scripts_path=./$(dirname $0)
+eval $($scripts_path/get_paths.sh)
+
+if [ -n "${DIEGO_CI_TARGET}" ]; then
+  target="-t ${DIEGO_CI_TARGET}"
+else
+  target="-t ci"
+fi
+
+fly ${target} execute -p -x -c $DIEGO_RELEASE_DIR/scripts/ci/run_unit_windows.build.yml -i diego-release=$PWD -- "$@"

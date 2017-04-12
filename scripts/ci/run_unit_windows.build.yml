@@ -1,0 +1,18 @@
+---
+platform: windows
+
+inputs:
+  - name: diego-release
+
+params:
+  PACKAGE:
+  SCRIPT:
+  SQL_FLAVOR:
+
+run:
+  path: powershell
+  args:
+  - "-ExecutionPolicy"
+  - "Bypass"
+  - "-File"
+  - diego-release/scripts/ci/run_unit_windows.ps1
