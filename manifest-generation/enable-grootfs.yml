@@ -11,6 +11,7 @@ grootfs_overrides:
     graph_cleanup_threshold_in_mb: (( property_overrides.garden.graph_cleanup_threshold_in_mb || 0 ))
     insecure_docker_registry_list: (( property_overrides.garden.insecure_docker_registry_list || nil ))
     persistent_image_list: (( property_overrides.garden.persistent_image_list || ["/var/vcap/packages/cflinuxfs2/rootfs.tar"] ))
+    dropsonde_port: 3457
   templates:
   - name: grootfs
     release: grootfs
