@@ -38,86 +38,107 @@ resource_pools:
     network: diego1
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.access_z1.cloud_properties ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: access_z2
     network: diego2
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.access_z2.cloud_properties || empty_hash ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: access_z3
     network: diego3
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.access_z3.cloud_properties || empty_hash ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: brain_z1
     network: diego1
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.brain_z1.cloud_properties ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: brain_z2
     network: diego2
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.brain_z2.cloud_properties || empty_hash ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: brain_z3
     network: diego3
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.brain_z3.cloud_properties || empty_hash ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: cc_bridge_z1
     network: diego1
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.cc_bridge_z1.cloud_properties ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: cc_bridge_z2
     network: diego2
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.cc_bridge_z2.cloud_properties || empty_hash ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: cc_bridge_z3
     network: diego3
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.cc_bridge_z3.cloud_properties || empty_hash ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: cell_z1
     network: diego1
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.cell_z1.cloud_properties ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: cell_z2
     network: diego2
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.cell_z2.cloud_properties || empty_hash ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: cell_z3
     network: diego3
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.cell_z3.cloud_properties || empty_hash ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: database_z1
     network: diego1
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.database_z1.cloud_properties ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: database_z2
     network: diego2
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.database_z2.cloud_properties || empty_hash ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: database_z3
     network: diego3
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.database_z3.cloud_properties || empty_hash ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: route_emitter_z1
     network: diego1
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.route_emitter_z1.cloud_properties ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: route_emitter_z2
     network: diego2
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.route_emitter_z2.cloud_properties || empty_hash ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: route_emitter_z3
     network: diego3
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.route_emitter_z3.cloud_properties || empty_hash ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: colocated_z1
     network: diego1
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.colocated_z1.cloud_properties ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: colocated_z2
     network: diego2
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.colocated_z2.cloud_properties || empty_hash ))
+    env: (( iaas_settings.env || empty_hash ))
   - name: colocated_z3
     network: diego3
     stemcell: (( iaas_settings.stemcell ))
     cloud_properties: (( iaas_settings.resource_pool_cloud_properties.colocated_z3.cloud_properties || empty_hash ))
+    env: (( iaas_settings.env || empty_hash ))
 
 jobs: (( cf_networking_overrides.jobs base.jobs ))
 
