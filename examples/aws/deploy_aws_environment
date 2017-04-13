@@ -396,6 +396,12 @@ spiff merge \
   $aws_instance_types stubs/aws-resources.yml \
   > stubs/diego-windows/iaas-settings.yml
 
+# generate Routing IaaS-settings stub
+spiff merge \
+  $SCRIPT_DIR/templates/routing/iaas-settings.yml \
+  stubs/aws-resources.yml \
+  > stubs/routing/iaas-settings.yml
+
 mkdir -p stubs/cf-mysql
 
 # generate CF-MySQL IaaS-settings stub

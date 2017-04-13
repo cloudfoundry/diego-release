@@ -1,0 +1,99 @@
+iaas_settings:
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: latest
+  subnet_configs:
+    - name: router1
+      subnets:
+        - range:    (( Resources.SubnetCIDR.ROUTINGZ1 ))
+          reserved: (( [Resources.SubnetOctets.ROUTINGZ1.[2] ".2 - " Resources.SubnetOctets.ROUTINGZ1.[2] ".9"] ))
+          static:   (( [Resources.SubnetOctets.ROUTINGZ1.[2] ".10 - " Resources.SubnetOctets.ROUTINGZ1.[2] ".63"] ))
+          gateway:  (( Resources.SubnetOctets.ROUTINGZ1.[2] ".1" ))
+          dns:      (( [Resources.SubnetOctets.ROUTINGZ1.[1] ".0.2"] ))
+          cloud_properties:
+            security_groups: (( [Resources.SecurityGroupName.Internal] ))
+            subnet: (( Resources.Subnet.ROUTINGZ1 ))
+    - name: router2
+      subnets:
+        - range:    (( Resources.SubnetCIDR.ROUTINGZ2 ))
+          reserved: (( [Resources.SubnetOctets.ROUTINGZ2.[2] ".2 - " Resources.SubnetOctets.ROUTINGZ2.[2] ".9"] ))
+          static:   (( [Resources.SubnetOctets.ROUTINGZ2.[2] ".10 - " Resources.SubnetOctets.ROUTINGZ2.[2] ".63"] ))
+          gateway:  (( Resources.SubnetOctets.ROUTINGZ2.[2] ".1" ))
+          dns:      (( [Resources.SubnetOctets.ROUTINGZ2.[1] ".0.2"] ))
+          cloud_properties:
+            security_groups: (( [Resources.SecurityGroupName.Internal] ))
+            subnet: (( Resources.Subnet.ROUTINGZ2 ))
+    - name: router3
+      subnets:
+        - range:    (( Resources.SubnetCIDR.ROUTINGZ3 ))
+          reserved: (( [Resources.SubnetOctets.ROUTINGZ3.[2] ".2 - " Resources.SubnetOctets.ROUTINGZ3.[2] ".9"] ))
+          static:   (( [Resources.SubnetOctets.ROUTINGZ3.[2] ".10 - " Resources.SubnetOctets.ROUTINGZ3.[2] ".63"] ))
+          gateway:  (( Resources.SubnetOctets.ROUTINGZ3.[2] ".1" ))
+          dns:      (( [Resources.SubnetOctets.ROUTINGZ3.[1] ".0.2"] ))
+          cloud_properties:
+            security_groups: (( [Resources.SecurityGroupName.Internal] ))
+            subnet: (( Resources.Subnet.ROUTINGZ3 ))
+  compilation_cloud_properties:
+     instance_type: c3.large
+     availability_zone: (( Resources.SubnetAvailabilityZone.ROUTINGZ1 ))
+  resource_pool_cloud_properties:
+    - name: routing_api_z1
+      cloud_properties:
+        instance_type: t2.micro
+        availability_zone: (( Resources.SubnetAvailabilityZone.ROUTINGZ1 ))
+    - name: routing_api_z2
+      cloud_properties:
+        instance_type: t2.micro
+        availability_zone: (( Resources.SubnetAvailabilityZone.ROUTINGZ2 ))
+    - name: routing_api_z3
+      cloud_properties:
+        instance_type: t2.micro
+        availability_zone: (( Resources.SubnetAvailabilityZone.ROUTINGZ3 ))
+    - name: tcp_router_z1
+      cloud_properties:
+        instance_type: t2.micro
+        availability_zone: (( Resources.SubnetAvailabilityZone.ROUTINGZ1 ))
+    - name: tcp_router_z2
+      cloud_properties:
+        instance_type: t2.micro
+        availability_zone: (( Resources.SubnetAvailabilityZone.ROUTINGZ2 ))
+    - name: tcp_router_z3
+      cloud_properties:
+        instance_type: t2.micro
+        availability_zone: (( Resources.SubnetAvailabilityZone.ROUTINGZ3 ))
+    - name: tcp_emitter_z1
+      cloud_properties:
+        instance_type: t2.micro
+        availability_zone: (( Resources.SubnetAvailabilityZone.ROUTINGZ1 ))
+    - name: tcp_emitter_z2
+      cloud_properties:
+        instance_type: t2.micro
+        availability_zone: (( Resources.SubnetAvailabilityZone.ROUTINGZ2 ))
+    - name: tcp_emitter_z3
+      cloud_properties:
+        instance_type: t2.micro
+        availability_zone: (( Resources.SubnetAvailabilityZone.ROUTINGZ3 ))
+    - name: small_errand
+      cloud_properties:
+        availability_zone: us-east-1a
+        instance_type: m3.medium
+
+Resources:
+  Subnet:
+    ROUTINGZ1: (( merge ))
+    ROUTINGZ2: (( merge ))
+    ROUTINGZ3: (( merge ))
+  SubnetAvailabilityZone:
+    ROUTINGZ1: (( merge ))
+    ROUTINGZ2: (( merge ))
+    ROUTINGZ3: (( merge ))
+  SubnetOctets:
+    ROUTINGZ1: (( merge ))
+    ROUTINGZ2: (( merge ))
+    ROUTINGZ3: (( merge ))
+  SubnetCIDR:
+    ROUTINGZ1: (( merge ))
+    ROUTINGZ2: (( merge ))
+    ROUTINGZ3: (( merge ))
+  SecurityGroupName:
+     Internal: (( merge ))

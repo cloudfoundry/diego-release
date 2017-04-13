@@ -53,6 +53,24 @@ default_subnets:
     route_table:
       internet_gateway: VPCGateway
 
+  - name: ROUTINGZ1
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      instance: NATZ1
+
+  - name: ROUTINGZ2
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      instance: NATZ1
+
+  - name: ROUTINGZ3
+    cidr: (( merge ))
+    availability_zone: (( merge ))
+    route_table:
+      instance: NATZ1
+
   - name: SSHProxyELBZ1
     cidr: (( merge ))
     availability_zone: (( merge ))
