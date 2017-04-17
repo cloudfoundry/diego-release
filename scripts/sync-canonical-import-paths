@@ -42,5 +42,5 @@ check_package() {
   popd
 }
 
-go list -f '{{.ImportPath}}' code.cloudfoundry.org/... | grep -f <(packages) | while read pkg; do check_package $pkg > /dev/null; done
+go list -e -f '{{.ImportPath}}' code.cloudfoundry.org/... | grep -f <(packages) | while read pkg; do check_package $pkg > /dev/null; done
 git diff --name-only src/code.cloudfoundry.org
