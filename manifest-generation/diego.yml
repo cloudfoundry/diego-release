@@ -838,6 +838,8 @@ properties:
     network_mtu: (( property_overrides.garden.mtu || nil ))
     max_containers: (( property_overrides.garden.max_containers || nil ))
     network_pool: (( property_overrides.garden.network_pool || nil ))
+    port_pool:
+      size: (( property_overrides.garden.port_pool.size || nil ))
     persistent_image_list: (( property_overrides.garden.persistent_image_list || ["/var/vcap/packages/cflinuxfs2/rootfs"] ))
     network_plugin: (( cf_networking_overrides.garden_properties.network_plugin || nil ))
     network_plugin_extra_args: (( cf_networking_overrides.garden_properties.network_plugin_extra_args || nil ))
