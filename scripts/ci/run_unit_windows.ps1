@@ -35,19 +35,21 @@ $env:SQL_FLAVOR="mysql"
 
 cd src/code.cloudfoundry.org/
 
-$env:SKIP_PACKAGES="route-emitter/routingtable/benchmarks"
+# $env:SKIP_PACKAGES=route-emitter/routingtable/benchmarks
 
-ginkgo -r -skipPackage=$env:SKIP_PACKAGES -keepGoing -trace -randomizeAllSpecs -progress --race `
+ginkgo -p -r -skipPackage=$env:SKIP_PACKAGES -keepGoing -trace -randomizeAllSpecs -progress --race `
+  cfhttp `
+  executor `
   bytefmt `
   durationjson `
   eventhub `
-  executor `
   localip `
   operationq `
   rep `
   routing-info `
   workpool
 
+# TODO: These suites do not work yet.
 # ginkgo -r -skipPackage=$env:SKIP_PACKAGES -keepGoing -trace -randomizeAllSpecs -progress --race cacheddownloader
 # ginkgo -r -skipPackage=$env:SKIP_PACKAGES -keepGoing -trace -randomizeAllSpecs -progress --race cfhttp
 # ginkgo -r -skipPackage=$env:SKIP_PACKAGES -keepGoing -trace -randomizeAllSpecs -progress --race route-emitter
