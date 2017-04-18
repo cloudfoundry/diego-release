@@ -6,7 +6,10 @@ export TMP_HOME=${PWD}
 export GOROOT=/usr/local/go
 export PATH=${GOROOT}/bin:${PATH}
 
-apt-get install -y resolvconf
+# Update to concourse 2.7.3 and garden-runc 1.4.0 caused inigo to fail since
+# resolv.conf is now bind-mounted in. Removing the apt-get install, two inigo
+# tests were failing because they were unable to resolve DNS names.
+echo "nameserver 8.8.8.8" >> /etc/resolv.conf
 
 # Adds the cell announced urls to the /etc/hosts file. We cannot use consul
 # reliably since there could be multiple consuls running on multiple ginkgo
