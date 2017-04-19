@@ -15,8 +15,14 @@ Also, the BBS and Auctioneer will obtain both the Consul lock through its local 
 
 ## Disable Consul Lock
 
-In the final step, to disable Consul backed lock, set both `property_overrides.bbs.skip_consul_lock` and
-`property_overrides.auctioneer.skip_consul_lock` to `true` in your property overrides stub, regenerate the
-deployment manifest, and redeploy the Diego deployment.  After the deployment of the regenerated manifest,
-the BBS and Auctioneer will now only obtain the SQL lock through the co-located locket server.
+In the final step, to disable Consul backed lock, set the following properties
+to `true` in your property overrides stub:
+
+* `property_overrides.bbs.skip_consul_lock`
+* `property_overrides.auctioneer.skip_consul_lock`
+* `property_overrides.tps.watcher.skip_consul_lock`
+
+Afterwards, regenerate the deployment manifest, and redeploy the Diego deployment.
+After the deployment of the regenerated manifest, the BBS and Auctioneer will now
+only obtain the SQL lock through the co-located locket server.
 
