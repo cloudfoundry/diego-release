@@ -29,6 +29,9 @@ properties:
     default: 5
   benchmark-bbs.num_populate_workers:
     description: "the number of workers generating desired LRPs during setup"
+  benchmark-bbs.reseed_database:
+    description: "boolean flag to turn on database reseeding"
+    default: true
 
   benchmark-bbs.bbs.api_location:
     description: "the address of the BBS"
