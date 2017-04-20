@@ -25,6 +25,7 @@ This document is for describing options to Diego manifest generation.
     -N <cf-networking-path> Path to CF Networking stub file.
     -B                      Opt out of deprecated CC bridge components.
     -R                      Opt into using local route-emitter configuration for cells.
+    -r                      Opt into using cflinuxfs2-release.
     -Q                      Opt into using sql locket service (EXPERIMENTAL).
     -G                      Opt into using GrootFS container image orchestrator (EXPERIMENTAL).
     -L                      Opt into using garden-linux-release for cells. (DEPRECATED)
@@ -41,6 +42,7 @@ This document is for describing options to Diego manifest generation.
       -d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml \
       -N ../cf-networking-release/manifest-generation/stubs/cf-networking.yml \
       -b \
+      -r \
       -R
 
 ### Options
@@ -68,6 +70,11 @@ and `route_emitter_z3` VMs in the instance-count-overrides stubs.
 to perform two deploys: one to enable the local route-emitter configuration, and one to remove the global route-emitter
 configuration. To remove the global route-emitter configuration, you can specify 0 instances for the `route_emitter_z1`,
 `route_emitter_z2`, and `route_emitter_z3` VMs in the instance-count-overrides stubs.
+
+### -r Opt into using cflinuxfs2-release
+There is a change in release name from `cflinuxfs2-rootfs` to `cflinuxfs2`. The `-r` argument opts into using the new release name when generating the diego release manifest. The old release name `cflinuxfs2-rootfs` will be deprecated and eventually the `-r` flag will become the primary option to generate diego release manifests.
+
+To specify a specific version of `cflinuxfs2` the version can be set in the `release-versions` stub under `release_versions.cflinuxfs2`.
 
 ##### **Experimental** -Q Opt into using sql locket service
 

@@ -1,0 +1,6 @@
+---
+cflinuxfs2_overrides:
+  name: cflinuxfs2
+  version: (( release_versions.cflinuxfs2 || "latest" ))
+
+release_versions: (( merge ))

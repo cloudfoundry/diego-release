@@ -27,6 +27,7 @@ OPTIONAL ARGUMENTS:
     -N <cf-networking-path>     Path to CF Networking stub file
     -B                          Opt out of deprecated CC bridge components.
     -R                          Opt into using local route-emitter configuration for cells.
+    -r                          Opt into using cflinuxfs2-release.
     -Q                          Opt into using sql locket service (EXPERIMENTAL).
     -G                          Opt into using grootfs release (EXPERIMENTAL).
     -L                          Opt into using garden-linux-release for cells. (DEPRECATED)
@@ -42,6 +43,7 @@ EXAMPLE:
       -x \\
       -d manifest-generation/bosh-lite-stubs/experimental/voldriver/drivers.yml \\
       -b \\
+      -r \\
       -R
 EOF
   exit 1
@@ -84,7 +86,7 @@ while getopts "c:i:p:n:k:v:s:d:N:QkrbgxLBRG" opt; do
       >&2 echo "DEPRECATED -k flag: Persistent disk configuration moved to IaaS-settings stub."
       ;;
     r)
-      >&2 echo "DEPRECATED -r flag: The cflinuxfs2 rootfs now always comes from its own release."
+      cflinuxfs2_properties="${manifest_generation}/enable-cflinuxfs2-release.yml"
       ;;
     d)
       voldriver_settings=$OPTARG
@@ -214,6 +216,7 @@ spiff merge \
   ${manifest_generation}/diego.yml \
   ${garden_properties} \
   ${grootfs_properties} \
+  ${cflinuxfs2_properties} \
   ${release_versions} \
   ${bbs_properties} \
   ${bridge_jobs} \
