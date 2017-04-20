@@ -209,6 +209,8 @@ properties:
         ca_cert: (( config_from_cf.consul.ca_cert ))
         client_cert: (( property_overrides.rep.consul.client_cert || nil ))
         client_key: (( property_overrides.rep.consul.client_key || nil ))
+      locket:
+        api_location: (( sql_lock_overrides.locket.api_location ))
 
     route_emitter:
       dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
@@ -232,6 +234,9 @@ config_from_cf: (( merge ))
 iaas_settings: (( merge ))
 instance_count_overrides: (( merge || nil ))
 property_overrides: (( merge ))
+sql_lock_overrides:
+  locket:
+    api_location: (( merge || nil ))
 
 base_templates:
   cell_windows:

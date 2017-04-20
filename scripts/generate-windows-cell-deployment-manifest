@@ -30,13 +30,15 @@ EXAMPLE:
       -n manifest-generation/bosh-lite-stubs/instance-count-overrides.yml \\
       -v manifest-generation/bosh-lite-stubs/release-versions.yml \\
       -R
+      -Q
 EOF
   exit 1
 }
 
 local_route_emitter_properties=""
+sql_lock_overrides=""
 
-while getopts "c:i:p:n:v:R" opt; do
+while getopts "c:i:p:n:v:RQ" opt; do
   case $opt in
     c)
       cf_deployment_manifest=$OPTARG
@@ -55,6 +57,9 @@ while getopts "c:i:p:n:v:R" opt; do
       ;;
     R)
       local_route_emitter_properties="${manifest_generation}/enable-local-route-emitters-windows.yml";
+      ;;
+    Q)
+      sql_lock_overrides="${manifest_generation}/enable-sql-lock.yml"
       ;;
     *)
       echo "Unknown arguments"
@@ -123,6 +128,7 @@ spiff merge \
   ${local_route_emitter_properties} \
   ${property_overrides} \
   ${instance_counts} \
+  ${sql_lock_overrides} \
   ${iaas_settings} \
   ${tmpdir}/config-from-cf.yml \
   > ${tmpdir}/diego-windows.yml
