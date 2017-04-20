@@ -837,6 +837,7 @@ properties:
     image_plugin_extra_args: (( grootfs_overrides.garden.image_plugin_extra_args || nil ))
     privileged_image_plugin: (( grootfs_overrides.garden.privileged_image_plugin || nil ))
     privileged_image_plugin_extra_args: (( grootfs_overrides.garden.privileged_image_plugin_extra_args || nil ))
+    cleanup_process_dirs_on_wait: true
 
   # -- Properties below are used by jobs from grootfs-release --
   grootfs: (( grootfs_overrides.grootfs || nil ))
