@@ -810,6 +810,10 @@ properties:
         require_ssl: (( property_overrides.bbs.require_ssl || nil ))
         client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
+      watcher:
+        locket:
+          api_location: (( sql_lock_overrides.locket.api_location || nil ))
+        skip_consul_lock: (( property_overrides.tps.watcher.skip_consul_lock || nil))
       log_level: (( property_overrides.tps.log_level || nil ))
 
   # -- Properties below are used by jobs from garden-runc-release --
