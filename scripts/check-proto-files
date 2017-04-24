@@ -27,6 +27,12 @@ test_proto_files() {
 
     git diff --exit-code
   popd
+
+  pushd src/code.cloudfoundry.org/locket
+    go generate -run generate_proto ./...
+
+    git diff --exit-code
+  popd
 }
 
 cd `dirname $0`/..
