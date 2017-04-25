@@ -145,7 +145,7 @@ jobs: (( cf_networking_overrides.jobs base.jobs ))
 base:
   jobs:
     - name: database_z1
-      templates: (( bbs_overrides.job_templates sql_lock_overrides.templates ))
+      templates: (( bbs_overrides.job_templates sql_lock_overrides.templates cf_networking_overrides.bbs_templates))
       instances: (( instance_count_overrides.database_z1.instances || 1 ))
       persistent_disk_pool: database_disks
       resource_pool: database_z1
@@ -155,7 +155,7 @@ base:
         serial: true
         max_in_flight: 1
       properties:
-        consul: (( bbs_overrides.job_properties.consul ))
+        consul: (( cf_networking_overrides.bbs_consul_properties || bbs_overrides.job_properties.consul ))
         dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
         metron_agent:
           zone: z1
@@ -167,7 +167,7 @@ base:
           max_open_connections: (( property_overrides.locket.database.max_open_connections || nil ))
 
     - name: database_z2
-      templates: (( bbs_overrides.job_templates sql_lock_overrides.templates ))
+      templates: (( bbs_overrides.job_templates sql_lock_overrides.templates cf_networking_overrides.bbs_templates))
       instances: (( instance_count_overrides.database_z2.instances || 1 ))
       persistent_disk_pool: database_disks
       resource_pool: database_z2
@@ -177,7 +177,7 @@ base:
         serial: true
         max_in_flight: 1
       properties:
-        consul: (( bbs_overrides.job_properties.consul ))
+        consul: (( cf_networking_overrides.bbs_consul_properties || bbs_overrides.job_properties.consul ))
         dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
         metron_agent:
           zone: z2
@@ -189,7 +189,7 @@ base:
           max_open_connections: (( property_overrides.locket.database.max_open_connections || nil ))
 
     - name: database_z3
-      templates: (( bbs_overrides.job_templates sql_lock_overrides.templates ))
+      templates: (( bbs_overrides.job_templates sql_lock_overrides.templates cf_networking_overrides.bbs_templates))
       instances: (( instance_count_overrides.database_z3.instances || 1 ))
       persistent_disk_pool: database_disks
       resource_pool: database_z3
@@ -199,7 +199,7 @@ base:
         serial: true
         max_in_flight: 1
       properties:
-        consul: (( bbs_overrides.job_properties.consul ))
+        consul: ((  cf_networking_overrides.bbs_consul_properties || bbs_overrides.job_properties.consul ))
         dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
         metron_agent:
           zone: z3
@@ -568,7 +568,7 @@ properties:
   cflinuxfs2-rootfs:
     trusted_certs: (( property_overrides.rootfs_cflinuxfs2.trusted_certs || nil ))
 
-  # -- Properties used by cf-networking processes on the cell and the policy-server job --
+  # -- Properties used by cf-networking processes on the cell, the bbs and the policy-server job --
   cf_networking: (( cf_networking_overrides.properties.cf_networking || nil ))
 
   # -- Properties below are used by the jobs from diego-release --
@@ -942,6 +942,8 @@ cf_networking_overrides:
   properties: (( merge || [] ))
   garden_properties: (( merge || [] ))
   jobs: (( merge || [] ))
+  bbs_templates: (( merge || [] ))
+  bbs_consul_properties: (( merge || nil ))
 
 route_emitter_overrides:
   templates: (( merge || [] ))
