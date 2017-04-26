@@ -155,7 +155,7 @@ base:
         serial: true
         max_in_flight: 1
       properties:
-        consul: (( cf_networking_overrides.bbs_consul_properties || bbs_overrides.job_properties.consul ))
+        consul: (( bbs_overrides.job_properties.consul ))
         dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
         metron_agent:
           zone: z1
@@ -177,7 +177,7 @@ base:
         serial: true
         max_in_flight: 1
       properties:
-        consul: (( cf_networking_overrides.bbs_consul_properties || bbs_overrides.job_properties.consul ))
+        consul: (( bbs_overrides.job_properties.consul ))
         dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
         metron_agent:
           zone: z2
@@ -199,7 +199,7 @@ base:
         serial: true
         max_in_flight: 1
       properties:
-        consul: ((  cf_networking_overrides.bbs_consul_properties || bbs_overrides.job_properties.consul ))
+        consul: (( bbs_overrides.job_properties.consul ))
         dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
         metron_agent:
           zone: z3
@@ -862,7 +862,7 @@ bridge_overrides:
 
 bbs_overrides:
   job_properties:
-    consul: (( merge  || base_etcd_properties.consul ))
+    consul: (( cf_networking_overrides.bbs_consul_properties || merge || base_etcd_properties.consul ))
   job_templates: (( merge || base_job_templates.database ))
   etcd_properties: (( merge || base_etcd_properties.properties ))
   bbs_properties:
