@@ -155,7 +155,7 @@ base:
         serial: true
         max_in_flight: 1
       properties:
-        consul: (( bbs_overrides.job_properties.consul ))
+        consul: (( base_bbs_consul_properties ))
         dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
         metron_agent:
           zone: z1
@@ -177,7 +177,7 @@ base:
         serial: true
         max_in_flight: 1
       properties:
-        consul: (( bbs_overrides.job_properties.consul ))
+        consul: (( base_bbs_consul_properties ))
         dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
         metron_agent:
           zone: z2
@@ -199,7 +199,7 @@ base:
         serial: true
         max_in_flight: 1
       properties:
-        consul: (( bbs_overrides.job_properties.consul ))
+        consul: (( base_bbs_consul_properties ))
         dropsonde_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
         metron_agent:
           zone: z3
@@ -476,7 +476,7 @@ base:
         serial: true
         max_in_flight: 1
       properties:
-        consul: (( bbs_overrides.job_properties.consul ))
+        consul: (( base_bbs_consul_properties ))
         diego:
           rep:
             zone: z1
@@ -494,7 +494,7 @@ base:
         serial: true
         max_in_flight: 1
       properties:
-        consul: (( bbs_overrides.job_properties.consul ))
+        consul: (( base_bbs_consul_properties ))
         diego:
           rep:
             zone: z2
@@ -512,7 +512,7 @@ base:
         serial: true
         max_in_flight: 1
       properties:
-        consul: (( bbs_overrides.job_properties.consul ))
+        consul: (( base_bbs_consul_properties ))
         diego:
           rep:
             zone: z3
@@ -860,9 +860,18 @@ bridge_overrides:
   releases: (( merge || [] ))
   listener_enabled: (( merge || nil ))
 
+# This is weird. We need to merge the consul properties for the bbs in the
+# following order:
+#   - cf_networking_overrides.bbs_consul_properties
+#   - bbs_overrides.job_properties.consul
+#   - base_etcd_properties.consul.
+# Due to limitations in spiff, you cannot currently do: (( a || b || c )) in
+# this manner. Thus this is a cosmetic rename so that the bbs job definitions
+# above are not referncing `cf_networking_overrides.bbs_consul_properties`.
+base_bbs_consul_properties: (( cf_networking_overrides.bbs_consul_properties ))
 bbs_overrides:
   job_properties:
-    consul: (( cf_networking_overrides.bbs_consul_properties || merge || base_etcd_properties.consul ))
+    consul: (( merge || base_etcd_properties.consul ))
   job_templates: (( merge || base_job_templates.database ))
   etcd_properties: (( merge || base_etcd_properties.properties ))
   bbs_properties:
@@ -947,7 +956,7 @@ cf_networking_overrides:
   garden_properties: (( merge || [] ))
   jobs: (( merge || [] ))
   bbs_templates: (( merge || [] ))
-  bbs_consul_properties: (( merge || nil ))
+  bbs_consul_properties: (( merge || bbs_overrides.job_properties.consul ))
 
 route_emitter_overrides:
   templates: (( merge || [] ))
