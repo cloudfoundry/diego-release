@@ -568,7 +568,7 @@ properties:
   cflinuxfs2-rootfs:
     trusted_certs: (( property_overrides.rootfs_cflinuxfs2.trusted_certs || nil ))
 
-  # -- Properties used by cf-networking processes on the cell, the bbs and the policy-server job --
+  # -- Properties used by cf-networking processes on the cell and the policy-server job --
   cf_networking: (( cf_networking_overrides.properties.cf_networking || nil ))
 
   # -- Properties below are used by the jobs from diego-release --

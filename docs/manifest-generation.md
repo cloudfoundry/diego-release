@@ -166,8 +166,16 @@ volman_overrides:
 
 The optional -N flag is used to specify the path for the [CF Networking](https://github.com/cloudfoundry-incubator/cf-networking-release) stub file.
 
-**Note**: If you are deploying with ETCD, you will need to add the `bbs_overrides.job_properties.consul` to
-`cf_networking_overrides.bbs_consul_properties`, as `cf_networking_overrides.bbs_consul_properties` will clobber any other values in that field.
+**Note**: The `cf_networking_overrides.bbs_consul_properties` will take
+precedent over `bbs_overrides.job_properties.consul`.  If you are deploying
+with an ETCD backed BBS, you will need to add the ETCD service definition to
+`cf_networking_overrides.bbs_consul_properties`:
+```yaml
+bbs_consul_properties:
+  agent:
+    services:
+      etcd: {}
+```
 
 ##### **Experimental** -B Opt out of deprecated CC bridge components
 
