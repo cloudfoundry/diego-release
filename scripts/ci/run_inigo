@@ -92,7 +92,7 @@ build_grootfs () {
   export GARDEN_GOPATH=${PWD}/garden-runc-release
 
   mkdir -p ${GARDEN_GOPATH}/src/code.cloudfoundry.org
-  cp -r grootfs ${GARDEN_GOPATH}/src/code.cloudfoundry.org
+  cp -r grootfs-release ${GARDEN_GOPATH}/src/code.cloudfoundry.org
 
   pushd ${GARDEN_GOPATH}/src/code.cloudfoundry.org/grootfs
     export GOPATH=${GARDEN_GOPATH}
