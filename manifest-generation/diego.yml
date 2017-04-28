@@ -773,7 +773,7 @@ properties:
         client_session_cache_size: (( property_overrides.bbs.client_session_cache_size || nil ))
         max_idle_conns_per_host: (( property_overrides.bbs.max_idle_conns_per_host || nil ))
       cc:
-        base_url: (( config_from_cf.cc.srv_api_uri ))
+        base_url: (( property_overrides.nsync.cc_api_uri || config_from_cf.cc.srv_api_uri ))
         basic_auth_username: (( config_from_cf.cc.internal_api_user ))
         basic_auth_password: (( config_from_cf.cc.internal_api_password ))
       log_level: (( property_overrides.nsync.log_level || nil ))
