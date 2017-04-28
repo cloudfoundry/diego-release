@@ -6,7 +6,7 @@ image: docker:///cloudfoundry/inigo-ci
 inputs:
 - name: diego-release
 - name: garden-runc-release
-- name: grootfs
+- name: grootfs-release
 
 params:
   GINKGO_PARALLEL: "true" # we check for the literal string "true" in the run_inigo script
