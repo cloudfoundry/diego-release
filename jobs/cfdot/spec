@@ -11,7 +11,7 @@ packages:
   - cfdot
 
 properties:
-  diego.cfdot.bbs.use_ssl:
+  diego.cfdot.bbs.require_ssl:
     description: "true if the bbs requires TLS connections, false otherwise"
     default: true
   diego.cfdot.bbs.ca_cert:
