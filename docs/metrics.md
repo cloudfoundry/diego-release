@@ -108,6 +108,8 @@
 | `RoutesTotal`                                  | Number of routes in the route-emitter's routing table. Emitted periodically.                                                                                     | number           |
 | `RoutesUnregistered`                           | Cumulative number of route unregistrations emitted from the route-emitter as it reacts to changes to LRPs.                                                       | number           |
 | `ConsulDownMode`                               | Whether the route-emitter is able to connect with the consul correctly                                                                                           | 0 or 1 boolean   |
+| `HTTPRouteCount`                               | Number of HTTP Routes in the route-emitter's routing table. Emitted periodically and only on local mode.                                                         | number           |
+| `TCPRouteCount`                                | Number of TCP Routes in the route-emitter's routing table. Emitted periodically and only on local mode and when tcp enabled.                                     | number           |
 
 ## SSH Proxy
 
