@@ -89,14 +89,12 @@ mount_btrfs() {
 
 build_grootfs () {
   echo "Building grootfs..."
-  export GARDEN_GOPATH=${PWD}/garden-runc-release
+  export GROOTFS_GOPATH=${PWD}/grootfs-release
+  export GROOTFS_BINPATH=${GROOTFS_GOPATH}/bin
+  mkdir -p ${GROOTFS_BINPATH}
 
-  mkdir -p ${GARDEN_GOPATH}/src/code.cloudfoundry.org
-  mv grootfs-release grootfs
-  cp -r grootfs ${GARDEN_GOPATH}/src/code.cloudfoundry.org
-
-  pushd ${GARDEN_GOPATH}/src/code.cloudfoundry.org/grootfs
-    export GOPATH=${GARDEN_GOPATH}
+  pushd ${GROOTFS_GOPATH}/src/code.cloudfoundry.org/grootfs
+    export GOPATH=${GROOTFS_GOPATH}
     export PATH=${GOPATH}/bin:${PATH}
 
     # Set up btrfs volume and loopback devices in environment
@@ -105,7 +103,7 @@ build_grootfs () {
 
     make
 
-    mv grootfs ${GARDEN_GOPATH}/bin
+    mv grootfs ${GROOTFS_GOPATH}/bin/
     mv drax /usr/local/bin
     chown root:root /usr/local/bin/drax
     chmod u+s /usr/local/bin/drax
