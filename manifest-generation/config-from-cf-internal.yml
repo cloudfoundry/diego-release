@@ -113,7 +113,7 @@ properties:
   loggregator_endpoint:
     shared_secret: (( merge ))
   metron_endpoint:
-    shared_secret: (( merge ))
+    shared_secret: (( merge || nil ))
   metron_agent:
     grpc_port: (( merge || nil ))
     dropsonde_incoming_port: (( merge || nil ))
