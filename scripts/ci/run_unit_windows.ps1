@@ -37,7 +37,7 @@ cd src/code.cloudfoundry.org/
 
 # $env:SKIP_PACKAGES=route-emitter/routingtable/benchmarks
 
-ginkgo -p -r -skipPackage=$env:SKIP_PACKAGES -keepGoing -trace -randomizeAllSpecs -progress --race `
+ginkgo -r -skipPackage=$env:SKIP_PACKAGES -keepGoing -trace -randomizeAllSpecs -progress --race `
   cfhttp `
   executor `
   bytefmt `
