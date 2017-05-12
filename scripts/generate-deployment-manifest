@@ -7,7 +7,7 @@ manifest_generation=$(dirname $0)/../manifest-generation
 usage() {
   >&2 cat <<EOF
 SYNOPSIS:
-    Generate a manifest for a Diego deployment to accompany an existing CF deployment.
+    Generate a manifest for a Diego deployment to accompany an existing cf-release deployment.
 
 USAGE:
     $0 <MANDATORY ARGUMENTS> [OPTIONAL ARGUMENTS]
