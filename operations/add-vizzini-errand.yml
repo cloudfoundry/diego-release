@@ -29,10 +29,7 @@
     - name: consul_agent
       release: consul
       consumes:
-        consul: {from: consul_common_link}
-        consul_common: nil
-        consul_server: nil
-        consul_client: nil
+        consul: {from: consul_server}
 - type: replace
   path: /instance_groups/name=diego-brain/jobs/name=ssh_proxy/properties/diego/ssh_proxy/enable_diego_auth?
   value: true
