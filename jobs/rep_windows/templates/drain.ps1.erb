@@ -26,6 +26,12 @@ function heartbeat {
     return $true
 }
 
+if ((Get-Service -Name "${SERVICE_NAME}").Status -ne "Running") {
+    echo "$(Get-Date): service '${SERVICE_NAME}' not running" >> $LOGFILE
+    echo "0"
+    Exit 0
+}
+
 Set-Service "${SERVICE_NAME}" -StartupType "Disabled"
 echo "$(Get-Date): service '${SERVICE_NAME}' StartupType set to 'Disabled'" >> $LOGFILE
 
