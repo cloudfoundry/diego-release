@@ -4,7 +4,10 @@ bbs_overrides:
     consul: {}
   job_templates:
   - name: consul_agent
-    consumes: {consul: nil}
+    consumes:
+      consul_common: nil
+      consul_server: nil
+      consul_client: nil
     release: cf
   - name: bbs
     release: diego
