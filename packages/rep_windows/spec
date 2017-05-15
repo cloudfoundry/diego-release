@@ -46,7 +46,23 @@ files:
   - code.cloudfoundry.org/garden/server/streamer/*.go # gosub
   - code.cloudfoundry.org/garden/server/timebomb/*.go # gosub
   - code.cloudfoundry.org/garden/transport/*.go # gosub
-  - code.cloudfoundry.org/go-loggregator/loggregator_v2/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/internal/loggregator_v2/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/internal/v2shim/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/v1/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/v2/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/vendor/google.golang.org/grpc/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/vendor/google.golang.org/grpc/codes/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/vendor/google.golang.org/grpc/credentials/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/vendor/google.golang.org/grpc/grpclog/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/vendor/google.golang.org/grpc/internal/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/vendor/google.golang.org/grpc/keepalive/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/vendor/google.golang.org/grpc/metadata/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/vendor/google.golang.org/grpc/naming/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/vendor/google.golang.org/grpc/peer/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/vendor/google.golang.org/grpc/stats/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/vendor/google.golang.org/grpc/tap/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/vendor/google.golang.org/grpc/transport/*.go # gosub
   - code.cloudfoundry.org/goshims/http_wrap/*.go # gosub
   - code.cloudfoundry.org/goshims/osshim/*.go # gosub
   - code.cloudfoundry.org/lager/*.go # gosub
