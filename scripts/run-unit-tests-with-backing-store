@@ -24,6 +24,8 @@ pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/ > /dev/null
     bbs/cmd/bbs \
     bbs/db/migrations \
     converger/cmd/converger \
+    locket/cmd/locket \
+    locket/db \
     rep/cmd/rep \
     rep/generator/internal \
     route-emitter/cmd/route-emitter \
