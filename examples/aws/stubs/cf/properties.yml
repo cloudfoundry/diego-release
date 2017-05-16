@@ -52,6 +52,11 @@ properties:
       notifications:
         secret: REPLACE_WITH_NOTIFICATIONS_PASSWORD
       ssh-proxy:
+        authorized-grant-types: authorization_code
+        autoapprove: true
+        override: true
+        redirect-uri: "https://login.REPLACE_WITH_SYSTEM_DOMAIN/login"
+        scope: openid,cloud_controller.read,cloud_controller.write
         secret: REPLACE_WITH_SSH_PROXY_PASSWORD
       tcp_router:
         secret: REPLACE_WITH_TCP_ROUTER_PASSWORD
