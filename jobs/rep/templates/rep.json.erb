@@ -157,17 +157,18 @@
      end
    end
 
-  config[:loggregator_use_v2_api] = p("loggregator.use_v2_api")
+  config[:loggregator]={}
+  config[:loggregator][:loggregator_use_v2_api] = p("loggregator.use_v2_api")
   if p("loggregator.use_v2_api") == true
-    config[:loggregator_api_port] = p("loggregator.v2_api_port")
-    config[:loggregator_ca_path] = "#{CONF_DIR}/certs/loggregator/ca.crt"
-    config[:loggregator_cert_path] = "#{CONF_DIR}/certs/loggregator/client.crt"
-    config[:loggregator_key_path] = "#{CONF_DIR}/certs/loggregator/client.key"
-    config[:loggregator_job_deployment] = spec.deployment
-    config[:loggregator_job_name] = spec.name
-    config[:loggregator_job_index] = spec.id
-    config[:loggregator_job_ip] = spec.address
-    config[:loggregator_job_origin] = "rep"
+    config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
+    config[:loggregator][:loggregator_ca_path] = "#{CONF_DIR}/certs/loggregator/ca.crt"
+    config[:loggregator][:loggregator_cert_path] = "#{CONF_DIR}/certs/loggregator/client.crt"
+    config[:loggregator][:loggregator_key_path] = "#{CONF_DIR}/certs/loggregator/client.key"
+    config[:loggregator][:loggregator_job_deployment] = spec.deployment
+    config[:loggregator][:loggregator_job_name] = spec.name
+    config[:loggregator][:loggregator_job_index] = spec.id
+    config[:loggregator][:loggregator_job_ip] = spec.address
+    config[:loggregator][:loggregator_job_origin] = "rep"
   end
 
   config.to_json
