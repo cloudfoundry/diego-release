@@ -43,6 +43,7 @@ SKIP_PACKAGES="$SKIP_PACKAGES,./trace-logger"
 SKIP_PACKAGES="$SKIP_PACKAGES,./uaa-go-client"
 SKIP_PACKAGES="$SKIP_PACKAGES,./veritas"
 SKIP_PACKAGES="$SKIP_PACKAGES,./vizzini"
+SKIP_PACKAGES="$SKIP_PACKAGES,./systemcerts"
 ERROR_CODE=0
 
 if [ -z "${RUN_SQL_TESTS}" ]; then

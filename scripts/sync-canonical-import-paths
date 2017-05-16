@@ -30,6 +30,7 @@ code.cloudfoundry.org/route-emitter
 code.cloudfoundry.org/runtimeschema
 code.cloudfoundry.org/vizzini
 code.cloudfoundry.org/cflager
+code.cloudfoundry.org/systemcerts
 EOF
 }
 
@@ -37,7 +38,7 @@ check_package() {
   pkg=$1
   pushd src/$pkg
     package_name=$(basename $pkg | tr '-' '_')
-    grep -E --silent 'package main$' *.go && package_name=main
+    grep -E --silent 'package main$' $(grep -L '// +build ignore' *.go) && package_name=main
     echo "package $package_name // import \"$pkg\"" > package.go
   popd
 }
