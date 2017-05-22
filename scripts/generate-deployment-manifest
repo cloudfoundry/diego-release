@@ -157,6 +157,11 @@ else
   fi
 fi
 
+if [[ -z "${sql_settings}" ]]; then
+  >&2 echo "ERROR: SQL Setting stub is missing"
+  argument_error=true
+fi
+
 if [[ ! -z "${sql_settings}" && ! -f "${sql_settings}" ]]; then
   >&2 echo "ERROR: SQL Setting stub '${sql_settings}' is not a regular file"
   argument_error=true
