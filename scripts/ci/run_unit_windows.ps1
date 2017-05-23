@@ -35,9 +35,8 @@ $env:SQL_FLAVOR="mysql"
 
 cd src/code.cloudfoundry.org/
 
-# $env:SKIP_PACKAGES=route-emitter/routingtable/benchmarks
-
-ginkgo -r -skipPackage=$env:SKIP_PACKAGES -keepGoing -trace -randomizeAllSpecs -progress --race `
+ginkgo -r -keepGoing -trace -randomizeAllSpecs -progress --race `
+  route-emitter `
   cfhttp `
   cacheddownloader `
   executor `
@@ -49,9 +48,6 @@ ginkgo -r -skipPackage=$env:SKIP_PACKAGES -keepGoing -trace -randomizeAllSpecs -
   rep `
   routing-info `
   workpool
-
-# TODO: These suites do not work yet.
-# ginkgo -r -skipPackage=$env:SKIP_PACKAGES -keepGoing -trace -randomizeAllSpecs -progress --race route-emitter
 
 if ($LastExitCode -ne 0) {
   Write-Host "Diego unit tests failed"
