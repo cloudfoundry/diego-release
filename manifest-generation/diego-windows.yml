@@ -139,21 +139,12 @@ properties:
   # -- Properties below are used by the metron_agent job from cf-release --
   metron_agent:
     deployment: (( name ))
-    protocols: (( config_from_cf.metron_agent.protocols ))
-    preferred_protocol: (( config_from_cf.metron_agent.preferred_protocol ))
-    tls:
-      client_cert: (( config_from_cf.metron_agent.tls.client_cert ))
-      client_key: (( config_from_cf.metron_agent.tls.client_key ))
-    etcd:
-      client_cert: (( config_from_cf.metron_agent.etcd.client_cert ))
-      client_key: (( config_from_cf.metron_agent.etcd.client_key ))
     dropsonde_incoming_port: (( config_from_cf.metron_agent.dropsonde_incoming_port ))
   loggregator:
     etcd:
       require_ssl: (( config_from_cf.loggregator.etcd_require_ssl ))
       ca_cert: (( config_from_cf.loggregator.etcd_ca_cert ))
       machines: (( config_from_cf.loggregator.etcd_machines ))
-    dropsonde_incoming_port: (( config_from_cf.loggregator.dropsonde_incoming_port ))
     tls:
       ca_cert: (( config_from_cf.loggregator.tls.ca_cert ))
       metron:

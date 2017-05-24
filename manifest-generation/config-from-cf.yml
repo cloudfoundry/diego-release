@@ -28,7 +28,6 @@ config_from_cf:
     etcd_require_ssl: (( merge ))
     etcd_machines: (( merge ))
     shared_secret: (( merge ))
-    dropsonde_incoming_port: (( merge ))
     tls:
       ca_cert: (( merge ))
       metron:
@@ -38,14 +37,6 @@ config_from_cf:
   metron_agent:
     dropsonde_incoming_port: (( merge ))
     grpc_port: (( merge ))
-    protocols: (( merge ))
-    preferred_protocol: (( merge ))
-    tls:
-      client_cert: (( merge ))
-      client_key: (( merge ))
-    etcd:
-      client_cert: (( merge ))
-      client_key: (( merge ))
 
   metron_endpoint:
     shared_secret: (( merge ))

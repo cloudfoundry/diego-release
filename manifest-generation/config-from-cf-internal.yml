@@ -28,7 +28,6 @@ config_from_cf:
     etcd_require_ssl: (( properties.loggregator.etcd.require_ssl ))
     etcd_ca_cert: (( properties.loggregator.etcd.ca_cert ))
     shared_secret: (( properties.loggregator_endpoint.shared_secret ))
-    dropsonde_incoming_port: (( properties.loggregator.dropsonde_incoming_port ))
     tls:
       ca_cert: (( properties.loggregator.tls.ca_cert ))
       metron:
@@ -39,14 +38,6 @@ config_from_cf:
   metron_agent:
     grpc_port: (( properties.metron_agent.grpc_port ))
     dropsonde_incoming_port: (( properties.metron_agent.dropsonde_incoming_port ))
-    protocols: (( properties.metron_agent.protocols ))
-    preferred_protocol: (( properties.metron_agent.preferred_protocol ))
-    tls:
-      client_cert: (( properties.metron_agent.tls.client_cert ))
-      client_key: (( properties.metron_agent.tls.client_key ))
-    etcd:
-      client_cert: (( properties.metron_agent.etcd.client_cert ))
-      client_key: (( properties.metron_agent.etcd.client_key ))
   nats:
     user: (( properties.nats.user ))
     password: (( properties.nats.password ))
