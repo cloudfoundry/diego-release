@@ -39,7 +39,7 @@ properties:
     default: "info"
   diego.auctioneer.cell_state_timeout:
     description: "Timeout applied to HTTP requests to the Cell State endpoint."
-    default: "1s"
+    default: "10s"
   diego.auctioneer.starting_container_weight:
     description: "Factor to bias against cells with starting containers (0.0 - 1.0)"
     default: 0.25
@@ -78,7 +78,7 @@ properties:
     description: "Client key for communication to the rep."
   diego.auctioneer.rep.client_session_cache_size:
     description: "capacity of the tls client cache"
-    default: 0
+    default: 4096
 
   diego.auctioneer.locket.api_location:
     description: "EXPERIMENTAL: hostname and port of the locket server"
