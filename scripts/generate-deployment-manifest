@@ -47,7 +47,6 @@ EOF
   exit 1
 }
 
-cflinuxfs2_properties="${manifest_generation}/enable-cflinuxfs2-release.yml"
 base_releases="${manifest_generation}/base-releases.yml"
 garden_properties=""
 bridge_properties=""
@@ -219,7 +218,6 @@ spiff merge \
   ${manifest_generation}/diego.yml \
   ${garden_properties} \
   ${grootfs_properties} \
-  ${cflinuxfs2_properties} \
   ${release_versions} \
   ${bbs_properties} \
   ${bridge_jobs} \

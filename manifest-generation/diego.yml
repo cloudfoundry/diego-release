@@ -959,15 +959,11 @@ route_emitter_overrides:
   templates: (( merge || [] ))
   local_mode_enabled: false
 
-cflinuxfs2_overrides:
-  name: (( merge  || "cflinuxfs2-rootfs" ))
-  version: (( merge || release_versions.cflinuxfs2-rootfs || "latest" ))
-
 base_releases:
   - name: diego
     version: (( release_versions.diego || "latest" ))
-  - name: (( cflinuxfs2_overrides.name ))
-    version: (( cflinuxfs2_overrides.version ))
+  - name: cflinuxfs2
+    version: (( release_versions.cflinuxfs2 || "latest" ))
 
 release_versions: (( merge || nil ))
 default_bridge_jobs:
@@ -1030,7 +1026,7 @@ base_job_templates:
     - name: garden
       release: (( garden_overrides.job_release || "garden-runc" ))
     - name: cflinuxfs2-rootfs-setup
-      release: (( cflinuxfs2_overrides.name ))
+      release: cflinuxfs2
     - name: metron_agent
       release: cf
     - name: cfdot
@@ -1078,7 +1074,7 @@ base_job_templates:
     - name: nsync
       release: cf
     - name: cflinuxfs2-rootfs-setup
-      release: (( cflinuxfs2_overrides.name ))
+      release: cflinuxfs2
     - name: route_emitter
       release: diego
     - name: ssh_proxy
