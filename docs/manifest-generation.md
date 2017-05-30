@@ -131,6 +131,13 @@ sql_overrides:
     db_password: diego
     db_schema: diego
     max_open_connections: 500
+  locket:
+    db_driver: mysql
+    db_host: 10.244.7.2
+    db_port: 3306
+    db_username: locket
+    db_password: locket
+    db_schema: locket
 ```
 
 ##### Postgres Example:
@@ -144,6 +151,13 @@ sql_overrides:
     db_password: admin
     db_schema: diego
     max_open_connections: 500
+  locket:
+    db_driver: postgres
+    db_host: 10.244.0.30
+    db_port: 5524
+    db_username: locket
+    db_password: admin
+    db_schema: locket
 ```
 
 ##### **Experimental** -d Volume Stub File

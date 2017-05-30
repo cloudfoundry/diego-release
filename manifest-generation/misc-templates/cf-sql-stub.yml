@@ -6,3 +6,10 @@ sql_overrides:
     db_username: diego
     db_password: (( merge ))
     db_schema: diego
+  locket:
+    db_driver: postgres
+    db_host: (( merge ))
+    db_port: (( merge ))
+    db_username: diego
+    db_password: (( merge ))
+    db_schema: diego

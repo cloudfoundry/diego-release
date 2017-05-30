@@ -649,12 +649,12 @@ properties:
       skip_consul_lock: (( property_overrides.bbs.skip_consul_lock || nil))
     locket:
       sql:
-        db_driver: (( sql_overrides.bbs.db_driver || nil ))
-        db_host: (( sql_overrides.bbs.db_host || nil ))
-        db_port: (( sql_overrides.bbs.db_port || nil ))
-        db_username: (( sql_overrides.bbs.db_username || nil ))
-        db_password: (( sql_overrides.bbs.db_password || nil ))
-        db_schema: (( sql_overrides.bbs.db_schema || nil ))
+        db_driver: (( sql_overrides.locket.db_driver || nil ))
+        db_host: (( sql_overrides.locket.db_host || nil ))
+        db_port: (( sql_overrides.locket.db_port || nil ))
+        db_username: (( sql_overrides.locket.db_username || nil ))
+        db_password: (( sql_overrides.locket.db_password || nil ))
+        db_schema: (( sql_overrides.locket.db_schema || nil ))
     executor:
       disk_capacity_mb: (( property_overrides.executor.disk_capacity_mb || nil ))
       auto_disk_capacity_overhead_mb: (( property_overrides.executor.auto_disk_capacity_overhead_mb || nil ))

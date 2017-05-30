@@ -85,6 +85,9 @@ properties:
       - tag: admin
         name: diego
         password: REPLACE_WITH_DIEGO_PASSWORD
+      - tag: admin
+        name: locket
+        password: REPLACE_WITH_LOCKET_PASSWORD
     databases:
       - tag: cc
         name: ccdb
@@ -94,6 +97,9 @@ properties:
         citext: true
       - tag: diego
         name: diego
+        citext: false
+      - tag: locket
+        name: locket
         citext: false
 
   uaadb:

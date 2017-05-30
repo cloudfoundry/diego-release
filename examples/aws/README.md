@@ -1003,14 +1003,21 @@ sql_overrides:
     db_host: <sql-instance-endpoint>
     db_port: <port>
     db_username: diego
-    db_password: <REPLACE_ME_WITH_DB_PASSWORD>
+    db_password: <REPLACE_ME_WITH_DIEGO_DB_PASSWORD>
     db_schema: diego
     max_open_connections: 500
     require_ssl: null
     ca_cert: null
+  locket:
+    db_driver: <driver>
+    db_host: <sql-instance-endpoint>
+    db_port: <port>
+    db_username: <locket-db-username>
+    db_password: <REPLACE_ME_WITH_LOCKET_DB_PASSWORD>
+    db_schema: <locket-db-schema>
 ```
 
-Fill in the bracketed parameters in the `db_driver`, `db_host`, `db_port` and `db_password` with the following values:
+Fill in the bracketed parameters in the `db_driver`, `db_host`, `db_port` and `db_password` for both bbs and locket with the following values:
 
 - `<driver>` could be either `mysql` or `postgres` depending on  the flavor of your backing data store.
 - For AWS RDS:
@@ -1019,7 +1026,8 @@ Fill in the bracketed parameters in the `db_driver`, `db_host`, `db_port` and `d
 - For Standalone CF-MySQL:
   - If configuring a Single Node CF-MySQL, `<sql-instance-endpoint>` would be the internal IP address and `<port>` would take on the port of the single MySQL node.
   - If configuring an Highly Available CF-MySQL with Consul use the consul service address (e.g. `mysql.service.cf.internal` for `<sql-instance-endpoint>` and `3306` for `<port>`).
-- `<REPLACE_ME_WITH_DB_PASSWORD>`: The password chosen when you created the SQL instance.
+- `<REPLACE_ME_WITH_DIEGO_DB_PASSWORD>`: The password chosen when you created the Diego database.
+- `<REPLACE_ME_WITH_LOCKET_DB_PASSWORD>`: The password chosen when you created the Locket database.
 
 
 #### SSL support
