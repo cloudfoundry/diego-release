@@ -69,5 +69,6 @@ properties:
     log_level: (( merge || nil ))
     local_route_emitters: (( merge || false ))
     log_file: (( merge || nil ))
+    reseed_database: (( merge || nil ))
 
 iaas_settings: (( merge ))
