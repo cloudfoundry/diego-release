@@ -883,7 +883,7 @@ configurations. All configurations have the same starting steps:
       host: null
     ```
 
-  0. Add the following `seeded_databases` property to configure a database for Diego to use. Replace `REPLACE_ME_WITH_DB_PASSWORD` with the desired password for the database:
+  0. Add the following `seeded_databases` property to configure a database for Diego to use. Replace `REPLACE_ME_WITH_DIEGO_DB_PASSWORD` and `REPLACE_ME_WITH_LOCKET_DB_PASSWORD` with the desired password for each database:
 
     ```yaml
     property_overrides:
@@ -891,7 +891,10 @@ configurations. All configurations have the same starting steps:
         seeded_databases:
         - name: diego
           username: diego
-          password: REPLACE_ME_WITH_DB_PASSWORD
+          password: REPLACE_ME_WITH_DIEGO_DB_PASSWORD
+        - name: locket
+          username: diego
+          password: REPLACE_ME_WITH_LOCKET_DB_PASSWORD
     ```
 
 After that you can deploy the CF-MySQL release in either mode:
@@ -979,15 +982,17 @@ After that you can deploy the CF-MySQL release in either mode:
 
 ### Use the PostgreSQL job from CF-Release
 
-The PostgreSQL job in CF Release can be used as the database for Diego. Replace `REPLACE_ME_WITH_DB_PASSWORD` in your `stubs/cf/properties.yml` with your desired password, and [configure Diego to use this database](#use-of-granular-database-properties-for-mysql-or-postgresql).
+The PostgreSQL job in CF Release can be used as the database for Diego. Replace `REPLACE_ME_WITH_DIEGO_DB_PASSWORD` & `REPLACE_ME_WITH_LOCKET_DB_PASSWORD` in your `stubs/cf/properties.yml` with your desired password, and [configure Diego to use this database](#use-of-granular-database-properties-for-mysql-or-postgresql).
 
 ```yaml
 databases:
   ...
   roles:
     ...
-    - name: diego:
-      password: REPLACE_WITH_DB_PASSWORD
+    - name: diego
+      password: REPLACE_ME_WITH_DIEGO_DB_PASSWORD
+    - name: locket
+      password: REPLACE_ME_WITH_LOCKET_DB_PASSWORD
 ```
 
 ## Deploy Diego
