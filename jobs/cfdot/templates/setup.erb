@@ -8,3 +8,7 @@ export BBS_URL=<%= p("diego.cfdot.bbs.use_ssl") ? 'https' : 'http' %>://bbs.serv
 export BBS_CA_CERT_FILE=/var/vcap/jobs/cfdot/config/certs/bbs/ca.crt
 export BBS_CERT_FILE=/var/vcap/jobs/cfdot/config/certs/bbs/client.crt
 export BBS_KEY_FILE=/var/vcap/jobs/cfdot/config/certs/bbs/client.key
+export LOCKET_API_LOCATION=locket.service.cf.internal:8891
+export LOCKET_CA_CERT_FILE=/var/vcap/jobs/cfdot/config/certs/locket/ca.crt
+export LOCKET_CERT_FILE=/var/vcap/jobs/cfdot/config/certs/locket/client.crt
+export LOCKET_KEY_FILE=/var/vcap/jobs/cfdot/config/certs/locket/client.key
