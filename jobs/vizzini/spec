@@ -21,6 +21,10 @@ properties:
     description: "enable ssl for all communication with the bbs"
     default: true
 
+  vizzini.rep.placement_tags:
+    description: "use placement tags for created LRPs"
+    default: []
+
   vizzini.ssh.proxy_address:
     description: "Host and port for the SSH proxy"
     default: "ssh-proxy.service.cf.internal:2222"
