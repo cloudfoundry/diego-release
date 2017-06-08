@@ -6,5 +6,6 @@ sql_overrides:
     db_username: diego
     db_password: admin
     db_schema: diego
-  locket: *db_params
-
+  locket:
+    <<: *db_params
+    db_schema: locket
