@@ -18,9 +18,6 @@ chown -R vcap:vcap $LOG_DIR
 
 cd /var/vcap/packages/benchmark-bbs/src/code.cloudfoundry.org/benchmarkbbs
 
-# Work around for GOLANG 1.5.3 DNS bug
-export GODEBUG=netdns=cgo
-
 # Allowed number of open file descriptors
 ulimit -n 100000
 echo 1024 65535 > /proc/sys/net/ipv4/ip_local_port_range

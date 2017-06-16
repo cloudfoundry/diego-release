@@ -8,9 +8,6 @@ PIDFILE=$RUN_DIR/bbs.pid
 
 export GOMAXPROCS=$(nproc)
 
-# Work around for GOLANG 1.5.3 DNS bug
-export GODEBUG=netdns=cgo
-
 /var/vcap/packages/bbs/bin/bbs \
     -config=$CONF_DIR/bbs.json \
     2> >(tee -a $LOG_DIR/bbs.stderr.log | logger -p user.error -t vcap.bbs) \

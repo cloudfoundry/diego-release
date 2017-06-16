@@ -8,9 +8,6 @@ PIDFILE=$RUN_DIR/locket.pid
 
 export GOMAXPROCS=$(nproc)
 
-# Work around for GOLANG 1.5.3 DNS bug
-export GODEBUG=netdns=cgo
-
 /var/vcap/packages/locket/bin/locket \
     -config=$CONF_DIR/locket.json \
     2> >(tee -a $LOG_DIR/locket.stderr.log | logger -p user.error -t vcap.locket) \

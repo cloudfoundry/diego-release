@@ -6,9 +6,6 @@ CONF_DIR=/var/vcap/jobs/file_server/config
 
 PIDFILE=$RUN_DIR/file_server.pid
 
-# Work around for GOLANG 1.5.3 DNS bug
-export GODEBUG=netdns=cgo
-
 /var/vcap/packages/file_server/bin/file-server \
       -config=$CONF_DIR/file_server.json \
       2> >(tee -a $LOG_DIR/file_server.stderr.log | logger -p user.error -t vcap.file-server) \

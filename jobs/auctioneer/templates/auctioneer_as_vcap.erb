@@ -8,9 +8,6 @@ PIDFILE=$RUN_DIR/auctioneer.pid
 
 export GOMAXPROCS=$(nproc)
 
-# Work around for GOLANG 1.5.3 DNS bug
-export GODEBUG=netdns=cgo
-
 /var/vcap/packages/auctioneer/bin/auctioneer \
       -config=${CONF_DIR}/auctioneer.json \
       2> >(tee -a $LOG_DIR/auctioneer.stderr.log | logger -p user.error -t vcap.auctioneer) \

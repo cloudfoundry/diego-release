@@ -6,9 +6,6 @@ CONF_DIR=/var/vcap/jobs/ssh_proxy/config
 
 PIDFILE=$RUN_DIR/ssh_proxy.pid
 
-# Work around for GOLANG 1.5.3 DNS bug
-export GODEBUG=netdns=cgo
-
 /var/vcap/packages/ssh_proxy/bin/ssh-proxy ${bbs_sec_flags} \
   -config=$CONF_DIR/ssh_proxy.json \
   2> >(tee -a $LOG_DIR/ssh_proxy.stderr.log | logger -p user.error -t vcap.ssh-proxy) \

@@ -9,9 +9,6 @@ PIDFILE=$RUN_DIR/rep.pid
 # Enable maximum OS thread concurrency
 export GOMAXPROCS=$(nproc)
 
-# Work around for GOLANG 1.5.3 DNS bug
-export GODEBUG=netdns=cgo
-
 echo $$ > $PIDFILE
 
 zone_flag=""
