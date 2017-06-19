@@ -15,12 +15,14 @@ if ! diff -u <(echo -e "$rep_properties") <(echo -e "$rep_windows_properties"); 
     exit 1
 fi
 
-if ! diff -u jobs/route_emitter{,_windows}/templates/route_emitter.json.erb; then
+route_emitter_json=$(cat jobs/route_emitter/templates/route_emitter.json.erb | grep -v register_direct_instance_routes )
+route_emitter_windows_json=$(cat jobs/route_emitter_windows/templates/route_emitter.json.erb )
+if ! diff -u <(echo -e "$route_emitter_json") <(echo -e "$route_emitter_windows_json"); then
     echo "route emitter json have drifted"
     exit 1
 fi
 
-route_emitter_properties=$(cat jobs/route_emitter/spec | sed -n '/properties/,$P' | grep -E '^  [a-z].*$' | tr -d '[:blank:]' | sort)
+route_emitter_properties=$(cat jobs/route_emitter/spec | sed -n '/properties/,$P' | grep -E '^  [a-z].*$' | grep -v register_direct_instance_routes | tr -d '[:blank:]' | sort)
 route_emitter_windows_properties=$(cat jobs/route_emitter_windows/spec | sed -n '/properties/,$P' | grep -E '^  [a-z].*$' | grep -v syslog | tr -d '[:blank:]' | sort)
 
 if ! diff -u <(echo -e "$route_emitter_properties") <(echo -e "$route_emitter_windows_properties"); then

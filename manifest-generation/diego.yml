@@ -843,6 +843,8 @@ properties:
   # -- Properties below are used by jobs from grootfs-release --
   grootfs: (( grootfs_overrides.grootfs || nil ))
 
+  register_direct_instance_routes: (( property_overrides.register_direct_instance_routes || nil))
+
 # The keys below should not be included in the final stub
 config_from_cf: (( merge ))
 iaas_settings: (( merge ))

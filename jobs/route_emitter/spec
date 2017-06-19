@@ -21,6 +21,9 @@ consumes:
   optional: true
 
 properties:
+  register_direct_instance_routes:
+    description: "Use the container IP address and internal port instead of the host IP address and external port when registering route endpoints. Suitable only for deployments in which the gorouters and TCP routers can route directly to the container IP of instances."
+    default: false
   diego.route_emitter.local_mode:
     description: "EXPERIMENTAL: turn on local mode. in this mode route-emitter only handles events for the local cell"
     default: false
