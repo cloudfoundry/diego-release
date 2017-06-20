@@ -14,5 +14,5 @@ rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg
 # install jq
 BIN_DIR=${BOSH_INSTALL_TARGET}/bin
 mkdir -p ${BIN_DIR}
-cp jq/jq-linux64 ${BIN_DIR}/jq
+cp jq/jq-1.5-linux64 ${BIN_DIR}/jq
 chmod +x ${BIN_DIR}/jq
