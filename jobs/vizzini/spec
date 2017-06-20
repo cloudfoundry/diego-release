@@ -38,3 +38,7 @@ properties:
   vizzini.verbose:
     description: Run tests in verbose mode
     default: false
+
+  enable_declarative_healthcheck:
+    description: "EXPERIMENTAL: When set, enables the declarative check tests in vizzini"
+    default: false

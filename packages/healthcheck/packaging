@@ -14,8 +14,8 @@ for binary in healthcheck; do
     ldd $binary && echo "$binary must be statically linked" && false
 done
 
-tar -czf ${BOSH_INSTALL_TARGET}/healthcheck.tgz healthcheck
-tar -czf ${BOSH_INSTALL_TARGET}/healthcheck-windows.tgz healthcheck.exe
+cp healthcheck ${BOSH_INSTALL_TARGET}
+cp healthcheck.exe ${BOSH_INSTALL_TARGET}
 
 # clean up source artifacts
 rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg

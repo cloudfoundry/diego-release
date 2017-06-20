@@ -15,7 +15,7 @@ for binary in builder launcher; do
 done
 
 tar -xzf /var/vcap/packages/diego-sshd/diego-sshd.tgz
-tar -xzf /var/vcap/packages/healthcheck/healthcheck.tgz
+cp /var/vcap/packages/healthcheck/healthcheck .
 
 tar -czf ${BOSH_INSTALL_TARGET}/docker_app_lifecycle.tgz builder launcher healthcheck diego-sshd
 

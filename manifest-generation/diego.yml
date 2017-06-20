@@ -256,6 +256,7 @@ base:
             placement_tags: (( property_overrides.rep.placement_tags || [] ))
           route_emitter:
             local_mode: (( route_emitter_overrides.local_mode_enabled ))
+        enable_declarative_healthcheck: (( property_overrides.rep.enable_declarative_healthcheck || nil ))
         tcp:
           enabled: (( property_overrides.tcp_emitter.enabled || nil ))
         routing_api:
@@ -342,6 +343,7 @@ base:
             placement_tags: (( property_overrides.rep.placement_tags || [] ))
           route_emitter:
             local_mode: (( route_emitter_overrides.local_mode_enabled ))
+        enable_declarative_healthcheck: (( property_overrides.rep.enable_declarative_healthcheck || nil ))
         tcp:
           enabled: (( property_overrides.tcp_emitter.enabled || nil ))
         routing_api:
@@ -422,6 +424,7 @@ base:
             placement_tags: (( property_overrides.rep.placement_tags || [] ))
           route_emitter:
             local_mode: (( route_emitter_overrides.local_mode_enabled ))
+        enable_declarative_healthcheck: (( property_overrides.rep.enable_declarative_healthcheck || nil ))
         tcp:
           enabled: (( property_overrides.tcp_emitter.enabled || nil ))
         routing_api:

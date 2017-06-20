@@ -30,6 +30,7 @@ templates:
 packages:
   - pid_utils
   - rep
+  - healthcheck
 
 properties:
   diego.rep.listen_addr:
@@ -250,3 +251,7 @@ properties:
 
   diego.rep.locket.api_location:
     description: "EXPERIMENTAL: hostname and port of the locket server"
+
+  enable_declarative_healthcheck:
+    description: "EXPERIMENTAL: When set, enables the rep to prefer the LRP CheckDefinition to healthcheck instances over the Monitor action."
+    default: false

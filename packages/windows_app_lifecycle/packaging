@@ -3,5 +3,5 @@ set -e
 mkdir -p tmp
 tar -xzf lifecycles/windows_app_lifecycle-*.tgz -C tmp
 tar -xzf /var/vcap/packages/diego-sshd/diego-sshd-windows.tgz -C tmp
-tar -xzf /var/vcap/packages/healthcheck/healthcheck-windows.tgz -C tmp
+cp /var/vcap/packages/healthcheck/healthcheck.exe tmp
 tar -zcf ${BOSH_INSTALL_TARGET}/windows_app_lifecycle.tgz -C tmp .

@@ -32,6 +32,7 @@ nodes=<%= properties.vizzini.nodes %>
 verbose=<%= properties.vizzini.verbose %>
 routable_domain_suffix=<%= properties.vizzini.routable_domain_suffix %>
 ssh_proxy_address=<%= properties.vizzini.ssh.proxy_address  %>
+enable_declarative_healthcheck=<%= properties.enable_declarative_healthcheck %>
 <% if_p("vizzini.ssh.proxy_secret") do |proxy_secret| %>
   ssh_proxy_secret_flag="--ssh-password=<%= proxy_secret %>"
 <% end %>
@@ -55,6 +56,7 @@ ginkgo \
   -keepGoing \
   -- \
   ${bbs_sec_flags} \
+  --enable-declarative-healthcheck=${enable_declarative_healthcheck} \
   --bbs-address=${bbs_api_url} \
   --ssh-address=${ssh_proxy_address} \
   ${ssh_proxy_secret_flag} \

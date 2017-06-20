@@ -70,6 +70,7 @@ jobs:
           zone: z1
         route_emitter:
           local_mode: (( route_emitter_overrides.local_mode_enabled ))
+      enable_declarative_healthcheck: (( property_overrides.rep.enable_declarative_healthcheck || nil ))
       tcp:
         enabled: (( property_overrides.tcp_emitter.enabled || nil ))
       routing_api:
@@ -102,6 +103,7 @@ jobs:
           zone: z2
         route_emitter:
           local_mode: (( route_emitter_overrides.local_mode_enabled ))
+      enable_declarative_healthcheck: (( property_overrides.rep.enable_declarative_healthcheck || nil ))
       tcp:
         enabled: (( property_overrides.tcp_emitter.enabled || nil ))
       routing_api:
@@ -128,6 +130,7 @@ jobs:
           zone: z3
         route_emitter:
           local_mode: (( route_emitter_overrides.local_mode_enabled ))
+      enable_declarative_healthcheck: (( property_overrides.rep.enable_declarative_healthcheck || nil ))
       tcp:
         enabled: (( property_overrides.tcp_emitter.enabled || nil ))
       routing_api:
