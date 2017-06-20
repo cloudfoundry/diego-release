@@ -615,6 +615,28 @@ property_overrides:
       I0YSumzEeQMcFbg0LUYayZ9PlhPgLosMba9BDK/K244OZvmGyRr1ANnnASsQg4cK
       vsHDEV4jBWxHAw41ArfNLg9vA8ojf/1EU4E2d5GU5fVe
       -----END CERTIFICATE-----
+      -----BEGIN CERTIFICATE-----
+      MIIDtzCCAp+gAwIBAgIJAIPgaUgWRCE8MA0GCSqGSIb3DQEBBQUAMEUxCzAJBgNV
+      BAYTAkFVMRMwEQYDVQQIEwpTb21lLVN0YXRlMSEwHwYDVQQKExhJbnRlcm5ldCBX
+      aWRnaXRzIFB0eSBMdGQwIBcNMTYwMzI1MTgzOTI1WhgPMjI5MDAxMDcxODM5MjVa
+      MEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIEwpTb21lLVN0YXRlMSEwHwYDVQQKExhJ
+      bnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw
+      ggEKAoIBAQDDmSpF1agfBnLiyi+KlbqvetxxFqG0ONDOZQTiTnc/xkmwJdCsEwWe
+      CA8okKm6aB9/C5IQz8//7KnZeAWghl+PCVanr+Ax1vjZKLPO2Ccin7oQ7wVSqJ5q
+      5slVK2nfRtLcyXdb5rPIlNEMRpupv0jiRAaOoh5KvOSWA770zIJF3qP9IyuA8P6y
+      XCU4+lu6XOeaHWRCXyzpjBGgnc6M/kYx8sKp6ktu1dXYUpNld4ICjSbmLDdq6hd6
+      OU7WkR3/AZQ3q3F7hiRg7CVAea24RsV30a2mYgVZnUgA8A12zuHXV0S+955CUntr
+      Cygv4JovFCf/VaBuUG7LGJNuCy+rJrBRAgMBAAGjgacwgaQwHQYDVR0OBBYEFDcq
+      5thPoSs0QiQLQMmW2WxjEVSSMHUGA1UdIwRuMGyAFDcq5thPoSs0QiQLQMmW2Wxj
+      EVSSoUmkRzBFMQswCQYDVQQGEwJBVTETMBEGA1UECBMKU29tZS1TdGF0ZTEhMB8G
+      A1UEChMYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkggkAg+BpSBZEITwwDAYDVR0T
+      BAUwAwEB/zANBgkqhkiG9w0BAQUFAAOCAQEANqwgDsDrQc3iKMsC8/HoCOKz/Gu7
+      EHDncfeuo8/+6vuHf5IsJrkpzNoFI7OWMp/PsDQ2L7jAFATKYNhpbwJwAknSlTBk
+      2Pi2j303EGdLLGFdhKWK46MUtBMf6KBfUn/ReFgTUIH+NrX/mnr3ZdK/O2DfIjYj
+      Wdc+6NNVewmA0E/n2O4BasfsIH9xZ8Sjt1yeyyW/x47i1UIgsSSg7J6h3GEfG1PA
+      a2avU7gd1ERzy4z0FobouMTCiQ+BDfQHT2Jg8WLbdyEj/TH56w4cF29pQ0coZOC1
+      bAzM00WOuWYAt8wwcB2+feZiOUxoMzE13XdDf+XaJwmBmKEKYf56+kJTkQ==
+      -----END CERTIFICATE-----
     server_cert: |
       -----BEGIN CERTIFICATE-----
       MIIEcTCCAlmgAwIBAgIQLBlh31i3G9/L90VUjh9wuzANBgkqhkiG9w0BAQsFADAQ
@@ -726,7 +748,7 @@ property_overrides:
       -----END RSA PRIVATE KEY-----
   route_emitter:
     log_level: debug
-  skip_cert_verify: true
+  skip_cert_verify: false
   ssh_proxy:
     host_key: |
       -----BEGIN RSA PRIVATE KEY-----
