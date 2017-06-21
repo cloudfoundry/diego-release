@@ -1,0 +1,10 @@
+---
+name: healthcheck_windows
+
+dependencies:
+  - golang-windows
+
+files:
+  - exiter.ps1
+  - code.cloudfoundry.org/healthcheck/cmd/healthcheck/*.go # gosub
+  - code.cloudfoundry.org/healthcheck/*.go # gosub
