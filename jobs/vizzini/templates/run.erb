@@ -59,6 +59,9 @@ ginkgo \
   --enable-declarative-healthcheck=${enable_declarative_healthcheck} \
   --bbs-address=${bbs_api_url} \
   --ssh-address=${ssh_proxy_address} \
+  <% Array(p("vizzini.rep.placement_tags")).each do |placement_tag| %> \
+  --rep-placement-tag=<%= placement_tag %> \
+  <% end %>\
   ${ssh_proxy_secret_flag} \
   --routable-domain-suffix=${routable_domain_suffix} \
   2> >(tee -a $LOG_DIR/vizzini.stderr.log) \
