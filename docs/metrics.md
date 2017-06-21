@@ -61,11 +61,12 @@
 
 ## Locket
 
-| Metric                                               | Description                                                                                                                                                | Unit             |
-| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----             |
-| `ActiveLocks`                                        | Total number of active locks. Emitted periodically.                                                                                                        | number           |
-| `ActivePresences`                                    | Total number of active presences.  Emitted periodically.                                                                                                   | number           |
-| `LocksExpired`                                       | Cumulative number of locks/presences that have expired.  Emitted when a lock or presence is expired.                                                       | number           |
+| Metric                                               | Description                                                                                                                                                | Unit   |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----   |
+| `ActiveLocks`                                        | Total number of active locks. Emitted periodically.                                                                                                        | number |
+| `ActivePresences`                                    | Total number of active presences.  Emitted periodically.                                                                                                   | number |
+| `LocksExpired`                                       | Cumulative number of locks that have expired.  Emitted when a lock is expired.                                                                             | number |
+| `PresenceExpired`                                    | Cumulative number of presences that have expired.  Emitted when a presence is expired.                                                                     | number |
 
 ## Rep
 
