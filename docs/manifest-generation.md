@@ -124,6 +124,8 @@ The optional -s flag is used to specify the stub for SQL and needs to be specifi
 ```yaml
 sql_overrides:
   bbs:
+    ca_cert: null
+    require_ssl: null
     db_driver: mysql
     db_host: 10.244.7.2
     db_port: 3306
@@ -132,6 +134,8 @@ sql_overrides:
     db_schema: diego
     max_open_connections: 500
   locket:
+    ca_cert: null
+    require_ssl: null
     db_driver: mysql
     db_host: 10.244.7.2
     db_port: 3306
@@ -144,6 +148,8 @@ sql_overrides:
 ```yaml
 sql_overrides:
   bbs:
+    ca_cert: null
+    require_ssl: null
     db_driver: postgres
     db_host: 10.244.0.30
     db_port: 5524
@@ -152,6 +158,8 @@ sql_overrides:
     db_schema: diego
     max_open_connections: 500
   locket:
+    ca_cert: null
+    require_ssl: null
     db_driver: postgres
     db_host: 10.244.0.30
     db_port: 5524

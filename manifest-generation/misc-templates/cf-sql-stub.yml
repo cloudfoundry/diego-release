@@ -7,6 +7,8 @@ sql_overrides:
     db_password: (( merge ))
     db_schema: diego
   locket:
+    ca_cert: (( merge ))
+    require_ssl: (( merge ))
     db_driver: postgres
     db_host: (( merge ))
     db_port: (( merge ))

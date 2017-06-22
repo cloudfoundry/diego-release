@@ -652,6 +652,8 @@ properties:
       skip_consul_lock: (( property_overrides.bbs.skip_consul_lock || nil))
     locket:
       sql:
+        ca_cert: (( sql_overrides.locket.ca_cert || nil ))
+        require_ssl: (( sql_overrides.locket.require_ssl || nil ))
         db_driver: (( sql_overrides.locket.db_driver || nil ))
         db_host: (( sql_overrides.locket.db_host || nil ))
         db_port: (( sql_overrides.locket.db_port || nil ))

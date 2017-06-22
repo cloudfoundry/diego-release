@@ -828,7 +828,7 @@ In order to configure SSL for RDS you need to download the ca cert bundle from A
 curl -o $DEPLOYMENT_DIR/certs/rds-combined-ca-bundle.pem http://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
 ```
 
-The contents of this file will be supplied in the `sql_overrides.bbs.ca_cert` field in the Diego-SQL stub below.
+The contents of this file will be supplied in the `sql_overrides.bbs.ca_cert` and `sql_overrides.locket.ca_cert` fields in the Diego-SQL stub below.
 
 ### Setup AWS RDS PostgreSQL
 
@@ -1020,6 +1020,8 @@ sql_overrides:
     db_username: <locket-db-username>
     db_password: <REPLACE_ME_WITH_LOCKET_DB_PASSWORD>
     db_schema: <locket-db-schema>
+    require_ssl: null
+    ca_cert: null
 ```
 
 Fill in the bracketed parameters in the `db_driver`, `db_host`, `db_port` and `db_password` for both bbs and locket with the following values:
@@ -1037,13 +1039,16 @@ Fill in the bracketed parameters in the `db_driver`, `db_host`, `db_port` and `d
 
 #### SSL support
 
-**Note:** The `sql_overrides.bbs.ca_cert` and `sql_overrides.bbs.require_ssl` properties should be provided only when deploying with an SSL-supported MySQL cluster. Set the `require_ssl` property to `true` to ensure that the BBS uses SSL to connect to the store, and set the `ca_cert` property to the contents of a certificate bundle containing the correct CA certificates to verify the certificate that the SQL server presents.
+**Note:** The `sql_overrides.bbs.ca_cert`, `sql_overrides.bbs.require_ssl`, `sql_overrides.locket.ca_cert`, and `sql_overrides.locket.require_ssl` properties should be provided only when deploying with an SSL-supported MySQL cluster. Set the `require_ssl` property to `true` to ensure that the BBS and/or Locket uses SSL to connect to the store, and set the `ca_cert` property to the contents of a certificate bundle containing the correct CA certificates to verify the certificate that the SQL server presents.
 
 If enabling SSL for an RDS database, include the contents of `$DEPLOYMENT_DIR/certs/rds-combined-ca-bundle.pem` as the value of the `ca_cert` property:
 
 ```yaml
 sql_overrides:
   bbs:
+    ca_cert: |
+      REPLACE_WITH_CONTENTS_OF_(DEPLOYMENT_DIR/certs/rds-combined-ca-bundle.pem)
+  locket:
     ca_cert: |
       REPLACE_WITH_CONTENTS_OF_(DEPLOYMENT_DIR/certs/rds-combined-ca-bundle.pem)
 ```

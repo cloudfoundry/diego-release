@@ -8,6 +8,7 @@ templates:
   locket_ca.crt.erb: config/certs/ca.crt
   locket_server.crt.erb: config/certs/server.crt
   locket_server.key.erb: config/certs/server.key
+  sql_ca.crt.erb: config/certs/sql/ca.crt
 
 packages:
   - pid_utils
@@ -53,3 +54,8 @@ properties:
   diego.locket.sql.db_driver:
     description: "Database driver to use for SQL backend (for example: mysql,postgres)"
     default: mysql
+  diego.locket.sql.require_ssl:
+    description: "Whether to require SSL for Locket communication to the SQL backend"
+    default: false
+  diego.locket.sql.ca_cert:
+    description: "Bundle of CA certificates for the Locket to verify the SQL server SSL certificate when connecting via SSL"
