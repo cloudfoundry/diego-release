@@ -50,7 +50,7 @@ connection_string = connection_string_from_db_params
 config[:database_connection_string] = connection_string
 config[:database_driver] = p("diego.locket.sql.db_driver")
 
-if p("diego.bbs.locket.require_ssl")
+if p("diego.locket.sql.require_ssl")
    config[:sql_ca_cert_file] = "#{CONF_DIR}/certs/sql/ca.crt"
 end
 
