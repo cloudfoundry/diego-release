@@ -1,0 +1,32 @@
+#!/bin/bash
+# vim: set ft=sh
+
+set -e
+
+chown -R diego diego-release/
+
+
+cd diego-release
+
+export GOROOT=/usr/local/go
+export PATH=$GOROOT/bin:$PATH
+
+export GOPATH=$PWD
+export PATH=$PWD/bin:$PATH
+
+go install github.com/apcera/gnatsd
+go install github.com/coreos/etcd
+go install github.com/onsi/ginkgo/ginkgo
+
+cd src/code.cloudfoundry.org/auction
+
+ginkgo -r -p
+ERROR_CODE=$?
+
+if [ ${ERROR_CODE} -eq 0 ]; then
+  echo "Auction simulation completed."
+else
+  echo "Auction simulation failed!"
+fi
+
+exit ${ERROR_CODE}
