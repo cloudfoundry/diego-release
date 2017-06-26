@@ -71,8 +71,14 @@ files:
   - golang.org/x/net/context/*.go # gosub
   - golang.org/x/net/http2/*.go # gosub
   - golang.org/x/net/http2/hpack/*.go # gosub
+  - golang.org/x/net/idna/*.go # gosub
   - golang.org/x/net/internal/timeseries/*.go # gosub
+  - golang.org/x/net/lex/httplex/*.go # gosub
   - golang.org/x/net/trace/*.go # gosub
+  - golang.org/x/text/secure/bidirule/*.go # gosub
+  - golang.org/x/text/transform/*.go # gosub
+  - golang.org/x/text/unicode/bidi/*.go # gosub
+  - golang.org/x/text/unicode/norm/*.go # gosub
   - google.golang.org/grpc/*.go # gosub
   - google.golang.org/grpc/codes/*.go # gosub
   - google.golang.org/grpc/credentials/*.go # gosub
