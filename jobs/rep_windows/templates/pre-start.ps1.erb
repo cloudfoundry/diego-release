@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop";
+﻿$ErrorActionPreference = "Stop";
 trap { $host.SetShouldExit(1) }
 
 Write-Host "Running pre-start"
@@ -26,3 +26,11 @@ if (-Not (Get-NetFirewallRule | Where-Object { $_.DisplayName -eq "SecureRepPort
     Write-Error "Unable to add RepPort firewall rule"
   }
 }
+
+# Set ACL on executor cache to open up to container users
+$CACHE_DIR = "<%= p("diego.executor.cache_path") %>"
+New-Item -Path $CACHE_DIR -ItemType "directory" -Force
+$rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", "ReadAndExecute", "ContainerInherit, ObjectInherit", "None", "Allow")
+$acl = Get-Acl $CACHE_DIR
+$acl.AddAccessRule($rule)
+Set-Acl $CACHE_DIR $acl
