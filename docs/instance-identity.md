@@ -3,15 +3,17 @@
 **Note** This feature is experimental
 
 Diego's instance identity system provides each app container with a
-certificate and private key in the standard locations
-`/etc/cf-instance-identity/instance.crt` and
-`/etc/cf-instance-identity/instance.key`, respectively. The absolute path of
-the certificate and private key are also present in the environment variables
-`CF_INSTANCE_CERT` and `CF_INSTANCE_KEY`.
+certificate and private key.  You can find the file path
+for each by inspecting the environment variables `CF_INSTANCE_CERT` and `CF_INSTANCE_KEY`.
+The files are PEM encoded.
 
-The certificate's `Common Name` property is set to the instance id and the SAN
-is set to the container IP address that is running the given app instance. The
-certificate expires 24 hours after the container is created.
+### About the Certificate
+- The certificate's `Common Name` property is set to the instance id.
+- The SAN is set to the container IP address that is running the given app instance.
+- On Cloud Foundry, the certificate's `Organizational Unit` property is set to the string `app:app-guid`
+  where `app-guid` is the Application GUID assigned by Cloud Controller.
+
+The certificate expires 24 hours after the container is created.
 
 ### Enabling Instance Identity
 
