@@ -4,8 +4,8 @@
 
 Diego's instance identity system provides each app container with a
 certificate and private key in the standard locations
-`/etc/cf-instance-identity/instance.crt` and
-`/etc/cf-instance-identity/instance.key`, respectively. The absolute path of
+`/etc/cf-instance-credentials/instance.crt` and
+`/etc/cf-instance-credentials/instance.key`, respectively. The absolute path of
 the certificate and private key are also present in the environment variables
 `CF_INSTANCE_CERT` and `CF_INSTANCE_KEY`.
 
