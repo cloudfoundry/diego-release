@@ -2,18 +2,22 @@
 
 **Note** This feature is experimental
 
-Diego's instance identity system provides each app container with a
-certificate and private key.  You can find the file path
-for each by inspecting the environment variables `CF_INSTANCE_CERT` and `CF_INSTANCE_KEY`.
-The files are PEM encoded.
+The instance identity system in Diego provides each application instance with a PEM-encoded
+[X.509](https://tools.ietf.org/html/rfc5280) certificate and [PKCS#1](https://tools.ietf.org/html/rfc3447) RSA private key.  The values of the environment variables `CF_INSTANCE_CERT` and `CF_INSTANCE_KEY` contain the absolute paths to the certificate and private key files, respectively.
+
+This feature is still experimental, and both developer- and operator-facing aspects of it may be subject to change without notice.
+
 
 ### About the Certificate
-- The certificate's `Common Name` property is set to the instance id.
-- The SAN is set to the container IP address that is running the given app instance.
-- On Cloud Foundry, the certificate's `Organizational Unit` property is set to the string `app:app-guid`
-  where `app-guid` is the Application GUID assigned by Cloud Controller.
 
-The certificate expires 24 hours after the container is created.
+- The certificate's `Common Name` property is set to the instance guid.
+- The certificate contains an IP SAN set to the container IP address for the given app instance.
+- For Cloud Foundry apps, the certificate's `Organizational Unit` property is set to the string `app:app-guid`, where `app-guid` is the application guid assigned by Cloud Controller.
+
+By default, the certificate is valid for the 24 hours after the container is created, but the Diego operator may control this validity period with the `diego.executor.instance_identity_validity_period_in_hours` BOSH property.
+
+The Diego cell rep will supply a new certificate-key pair to the container before the end of the validity period, no earlier than 1 hour before the end of the validity period and no later than 1/12 of the period. The new pair of files will replace the existing pair at the same path location, with each file being replaced atomically.
+
 
 ### Enabling Instance Identity
 
@@ -22,6 +26,7 @@ deployment manifest:
 
 - `diego.executor.instance_identity_ca_cert`: The CA certificate used to sign the app container's certificate.
 - `diego.executor.instance_identity_key`: The private key of the given CA certificate.
+
 
 ### Requirements
 
