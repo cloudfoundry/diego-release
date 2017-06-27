@@ -14,9 +14,9 @@ This feature is still experimental, and both developer- and operator-facing aspe
 - The certificate contains an IP SAN set to the container IP address for the given app instance.
 - For Cloud Foundry apps, the certificate's `Organizational Unit` property is set to the string `app:app-guid`, where `app-guid` is the application guid assigned by Cloud Controller.
 
-By default, the certificate is valid for the 24 hours after the container is created, but the Diego operator may control this validity period with the `diego.executor.instance_identity_validity_period_in_hours` BOSH property.
+By default, the certificate is valid for the 24 hours after the container is created, but the Diego operator may control this validity period with the `diego.executor.instance_identity_validity_period_in_hours` BOSH property. The smallest allowed validity duration is 1 hour.
 
-The Diego cell rep will supply a new certificate-key pair to the container before the end of the validity period, no earlier than 1 hour before the end of the validity period and no later than 1/12 of the period. The new pair of files will replace the existing pair at the same path location, with each file being replaced atomically.
+The Diego cell rep will supply a new certificate-key pair to the container before the end of the validity period. The new pair of files will replace the existing pair at the same path location, with each file being replaced atomically. If the validity period is greater than 4 hours, the pair will be regenerated between 1 hour and 20 minutes before the end of the validity period. If the validity period is less than or equal to 4 hours, the pair will be regenerated between 1/4 and 1/12 of the way to the end of the period.
 
 
 ### Enabling Instance Identity
