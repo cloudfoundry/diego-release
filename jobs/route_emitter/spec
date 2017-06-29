@@ -25,7 +25,7 @@ properties:
     description: "Use the container IP address and internal port instead of the host IP address and external port when registering route endpoints. Suitable only for deployments in which the gorouters and TCP routers can route directly to the container IP of instances."
     default: false
   diego.route_emitter.local_mode:
-    description: "EXPERIMENTAL: turn on local mode. in this mode route-emitter only handles events for the local cell"
+    description: "Enable cell-local mode for the route-emitter. In this mode, the route-emitter emits route registrations only for the instances associated to its cell, as determined by the BOSH-assigned VM identifier `spec.id`."
     default: false
   diego.route_emitter.nats.user:
     description: "Username for server authentication."
@@ -75,7 +75,7 @@ properties:
     default: "route_emitter"
 
   tcp.enabled:
-    description: "EXPERIMENTAL. Turn on tcp route emitter"
+    description: "Enable the route-emitter in cell-local mode to emit TCP routes for instances to the Routing API."
     default: false
   routing_api.url:
     description: "Routing API uri to be used by the tcp route-emitter"
