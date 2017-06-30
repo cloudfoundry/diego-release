@@ -30,7 +30,12 @@ else
   echo "pre-push installed."
 fi
 
-PRE_COMMIT=${RELEASE}/.git/modules/src/code.cloudfoundry.org/cfdot/hooks/pre-commit
+CFDOT_HOOKS_DIR=${RELEASE}/.git/modules/src/code.cloudfoundry.org/cfdot/hooks
+PRE_COMMIT=${CFDOT_HOOKS_DIR}/pre-commit
+
+if [ ! -d ${CFDOT_HOOKS_DIR} ]; then
+    mkdir -p ${CFDOT_HOOKS_DIR}
+fi
 
 if [ ! -f ${PRE_COMMIT} ]; then
   echo "#!/bin/bash" > ${PRE_COMMIT}
