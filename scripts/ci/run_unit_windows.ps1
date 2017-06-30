@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop";
+﻿$ErrorActionPreference = "Stop";
 trap { $host.SetShouldExit(1) }
 
 cd diego-release/
@@ -43,6 +43,7 @@ ginkgo -r -keepGoing -trace -randomizeAllSpecs -progress --race `
   bytefmt `
   durationjson `
   eventhub `
+  healthcheck `
   localip `
   operationq `
   rep `
