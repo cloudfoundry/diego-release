@@ -21,6 +21,9 @@ packages:
   - auctioneer
 
 properties:
+  diego.auctioneer.require_tls:
+    description: "Whether to require mutual TLS for communication to the securable auctioneer API server"
+    default: false
   diego.auctioneer.ca_cert:
     description: "PEM-encoded CA certificate for the auctioneer API server."
   diego.auctioneer.server_cert:
