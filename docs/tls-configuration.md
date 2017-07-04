@@ -12,15 +12,12 @@ the rep servers on the cell vms, via the `diego.rep.require_tls` and
 `false`. When enabled, the operator must provide TLS certificates and keys for
 the rep server and its clients (other components in the Diego deployment).
 
-TLS with mutual authentication can be enabled for communication to the Auctioneer
-server, via the presence of any of the following properties: `diego.auctioneer.ca_cert`,
-`diego.auctioneer.server_cert`, `diego.auctioneer.server_key`. If TLS is enabled for
-the Auctioneer, the operator must also specify the client certificates and keys
-required for mutual authentication in the following properties: `diego.bbs.auctioneer.ca_cert`,
-`diego.bbs.auctioneer.client_cert`, `diego.bbs.auctioneer.client_key`.
-The operator may also set `diego.bbs.auctioneer.require_tls` to `true` to ensure
-that all communication between the BBS and the Auctioneer server is secured using TLS
-with mutual authentication.
+
+TLS with mutual authentication can be enabled for communication to
+the Auctioneer server, via the `diego.auctioneer.require_tls` and
+`diego.bbs.auctioneer.require_tls` BOSH properties. These properties default to
+`false`. When enabled, the operator must provide TLS certificates and keys for
+the Auctioneer server and the BBS client.
 
 TLS with mutual authentication can be enabled for upload and download of assets
 into the containers, via the presence of the following properties:

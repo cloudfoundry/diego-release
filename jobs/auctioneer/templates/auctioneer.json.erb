@@ -2,6 +2,7 @@
   CONF_DIR = "/var/vcap/jobs/auctioneer/config"
 
   config = {
+    require_tls: p("diego.auctioneer.require_tls"),
     dropsonde_port: p("diego.auctioneer.dropsonde_port"),
     consul_cluster: "http://127.0.0.1:8500",
     debug_address: p("diego.auctioneer.debug_addr"),
@@ -37,7 +38,7 @@
     config[:rep_ca_cert] = "#{CONF_DIR}/certs/rep/ca.crt"
   end
 
-  if p("diego.auctioneer.ca_cert", "") != "" || p("diego.auctioneer.server_cert", "") != "" || p("diego.auctioneer.server_key", "") != ""
+  if p("diego.auctioneer.require_tls")
     config[:ca_cert_file] = "#{CONF_DIR}/certs/auctioneer/ca.crt"
     config[:server_cert_file] = "#{CONF_DIR}/certs/auctioneer/server.crt"
     config[:server_key_file] = "#{CONF_DIR}/certs/auctioneer/server.key"
