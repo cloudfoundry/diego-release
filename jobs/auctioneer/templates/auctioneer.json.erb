@@ -41,6 +41,7 @@
   if p("diego.auctioneer.ca_cert", "") != "" || p("diego.auctioneer.server_cert", "") != "" || p("diego.auctioneer.server_key", "") != ""
     config[:ca_cert_file] = "#{conf_dir}/certs/auctioneer/ca.crt"
     config[:server_cert_file] = "#{conf_dir}/certs/auctioneer/server.crt"
+    config[:server_key_file] = "#{conf_dir}/certs/auctioneer/server.key"
   end
 
   if_p("diego.auctioneer.locket.api_location") do |value|
