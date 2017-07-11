@@ -1,0 +1,8 @@
+---
+processes:
+  locket:
+    executable: /var/vcap/packages/locket/bin/locket
+    args:
+      - -config=/var/vcap/jobs/locket/config/locket.json
+    limits:
+      open_files: 100000

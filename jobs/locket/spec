@@ -8,6 +8,8 @@ templates:
   locket_ca.crt.erb: config/certs/ca.crt
   locket_server.crt.erb: config/certs/server.crt
   locket_server.key.erb: config/certs/server.key
+  bpm.yml.erb: config/bpm.yml
+  pre-start.erb: bin/pre-start
   sql_ca.crt.erb: config/certs/sql/ca.crt
   loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
   loggregator_client.crt.erb: config/certs/loggregator/client.crt
@@ -18,6 +20,9 @@ packages:
   - locket
 
 properties:
+  bpm.enabled:
+    description: "Enable Bosh Process Manager for diego components"
+    default: false
   tls.ca_cert:
     description: "ca cert for locket server mutual auth tls"
   tls.cert:

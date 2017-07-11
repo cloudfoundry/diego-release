@@ -1,5 +1,13 @@
+<% if p("bpm.enabled") %>
+check process auctioneer
+  with pidfile /var/vcap/sys/run/bpm/auctioneer/auctioneer.pid
+  start program "/var/vcap/jobs/bpm/bin/bpm start auctioneer"
+  stop program "/var/vcap/jobs/bpm/bin/bpm stop auctioneer"
+  group vcap
+<% else %>
 check process auctioneer
   with pidfile /var/vcap/sys/run/auctioneer/auctioneer.pid
   start program "/var/vcap/jobs/auctioneer/bin/auctioneer_ctl start"
   stop program "/var/vcap/jobs/auctioneer/bin/auctioneer_ctl stop"
   group vcap
+<% end %>

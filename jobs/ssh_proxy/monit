@@ -1,6 +1,13 @@
+<% if p("bpm.enabled") %>
+check process ssh_proxy
+  with pidfile /var/vcap/sys/run/bpm/ssh_proxy/ssh_proxy.pid
+  start program "/var/vcap/jobs/bpm/bin/bpm start ssh_proxy"
+  stop program "/var/vcap/jobs/bpm/bin/bpm stop ssh_proxy"
+  group vcap
+<% else %>
 check process ssh_proxy
   with pidfile /var/vcap/sys/run/ssh_proxy/ssh_proxy.pid
   start program "/var/vcap/jobs/ssh_proxy/bin/ssh_proxy_ctl start"
   stop program "/var/vcap/jobs/ssh_proxy/bin/ssh_proxy_ctl stop"
   group vcap
-
+<% end %>

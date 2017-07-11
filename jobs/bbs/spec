@@ -5,6 +5,7 @@ templates:
   bbs_ctl.erb: bin/bbs_ctl
   bbs_as_vcap.erb: bin/bbs_as_vcap
   bbs.json.erb: config/bbs.json
+  bpm.yml.erb: config/bpm.yml
   drain.erb: bin/drain
   etcd_ca.crt.erb: config/certs/etcd/ca.crt
   etcd_client.crt.erb: config/certs/etcd/client.crt
@@ -13,6 +14,7 @@ templates:
   bbs_server.crt.erb: config/certs/server.crt
   bbs_server.key.erb: config/certs/server.key
   sql_ca.crt.erb: config/certs/sql/ca.crt
+  pre-start.erb: bin/pre-start
   post-start.erb: bin/post-start
   rep_ca.crt.erb: config/certs/rep/ca.crt
   rep_client.crt.erb: config/certs/rep/client.crt
@@ -29,6 +31,9 @@ packages:
   - bbs
 
 properties:
+  bpm.enabled:
+    description: "Enable Bosh Process Manager for diego components"
+    default: false
   diego.bbs.auctioneer.api_url:
     description: "URL of the auctioneer API. Deprecated in favor of api_location, but in use through Diego v1."
     default: "http://auctioneer.service.cf.internal:9016"

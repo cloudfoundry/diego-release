@@ -2,6 +2,7 @@
 name: rep
 
 templates:
+  rep.erb: bin/rep
   rep_ctl.erb: bin/rep_ctl
   rep_as_vcap.erb: bin/rep_as_vcap
   drain.erb: bin/drain
@@ -19,6 +20,9 @@ templates:
   consul_client.crt.erb: config/certs/consul/client.crt
   consul_client.key.erb: config/certs/consul/client.key
   rep.json.erb: config/rep.json
+  bpm.yml.erb: config/bpm.yml
+  bpm-pre-start.erb: bin/bpm-pre-start
+  pre-start.erb: bin/pre-start
   post-start.erb: bin/post-start
   loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
   loggregator_client.crt.erb: config/certs/loggregator/client.crt
@@ -34,6 +38,9 @@ packages:
   - proxy
 
 properties:
+  bpm.enabled:
+    description: "Enable Bosh Process Manager for diego components"
+    default: false
   diego.rep.listen_addr:
     description: "address to serve auction and LRP stop requests on"
     default: "0.0.0.0:1800"

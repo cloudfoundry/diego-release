@@ -2,6 +2,11 @@
 
 set -e
 
+<% if p("bpm.enabled") %>
+/var/vcap/jobs/bpm/bin/bpm stop auctioneer 1>&2 || true
+echo "0"
+exit 0
+<% else %>
 run_dir=/var/vcap/sys/run/auctioneer
 pidfile=$run_dir/auctioneer.pid
 log_dir=/var/vcap/sys/log/auctioneer
@@ -44,3 +49,4 @@ fi
 
 echo "$(date): drain triggered"
 kill_and_wait $pidfile
+<% end %>

@@ -12,8 +12,6 @@ mkdir -p $log_dir
 
 exec 3>&1
 
-source /var/vcap/packages/pid_utils/pid_utils.sh
-
 exec 1>> $logfile
 exec 2>> $logfile
 
@@ -39,6 +37,27 @@ output_for_bosh() {
 
 trap output_for_bosh EXIT
 
+<% if p("bpm.enabled") %>
+if ! /var/vcap/jobs/bpm/bin/bpm pid rep >/dev/null 2>&1; then
+  echo "$(date): rep process not running"
+  exit 0
+fi
+
+echo "$(date): drain triggered"
+
+if evacuate; then
+  while heartbeat; do
+    sleep 5
+    echo "$(date): waiting"
+  done
+
+  /var/vcap/jobs/bpm/bin/bpm stop rep
+else
+  exit 1
+fi
+<% else %>
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
 if [ ! -f $pidfile ]; then
   echo "$(date): pidfile does not exist"
   exit 0
@@ -62,3 +81,4 @@ if evacuate; then
 else
   exit 1
 fi
+<% end %>

@@ -9,6 +9,7 @@ templates:
   bbs_client.key.erb: config/certs/bbs/client.key
   uaa_ca.crt.erb: config/certs/uaa/ca.crt
   ssh_proxy.json.erb: config/ssh_proxy.json
+  bpm.yml.erb: config/bpm.yml
 
 provides:
 - name: ssh_proxy
@@ -19,6 +20,9 @@ packages:
   - ssh_proxy
 
 properties:
+  bpm.enabled:
+    description: "Enable Bosh Process Manager for diego components"
+    default: false
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false

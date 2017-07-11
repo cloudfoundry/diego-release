@@ -2,15 +2,16 @@
 name: auctioneer
 
 templates:
-  auctioneer_ctl.erb: bin/auctioneer_ctl
-  auctioneer_as_vcap.erb: bin/auctioneer_as_vcap
   auctioneer.json.erb: config/auctioneer.json
+  auctioneer_as_vcap.erb: bin/auctioneer_as_vcap
   auctioneer_ca.crt.erb: config/certs/auctioneer/ca.crt
+  auctioneer_ctl.erb: bin/auctioneer_ctl
   auctioneer_server.crt.erb: config/certs/auctioneer/server.crt
   auctioneer_server.key.erb: config/certs/auctioneer/server.key
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
+  bpm.yml.erb: config/bpm.yml
   drain.erb: bin/drain
   rep_ca.crt.erb: config/certs/rep/ca.crt
   rep_client.crt.erb: config/certs/rep/client.crt
@@ -24,6 +25,9 @@ packages:
   - auctioneer
 
 properties:
+  bpm.enabled:
+    description: "Enable Bosh Process Manager for diego components"
+    default: false
   diego.auctioneer.ca_cert:
     description: "PEM-encoded CA certificate for the auctioneer API server."
   diego.auctioneer.server_cert:

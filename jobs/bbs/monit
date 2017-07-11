@@ -1,5 +1,13 @@
+<% if p("bpm.enabled") %>
+check process bbs
+  with pidfile /var/vcap/sys/run/bpm/bbs/bbs.pid
+  start program "/var/vcap/jobs/bpm/bin/bpm start bbs"
+  stop program "/var/vcap/jobs/bpm/bin/bpm stop bbs"
+  group vcap
+<% else %>
 check process bbs
   with pidfile /var/vcap/sys/run/bbs/bbs.pid
   start program "/var/vcap/jobs/bbs/bin/bbs_ctl start"
   stop program "/var/vcap/jobs/bbs/bin/bbs_ctl stop"
   group vcap
+<% end %>

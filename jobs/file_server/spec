@@ -3,8 +3,10 @@ name: file_server
 
 templates:
   file_server.json.erb: config/file_server.json
+  bpm.yml.erb: config/bpm.yml
   file_server_ctl.erb: bin/file_server_ctl
   file_server_as_vcap.erb: bin/file_server_as_vcap
+  pre-start.erb: bin/pre-start
 
 packages:
   - pid_utils
@@ -14,6 +16,9 @@ packages:
   - windows_app_lifecycle
 
 properties:
+  bpm.enabled:
+    description: "Enable Bosh Process Manager for diego components"
+    default: false
   diego.file_server.listen_addr:
     description: "Address of interface on which to serve files"
     default: "0.0.0.0:8080"

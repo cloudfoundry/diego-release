@@ -6,6 +6,7 @@ templates:
   route_emitter_ctl.erb: bin/route_emitter_ctl
   route_emitter_as_vcap.erb: bin/route_emitter_as_vcap
   route_emitter.json.erb: config/route_emitter.json
+  bpm.yml.erb: config/bpm.yml
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
@@ -21,6 +22,9 @@ consumes:
   optional: true
 
 properties:
+  bpm.enabled:
+    description: "Enable Bosh Process Manager for diego components"
+    default: false
   register_direct_instance_routes:
     description: "Use the container IP address and internal port instead of the host IP address and external port when registering route endpoints. Suitable only for deployments in which the gorouters and TCP routers can route directly to the container IP of instances."
     default: false

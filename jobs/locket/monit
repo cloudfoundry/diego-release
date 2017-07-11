@@ -1,5 +1,13 @@
+<% if p("bpm.enabled") %>
+check process locket
+  with pidfile /var/vcap/sys/run/bpm/locket/locket.pid
+  start program "/var/vcap/jobs/bpm/bin/bpm start locket"
+  stop program "/var/vcap/jobs/bpm/bin/bpm stop locket"
+  group vcap
+<% else %>
 check process locket
   with pidfile /var/vcap/sys/run/locket/locket.pid
   start program "/var/vcap/jobs/locket/bin/locket_ctl start"
   stop program "/var/vcap/jobs/locket/bin/locket_ctl stop"
   group vcap
+<% end %>
