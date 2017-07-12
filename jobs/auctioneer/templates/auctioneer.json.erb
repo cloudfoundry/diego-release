@@ -45,6 +45,7 @@
 
   if_p("diego.auctioneer.locket.api_location") do |value|
     config[:locket_address] = value
+    config[:uuid] = spec.id
     config[:locket_ca_cert_file] = "#{CONF_DIR}/certs/bbs/ca.crt"
     config[:locket_client_cert_file] = "#{CONF_DIR}/certs/bbs/client.crt"
     config[:locket_client_key_file] = "#{CONF_DIR}/certs/bbs/client.key"
