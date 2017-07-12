@@ -1,0 +1,98 @@
+azs:
+- name: z1
+  cloud_properties:
+    availability_zone: (( Resources.SubnetAvailabilityZone.MySQLZ1 ))
+- name: z2
+  cloud_properties:
+    availability_zone: (( Resources.SubnetAvailabilityZone.MySQLZ2 ))
+- name: z3
+  cloud_properties:
+    availability_zone: us-east-1a
+    availability_zone: (( Resources.SubnetAvailabilityZone.MySQLZ3 ))
+
+vm_types:
+- name: database
+  cloud_properties:
+    instance_type: c3.4xlarge
+- name: proxy
+  cloud_properties:
+    instance_type: c3.2xlarge
+- name: arbitrator
+  cloud_properties:
+    instance_type: t2.micro
+- name: errand
+  cloud_properties:
+    instance_type: m3.large
+- name: compilation
+  cloud_properties:
+    instance_type: c4.large
+    ephemeral_disk:
+      size: 30000
+      type: gp2
+disk_types:
+- cloud_properties:
+    iops: 2000
+    type: io1
+  disk_size: 100000
+  name: mysql-persistent-disk
+
+compilation:
+  workers: 4
+  network: default
+  az: z1
+  reuse_compilation_vms: true
+  vm_type: compilation
+
+networks:
+- name: default
+  subnets:
+  - az: z1
+    range:    (( Resources.SubnetCIDR.MySQLZ1 ))
+    reserved:
+      - (( Resources.SubnetOctets.MySQLZ1.[2] ".2 - " Resources.SubnetOctets.MySQLZ1.[2] ".9" ))
+      - (( Resources.SubnetOctets.MySQLZ1.[2] ".130 - " Resources.SubnetOctets.MySQLZ1.[2] ".254" ))
+    static:   (( [Resources.SubnetOctets.MySQLZ1.[2] ".10 - " Resources.SubnetOctets.MySQLZ1.[2] ".63"] ))
+    gateway:  (( Resources.SubnetOctets.MySQLZ1.[2] ".1" ))
+    dns:      (( [Resources.SubnetOctets.MySQLZ1.[1] ".0.2"] ))
+    cloud_properties:
+      subnet: (( Resources.Subnet.MySQLZ1 ))
+  - az: z2
+    range:    (( Resources.SubnetCIDR.MySQLZ2 ))
+    reserved:
+      - (( Resources.SubnetOctets.MySQLZ2.[2] ".2 - " Resources.SubnetOctets.MySQLZ2.[2] ".9" ))
+      - (( Resources.SubnetOctets.MySQLZ2.[2] ".130 - " Resources.SubnetOctets.MySQLZ2.[2] ".254" ))
+    static:   (( [Resources.SubnetOctets.MySQLZ2.[2] ".10 - " Resources.SubnetOctets.MySQLZ2.[2] ".63"] ))
+    gateway:  (( Resources.SubnetOctets.MySQLZ2.[2] ".1" ))
+    dns:      (( [Resources.SubnetOctets.MySQLZ2.[1] ".0.2"] ))
+    cloud_properties:
+      subnet: (( Resources.Subnet.MySQLZ2 ))
+  - az: z3
+    range:    (( Resources.SubnetCIDR.MySQLZ3 ))
+    reserved:
+      - (( Resources.SubnetOctets.MySQLZ3.[2] ".2 - " Resources.SubnetOctets.MySQLZ3.[2] ".9" ))
+      - (( Resources.SubnetOctets.MySQLZ3.[2] ".130 - " Resources.SubnetOctets.MySQLZ3.[2] ".254" ))
+    static:   (( [Resources.SubnetOctets.MySQLZ3.[2] ".10 - " Resources.SubnetOctets.MySQLZ3.[2] ".63"] ))
+    gateway:  (( Resources.SubnetOctets.MySQLZ3.[2] ".1" ))
+    dns:      (( [Resources.SubnetOctets.MySQLZ3.[1] ".0.2"] ))
+    cloud_properties:
+      subnet: (( Resources.Subnet.MySQLZ3 ))
+
+####################################################
+
+Resources:
+  Subnet:
+    MySQLZ1: (( merge ))
+    MySQLZ2: (( merge ))
+    MySQLZ3: (( merge ))
+  SubnetAvailabilityZone:
+    MySQLZ1: (( merge ))
+    MySQLZ2: (( merge ))
+    MySQLZ3: (( merge ))
+  SubnetOctets:
+    MySQLZ1: (( merge ))
+    MySQLZ2: (( merge ))
+    MySQLZ3: (( merge ))
+  SubnetCIDR:
+    MySQLZ1: (( merge ))
+    MySQLZ2: (( merge ))
+    MySQLZ3: (( merge ))
