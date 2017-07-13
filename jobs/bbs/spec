@@ -20,6 +20,9 @@ templates:
   auctioneer_ca.crt.erb: config/certs/auctioneer/ca.crt
   auctioneer_client.crt.erb: config/certs/auctioneer/client.crt
   auctioneer_client.key.erb: config/certs/auctioneer/client.key
+  loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
+  loggregator_client.crt.erb: config/certs/loggregator/client.crt
+  loggregator_client.key.erb: config/certs/loggregator/client.key
 
 packages:
   - pid_utils
@@ -159,3 +162,16 @@ properties:
   diego.bbs.skip_consul_lock:
     default: false
     description: "EXPERIMENTAL: true to skip consul lock. locket.api_location must be set"
+
+  loggregator.use_v2_api:
+    description: "True to use local metron agent gRPC v2 api. False, to use UDP v1 api"
+    default: false
+  loggregator.v2_api_port:
+    description: "Local metron agent gRPC port"
+    default: 3458
+  loggregator.ca_cert:
+    description: "CA Cert used to communicate with local metron agent over gRPC"
+  loggregator.cert:
+    description: "Cert used to communicate with local metron agent over gRPC"
+  loggregator.key:
+    description: "Key used to communicate with local metron agent over gRPC"
