@@ -839,62 +839,57 @@ To setup a PostgreSQL instance on RDS in AWS, follow the instructions above desc
 The CF-MySQL release can be deployed in a few different modes and
 configurations. All configurations have the same starting steps:
 
-1. Make a directory for the CF-MySQL stubs:
+1. Edit or create `$DEPLOYMENT_DIR/stubs/aws-instance-types.yml` to optionally have the following:
 
-  ```bash
-  mkdir -p $DEPLOYMENT_DIR/stubs/cf-mysql
-  ```
+   ``` yaml
+   instance_types:
+     mysql_database: m3.medium # replace with the instance type of the mysql database
+     mysql_proxy: m3.medium # replace with the instance type of the mysql proxy
+     mysql_persistent_disk_iops: 1000 # Only set this value if the disk_type is io1
+     mysql_persistent_disk_type: gp2 # replace with the disk type of the mysql database
+   ```
 
-1. Clone the CF-MySQL release `release-candidate` branch:
+1. Clone the [cf-mysql-deployment](https://github.com/cloudfoundry/cf-mysql-deployment) `release-candidate` branch:
 
-  ```bash
-  git clone -b release-candidate https://github.com/cloudfoundry/cf-mysql-release.git
-  export CF_MYSQL_RELEASE_DIR=$PWD/cf-mysql-release
-  ```
+   ```bash
+   git clone -b release-candidate https://github.com/cloudfoundry/cf-mysql-deployment
+   ```
 
-1. Copy over relevant stubs from the CF-MySQL release to deployment directory:
+1. Rename the deployment in `$DEPLOYMENT_DIR/stubs/cf-mysql/mysql-overrides-ops.yml`:
 
-  ```bash
-  cp $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/property-overrides.yml \
-     $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/standalone/instance-count-overrides.yml \
-  $DEPLOYMENT_DIR/stubs/cf-mysql/
-  ```
+   ```yml
+   - type: replace
+      path: /name
+      value: "DEPLOYMENT_NAME"
+   ```
 
-1. Copy over CF-based manifest stub:
+1. Edit consul ip addresses and encryption key by editing `$DEPLOYMENT_DIR/stubs/cf-mysql/mysql-overrides-ops.yml`:
 
-  ```bash
-  cp $DEPLOYMENT_DIR/deployments/cf.yml $DEPLOYMENT_DIR/stubs/cf-mysql/cf.yml
-  ```
+   ```yml
+   - type: replace
+     path: /instance_groups/name=proxy/jobs/name=consul_agent/properties?/consul/encrypt_keys
+     value:
+       REPLACE_WITH_CONSUL_ENCRYPT_KEYS
+   - type: replace
+     path: /instance_groups/name=proxy/jobs/name=consul_agent/properties?/consul/agent/servers/lan
+     value:
+       REPLACE_WITH_CONSUL_SERVER_IPS
+   ```
 
-1. Edit `property-overrides.yml`:
-  1. Rename the deployment:
+Consul ip addresses can be found by running `bosh vms | grep consul`
 
-    ```yaml
-    property_overrides:
-      deployment_name: diego-mysql
-    ```
+1. Edit the database passwords in `$DEPLOYMENT_DIR/stubs/cf-mysql/mysql-overrides-ops.yml`:
+   ```yml
+   - type: replace
+     path: /properties/cf_mysql/mysql/seeded_databases?
+     value:
+       - name: diego
+         username: diego
+         password: REPLACE_ME_WITH_DIEGO_DB_PASSWORD
+       - name: locket
+         username: locket
+         password: REPLACE_ME_WITH_LOCKET_DB_PASSWORD
 
-  1. Fill in all `REPLACE_WITH_` properties with appropriate values. Ignore all `UNUSED_VALUE` properties.
-  1. Set the `host` property to `null`. Do not remove it entirely, since the
-     current manifest-generation scripts for CF-MySQL depend on its presence:
-
-    ```yaml
-    property_overrides:
-      host: null
-    ```
-
-  0. Add the following `seeded_databases` property to configure a database for Diego to use. Replace `REPLACE_ME_WITH_DIEGO_DB_PASSWORD` and `REPLACE_ME_WITH_LOCKET_DB_PASSWORD` with the desired password for each database:
-
-    ```yaml
-    property_overrides:
-      mysql:
-        seeded_databases:
-        - name: diego
-          username: diego
-          password: REPLACE_ME_WITH_DIEGO_DB_PASSWORD
-        - name: locket
-          username: diego
-          password: REPLACE_ME_WITH_LOCKET_DB_PASSWORD
     ```
 
 After that you can deploy the CF-MySQL release in either mode:
@@ -905,80 +900,49 @@ After that you can deploy the CF-MySQL release in either mode:
 * [Highly Available CF-MySQL](#highly-available-cf-mysql) - Recommended for
   production use. Uses [Consul](https://consul.io) for discovery.
 
+#### Migrating from pervious CF-MySQL deployments
+
+If you have used the old style [manifest generation](https://github.com/cloudfoundry/cf-mysql-release/tree/v35.1.0/manifest-generation), then you will have to follow the steps in [cf-mysql-deployment](https://github.com/cloudfoundry/cf-mysql-deployment#upgrading-from-previous-deployment-topologies) to update to the new `cf-mysql-deployment` style.
+
 #### Single Node CF-MySQL
 
-1. Edits to `instance-count-overrides.yml`:
+1. Add the following to `$DEPLOYMENT_DIR/stubs/cf-mysql/mysql-overrides-ops.yml`:
 
-  ```yaml
-  instance_count_overrides:
-    - name: cf-mysql-broker_z1
-      instances: 0
-    - name: cf-mysql-broker_z2
-      instances: 0
-    - name: mysql_z2
-      instances: 0
-    - name: arbitrator_z3
-      instances: 0
-    - name: proxy_z1
-      instances: 0
-    - name: proxy_z2
-      instances: 0
-  ```
-
-1. Generate deployment manifest:
-
-  ```bash
-  $CF_MYSQL_RELEASE_DIR/scripts/generate-deployment-manifest \
-      -c $DEPLOYMENT_DIR/stubs/cf-mysql/cf.yml \
-      -p $DEPLOYMENT_DIR/stubs/cf-mysql/property-overrides.yml \
-      -i $DEPLOYMENT_DIR/stubs/cf-mysql/iaas-settings.yml \
-      -n $DEPLOYMENT_DIR/stubs/cf-mysql/instance-count-overrides.yml \
-  > $DEPLOYMENT_DIR/deployments/cf-mysql.yml
-  ```
-
-1. Deploy the CF-MySQL cluster
-
-  ```bash
-  cd $CF_MYSQL_RELEASE_DIR
-  bosh create release && bosh upload release && bosh -d $DEPLOYMENT_DIR/deployments/cf-mysql.yml deploy
+    ```yml
+- type: replace
+  path: /instance_groups/name=proxy/instances?
+  value: 0
+- type: replace
+  path: /instance_groups/name=arbitrator/instances?
+  value: 0
+- type: replace
+  path: /instance_groups/name=mysql/instances?
+  value: 1
   ```
 
 #### Highly Available CF-MySQL
 
-1. Copy additional `job-overrides-consul.yml`:
+No changes are required since the default manifest deploys highly available CF-MySQL
+
+#### Deploying CF-MySQL
+
+1. Update the cloud config (generated by `deploy_aws_environment`):
 
   ```bash
-  cp $CF_MYSQL_RELEASE_DIR/manifest-generation/examples/job-overrides-consul.yml \
-  $DEPLOYMENT_DIR/stubs/cf-mysql/
+  bosh update-cloud-config $DEPLOYMENT_DIR/stubs/cloud-config.yml
   ```
 
-1. Edits to `property-overrides.yml`, add the following properties:
+1. Deploy:
 
-  ```yaml
-  property_overrides:
-    proxy:
-      # ...
-      consul_enabled: true
-      consul_service_name: mysql
-  ```
+   ```bash
+   bosh -d <replace-with-deployment-name> deploy cf-mysql-deployment/cf-mysql-deployment.yml \
+     --vars-file $DEPLOYMENT_DIR/stubs/cf-mysql/consul-secrets.yml \
+     --vars-store $DEPLOYMENT_DIR/deployments/cf-mysql-vars.yml \
+     -o cf-mysql-deployment/operations/proxy-consul.yml \
+     -o $DEPLOYMENT_DIR/stubs/cf-mysql/mysql-overrides-ops.yml --no-redact
+   ```
 
-1. Generate deployment manifest:
-
-  ```bash
-  $CF_MYSQL_RELEASE_DIR/scripts/generate-deployment-manifest \
-      -c $DEPLOYMENT_DIR/stubs/cf-mysql/cf.yml \
-      -p $DEPLOYMENT_DIR/stubs/cf-mysql/property-overrides.yml \
-      -i $DEPLOYMENT_DIR/stubs/cf-mysql/iaas-settings.yml \
-      -j $DEPLOYMENT_DIR/stubs/cf-mysql/job-overrides-consul.yml \
-      -n $DEPLOYMENT_DIR/stubs/cf-mysql/instance-count-overrides.yml \
-  > $DEPLOYMENT_DIR/deployments/cf-mysql.yml
-  ```
-
-1. Deploy the CF-MySQL cluster
-
-  ```bash
-  bosh -d $DEPLOYMENT_DIR/deployments/cf-mysql.yml deploy
-  ```
+**NOTE** this command will store some credentials in `$DEPLOYMENT_DIR/deployments/cf-mysql-vars.yml` make sure you commit this file.
 
 ### Use the PostgreSQL job from CF-Release
 

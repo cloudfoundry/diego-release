@@ -403,21 +403,21 @@ spiff merge \
   stubs/aws-resources.yml \
   > stubs/routing/iaas-settings.yml
 
-mkdir -p stubs/cf-mysql
-
-# generate CF-MySQL IaaS-settings stub
-spiff merge \
-  $SCRIPT_DIR/templates/mysql/iaas-settings.yml \
-  $SCRIPT_DIR/templates/mysql/iaas-settings-internal.yml \
-  stubs/aws-resources.yml \
-  > stubs/cf-mysql/iaas-settings.yml
-
-# generate cloud config stub
+# generate mysql cloud config stub
 spiff merge \
   $SCRIPT_DIR/templates/infrastructure/cloud-config.yml \
   $SCRIPT_DIR/templates/infrastructure/cloud-config-internal.yml \
-  stubs/aws-resources.yml \
+  $aws_instance_types stubs/aws-resources.yml \
   > stubs/cloud-config.yml
+
+mkdir -p stubs/cf-mysql
+
+if [ ! -f stubs/cf-mysql/mysql-overrides-ops.yml ]; then
+  cp $SCRIPT_DIR/templates/mysql/mysql-overrides-ops.yml stubs/cf-mysql/mysql-overrides-ops.yml
+fi
+
+spiff merge $SCRIPT_DIR/templates/mysql/consul-secrets.yml <(cf_credentials) > stubs/cf-mysql/consul-secrets.yml
+
 
 # generate datadog firehose nozzle manifest if the user stubs exist
 if [ -d stubs/datadog-firehose-nozzle ]; then

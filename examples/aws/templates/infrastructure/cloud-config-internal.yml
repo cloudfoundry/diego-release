@@ -1,3 +1,5 @@
+instance_types: (( merge ))
+
 azs:
 - name: z1
   cloud_properties:
@@ -13,16 +15,16 @@ azs:
 vm_types:
 - name: database
   cloud_properties:
-    instance_type: c3.4xlarge
+    instance_type: (( instance_types.mysql_database || "m3.medium" ))
 - name: proxy
   cloud_properties:
-    instance_type: c3.2xlarge
+    instance_type: (( instance_types.mysql_proxy || "m3.medium" ))
 - name: arbitrator
   cloud_properties:
     instance_type: t2.micro
 - name: errand
   cloud_properties:
-    instance_type: m3.large
+    instance_type: m3.medium
 - name: compilation
   cloud_properties:
     instance_type: c4.large
@@ -31,8 +33,8 @@ vm_types:
       type: gp2
 disk_types:
 - cloud_properties:
-    iops: 2000
-    type: io1
+    iops: (( instance_types.mysql_persistent_disk_iops || nil ))
+    type: (( instance_types.mysql_persistent_disk_type || "gp2" ))
   disk_size: 100000
   name: mysql-persistent-disk
 

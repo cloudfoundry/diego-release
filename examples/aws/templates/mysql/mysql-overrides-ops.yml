@@ -1,0 +1,73 @@
+- type: replace
+  path: /name
+  value: "REPLACE_WITH_DEPLOYMENT_NAME"
+- type: replace
+  path: /properties/cf_mysql/mysql/innodb_flush_log_at_trx_commit?
+  value: 0
+- type: replace
+  path: /properties/cf_mysql/mysql/binlog_enabled?
+  value: false
+- type: replace
+  path: /properties/cf_mysql/mysql/binlog_expire_days?
+  value: 5
+- type: replace
+  path: /properties/cf_mysql/mysql/innodb_buffer_pool_size?
+  value: 12_000_000_000 # set the innodb buffer pool size to 12GB ~80% of memory
+- type: replace
+  path: /properties/cf_mysql/mysql/innodb_buffer_pool_instances?
+  value: 16
+- type: replace
+  path: /instance_groups/name=mysql/vm_type?
+  value: database
+- type: replace
+  path: /instance_groups/name=mysql/persistent_disk_type?
+  value: mysql-persistent-disk
+- type: remove
+  path: /instance_groups/name=mysql/persistent_disk?
+- type: replace
+  path: /instance_groups/name=proxy/vm_type?
+  value: proxy
+- type: replace
+  path: /instance_groups/name=arbitrator/vm_type?
+  value: arbitrator
+- type: replace
+  path: /instance_groups/name=rejoin-unsafe/vm_type?
+  value: errand
+- type: replace
+  path: /instance_groups/name=rejoin-unsafe/instances?
+  value: 0
+- type: replace
+  path: /instance_groups/name=verify-cluster-schemas/vm_type?
+  value: errand
+- type: replace
+  path: /instance_groups/name=verify-cluster-schemas/instances?
+  value: 0
+- type: replace
+  path: /instance_groups/name=smoke-tests/vm_type?
+  value: errand
+- type: replace
+  path: /instance_groups/name=smoke-tests/instances?
+  value: 0
+- type: replace
+  path: /instance_groups/name=bootstrap/vm_type?
+  value: errand
+- type: replace
+  path: /stemcells/alias=default/version
+  value: latest
+- type: replace
+  path: /instance_groups/name=proxy/jobs/name=consul_agent/properties?/consul/encrypt_keys
+  value:
+    REPLACE_WITH_CONSUL_ENCRYPT_KEYS
+- type: replace
+  path: /instance_groups/name=proxy/jobs/name=consul_agent/properties?/consul/agent/servers/lan
+  value:
+    REPLACE_WITH_CONSUL_SERVER_IPS
+- type: replace
+  path: /properties/cf_mysql/mysql/seeded_databases?
+  value:
+    - name: diego
+      username: diego
+      password: REPLACE_ME_WITH_DIEGO_DB_PASSWORD
+    - name: locket
+      username: locket
+      password: REPLACE_ME_WITH_LOCKET_DB_PASSWORD
