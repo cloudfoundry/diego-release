@@ -34,3 +34,10 @@ $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", "
 $acl = Get-Acl $CACHE_DIR
 $acl.AddAccessRule($rule)
 Set-Acl $CACHE_DIR $acl
+
+$INSTANCE_IDENTITY_DIR = "/var/vcap/data/executor/instance_identity"
+New-Item -Path $INSTANCE_IDENTITY_DIR -ItemType "directory" -Force
+$rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", "ReadAndExecute", "ContainerInherit, ObjectInherit", "None", "Allow")
+$acl = Get-Acl $INSTANCE_IDENTITY_DIR
+$acl.AddAccessRule($rule)
+Set-Acl $INSTANCE_IDENTITY_DIR $acl
