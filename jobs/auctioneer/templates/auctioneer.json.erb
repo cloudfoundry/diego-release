@@ -38,7 +38,7 @@
     config[:rep_ca_cert] = "#{conf_dir}/certs/rep/ca.crt"
   end
 
-  if p("diego.auctioneer.ca_cert", "") != "" || p("diego.auctioneer.server_cert", "") != "" || p("diego.auctioneer.server_key", "") != ""
+  if p("diego.auctioneer.require_tls")
     config[:ca_cert_file] = "#{conf_dir}/certs/auctioneer/ca.crt"
     config[:server_cert_file] = "#{conf_dir}/certs/auctioneer/server.crt"
     config[:server_key_file] = "#{conf_dir}/certs/auctioneer/server.key"
@@ -48,7 +48,7 @@
     config[:locket_address] = value
     config[:uuid] = spec.id
     config[:locket_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
-    config[:locket_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"
+    config[:locket_client_cert_file] = "#{conf_dir}/cer ts/bbs/client.crt"
     config[:locket_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
   end
 
