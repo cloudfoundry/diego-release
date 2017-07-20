@@ -1,6 +1,6 @@
 - type: replace
   path: /name
-  value: "REPLACE_WITH_DEPLOYMENT_NAME"
+  value: "REPLACE_WITH_CF_MYSQL_DEPLOYMENT_NAME"
 - type: replace
   path: /properties/cf_mysql/mysql/innodb_flush_log_at_trx_commit?
   value: 0
@@ -65,9 +65,9 @@
 - type: replace
   path: /properties/cf_mysql/mysql/seeded_databases?
   value:
-    - name: diego
-      username: diego
-      password: REPLACE_ME_WITH_DIEGO_DB_PASSWORD
-    - name: locket
-      username: locket
-      password: REPLACE_ME_WITH_LOCKET_DB_PASSWORD
+  - name: diego
+    username: diego
+    password: REPLACE_ME_WITH_DIEGO_DB_PASSWORD
+  - name: locket
+    username: locket
+    password: REPLACE_ME_WITH_LOCKET_DB_PASSWORD
