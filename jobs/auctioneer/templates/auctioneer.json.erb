@@ -1,5 +1,5 @@
 <%=
-  conf_dir = "/var/vcap/jobs/auctioneer/config"
+  CONF_DIR = "/var/vcap/jobs/auctioneer/config"
 
   config = {
     require_tls: p("diego.auctioneer.require_tls"),
@@ -16,9 +16,9 @@
   }
 
   if p("diego.auctioneer.bbs.require_ssl")
-    config[:bbs_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
-    config[:bbs_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"
-    config[:bbs_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
+    config[:bbs_ca_cert_file] = "#{CONF_DIR}/certs/bbs/ca.crt"
+    config[:bbs_client_cert_file] = "#{CONF_DIR}/certs/bbs/client.crt"
+    config[:bbs_client_key_file] = "#{CONF_DIR}/certs/bbs/client.key"
     config[:bbs_address] = "https://#{p("diego.auctioneer.bbs.api_location")}"
   else
     config[:bbs_address] = "http://#{p("diego.auctioneer.bbs.api_location")}"
@@ -33,41 +33,26 @@
   end
 
   if_p("diego.auctioneer.rep.ca_cert", "diego.auctioneer.rep.client_key", "diego.auctioneer.rep.client_cert") do
-    config[:rep_client_cert] = "#{conf_dir}/certs/rep/client.crt"
-    config[:rep_client_key] = "#{conf_dir}/certs/rep/client.key"
-    config[:rep_ca_cert] = "#{conf_dir}/certs/rep/ca.crt"
+    config[:rep_client_cert] = "#{CONF_DIR}/certs/rep/client.crt"
+    config[:rep_client_key] = "#{CONF_DIR}/certs/rep/client.key"
+    config[:rep_ca_cert] = "#{CONF_DIR}/certs/rep/ca.crt"
   end
 
   if p("diego.auctioneer.require_tls")
-    config[:ca_cert_file] = "#{conf_dir}/certs/auctioneer/ca.crt"
-    config[:server_cert_file] = "#{conf_dir}/certs/auctioneer/server.crt"
-    config[:server_key_file] = "#{conf_dir}/certs/auctioneer/server.key"
+    config[:ca_cert_file] = "#{CONF_DIR}/certs/auctioneer/ca.crt"
+    config[:server_cert_file] = "#{CONF_DIR}/certs/auctioneer/server.crt"
+    config[:server_key_file] = "#{CONF_DIR}/certs/auctioneer/server.key"
   end
 
   if_p("diego.auctioneer.locket.api_location") do |value|
     config[:locket_address] = value
-    config[:uuid] = spec.id
-    config[:locket_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
-    config[:locket_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"
-    config[:locket_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
+    config[:locket_ca_cert_file] = "#{CONF_DIR}/certs/bbs/ca.crt"
+    config[:locket_client_cert_file] = "#{CONF_DIR}/certs/bbs/client.crt"
+    config[:locket_client_key_file] = "#{CONF_DIR}/certs/bbs/client.key"
   end
 
   if_p("diego.auctioneer.skip_consul_lock") do |skip_consul_lock|
     config[:skip_consul_lock] = skip_consul_lock
-  end
-
-  config[:loggregator]={}
-  config[:loggregator][:loggregator_use_v2_api] = p("loggregator.use_v2_api")
-  if p("loggregator.use_v2_api") == true
-    config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
-    config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"
-    config[:loggregator][:loggregator_cert_path] = "#{conf_dir}/certs/loggregator/client.crt"
-    config[:loggregator][:loggregator_key_path] = "#{conf_dir}/certs/loggregator/client.key"
-    config[:loggregator][:loggregator_job_deployment] = spec.deployment
-    config[:loggregator][:loggregator_job_name] = spec.name
-    config[:loggregator][:loggregator_job_index] = spec.id
-    config[:loggregator][:loggregator_job_ip] = spec.address
-    config[:loggregator][:loggregator_job_origin] = "auctioneer"
   end
 
   config.to_json

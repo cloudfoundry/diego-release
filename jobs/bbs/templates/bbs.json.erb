@@ -174,7 +174,6 @@
 
   if_p("diego.bbs.locket.api_location") do |value|
     config[:locket_address] = value
-    config[:uuid] = spec.id
     config[:locket_ca_cert_file] = "#{CONF_DIR}/certs/ca.crt"
     config[:locket_client_cert_file] = "#{CONF_DIR}/certs/server.crt"
     config[:locket_client_key_file] = "#{CONF_DIR}/certs/server.key"
@@ -182,20 +181,6 @@
 
   if_p("diego.bbs.skip_consul_lock") do |skip_consul_lock|
     config[:skip_consul_lock] = skip_consul_lock
-  end
-
-  config[:loggregator]={}
-  config[:loggregator][:loggregator_use_v2_api] = p("loggregator.use_v2_api")
-  if p("loggregator.use_v2_api") == true
-    config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
-    config[:loggregator][:loggregator_ca_path] = "#{CONF_DIR}/certs/loggregator/ca.crt"
-    config[:loggregator][:loggregator_cert_path] = "#{CONF_DIR}/certs/loggregator/client.crt"
-    config[:loggregator][:loggregator_key_path] = "#{CONF_DIR}/certs/loggregator/client.key"
-    config[:loggregator][:loggregator_job_deployment] = spec.deployment
-    config[:loggregator][:loggregator_job_name] = spec.name
-    config[:loggregator][:loggregator_job_index] = spec.id
-    config[:loggregator][:loggregator_job_ip] = spec.address
-    config[:loggregator][:loggregator_job_origin] = "bbs"
   end
 
   config.to_json
