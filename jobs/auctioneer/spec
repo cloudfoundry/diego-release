@@ -15,15 +15,15 @@ templates:
   rep_ca.crt.erb: config/certs/rep/ca.crt
   rep_client.crt.erb: config/certs/rep/client.crt
   rep_client.key.erb: config/certs/rep/client.key
-  loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
-  loggregator_client.crt.erb: config/certs/loggregator/client.crt
-  loggregator_client.key.erb: config/certs/loggregator/client.key
 
 packages:
   - pid_utils
   - auctioneer
 
 properties:
+  diego.auctioneer.require_tls:
+    description: "Whether to require mutual TLS for communication to the securable auctioneer API server"
+    default: false
   diego.auctioneer.ca_cert:
     description: "PEM-encoded CA certificate for the auctioneer API server."
   diego.auctioneer.server_cert:
@@ -88,16 +88,3 @@ properties:
   diego.auctioneer.skip_consul_lock:
     default: false
     description: "EXPERIMENTAL: true to skip consul lock. locket.api_location must be set"
-
-  loggregator.use_v2_api:
-    description: "True to use local metron agent gRPC v2 api. False, to use UDP v1 api"
-    default: false
-  loggregator.v2_api_port:
-    description: "Local metron agent gRPC port"
-    default: 3458
-  loggregator.ca_cert:
-    description: "CA Cert used to communicate with local metron agent over gRPC"
-  loggregator.cert:
-    description: "Cert used to communicate with local metron agent over gRPC"
-  loggregator.key:
-    description: "Key used to communicate with local metron agent over gRPC"

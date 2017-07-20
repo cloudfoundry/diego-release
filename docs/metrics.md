@@ -100,20 +100,20 @@
 
 ## Route Emitter
 
-| Metric                                            | Description                                                                                                                                                                           | Unit             |
-| -------------------------------------------       | ----------------------------------------------------------------------------------------------------------------------------------------------------------                            | ----             |
-| `RoutesTotal`                                     | Number of (http and tcp) route associations (`external routes * backend instances`) in the route-emitter's routing table. Emitted periodically every emit cycle.                      | number           |
-| `HTTPRouteCount`                                  | Number of (http and tcp) route associations (`external routes * backend instances`) in the route-emitter's routing table. Emitted periodically every emit cycle (only in local mode). | number           |
-| `TCPRouteCount`                                   | Number of exposable ports (i.e. container ports) in the routing table. Emitted periodically every emit cycle (only in local mode).                                                    | number           |
-| `AddressCollisions`                               | Number of detected conflicting routes. A conflicting route is a set of two distinct instances with the same IP address on the routing table.                                          | number           |
-| `MessagesEmitted`                                 | Cumulative number of messages the route-emitter sends over NATS to the gorouter.                                                                                                      | number           |
-| `RouteEmitterSyncDuration`                        | Time the route-emitter took to perform its synchronization pass. Emitted periodically.                                                                                                | ns               |
-| `RoutesRegistered`                                | Cumulative number of NATs route registrations emitted from the route-emitter as it reacts to changes to LRPs.                                                                         | number           |
-| `RoutesUnregistered`                              | Cumulative number of NATs route unregistrations emitted from the route-emitter as it reacts to changes to LRPs.                                                                       | number           |
-| `RoutesSynced`                                    | Cumulative number of route **registrations** emitted from the route-emitter during its periodic route-table emission.                                                                 | number           |
-| `ConsulDownMode`                                  | Whether the route-emitter is able to connect with the consul correctly                                                                                                                | 0 or 1 boolean   |
-| `LockHeld.` `v1-locks-route_emitter_lock`         | Whether a route-emitter holds the route-emitter lock: 1 means the lock is held, and 0 means the lock was lost. Emitted periodically by the active route-emitter.                      | 0 or 1 (boolean) |
-| `LockHeldDuration.` `v1-locks-route_emitter_lock` | Time the active route-emitter has held the route-emitter lock. Emitted periodically by the active route-emitter.                                                                      | ns               |
+| Metric                                         | Description                                                                                                                                                      | Unit             |
+| -------------------------------------------    | ----------------------------------------------------------------------------------------------------------------------------------------------------------       | ----             |
+| `AddressCollisions`                            | Number of detected conflicting routes. A conflicting route is a set of two distinct instances with the same IP address on the routing table.                     | number           |
+| `LockHeld.` `v1-locks-route_emitter_lock`         | Whether a route-emitter holds the route-emitter lock: 1 means the lock is held, and 0 means the lock was lost. Emitted periodically by the active route-emitter. | 0 or 1 (boolean) |
+| `LockHeldDuration.` `v1-locks-route_emitter_lock` | Time the active route-emitter has held the route-emitter lock. Emitted periodically by the active route-emitter.                                                 | ns               |
+| `MessagesEmitted`                              | Cumulative number of messages the route-emitter sends over NATS to the gorouter.                                                                                 | number           |
+| `RouteEmitterSyncDuration`                     | Time the active route-emitter took to perform its synchronization pass. Emitted periodically.                                                                    | ns               |
+| `RoutesRegistered`                             | Cumulative number of route registrations emitted from the route-emitter as it reacts to changes to LRPs.                                                         | number           |
+| `RoutesSynced`                                 | Cumulative number of route registrations emitted from the route-emitter during its periodic route-table synchronization.                                         | number           |
+| `RoutesTotal`                                  | Number of routes in the route-emitter's routing table. Emitted periodically.                                                                                     | number           |
+| `RoutesUnregistered`                           | Cumulative number of route unregistrations emitted from the route-emitter as it reacts to changes to LRPs.                                                       | number           |
+| `ConsulDownMode`                               | Whether the route-emitter is able to connect with the consul correctly                                                                                           | 0 or 1 boolean   |
+| `HTTPRouteCount`                               | Number of HTTP Routes in the route-emitter's routing table. Emitted periodically and only on local mode.                                                         | number           |
+| `TCPRouteCount`                                | Number of TCP Routes in the route-emitter's routing table. Emitted periodically and only on local mode and when tcp enabled.                                     | number           |
 
 ## SSH Proxy
 
