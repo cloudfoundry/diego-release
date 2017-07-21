@@ -1,8 +1,8 @@
 #!/bin/bash -e
 set -e -x
 
-LOG_DIR=/var/vcap/sys/log/benchmark-bbs
-CONF_DIR=/var/vcap/jobs/benchmark-bbs/config
+log_dir=/var/vcap/sys/log/benchmark-bbs
+conf_dir=/var/vcap/jobs/benchmark-bbs/config
 
 export GOROOT=$(readlink -nf /var/vcap/packages/golang)
 export PATH=${GOROOT}/bin:${PATH}
@@ -12,8 +12,8 @@ export PATH=${GOPATH}/bin:${PATH}
 
 export CF_COLOR=false
 
-mkdir -p $LOG_DIR
-chown -R vcap:vcap $LOG_DIR
+mkdir -p $log_dir
+chown -R vcap:vcap $log_dir
 
 
 cd /var/vcap/packages/benchmark-bbs/src/code.cloudfoundry.org/benchmarkbbs
@@ -23,6 +23,6 @@ ulimit -n 100000
 echo 1024 65535 > /proc/sys/net/ipv4/ip_local_port_range
 
 ginkgo -- \
-    -config=$CONF_DIR/benchmark.json \
-    1> >(tee -a $LOG_DIR/benchmark-bbs.stdout.log) \
-    2> >(tee -a $LOG_DIR/benchmark-bbs.stderr.log)
+    -config=$conf_dir/benchmark.json \
+    1> >(tee -a $log_dir/benchmark-bbs.stdout.log) \
+    2> >(tee -a $log_dir/benchmark-bbs.stderr.log)

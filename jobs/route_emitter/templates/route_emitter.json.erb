@@ -1,5 +1,5 @@
 <%=
-  CONF_DIR = "/var/vcap/jobs/#{p("diego.route_emitter.job_name")}/config"
+  conf_dir = "/var/vcap/jobs/#{p("diego.route_emitter.job_name")}/config"
 
   nats_machines = nil
   if_p('diego.route_emitter.nats.machines') do |ips|
@@ -45,9 +45,9 @@
   }
 
   if p("diego.route_emitter.bbs.require_ssl")
-    config[:bbs_ca_cert_file] = "#{CONF_DIR}/certs/bbs/ca.crt"
-    config[:bbs_client_cert_file] = "#{CONF_DIR}/certs/bbs/client.crt"
-    config[:bbs_client_key_file] = "#{CONF_DIR}/certs/bbs/client.key"
+    config[:bbs_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
+    config[:bbs_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"
+    config[:bbs_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
     config[:bbs_address] = "https://#{p("diego.route_emitter.bbs.api_location")}"
   else
     config[:bbs_address] = "http://#{p("diego.route_emitter.bbs.api_location")}"
@@ -82,7 +82,7 @@
       config[:oauth][:client_name] = p("uaa.client_name")
       config[:oauth][:client_secret] = p("uaa.client_secret")
       config[:oauth][:skip_cert_verify] = p("uaa.skip_cert_verify")
-      config[:oauth][:ca_certs] = "#{CONF_DIR}/certs/uaa/ca.crt"
+      config[:oauth][:ca_certs] = "#{conf_dir}/certs/uaa/ca.crt"
     end
   end
 

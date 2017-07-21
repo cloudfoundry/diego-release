@@ -1,22 +1,22 @@
 #!/bin/bash -e
 
-RUN_DIR=/var/vcap/sys/run/file_server
-LOG_DIR=/var/vcap/sys/log/file_server
+run_dir=/var/vcap/sys/run/file_server
+log_dir=/var/vcap/sys/log/file_server
 
-PIDFILE=$RUN_DIR/file_server.pid
+pidfile=$run_dir/file_server.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
 case $1 in
 
   start)
-    pid_guard $PIDFILE "file_server"
+    pid_guard $pidfile "file_server"
 
-    mkdir -p $RUN_DIR
-    chown -R vcap:vcap $RUN_DIR
+    mkdir -p $run_dir
+    chown -R vcap:vcap $run_dir
 
-    mkdir -p $LOG_DIR
-    chown -R vcap:vcap $LOG_DIR
+    mkdir -p $log_dir
+    chown -R vcap:vcap $log_dir
 
     if running_in_container; then
         echo "Not setting /proc/sys/net/ipv4 parameters, since I'm running inside a linux container"
@@ -45,7 +45,7 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait $PIDFILE
+    kill_and_wait $pidfile
 
     ;;
 

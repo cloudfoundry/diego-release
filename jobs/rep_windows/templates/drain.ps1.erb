@@ -1,16 +1,16 @@
 $ErrorActionPreference = "Stop";
 trap { $host.SetShouldExit(1) }
 
-$SERVICE_NAME="rep_windows"
-$LOG_DIR="/var/vcap/sys/log/rep_windows"
-$LOGFILE="${LOG_DIR}/drain.log"
-$ADDRESS="http://<%= p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") : p("diego.rep.listen_addr_admin")%>"
+$service_name="rep_windows"
+$log_dir="/var/vcap/sys/log/rep_windows"
+$logfile="${log_dir}/drain.log"
+$address="http://<%= p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") : p("diego.rep.listen_addr_admin")%>"
 
-New-Item -ItemType "directory" -Force "${LOG_DIR}" 2>&1 >> $LOGFILE
+New-Item -ItemType "directory" -Force "${log_dir}" 2>&1 >> $logfile
 
 function evacuate {
     try {
-        Invoke-WebRequest -URI "${ADDRESS}/evacuate" -Method "Post" 2>&1 >> $LOGFILE
+        Invoke-WebRequest -URI "${address}/evacuate" -Method "Post" 2>&1 >> $logfile
     } catch {
         return $false
     }
@@ -19,32 +19,32 @@ function evacuate {
 
 function heartbeat {
     try {
-        Invoke-WebRequest -URI "${ADDRESS}/ping" 2>&1 >> $LOGFILE
+        Invoke-WebRequest -URI "${address}/ping" 2>&1 >> $logfile
     } catch {
         return $false
     }
     return $true
 }
 
-if ((Get-Service -Name "${SERVICE_NAME}").Status -ne "Running") {
-    echo "$(Get-Date): service '${SERVICE_NAME}' not running" >> $LOGFILE
+if ((Get-Service -Name "${service_name}").Status -ne "Running") {
+    echo "$(Get-Date): service '${service_name}' not running" >> $logfile
     echo "0"
     Exit 0
 }
 
-Set-Service "${SERVICE_NAME}" -StartupType "Disabled"
-echo "$(Get-Date): service '${SERVICE_NAME}' StartupType set to 'Disabled'" >> $LOGFILE
+Set-Service "${service_name}" -StartupType "Disabled"
+echo "$(Get-Date): service '${service_name}' StartupType set to 'Disabled'" >> $logfile
 
-echo "$(Get-Date): drain triggered" >> $LOGFILE
+echo "$(Get-Date): drain triggered" >> $logfile
 if (evacuate) {
     while (heartbeat) {
         Start-Sleep -Seconds 5
-        echo "$(Get-Date): waiting" >> $LOGFILE
+        echo "$(Get-Date): waiting" >> $logfile
     }
 }
 
-Set-Service "${SERVICE_NAME}" -StartupType "Automatic"
-echo "$(Get-Date): service '${SERVICE_NAME}' StartupType set to 'Automatic'" >> $LOGFILE
+Set-Service "${service_name}" -StartupType "Automatic"
+echo "$(Get-Date): service '${service_name}' StartupType set to 'Automatic'" >> $logfile
 
 echo "0"
 Exit 0

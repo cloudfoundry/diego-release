@@ -1,14 +1,14 @@
 #!/bin/bash -e
 
-RUN_DIR=/var/vcap/sys/run/locket
-LOG_DIR=/var/vcap/sys/log/locket
-CONF_DIR=/var/vcap/jobs/locket/config
+run_dir=/var/vcap/sys/run/locket
+log_dir=/var/vcap/sys/log/locket
+conf_dir=/var/vcap/jobs/locket/config
 
-PIDFILE=$RUN_DIR/locket.pid
+pidfile=$run_dir/locket.pid
 
 export GOMAXPROCS=$(nproc)
 
 /var/vcap/packages/locket/bin/locket \
-    -config=$CONF_DIR/locket.json \
-    2> >(tee -a $LOG_DIR/locket.stderr.log | logger -p user.error -t vcap.locket) \
-    1> >(tee -a $LOG_DIR/locket.stdout.log | logger -p user.info -t vcap.locket) & echo $! > $PIDFILE
+    -config=$conf_dir/locket.json \
+    2> >(tee -a $log_dir/locket.stderr.log | logger -p user.error -t vcap.locket) \
+    1> >(tee -a $log_dir/locket.stdout.log | logger -p user.info -t vcap.locket) & echo $! > $pidfile

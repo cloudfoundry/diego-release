@@ -2,27 +2,27 @@
 
 set -e
 
-RUN_DIR=/var/vcap/sys/run/rep
-PIDFILE=$RUN_DIR/rep.pid
-LOG_DIR=/var/vcap/sys/log/rep
-LOGFILE=$LOG_DIR/drain.log
-ADDRESS=<%= p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") : p("diego.rep.listen_addr_admin")%>
+run_dir=/var/vcap/sys/run/rep
+pidfile=$run_dir/rep.pid
+log_dir=/var/vcap/sys/log/rep
+logfile=$log_dir/drain.log
+address=<%= p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") : p("diego.rep.listen_addr_admin")%>
 
-mkdir -p $LOG_DIR
+mkdir -p $log_dir
 
 exec 3>&1
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-exec 1>> $LOGFILE
-exec 2>> $LOGFILE
+exec 1>> $logfile
+exec 2>> $logfile
 
 evacuate() {
-  curl --fail --silent -X POST http://$ADDRESS/evacuate >/dev/null 2>&1
+  curl --fail --silent -X POST http://$address/evacuate >/dev/null 2>&1
 }
 
 heartbeat() {
-  curl --fail --silent http://$ADDRESS/ping >/dev/null 2>&1
+  curl --fail --silent http://$address/ping >/dev/null 2>&1
 }
 
 output_for_bosh() {
@@ -39,12 +39,12 @@ output_for_bosh() {
 
 trap output_for_bosh EXIT
 
-if [ ! -f $PIDFILE ]; then
-  echo "$(date): PIDFILE does not exist"
+if [ ! -f $pidfile ]; then
+  echo "$(date): pidfile does not exist"
   exit 0
 fi
 
-pid=$(cat $PIDFILE)
+pid=$(cat $pidfile)
 
 if [ ! -e /proc/$pid ]; then
   echo "$(date): rep process not running"
@@ -58,7 +58,7 @@ if evacuate; then
     echo "$(date): waiting"
   done
 
-  kill_and_wait $PIDFILE
+  kill_and_wait $pidfile
 else
   exit 1
 fi

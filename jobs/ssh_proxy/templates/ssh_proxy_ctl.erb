@@ -1,29 +1,29 @@
 #!/bin/bash -e
 
-RUN_DIR=/var/vcap/sys/run/ssh_proxy
-LOG_DIR=/var/vcap/sys/log/ssh_proxy
+run_dir=/var/vcap/sys/run/ssh_proxy
+log_dir=/var/vcap/sys/log/ssh_proxy
 
-PIDFILE=$RUN_DIR/ssh_proxy.pid
+pidfile=$run_dir/ssh_proxy.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
 case $1 in
 
   start)
-    pid_guard $PIDFILE "ssh_proxy"
+    pid_guard $pidfile "ssh_proxy"
 
-    mkdir -p $RUN_DIR
-    chown -R vcap:vcap $RUN_DIR
+    mkdir -p $run_dir
+    chown -R vcap:vcap $run_dir
 
-    mkdir -p $LOG_DIR
-    chown -R vcap:vcap $LOG_DIR
+    mkdir -p $log_dir
+    chown -R vcap:vcap $log_dir
 
     exec chpst -u vcap:vcap bash -c '/var/vcap/jobs/ssh_proxy/bin/ssh_proxy_as_vcap'
 
     ;;
 
   stop)
-    kill_and_wait $PIDFILE
+    kill_and_wait $pidfile
 
     ;;
 

@@ -1,7 +1,7 @@
 #!/bin/bash -l
 
-CONF_DIR=/var/vcap/jobs/vizzini/config
-LOG_DIR=/var/vcap/sys/log/vizzini
+conf_dir=/var/vcap/jobs/vizzini/config
+log_dir=/var/vcap/sys/log/vizzini
 
 set -e -x
 
@@ -15,12 +15,12 @@ export CF_COLOR=false
 
 cd /var/vcap/packages/vizzini/src/code.cloudfoundry.org/vizzini
 
-EXITSTATUS=0
+exitstatus=0
 
 <% if p("vizzini.bbs.require_ssl") %>
   bbs_sec_flags=" \
-   --bbs-client-cert=${CONF_DIR}/certs/bbs/client.crt \
-   --bbs-client-key=${CONF_DIR}/certs/bbs/client.key"
+   --bbs-client-cert=${conf_dir}/certs/bbs/client.crt \
+   --bbs-client-key=${conf_dir}/certs/bbs/client.key"
 
   bbs_api_url="<%= "https://" + p("vizzini.bbs.api_location") %>"
 <% else %>
@@ -44,7 +44,7 @@ go install github.com/onsi/ginkgo/ginkgo
   export DEFAULT_EVENTUALLY_TIMEOUT=<%= eventually_timeout %>
 <% end %>
 
-mkdir -p $LOG_DIR
+mkdir -p $log_dir
 
 ginkgo \
   -nodes=${nodes} \
@@ -64,9 +64,9 @@ ginkgo \
   <% end %>\
   ${ssh_proxy_secret_flag} \
   --routable-domain-suffix=${routable_domain_suffix} \
-  2> >(tee -a $LOG_DIR/vizzini.stderr.log) \
-  1> >(tee -a $LOG_DIR/vizzini.stdout.log)
+  2> >(tee -a $log_dir/vizzini.stderr.log) \
+  1> >(tee -a $log_dir/vizzini.stdout.log)
 
-echo "Vizzini Complete; exit status: $EXITSTATUS"
+echo "Vizzini Complete; exit status: $exitstatus"
 
-exit $EXITSTATUS
+exit $exitstatus

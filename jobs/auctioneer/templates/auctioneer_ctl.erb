@@ -1,22 +1,22 @@
 #!/bin/bash -e
 
-RUN_DIR=/var/vcap/sys/run/auctioneer
-LOG_DIR=/var/vcap/sys/log/auctioneer
+run_dir=/var/vcap/sys/run/auctioneer
+log_dir=/var/vcap/sys/log/auctioneer
 
-PIDFILE=$RUN_DIR/auctioneer.pid
+pidfile=$run_dir/auctioneer.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
 case $1 in
 
   start)
-    pid_guard $PIDFILE "auctioneer"
+    pid_guard $pidfile "auctioneer"
 
-    mkdir -p $RUN_DIR
-    chown -R vcap:vcap $RUN_DIR
+    mkdir -p $run_dir
+    chown -R vcap:vcap $run_dir
 
-    mkdir -p $LOG_DIR
-    chown -R vcap:vcap $LOG_DIR
+    mkdir -p $log_dir
+    chown -R vcap:vcap $log_dir
 
     # Allowed number of open file descriptors
     ulimit -n 100000
@@ -26,7 +26,7 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait $PIDFILE
+    kill_and_wait $pidfile
 
     ;;
 

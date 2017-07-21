@@ -2,19 +2,19 @@
 
 set -e
 
-RUN_DIR=/var/vcap/sys/run/bbs
-PIDFILE=$RUN_DIR/bbs.pid
-LOG_DIR=/var/vcap/sys/log/bbs
-LOGFILE=$LOG_DIR/drain.log
+run_dir=/var/vcap/sys/run/bbs
+pidfile=$run_dir/bbs.pid
+log_dir=/var/vcap/sys/log/bbs
+logfile=$log_dir/drain.log
 
-mkdir -p $LOG_DIR
+mkdir -p $log_dir
 
 exec 3>&1
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
-exec 1>> $LOGFILE
-exec 2>> $LOGFILE
+exec 1>> $logfile
+exec 2>> $logfile
 
 output_for_bosh() {
   exit_code=$?
@@ -30,12 +30,12 @@ output_for_bosh() {
 
 trap output_for_bosh EXIT
 
-if [ ! -f $PIDFILE ]; then
-  echo "$(date): PIDFILE does not exist"
+if [ ! -f $pidfile ]; then
+  echo "$(date): pidfile does not exist"
   exit 0
 fi
 
-pid=$(cat $PIDFILE)
+pid=$(cat $pidfile)
 
 if [ ! -e /proc/$pid ]; then
   echo "$(date): bbs process not running"
@@ -43,4 +43,4 @@ if [ ! -e /proc/$pid ]; then
 fi
 
 echo "$(date): drain triggered"
-kill_and_wait $PIDFILE
+kill_and_wait $pidfile

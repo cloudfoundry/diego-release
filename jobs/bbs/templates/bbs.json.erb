@@ -2,10 +2,10 @@
   require 'uri'
 
 
-  CONF_DIR = "/var/vcap/jobs/bbs/config"
-  TMP_DIR = "/var/vcap/data/executor/tmp"
-  TRUSTED_CERTS_DIR = "/var/vcap/data/executor/trusted_certs"
-  LOG_DIR = "/var/vcap/sys/log/bbs"
+  conf_dir = "/var/vcap/jobs/bbs/config"
+  tmp_dir = "/var/vcap/data/executor/tmp"
+  trusted_certs_dir = "/var/vcap/data/executor/trusted_certs"
+  log_dir = "/var/vcap/sys/log/bbs"
 
   config = {
    require_ssl: p("diego.bbs.require_ssl"),
@@ -89,15 +89,15 @@
      p("diego.bbs.auctioneer.client_key", "") != "" then
     config[:auctioneer_address] = "https://#{auctioneer_address}"
     config[:auctioneer_require_tls] = p("diego.bbs.auctioneer.require_tls")
-    config[:auctioneer_client_cert] = "#{CONF_DIR}/certs/auctioneer/client.crt"
-    config[:auctioneer_client_key] = "#{CONF_DIR}/certs/auctioneer/client.key"
-    config[:auctioneer_ca_cert] = "#{CONF_DIR}/certs/auctioneer/ca.crt"
+    config[:auctioneer_client_cert] = "#{conf_dir}/certs/auctioneer/client.crt"
+    config[:auctioneer_client_key] = "#{conf_dir}/certs/auctioneer/client.key"
+    config[:auctioneer_ca_cert] = "#{conf_dir}/certs/auctioneer/ca.crt"
   end
 
   if_p("diego.bbs.rep.ca_cert", "diego.bbs.rep.client_key", "diego.bbs.rep.client_cert") do
-    config[:rep_client_cert] = "#{CONF_DIR}/certs/rep/client.crt"
-    config[:rep_client_key] = "#{CONF_DIR}/certs/rep/client.key"
-    config[:rep_ca_cert] = "#{CONF_DIR}/certs/rep/ca.crt"
+    config[:rep_client_cert] = "#{conf_dir}/certs/rep/client.crt"
+    config[:rep_client_key] = "#{conf_dir}/certs/rep/client.key"
+    config[:rep_ca_cert] = "#{conf_dir}/certs/rep/ca.crt"
   end
 
 
@@ -105,9 +105,9 @@
     scheme = "http"
     if p("diego.bbs.etcd.require_ssl")
       scheme = "https"
-      config[:etcd_cert_file] = "#{CONF_DIR}/certs/etcd/client.crt"
-      config[:etcd_key_file] = "#{CONF_DIR}/certs/etcd/client.key"
-      config[:etcd_ca_file] = "#{CONF_DIR}/certs/etcd/ca.crt"
+      config[:etcd_cert_file] = "#{conf_dir}/certs/etcd/client.crt"
+      config[:etcd_key_file] = "#{conf_dir}/certs/etcd/client.key"
+      config[:etcd_ca_file] = "#{conf_dir}/certs/etcd/ca.crt"
     end
 
     config[:etcd_cluster_urls] = p("diego.bbs.etcd.machines").map{|addr| "#{scheme}://#{addr}:4001"}
@@ -120,7 +120,7 @@
   end
 
   if p("diego.bbs.sql.require_ssl")
-     config[:sql_ca_cert_file] = "#{CONF_DIR}/certs/sql/ca.crt"
+     config[:sql_ca_cert_file] = "#{conf_dir}/certs/sql/ca.crt"
   end
 
   if_p("diego.bbs.sql.max_open_connections") do |value|
@@ -161,23 +161,23 @@
 
   if p("diego.bbs.require_ssl")
     config[:advertise_url] = advertise_url "https"
-    config[:ca_file] = "#{CONF_DIR}/certs/ca.crt"
-    config[:cert_file] = "#{CONF_DIR}/certs/server.crt"
-    config[:key_file] = "#{CONF_DIR}/certs/server.key"
+    config[:ca_file] = "#{conf_dir}/certs/ca.crt"
+    config[:cert_file] = "#{conf_dir}/certs/server.crt"
+    config[:key_file] = "#{conf_dir}/certs/server.key"
   else
     config[:advertise_url] = advertise_url "http"
   end
 
   if p("diego.bbs.enable_access_log")
-    config[:access_log_path] = "#{LOG_DIR}/bbs.access.log"
+    config[:access_log_path] = "#{log_dir}/bbs.access.log"
   end
 
   if_p("diego.bbs.locket.api_location") do |value|
     config[:locket_address] = value
     config[:uuid] = spec.id
-    config[:locket_ca_cert_file] = "#{CONF_DIR}/certs/ca.crt"
-    config[:locket_client_cert_file] = "#{CONF_DIR}/certs/server.crt"
-    config[:locket_client_key_file] = "#{CONF_DIR}/certs/server.key"
+    config[:locket_ca_cert_file] = "#{conf_dir}/certs/ca.crt"
+    config[:locket_client_cert_file] = "#{conf_dir}/certs/server.crt"
+    config[:locket_client_key_file] = "#{conf_dir}/certs/server.key"
   end
 
   if_p("diego.bbs.skip_consul_lock") do |skip_consul_lock|
@@ -188,9 +188,9 @@
   config[:loggregator][:loggregator_use_v2_api] = p("loggregator.use_v2_api")
   if p("loggregator.use_v2_api") == true
     config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
-    config[:loggregator][:loggregator_ca_path] = "#{CONF_DIR}/certs/loggregator/ca.crt"
-    config[:loggregator][:loggregator_cert_path] = "#{CONF_DIR}/certs/loggregator/client.crt"
-    config[:loggregator][:loggregator_key_path] = "#{CONF_DIR}/certs/loggregator/client.key"
+    config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"
+    config[:loggregator][:loggregator_cert_path] = "#{conf_dir}/certs/loggregator/client.crt"
+    config[:loggregator][:loggregator_key_path] = "#{conf_dir}/certs/loggregator/client.key"
     config[:loggregator][:loggregator_job_deployment] = spec.deployment
     config[:loggregator][:loggregator_job_name] = spec.name
     config[:loggregator][:loggregator_job_index] = spec.id

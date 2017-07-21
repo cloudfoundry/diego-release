@@ -1,10 +1,10 @@
 <%=
   require 'uri'
 
-  CONF_DIR = "/var/vcap/jobs/benchmark-bbs/config"
-  TMP_DIR = "/var/vcap/data/executor/tmp"
-  TRUSTED_CERTS_DIR = "/var/vcap/data/executor/trusted_certs"
-  LOG_DIR = "/var/vcap/sys/log/benchmark-bbs"
+  conf_dir = "/var/vcap/jobs/benchmark-bbs/config"
+  tmp_dir = "/var/vcap/data/executor/tmp"
+  trusted_certs_dir = "/var/vcap/data/executor/trusted_certs"
+  log_dir = "/var/vcap/sys/log/benchmark-bbs"
 
   config = {
     active_key_label: p("benchmark-bbs.active_key_label"),
@@ -18,9 +18,9 @@
     desired_lrps: p("benchmark-bbs.desired_lrps"),
     local_route_emitters: p("benchmark-bbs.local_route_emitters"),
     locket_address: p("benchmark-bbs.locket.api_location"),
-    locket_ca_cert_file: "#{CONF_DIR}/certs/bbs/ca.crt",
-    locket_client_cert_file: "#{CONF_DIR}/certs/bbs/client.crt",
-    locket_client_key_file: "#{CONF_DIR}/certs/bbs/client.key",
+    locket_ca_cert_file: "#{conf_dir}/certs/bbs/ca.crt",
+    locket_client_cert_file: "#{conf_dir}/certs/bbs/client.crt",
+    locket_client_key_file: "#{conf_dir}/certs/bbs/client.key",
     log_level: p("benchmark-bbs.log_level"),
     metric_prefix: p("benchmark-bbs.datadog_metric_prefix"),
     num_populate_workers: p("benchmark-bbs.num_populate_workers"),
@@ -86,16 +86,16 @@
   end
 
   if_p("benchmark-bbs.log_file") do |value|
-    config[:log_filename] = "#{LOG_DIR}/#{value}"
+    config[:log_filename] = "#{log_dir}/#{value}"
   end
 
   if p("benchmark-bbs.etcd.machines").size > 0
     scheme = "http"
     if p("benchmark-bbs.etcd.require_ssl")
       scheme = "https"
-      config[:etcd_cert_file] = "#{CONF_DIR}/certs/etcd/client.crt"
-      config[:etcd_key_file] = "#{CONF_DIR}/certs/etcd/client.key"
-      config[:etcd_ca_file] = "#{CONF_DIR}/certs/etcd/ca.crt"
+      config[:etcd_cert_file] = "#{conf_dir}/certs/etcd/client.crt"
+      config[:etcd_key_file] = "#{conf_dir}/certs/etcd/client.key"
+      config[:etcd_ca_file] = "#{conf_dir}/certs/etcd/ca.crt"
     end
 
     config[:etcd_cluster_urls] = p("benchmark-bbs.etcd.machines").map{|addr| "#{scheme}://#{addr}:4001"}
@@ -109,9 +109,9 @@
 
   if p("benchmark-bbs.bbs.require_ssl")
     config[:bbs_address] = "https://#{p("benchmark-bbs.bbs.api_location")}"
-    config[:bbs_ca_cert] = "#{CONF_DIR}/certs/bbs/ca.crt"
-    config[:bbs_client_cert] = "#{CONF_DIR}/certs/bbs/client.crt"
-    config[:bbs_client_key] = "#{CONF_DIR}/certs/bbs/client.key"
+    config[:bbs_ca_cert] = "#{conf_dir}/certs/bbs/ca.crt"
+    config[:bbs_client_cert] = "#{conf_dir}/certs/bbs/client.crt"
+    config[:bbs_client_key] = "#{conf_dir}/certs/bbs/client.key"
   else
     config[:bbs_address] = "http://#{p("benchmark-bbs.bbs.api_location")}"
   end

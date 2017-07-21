@@ -1,31 +1,31 @@
 #!/bin/bash -e
 
-RUN_DIR=/var/vcap/sys/run/bbs
-LOG_DIR=/var/vcap/sys/log/bbs
-CONF_DIR=/var/vcap/jobs/bbs/config
-DATA_DIR=/var/vcap/data/bbs
-TMP_DIR=$DATA_DIR/tmp
+run_dir=/var/vcap/sys/run/bbs
+log_dir=/var/vcap/sys/log/bbs
+conf_dir=/var/vcap/jobs/bbs/config
+data_dir=/var/vcap/data/bbs
+tmp_dir=$data_dir/tmp
 
-PIDFILE=$RUN_DIR/bbs.pid
+pidfile=$run_dir/bbs.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
 case $1 in
 
   start)
-    pid_guard $PIDFILE "bbs"
+    pid_guard $pidfile "bbs"
 
-    mkdir -p $RUN_DIR
-    chown -R vcap:vcap $RUN_DIR
+    mkdir -p $run_dir
+    chown -R vcap:vcap $run_dir
 
-    mkdir -p $LOG_DIR
-    chown -R vcap:vcap $LOG_DIR
+    mkdir -p $log_dir
+    chown -R vcap:vcap $log_dir
 
-    mkdir -p $DATA_DIR
-    chown -R vcap:vcap $DATA_DIR
+    mkdir -p $data_dir
+    chown -R vcap:vcap $data_dir
 
-    mkdir -p $TMP_DIR
-    chown -R vcap:vcap $TMP_DIR
+    mkdir -p $tmp_dir
+    chown -R vcap:vcap $tmp_dir
 
     if running_in_container; then
         echo "Not setting /proc/sys/net/ipv4 parameters, since I'm running inside a linux container"
@@ -54,7 +54,7 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait $PIDFILE
+    kill_and_wait $pidfile
 
     ;;
 

@@ -1,8 +1,8 @@
 <%=
-  CONF_DIR = "/var/vcap/jobs/#{p("diego.rep.job_name")}/config"
-  TMP_DIR = "/var/vcap/data/executor/tmp"
-  TRUSTED_CERTS_DIR = "/var/vcap/data/executor/trusted_certs"
-  INSTANCE_IDENTITY_DIR = "/var/vcap/data/executor/instance_identity"
+  conf_dir = "/var/vcap/jobs/#{p("diego.rep.job_name")}/config"
+  tmp_dir = "/var/vcap/data/executor/tmp"
+  trusted_certs_dir = "/var/vcap/data/executor/trusted_certs"
+  instance_identity_dir = "/var/vcap/data/executor/instance_identity"
 
   config = {
     advertise_domain: p("diego.rep.advertise_domain"),
@@ -46,7 +46,7 @@
     require_tls: p("diego.rep.require_tls"),
     skip_cert_verify: p("diego.ssl.skip_cert_verify"),
     supported_providers: p("diego.rep.rootfs_providers"),
-    temp_dir: "#{TMP_DIR}",
+    temp_dir: "#{tmp_dir}",
     unhealthy_monitoring_interval: "#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s",
     zone: spec.az || p("diego.rep.zone"),
   }
@@ -56,25 +56,25 @@
   end
 
   if p("diego.rep.bbs.require_ssl")
-    config[:bbs_ca_cert_file] = "#{CONF_DIR}/certs/bbs/ca.crt"
-    config[:bbs_client_cert_file] = "#{CONF_DIR}/certs/bbs/client.crt"
-    config[:bbs_client_key_file] = "#{CONF_DIR}/certs/bbs/client.key"
+    config[:bbs_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
+    config[:bbs_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"
+    config[:bbs_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
     config[:bbs_address] = "https://#{p("diego.rep.bbs.api_location")}"
   else
     config[:bbs_address] = "http://#{p("diego.rep.bbs.api_location")}"
   end
 
   if p("diego.rep.require_tls")
-    config[:ca_cert_file] =  "#{CONF_DIR}/certs/ca.crt"
-    config[:server_cert_file] =  "#{CONF_DIR}/certs/server.crt"
-    config[:server_key_file] =  "#{CONF_DIR}/certs/server.key"
+    config[:ca_cert_file] =  "#{conf_dir}/certs/ca.crt"
+    config[:server_cert_file] =  "#{conf_dir}/certs/server.crt"
+    config[:server_key_file] =  "#{conf_dir}/certs/server.key"
   end
 
   if p("diego.rep.consul.require_tls")
     config[:consul_cluster] = "https://127.0.0.1:8500"
-    config[:consul_ca_cert] = "#{CONF_DIR}/certs/consul/ca.crt"
-    config[:consul_client_cert] = "#{CONF_DIR}/certs/consul/client.crt"
-    config[:consul_client_key] = "#{CONF_DIR}/certs/consul/client.key"
+    config[:consul_ca_cert] = "#{conf_dir}/certs/consul/ca.crt"
+    config[:consul_client_cert] = "#{conf_dir}/certs/consul/client.crt"
+    config[:consul_client_key] = "#{conf_dir}/certs/consul/client.key"
   else
     config[:consul_cluster] = "http://127.0.0.1:8500"
   end
@@ -88,30 +88,30 @@
   end
 
   if_p("diego.rep.trusted_certs") do |value|
-    config[:trusted_system_certificates_path] = "#{TRUSTED_CERTS_DIR}"
+    config[:trusted_system_certificates_path] = "#{trusted_certs_dir}"
   end
 
   if_p("tls.cert") do |value|
     if !value.empty?
-      config[:path_to_tls_cert] = "#{CONF_DIR}/certs/tls.crt"
+      config[:path_to_tls_cert] = "#{conf_dir}/certs/tls.crt"
     end
   end
 
   if_p("tls.key") do |value|
     if !value.empty?
-      config[:path_to_tls_key] = "#{CONF_DIR}/certs/tls.key"
+      config[:path_to_tls_key] = "#{conf_dir}/certs/tls.key"
     end
   end
 
   if_p("tls.ca_cert") do |value|
     if !value.empty?
-      config[:path_to_tls_ca_cert] = "#{CONF_DIR}/certs/tls_ca.crt"
+      config[:path_to_tls_ca_cert] = "#{conf_dir}/certs/tls_ca.crt"
     end
   end
 
   if_p("diego.executor.ca_certs_for_downloads") do |value|
     if !value.empty?
-      config[:path_to_ca_certs_for_downloads] = "#{CONF_DIR}/certs/rep/ca_certs_for_downloads.crt"
+      config[:path_to_ca_certs_for_downloads] = "#{conf_dir}/certs/rep/ca_certs_for_downloads.crt"
     end
   end
 
@@ -141,18 +141,18 @@
 
   if_p("diego.rep.locket.api_location") do |value|
     config[:locket_address] = value
-    config[:locket_ca_cert_file] = "#{CONF_DIR}/certs/bbs/ca.crt"
-    config[:locket_client_cert_file] = "#{CONF_DIR}/certs/bbs/client.crt"
-    config[:locket_client_key_file] = "#{CONF_DIR}/certs/bbs/client.key"
+    config[:locket_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
+    config[:locket_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"
+    config[:locket_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
   end
 
   if_p("diego.executor.instance_identity_ca_cert",
        "diego.executor.instance_identity_key",
        "diego.executor.instance_identity_validity_period_in_hours") do |cert, key, validity_period|
      if !(cert.empty? || key.empty? || validity_period < 1)
-       config[:instance_identity_ca_path] = "#{CONF_DIR}/certs/rep/instance_identity.crt"
-       config[:instance_identity_private_key_path] = "#{CONF_DIR}/certs/rep/instance_identity.key"
-       config[:instance_identity_cred_dir] = INSTANCE_IDENTITY_DIR
+       config[:instance_identity_ca_path] = "#{conf_dir}/certs/rep/instance_identity.crt"
+       config[:instance_identity_private_key_path] = "#{conf_dir}/certs/rep/instance_identity.key"
+       config[:instance_identity_cred_dir] = instance_identity_dir
        config[:instance_identity_validity_period] = "#{validity_period}h"
      elsif validity_period < 1
        raise '"diego.executor.instance_identity_validity_period_in_hours" should be a positive integer'
@@ -163,9 +163,9 @@
   config[:loggregator][:loggregator_use_v2_api] = p("loggregator.use_v2_api")
   if p("loggregator.use_v2_api") == true
     config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
-    config[:loggregator][:loggregator_ca_path] = "#{CONF_DIR}/certs/loggregator/ca.crt"
-    config[:loggregator][:loggregator_cert_path] = "#{CONF_DIR}/certs/loggregator/client.crt"
-    config[:loggregator][:loggregator_key_path] = "#{CONF_DIR}/certs/loggregator/client.key"
+    config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"
+    config[:loggregator][:loggregator_cert_path] = "#{conf_dir}/certs/loggregator/client.crt"
+    config[:loggregator][:loggregator_key_path] = "#{conf_dir}/certs/loggregator/client.key"
     config[:loggregator][:loggregator_job_deployment] = spec.deployment
     config[:loggregator][:loggregator_job_name] = spec.name
     config[:loggregator][:loggregator_job_index] = spec.id

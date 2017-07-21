@@ -3,34 +3,34 @@ trap { $host.SetShouldExit(1) }
 
 Write-Host "Running pre-start"
 
-$PORT="<%= p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "") : p("diego.rep.listen_addr_admin").sub(/^127\.0\.0\.1:/, "")%>"
+$port="<%= p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "") : p("diego.rep.listen_addr_admin").sub(/^127\.0\.0\.1:/, "")%>"
 
-if ($PORT -eq "") {
+if ($port -eq "") {
   Write-Error "Unable to find the port for rep_windows"
 }
 if (-Not (Get-NetFirewallRule | Where-Object { $_.DisplayName -eq "RepPort" })) {
-  New-NetFirewallRule -DisplayName "RepPort" -Action Allow -Direction Inbound -Enabled True -LocalPort $PORT -Protocol TCP
+  New-NetFirewallRule -DisplayName "RepPort" -Action Allow -Direction Inbound -Enabled True -LocalPort $port -Protocol TCP
   if (-Not (Get-NetFirewallRule | Where-Object { $_.DisplayName -eq "RepPort" })) {
     Write-Error "Unable to add RepPort firewall rule"
   }
 }
 
-$PORT="<%= p("diego.rep.listen_addr_securable").match(/:(\d+)/)[1]%>"
+$port="<%= p("diego.rep.listen_addr_securable").match(/:(\d+)/)[1]%>"
 
-if ($PORT -eq "") {
+if ($port -eq "") {
   Write-Error "Unable to find the listen_addr_securable port for rep_windows"
 }
 if (-Not (Get-NetFirewallRule | Where-Object { $_.DisplayName -eq "SecureRepPort" })) {
-  New-NetFirewallRule -DisplayName "SecureRepPort" -Action Allow -Direction Inbound -Enabled True -LocalPort $PORT -Protocol TCP
+  New-NetFirewallRule -DisplayName "SecureRepPort" -Action Allow -Direction Inbound -Enabled True -LocalPort $port -Protocol TCP
   if (-Not (Get-NetFirewallRule | Where-Object { $_.DisplayName -eq "SecureRepPort" })) {
     Write-Error "Unable to add RepPort firewall rule"
   }
 }
 
 # Set ACL on executor cache to open up to container users
-$CACHE_DIR = "<%= p("diego.executor.cache_path") %>"
-New-Item -Path $CACHE_DIR -ItemType "directory" -Force
+$cache_dir = "<%= p("diego.executor.cache_path") %>"
+New-Item -Path $cache_dir -ItemType "directory" -Force
 $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", "ReadAndExecute", "ContainerInherit, ObjectInherit", "None", "Allow")
-$acl = Get-Acl $CACHE_DIR
+$acl = Get-Acl $cache_dir
 $acl.AddAccessRule($rule)
-Set-Acl $CACHE_DIR $acl
+Set-Acl $cache_dir $acl

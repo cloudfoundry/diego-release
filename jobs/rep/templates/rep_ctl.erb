@@ -1,69 +1,69 @@
 #!/bin/bash -e
 
-RUN_DIR=/var/vcap/sys/run/rep
-LOG_DIR=/var/vcap/sys/log/rep
-CONF_DIR=/var/vcap/jobs/rep/config
+run_dir=/var/vcap/sys/run/rep
+log_dir=/var/vcap/sys/log/rep
+conf_dir=/var/vcap/jobs/rep/config
 
-DATA_DIR=/var/vcap/data/executor
-CACHE_DIR=<%= p("diego.executor.cache_path") %>
-TMP_DIR=$DATA_DIR/tmp
+data_dir=/var/vcap/data/executor
+cache_dir=<%= p("diego.executor.cache_path") %>
+tmp_dir=$data_dir/tmp
 
-PIDFILE=$RUN_DIR/rep.pid
+pidfile=$run_dir/rep.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
 case $1 in
 
   start)
-    pid_guard $PIDFILE "rep"
+    pid_guard $pidfile "rep"
 
-    mkdir -p $RUN_DIR
-    chown -R vcap:vcap $RUN_DIR
+    mkdir -p $run_dir
+    chown -R vcap:vcap $run_dir
 
-    mkdir -p $LOG_DIR
-    chown -R vcap:vcap $LOG_DIR
+    mkdir -p $log_dir
+    chown -R vcap:vcap $log_dir
 
-    mkdir -p $DATA_DIR
-    chown -R vcap:vcap $DATA_DIR
+    mkdir -p $data_dir
+    chown -R vcap:vcap $data_dir
 
-    mkdir -p $TMP_DIR
-    chown -R vcap:vcap $TMP_DIR
+    mkdir -p $tmp_dir
+    chown -R vcap:vcap $tmp_dir
 
-    mkdir -p $CACHE_DIR
-    chown -R vcap:vcap $CACHE_DIR
+    mkdir -p $cache_dir
+    chown -R vcap:vcap $cache_dir
 
-    DRIVERS_PATHS=<%= p("diego.executor.volman.driver_paths") %>
-    mkdir -p $DRIVERS_PATHS
-    chown vcap:vcap $DRIVERS_PATHS
+    drivers_paths=<%= p("diego.executor.volman.driver_paths") %>
+    mkdir -p $drivers_paths
+    chown vcap:vcap $drivers_paths
 
     # Key and Cert are generally ~2048 bytes. Add an extra 2048 for extra space
     # add another 4096 to account for the temp files used to do atomic replacement #141163257
     instance_cert_and_key_size=10240
-    instance_ca_size=$(wc -c ${CONF_DIR}/certs/rep/instance_identity.crt | cut -d' ' -f1)
+    instance_ca_size=$(wc -c ${conf_dir}/certs/rep/instance_identity.crt | cut -d' ' -f1)
     max_containers=250
     instance_tmpfs_size=$((($instance_ca_size + $instance_cert_and_key_size) * $max_containers))
 
-    INSTANCE_IDENTITY_DIR=${DATA_DIR}/instance_identity
-    if mount | grep -q $INSTANCE_IDENTITY_DIR; then
-      umount -f $INSTANCE_IDENTITY_DIR
+    instance_identity_dir=${data_dir}/instance_identity
+    if mount | grep -q $instance_identity_dir; then
+      umount -f $instance_identity_dir
     fi
-    mkdir -p "$INSTANCE_IDENTITY_DIR"
-    mount -t tmpfs -o size=$instance_tmpfs_size tmpfs $INSTANCE_IDENTITY_DIR
-    chown -R vcap:vcap "$INSTANCE_IDENTITY_DIR"
-    chmod 0700 "$INSTANCE_IDENTITY_DIR"
+    mkdir -p "$instance_identity_dir"
+    mount -t tmpfs -o size=$instance_tmpfs_size tmpfs $instance_identity_dir
+    chown -R vcap:vcap "$instance_identity_dir"
+    chmod 0700 "$instance_identity_dir"
 
-    TRUSTED_CERTS_DIR=${DATA_DIR}/trusted_certs
-    rm -rf "$TRUSTED_CERTS_DIR"
+    trusted_certs_dir=${data_dir}/trusted_certs
+    rm -rf "$trusted_certs_dir"
     <% if_p("diego.rep.trusted_certs") do |value| %>
-      mkdir -p "$TRUSTED_CERTS_DIR"
-      chown -R vcap:vcap $TRUSTED_CERTS_DIR
+      mkdir -p "$trusted_certs_dir"
+      chown -R vcap:vcap $trusted_certs_dir
 
       # Split files on '----END CERTIFICATE-----' and increment our file counter by 1
-      pushd $TRUSTED_CERTS_DIR
+      pushd $trusted_certs_dir
               awk -v n=1 '
                       split_after == 1 {n++;split_after=0}
                       /-----END CERTIFICATE-----/ {split_after=1}
-                      NF {print > "trusted_ca_" n ".crt"}' < $CONF_DIR/certs/rep/trusted_certs.crt
+                      NF {print > "trusted_ca_" n ".crt"}' < $conf_dir/certs/rep/trusted_certs.crt
       popd
     <% end %>
 
@@ -98,7 +98,7 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait $PIDFILE
+    kill_and_wait $pidfile
 
     ;;
 

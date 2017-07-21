@@ -2,17 +2,17 @@
 require 'uri'
 
 
-CONF_DIR = "/var/vcap/jobs/locket/config"
-TMP_DIR = "/var/vcap/data/executor/tmp"
-LOG_DIR = "/var/vcap/sys/log/locket"
+conf_dir = "/var/vcap/jobs/locket/config"
+tmp_dir = "/var/vcap/data/executor/tmp"
+log_dir = "/var/vcap/sys/log/locket"
 
 config = {
-  ca_file: "#{CONF_DIR}/certs/ca.crt",
-  cert_file: "#{CONF_DIR}/certs/server.crt",
+  ca_file: "#{conf_dir}/certs/ca.crt",
+  cert_file: "#{conf_dir}/certs/server.crt",
   consul_cluster: "http://127.0.0.1:8500",
   debug_address: p("diego.locket.debug_addr"),
   dropsonde_port: p("dropsonde_port"),
-  key_file: "#{CONF_DIR}/certs/server.key",
+  key_file: "#{conf_dir}/certs/server.key",
   listen_address: p("diego.locket.listen_addr"),
   log_level: p("diego.locket.log_level"),
   max_open_database_connections: p("database.max_open_connections"),
@@ -51,7 +51,7 @@ config[:database_connection_string] = connection_string
 config[:database_driver] = p("diego.locket.sql.db_driver")
 
 if p("diego.locket.sql.require_ssl")
-   config[:sql_ca_cert_file] = "#{CONF_DIR}/certs/sql/ca.crt"
+   config[:sql_ca_cert_file] = "#{conf_dir}/certs/sql/ca.crt"
 end
 
 config.to_json

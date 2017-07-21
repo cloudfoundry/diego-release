@@ -1,12 +1,12 @@
 #!/bin/bash -e
 
-RUN_DIR=/var/vcap/sys/run/file_server
-LOG_DIR=/var/vcap/sys/log/file_server
-CONF_DIR=/var/vcap/jobs/file_server/config
+run_dir=/var/vcap/sys/run/file_server
+log_dir=/var/vcap/sys/log/file_server
+conf_dir=/var/vcap/jobs/file_server/config
 
-PIDFILE=$RUN_DIR/file_server.pid
+pidfile=$run_dir/file_server.pid
 
 /var/vcap/packages/file_server/bin/file-server \
-      -config=$CONF_DIR/file_server.json \
-      2> >(tee -a $LOG_DIR/file_server.stderr.log | logger -p user.error -t vcap.file-server) \
-      1> >(tee -a $LOG_DIR/file_server.stdout.log | logger -p user.info -t vcap.file-server) & echo $! > $PIDFILE
+      -config=$conf_dir/file_server.json \
+      2> >(tee -a $log_dir/file_server.stderr.log | logger -p user.error -t vcap.file-server) \
+      1> >(tee -a $log_dir/file_server.stdout.log | logger -p user.info -t vcap.file-server) & echo $! > $pidfile

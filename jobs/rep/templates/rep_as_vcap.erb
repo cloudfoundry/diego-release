@@ -1,15 +1,15 @@
 #!/bin/bash -e
 
-RUN_DIR=/var/vcap/sys/run/rep
-LOG_DIR=/var/vcap/sys/log/rep
-CONF_DIR=/var/vcap/jobs/rep/config
+run_dir=/var/vcap/sys/run/rep
+log_dir=/var/vcap/sys/log/rep
+conf_dir=/var/vcap/jobs/rep/config
 
-PIDFILE=$RUN_DIR/rep.pid
+pidfile=$run_dir/rep.pid
 
 # Enable maximum OS thread concurrency
 export GOMAXPROCS=$(nproc)
 
-echo $$ > $PIDFILE
+echo $$ > $pidfile
 
 zone_flag=""
 <% if p("diego.rep.use_azure_fault_domains") %> 
@@ -22,6 +22,6 @@ set -e
 <% end %>
 
 exec /var/vcap/packages/rep/bin/rep \
-      -config=$CONF_DIR/rep.json ${zone_flag} \
-  2> >(tee -a $LOG_DIR/rep.stderr.log | logger -p user.error -t vcap.rep) \
-  1> >(tee -a $LOG_DIR/rep.stdout.log | logger -t vcap.rep)
+      -config=$conf_dir/rep.json ${zone_flag} \
+  2> >(tee -a $log_dir/rep.stderr.log | logger -p user.error -t vcap.rep) \
+  1> >(tee -a $log_dir/rep.stdout.log | logger -t vcap.rep)

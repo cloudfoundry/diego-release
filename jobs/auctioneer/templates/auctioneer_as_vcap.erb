@@ -1,14 +1,14 @@
 #!/bin/bash -e
 
-RUN_DIR=/var/vcap/sys/run/auctioneer
-LOG_DIR=/var/vcap/sys/log/auctioneer
-CONF_DIR=/var/vcap/jobs/auctioneer/config
+run_dir=/var/vcap/sys/run/auctioneer
+log_dir=/var/vcap/sys/log/auctioneer
+conf_dir=/var/vcap/jobs/auctioneer/config
 
-PIDFILE=$RUN_DIR/auctioneer.pid
+pidfile=$run_dir/auctioneer.pid
 
 export GOMAXPROCS=$(nproc)
 
 /var/vcap/packages/auctioneer/bin/auctioneer \
-      -config=${CONF_DIR}/auctioneer.json \
-      2> >(tee -a $LOG_DIR/auctioneer.stderr.log | logger -p user.error -t vcap.auctioneer) \
-      1> >(tee -a $LOG_DIR/auctioneer.stdout.log | logger -p user.info -t vcap.auctioneer) & echo $! > $PIDFILE
+      -config=${conf_dir}/auctioneer.json \
+      2> >(tee -a $log_dir/auctioneer.stderr.log | logger -p user.error -t vcap.auctioneer) \
+      1> >(tee -a $log_dir/auctioneer.stdout.log | logger -p user.info -t vcap.auctioneer) & echo $! > $pidfile

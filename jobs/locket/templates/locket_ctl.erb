@@ -1,31 +1,31 @@
 #!/bin/bash -e
 
-RUN_DIR=/var/vcap/sys/run/locket
-LOG_DIR=/var/vcap/sys/log/locket
-CONF_DIR=/var/vcap/jobs/locket/config
-DATA_DIR=/var/vcap/data/locket
-TMP_DIR=$DATA_DIR/tmp
+run_dir=/var/vcap/sys/run/locket
+log_dir=/var/vcap/sys/log/locket
+conf_dir=/var/vcap/jobs/locket/config
+data_dir=/var/vcap/data/locket
+tmp_dir=$data_dir/tmp
 
-PIDFILE=$RUN_DIR/locket.pid
+pidfile=$run_dir/locket.pid
 
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
 case $1 in
 
   start)
-    pid_guard $PIDFILE "locket"
+    pid_guard $pidfile "locket"
 
-    mkdir -p $RUN_DIR
-    chown -R vcap:vcap $RUN_DIR
+    mkdir -p $run_dir
+    chown -R vcap:vcap $run_dir
 
-    mkdir -p $LOG_DIR
-    chown -R vcap:vcap $LOG_DIR
+    mkdir -p $log_dir
+    chown -R vcap:vcap $log_dir
 
-    mkdir -p $DATA_DIR
-    chown -R vcap:vcap $DATA_DIR
+    mkdir -p $data_dir
+    chown -R vcap:vcap $data_dir
 
-    mkdir -p $TMP_DIR
-    chown -R vcap:vcap $TMP_DIR
+    mkdir -p $tmp_dir
+    chown -R vcap:vcap $tmp_dir
 
     if running_in_container; then
         echo "Not setting /proc/sys/net/ipv4 parameters, since I'm running inside a linux container"
@@ -54,7 +54,7 @@ case $1 in
     ;;
 
   stop)
-    kill_and_wait $PIDFILE
+    kill_and_wait $pidfile
 
     ;;
 
