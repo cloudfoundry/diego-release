@@ -521,11 +521,9 @@ property_overrides:
         Xzyf48aQ170lBX9uxw0ZrFfc3bf5+1EGqt3slc6WxZITk6Dtlypm
         -----END RSA PRIVATE KEY-----
   executor:
-    drain_timeout_in_seconds: 0
     garden:
       network: tcp
       address: 127.0.0.1:7777
-    log_level: debug
     instance_identity_ca_cert: |+
       -----BEGIN CERTIFICATE-----
       MIIC9jCCAd6gAwIBAgIBATANBgkqhkiG9w0BAQsFADAbMRkwFwYDVQQDExBpbnN0
