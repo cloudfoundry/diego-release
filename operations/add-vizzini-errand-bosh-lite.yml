@@ -1,0 +1,47 @@
+---
+- type: replace
+  path: /instance_groups/-
+  value:
+    name: vizzini
+    lifecycle: errand
+    azs:
+    - z1
+    instances: 1
+    vm_type: m3.medium
+    stemcell: default
+    update:
+      max_in_flight: 1
+      serial: true
+    networks:
+    - name: default
+    jobs:
+    - name: vizzini
+      release: diego
+      properties:
+        enable_declarative_healthcheck: true
+        vizzini:
+          bbs:
+            ca_cert: "((diego_bbs_client.ca))"
+            client_cert: "((diego_bbs_client.certificate))"
+            client_key: "((diego_bbs_client.private_key))"
+          ssh:
+            proxy_secret: "((ssh_proxy_diego_credentials))"
+          routable_domain_suffix: "((system_domain))"
+    - name: consul_agent
+      release: consul
+      consumes:
+        consul: nil
+        consul_common: {from: consul_common_link}
+        consul_server: nil
+        consul_client: {from: consul_client_link}
+- type: replace
+  path: /instance_groups/name=router/jobs/name=ssh_proxy/properties/diego/ssh_proxy/enable_diego_auth?
+  value: true
+- type: replace
+  path: /instance_groups/name=router/jobs/name=ssh_proxy/properties/diego/ssh_proxy/diego_credentials?
+  value: "((ssh_proxy_diego_credentials))"
+- type: replace
+  path: /variables/-
+  value:
+    name: ssh_proxy_diego_credentials
+    type: password
