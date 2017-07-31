@@ -957,9 +957,10 @@ cf_networking_overrides:
   properties: (( merge || [] ))
   garden_properties: (( merge || [] ))
   jobs: (( merge || [] ))
-  bbs_templates_z1: (( merge || [] ))
-  bbs_templates_z2: (( merge || [] ))
-  bbs_templates_z3: (( merge || [] ))
+  bbs_templates: (( merge || [] ))
+  bbs_templates_z1: (( merge || cf_networking_overrides.bbs_templates ))
+  bbs_templates_z2: (( merge || cf_networking_overrides.bbs_templates ))
+  bbs_templates_z3: (( merge || cf_networking_overrides.bbs_templates ))
   bbs_consul_properties: (( merge || bbs_overrides.job_properties.consul ))
 
 route_emitter_overrides:
