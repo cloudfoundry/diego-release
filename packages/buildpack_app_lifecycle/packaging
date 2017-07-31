@@ -10,14 +10,19 @@ export PATH=$GOROOT/bin:$PATH
 CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/builder
 CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/launcher
 
+GOOS=windows CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/builder
+GOOS=windows CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/launcher
+
 for binary in builder launcher; do
     ldd $binary && echo "$binary must be statically linked" && false
 done
 
 tar -xzf /var/vcap/packages/diego-sshd/diego-sshd.tgz
+tar -xzf /var/vcap/packages/diego-sshd/diego-sshd-windows.tgz
 cp /var/vcap/packages/healthcheck/healthcheck .
+cp /var/vcap/packages/healthcheck/healthcheck.exe .
 
-tar -czf ${BOSH_INSTALL_TARGET}/buildpack_app_lifecycle.tgz builder launcher healthcheck diego-sshd
+tar -czf ${BOSH_INSTALL_TARGET}/buildpack_app_lifecycle.tgz builder launcher healthcheck diego-sshd  builder.exe launcher.exe healthcheck.exe diego-sshd.exe
 
 # clean up source artifacts
 rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg
