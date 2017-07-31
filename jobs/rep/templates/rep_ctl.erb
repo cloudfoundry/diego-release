@@ -32,6 +32,10 @@ case $1 in
     mkdir -p $cache_dir
     chown -R vcap:vcap $cache_dir
 
+    drivers_paths=<%= p("diego.executor.volman.driver_paths") %>
+    mkdir -p $drivers_paths
+    chown vcap:vcap $drivers_paths
+
     # Key and Cert are generally ~2048 bytes. Add an extra 2048 for extra space
     # add another 4096 to account for the temp files used to do atomic replacement #141163257
     instance_cert_and_key_size=10240

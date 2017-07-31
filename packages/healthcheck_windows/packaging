@@ -21,7 +21,7 @@ if ($LASTEXITCODE -ge 8) {
 
 $env:CGO_ENABLED=0
 
-go.exe build -tags=external -a -installsuffix static -o "${BOSH_INSTALL_TARGET}\${pkg_name}.exe" "${pkg_path}"
+go.exe build  -a -installsuffix static -o "${BOSH_INSTALL_TARGET}\${pkg_name}.exe" "${pkg_path}"
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Error compiling: ${pkg_path}"
 }
