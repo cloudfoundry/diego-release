@@ -140,6 +140,9 @@ if [ "x${USE_GROOTFS}" = "xtrue" ]; then
 	build_grootfs
 fi
 
+export ROUTER_GOPATH=$PWD/routing-release
+export ROUTING_API_GOPATH=${ROUTER_GOPATH}
+
 cd diego-release/
 
 export GOPATH_ROOT=$PWD
@@ -160,8 +163,6 @@ export REP_GOPATH=${GOPATH_ROOT}
 export ROUTE_EMITTER_GOPATH=${GOPATH_ROOT}
 export STAGER_GOPATH=${GOPATH_ROOT}
 export TPS_GOPATH=${GOPATH_ROOT}
-export ROUTER_GOPATH=${GOPATH_ROOT}
-export ROUTING_API_GOPATH=${GOPATH_ROOT}
 
 # install application dependencies
 echo "Installing go dependencies ..."
