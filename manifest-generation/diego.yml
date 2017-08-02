@@ -165,6 +165,12 @@ base:
           key:     (( property_overrides.locket.tls.key || nil ))
         database:
           max_open_connections: (( property_overrides.locket.database.max_open_connections || nil ))
+        loggregator: &database-loggregator
+          use_v2_api:  (( property_overrides.loggregator.use_v2_api || nil ))
+          v2_api_port: (( config_from_cf.metron_agent.grpc_port || nil ))
+          ca_cert:     (( property_overrides.loggregator.tls.ca_cert || config_from_cf.loggregator.tls.ca_cert || nil ))
+          cert:        (( property_overrides.loggregator.tls.cert || nil ))
+          key:         (( property_overrides.loggregator.tls.key || nil))
 
     - name: database_z2
       templates: (( bbs_overrides.job_templates sql_lock_overrides.templates cf_networking_overrides.bbs_templates))
@@ -187,6 +193,7 @@ base:
           key:     (( property_overrides.locket.tls.key || nil ))
         database:
           max_open_connections: (( property_overrides.locket.database.max_open_connections || nil ))
+        loggregator: *database-loggregator
 
     - name: database_z3
       templates: (( bbs_overrides.job_templates sql_lock_overrides.templates cf_networking_overrides.bbs_templates))
@@ -209,6 +216,7 @@ base:
           key:     (( property_overrides.locket.tls.key || nil ))
         database:
           max_open_connections: (( property_overrides.locket.database.max_open_connections || nil ))
+        loggregator: *database-loggregator
 
     - name: brain_z1
       templates: (( base_job_templates.brain ))
@@ -222,6 +230,12 @@ base:
       properties:
         metron_agent:
           zone: z1
+        loggregator: &brain-loggregator
+          use_v2_api:  (( property_overrides.loggregator.use_v2_api || nil ))
+          v2_api_port: (( config_from_cf.metron_agent.grpc_port || nil ))
+          ca_cert:     (( property_overrides.loggregator.tls.ca_cert || config_from_cf.loggregator.tls.ca_cert || nil ))
+          cert:        (( property_overrides.loggregator.tls.cert || nil ))
+          key:         (( property_overrides.loggregator.tls.key || nil))
 
     - name: cell_z1
       templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates grootfs_overrides.templates ))
@@ -321,6 +335,7 @@ base:
       properties:
         metron_agent:
           zone: z2
+        loggregator: *brain-loggregator
 
     - name: cell_z2
       templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates grootfs_overrides.templates ))
@@ -402,6 +417,7 @@ base:
       properties:
         metron_agent:
           zone: z3
+        loggregator: *brain-loggregator
 
     - name: cell_z3
       templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates grootfs_overrides.templates ))
