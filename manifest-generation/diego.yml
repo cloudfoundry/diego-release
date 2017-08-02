@@ -650,6 +650,7 @@ properties:
       locket:
         api_location: (( sql_lock_overrides.locket.api_location || nil ))
       skip_consul_lock: (( property_overrides.bbs.skip_consul_lock || nil))
+      detect_consul_cell_registrations: (( property_overrides.bbs.detect_consul_cell_registrations || nil ))
     locket:
       sql:
         ca_cert: (( sql_overrides.locket.ca_cert || nil ))

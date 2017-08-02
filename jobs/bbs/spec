@@ -162,6 +162,10 @@ properties:
   diego.bbs.skip_consul_lock:
     default: false
     description: "EXPERIMENTAL: true to skip consul lock. locket.api_location must be set"
+  diego.bbs.detect_consul_cell_registrations:
+    default: true
+    description: "EXPERIMENTAL: set to false only when the BBS uses Locket and all cells deployed register presences via Locket."
+
 
   loggregator.use_v2_api:
     description: "True to use local metron agent gRPC v2 api. False, to use UDP v1 api"
