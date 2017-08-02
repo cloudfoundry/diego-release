@@ -145,7 +145,7 @@ jobs: (( cf_networking_overrides.jobs base.jobs ))
 base:
   jobs:
     - name: database_z1
-      templates: (( bbs_overrides.job_templates sql_lock_overrides.templates cf_networking_overrides.bbs_templates))
+      templates: (( bbs_overrides.job_templates sql_lock_overrides.templates cf_networking_overrides.bbs_templates_z1))
       instances: (( instance_count_overrides.database_z1.instances || 1 ))
       persistent_disk_pool: database_disks
       resource_pool: database_z1
@@ -173,7 +173,7 @@ base:
           key:         (( property_overrides.loggregator.tls.key || nil))
 
     - name: database_z2
-      templates: (( bbs_overrides.job_templates sql_lock_overrides.templates cf_networking_overrides.bbs_templates))
+      templates: (( bbs_overrides.job_templates sql_lock_overrides.templates cf_networking_overrides.bbs_templates_z2))
       instances: (( instance_count_overrides.database_z2.instances || 1 ))
       persistent_disk_pool: database_disks
       resource_pool: database_z2
@@ -196,7 +196,7 @@ base:
         loggregator: *database-loggregator
 
     - name: database_z3
-      templates: (( bbs_overrides.job_templates sql_lock_overrides.templates cf_networking_overrides.bbs_templates))
+      templates: (( bbs_overrides.job_templates sql_lock_overrides.templates cf_networking_overrides.bbs_templates_z3))
       instances: (( instance_count_overrides.database_z3.instances || 1 ))
       persistent_disk_pool: database_disks
       resource_pool: database_z3
@@ -975,6 +975,9 @@ cf_networking_overrides:
   garden_properties: (( merge || [] ))
   jobs: (( merge || [] ))
   bbs_templates: (( merge || [] ))
+  bbs_templates_z1: (( merge || cf_networking_overrides.bbs_templates ))
+  bbs_templates_z2: (( merge || cf_networking_overrides.bbs_templates ))
+  bbs_templates_z3: (( merge || cf_networking_overrides.bbs_templates ))
   bbs_consul_properties: (( merge || bbs_overrides.job_properties.consul ))
 
 route_emitter_overrides:
