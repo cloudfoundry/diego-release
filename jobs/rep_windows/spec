@@ -9,6 +9,8 @@ templates:
   ca_certs_for_downloads.crt.erb: config/certs/rep/ca_certs_for_downloads.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
+  instance_identity.crt.erb: config/certs/rep/instance_identity.crt
+  instance_identity.key.erb: config/certs/rep/instance_identity.key
   rep_ca.crt.erb: config/certs/ca.crt
   rep_server.crt.erb: config/certs/server.crt
   rep_server.key.erb: config/certs/server.key
