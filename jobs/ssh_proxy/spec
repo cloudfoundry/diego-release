@@ -89,5 +89,8 @@ properties:
     description: "capacity of the tls client cache"
   diego.ssh_proxy.bbs.max_idle_conns_per_host:
     description: "maximum number of idle http connections"
+  connect_to_instance_address:
+    description: "Connect directly to container IP instead of to the host IP and external port. Suitable only for deployments in which the gorouters and TCP routers can route directly to the container IP of instances."
+    default: false
 
 
