@@ -27,15 +27,15 @@ if (-Not (Get-NetFirewallRule | Where-Object { $_.DisplayName -eq "SecureRepPort
   }
 }
 
-# Set ACL on executor cache to open up to container users
-$cache_dir = "<%= p("diego.executor.cache_path") %>"
+# Set ACL on download cache to open up to container users
+$cache_dir = "/var/vcap/data/rep/download_cache"
 New-Item -Path $cache_dir -ItemType "directory" -Force
 $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", "ReadAndExecute", "ContainerInherit, ObjectInherit", "None", "Allow")
 $acl = Get-Acl $cache_dir
 $acl.AddAccessRule($rule)
 Set-Acl $cache_dir $acl
 
-$instance_identity_dir = "/var/vcap/data/executor/instance_identity"
+$instance_identity_dir = "/var/vcap/data/rep/instance_identity"
 New-Item -Path $instance_identity_dir -ItemType "directory" -Force
 $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", "ReadAndExecute", "ContainerInherit, ObjectInherit", "None", "Allow")
 $acl = Get-Acl $instance_identity_dir

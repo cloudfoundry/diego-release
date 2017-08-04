@@ -153,9 +153,6 @@ properties:
     default: 200000
   diego.executor.container_metrics_report_interval:
     description: "the frequency for emitting container metrics; should be a string that can be parsed by time.ParseDuration, such as 15s"
-  diego.executor.cache_path:
-    description: "path to the executor's cache"
-    default: "/var/vcap/data/executor_cache"
   diego.executor.max_cache_size_in_bytes:
     description: "maximum size of the cache in bytes - this should leave a healthy overhead for temporary items, etc."
     default: 10000000000

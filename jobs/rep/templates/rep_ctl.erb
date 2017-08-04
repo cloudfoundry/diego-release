@@ -4,8 +4,9 @@ run_dir=/var/vcap/sys/run/rep
 log_dir=/var/vcap/sys/log/rep
 conf_dir=/var/vcap/jobs/rep/config
 
-data_dir=/var/vcap/data/executor
-cache_dir=<%= p("diego.executor.cache_path") %>
+data_dir=/var/vcap/data/rep
+
+cache_dir=${data_dir}/download_cache
 tmp_dir=$data_dir/tmp
 
 pidfile=$run_dir/rep.pid
@@ -31,6 +32,8 @@ case $1 in
 
     mkdir -p $cache_dir
     chown -R vcap:vcap $cache_dir
+    # Remove old cache dir so that disk space isn't wasted
+    rm -rf /var/vcap/data/executor_cache
 
     # Key and Cert are generally ~2048 bytes. Add an extra 2048 for extra space
     # add another 4096 to account for the temp files used to do atomic replacement #141163257

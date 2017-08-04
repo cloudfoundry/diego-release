@@ -1,13 +1,14 @@
 <%=
   conf_dir = "/var/vcap/jobs/#{p("diego.rep.job_name")}/config"
-  tmp_dir = "/var/vcap/data/executor/tmp"
-  trusted_certs_dir = "/var/vcap/data/executor/trusted_certs"
-  instance_identity_dir = "/var/vcap/data/executor/instance_identity"
+  tmp_dir = "/var/vcap/data/rep/tmp"
+  trusted_certs_dir = "/var/vcap/data/rep/trusted_certs"
+  instance_identity_dir = "/var/vcap/data/rep/instance_identity"
+  download_cache_dir= "/var/vcap/data/rep/download_cache"
 
   config = {
     advertise_domain: p("diego.rep.advertise_domain"),
     auto_disk_capacity_overhead_mb: p("diego.executor.auto_disk_capacity_overhead_mb"),
-    cache_path: p("diego.executor.cache_path"),
+    cache_path: "#{download_cache_dir}",
     cell_id: spec.id,
     container_inode_limit: p("diego.executor.container_inode_limit"),
     container_max_cpu_shares: p("diego.executor.container_max_cpu_shares"),
