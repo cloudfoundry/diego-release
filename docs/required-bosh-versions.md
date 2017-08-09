@@ -2,7 +2,7 @@
 
 Deploying diego-release requires the following minimum versions of BOSH dependencies:
 
-- BOSH release v255.4+ (Director version 1.3213.0).
+- BOSH release v261+.
 - BOSH stemcell 3263+.
 
 These BOSH versions ensure the following BOSH lifecycle management operations occur on the Diego jobs:
