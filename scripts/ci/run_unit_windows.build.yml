@@ -4,11 +4,6 @@ platform: windows
 inputs:
   - name: diego-release
 
-params:
-  PACKAGE:
-  SCRIPT:
-  SQL_FLAVOR:
-
 run:
   path: powershell
   args:
