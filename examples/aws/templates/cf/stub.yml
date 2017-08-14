@@ -62,6 +62,7 @@ resource_pools:
   - name: large_z1
     cloud_properties:
       instance_type: (( merge ))
+      ephemeral_disk: (( merge ))
       availability_zone: (( merge ))
 
   - name: runner_z1
@@ -88,6 +89,7 @@ resource_pools:
   - name: large_z2
     cloud_properties:
       instance_type: (( merge ))
+      ephemeral_disk: (( merge ))
       availability_zone: (( merge ))
 
   - name: runner_z2
@@ -114,6 +116,7 @@ resource_pools:
   - name: large_z3
     cloud_properties:
       instance_type: (( merge ))
+      ephemeral_disk: (( merge ))
       availability_zone: (( merge ))
 
   - name: runner_z3

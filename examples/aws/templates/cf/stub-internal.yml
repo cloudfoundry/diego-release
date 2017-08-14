@@ -58,6 +58,9 @@ resource_pools:
   - name: large_z1
     cloud_properties:
       instance_type: (( instance_types.large ))
+      ephemeral_disk:
+        size: 32768
+        type: gp2
       availability_zone: (( meta.zones.z1 ))
 
   - name: runner_z1
@@ -84,6 +87,9 @@ resource_pools:
   - name: large_z2
     cloud_properties:
       instance_type: (( instance_types.large ))
+      ephemeral_disk:
+        size: 32768
+        type: gp2
       availability_zone: (( meta.zones.z2 ))
 
   - name: runner_z2
@@ -110,6 +116,9 @@ resource_pools:
   - name: large_z3
     cloud_properties:
       instance_type: (( instance_types.large ))
+      ephemeral_disk:
+        size: 32768
+        type: gp2
       availability_zone: (( meta.zones.z3 ))
 
   - name: runner_z3
