@@ -69,6 +69,8 @@ files:
   - code.cloudfoundry.org/go-loggregator/vendor/google.golang.org/grpc/status/*.go # gosub
   - code.cloudfoundry.org/go-loggregator/vendor/google.golang.org/grpc/tap/*.go # gosub
   - code.cloudfoundry.org/go-loggregator/vendor/google.golang.org/grpc/transport/*.go # gosub
+  - code.cloudfoundry.org/goshims/filepathshim/*.go # gosub
+  - code.cloudfoundry.org/goshims/grpcshim/*.go # gosub
   - code.cloudfoundry.org/goshims/http_wrap/*.go # gosub
   - code.cloudfoundry.org/goshims/osshim/*.go # gosub
   - code.cloudfoundry.org/lager/*.go # gosub
@@ -97,6 +99,7 @@ files:
   - code.cloudfoundry.org/volman/*.go # gosub
   - code.cloudfoundry.org/volman/vollocal/*.go # gosub
   - code.cloudfoundry.org/workpool/*.go # gosub
+  - github.com/Kaixiang/csiplugin/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
@@ -125,6 +128,8 @@ files:
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/serf/coordinate/*.go # gosub
   - github.com/hashicorp/go-multierror/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
+  - github.com/paulcwarren/spec/*.go # gosub
+  - github.com/paulcwarren/spec/csishim/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
   - github.com/tedsuo/ifrit/http_server/*.go # gosub
