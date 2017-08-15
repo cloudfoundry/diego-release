@@ -17,8 +17,8 @@ for binary in builder launcher; do
     ldd $binary && echo "$binary must be statically linked" && false
 done
 
-tar -xzf /var/vcap/packages/diego-sshd/diego-sshd.tgz
-tar -xzf /var/vcap/packages/diego-sshd/diego-sshd-windows.tgz
+cp /var/vcap/packages/diego-sshd/diego-sshd .
+cp /var/vcap/packages/diego-sshd/diego-sshd.exe .
 cp /var/vcap/packages/healthcheck/healthcheck .
 cp /var/vcap/packages/healthcheck/healthcheck.exe .
 
