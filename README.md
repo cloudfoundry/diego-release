@@ -67,7 +67,7 @@ The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) pre
 
 ### <a name="component-coordination"></a>Component Coordination
 
-- (**Experimental**) [Migrating from Consul to SQL Locks](docs/migrating-from-consul-to-sql-locks.md) explains how to migrate the BBS and auctioneer from coordinating around a lock in Consul to coordinating around one stored in the Diego relational database.
+- [Migrating from Consul to SQL Locks](docs/migrating-from-consul-to-sql-locks.md) explains how to migrate the BBS and auctioneer from coordinating around a lock in Consul to coordinating around one stored in the Diego relational database.
 
 
 ### <a name="monitoring-inspection"></a>Monitoring and Inspection

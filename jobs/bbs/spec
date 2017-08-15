@@ -158,13 +158,13 @@ properties:
     default: 0
 
   diego.bbs.locket.api_location:
-    description: "EXPERIMENTAL: hostname and port of the locket server"
+    description: "Hostname and port of the locket server"
   diego.bbs.skip_consul_lock:
     default: false
-    description: "EXPERIMENTAL: true to skip consul lock. locket.api_location must be set"
+    description: "True to skip consul lock. locket.api_location must be set"
   diego.bbs.detect_consul_cell_registrations:
     default: true
-    description: "EXPERIMENTAL: set to false only when the BBS uses Locket and all cells deployed register presences via Locket."
+    description: "Set to false only when the BBS uses Locket and all cells deployed register presences via Locket."
 
 
   loggregator.use_v2_api:

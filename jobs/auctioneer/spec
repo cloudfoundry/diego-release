@@ -84,10 +84,10 @@ properties:
     default: 4096
 
   diego.auctioneer.locket.api_location:
-    description: "EXPERIMENTAL: hostname and port of the locket server"
+    description: "Hostname and port of the locket server"
   diego.auctioneer.skip_consul_lock:
     default: false
-    description: "EXPERIMENTAL: true to skip consul lock. locket.api_location must be set"
+    description: "True to skip consul lock. locket.api_location must be set"
 
   loggregator.use_v2_api:
     description: "True to use local metron agent gRPC v2 api. False, to use UDP v1 api"

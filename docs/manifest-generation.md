@@ -26,7 +26,7 @@ This document is for describing options to Diego manifest generation.
     -B                      Opt out of deprecated CC bridge components.
     -R                      Opt into using local route-emitter configuration for cells.
     -r                      Opt into using cflinuxfs2-release.
-    -Q                      Opt into using sql locket service (EXPERIMENTAL).
+    -Q                      Opt into using sql locket service.
     -G                      Opt into using GrootFS container image orchestrator (EXPERIMENTAL).
     -L                      Opt into using garden-linux-release for cells. (DEPRECATED)
 
@@ -76,7 +76,7 @@ There is a change in release name from `cflinuxfs2-rootfs` to `cflinuxfs2`. The 
 
 To specify a specific version of `cflinuxfs2` the version can be set in the `release-versions` stub under `release_versions.cflinuxfs2`.
 
-##### **Experimental** -Q Opt into using sql locket service
+##### -Q Opt into using sql locket service
 
 The optional -Q flag is used to enable the BBS and Auctioneer to use the locket server for it's SQL lock.
 
