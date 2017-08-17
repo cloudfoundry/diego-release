@@ -1,7 +1,11 @@
 ---
 platform: linux
 
-rootfs_uri: docker:///cloudfoundry/diego-pipeline
+image_resource:
+  type: docker-image
+  source:
+    repository: cloudfoundry/diego-pipeline
+    tag: latest
 
 inputs:
   - name: diego-release
