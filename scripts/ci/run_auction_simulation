@@ -3,6 +3,9 @@
 
 set -e
 
+chown -R diego diego-release/
+
+
 cd diego-release
 
 export GOROOT=/usr/local/go
