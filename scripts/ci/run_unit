@@ -3,8 +3,6 @@
 
 set -e
 
-chown -R diego diego-release/
-
 cat << EOF > /etc/my.cnf
 [mysqld]
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
@@ -20,4 +18,4 @@ else
 fi
 
 
-su diego -p -c ./diego-release/scripts/ci/run_unit_internal
+./diego-release/scripts/ci/run_unit_internal

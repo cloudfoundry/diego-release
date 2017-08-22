@@ -1,7 +1,11 @@
 
 platform: linux
 
-rootfs_uri: docker:///cloudfoundry/inigo-ci
+image_resource:
+  type: docker-image
+  source:
+    repository: cloudfoundry/inigo-ci
+    tag: latest
 
 inputs:
 - name: diego-release
