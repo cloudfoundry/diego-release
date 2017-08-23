@@ -158,13 +158,13 @@ properties:
     default: 0
 
   diego.bbs.locket.api_location:
-    description: "Hostname and port of the locket server"
+    description: "Hostname and port of the Locket server. When set, the BBS attempts to claim a lock from the Locket API and will detect Diego cells registered with the Locket API."
   diego.bbs.skip_consul_lock:
     default: false
-    description: "True to skip consul lock. locket.api_location must be set"
+    description: "Set to 'true' for the BBS to skip acquiring a Consul lock. Requires 'diego.bbs.locket.api_location' to be set."
   diego.bbs.detect_consul_cell_registrations:
     default: true
-    description: "Set to false only when the BBS uses Locket and all cells deployed register presences via Locket."
+    description: "Whether the BBS should detect Diego cell registrations present in the Consul key-value store. To prevent unexpected loss of capacity, set to 'false' only when the BBS uses Locket and when all Diego cells in the cluster maintain their registrations via Locket."
 
 
   loggregator.use_v2_api:
