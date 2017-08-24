@@ -344,10 +344,6 @@
 	path = src/google.golang.org/grpc
 	url = https://github.com/grpc/grpc-go
 	branch = master
-[submodule "src/code.cloudfoundry.org/loggregator-api"]
-	path = src/code.cloudfoundry.org/loggregator-api
-	url = https://github.com/cloudfoundry/loggregator-api
-	branch = master
 [submodule "src/code.cloudfoundry.org/go-loggregator"]
 	path = src/code.cloudfoundry.org/go-loggregator
 	url = https://github.com/cloudfoundry-incubator/go-loggregator
@@ -384,3 +380,6 @@
 [submodule "src/github.com/jeffpak/local-node-plugin"]
 	path = src/github.com/jeffpak/local-node-plugin
 	url = https://github.com/jeffpak/local-node-plugin
+[submodule "src/code.cloudfoundry.org/diego-logging-client"]
+	path = src/code.cloudfoundry.org/diego-logging-client
+	url = https://github.com/cloudfoundry/diego-logging-client
