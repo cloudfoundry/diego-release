@@ -1,0 +1,5 @@
+set -e
+
+cd proxy
+tar -xzf envoy-1.3.0.tgz
+mv envoy ${BOSH_INSTALL_TARGET}

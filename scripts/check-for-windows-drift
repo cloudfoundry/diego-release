@@ -2,7 +2,7 @@
 
 cd `dirname $0`/..
 
-rep_json=$(cat jobs/rep/templates/rep.json.erb | grep -v declarative_healthcheck_path)
+rep_json=$(cat jobs/rep/templates/rep.json.erb | grep -v declarative_healthcheck_path | grep -v container_proxy)
 rep_windows_json=$(cat jobs/rep_windows/templates/rep.json.erb | grep -v declarative_healthcheck_path)
 
 if ! diff -u <(echo -e "$rep_windows_json") <(echo -e "$rep_json"); then
@@ -10,7 +10,7 @@ if ! diff -u <(echo -e "$rep_windows_json") <(echo -e "$rep_json"); then
     exit 1
 fi
 
-rep_properties=$(cat jobs/rep/spec | sed -n '/properties/,$P' | grep -E '^  [a-z].*$' | tr -d '[:blank:]' | grep -v volman | sort)
+rep_properties=$(cat jobs/rep/spec | sed -n '/properties/,$P' | grep -E '^  [a-z].*$' | tr -d '[:blank:]' | grep -v volman | grep -v container_proxy | sort)
 rep_windows_properties=$(cat jobs/rep_windows/spec | sed -n '/properties/,$P' | grep -E '^  [a-z].*$' | grep -v syslog | tr -d '[:blank:]' | sort)
 
 if ! diff -u <(echo -e "$rep_properties") <(echo -e "$rep_windows_properties"); then
