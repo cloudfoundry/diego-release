@@ -36,7 +36,7 @@ If a contribution is deemed to be covered by an existing CLA, then it is analyze
 fit before merging it.
 
 If a contribution is not covered by the CLA, then the automated CLA system notifies the submitter politely that we
-cannot identify their CLA and ask them to sign either an individual or corporate CLA. This happens automatially as a
+cannot identify their CLA and ask them to sign either an individual or corporate CLA. This happens automatically as a
 comment on pull requests.
 
 When the project receives a new CLA, it is recorded in the project records, the CLA is added to the database for the
