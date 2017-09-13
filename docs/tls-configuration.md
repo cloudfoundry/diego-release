@@ -223,13 +223,19 @@ following steps to successfully generate the required certificates.
 #### Experimental: TLS Certificates for Loggregator V2 API
 
 Since
-[loggregator release version 75](https://github.com/cloudfoundry/loggregator/releases/tag/v75) metron
-supports the loggregator V2 API which uses gRPC and supports TLS.
+[loggregator release version 75](https://github.com/cloudfoundry/loggregator/releases/tag/v75)
+metron supports the loggregator V2 API which uses gRPC and supports TLS.
 
-In order to enable the loggregator V2 API you need to set the following
-properties:
+The loggregator V2 API is enabled by default. In order to disable it and use
+the V1 API, set `loggregator.use_v2_api` to `false` in the overrides.
 
- * `loggregator.use_v2_api`: Set this to true
+For the V2 API, you will need a CA, a cert, and a key for Metron. To generate
+those values, see
+[the script](https://github.com/cloudfoundry/cf-release/blob/master/scripts/generate-loggregator-certs)
+in cf-release.
+
+You will need to update the following properties:
+
  * `loggregator.v2_api_port`: Set this to the loggregator gRPC port
    (`metron_agent.grpc_port`), this property has a default value that matches
    the default value of `metron`'s
@@ -245,15 +251,6 @@ properties:
 **NOTE:** The properties listed above need to be configured on the `rep`
 template of Diego. Differently to the other properties referenced in this
 document these are not global as that way of configuring BOSH is deprecated.
-
-Assuming the loggregator ca cert and key are located at
-`/path/to/loggregator-ca.crt` and `/path/to/loggregator-ca.key`, respectively.  Run
-the following commands to generate the client cert/key used by the rep:
-
-``` shell
-certstrap --depot-path /path/to request-cert --cn metron-client
-certstrap --depot-path /path/to sign --CA loggregator-ca metron-client
-```
 
 ### Custom TLS Certificate Generation
 
