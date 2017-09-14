@@ -34,3 +34,7 @@ properties:
   diego.file_server.dropsonde_port:
     description: "local metron agent's port"
     default: 3457
+
+  enable_consul_service_registration:
+    description: "Enable component to register itself as a service with consul, providing DNS"
+    default: true

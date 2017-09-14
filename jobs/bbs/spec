@@ -171,6 +171,10 @@ properties:
     default: true
     description: "Whether the BBS should detect Diego cell registrations present in the Consul key-value store. To prevent unexpected loss of capacity, set to 'false' only when the BBS uses Locket and when all Diego cells in the cluster maintain their registrations via Locket."
 
+  enable_consul_service_registration:
+    description: "Enable component to register itself as a service with consul, providing DNS"
+    default: true
+
 
   loggregator.use_v2_api:
     description: "True to use local metron agent gRPC v2 api. False, to use UDP v1 api"

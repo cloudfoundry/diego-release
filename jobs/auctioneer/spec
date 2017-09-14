@@ -93,6 +93,10 @@ properties:
     default: false
     description: "Set to 'true' for the auctioneer to skip acquiring a Consul lock. Requires 'diego.auctioneer.locket.api_location' to be set."
 
+  enable_consul_service_registration:
+    description: "Enable component to register itself as a service with consul, providing DNS"
+    default: true
+
   loggregator.use_v2_api:
     description: "True to use local metron agent gRPC v2 api. False, to use UDP v1 api"
     default: false

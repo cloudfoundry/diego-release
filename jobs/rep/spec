@@ -257,6 +257,9 @@ properties:
   diego.rep.locket.api_location:
     description: "Hostname and port of the Locket server. When set, the cell rep will establish its cell registration in the Locket API instead of in the Consul key-value store."
 
+  enable_consul_service_registration:
+    description: "Enable component to register itself as a service with consul, providing DNS"
+    default: true
   enable_declarative_healthcheck:
     description: "EXPERIMENTAL: When set, enables the rep to prefer the LRP CheckDefinition to healthcheck instances over the Monitor action."
     default: false

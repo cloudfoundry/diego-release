@@ -96,5 +96,6 @@ properties:
   connect_to_instance_address:
     description: "Connect directly to container IP instead of to the host IP and external port. Suitable only for deployments in which the gorouters and TCP routers can route directly to the container IP of instances."
     default: false
-
-
+  enable_consul_service_registration:
+    description: "Enable component to register itself as a service with consul, providing DNS"
+    default: true

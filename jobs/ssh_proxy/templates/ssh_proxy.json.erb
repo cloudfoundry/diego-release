@@ -4,6 +4,7 @@
     health_check_address: p("diego.ssh_proxy.healthcheck_listen_addr"),
     host_key: p("diego.ssh_proxy.host_key"),
     consul_cluster: "http://127.0.0.1:8500",
+    enable_consul_service_registration: p("enable_consul_service_registration"),
     cc_api_url: "http://#{p("diego.ssh_proxy.cc.internal_service_hostname")}:#{p("diego.ssh_proxy.cc.external_port")}",
     dropsonde_port: p("diego.ssh_proxy.dropsonde_port"),
     skip_cert_verify:  p("diego.ssl.skip_cert_verify"),
