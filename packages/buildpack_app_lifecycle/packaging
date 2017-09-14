@@ -18,11 +18,15 @@ for binary in builder launcher; do
 done
 
 cp /var/vcap/packages/diego-sshd/diego-sshd .
-cp /var/vcap/packages/diego-sshd/diego-sshd.exe .
+cp /var/vcap/packages/diego-sshd/*.exe .
+cp /var/vcap/packages/diego-sshd/winpty.dll .
 cp /var/vcap/packages/healthcheck/healthcheck .
 cp /var/vcap/packages/healthcheck/healthcheck.exe .
 
-tar -czf ${BOSH_INSTALL_TARGET}/buildpack_app_lifecycle.tgz builder launcher healthcheck diego-sshd  builder.exe launcher.exe healthcheck.exe diego-sshd.exe
+tar -czf ${BOSH_INSTALL_TARGET}/buildpack_app_lifecycle.tgz \
+  builder launcher healthcheck diego-sshd  \
+  builder.exe launcher.exe healthcheck.exe diego-sshd.exe \
+  winpty-agent.exe winpty.dll
 
 # clean up source artifacts
 rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg

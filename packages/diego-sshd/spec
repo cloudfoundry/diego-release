@@ -5,6 +5,7 @@ dependencies:
   - golang
 
 files:
+  - winpty/winpty-*.tgz
   - code.cloudfoundry.org/bbs/*.go # gosub
   - code.cloudfoundry.org/bbs/encryption/*.go # gosub
   - code.cloudfoundry.org/bbs/events/*.go # gosub
@@ -17,6 +18,7 @@ files:
   - code.cloudfoundry.org/diego-ssh/cmd/sshd/*.go # gosub
   - code.cloudfoundry.org/diego-ssh/daemon/*.go # gosub
   - code.cloudfoundry.org/diego-ssh/handlers/*.go # gosub
+  - code.cloudfoundry.org/diego-ssh/winpty/*.go # gosub
   - code.cloudfoundry.org/diego-ssh/helpers/*.go # gosub
   - code.cloudfoundry.org/diego-ssh/keys/*.go # gosub
   - code.cloudfoundry.org/diego-ssh/proxy/*.go # gosub
@@ -57,3 +59,4 @@ files:
   - golang.org/x/crypto/ed25519/*.go # gosub
   - golang.org/x/crypto/ed25519/internal/edwards25519/*.go # gosub
   - golang.org/x/crypto/ssh/*.go # gosub
+  - golang.org/x/sys/windows/**/*
