@@ -57,13 +57,7 @@ case $1 in
       mkdir -p "$trusted_certs_dir"
       chown -R vcap:vcap $trusted_certs_dir
 
-      # Split files on '----END CERTIFICATE-----' and increment our file counter by 1
-      pushd $trusted_certs_dir
-              awk -v n=1 '
-                      split_after == 1 {n++;split_after=0}
-                      /-----END CERTIFICATE-----/ {split_after=1}
-                      NF {print > "trusted_ca_" n ".crt"}' < $conf_dir/certs/rep/trusted_certs.crt
-      popd
+      /var/vcap/packages/certsplitter/bin/certsplitter $conf_dir/certs/rep/trusted_certs.crt $trusted_certs_dir
     <% end %>
 
     if running_in_container; then

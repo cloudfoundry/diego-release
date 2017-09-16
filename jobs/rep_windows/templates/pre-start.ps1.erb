@@ -41,3 +41,15 @@ $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", "
 $acl = Get-Acl $instance_identity_dir
 $acl.AddAccessRule($rule)
 Set-Acl $instance_identity_dir $acl
+
+$conf_dir = "C:/var/vcap/jobs/rep_windows/config"
+<% if_p("diego.rep.trusted_certs") do |value| %>
+  $trusted_certs_dir = "C:/var/vcap/data/rep/trusted_certs"
+  New-Item -Path $trusted_certs_dir -ItemType "directory" -Force
+  $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", "ReadAndExecute", "ContainerInherit, ObjectInherit", "None", "Allow")
+  $acl = Get-Acl $trusted_certs_dir
+  $acl.AddAccessRule($rule)
+  Set-Acl $trusted_certs_dir $acl
+
+  C:/var/vcap/packages/certsplitter_windows/certsplitter $conf_dir/certs/rep/trusted_certs.crt $trusted_certs_dir
+<% end %>
