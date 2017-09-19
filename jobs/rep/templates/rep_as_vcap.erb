@@ -7,7 +7,6 @@ pidfile=$run_dir/rep.pid
 
 echo $$ > $pidfile
 
-exec /var/vcap/jobs/rep/bin/rep \
 zone_flag=""
 <% if p("diego.rep.use_azure_fault_domains") %>
 set +e
