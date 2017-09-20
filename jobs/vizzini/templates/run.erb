@@ -33,6 +33,7 @@ verbose=<%= properties.vizzini.verbose %>
 routable_domain_suffix=<%= properties.vizzini.routable_domain_suffix %>
 ssh_proxy_address=<%= properties.vizzini.ssh.proxy_address  %>
 enable_declarative_healthcheck=<%= properties.enable_declarative_healthcheck %>
+enable_container_proxy_tests=<%= properties.enable_container_proxy_tests %>
 <% if_p("vizzini.ssh.proxy_secret") do |proxy_secret| %>
   ssh_proxy_secret_flag="--ssh-password=<%= proxy_secret %>"
 <% end %>
@@ -57,6 +58,7 @@ ginkgo \
   -- \
   ${bbs_sec_flags} \
   --enable-declarative-healthcheck=${enable_declarative_healthcheck} \
+  --enable-container-proxy-tests=${enable_container_proxy_tests} \
   --bbs-address=${bbs_api_url} \
   --ssh-address=${ssh_proxy_address} \
   <% Array(p("vizzini.rep.placement_tags")).each do |placement_tag| %> \

@@ -46,3 +46,7 @@ properties:
   enable_declarative_healthcheck:
     description: "EXPERIMENTAL: When set, enables the declarative check tests in vizzini"
     default: false
+
+  enable_container_proxy_tests:
+    description: "EXPERIMENTAL: When set, enables the container proxy tests in vizzini"
+    default: false
