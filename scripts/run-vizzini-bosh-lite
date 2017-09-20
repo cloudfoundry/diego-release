@@ -7,11 +7,12 @@ eval $($scripts_path/get_paths.sh)
 
 pushd ${DIEGO_RELEASE_DIR}/src/code.cloudfoundry.org/vizzini/
 ginkgo \
-  -nodes=${NODES:-2} \
+  -nodes=${NODES:-1} \
   -randomizeAllSpecs \
   "$@" \
   -- \
- -bbs-address="https://10.244.16.2:8889" \
- -bbs-client-cert=${DIEGO_RELEASE_DIR}/manifest-generation/bosh-lite-stubs/bbs-certs/client.crt \
- -bbs-client-key=${DIEGO_RELEASE_DIR}/manifest-generation/bosh-lite-stubs/bbs-certs/client.key
+ -bbs-address=${BBS_URL:-https://10.244.16.2:8889} \
+ -bbs-client-cert=${BBS_CERT_FILE:-${DIEGO_RELEASE_DIR}/manifest-generation/bosh-lite-stubs/bbs-certs/client.crt} \
+ -bbs-client-key=${BBS_KEY_FILE:-${DIEGO_RELEASE_DIR}/manifest-generation/bosh-lite-stubs/bbs-certs/client.key} \
+ -ssh-password=${DIEGO_SSH_PROXY_PASSWORD:-ssh-password}
 popd
