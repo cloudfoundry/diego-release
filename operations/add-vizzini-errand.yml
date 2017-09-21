@@ -34,10 +34,10 @@
         consul_server: nil
         consul_client: {from: consul_client_link}
 - type: replace
-  path: /instance_groups/name=diego-brain/jobs/name=ssh_proxy/properties/diego/ssh_proxy/enable_diego_auth?
+  path: /instance_groups/name=scheduler/jobs/name=ssh_proxy/properties/diego/ssh_proxy/enable_diego_auth?
   value: true
 - type: replace
-  path: /instance_groups/name=diego-brain/jobs/name=ssh_proxy/properties/diego/ssh_proxy/diego_credentials?
+  path: /instance_groups/name=scheduler/jobs/name=ssh_proxy/properties/diego/ssh_proxy/diego_credentials?
   value: "((ssh_proxy_diego_credentials))"
 - type: replace
   path: /variables/-

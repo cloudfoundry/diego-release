@@ -31,19 +31,19 @@
 
 # Enable for Diego Brain
 - type: replace
-  path: /instance_groups/name=diego-brain/jobs/-
+  path: /instance_groups/name=scheduler/jobs/-
   value:
     name: bpm
     release: bpm
 
 - type: replace
-  path: /instance_groups/name=diego-brain/jobs/name=auctioneer/properties/bpm?/enabled?
+  path: /instance_groups/name=scheduler/jobs/name=auctioneer/properties/bpm?/enabled?
   value: true
 
 - type: replace
-  path: /instance_groups/name=diego-brain/jobs/name=file_server/properties?/bpm?/enabled?
+  path: /instance_groups/name=scheduler/jobs/name=file_server/properties?/bpm?/enabled?
   value: true
 
 - type: replace
-  path: /instance_groups/name=diego-brain/jobs/name=ssh_proxy/properties/bpm?/enabled?
+  path: /instance_groups/name=scheduler/jobs/name=ssh_proxy/properties/bpm?/enabled?
   value: true
