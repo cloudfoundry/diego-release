@@ -327,9 +327,7 @@ bosh_ip=$(${gobosh} interpolate "${deployment_dir}/stubs/bosh/aws.yml" --path /e
 director_uuid=$("${gobosh}" \
   -e ${bosh_ip} \
   --ca-cert "$("${gobosh}" interpolate "${deployment_dir}/deployments/bosh/creds.yml" --path /director_ssl/ca)" \
-  env \
-  | grep UUID \
-  | cut -f2)
+  env --json | jq -r '.Tables[0].Rows[0].uuid')
 
 cat > stubs/director-uuid.yml <<EOF
 # GENERATED: NO TOUCHING
