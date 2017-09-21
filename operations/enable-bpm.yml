@@ -37,6 +37,12 @@
     release: bpm
 
 - type: replace
+  path: /instance_groups/name=api/jobs/-
+  value:
+    name: bpm
+    release: bpm
+
+- type: replace
   path: /instance_groups/name=scheduler/jobs/name=auctioneer/properties/bpm?/enabled?
   value: true
 
