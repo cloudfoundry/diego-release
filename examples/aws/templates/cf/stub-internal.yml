@@ -236,6 +236,31 @@ properties:
       syslogdrainbinder:
         cert: (( cf_credentials.loggregator.syslogdrainbinder_cert ))
         key: (( cf_credentials.loggregator.syslogdrainbinder_key ))
+      reverse_log_proxy:
+        cert: (( cf_credentials.loggregator.reverse_log_proxy_cert ))
+        key: (( cf_credentials.loggregator.reverse_log_proxy_key ))
+
+  scalablesyslog:
+    adapter:
+      tls:
+        ca: (( cf_credentials.scalablesyslog.adapter_ca_cert ))
+        cert: (( cf_credentials.scalablesyslog.adapter_cert ))
+        key: (( cf_credentials.scalablesyslog.adapter_key ))
+    adapter_rlp:
+      tls:
+        ca: (( cf_credentials.scalablesyslog.adapter_rlp_ca_cert ))
+        cert: (( cf_credentials.scalablesyslog.adapter_rlp_cert ))
+        key: (( cf_credentials.scalablesyslog.adapter_rlp_key ))
+    scheduler:
+      tls:
+        client:
+          ca: (( cf_credentials.scalablesyslog.scheduler_client_ca_cert ))
+          cert: (( cf_credentials.scalablesyslog.scheduler_client_cert ))
+          key: (( cf_credentials.scalablesyslog.scheduler_client_key ))
+        api:
+          ca: (( cf_credentials.scalablesyslog.scheduler_api_ca_cert ))
+          cert: (( cf_credentials.scalablesyslog.scheduler_api_cert ))
+          key: (( cf_credentials.scalablesyslog.scheduler_api_key ))
 
 Resources: (( merge ))
 Region: (( merge ))

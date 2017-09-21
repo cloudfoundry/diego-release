@@ -203,6 +203,31 @@ properties:
       syslogdrainbinder:
         cert: (( merge ))
         key: (( merge ))
+      reverse_log_proxy:
+        cert: (( merge ))
+        key: (( merge ))
+
+  scalablesyslog:
+    adapter:
+      tls:
+        ca: (( merge ))
+        cert: (( merge ))
+        key: (( merge ))
+    adapter_rlp:
+      tls:
+        ca: (( merge ))
+        cert: (( merge ))
+        key: (( merge ))
+    scheduler:
+      tls:
+        client:
+          ca: (( merge ))
+          cert: (( merge ))
+          key: (( merge ))
+        api:
+          ca: (( merge ))
+          cert: (( merge ))
+          key: (( merge ))
   login:
     saml:
       serviceProviderCertificate: (( merge ))

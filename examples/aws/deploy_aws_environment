@@ -80,6 +80,21 @@ $(block statsd_injector_cert   certs/statsd-injector-certs/statsdinjector.crt | 
 $(block statsd_injector_key    certs/statsd-injector-certs/statsdinjector.key | indent | indent)
 $(block syslogdrainbinder_cert certs/loggregator-certs/syslogdrainbinder.crt  | indent | indent)
 $(block syslogdrainbinder_key  certs/loggregator-certs/syslogdrainbinder.key  | indent | indent)
+$(block reverse_log_proxy_cert certs/loggregator-certs/reverselogproxy.crt  | indent | indent)
+$(block reverse_log_proxy_key  certs/loggregator-certs/reverselogproxy.key  | indent | indent)
+  scalablesyslog:
+$(block adapter_ca_cert certs/loggregator-certs/loggregator-ca.crt | indent | indent)
+$(block adapter_cert certs/loggregator-certs/ss-adapter.crt | indent | indent)
+$(block adapter_key certs/loggregator-certs/ss-adapter.key | indent | indent)
+$(block adapter_rlp_ca_cert certs/loggregator-certs/loggregator-ca.crt | indent | indent)
+$(block adapter_rlp_cert certs/loggregator-certs/ss-adapter-rlp.crt | indent | indent)
+$(block adapter_rlp_key certs/loggregator-certs/ss-adapter-rlp.key | indent | indent)
+$(block scheduler_client_ca_cert certs/loggregator-certs/loggregator-ca.crt | indent | indent)
+$(block scheduler_client_cert certs/loggregator-certs/ss-scheduler.crt | indent | indent)
+$(block scheduler_client_key certs/loggregator-certs/ss-scheduler.key | indent | indent)
+$(block scheduler_api_ca_cert certs/cf-diego-certs/cf-diego-ca.crt | indent | indent)
+$(block scheduler_api_cert certs/loggregator-certs/ss-scheduler-api.crt | indent | indent)
+$(block scheduler_api_key certs/loggregator-certs/ss-scheduler-api.key | indent | indent)
 EOF
 }
 

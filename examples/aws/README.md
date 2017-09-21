@@ -525,16 +525,27 @@ DEPLOYMENT_DIR/certs
 |- locket-certs           # generated via diego-release/scripts/generate-diego-certs
 |  |- server.crt
 |  |- server.key
-|- loggregator-certs      # generated via cf-release/scripts/generate-loggregator-certs
-|  |- doppler.crt
-|  |- doppler.key
+|- loggregator-certs      # generated via cf-release/scripts/generate-loggregator-certs & cf-syslog-drain-release/scripts/generate-certs
 |  |- loggregator-ca.crt
-|  |- metron.crt
-|  |- metron.key
-|  |- syslogdrainbinder.crt
-|  |- syslogdrainbinder.key
+|  |- loggregator-ca.key
 |  |- trafficcontroller.crt
 |  |- trafficcontroller.key
+|  |- doppler.crt
+|  |- doppler.key
+|  |- metron.crt
+|  |- metron.key
+|  |- reverselogproxy.crt
+|  |- reverselogproxy.key
+|  |- ss-adapter.crt
+|  |- ss-adapter.key
+|  |- ss-adapter-rlp.crt
+|  |- ss-adapter-rlp.key
+|  |- ss-scheduler-api.crt
+|  |- ss-scheduler-api.key
+|  |- ss-scheduler.crt
+|  |- ss-scheduler.key
+|  |- syslogdrainbinder.crt
+|  |- syslogdrainbinder.key
 |- rep-certs              # generated via diego-release/scripts/generate-diego-certs
 |  |- client.crt
 |  |- client.key
