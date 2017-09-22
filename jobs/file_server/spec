@@ -36,5 +36,5 @@ properties:
     default: 3457
 
   enable_consul_service_registration:
-    description: "Enable component to register itself as a service with consul, providing DNS"
+    description: "Enable the file-server to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."
     default: true

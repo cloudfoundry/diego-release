@@ -256,7 +256,7 @@ properties:
     description: "Hostname and port of the locket server"
 
   enable_consul_service_registration:
-    description: "Enable component to register itself as a service with consul, providing DNS"
+    description: "Enable the cell rep to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."
     default: true
   enable_declarative_healthcheck:
     description: "EXPERIMENTAL: When set, enables the rep to prefer the LRP CheckDefinition to healthcheck instances over the Monitor action."

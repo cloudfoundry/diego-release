@@ -172,7 +172,7 @@ properties:
     description: "Whether the BBS should detect Diego cell registrations present in the Consul key-value store. To prevent unexpected loss of capacity, set to 'false' only when the BBS uses Locket and when all Diego cells in the cluster maintain their registrations via Locket."
 
   enable_consul_service_registration:
-    description: "Enable component to register itself as a service with consul, providing DNS"
+    description: "Enable the BBS to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."
     default: true
 
 

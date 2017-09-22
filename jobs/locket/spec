@@ -68,7 +68,7 @@ properties:
   diego.locket.sql.ca_cert:
     description: "Bundle of CA certificates for the Locket to verify the SQL server SSL certificate when connecting via SSL"
   enable_consul_service_registration:
-    description: "Enable component to register itself as a service with consul, providing DNS"
+    description: "Enable the Locket server to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."
     default: true
   loggregator.use_v2_api:
     description: "True to use local metron agent gRPC v2 api. False, to use UDP v1 api"
