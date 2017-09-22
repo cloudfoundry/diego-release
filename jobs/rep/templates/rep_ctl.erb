@@ -58,6 +58,7 @@ case $1 in
       chown -R vcap:vcap $trusted_certs_dir
 
       /var/vcap/packages/certsplitter/bin/certsplitter $conf_dir/certs/rep/trusted_certs.crt $trusted_certs_dir
+      chmod +r ${trusted_certs_dir}/*
     <% end %>
 
     if running_in_container; then
