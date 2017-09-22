@@ -21,7 +21,7 @@ packages:
 
 properties:
   bpm.enabled:
-    description: "Enable Bosh Process Manager for diego components"
+    description: "Experimental: use the BOSH Process Manager to manage the ssh-proxy process."
     default: false
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"

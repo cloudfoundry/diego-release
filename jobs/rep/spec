@@ -40,7 +40,7 @@ packages:
 
 properties:
   bpm.enabled:
-    description: "Enable Bosh Process Manager for diego components"
+    description: "Experimental: use the BOSH Process Manager to manage the cell rep process."
     default: false
   diego.rep.listen_addr:
     description: "address to serve auction and LRP stop requests on"

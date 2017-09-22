@@ -21,7 +21,7 @@ packages:
 
 properties:
   bpm.enabled:
-    description: "Enable Bosh Process Manager for diego components"
+    description: "Experimental: use the BOSH Process Manager to manage the Locket process."
     default: false
   tls.ca_cert:
     description: "ca cert for locket server mutual auth tls"

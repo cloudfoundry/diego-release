@@ -32,7 +32,7 @@ packages:
 
 properties:
   bpm.enabled:
-    description: "Enable Bosh Process Manager for diego components"
+    description: "Experimental: use the BOSH Process Manager to manage the BBS process."
     default: false
   diego.bbs.auctioneer.api_url:
     description: "URL of the auctioneer API. Deprecated in favor of api_location, but in use through Diego v1."
