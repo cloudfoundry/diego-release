@@ -309,6 +309,12 @@ base:
       properties:
         metron_agent:
           zone: z1
+        tcp:
+          enabled: (( property_overrides.tcp_emitter.enabled || nil ))
+        routing_api:
+          url: (( property_overrides.tcp_emitter.routing_api_url || nil ))
+          port:  (( property_overrides.tcp_emitter.routing_api_port || nil ))
+        uaa: *route_emitter_uaa_configuration
 
     - name: access_z1
       templates: (( base_job_templates.access ))
@@ -391,6 +397,12 @@ base:
       properties:
         metron_agent:
           zone: z2
+        tcp:
+          enabled: (( property_overrides.tcp_emitter.enabled || nil ))
+        routing_api:
+          url: (( property_overrides.tcp_emitter.routing_api_url || nil ))
+          port:  (( property_overrides.tcp_emitter.routing_api_port || nil ))
+        uaa: *route_emitter_uaa_configuration
 
     - name: access_z2
       templates: (( base_job_templates.access ))
@@ -473,6 +485,12 @@ base:
       properties:
         metron_agent:
           zone: z3
+        tcp:
+          enabled: (( property_overrides.tcp_emitter.enabled || nil ))
+        routing_api:
+          url: (( property_overrides.tcp_emitter.routing_api_url || nil ))
+          port:  (( property_overrides.tcp_emitter.routing_api_port || nil ))
+        uaa: *route_emitter_uaa_configuration
 
     - name: access_z3
       templates: (( base_job_templates.access ))
