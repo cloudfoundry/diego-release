@@ -266,5 +266,5 @@ properties:
     default: false
 
   container_proxy.enabled:
-    description: "EXPERIMENTAL: Enable envoy proxy on garden containers"
+    description: "EXPERIMENTAL: Enable envoy proxy on garden containers. Requires valid TLS credentials in diego.executor.instance_identity_ca_cert and diego.executor.instance_identity_key."
     default: false

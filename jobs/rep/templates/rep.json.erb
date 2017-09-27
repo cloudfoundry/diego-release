@@ -151,6 +151,15 @@
     config[:locket_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
   end
 
+  if config[:enable_container_proxy]
+    begin
+      p("diego.executor.instance_identity_ca_cert")
+      p("diego.executor.instance_identity_key")
+    rescue
+      raise '"when container_proxy.enabled is true, diego.executor.instance_identity_ca_cert" and "diego.executor.instance_identity_key" must both be set'
+    end
+  end
+
   if_p("diego.executor.instance_identity_ca_cert",
        "diego.executor.instance_identity_key",
        "diego.executor.instance_identity_validity_period_in_hours") do |cert, key, validity_period|
