@@ -1,11 +1,13 @@
 ---
 processes:
-  rep:
-    executable: /var/vcap/jobs/rep/bin/rep
-    limits:
-      open_files: 100000
-    hooks:
-      pre_start: /var/vcap/jobs/rep/bin/bpm-pre-start
-    volumes:
-      - <%= p("diego.executor.volman.driver_paths") %>
-      - /var/vcap/data/garden
+- name: rep
+  executable: /var/vcap/jobs/rep/bin/rep
+  limits:
+    open_files: 100000
+  hooks:
+    pre_start: /var/vcap/jobs/rep/bin/bpm-pre-start
+  volumes:
+    - path: <%= p("diego.executor.volman.driver_paths") %>
+      writable: true
+    - path : /var/vcap/data/garden
+      writable: true

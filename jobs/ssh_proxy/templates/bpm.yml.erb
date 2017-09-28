@@ -1,6 +1,6 @@
 ---
 processes:
-  ssh_proxy:
-    executable: /var/vcap/packages/ssh_proxy/bin/ssh-proxy
-    args:
-      - -config=/var/vcap/jobs/ssh_proxy/config/ssh_proxy.json
+- name: ssh_proxy
+  executable: /var/vcap/packages/ssh_proxy/bin/ssh-proxy
+  args:
+    - -config=/var/vcap/jobs/ssh_proxy/config/ssh_proxy.json
