@@ -261,3 +261,7 @@ properties:
   enable_declarative_healthcheck:
     description: "EXPERIMENTAL: When set, enables the rep to prefer the LRP CheckDefinition to healthcheck instances over the Monitor action."
     default: false
+
+  container_proxy.enabled:
+    description: "EXPERIMENTAL: Enable envoy proxy on garden containers. Currently doesn't work on windows cells but left here for compatability with the linux Rep"
+    default: false
