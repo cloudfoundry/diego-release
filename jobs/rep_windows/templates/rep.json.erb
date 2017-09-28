@@ -19,8 +19,11 @@
     dropsonde_port: p("diego.rep.dropsonde_port"),
     enable_consul_service_registration: p("enable_consul_service_registration"),
     enable_declarative_healthcheck: p("enable_declarative_healthcheck"),
-    enable_legacy_api_endpoints: p("diego.rep.enable_legacy_api_endpoints"),
     declarative_healthcheck_path: "/var/vcap/packages/healthcheck_windows",
+    enable_container_proxy: p("container_proxy.enabled"),
+    container_proxy_path: "/var/vcap/packages/proxy",
+    container_proxy_config_path: "/var/vcap/data/rep/proxy_config",
+    enable_legacy_api_endpoints: p("diego.rep.enable_legacy_api_endpoints"),
     evacuation_polling_interval: "#{p("diego.rep.evacuation_polling_interval_in_seconds")}s",
     evacuation_timeout: "#{p("diego.rep.evacuation_timeout_in_seconds")}s",
     export_network_env_vars: p("diego.executor.export_network_env_vars"),
@@ -146,6 +149,15 @@
     config[:locket_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
     config[:locket_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"
     config[:locket_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
+  end
+
+  if config[:enable_container_proxy]
+    begin
+      p("diego.executor.instance_identity_ca_cert")
+      p("diego.executor.instance_identity_key")
+    rescue
+      raise '"when container_proxy.enabled is true, diego.executor.instance_identity_ca_cert" and "diego.executor.instance_identity_key" must both be set'
+    end
   end
 
   if_p("diego.executor.instance_identity_ca_cert",
