@@ -6,7 +6,7 @@ processes:
     open_files: 100000
   hooks:
     pre_start: /var/vcap/jobs/rep/bin/bpm-pre-start
-  volumes:
+  additional_volumes:
     - path: <%= p("diego.executor.volman.driver_paths") %>
       writable: true
     - path : /var/vcap/data/garden
