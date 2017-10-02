@@ -4,7 +4,7 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: cloudfoundry/diego-units-ci
+    repository: cfdiegodocker/diego-units-ci-privileged
     tag: latest
 
 inputs:
