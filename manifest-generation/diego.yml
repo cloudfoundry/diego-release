@@ -165,7 +165,7 @@ base:
           key:     (( property_overrides.locket.tls.key || nil ))
         database:
           max_open_connections: (( property_overrides.locket.database.max_open_connections || nil ))
-        loggregator: &database-loggregator
+        loggregator: &loggregator-properties
           use_v2_api:  (( property_overrides.loggregator.use_v2_api || nil ))
           v2_api_port: (( config_from_cf.metron_agent.grpc_port || nil ))
           ca_cert:     (( property_overrides.loggregator.tls.ca_cert || config_from_cf.loggregator.tls.ca_cert || nil ))
@@ -193,7 +193,7 @@ base:
           key:     (( property_overrides.locket.tls.key || nil ))
         database:
           max_open_connections: (( property_overrides.locket.database.max_open_connections || nil ))
-        loggregator: *database-loggregator
+        loggregator: *loggregator-properties
 
     - name: database_z3
       templates: (( bbs_overrides.job_templates sql_lock_overrides.templates cf_networking_overrides.bbs_templates_z3))
@@ -216,7 +216,7 @@ base:
           key:     (( property_overrides.locket.tls.key || nil ))
         database:
           max_open_connections: (( property_overrides.locket.database.max_open_connections || nil ))
-        loggregator: *database-loggregator
+        loggregator: *loggregator-properties
 
     - name: brain_z1
       templates: (( base_job_templates.brain ))
@@ -230,13 +230,7 @@ base:
       properties:
         metron_agent:
           zone: z1
-        loggregator: &brain-loggregator
-          use_v2_api:  (( property_overrides.loggregator.use_v2_api || nil ))
-          v2_api_port: (( config_from_cf.metron_agent.grpc_port || nil ))
-          ca_cert:     (( property_overrides.loggregator.tls.ca_cert || config_from_cf.loggregator.tls.ca_cert || nil ))
-          cert:        (( property_overrides.loggregator.tls.cert || nil ))
-          key:         (( property_overrides.loggregator.tls.key || nil))
-
+        loggregator: *loggregator-properties
     - name: cell_z1
       templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates grootfs_overrides.templates ))
       instances: (( instance_count_overrides.cell_z1.instances || 1 ))
@@ -255,12 +249,7 @@ base:
           cert: (( property_overrides.cell.tls.cert || property_overrides.rep.server_cert || nil ))
           key: (( property_overrides.cell.tls.key || property_overrides.rep.server_key || nil ))
           ca_cert: (( property_overrides.cell.tls.ca_cert || property_overrides.rep.ca_cert || nil ))
-        loggregator: &cell-loggregator
-          use_v2_api:  (( property_overrides.loggregator.use_v2_api || nil ))
-          v2_api_port: (( config_from_cf.metron_agent.grpc_port || nil ))
-          ca_cert:     (( property_overrides.loggregator.tls.ca_cert || config_from_cf.loggregator.tls.ca_cert || nil ))
-          cert:        (( property_overrides.loggregator.tls.cert || nil ))
-          key:         (( property_overrides.loggregator.tls.key || nil))
+        loggregator: *loggregator-properties
         metron_agent:
           zone: z1
         diego:
@@ -307,6 +296,7 @@ base:
         serial: false
         max_in_flight: (( instance_count_overrides.route_emitter_z1.max_in_flight || 1 ))
       properties:
+        loggregator: *loggregator-properties
         metron_agent:
           zone: z1
         tcp:
@@ -341,7 +331,7 @@ base:
       properties:
         metron_agent:
           zone: z2
-        loggregator: *brain-loggregator
+        loggregator: *loggregator-properties
 
     - name: cell_z2
       templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates grootfs_overrides.templates ))
@@ -353,7 +343,7 @@ base:
         serial: false
         max_in_flight: (( instance_count_overrides.cell_z2.max_in_flight || 1 ))
       properties:
-        loggregator: *cell-loggregator
+        loggregator: *loggregator-properties
         tls: *cell-tls-configuration
         metron_agent:
           zone: z2
@@ -395,6 +385,7 @@ base:
         serial: false
         max_in_flight: (( instance_count_overrides.route_emitter_z2.max_in_flight || 1 ))
       properties:
+        loggregator: *loggregator-properties
         metron_agent:
           zone: z2
         tcp:
@@ -429,7 +420,7 @@ base:
       properties:
         metron_agent:
           zone: z3
-        loggregator: *brain-loggregator
+        loggregator: *loggregator-properties
 
     - name: cell_z3
       templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates grootfs_overrides.templates ))
@@ -442,7 +433,7 @@ base:
         max_in_flight: (( instance_count_overrides.cell_z3.max_in_flight || 1 ))
       properties:
         tls: *cell-tls-configuration
-        loggregator: *cell-loggregator
+        loggregator: *loggregator-properties
         metron_agent:
           zone: z3
         diego:
@@ -483,6 +474,7 @@ base:
         serial: false
         max_in_flight: (( instance_count_overrides.route_emitter_z3.max_in_flight || 1 ))
       properties:
+        loggregator: *loggregator-properties
         metron_agent:
           zone: z3
         tcp:
