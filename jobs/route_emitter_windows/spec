@@ -8,6 +8,9 @@ templates:
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
   uaa_ca.crt.erb: config/certs/uaa/ca.crt
+  loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
+  loggregator_client.crt.erb: config/certs/loggregator/client.crt
+  loggregator_client.key.erb: config/certs/loggregator/client.key
 
 packages:
   - route_emitter_windows
