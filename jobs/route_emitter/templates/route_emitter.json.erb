@@ -65,6 +65,7 @@
     config[:cell_id] = spec.id
   end
 
+  config[:enable_internal_emitter] = p("internal_routes.enabled")
   config[:enable_tcp_emitter] = p("tcp.enabled")
   config[:routing_api] = {}
   if_p("routing_api.url") do |value|

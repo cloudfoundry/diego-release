@@ -81,6 +81,10 @@ properties:
     description: "Syslog transport protocol (tcp or udp)"
     default: "udp"
 
+  internal_routes.enabled:
+    description: "Experimental: Enable the route-emitter to emit registrations for internal DNS-based service discovery."
+    default: false
+
   tcp.enabled:
     description: "Enable the route-emitter in cell-local mode to emit TCP routes for instances to the Routing API."
     default: false
