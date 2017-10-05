@@ -31,13 +31,13 @@ if ($LastExitCode -ne 0) {
 }
 
 Write-Host "Downloading winpty DLL"
-$WINPTY_DIR = "C:/winpty"
+$WINPTY_DIR = "C:\winpty"
 if(!(Test-Path -Path $WINPTY_DIR )) {
     New-Item -ItemType directory -Path $WINPTY_DIR
-    (New-Object System.Net.WebClient).DownloadFile('https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip', "$WINPTY_DIR/winpty.zip")
-    [System.IO.Compression.ZipFile]::ExtractToDirectory("$WINPTY_DIR/winpty.zip", "$WINPTY_DIR")
+    (New-Object System.Net.WebClient).DownloadFile('https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip', "$WINPTY_DIR\winpty.zip")
+    [System.IO.Compression.ZipFile]::ExtractToDirectory("$WINPTY_DIR\winpty.zip", "$WINPTY_DIR")
 }
-$env:WINPTY_DLL_PATH="$WINPTY_DIR/x64/bin/winpty.dll"
+$env:WINPTY_DLL_DIR="$WINPTY_DIR\x64\bin"
 
 Write-Host "Running store-independent test suites against a MySQL database..."
 $env:SQL_FLAVOR="mysql"
