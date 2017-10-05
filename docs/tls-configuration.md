@@ -113,7 +113,7 @@ following steps to successfully generate the required certificates.
    Created out/locket.service.cf.internal.crt from out/locket.service.cf.internal.csr signed by out/diegoCA.key
    ```
 
-   **Note** the following properties must be set in the `database` job, see the `locket` spec file for more information:
+   **Note** the following properties must be set in the `database` instance_group, see the `locket` job spec file for more information:
    - `properties.tls.ca_cert`: The BBS/Locket mutual TLS certificate authority
    - `properties.tls.cert`:
    - `properties.tls.key`:
@@ -178,7 +178,7 @@ following steps to successfully generate the required certificates.
    Created out/clientName.crt from out/clientName.csr signed by out/cf-diego-ca.key
    ```
 
-   **Note** the following properties must be set in the `cell` job, see the `rep` spec file for more information:
+   **Note** the following properties must be set in the `cell` instance_group, see the `rep` job spec file for more information:
    - `properties.tls.ca_cert`: The CF/Diego mutual TLS certificate authority
    - `properties.tls.cert`
    - `properties.tls.key`
