@@ -14,6 +14,15 @@ files:
   - code.cloudfoundry.org/dockerapplifecycle/launcher/*.go # gosub
   - code.cloudfoundry.org/dockerapplifecycle/protocol/*.go # gosub
   - github.com/Sirupsen/logrus/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/credhub/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/credhub/auth/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/credhub/auth/uaa/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/credhub/credentials/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/credhub/credentials/generate/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/credhub/credentials/values/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/credhub/permissions/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/credhub/server/*.go # gosub
+  - github.com/cloudfoundry-incubator/credhub-cli/vendor/github.com/hashicorp/go-version/*.go # gosub
   - github.com/docker/distribution/*.go # gosub
   - github.com/docker/distribution/context/*.go # gosub
   - github.com/docker/distribution/digest/*.go # gosub
