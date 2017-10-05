@@ -11,7 +11,7 @@ if ! diff -u <(echo -e "$rep_windows_json") <(echo -e "$rep_json"); then
 fi
 
 rep_properties=$(cat jobs/rep/spec | sed -n '/properties/,$P' | grep -E '^  [a-z].*$' | tr -d '[:blank:]' | grep -v volman | grep -v bpm | sort)
-rep_windows_properties=$(cat jobs/rep_windows/spec | sed -n '/properties/,$P' | grep -E '^  [a-z].*$' | grep -v syslog | tr -d '[:blank:]' | sort)
+rep_windows_properties=$(cat jobs/rep_windows/spec | sed -n '/properties/,$P' | grep -E '^  [a-z].*$' | grep -v syslog | grep -v diego.rep.open_bindmounts_acl | tr -d '[:blank:]' | sort)
 
 if ! diff -u <(echo -e "$rep_properties") <(echo -e "$rep_windows_properties"); then
     echo "rep specs have drifted"

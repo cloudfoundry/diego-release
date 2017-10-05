@@ -67,6 +67,9 @@ properties:
   diego.rep.trusted_certs:
     description: "Concatenation of trusted CA certificates to be made available on the cell."
     default: null
+  diego.rep.open_bindmounts_acl:
+    description: "Add more permissive ACLs to directories that are bind mounted into containers. Required for Windows 2016 cells"
+    default: false
 
   loggregator.use_v2_api:
     description: "True to use local metron agent gRPC v2 api. False, to use UDP v1 api"
