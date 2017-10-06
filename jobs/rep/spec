@@ -22,6 +22,7 @@ templates:
   rep.json.erb: config/rep.json
   bpm.yml.erb: config/bpm.yml
   bpm-pre-start.erb: bin/bpm-pre-start
+  mount_instance_identity.erb: bin/mount_instance_identity
   pre-start.erb: bin/pre-start
   post-start.erb: bin/post-start
   loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
