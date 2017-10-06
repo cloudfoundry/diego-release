@@ -316,6 +316,7 @@ base:
         serial: false
         max_in_flight: (( instance_count_overrides.access_z1.max_in_flight || 1 ))
       properties:
+        loggregator: *loggregator-properties
         metron_agent:
           zone: z1
 
@@ -405,6 +406,7 @@ base:
         serial: false
         max_in_flight: (( instance_count_overrides.access_z2.max_in_flight || 1))
       properties:
+        loggregator: *loggregator-properties
         metron_agent:
           zone: z2
 
@@ -494,6 +496,7 @@ base:
         serial: false
         max_in_flight: (( instance_count_overrides.access_z3.max_in_flight || 1))
       properties:
+        loggregator: *loggregator-properties
         metron_agent:
           zone: z3
 
