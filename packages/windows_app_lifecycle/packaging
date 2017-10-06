@@ -13,7 +13,7 @@ GOOS=windows CGO_ENABLED=0 go build -tags=windows2012R2 -a -installsuffix static
 mkdir -p tmp
 tar -xzf tar/tar-*.tgz -C tmp
 
-cp /var/vcap/packages/diego-sshd/diego-sshd-external-port.exe diego-sshd.exe
+cp /var/vcap/packages/diego-sshd/diego-sshd-windows2012R2.exe diego-sshd.exe
 cp /var/vcap/packages/healthcheck/healthcheck-external-port.exe healthcheck.exe
 cp tmp/tar-*.exe tar.exe
 
