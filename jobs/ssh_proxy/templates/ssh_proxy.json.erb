@@ -78,6 +78,7 @@
     config[:loggregator][:loggregator_job_index] = spec.id
     config[:loggregator][:loggregator_job_ip] = spec.address
     config[:loggregator][:loggregator_job_origin] = "ssh_proxy"
+    config[:loggregator][:loggregator_batch_max_size] = 1
   end
 
   config.to_json
