@@ -3,16 +3,26 @@
 
 set -e
 
-cat << EOF > /etc/my.cnf
+function initialize_mysql {
+    cat << EOF > /etc/my.cnf
 [mysqld]
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 EOF
+    datadir=/mysql-datadir
+    escaped_datadir=${datadir/\//\\\/}
+    mkdir $datadir
+    mount -t tmpfs -o size=2g tmpfs $datadir
+    rsync -av --progress /var/lib/mysql/ $datadir
+    sed -i "s/datadir.*/datadir=${escaped_datadir}/g" /etc/mysql/mysql.conf.d/mysqld.cnf
+}
 
 if [ "${SQL_FLAVOR}" = "mysql" ]; then
+  initialize_mysql
   service mysql start
 elif [ "${SQL_FLAVOR}" = "postgres" ]; then
   service postgresql start
 else
+  initialize_mysql
   service mysql start
   service postgresql start
 fi
