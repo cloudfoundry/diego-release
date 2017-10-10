@@ -1,15 +1,14 @@
 ---
 platform: linux
 
-rootfs_uri: docker:///cloudfoundry/diego-units-ci#latest
+image_resource:
+  type: docker-image
+  source:
+    repository: cloudfoundry/diego-units-ci
+    tag: latest
 
 inputs:
   - name: diego-release
-
-params:
-  PACKAGE:
-  SCRIPT:
-  SQL_FLAVOR:
 
 run:
   path: diego-release/scripts/ci/run_auction_simulation
