@@ -19,6 +19,7 @@ grootfs_overrides:
   templates:
   - name: grootfs
     release: grootfs
+    consumes: {rootless_link: nil}
 
 property_overrides: (( merge || nil ))
 
