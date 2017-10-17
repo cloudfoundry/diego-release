@@ -57,6 +57,9 @@ sync_package docker_app_lifecycle    -app  code.cloudfoundry.org/dockerapplifecy
 sync_package buildpack_app_lifecycle -app  code.cloudfoundry.org/buildpackapplifecycle/builder \
   -app code.cloudfoundry.org/buildpackapplifecycle/launcher &
 
+sync_package windows_app_lifecycle -app  code.cloudfoundry.org/buildpackapplifecycle/builder \
+  -app code.cloudfoundry.org/buildpackapplifecycle/launcher &
+
 sync_package vizzini \
   -test code.cloudfoundry.org/vizzini/... \
   -app github.com/onsi/ginkgo/ginkgo &
