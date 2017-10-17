@@ -188,10 +188,8 @@ chmod 0600 "$cert_file"
 chmod 0600 "$key_file"
 
 if [ "${SQL_FLAVOR}" = "mysql" ]; then
-  cat << EOF > /etc/my.cnf
-[mysqld]
-sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
-EOF
+  source initialize_mysql.sh
+
   sed -i 's/#max_connections.*= 100/max_connections = 2000/g' /etc/mysql/mysql.conf.d/mysqld.cnf
 
   chown mysql:mysql "$ca_file"
@@ -201,8 +199,7 @@ EOF
   sed -i "s%# ssl-cert=/etc/mysql/server-cert.pem%ssl-cert=$cert_file%g" /etc/mysql/mysql.conf.d/mysqld.cnf
   sed -i "s%# ssl-key=/etc/mysql/server-key.pem%ssl-key=$key_file%g" /etc/mysql/mysql.conf.d/mysqld.cnf
   sed -i "s%# ssl-ca=/etc/mysql/cacert.pem%ssl-ca=$ca_file%g" /etc/mysql/mysql.conf.d/mysqld.cnf
-
-  service mysql start
+  initialize_mysql
 else
   sed -i 's/max_connections = 100/max_connections = 2000/g' /etc/postgresql/9.4/main/postgresql.conf
 
