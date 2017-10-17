@@ -188,7 +188,7 @@ chmod 0600 "$cert_file"
 chmod 0600 "$key_file"
 
 if [ "${SQL_FLAVOR}" = "mysql" ]; then
-  source initialize_mysql.sh
+  source ${GOPATH_ROOT}/scripts/ci/initialize_mysql.sh
 
   sed -i 's/#max_connections.*= 100/max_connections = 2000/g' /etc/mysql/mysql.conf.d/mysqld.cnf
 
