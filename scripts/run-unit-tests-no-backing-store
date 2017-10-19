@@ -42,6 +42,7 @@ SKIP_PACKAGES="$SKIP_PACKAGES,./veritas"
 SKIP_PACKAGES="$SKIP_PACKAGES,./vizzini"
 SKIP_PACKAGES="$SKIP_PACKAGES,./systemcerts"
 SKIP_PACKAGES="$SKIP_PACKAGES,./credhub-cli"
+SKIP_PACKAGES="$SKIP_PACKAGES,./cfdot/integration"
 ERROR_CODE=0
 
 if [ -z "${RUN_SQL_TESTS}" ]; then

@@ -27,6 +27,7 @@ pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/ > /dev/null
     locket/cmd/locket \
     locket/db \
     rep/cmd/rep \
+    cfdot/integration \
     rep/generator/internal \
     route-emitter/cmd/route-emitter \
     ${DB_UNITS}
