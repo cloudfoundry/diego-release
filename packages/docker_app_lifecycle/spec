@@ -7,6 +7,7 @@ dependencies:
   - diego-sshd
 
 files:
+  - code.cloudfoundry.org/buildpackapplifecycle/databaseuri/*.go # gosub
   - code.cloudfoundry.org/dockerapplifecycle/*.go # gosub
   - code.cloudfoundry.org/dockerapplifecycle/builder/*.go # gosub
   - code.cloudfoundry.org/dockerapplifecycle/docker/nat/*.go # gosub
