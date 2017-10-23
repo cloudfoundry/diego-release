@@ -1,6 +1,6 @@
 ---
 processes:
-  route_emitter:
-    executable: /var/vcap/packages/route_emitter/bin/route-emitter
-    args:
-      - -config=/var/vcap/jobs/route_emitter/config/route_emitter.json
+- name: route_emitter
+  executable: /var/vcap/packages/route_emitter/bin/route-emitter
+  args:
+    - -config=/var/vcap/jobs/route_emitter/config/route_emitter.json

@@ -1,32 +1,5 @@
 #!/bin/bash -e
 
 <% if p("bpm.enabled") %>
-conf_dir=/var/vcap/jobs/rep/config
-data_dir=/var/vcap/data/rep
-
-# Key and Cert are generally ~2048 bytes. Add an extra 2048 for extra space
-# add another 4096 to account for the temp files used to do atomic replacement #141163257
-instance_cert_and_key_size=10240
-instance_ca_size=$(wc -c ${conf_dir}/certs/rep/instance_identity.crt | cut -d' ' -f1)
-max_containers=250
-instance_tmpfs_size=$((($instance_ca_size + $instance_cert_and_key_size) * $max_containers))
-
-instance_identity_dir=${data_dir}/instance_identity
-if mount | grep -q $instance_identity_dir; then
-  umount -f $instance_identity_dir
-fi
-mkdir -p "$instance_identity_dir"
-mount -t tmpfs -o size=$instance_tmpfs_size tmpfs $instance_identity_dir
-chown -R vcap:vcap "$instance_identity_dir"
-chmod 0700 "$instance_identity_dir"
-
-trusted_certs_dir=${data_dir}/trusted_certs
-rm -rf "$trusted_certs_dir"
-<% if_p("diego.rep.trusted_certs") do |value| %>
-  mkdir -p "$trusted_certs_dir"
-  chown -R vcap:vcap $trusted_certs_dir
-
-  /var/vcap/packages/certsplitter/bin/certsplitter $conf_dir/certs/rep/trusted_certs.crt $trusted_certs_dir
-  chmod +r ${trusted_certs_dir}/*
-<% end %>
+/var/vcap/jobs/rep/bin/mount_instance_identity
 <% end %>

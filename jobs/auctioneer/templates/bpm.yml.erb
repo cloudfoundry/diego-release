@@ -1,8 +1,8 @@
 ---
 processes:
-  auctioneer:
-    executable: /var/vcap/packages/auctioneer/bin/auctioneer
-    args:
-      - -config=/var/vcap/jobs/auctioneer/config/auctioneer.json
-    limits:
-      open_files: 100000
+- name: auctioneer
+  executable: /var/vcap/packages/auctioneer/bin/auctioneer
+  args:
+    - -config=/var/vcap/jobs/auctioneer/config/auctioneer.json
+  limits:
+    open_files: 100000

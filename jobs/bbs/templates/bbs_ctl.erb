@@ -3,8 +3,7 @@
 run_dir=/var/vcap/sys/run/bbs
 log_dir=/var/vcap/sys/log/bbs
 conf_dir=/var/vcap/jobs/bbs/config
-data_dir=/var/vcap/data/bbs
-tmp_dir=$data_dir/tmp
+tmp_dir=/var/vcap/data/bbs/tmp
 
 pidfile=$run_dir/bbs.pid
 
@@ -20,9 +19,6 @@ case $1 in
 
     mkdir -p $log_dir
     chown -R vcap:vcap $log_dir
-
-    mkdir -p $data_dir
-    chown -R vcap:vcap $data_dir
 
     mkdir -p $tmp_dir
     chown -R vcap:vcap $tmp_dir

@@ -1,8 +1,8 @@
 ---
 processes:
-  file_server:
-    executable: /var/vcap/packages/file_server/bin/file-server
-    args:
-      - -config=/var/vcap/jobs/file_server/config/file_server.json
-    limits:
-      open_files: 100000
+- name: file_server
+  executable: /var/vcap/packages/file_server/bin/file-server
+  args:
+    - -config=/var/vcap/jobs/file_server/config/file_server.json
+  limits:
+    open_files: 100000

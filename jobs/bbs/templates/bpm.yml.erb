@@ -1,8 +1,8 @@
 ---
 processes:
-  bbs:
-    executable: /var/vcap/packages/bbs/bin/bbs
-    args:
-      - -config=/var/vcap/jobs/bbs/config/bbs.json
-    limits:
-      open_files: 100000
+- name: bbs
+  executable: /var/vcap/packages/bbs/bin/bbs
+  args:
+    - -config=/var/vcap/jobs/bbs/config/bbs.json
+  limits:
+    open_files: 100000
