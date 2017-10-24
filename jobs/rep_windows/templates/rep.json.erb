@@ -19,7 +19,7 @@
     dropsonde_port: p("diego.rep.dropsonde_port"),
     enable_consul_service_registration: p("enable_consul_service_registration"),
     enable_declarative_healthcheck: p("enable_declarative_healthcheck"),
-    declarative_healthcheck_path: "/var/vcap/packages/healthcheck_windows",
+    declarative_healthcheck_path: p("declarative_healthcheck_path"),
     enable_container_proxy: p("container_proxy.enabled"),
     container_proxy_path: "/var/vcap/packages/proxy",
     container_proxy_config_path: "/var/vcap/data/rep/proxy_config",
