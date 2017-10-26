@@ -55,7 +55,8 @@ sync_package docker_app_lifecycle    -app  code.cloudfoundry.org/dockerapplifecy
   -app code.cloudfoundry.org/dockerapplifecycle/launcher &
 
 sync_package buildpack_app_lifecycle -app  code.cloudfoundry.org/buildpackapplifecycle/builder \
-  -app code.cloudfoundry.org/buildpackapplifecycle/launcher &
+  -app code.cloudfoundry.org/buildpackapplifecycle/launcher \
+  -app code.cloudfoundry.org/buildpackapplifecycle/shell/shell &
 
 sync_package windows_app_lifecycle -app  code.cloudfoundry.org/buildpackapplifecycle/builder \
   -app code.cloudfoundry.org/buildpackapplifecycle/launcher &
