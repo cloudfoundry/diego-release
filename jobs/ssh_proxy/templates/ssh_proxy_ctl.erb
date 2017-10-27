@@ -18,6 +18,9 @@ case $1 in
     mkdir -p $log_dir
     chown -R vcap:vcap $log_dir
 
+    # Allowed number of open file descriptors
+    ulimit -n 100000
+
     exec chpst -u vcap:vcap bash -c '/var/vcap/jobs/ssh_proxy/bin/ssh_proxy_as_vcap'
 
     ;;
