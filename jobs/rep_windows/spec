@@ -264,6 +264,9 @@ properties:
   enable_declarative_healthcheck:
     description: "EXPERIMENTAL: When set, enables the rep to prefer the LRP CheckDefinition to healthcheck instances over the Monitor action."
     default: false
+  declarative_healthcheck_path:
+    description: "EXPERIMENTAL: The directory containing the declarative healthcheck binary"
+    default: "/var/vcap/packages/healthcheck_windows/external"
 
   container_proxy.enabled:
     description: "EXPERIMENTAL: Enable envoy proxy on garden containers. Currently doesn't work on windows cells but left here for compatability with the linux Rep"
