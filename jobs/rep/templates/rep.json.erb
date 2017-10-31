@@ -21,6 +21,7 @@
     enable_declarative_healthcheck: p("enable_declarative_healthcheck"),
     declarative_healthcheck_path: "/var/vcap/packages/healthcheck",
     enable_container_proxy: p("container_proxy.enabled"),
+    additional_memory_allocation_mb: p("container_proxy.additional_memory_allocation_mb"),
     container_proxy_path: "/var/vcap/packages/proxy",
     container_proxy_config_path: "/var/vcap/data/rep/proxy_config",
     enable_legacy_api_endpoints: p("diego.rep.enable_legacy_api_endpoints"),
@@ -55,6 +56,10 @@
     unhealthy_monitoring_interval: "#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s",
     zone: spec.az || p("diego.rep.zone"),
   }
+
+  if config[:additional_memory_allocation_mb] < 0
+    raise "additional_memory_allocation_mb cannot be negative"
+  end
 
   if_p("diego.executor.volman.driver_paths") do |value|
     config[:volman_driver_paths] = value
