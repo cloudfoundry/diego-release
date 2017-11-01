@@ -1,55 +1,55 @@
-    ---
-  name: rep_windows
+---
+name: rep_windows
 
-  templates:
-    drain.ps1.erb: bin/drain.ps1
-    pre-start.ps1.erb: bin/pre-start.ps1
-    bbs_ca.crt.erb: config/certs/bbs/ca.crt
-    trusted_certs.crt.erb: config/certs/rep/trusted_certs.crt
-    ca_certs_for_downloads.crt.erb: config/certs/rep/ca_certs_for_downloads.crt
-    bbs_client.crt.erb: config/certs/bbs/client.crt
-    bbs_client.key.erb: config/certs/bbs/client.key
-    instance_identity.crt.erb: config/certs/rep/instance_identity.crt
-    instance_identity.key.erb: config/certs/rep/instance_identity.key
-    rep_ca.crt.erb: config/certs/ca.crt
-    rep_server.crt.erb: config/certs/server.crt
-    rep_server.key.erb: config/certs/server.key
-    consul_ca.crt.erb: config/certs/consul/ca.crt
-    consul_client.crt.erb: config/certs/consul/client.crt
-    consul_client.key.erb: config/certs/consul/client.key
-    rep.json.erb: config/rep.json
-    loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
-    loggregator_client.crt.erb: config/certs/loggregator/client.crt
-    loggregator_client.key.erb: config/certs/loggregator/client.key
-    tls.crt.erb: config/certs/tls.crt
-    tls.key.erb: config/certs/tls.key
-    tls_ca.crt.erb: config/certs/tls_ca.crt
+templates:
+  drain.ps1.erb: bin/drain.ps1
+  pre-start.ps1.erb: bin/pre-start.ps1
+  bbs_ca.crt.erb: config/certs/bbs/ca.crt
+  trusted_certs.crt.erb: config/certs/rep/trusted_certs.crt
+  ca_certs_for_downloads.crt.erb: config/certs/rep/ca_certs_for_downloads.crt
+  bbs_client.crt.erb: config/certs/bbs/client.crt
+  bbs_client.key.erb: config/certs/bbs/client.key
+  instance_identity.crt.erb: config/certs/rep/instance_identity.crt
+  instance_identity.key.erb: config/certs/rep/instance_identity.key
+  rep_ca.crt.erb: config/certs/ca.crt
+  rep_server.crt.erb: config/certs/server.crt
+  rep_server.key.erb: config/certs/server.key
+  consul_ca.crt.erb: config/certs/consul/ca.crt
+  consul_client.crt.erb: config/certs/consul/client.crt
+  consul_client.key.erb: config/certs/consul/client.key
+  rep.json.erb: config/rep.json
+  loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
+  loggregator_client.crt.erb: config/certs/loggregator/client.crt
+  loggregator_client.key.erb: config/certs/loggregator/client.key
+  tls.crt.erb: config/certs/tls.crt
+  tls.key.erb: config/certs/tls.key
+  tls_ca.crt.erb: config/certs/tls_ca.crt
 
-  packages:
-    - rep_windows
-    - healthcheck_windows
-    - certsplitter_windows
+packages:
+  - rep_windows
+  - healthcheck_windows
+  - certsplitter_windows
 
-  properties:
-    diego.rep.listen_addr:
-      description: "address to serve auction and LRP stop requests on"
-      default: "0.0.0.0:1800"
-    diego.rep.debug_addr:
-      description: "address at which to serve debug info"
-      default: "127.0.0.1:17008"
-    diego.rep.polling_interval_in_seconds:
-      description: "The interval to look for completed tasks and LRPs in seconds"
-      default: 30
-    diego.rep.evacuation_polling_interval_in_seconds:
-      description: "The interval to look for completed tasks and LRPs during evacuation in seconds"
-      default: 10
-    diego.rep.evacuation_timeout_in_seconds:
-      description: "The time to wait for evacuation to complete in seconds"
-      default: 600
-    diego.rep.zone:
-      description: "The zone associated with the rep"
-    diego.rep.use_azure_fault_domains:
-      description: "Use Azure Fault-Domains to determine the value of the zone. The value of the zone will be z<FD-index>. e.g. z0, z1, etc."
+properties:
+  diego.rep.listen_addr:
+    description: "address to serve auction and LRP stop requests on"
+    default: "0.0.0.0:1800"
+  diego.rep.debug_addr:
+    description: "address at which to serve debug info"
+    default: "127.0.0.1:17008"
+  diego.rep.polling_interval_in_seconds:
+    description: "The interval to look for completed tasks and LRPs in seconds"
+    default: 30
+  diego.rep.evacuation_polling_interval_in_seconds:
+    description: "The interval to look for completed tasks and LRPs during evacuation in seconds"
+    default: 10
+  diego.rep.evacuation_timeout_in_seconds:
+    description: "The time to wait for evacuation to complete in seconds"
+    default: 600
+  diego.rep.zone:
+    description: "The zone associated with the rep"
+  diego.rep.use_azure_fault_domains:
+    description: "Use Azure Fault-Domains to determine the value of the zone. The value of the zone will be z<FD-index>. e.g. z0, z1, etc."
     default: false
   diego.rep.preloaded_rootfses:
     description: "Array of name:absolute_path pairs representing root filesystems preloaded onto the underlying garden"
