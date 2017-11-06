@@ -65,7 +65,7 @@ properties:
     description: "local metron agent's port"
     default: 3457
   diego.rep.trusted_certs:
-    description: "Concatenation of trusted CA certificates to be made available on the cell."
+    description: "Concatenation of trusted CA certificates to be made available on the cell. Deprecated in favor of containers.trusted_ca_certificates"
     default: null
   diego.rep.open_bindmounts_acl:
     description: "Add more permissive ACLs to directories that are bind mounted into containers. Required for Windows 2016 cells"
@@ -274,3 +274,7 @@ properties:
   container_proxy.additional_memory_allocation_mb:
     description: "EXPERIMENTAL: Additional memory allocated to each container for the envoy proxy. Currently doesn't work on windows cells but left here for compatability with the linux Rep"
     default: 5
+
+  containers.trusted_ca_certificates:
+    description: "A list of trusted CA certificates to be made available inside the rootfses"
+    default: null

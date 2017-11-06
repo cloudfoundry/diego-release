@@ -56,6 +56,16 @@ $bindmountDirs += $instance_identity_dir
   $bindmountDirs += $trusted_certs_dir
 <% end %>
 
+<% if_p("diego.rep.trusted_ca_certificates") do |value| %>
+  $conf_dir = "C:/var/vcap/jobs/rep_windows/config"
+  $trusted_certs_dir = "C:/var/vcap/data/rep/trusted_certs"
+
+  New-Item -Path $trusted_certs_dir -ItemType "directory" -Force
+  C:/var/vcap/packages/certsplitter_windows/certsplitter $conf_dir/certs/rep/trusted_ca_certificates.json $trusted_certs_dir
+
+  $bindmountDirs += $trusted_certs_dir
+<% end %>
+
 <% if p("enable_declarative_healthcheck") %>
   $healthcheckDir = "<%= p("declarative_healthcheck_path") %>"
   $bindmountDirs += $healthcheckDir

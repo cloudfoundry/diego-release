@@ -26,5 +26,15 @@ rm -rf "$trusted_certs_dir"
   chown -R vcap:vcap $trusted_certs_dir
 
   /var/vcap/packages/certsplitter/bin/certsplitter $conf_dir/certs/rep/trusted_certs.crt $trusted_certs_dir
+
+  chmod +r ${trusted_certs_dir}/*
+<% end %>
+
+<% if_p("containers.trusted_ca_certificates") do %>
+  mkdir -p "$trusted_certs_dir"
+  chown -R vcap:vcap $trusted_certs_dir
+
+  /var/vcap/packages/certsplitter/bin/certsplitter $conf_dir/certs/rep/trusted_ca_certificates.json $trusted_certs_dir
+
   chmod +r ${trusted_certs_dir}/*
 <% end %>

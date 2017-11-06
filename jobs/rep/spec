@@ -8,6 +8,7 @@ templates:
   drain.erb: bin/drain
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   trusted_certs.crt.erb: config/certs/rep/trusted_certs.crt
+  trusted_ca_certificates.json.erb: config/certs/rep/trusted_ca_certificates.json
   ca_certs_for_downloads.crt.erb: config/certs/rep/ca_certs_for_downloads.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
@@ -76,7 +77,7 @@ properties:
     description: "local metron agent's port"
     default: 3457
   diego.rep.trusted_certs:
-    description: "Concatenation of trusted CA certificates to be made available inside the rootfses"
+    description: "Concatenation of trusted CA certificates to be made available inside the rootfses. Deprecated in favor of containers.trusted_ca_certificates."
     default: null
   diego.rep.placement_tags:
     description: "Array of tags used for scheduling Tasks and LRPs"
@@ -272,3 +273,7 @@ properties:
   container_proxy.additional_memory_allocation_mb:
     description: "EXPERIMENTAL: Additional memory allocated to each container for the envoy proxy"
     default: 5
+
+  containers.trusted_ca_certificates:
+    description: "A list of trusted CA certificates to be made available inside the rootfses"
+    default: null
