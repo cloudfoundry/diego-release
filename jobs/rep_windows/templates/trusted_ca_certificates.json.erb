@@ -1,3 +1,5 @@
 <%=
-  {trusted_ca_certificates: p("containers.trusted_ca_certificates")}.to_json
+  if_p("containers.trusted_ca_certificates") do |value|
+    {trusted_ca_certificates: value}.to_json
+  end
 %>
