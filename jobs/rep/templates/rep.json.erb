@@ -102,6 +102,10 @@
     config[:trusted_system_certificates_path] = "#{trusted_certs_dir}"
   end
 
+  if_p("containers.trusted_ca_certificates") do |value|
+    config[:trusted_system_certificates_path] = "#{trusted_certs_dir}"
+  end
+
   if_p("tls.cert") do |value|
     if !value.empty?
       config[:path_to_tls_cert] = "#{conf_dir}/certs/tls.crt"
