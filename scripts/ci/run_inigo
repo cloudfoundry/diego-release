@@ -145,6 +145,12 @@ export ROUTING_API_GOPATH=${ROUTER_GOPATH}
 
 cd diego-release/
 
+bosh sync-blobs
+
+mkdir /tmp/envoy
+tar -C /tmp/envoy -xf blobs/proxy/envoy.tgz
+export ENVOY_PATH=/tmp/envoy
+
 export GOPATH_ROOT=$PWD
 
 export GOPATH=${GOPATH_ROOT}

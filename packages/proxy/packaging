@@ -1,5 +1,19 @@
 set -e
 
+# Install lds binary
+mkdir -p ${BOSH_INSTALL_TARGET}/src
+cp -a . ${BOSH_INSTALL_TARGET}/src
+export GOPATH=$BOSH_INSTALL_TARGET
+
+export GOROOT=$(readlink -nf /var/vcap/packages/golang)
+export PATH=$GOROOT/bin:$PATH
+go install code.cloudfoundry.org/rep/lds/cmd/lds
+mv ${GOPATH}/bin/lds ${BOSH_INSTALL_TARGET}
+
+# clean up source artifacts
+rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg
+
+# Install envoy binary
 cd proxy
-tar -xzf envoy-1.3.0.tgz
+tar -xzf envoy.tgz
 mv envoy ${BOSH_INSTALL_TARGET}

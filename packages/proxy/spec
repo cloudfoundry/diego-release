@@ -1,7 +1,9 @@
 ---
 name: proxy
 
-dependencies: []
+dependencies:
+- golang
 
 files:
-- proxy/envoy-1.3.0.tgz
+  - proxy/envoy.tgz
+  - code.cloudfoundry.org/rep/lds/cmd/lds/*.go # gosub
