@@ -2,6 +2,9 @@
 name: cfdot
 
 templates:
+  ca.crt.erb: config/certs/cfdot/ca.crt
+  client.crt.erb: config/certs/cfdot/client.crt
+  client.key.erb: config/certs/cfdot/client.key
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
@@ -15,6 +18,12 @@ packages:
   - cfdot
 
 properties:
+  tls.ca_certificate:
+    description: "PEM-encoded CA certificate used for client credentials"
+  tls.certificate:
+    description: "PEM-encoded certificate used for client credentials"
+  tls.private_key:
+    description: "PEM-encoded key used for client credentials"
   diego.cfdot.bbs.use_ssl:
     description: "true if the bbs requires TLS connections, false otherwise"
     default: true
