@@ -273,7 +273,7 @@ properties:
     description: "EXPERIMENTAL: Enable envoy proxy on garden containers. Currently doesn't work on windows cells but left here for compatability with the linux Rep"
     default: false
   container_proxy.additional_memory_allocation_mb:
-    description: "EXPERIMENTAL: Additional memory allocated to each container for the envoy proxy. Currently doesn't work on windows cells but left here for compatability with the linux Rep"
+    description: "EXPERIMENTAL: Additional memory allocated to each container for the envoy proxy. This must not be negative. Currently doesn't work on windows cells but left here for compatability with the linux Rep"
     default: 5
 
   containers.trusted_ca_certificates:
