@@ -1,2 +1,8 @@
-<%= p("tls.ca_certificate") %>
+<%=
+  if_p("tls.ca_certificate") do |ca|
+    ca
+  end.else do
+    p("diego.cfdot.bbs.ca_cert")
+  end
+%>
 

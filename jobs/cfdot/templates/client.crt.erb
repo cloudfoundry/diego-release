@@ -1,2 +1,7 @@
-<%= p("tls.certificate") %>
-
+<%=
+  if_p("tls.certificate") do |cert|
+    cert
+  end.else do
+    p("diego.cfdot.bbs.client_cert")
+  end
+%>
