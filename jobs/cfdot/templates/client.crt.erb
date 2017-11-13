@@ -1,7 +1,9 @@
 <%=
-  if_p("tls.certificate") do |cert|
-    cert
+  cert = ""
+  if_p("tls.certificate") do |value|
+    cert = value
   end.else do
-    p("diego.cfdot.bbs.client_cert")
+    cert = p("diego.cfdot.bbs.client_cert")
   end
+  cert
 %>

@@ -1,8 +1,10 @@
 <%=
+  cert = ""
   if_p("tls.ca_certificate") do |ca|
-    ca
+    cert = ca
   end.else do
-    p("diego.cfdot.bbs.ca_cert")
+    cert = p("diego.cfdot.bbs.ca_cert")
   end
+  cert
 %>
 
