@@ -2,6 +2,8 @@
 
 set -e
 
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
 run_dir=/var/vcap/sys/run/rep
 pidfile=$run_dir/rep.pid
 log_dir=/var/vcap/sys/log/rep
@@ -56,7 +58,6 @@ else
   exit 1
 fi
 <% else %>
-source /var/vcap/packages/pid_utils/pid_utils.sh
 
 if [ ! -f $pidfile ]; then
   echo "$(date): pidfile does not exist"
