@@ -69,6 +69,13 @@
 | `ActivePresences`                                    | Total number of active presences.  Emitted periodically.                                                                                                   | number |
 | `LocksExpired`                                       | Cumulative number of locks that have expired.  Emitted when a lock is expired.                                                                             | number |
 | `PresenceExpired`                                    | Cumulative number of presences that have expired.  Emitted when a presence is expired.                                                                     | number |
+| `DBOpenConnections`                                  | Number of open sql database connections                                                                                                                    | number |
+| `DBQueriesStarted`                                   | Cumulative number of sql queries executed (i.e. `BEGIN`, `COMMIT`, `ROLLBACK` are counted as queries)                                                      | number |
+| `DBQueriesSucceeded`                                 | Cumulative number of sql queries that finished successfully                                                                                                | number |
+| `DBQueriesFailed`                                    | Cumulative number of sql queries that failed                                                                                                               | number |
+| `DBQueriesInFlight`                                  | Number of sql queries currently in-flight                                                                                                                  | number |
+| `DBQueryDurationMax`                                 | Max duration among all query that ran in the last 60-seconds. Emitted every 60 seconds                                                                     | ns     |
+
 
 ## Rep
 
