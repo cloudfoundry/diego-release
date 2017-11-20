@@ -2,6 +2,9 @@
 
 set -e
 
+# Redirect stdout to fd 3 so that output_for_bosh can echo correctly
+exec 3>&1
+
 source /var/vcap/packages/pid_utils/pid_utils.sh
 
 run_dir=/var/vcap/sys/run/rep
@@ -11,8 +14,6 @@ logfile=$log_dir/drain.log
 address=<%= p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") : p("diego.rep.listen_addr_admin")%>
 
 mkdir -p $log_dir
-
-exec 3>&1
 
 exec 1>> $logfile
 exec 2>> $logfile
