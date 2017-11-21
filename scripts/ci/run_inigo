@@ -148,7 +148,7 @@ cd diego-release/
 bosh sync-blobs
 
 mkdir /tmp/envoy
-tar -C /tmp/envoy -xf blobs/proxy/envoy.tgz
+tar -C /tmp/envoy -xf blobs/proxy/envoy*.tgz
 export ENVOY_PATH=/tmp/envoy
 
 export GOPATH_ROOT=$PWD
