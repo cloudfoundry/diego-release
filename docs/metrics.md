@@ -61,20 +61,21 @@
 | `TasksResolving`                                      | Total number of Tasks locked for deletion. Emitted periodically.                                                                                                                                                                 | number            |
 | `TasksRunning`                                        | Total number of Tasks running on cells. Emitted periodically.                                                                                                                                                                    | number            |
 
+
 ## Locket
 
 | Metric                                               | Description                                                                                                                                                | Unit   |
 | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----   |
 | `ActiveLocks`                                        | Total number of active locks. Emitted periodically.                                                                                                        | number |
-| `ActivePresences`                                    | Total number of active presences.  Emitted periodically.                                                                                                   | number |
-| `LocksExpired`                                       | Cumulative number of locks that have expired.  Emitted when a lock is expired.                                                                             | number |
-| `PresenceExpired`                                    | Cumulative number of presences that have expired.  Emitted when a presence is expired.                                                                     | number |
-| `DBOpenConnections`                                  | Number of open sql database connections                                                                                                                    | number |
-| `DBQueriesStarted`                                   | Cumulative number of sql queries executed (i.e. `BEGIN`, `COMMIT`, `ROLLBACK` are counted as queries)                                                      | number |
-| `DBQueriesSucceeded`                                 | Cumulative number of sql queries that finished successfully                                                                                                | number |
-| `DBQueriesFailed`                                    | Cumulative number of sql queries that failed                                                                                                               | number |
-| `DBQueriesInFlight`                                  | Number of sql queries currently in-flight                                                                                                                  | number |
-| `DBQueryDurationMax`                                 | Max duration among all query that ran in the last 60-seconds. Emitted every 60 seconds                                                                     | ns     |
+| `ActivePresences`                                    | Total number of active presences. Emitted periodically.                                                                                                    | number |
+| `DBOpenConnections`                                  | Number of open connections to the SQL database.                                                                                                            | number |
+| `DBQueriesFailed`                                    | Cumulative number of SQL queries that failed.                                                                                                              | number |
+| `DBQueriesInFlight`                                  | Number of SQL queries currently in flight.                                                                                                                 | number |
+| `DBQueriesStarted`                                   | Cumulative number of SQL queries executed, including `BEGIN`, `COMMIT`, and `ROLLBACK` statements.                                                         | number |
+| `DBQueriesSucceeded`                                 | Cumulative number of SQL queries that finished successfully.                                                                                               | number |
+| `DBQueryDurationMax`                                 | Maximum duration of all queries that have run in the last 60 seconds. Emitted every 60 seconds.                                                            | ns     |
+| `LocksExpired`                                       | Cumulative number of locks that have expired. Emitted when a lock is expired.                                                                              | number |
+| `PresenceExpired`                                    | Cumulative number of presences that have expired. Emitted when a presence is expired.                                                                      | number |
 
 
 ## Rep
