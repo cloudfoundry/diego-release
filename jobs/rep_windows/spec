@@ -269,10 +269,10 @@ properties:
     description: "EXPERIMENTAL: The directory containing the declarative healthcheck binary"
     default: "/var/vcap/packages/healthcheck_windows/external"
 
-  container.proxy.enabled:
+  containers.proxy.enabled:
     description: "EXPERIMENTAL: Enable envoy proxy on garden containers. Currently doesn't work on windows cells but left here for compatability with the linux Rep"
     default: false
-  container.proxy.additional_memory_allocation_mb:
+  containers.proxy.additional_memory_allocation_mb:
     description: "EXPERIMENTAL: Additional memory allocated to each container for the envoy proxy. This must not be negative. Currently doesn't work on windows cells but left here for compatability with the linux Rep"
     default: 5
 
