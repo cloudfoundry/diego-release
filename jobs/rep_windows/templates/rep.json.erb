@@ -21,8 +21,8 @@
     enable_declarative_healthcheck: p("enable_declarative_healthcheck"),
     declarative_healthcheck_path: p("declarative_healthcheck_path"),
     declarative_healthcheck_user: "",
-    enable_container_proxy: p("container_proxy.enabled"),
-    proxy_memory_allocation_mb: p("container_proxy.additional_memory_allocation_mb"),
+    enable_container_proxy: p("container.proxy.enabled"),
+    proxy_memory_allocation_mb: p("container.proxy.additional_memory_allocation_mb"),
     container_proxy_path: "/var/vcap/packages/proxy",
     container_proxy_config_path: "/var/vcap/data/rep/proxy_config",
     enable_legacy_api_endpoints: p("diego.rep.enable_legacy_api_endpoints"),
@@ -166,7 +166,7 @@
       p("diego.executor.instance_identity_ca_cert")
       p("diego.executor.instance_identity_key")
     rescue
-      raise '"when container_proxy.enabled is true, diego.executor.instance_identity_ca_cert" and "diego.executor.instance_identity_key" must both be set'
+      raise '"when container.proxy.enabled is true, diego.executor.instance_identity_ca_cert" and "diego.executor.instance_identity_key" must both be set'
     end
   end
 

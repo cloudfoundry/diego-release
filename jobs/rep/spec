@@ -267,10 +267,10 @@ properties:
     description: "EXPERIMENTAL: When set, enables the rep to prefer the LRP CheckDefinition to healthcheck instances over the Monitor action."
     default: false
 
-  container_proxy.enabled:
+  container.proxy.enabled:
     description: "EXPERIMENTAL: Enable envoy proxy on garden containers. Requires valid TLS credentials in diego.executor.instance_identity_ca_cert and diego.executor.instance_identity_key."
     default: false
-  container_proxy.additional_memory_allocation_mb:
+  container.proxy.additional_memory_allocation_mb:
     description: "EXPERIMENTAL: Additional memory allocated to each container for the envoy proxy. This value must not be negative"
     default: 5
 
