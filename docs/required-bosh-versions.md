@@ -15,12 +15,16 @@ These BOSH versions ensure the following BOSH lifecycle management operations oc
 
 Diego-release also requires the following versions of supported Garden releases:
 
-- For Linux cells: garden-runc 1.2.0+.
+- For Linux cells: garden-runc 1.2.0+. Unless declarative healthchecks are enabled in which case Diego-release requires garden-runc 1.10.0+
 - For Windows cells: garden-windows v0.3.0+.
 
-These versions ensure the following:
+Garden-runc 1.2.0+ & Garden-Windows v0.3.0+ ensures the following:
 
 - The `Image` field is available on the `ContainerSpec` structure in the Garden API.
 - The `NetIn` and `NetOut` fields are available on the `ContainerSpec` structure in the Garden API.
+
+Garden-runc 1.10.0+ ensures the following:
+
+- The `Image` field is available on the `ProcesSpec`. This causes the process to run in a sidecar container and is used by declarative healthchecks
 
 For Linux Diego cells to be able to run containers based on Docker images that require authentication, the garden-runc release must be deployed with grootfs-release v0.11.0+.
