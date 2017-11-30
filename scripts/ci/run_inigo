@@ -150,6 +150,7 @@ bosh sync-blobs
 mkdir /tmp/envoy
 tar -C /tmp/envoy -xf blobs/proxy/envoy*.tgz
 export ENVOY_PATH=/tmp/envoy
+chmod 777 $ENVOY_PATH
 
 export GOPATH_ROOT=$PWD
 
