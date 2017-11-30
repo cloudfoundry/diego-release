@@ -1,16 +1,87 @@
 #!/bin/bash
 
+# This script makes the following assumptions:
+# 1. All metrics needing documentation come from the IngressClient from the diego-logging-client
+# 2. We don't document the metrics sent with SendApp.*
+# 3. The IngressClient methods that should be documented always have the documented name as the first arg
+# 6. A first variable ending in "Metric" or "Duration" or "Count" or "Counter"
+# which is passed to a Send or Increment method on the IngressClient
+# holds the value of the metric name that should be documented
+
+set -eu
+
+EXIT_CODE=0
+
+readonly METRIC_CONST_CONVENTION='\(Metric\|Duration\|Counter\|Count\)\s*=\s*"'
+
+# Used for ensuring documentation of metrics
 metrics_in_code() {
-  grep --no-filename --exclude-dir={gorouter,go-loggregator} -I 'metric\..*("' -r src/code.cloudfoundry.org/ | \
-    cut -d '"' -f2 | sort -u
+  # returns a sorted list of all metrics following the convention, based on
+  # their const definition
+  grep --no-filename --exclude-dir={gorouter,go-loggregator} -I \
+    "$METRIC_CONST_CONVENTION" -r src/code.cloudfoundry.org/ |
+    cut -d '"' -f2 |
+    sort -u
 }
 
 documented_metrics() {
+  # returns a sorted list of documented metrics
   cat docs/metrics.md | grep '`' | awk '{print $2}' |  tr -d '`' | sort -u
+}
+
+# Returns a list of functions which are used to send metrics that might need
+# documentation.
+#
+# formats with | seperator for grep OR of invocations of the function
+# format example: SendDuration|\.SendMebiBytes|\.SendMetric|\.SendBytesPerSecond
+ingress_client_functions() {
+  client_file=$1
+  echo "\.$(
+    sed -n '/type IngressClient interface {/,/}/ { /type IngressClient interface {/b; /}/b; /name/!d; s/^[\t]\(.*\)(.*/\1/; p;} ' $client_file |
+    tr '\n' "." |
+    sed 's/\./|\\\./g' |
+    sed '$s/|\\\.$//'
+  )"
+}
+
+# Prints all calls to one of the IngressClient methods which do not match
+# the naming convention. Either change the metric name to match the convention
+# or add it to the EXCEPTIONAL_METRICS list.
+#
+# Note that dynamically generated metrics are an anti-pattern, and it is
+# better to use tags instead.
+metrics_without_constants_in_code() {
+  client_file=src/code.cloudfoundry.org/diego-logging-client/client.go
+
+  readonly conventional_metrics_calls="[a-zA-Z\.]*(Metric|Duration|Count|Counter)(,|\))"
+
+  # Dynamicly generated metric names. Provide as specific a regex as possible.
+  readonly exceptional_dynamic_metrics="Domain\|(m, duration)"
+  # Metrics calls which are wrapped in other methods. Find the calls to wrapped metrics instead
+  readonly wrapped_metrics_calls="err\ :=\ metronClient.SendDuration\(metric,\ value\)"
+
+  if [ -f $client_file ]; then
+    search_term=$(ingress_client_functions $client_file)
+    if [[ -z "$search_term" ]]; then
+      echo "no ingress client functions were found!"
+      exit 3
+    fi
+
+   grep -n --exclude={*_test.go,*fake*.go} --exclude-dir={go-loggregator,gorouter} -I -E -e "($search_term)\([^0-9]" -e "sendMetricDuration\(logger," -r src/code.cloudfoundry.org |
+      grep -E -v "$conventional_metrics_calls" |
+      grep -v "$exceptional_dynamic_metrics" |
+      grep  -E -v "$wrapped_metrics_calls" |
+      sort -u
+  else
+    echo "Failed to find $client_file"
+    exit 4
+
+  fi
 }
 
 diff=$(diff <(metrics_in_code) <(documented_metrics) | grep '^<' | awk '{print $2}')
 
+# Check for Undocumented Metrics
 if [ $(echo -n "$diff" | wc -c) -ne 0 ] ; then
   echo -ne "\033[1m"
   echo "Missing documentation for the following metrics:"
@@ -19,5 +90,26 @@ if [ $(echo -n "$diff" | wc -c) -ne 0 ] ; then
   echo -ne "\033[31m"
   echo "$diff"
   echo -ne "\033[0m"
-  exit 1
+  EXIT_CODE=1
 fi
+
+# Print violations of metric naming convention
+if [ $(metrics_without_constants_in_code | wc -c) -ne 0 ] ; then
+  if [ $EXIT_CODE -ne 0 ] ; then
+    echo
+    echo
+  fi
+  echo -ne "\033[1m"
+  echo "The following metrics do not conform to metric format convention:"
+  echo -ne "\033[0m"
+  echo "All metrics should have a constant name which ends in 'Metric',"
+  echo "'Duration', 'Counter', or 'Count'. If following the convention is"
+  echo "truely impossible, add it to the 'EXCEPTIONAL_METRICS' in this script"
+  echo "and be sure to document it"
+  echo "----------------------------------------------------------------------"
+  echo -ne "\033[31m"
+  metrics_without_constants_in_code
+  echo -ne "\033[0m"
+  EXIT_CODE=2
+fi
+exit $EXIT_CODE
