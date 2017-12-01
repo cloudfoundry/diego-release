@@ -5,6 +5,11 @@
   instance_identity_dir = "/var/vcap/data/rep/instance_identity"
   download_cache_dir= "/var/vcap/data/rep/download_cache"
 
+  zone = spec.az
+  if_p("diego.rep.zone") do |value|
+    zone = value
+  end
+
   config = {
     advertise_domain: p("diego.rep.advertise_domain"),
     auto_disk_capacity_overhead_mb: p("diego.executor.auto_disk_capacity_overhead_mb"),
@@ -54,7 +59,7 @@
     supported_providers: p("diego.rep.rootfs_providers"),
     temp_dir: "#{tmp_dir}",
     unhealthy_monitoring_interval: "#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s",
-    zone: p("diego.rep.zone") || spec.az,
+    zone: "#{zone}",
   }
 
   if config[:proxy_memory_allocation_mb] < 0
