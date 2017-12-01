@@ -54,7 +54,7 @@
     supported_providers: p("diego.rep.rootfs_providers"),
     temp_dir: "#{tmp_dir}",
     unhealthy_monitoring_interval: "#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s",
-    zone: spec.az || p("diego.rep.zone"),
+    zone: p("diego.rep.zone") || spec.az,
   }
 
   if config[:proxy_memory_allocation_mb] < 0

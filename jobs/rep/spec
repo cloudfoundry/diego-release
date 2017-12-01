@@ -60,7 +60,7 @@ properties:
     description: "The time to wait for evacuation to complete in seconds"
     default: 600
   diego.rep.zone:
-    description: "The zone associated with the rep"
+    description: "The zone associated with the rep. This will override the BOSH-provided spec.az property if present."
   diego.rep.use_azure_fault_domains:
     description: "Use Azure Fault-Domains to determine the value of the zone. The value of the zone will be z<FD-index>. e.g. z0, z1, etc."
     default: false
