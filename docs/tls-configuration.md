@@ -113,12 +113,11 @@ following steps to successfully generate the required certificates.
    Created out/locket.service.cf.internal.crt from out/locket.service.cf.internal.csr signed by out/diegoCA.key
    ```
 
-   The manifest property `tls.ca_cert` for the `locket` job should be set to
-   the certificate in `out/diegoCA.crt`.
-   The manifest property `tls.cert` for the `locket` job should be set to
-   the certificate in `out/locket.service.cf.internal.crt`.
-   The manifest property `tls.key` for the `locket` job should be set to
-   the certificate in `out/locket.service.cf.internal.key`.
+   Set the following properties on the `locket` job, which is located on the `database_z*` instance groups in the manifest that the diego-release scripts generate:
+
+   - `tls.ca_cert`: The BBS/Locket mutual TLS certificate authority.
+   - `tls.cert`: Contents of `out/locket.service.cf.internal.crt`.
+   - `tls.key`: Contents of `out/locket.service.cf.internal.key`.
 
 5. Create and sign a certificate for the Rep server.
    ```
@@ -180,10 +179,12 @@ following steps to successfully generate the required certificates.
    Created out/clientName.crt from out/clientName.csr signed by out/cf-diego-ca.key
    ```
 
-   **Note** the following properties must be set in the cell job spec:
-   - `properties.tls.ca_cert`: The CF/Diego mutual TLS certificate authority
-   - `properties.tls.cert`
-   - `properties.tls.key`
+   Set the following properties on the `rep` job, which is located on the `cell_z*` instance groups in the manifest that the diego-release scripts generate:
+
+   - `tls.ca_cert`: The BBS/Locket mutual TLS certificate authority.
+   - `tls.cert`: Contents of `out/clientName.crt`.
+   - `tls.key`: Contents of `out/clientName.key`.
+
 
 7. Create and sign a certificate for the Auctioneer server.
    ```
