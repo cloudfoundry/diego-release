@@ -32,12 +32,19 @@ documented_metrics() {
 # Returns a list of functions which are used to send metrics that might need
 # documentation.
 #
-# formats with | seperator for grep OR of invocations of the function
+# formats with | separator for grep OR of invocations of the function
 # format example: SendDuration|\.SendMebiBytes|\.SendMetric|\.SendBytesPerSecond
 ingress_client_functions() {
   client_file=$1
   echo "\.$(
-    sed -n '/type IngressClient interface {/,/}/ { /type IngressClient interface {/b; /}/b; /name/!d; s/^[\t]\(.*\)(.*/\1/; p;} ' $client_file |
+    sed \
+      -ne '/type IngressClient interface {/,/}/ {' \
+      -ne '/type IngressClient interface {/b' \
+      -ne '/}/b' -ne '/name/!d' \
+      -ne 's/\(.*\)(.*/\1/' \
+      -ne 'p' \
+      -ne '}' $client_file |
+    tr -d '\t' |
     tr '\n' "." |
     sed 's/\./|\\\./g' |
     sed '$s/|\\\.$//'
