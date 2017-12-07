@@ -16,7 +16,7 @@ The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) pre
 ## Table of Contents
 
 1. [Diego Operator Resources](#diego-operator-resources)
-  1. [Deployment Examples: BOSH-Lite and AWS](#deployment-examples)
+  1. [Deployment Examples](#deployment-examples)
   1. [Deployment Requirements and Constraints](#deployment-requirements-constraints)
   1. [Deploying Diego-Backed Cloud Foundry](#deploying-diego-backed-cloud-foundry)
   1. [Security Configuration](#security-configuration)
@@ -30,11 +30,18 @@ The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) pre
 
 ## <a name="diego-operator-resources"></a>Diego Operator Resources
 
-### <a name="deployment-examples"></a>Deployment Examples: BOSH-Lite and AWS
+### <a name="deployment-examples"></a>Deployment Examples
 
-- [Deploying CF and Diego to BOSH-Lite](examples/bosh-lite) provides detailed instructions for deploying a Diego-backed CF to a BOSH-Lite instance.
+#### Deploying to AWS
+
 - [Deploying CF and Diego to AWS](examples/aws) provides detailed instructions to deploy BOSH, CF, and Diego to a new CloudFormation stack. Alternately, follow the [instructions in cf-release](https://github.com/cloudfoundry/cf-release/tree/master/example_manifests) to deploy Diego alongside a minimal CF deployment.
 
+#### Deploying to BOSH-Lite
+
+**Note** the previous method of deploying a CF-Release & Diego-Release is now deprecated. Follow these instructions to deploy CF to a single VM:
+
+- Use either [bosh create-env](https://bosh.io/docs/bosh-lite.html) or [bbl](https://github.com/cloudfoundry/cf-deployment/tree/master/iaas-support/bosh-lite) to create the bosh-lite vm. `bosh create-env` have to be used in order to create a local VM using VirtualBox.
+- Follow the instructions in [CF-Deployment](https://github.com/cloudfoundry/cf-deployment/tree/master/iaas-support/bosh-lite#5-upload-the-cloud-config) to deploy CF to the newly created VM
 
 ### <a name="deployment-requirements-constraints"></a>Deployment Requirements and Constraints
 
