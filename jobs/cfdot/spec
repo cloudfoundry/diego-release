@@ -28,8 +28,8 @@ properties:
     description: "true if the bbs requires TLS connections, false otherwise"
     default: true
   diego.cfdot.bbs.ca_cert:
-    description: "PEM-encoded CA certificate"
+    description: "PEM-encoded CA certificate. Deprecated in favor of tls.ca_certificate."
   diego.cfdot.bbs.client_cert:
-    description: "PEM-encoded client certificate"
+    description: "PEM-encoded client certificate. Deprecated in favor of tls.certificate."
   diego.cfdot.bbs.client_key:
-    description: "PEM-encoded client key"
+    description: "PEM-encoded client key. Deprecated in favor of tls.private_key."
