@@ -36,12 +36,12 @@ The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) pre
 
 - [Deploying CF and Diego to AWS](examples/aws) provides detailed instructions to deploy BOSH, CF, and Diego to a new CloudFormation stack. Alternately, follow the [instructions in cf-release](https://github.com/cloudfoundry/cf-release/tree/master/example_manifests) to deploy Diego alongside a minimal CF deployment.
 
+
 #### Deploying to BOSH-Lite
 
-**Note** the previous method of deploying a CF-Release & Diego-Release is now deprecated. Follow these instructions to deploy CF to a single VM:
+- Create a BOSH-Lite VM using either the [v2 BOSH CLI](https://bosh.io/docs/bosh-lite.html) or [bosh-bootloader](https://github.com/cloudfoundry/cf-deployment/tree/master/iaas-support/bosh-lite). Note that to create a BOSH-Lite VM in your local VirtualBox, you must use the BOSH CLI.
+- Follow the instructions in [CF-Deployment](https://github.com/cloudfoundry/cf-deployment/tree/master/iaas-support/bosh-lite#5-upload-the-cloud-config) to deploy CF to the BOSH-Lite VM.
 
-- Use either [bosh create-env](https://bosh.io/docs/bosh-lite.html) or [bbl](https://github.com/cloudfoundry/cf-deployment/tree/master/iaas-support/bosh-lite) to create the bosh-lite vm. `bosh create-env` have to be used in order to create a local VM using VirtualBox.
-- Follow the instructions in [CF-Deployment](https://github.com/cloudfoundry/cf-deployment/tree/master/iaas-support/bosh-lite#5-upload-the-cloud-config) to deploy CF to the newly created VM
 
 ### <a name="deployment-requirements-constraints"></a>Deployment Requirements and Constraints
 
