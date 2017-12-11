@@ -15,5 +15,5 @@ rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg
 
 # Install envoy binary
 cd proxy
-tar -xzf envoy-b62c541005b601e9fde8c2fa0399f2f6c935fc3c.tgz
+tar -xzf envoy-0aba9ea82dc23347d62b563c5394f902c4f13d76.tgz
 mv envoy ${BOSH_INSTALL_TARGET}
