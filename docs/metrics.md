@@ -68,18 +68,23 @@
 
 ## Locket
 
-| Metric                                               | Description                                                                                                                                                | Unit   |
-| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----   |
-| `ActiveLocks`                                        | Total number of active locks. Emitted periodically.                                                                                                        | number |
-| `ActivePresences`                                    | Total number of active presences. Emitted periodically.                                                                                                    | number |
-| `DBOpenConnections`                                  | Number of open connections to the SQL database.                                                                                                            | number |
-| `DBQueriesFailed`                                    | Cumulative number of SQL queries that failed.                                                                                                              | number |
-| `DBQueriesInFlight`                                  | Number of SQL queries currently in flight.                                                                                                                 | number |
-| `DBQueriesTotal`                                     | Cumulative number of SQL queries executed, including `BEGIN`, `COMMIT`, and `ROLLBACK` statements.                                                         | number |
-| `DBQueriesSucceeded`                                 | Cumulative number of SQL queries that finished successfully.                                                                                               | number |
-| `DBQueryDurationMax`                                 | Maximum duration of all queries that have run in the last 60 seconds. Emitted every 60 seconds.                                                            | ns     |
-| `LocksExpired`                                       | Cumulative number of locks that have expired. Emitted when a lock is expired.                                                                              | number |
-| `PresenceExpired`                                    | Cumulative number of presences that have expired. Emitted when a presence is expired.                                                                      | number |
+| Metric                                               | Description                                                                                                                                                                                   | Unit   |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----   |
+| `ActiveLocks`                                        | Total number of active locks. Emitted periodically.                                                                                                                                           | number |
+| `ActivePresences`                                    | Total number of active presences. Emitted periodically.                                                                                                                                       | number |
+| `DBOpenConnections`                                  | Number of open connections to the SQL database.                                                                                                                                               | number |
+| `DBQueriesFailed`                                    | Cumulative number of SQL queries that failed.                                                                                                                                                 | number |
+| `DBQueriesInFlight`                                  | Number of SQL queries currently in flight.                                                                                                                                                    | number |
+| `DBQueriesTotal`                                     | Cumulative number of SQL queries executed, including `BEGIN`, `COMMIT`, and `ROLLBACK` statements.                                                                                            | number |
+| `DBQueriesSucceeded`                                 | Cumulative number of SQL queries that finished successfully.                                                                                                                                  | number |
+| `DBQueryDurationMax`                                 | Maximum duration of all queries that have run in the last 60 seconds. Emitted every 60 seconds.                                                                                               | ns     |
+| `LocksExpired`                                       | Cumulative number of locks that have expired. Emitted when a lock is expired.                                                                                                                 | number |
+| `PresenceExpired`                                    | Cumulative number of presences that have expired. Emitted when a presence is expired.                                                                                                         | number |
+| `RequestsStarted`                                    | Cumulative number of requests of a particular type that have been made. Currently tracking `Lock`, `Release`, `Fetch`, and `FetchAll` requests. Emitted every 60 seconds.                     | number |
+| `RequestsSucceeded`                                  | Cumulative number of requests of a particular type that have completed successfully. Currently tracking `Lock`, `Release`, `Fetch`, and `FetchAll` requests. Emitted every 60 seconds.        | number |
+| `RequestsFailed`                                     | Cumulative number of requests of a particular type that have failed for any reason. Currently tracking `Lock`, `Release`, `Fetch`, and `FetchAll` requests. Emitted every 60 seconds.         | number |
+| `RequestsInFlight`                                   | Number of requests of a particular type currently being handled by locket. Currently tracking `Lock`, `Release`, `Fetch`, and `FetchAll` requests. Emitted every 60 seconds.                  | number |
+| `RequestLatencyMax`                                  | Maximum request latency emitted by a request of a particular type in the last 60 seconds. Currently tracking `Lock`, `Release`, `Fetch`, and `FetchAll` requests. Emitted every 60 seconds.   | number |
 
 
 ## Rep
