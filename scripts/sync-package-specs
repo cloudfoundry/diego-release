@@ -44,8 +44,8 @@ sync_package cfdot                   -app  code.cloudfoundry.org/cfdot &
 sync_package diego-sshd              -app  code.cloudfoundry.org/diego-ssh/cmd/sshd &
 sync_package file_server             -app  code.cloudfoundry.org/fileserver/cmd/file-server &
 sync_package locket                  -app  code.cloudfoundry.org/locket/cmd/locket &
-sync_package rep                     -app  code.cloudfoundry.org/rep/cmd/rep &
-sync_package rep_windows             -app  code.cloudfoundry.org/rep/cmd/rep &
+sync_package rep                     -app  code.cloudfoundry.org/rep/cmd/rep -app  code.cloudfoundry.org/rep/cmd/gocurl &
+sync_package rep_windows             -app  code.cloudfoundry.org/rep/cmd/rep -app  code.cloudfoundry.org/rep/cmd/gocurl &
 sync_package route_emitter           -app  code.cloudfoundry.org/route-emitter/cmd/route-emitter &
 sync_package route_emitter_windows   -app  code.cloudfoundry.org/route-emitter/cmd/route-emitter &
 sync_package ssh_proxy               -app  code.cloudfoundry.org/diego-ssh/cmd/ssh-proxy &

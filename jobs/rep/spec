@@ -41,6 +41,9 @@ packages:
   - certsplitter
 
 properties:
+  admin_api.require_tls:
+    default: false
+    description: Whether to require mutual TLS for communication to the rep's administrative API. Requires `tls.ca_cert`, `tls.cert`, and `tls.key` to be configured.
   bpm.enabled:
     description: "Experimental: use the BOSH Process Manager to manage the cell rep process."
     default: false

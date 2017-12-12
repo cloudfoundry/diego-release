@@ -8,8 +8,8 @@ $BOSH_INSTALL_TARGET = Resolve-Path "${env:BOSH_INSTALL_TARGET}"
 $env:GOROOT="C:\var\vcap\packages\golang-windows\go"
 $env:GOPATH="${BOSH_INSTALL_TARGET}"
 $env:PATH="${env:GOROOT}\bin;${env:PATH}"
-$pkg_name="rep"
-$pkg_path="code.cloudfoundry.org/rep/cmd/rep"
+$rep_pkg_path="code.cloudfoundry.org/rep/cmd/rep"
+$gocurl_pkg_path="code.cloudfoundry.org/rep/cmd/gocurl"
 
 # Create GOPATH
 New-Item -ItemType "directory" -Force "${BOSH_INSTALL_TARGET}\src"
@@ -19,9 +19,14 @@ if ($LASTEXITCODE -ge 8) {
     Write-Error "robocopy.exe /E ${PWD} ${BOSH_INSTALL_TARGET}\src"
 }
 
-go.exe build -o "${BOSH_INSTALL_TARGET}\${pkg_name}.exe" "${pkg_path}"
+go.exe build -o "${BOSH_INSTALL_TARGET}\rep.exe" "${rep_pkg_path}"
 if ($LASTEXITCODE -ne 0) {
-    Write-Error "Error compiling: ${pkg_path}"
+    Write-Error "Error compiling: ${rep_pkg_path}"
+}
+
+go.exe build -o "${BOSH_INSTALL_TARGET}\gocurl.exe" "${gocurl_pkg_path}"
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Error compiling: ${gocurl_pkg_path}"
 }
 
 # Cleanup build artifacts

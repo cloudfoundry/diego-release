@@ -4,15 +4,33 @@ trap { $host.SetShouldExit(1) }
 $service_name="rep_windows"
 $log_dir="/var/vcap/sys/log/rep_windows"
 $logfile="${log_dir}/drain.log"
-$address="http://<%= p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:") : p("diego.rep.listen_addr_admin")%>"
+
+<% if p("diego.rep.enable_legacy_api_endpoints") %>
+$address="http://<%=p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:")%>"
+<% elsif p("admin_api.require_tls") %>
+$address="https://<%=p("diego.rep.listen_addr_admin")%>"
+<% else %>
+$address="http://<%=p("diego.rep.listen_addr_admin")%>"
+<% end %>
 
 New-Item -ItemType "directory" -Force "${log_dir}" 2>&1 | `
     Out-File -Append -Encoding utf8 -FilePath $logfile
 
+<% if p("admin_api.require_tls") %>
+$tls_ca_cert="<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls_ca.crt"%>"
+$tls_cert="<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls.crt"%>"
+$tls_key="<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls.key"%>"
+<% else %>
+$tls_ca_cert=""
+$tls_cert=""
+$tls_key=""
+<% end %>
+
 function evacuate {
     try {
-        Invoke-WebRequest -UseBasicParsing -URI "${address}/evacuate" -Method "Post" 2>&1 | `
-            Out-File -Append -Encoding utf8 -FilePath $logfile
+    <%="/var/vcap/packages/#{p("diego.rep.job_name")}/gocurl.exe"%> -X "POST" `
+        --cacert ${tls_ca_cert} --cert ${tls_cert} --key ${tls_key} "$address/evacuate" 2>&1 | `
+        Out-File -Append -Encoding utf8 -FilePath $logfile
     } catch {
         return $false
     }
@@ -21,8 +39,9 @@ function evacuate {
 
 function heartbeat {
     try {
-        Invoke-WebRequest -UseBasicParsing -URI "${address}/ping" 2>&1 | `
-            Out-File -Append -Encoding utf8 -FilePath $logfile
+    <%="/var/vcap/packages/#{p("diego.rep.job_name")}/gocurl.exe"%> `
+        --cacert ${tls_ca_cert} --cert ${tls_cert} --key ${tls_key} "$address/ping" 2>&1 | `
+        Out-File -Append -Encoding utf8 -FilePath $logfile
     } catch {
         return $false
     }
