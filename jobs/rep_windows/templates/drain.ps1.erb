@@ -29,7 +29,7 @@ $tls_key=""
 function evacuate {
     try {
     <%="/var/vcap/packages/#{p("diego.rep.job_name")}/gocurl.exe"%> -X "POST" `
-        --cacert ${tls_ca_cert} --cert ${tls_cert} --key ${tls_key} "$address/evacuate" 2>&1 | `
+        --cacert=${tls_ca_cert} --cert=${tls_cert} --key=${tls_key} "$address/evacuate" 2>&1 | `
         Out-File -Append -Encoding utf8 -FilePath $logfile
     } catch {
         return $false
@@ -40,7 +40,7 @@ function evacuate {
 function heartbeat {
     try {
     <%="/var/vcap/packages/#{p("diego.rep.job_name")}/gocurl.exe"%> `
-        --cacert ${tls_ca_cert} --cert ${tls_cert} --key ${tls_key} "$address/ping" 2>&1 | `
+        --cacert=${tls_ca_cert} --cert=${tls_cert} --key=${tls_key} "$address/ping" 2>&1 | `
         Out-File -Append -Encoding utf8 -FilePath $logfile
     } catch {
         return $false
