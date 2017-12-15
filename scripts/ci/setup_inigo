@@ -1,0 +1,238 @@
+#!/usr/bin/env bash
+
+export TMP_HOME=${PWD}
+export GOROOT=/usr/local/go
+export PATH=${GOROOT}/bin:${PATH}
+
+# Update to concourse 2.7.3 and garden-runc 1.4.0 caused inigo to fail since
+# resolv.conf is now bind-mounted in. Removing the apt-get install, two inigo
+# tests were failing because they were unable to resolve DNS names.
+echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+
+# Adds the cell announced urls to the /etc/hosts file. We cannot use consul
+# reliably since there could be multiple consuls running on multiple ginkgo
+# nodes. Adding all of them to the /etc/resolv.conf will lead potential to
+# cross talking across the different tests.
+function setup_localhost_hosts() {
+  local hosts_file
+  hosts_file=/etc/hosts
+  for ginkgoNode in {1..30}; do
+      for repN in {0..30}; do
+          echo "127.0.0.1 the-cell-id-${ginkgoNode}-${repN}.cell.service.cf.internal" >> "${hosts_file}"
+      done
+  done
+
+  # The following rep cell ids are used in the evacuation test :(
+  echo "127.0.0.1 cell-a.cell.service.cf.internal" >> "${hosts_file}"
+  echo "127.0.0.1 cell-b.cell.service.cf.internal" >> "${hosts_file}"
+}
+
+build_gardenrunc () {
+  echo "Building garden-runc"
+  export GARDEN_GOPATH=$PWD/garden-runc-release
+
+  pushd ${GARDEN_GOPATH}
+    export GOPATH=${PWD}
+    export PATH=${GOPATH}/bin:${PATH}
+    export GARDEN_BINPATH=${PWD}/bin/
+
+    if [ -d $GOPATH/src/github.com/cloudfoundry-incubator/guardian ]; then
+        NSTAR_PATH=src/github.com/cloudfoundry-incubator/guardian/rundmc/nstar
+        go install github.com/cloudfoundry-incubator/guardian/rundmc/iodaemon/cmd/iodaemon
+        go install github.com/cloudfoundry-incubator/guardian/cmd/kawasaki/
+        go install github.com/cloudfoundry-incubator/guardian/cmd/init/
+        go install github.com/cloudfoundry-incubator/guardian/cmd/dadoo/
+    else
+        NSTAR_PATH=src/code.cloudfoundry.org/guardian/rundmc/nstar
+        go install code.cloudfoundry.org/guardian/cmd/init/
+        go install code.cloudfoundry.org/guardian/cmd/dadoo/
+    fi
+
+    pushd src/github.com/opencontainers/runc
+      PKG_CONFIG_PATH=/usr/local/lib/pkgconfig GOPATH=${PWD}/Godeps/_workspace:${GOPATH} BUILDTAGS="seccomp" make static
+      mv runc ${GARDEN_BINPATH}
+    popd
+
+    pushd $NSTAR_PATH
+      make && cp nstar ${GARDEN_BINPATH}
+    popd
+  popd
+}
+
+# source: cloudfoundry/grootfs/ci/scripts/test/utils.sh
+mount_btrfs() {
+  # Configure cgroup
+  mount -tcgroup -odevices cgroup:devices /sys/fs/cgroup
+  devices_mount_info=$(cat /proc/self/cgroup | grep devices)
+  devices_subdir=$(echo $devices_mount_info | cut -d: -f3)
+  echo 'b 7:* rwm' > /sys/fs/cgroup/devices.allow
+  echo 'b 7:* rwm' > /sys/fs/cgroup${devices_subdir}/devices.allow
+
+  # Setup loop devices
+  for i in {0..256}
+  do
+    mknod -m777 /dev/loop$i b 7 $i
+  done
+
+  # Make BTRFS volume
+  truncate -s 8G /btrfs_volume
+  mkfs.btrfs /btrfs_volume
+
+  # Mount BTRFS
+  mkdir /mnt/btrfs
+  mount -t btrfs -o user_subvol_rm_allowed,rw /btrfs_volume /mnt/btrfs
+  chmod 777 -R /mnt/btrfs
+  btrfs quota enable /mnt/btrfs
+}
+
+build_grootfs () {
+  echo "Building grootfs..."
+  export GROOTFS_GOPATH=${PWD}/grootfs-release
+  export GROOTFS_BINPATH=${GROOTFS_GOPATH}/bin
+  mkdir -p ${GROOTFS_BINPATH}
+
+  pushd ${GROOTFS_GOPATH}/src/code.cloudfoundry.org/grootfs
+    export GOPATH=${GROOTFS_GOPATH}
+    export PATH=${GOPATH}/bin:${PATH}
+
+    # Set up btrfs volume and loopback devices in environment
+    mount_btrfs
+    umount /sys/fs/cgroup || true
+
+    make
+
+    mv grootfs ${GROOTFS_GOPATH}/bin/
+    mv drax /usr/local/bin
+    chown root:root /usr/local/bin/drax
+    chmod u+s /usr/local/bin/drax
+
+    echo "grootfs installed."
+
+    groupadd iamgroot -g 4294967294
+    useradd iamgroot -u 4294967294 -g 4294967294
+    echo "iamgroot:1:4294967293" > /etc/subuid
+    echo "iamgroot:1:4294967293" > /etc/subgid
+  popd
+}
+
+set_garden_rootfs () {
+  # use the 1.29 version of tar that's installed in the inigo-ci docker image
+  ln -s /usr/local/bin/tar "${GARDEN_BINPATH}"
+
+  if [ "x${USE_GROOTFS}" = "xtrue" ]; then
+    tar cpf /tmp/rootfs.tar -C /opt/inigo/rootfs .
+    export GARDEN_ROOTFS=/tmp/rootfs.tar
+  else
+    export GARDEN_ROOTFS=/tmp/opt/inigo/rootfs
+    mkdir -p "${GARDEN_ROOTFS}"
+    mount -t tmpfs tmpfs "${GARDEN_ROOTFS}"
+    cp -rp /opt/inigo/rootfs/* "${GARDEN_ROOTFS}"
+  fi
+}
+
+setup_localhost_hosts
+
+build_gardenrunc
+
+if [ "x${USE_GROOTFS}" = "xtrue" ]; then
+	build_grootfs
+fi
+
+export ROUTER_GOPATH=$PWD/routing-release
+export ROUTING_API_GOPATH=${ROUTER_GOPATH}
+
+cd diego-release/
+
+bosh sync-blobs
+
+mkdir /tmp/envoy
+tar -C /tmp/envoy -xf blobs/proxy/envoy*.tgz
+export ENVOY_PATH=/tmp/envoy
+chmod 777 $ENVOY_PATH
+
+export GOPATH_ROOT=$PWD
+
+export GOPATH=${GOPATH_ROOT}
+export PATH=${GOPATH_ROOT}/bin:${PATH}
+
+export AUCTIONEER_GOPATH=${GOPATH_ROOT}
+export CONVERGER_GOPATH=${GOPATH_ROOT}
+export EXECUTOR_GOPATH=${GOPATH_ROOT}
+export FILE_SERVER_GOPATH=${GOPATH_ROOT}
+export CC_UPLOADER_GOPATH=${GOPATH_ROOT}
+export APP_LIFECYCLE_GOPATH=${GOPATH_ROOT}
+export NSYNC_GOPATH=${GOPATH_ROOT}
+export BBS_GOPATH=${GOPATH_ROOT}
+export LOCKET_GOPATH=${GOPATH_ROOT}
+export REP_GOPATH=${GOPATH_ROOT}
+export ROUTE_EMITTER_GOPATH=${GOPATH_ROOT}
+export STAGER_GOPATH=${GOPATH_ROOT}
+export TPS_GOPATH=${GOPATH_ROOT}
+
+# install application dependencies
+echo "Installing go dependencies ..."
+for package in github.com/apcera/gnatsd; do
+  go install $package
+done
+
+cd "${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo"
+go install github.com/onsi/ginkgo/ginkgo
+
+set_garden_rootfs
+
+# used for routing to apps; same logic that Garden uses.
+EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\s/\1/;tx;d;:x')
+export EXTERNAL_ADDRESS
+
+ca_file="${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo/fixtures/certs/sql-certs/server-ca.crt"
+cert_file="${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo/fixtures/certs/sql-certs/server.crt"
+key_file="${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo/fixtures/certs/sql-certs/server.key"
+
+chmod 0600 "$ca_file"
+chmod 0600 "$cert_file"
+chmod 0600 "$key_file"
+
+if [ "${SQL_FLAVOR}" = "mysql" ]; then
+  source ${GOPATH_ROOT}/scripts/ci/initialize_mysql.sh
+
+  sed -i 's/#max_connections.*= 100/max_connections = 2000/g' /etc/mysql/mysql.conf.d/mysqld.cnf
+
+  chown mysql:mysql "$ca_file"
+  chown mysql:mysql "$cert_file"
+  chown mysql:mysql "$key_file"
+
+  sed -i "s%# ssl-cert=/etc/mysql/server-cert.pem%ssl-cert=$cert_file%g" /etc/mysql/mysql.conf.d/mysqld.cnf
+  sed -i "s%# ssl-key=/etc/mysql/server-key.pem%ssl-key=$key_file%g" /etc/mysql/mysql.conf.d/mysqld.cnf
+  sed -i "s%# ssl-ca=/etc/mysql/cacert.pem%ssl-ca=$ca_file%g" /etc/mysql/mysql.conf.d/mysqld.cnf
+  initialize_mysql
+else
+  sed -i 's/max_connections = 100/max_connections = 2000/g' /etc/postgresql/9.4/main/postgresql.conf
+
+  chown postgres:postgres "$ca_file"
+  chown postgres:postgres "$cert_file"
+  chown postgres:postgres "$key_file"
+
+  sed -i 's/ssl = false/ssl = true/g' /etc/postgresql/9.4/main/postgresql.conf
+  sed -i "s%ssl_cert_file = '/etc/ssl/certs/ssl-cert-snakeoil.pem'%ssl_cert_file = '$cert_file'%g" /etc/postgresql/9.4/main/postgresql.conf
+  sed -i "s%ssl_key_file = '/etc/ssl/private/ssl-cert-snakeoil.key'%ssl_key_file = '$key_file'%g" /etc/postgresql/9.4/main/postgresql.conf
+  sed -i "s%#ssl_ca_file = ''%ssl_ca_file = '$ca_file'%g" /etc/postgresql/9.4/main/postgresql.conf
+
+  service postgresql start
+fi
+
+# GARDEN_GRAPH_PATH is the root of the docker image filesystem
+export GARDEN_GRAPH_PATH=/tmp/garden/graph
+mkdir -p "${GARDEN_GRAPH_PATH}"
+mount -t tmpfs tmpfs "${GARDEN_GRAPH_PATH}"
+
+# workaround until Concourse's garden sets this up for us
+if ! grep -qs '/sys' /proc/mounts; then
+  mount -t sysfs sysfs /sys
+fi
+
+# shellcheck source=/dev/null
+source "${GARDEN_GOPATH}/ci/scripts/aufs"
+permit_device_control
+create_loop_devices 256
+
+set +ex
