@@ -8,25 +8,42 @@
 # which is passed to a Send or Increment method on the IngressClient
 # holds the value of the metric name that should be documented
 
+absolute_path() {
+  (cd $1 && pwd)
+}
+scripts_path=./$(dirname $0)
+DIEGO_RELEASE_DIR=${DIEGO_RELEASE_DIR:-$(absolute_path $scripts_path/..)}
+
 set -eu
 
 EXIT_CODE=0
 
 readonly METRIC_CONST_CONVENTION='\(Metric\|Duration\|Counter\|Count\)\s*=\s*"'
 
+# List of "space separated" metrics that do not follow the conventional naming
+# but are valid metrics and need to be listed.
+readonly EXCEPTIONAL_METRICS=()
+
 # Used for ensuring documentation of metrics
 metrics_in_code() {
   # returns a sorted list of all metrics following the convention, based on
   # their const definition
+  regexp="-e \"$METRIC_CONST_CONVENTION\""
+  if [ ! -z ${EXCEPTIONAL_METRICS:-} ]; then
+    exceptions=$(printf '%s\|' "${EXCEPTIONAL_METRICS[@]}")
+    exceptions=$(printf '\(%s\)\s*=\s*' ${exceptions::-2})
+    regexp="-e \"$METRIC_CONST_CONVENTION\" -e $exceptions"
+  fi
+
   grep --no-filename --exclude-dir={gorouter,go-loggregator} -I \
-    "$METRIC_CONST_CONVENTION" -r src/code.cloudfoundry.org/ |
+    $regexp -r $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/ |
     cut -d '"' -f2 |
     sort -u
 }
 
 documented_metrics() {
   # returns a sorted list of documented metrics
-  cat docs/metrics.md | grep '`' | awk '{print $2}' |  tr -d '`' | sort -u
+  cat $DIEGO_RELEASE_DIR/docs/metrics.md | grep '`' | awk '{print $2}' |  tr -d '`' | sort -u
 }
 
 # Returns a list of functions which are used to send metrics that might need
@@ -58,7 +75,7 @@ ingress_client_functions() {
 # Note that dynamically generated metrics are an anti-pattern, and it is
 # better to use tags instead.
 metrics_without_constants_in_code() {
-  client_file=src/code.cloudfoundry.org/diego-logging-client/client.go
+  client_file=$DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/diego-logging-client/client.go
 
   readonly conventional_metrics_calls="[a-zA-Z\.]*(Metric|Duration|Count|Counter)(,|\))"
 
@@ -67,6 +84,11 @@ metrics_without_constants_in_code() {
   # Metrics calls which are wrapped in other methods. Find the calls to wrapped metrics instead
   readonly wrapped_metrics_calls="err\ :=\ metronClient.SendDuration\(metric,\ value\)"
 
+  exceptional_static_metrics=""
+  if [ ! -z ${EXCEPTIONAL_METRICS:-} ]; then
+    exceptional_static_metrics=$(printf '%s|' "${EXCEPTIONAL_METRICS[@]}")
+  fi
+
   if [ -f $client_file ]; then
     search_term=$(ingress_client_functions $client_file)
     if [[ -z "$search_term" ]]; then
@@ -74,11 +96,21 @@ metrics_without_constants_in_code() {
       exit 3
     fi
 
-   grep -n --exclude={*_test.go,*fake*.go} --exclude-dir={go-loggregator,gorouter} -I -E -e "($search_term)\([^0-9]" -e "sendMetricDuration\(logger," -r src/code.cloudfoundry.org |
-      grep -E -v "$conventional_metrics_calls" |
-      grep -v "$exceptional_dynamic_metrics" |
-      grep  -E -v "$wrapped_metrics_calls" |
-      sort -u
+   if [ -z $exceptional_static_metrics ]; then
+     grep -n --exclude={*_test.go,*fake*.go} --exclude-dir={go-loggregator,gorouter} -I -E -e "($search_term)\([^0-9]" -e "sendMetricDuration\(logger," -r src/code.cloudfoundry.org |
+        grep -E -v "$conventional_metrics_calls" |
+        grep -v "$exceptional_dynamic_metrics" |
+        grep -E -v "$wrapped_metrics_calls" |
+        sort -u
+    else
+       grep -n --exclude={*_test.go,*fake*.go} --exclude-dir={go-loggregator,gorouter} -I -E -e "($search_term)\([^0-9]" -e "sendMetricDuration\(logger," -r src/code.cloudfoundry.org |
+          grep -E -v "$conventional_metrics_calls" |
+          grep -E -v "${exceptional_static_metrics::-1}" |
+          grep -v "$exceptional_dynamic_metrics" |
+          grep -E -v "$wrapped_metrics_calls" |
+          sort -u
+    fi
+
   else
     echo "Failed to find $client_file"
     exit 4

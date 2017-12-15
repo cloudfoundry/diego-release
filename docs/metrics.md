@@ -1,5 +1,7 @@
 # Diego Metrics
 
+A list of component-level metrics emitted by Diego. Contributors interested in adding new metrics should visit our [contributor doc](contributing.md#Metrics) for a list of code conventions we follow.
+
 * [Auctioneer](#auctioneer)
 * [BBS](#bbs)
 * [Locket](#locket)

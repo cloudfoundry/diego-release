@@ -110,6 +110,19 @@ To be able to run unit tests, you'll also need to install the following binaries
 
 To be able to run the integration test suite ("inigo"), you'll need to have a local [Concourse](http://concourse.ci) VM. Follow the instructions on the Concourse [README](https://github.com/concourse/concourse/blob/master/README.md) to set it up locally using [vagrant](https://www.vagrantup.com/). Download the fly CLI as instructed and move it somewhere visible to your `$PATH`.
 
+
+## Code Conventions
+### Metrics
+
+Metrics added to any of the Diego components need to follow the naming and documentation conventions listed here, otherwise the Diego unit tests will fail.
+
+- Metrics need to be defined as constants, preferably at the begging of the file
+- The constant name for the metric needs to follow the format `ConstantMetricName = "metric name"` where `ConstantMetricName` ends with one of the following qualifiers: `Metric`, `Duration`, `Count`, and `Counter`.
+- If it is intentionally desired for a metrics constant name to not end in one of the above qualifiers, the metrics name should be added to the list of `EXCEPTIONAL_METRICS` in [`scripts/check-metrics-documentation`](scripts/check-metrics-documentation).
+- All component level metrics passed to `diego-logging-client.IngressClient` must be documented in [Metrics Documentation](docs/metrics.md) regardless of whether they follow the naming conventions in the code or not.
+- Application level metrics passed to `diego-logging-client.SendApp*` should not be documented.
+
+
 ### Running the SQL unit tests
 
 As of Diego 1.0, SQL unit tests are the default unit tests for Diego. To run the SQL unit tests locally requires running MySQL and Postgres with the correct configuration.
