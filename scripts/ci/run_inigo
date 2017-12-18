@@ -17,5 +17,5 @@ pushd "${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo"
     PACKAGES_TO_SKIP=$PACKAGES_TO_SKIP",$SKIP_PACKAGES"
   fi
 
-  # ginkgo $nodes_flag -r -skipPackage="${PACKAGES_TO_SKIP}" -skip="${SKIP_REGEX}" -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=60 -keepGoing $@
+  ginkgo $nodes_flag -r -skipPackage="${PACKAGES_TO_SKIP}" -skip="${SKIP_REGEX}" -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=60 -keepGoing $@
 popd
