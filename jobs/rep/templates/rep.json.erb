@@ -40,6 +40,7 @@
     garden_healthcheck_process_user: p("diego.executor.garden_healthcheck.process.user"),
     garden_healthcheck_timeout: p("diego.executor.garden_healthcheck.timeout"),
     garden_network: p("diego.executor.garden.network"),
+    graceful_shutdown_interval: "#{p("containers.graceful_shutdown_interval_in_seconds")}s",
     healthcheck_work_pool_size: p("diego.executor.healthcheck_work_pool_size"),
     healthy_monitoring_interval: "#{p("diego.executor.healthy_monitoring_interval_in_seconds")}s",
     listen_addr: p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr") : p("diego.rep.listen_addr_admin"),
@@ -62,6 +63,10 @@
     unhealthy_monitoring_interval: "#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s",
     zone: "#{zone}",
   }
+
+  if p("containers.graceful_shutdown_interval_in_seconds") < 10
+    raise "graceful_shutdown_interval_in_seconds cannot be less than 10"
+  end
 
   if config[:proxy_memory_allocation_mb] < 0
     raise "additional_memory_allocation_mb cannot be negative"
