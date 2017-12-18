@@ -4,9 +4,6 @@
 # 1. All metrics needing documentation come from the IngressClient from the diego-logging-client
 # 2. We don't document the metrics sent with SendApp.*
 # 3. The IngressClient methods that should be documented always have the documented name as the first arg
-# 6. A first variable ending in "Metric" or "Duration" or "Count" or "Counter"
-# which is passed to a Send or Increment method on the IngressClient
-# holds the value of the metric name that should be documented
 
 absolute_path() {
   (cd $1 && pwd)
@@ -16,30 +13,7 @@ DIEGO_RELEASE_DIR=${DIEGO_RELEASE_DIR:-$(absolute_path $scripts_path/..)}
 
 set -eu
 
-EXIT_CODE=0
-
-readonly METRIC_CONST_CONVENTION='\(Metric\|Duration\|Counter\|Count\)\s*=\s*"'
-
-# List of "space separated" metrics that do not follow the conventional naming
-# but are valid metrics and need to be listed.
-readonly EXCEPTIONAL_METRICS=()
-
 # Used for ensuring documentation of metrics
-metrics_in_code() {
-  # returns a sorted list of all metrics following the convention, based on
-  # their const definition
-  regexp="-e \"$METRIC_CONST_CONVENTION\""
-  if [ ! -z ${EXCEPTIONAL_METRICS:-} ]; then
-    exceptions=$(printf '%s\|' "${EXCEPTIONAL_METRICS[@]}")
-    exceptions=$(printf '\(%s\)\s*=\s*' ${exceptions::-2})
-    regexp="-e \"$METRIC_CONST_CONVENTION\" -e $exceptions"
-  fi
-
-  grep --no-filename --exclude-dir={gorouter,go-loggregator} -I \
-    $regexp -r $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/ |
-    cut -d '"' -f2 |
-    sort -u
-}
 
 documented_metrics() {
   # returns a sorted list of documented metrics
@@ -68,57 +42,48 @@ ingress_client_functions() {
   )"
 }
 
-# Prints all calls to one of the IngressClient methods which do not match
-# the naming convention. Either change the metric name to match the convention
-# or add it to the EXCEPTIONAL_METRICS list.
-#
-# Note that dynamically generated metrics are an anti-pattern, and it is
-# better to use tags instead.
-metrics_without_constants_in_code() {
-  client_file=$DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/diego-logging-client/client.go
+metrics_in_code() {
+    client_file=$DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/diego-logging-client/client.go
 
-  readonly conventional_metrics_calls="[a-zA-Z\.]*(Metric|Duration|Count|Counter)(,|\))"
+    if [ ! -f $client_file ]; then
+        echo "Failed to find $client_file" >&2
+        exit 4
+    fi
 
-  # Dynamicly generated metric names. Provide as specific a regex as possible.
-  readonly exceptional_dynamic_metrics="Domain\|(m, duration)"
-  # Metrics calls which are wrapped in other methods. Find the calls to wrapped metrics instead
-  readonly wrapped_metrics_calls="err\ :=\ metronClient.SendDuration\(metric,\ value\)"
-
-  exceptional_static_metrics=""
-  if [ ! -z ${EXCEPTIONAL_METRICS:-} ]; then
-    exceptional_static_metrics=$(printf '%s|' "${EXCEPTIONAL_METRICS[@]}")
-  fi
-
-  if [ -f $client_file ]; then
     search_term=$(ingress_client_functions $client_file)
     if [[ -z "$search_term" ]]; then
-      echo "no ingress client functions were found!"
-      exit 3
+        echo "no ingress client functions were found!" >&2
+        exit 3
     fi
 
-   if [ -z $exceptional_static_metrics ]; then
-     grep -n --exclude={*_test.go,*fake*.go} --exclude-dir={go-loggregator,gorouter} -I -E -e "($search_term)\([^0-9]" -e "sendMetricDuration\(logger," -r src/code.cloudfoundry.org |
-        grep -E -v "$conventional_metrics_calls" |
-        grep -v "$exceptional_dynamic_metrics" |
-        grep -E -v "$wrapped_metrics_calls" |
-        sort -u
-    else
-       grep -n --exclude={*_test.go,*fake*.go} --exclude-dir={go-loggregator,gorouter} -I -E -e "($search_term)\([^0-9]" -e "sendMetricDuration\(logger," -r src/code.cloudfoundry.org |
-          grep -E -v "$conventional_metrics_calls" |
-          grep -E -v "${exceptional_static_metrics::-1}" |
-          grep -v "$exceptional_dynamic_metrics" |
-          grep -E -v "$wrapped_metrics_calls" |
-          sort -u
-    fi
-
-  else
-    echo "Failed to find $client_file"
-    exit 4
-
-  fi
+    IFS=$'\n'
+    result=$(grep -n --exclude={*_test.go,*fake*.go} --exclude-dir={go-loggregator,gorouter,volman} -I -E -e "($search_term)\(" -r src/code.cloudfoundry.org)
+    for line in $result; do
+        file_location=$(echo -e "$line" | cut -d: -f1)
+        client_call=$(echo -e "$line" | cut -d: -f3-)
+        # extract the variable name, e.g. "err := SendMetric(foo...)" -> "foo"
+        # Note: the sed command will stop at `,' `)' or `+'. The `+' is there to deal with prefixed metrics,
+        # e.g. domainMetricPrefix+domain which is found in src/code.cloudfoundry.org/bbs/db/sqldb/lrp_convergence.go
+        var_name=$(echo $client_call | sed -E "s/.*(${search_term})\(([^,+\)]*).*/\2/g")
+        # look for the constant definition, e.g. for a var named foo look for `foo = "...."`
+        metric_name=$(grep -E "[[:blank:]]+$var_name[[:blank:]]+=[[:blank:]]+" $file_location | sed -E 's/.*=[[:blank:]]+"([^"]*)"/\1/')
+        if [ ! -z $metric_name ]; then
+            echo $metric_name
+        else
+            echo "cannot find constant $var_name in $file_location. Are you missing 'const $var_name = \"...\"' at the beginning of the file ?" >&2
+            exit 1
+        fi
+    done
 }
 
-diff=$(diff <(metrics_in_code) <(documented_metrics) | grep '^<' | awk '{print $2}')
+set -e
+echo "Running..."
+
+metrics_in_code >/dev/null      # check for errors, e.g. constant not defined at the beginning of the file
+
+diff=$(diff <(metrics_in_code | sort | uniq) <(documented_metrics) | grep '^<' | awk '{print $2}')
+
+EXIT_CODE=0
 
 # Check for Undocumented Metrics
 if [ $(echo -n "$diff" | wc -c) -ne 0 ] ; then
@@ -132,23 +97,18 @@ if [ $(echo -n "$diff" | wc -c) -ne 0 ] ; then
   EXIT_CODE=1
 fi
 
-# Print violations of metric naming convention
-if [ $(metrics_without_constants_in_code | wc -c) -ne 0 ] ; then
-  if [ $EXIT_CODE -ne 0 ] ; then
-    echo
-    echo
-  fi
+diff=$(diff <(metrics_in_code | sort | uniq) <(documented_metrics | grep -Ev 'Volman|memoryStats|numGoRoutines|numCPUS') | grep '^>' | awk '{print $2}')
+
+# Check for Unemitted Metrics
+if [ $(echo -n "$diff" | wc -c) -ne 0 ] ; then
   echo -ne "\033[1m"
-  echo "The following metrics do not conform to metric format convention:"
+  echo "Extra documentation for the following metrics:"
+  echo "------------------------------------------------"
   echo -ne "\033[0m"
-  echo "All metrics should have a constant name which ends in 'Metric',"
-  echo "'Duration', 'Counter', or 'Count'. If following the convention is"
-  echo "truely impossible, add it to the 'EXCEPTIONAL_METRICS' in this script"
-  echo "and be sure to document it"
-  echo "----------------------------------------------------------------------"
   echo -ne "\033[31m"
-  metrics_without_constants_in_code
+  echo "$diff"
   echo -ne "\033[0m"
-  EXIT_CODE=2
+  EXIT_CODE=1
 fi
+
 exit $EXIT_CODE
