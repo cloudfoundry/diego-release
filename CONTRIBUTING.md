@@ -114,11 +114,11 @@ To be able to run the integration test suite ("inigo"), you'll need to have a lo
 ## Code Conventions
 ### Metrics
 
-Metrics added to any of the Diego components need to follow the naming and documentation conventions listed here, otherwise the Diego unit tests will fail.
+Metrics added to any of the Diego components need to follow the naming and documentation conventions listed here, as otherwise the Diego unit tests will fail.
 
-- Metrics need to be defined as constants, preferably at the begging of the file
-- The constant name for the metric needs to follow the format `ConstantMetricName = "metric name"`
-- All component level metrics passed to `diego-logging-client.IngressClient` must be documented in [Metrics Documentation](docs/metrics.md)
+- Metrics must be defined as constants, preferably at the beginning of the file.
+- The constant declaration for the metric needs to follow the format `ConstantMetricName = "metric name"`.
+- All component level metrics passed to `diego-logging-client.IngressClient` must be documented in the [metrics documentation](docs/metrics.md).
 - Application level metrics passed to `diego-logging-client.SendApp*` should not be documented.
 
 ### Running the SQL unit tests
