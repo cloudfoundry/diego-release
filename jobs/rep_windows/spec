@@ -273,7 +273,7 @@ properties:
     default: "/var/vcap/packages/healthcheck_windows/external"
 
   containers.graceful_shutdown_interval_in_seconds:
-    description: "EXPERIMENTAL: time in seconds between signalling a container to shutdown gracefully and stopping it forcefully. Can't be less than 10"
+    description: "EXPERIMENTAL: time in seconds between signalling a container to shutdown gracefully and stopping it forcefully. Should not be less than 10."
     default: 10
 
   containers.proxy.enabled:
