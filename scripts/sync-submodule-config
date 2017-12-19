@@ -8,6 +8,7 @@ go install github.com/vito/gosub
 
 {
   gosub list \
+    -app code.cloudfoundry.org/certsplitter/cmd/... \
     -app code.cloudfoundry.org/auctioneer/cmd/... \
     -app code.cloudfoundry.org/bbs/cmd/bbs \
     -app code.cloudfoundry.org/buildpackapplifecycle/... \
@@ -15,17 +16,17 @@ go install github.com/vito/gosub
     -app code.cloudfoundry.org/diego-ssh/... \
     -app code.cloudfoundry.org/dockerapplifecycle/... \
     -app code.cloudfoundry.org/fileserver/cmd/... \
-    -app code.cloudfoundry.org/gorouter \
     -app code.cloudfoundry.org/guardian/gqt/runner \
     -app code.cloudfoundry.org/healthcheck/cmd/... \
     -app code.cloudfoundry.org/localdriver/cmd/... \
     -app code.cloudfoundry.org/locket/cmd/locket \
     -app code.cloudfoundry.org/rep/cmd/... \
     -app code.cloudfoundry.org/route-emitter/cmd/... \
-    -app code.cloudfoundry.org/routing-api/cmd/... \
+    -app code.cloudfoundry.org/routing-api/cmd/routing-api \
     -app github.com/apcera/gnatsd \
     -app github.com/apcera/nats \
-    -app github.com/golang/protobuf...
+    -app github.com/golang/protobuf... \
+    -app github.com/maxbrunsfeld/counterfeiter
 
   # separate these so gosub doesn't asplode
   gosub list -test code.cloudfoundry.org/auctioneer/...
@@ -42,14 +43,10 @@ go install github.com/vito/gosub
   gosub list -test code.cloudfoundry.org/route-emitter/...
   gosub list -test code.cloudfoundry.org/vizzini/...
   gosub list -test code.cloudfoundry.org/auction/... \
-    \
-    -test code.cloudfoundry.org/inigo/... \
-    -test code.cloudfoundry.org/diego-upgrade-stability-tests/... \
-
+             -test code.cloudfoundry.org/inigo/... \
+             -test code.cloudfoundry.org/diego-upgrade-stability-tests/...
   gosub list -test code.cloudfoundry.org/localdriver/...
 
-} > /tmp/packages
-
-echo "code.cloudfoundry.org/loggregator-api" >> /tmp/packages
+} | grep -Ev '^github.com/docker/docker($|/)' > /tmp/packages
 
 cat /tmp/packages | xargs gosub sync

@@ -122,21 +122,12 @@
 [submodule "src/github.com/docker/libtrust"]
 	path = src/github.com/docker/libtrust
 	url = https://github.com/docker/libtrust
-[submodule "src/github.com/Sirupsen/logrus"]
-	path = src/github.com/Sirupsen/logrus
-	url = https://github.com/Sirupsen/logrus
 [submodule "src/golang.org/x/net"]
 	path = src/golang.org/x/net
 	url = https://go.googlesource.com/net
 [submodule "src/github.com/docker/distribution"]
 	path = src/github.com/docker/distribution
 	url = https://github.com/docker/distribution
-[submodule "src/github.com/gorilla/mux"]
-	path = src/github.com/gorilla/mux
-	url = https://github.com/gorilla/mux
-[submodule "src/github.com/gorilla/context"]
-	path = src/github.com/gorilla/context
-	url = https://github.com/gorilla/context
 [submodule "src/github.com/kr/fs"]
 	path = src/github.com/kr/fs
 	url = https://github.com/kr/fs
@@ -343,12 +334,10 @@
 [submodule "src/code.cloudfoundry.org/go-loggregator"]
 	path = src/code.cloudfoundry.org/go-loggregator
 	url = https://github.com/cloudfoundry-incubator/go-loggregator
+	branch = master
 [submodule "src/github.com/cactus/go-statsd-client"]
 	path = src/github.com/cactus/go-statsd-client
 	url = https://github.com/cactus/go-statsd-client
-[submodule "src/code.cloudfoundry.org/cf-tcp-router"]
-	path = src/code.cloudfoundry.org/cf-tcp-router
-	url = https://github.com/cloudfoundry-incubator/cf-tcp-router
 [submodule "src/github.com/jinzhu/inflection"]
 	path = src/github.com/jinzhu/inflection
 	url = https://github.com/jinzhu/inflection
@@ -358,12 +347,10 @@
 [submodule "src/code.cloudfoundry.org/systemcerts"]
 	path = src/code.cloudfoundry.org/systemcerts
 	url = https://github.com/cloudfoundry/systemcerts
-[submodule "src/github.com/maxbrunsfeld/counterfeiter"]
-	path = src/github.com/maxbrunsfeld/counterfeiter
-	url = https://github.com/maxbrunsfeld/counterfeiter
 [submodule "src/golang.org/x/text"]
 	path = src/golang.org/x/text
 	url = https://go.googlesource.com/text
+	branch = master
 [submodule "src/golang.org/x/sys"]
 	path = src/golang.org/x/sys
 	url = https://go.googlesource.com/sys
@@ -372,22 +359,19 @@
 	url = https://github.com/paulcwarren/spec.git
 [submodule "src/github.com/Kaixiang/csiplugin"]
 	path = src/github.com/Kaixiang/csiplugin
-	url = https://github.com/Kaixiang/csiplugin.git
+	url = https://github.com/Kaixiang/csiplugin
 [submodule "src/github.com/jeffpak/local-node-plugin"]
 	path = src/github.com/jeffpak/local-node-plugin
 	url = https://github.com/jeffpak/local-node-plugin
 [submodule "src/code.cloudfoundry.org/diego-logging-client"]
 	path = src/code.cloudfoundry.org/diego-logging-client
 	url = https://github.com/cloudfoundry/diego-logging-client
-[submodule "src/code.cloudfoundry.org/certsplitter"]
-	path = src/code.cloudfoundry.org/certsplitter
-	url = https://github.com/cloudfoundry/certsplitter
 [submodule "src/code.cloudfoundry.org/csishim"]
 	path = src/code.cloudfoundry.org/csishim
-	url = https://github.com/cloudfoundry/csishim.git
+	url = https://github.com/cloudfoundry/csishim
 [submodule "src/github.com/container-storage-interface/spec"]
 	path = src/github.com/container-storage-interface/spec
-	url = https://github.com/container-storage-interface/spec.git
+	url = https://github.com/container-storage-interface/spec
 [submodule "src/github.com/inconshreveable/mousetrap"]
 	path = src/github.com/inconshreveable/mousetrap
 	url = https://github.com/inconshreveable/mousetrap
@@ -400,9 +384,6 @@
 [submodule "src/github.com/containers/image"]
 	path = src/github.com/containers/image
 	url = https://github.com/containers/image
-[submodule "src/github.com/docker/docker-credential-helpers"]
-	path = src/github.com/docker/docker-credential-helpers
-	url = https://github.com/docker/docker-credential-helpers
 [submodule "src/github.com/docker/go-connections"]
 	path = src/github.com/docker/go-connections
 	url = https://github.com/docker/go-connections
@@ -421,3 +402,16 @@
 [submodule "src/github.com/sirupsen/logrus"]
 	path = src/github.com/sirupsen/logrus
 	url = https://github.com/sirupsen/logrus
+[submodule "src/code.cloudfoundry.org/certsplitter"]
+	path = src/code.cloudfoundry.org/certsplitter
+	url = https://github.com/cloudfoundry/certsplitter
+[submodule "src/github.com/maxbrunsfeld/counterfeiter"]
+	path = src/github.com/maxbrunsfeld/counterfeiter
+	url = https://github.com/maxbrunsfeld/counterfeiter
+[submodule "src/golang.org/x/tools"]
+	path = src/golang.org/x/tools
+	url = https://go.googlesource.com/tools
+	branch = master
+[submodule "src/github.com/docker/docker-credential-helpers"]
+	path = src/github.com/docker/docker-credential-helpers
+	url = https://github.com/docker/docker-credential-helpers
