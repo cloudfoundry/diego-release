@@ -1,10 +1,9 @@
 package tarsum
 
-// BuilderContext is an interface extending TarSum by adding the Remove method.
-// In general there was concern about adding this method to TarSum itself
-// so instead it is being added just to "BuilderContext" which will then
-// only be used during the .dockerignore file processing
-// - see builder/evaluator.go
+// This interface extends TarSum by adding the Remove method.  In general
+// there was concern about adding this method to TarSum itself so instead
+// it is being added just to "BuilderContext" which will then only be used
+// during the .dockerignore file processing - see builder/evaluator.go
 type BuilderContext interface {
 	TarSum
 	Remove(string)
