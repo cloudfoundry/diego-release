@@ -25,6 +25,7 @@ function setup_localhost_hosts() {
   # The following rep cell ids are used in the evacuation test :(
   echo "127.0.0.1 cell-a.cell.service.cf.internal" >> "${hosts_file}"
   echo "127.0.0.1 cell-b.cell.service.cf.internal" >> "${hosts_file}"
+  echo "127.0.0.1 file-server.service.cf.internal" >> "${hosts_file}"
 }
 
 build_gardenrunc () {
@@ -219,6 +220,9 @@ else
 
   service postgresql start
 fi
+
+# display ginkgo dots properly
+export LESSCHARSET=utf-8
 
 # GARDEN_GRAPH_PATH is the root of the docker image filesystem
 export GARDEN_GRAPH_PATH=/tmp/garden/graph
