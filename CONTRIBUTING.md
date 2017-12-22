@@ -337,6 +337,42 @@ To run cf-smoke-tests you can similarly deploy and run an errand to run the test
         # target the errand for smoke tests when running them
         bosh -n -d bosh-lite/deployments/cf.yml run errand smoke_tests
 
+### Running DUSTs in a container
+
+**Note** the test suite mentioned below is experimental.
+
+Run the following command to create a docker container that is suitable for running inigo or vizzini
+
+    ./scripts/start-inigo-container
+
+**Warning** The script assumes that you follow the team's conventions:
+1. [diego-release](https://github.com/cloudfoundry/diego-release) is cloned in `~/workspace/diego-releaes`
+1. [garden-runc-release](https://github.com/cloudfoundry/garden-runc-release) is cloned in `~/workspace/garden-runc-releaes`
+1. [routing-release](https://github.com/cloudfoundry/routing-release) is cloned in `~/workspace/routing-releaes`
+
+The script will start a shell inside the container . Once inside the container follow the instructions printed on the screen, namely run the following:
+
+    source /diego-release/scripts/ci/setup_inigo
+
+Navigate to the dusts directory:
+
+    cd /diego-release/src/code.cloudfoundry.org/diego-upgrade-stability-tests/collocated/
+    ginkgo
+
+The test suite will start the following jobs, then run the entire [Vizzini](https://github.com/cloudfoundry/vizzini) test suite:
+
+- Nats
+- Consul
+- FileServer
+- Garden
+- Locket
+- BBS
+- Auctioneer
+- Router
+- RouteEmitter
+- SSH-Proxy
+- 2 Rep instances
+
 ### Running Benchmark Tests
 Running the benchmark tests isn't usually needed for most changes. However, for  changes to the BBS or the protobuf models, it may be helpful to run these tests to understand the performance impact.
 
