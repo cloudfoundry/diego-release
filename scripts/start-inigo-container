@@ -13,4 +13,5 @@ Do not forget to run 'source /diego-release/scripts/ci/setup_inigo' and DO NOT u
 
 EOF
 
+docker pull cloudfoundry/inigo-ci
 docker run --detach-keys "ctrl-z" --privileged -v ~/workspace/diego-release:/diego-release -v ~/workspace/routing-release:/routing-release -v ~/workspace/garden-runc-release:/garden-runc-release -it cloudfoundry/inigo-ci bash -l
