@@ -9,7 +9,9 @@ If containers are failing to be created with 'failed to write 4194304 to memory.
 
 ################################
 
-Do not forget to run 'source /diego-release/scripts/ci/setup_inigo' and DO NOT use more than 9 nodes while running inigo
+After starting the inigo container, make sure to run 'source /diego-release/scripts/ci/setup_inigo'.
+
+DO NOT use more than 9 nodes while running inigo.
 
 EOF
 
