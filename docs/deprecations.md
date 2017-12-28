@@ -30,6 +30,11 @@ This document lists deprecated properties of the job templates in this BOSH rele
 - `diego.rep.trusted_certs`: Deprecated in favor of `containers.trusted_ca_certificates`.
 
 
+### <a name="bosh-job-properties-ssh-proxy"></a>`ssh_proxy`
+
+- `diego.ssh_proxy.uaa_token_url`: Deprecated in favor of `diego.ssh_proxy.uaa.url`.
+
+
 ## <a name="component-metrics"></a>Component metrics
 
 ### <a name="component-metrics-rep"></a>`rep` and `rep_windows`
