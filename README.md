@@ -1,24 +1,20 @@
 # Cloud Foundry Diego (BOSH release) [![slack.cloudfoundry.org](https://slack.cloudfoundry.org/badge.svg)](https://slack.cloudfoundry.org)
 
 ----
-This repo is a [BOSH](https://github.com/cloudfoundry/bosh) release for
+This repository is a [BOSH](https://github.com/cloudfoundry/bosh) release for
 deploying Diego and associated tasks for testing a Diego deployment.
 Diego is the new container runtime system for Cloud Foundry, replacing the DEAs and Health Manager.
 
-This release relies on a separate deployment to provide
-[Consul](https://github.com/hashicorp/consul),
-[NATS](https://github.com/apcera/gnatsd), and
-[Loggregator](https://github.com/cloudfoundry/loggregator). In practice, these typically
-come from [cf-release](https://github.com/cloudfoundry/cf-release).
+This release depends on external services such as a relational database (either [MySQL](https://github.com/cloudfoundry/cf-mysql-release) or [Postgres](https://github.com/cloudfoundry/postgres-release)) for data storage and [Consul](https://github.com/hashicorp/consul) or [BOSH DNS](https://github.com/cloudfoundry/bosh-dns-release) for inter-component service discovery. It also integrates with [NATS](https://github.com/apcera/gnatsd) to register routes to applications and [Loggregator](https://github.com/cloudfoundry/loggregator) to emit application logs and Diego component metrics. In practice, these dependencies typically come from [cf-deployment](https://github.com/cloudfoundry/cf-deployment) or [cf-release](https://github.com/cloudfoundry/cf-release).
 
 The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) present an overview of Diego, and links to the various Diego components.
 
 ## Table of Contents
 
 1. [Diego Operator Resources](#diego-operator-resources)
+    1. [Deploying Diego-Backed Cloud Foundry](#deploying-diego-backed-cloud-foundry)
     1. [Deployment Examples](#deployment-examples)
     1. [Deployment Requirements and Constraints](#deployment-requirements-constraints)
-    1. [Deploying Diego-Backed Cloud Foundry](#deploying-diego-backed-cloud-foundry)
     1. [Security Configuration](#security-configuration)
     1. [Data Store Configuration](#data-store-configuration)
     1. [Component Coordination](#component-coordination)
@@ -29,6 +25,15 @@ The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) pre
 ---
 
 ## <a name="diego-operator-resources"></a>Diego Operator Resources
+
+### <a name="deploying-diego-backed-cloud-foundry"></a>Deploying Diego-Backed Cloud Foundry
+
+Diego is typically deployed as part of a Cloud Foundry Application Runtime deployment to serve as its container runtime. The [cf-deployment](https://github.com/cloudfoundry/cf-deployment) repository contains the latest recommended way to use BOSH to deploy a Cloud Foundry cluster to infrastructure platforms such as AWS, GCP, and Azure.
+
+- For those deployment operators still using the manifests generated from [cf-release](https://github.com/cloudfoundry/cf-release), see "[Deploying Diego Alongside an Existing CF Deployment](docs/deploy-alongside-existing-cf.md)" for general instructions and guidelines to deploy Diego alongside a separate CF deployment. Note that these deployment strategies are now deprecated and will cease development in early 2018 in favor of cf-deployment.
+- [Diego Manifest Generation](docs/manifest-generation.md) describes the manifest-generation scripts in this repository.
+- [Release Compatibility](docs/release-compatibility.md) illustrates how to select versions of CF and other BOSH releases to deploy alongside Diego.
+- [Managing the Migration](https://github.com/cloudfoundry/diego-design-notes/blob/master/migrating-to-diego.md#managing-the-migration) describes how operators can manage a transition from the DEAs to Diego.
 
 ### <a name="deployment-examples"></a>Deployment Examples
 
@@ -48,13 +53,6 @@ The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) pre
 - [Required Dependency Versions](docs/required-dependency-versions.md) details the minimum versions of the BOSH director, stemcell, and dependency releases required to deploy Diego correctly.
 - [Deployment Constraints](docs/deployment-constraints.md) describes the dependencies that must be deployed before deploying the Diego cluster and restrictions on Diego instance update order and rates to ensure correct cluster operation.
 - [Deprecations](docs/deprecations.md) lists deprecated BOSH job properties, component metrics, and endpoints and fields for Diego component APIs.
-
-### <a name="deploying-diego-backed-cloud-foundry"></a>Deploying Diego-Backed Cloud Foundry
-
-- Diego is typically deployed alongside a Cloud Foundry deployment to serve as its new container runtime. See "[Deploying Diego Alongside an Existing CF Deployment](docs/deploy-alongside-existing-cf.md)" for general instructions and guidelines to deploy Diego this way.
-- [Diego Manifest Generation](docs/manifest-generation.md) describes the manifest-generation scripts in this repository.
-- [Release Compatibility](docs/release-compatibility.md) illustrates how to select versions of CF and other BOSH releases to deploy alongside Diego.
-- [Managing the Migration](https://github.com/cloudfoundry/diego-design-notes/blob/master/migrating-to-diego.md#managing-the-migration) describes how operators can manage a transition from the DEAs to Diego.
 
 
 ### <a name="security-configuration"></a>Security Configuration
