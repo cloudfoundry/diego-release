@@ -16,13 +16,13 @@ The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) pre
 ## Table of Contents
 
 1. [Diego Operator Resources](#diego-operator-resources)
-  1. [Deployment Examples](#deployment-examples)
-  1. [Deployment Requirements and Constraints](#deployment-requirements-constraints)
-  1. [Deploying Diego-Backed Cloud Foundry](#deploying-diego-backed-cloud-foundry)
-  1. [Security Configuration](#security-configuration)
-  1. [Data Store Configuration](#data-store-configuration)
-  1. [Component Coordination](#component-coordination)
-  1. [Monitoring and Inspection](#monitoring-inspection)
+    1. [Deployment Examples](#deployment-examples)
+    1. [Deployment Requirements and Constraints](#deployment-requirements-constraints)
+    1. [Deploying Diego-Backed Cloud Foundry](#deploying-diego-backed-cloud-foundry)
+    1. [Security Configuration](#security-configuration)
+    1. [Data Store Configuration](#data-store-configuration)
+    1. [Component Coordination](#component-coordination)
+    1. [Monitoring and Inspection](#monitoring-inspection)
 1. [CF App Developer Resources](#cf-app-developer-resources)
 1. [Diego Contributor Resources](#diego-contributor-resources)
 
