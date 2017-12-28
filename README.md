@@ -45,7 +45,7 @@ The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) pre
 
 ### <a name="deployment-requirements-constraints"></a>Deployment Requirements and Constraints
 
-- [Required BOSH Versions](docs/required-bosh-versions.md) details the minimum versions of the BOSH director, stemcell, and dependency releases required to deploy Diego correctly.
+- [Required Dependency Versions](docs/required-dependency-versions.md) details the minimum versions of the BOSH director, stemcell, and dependency releases required to deploy Diego correctly.
 - [Deployment Constraints](docs/deployment-constraints.md) describes the dependencies that must be deployed before deploying the Diego cluster and restrictions on Diego instance update order and rates to ensure correct cluster operation.
 - [Deprecations](docs/deprecations.md) lists deprecated BOSH job properties, component metrics, and endpoints and fields for Diego component APIs.
 
