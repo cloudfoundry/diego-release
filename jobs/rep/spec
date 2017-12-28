@@ -128,7 +128,7 @@ properties:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
   diego.executor.ca_certs_for_downloads:
-    description: "Concatenation of trusted CA certificates to be used when downloading assets. Deprecated in favor of configuration with tls.{cert,key,ca_cert}"
+    description: "Concatenation of trusted CA certificates to be used when downloading assets. Deprecated in favor of tls.ca_cert."
     default: null
   tls.cert:
     description: "PEM-encoded tls certificate that can be used for client or server auth"

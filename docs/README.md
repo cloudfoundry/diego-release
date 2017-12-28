@@ -6,6 +6,7 @@
 - [Data Store Encryption](data-store-encryption.md)
 - [Deploying Diego Alongside an Existing CF Deployment](deploy-alongside-existing-cf.md)
 - [Deployment Constraints](deployment-constraints.md)
+- [Deprecations](deprecations.md)
 - [Diego Manifest Generation](manifest-generation.md)
 - [Diego Metrics](metrics.md)
 - [Release Compatibility](release-compatibility.md)
