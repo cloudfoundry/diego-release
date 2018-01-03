@@ -13,8 +13,8 @@
     connect_to_instance_address: p("connect_to_instance_address"),
   }
 
-  if_p("diego.ssh_proxy.idle_connection_timeout") do |value|
-    config[:idle_connection_timeout] = value
+  if_p("diego.ssh_proxy.idle_connection_timeout_in_seconds") do |value|
+    config[:idle_connection_timeout] = "#{value}s"
   end
 
   if p("diego.ssh_proxy.bbs.require_ssl") then
