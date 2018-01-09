@@ -1,0 +1,20 @@
+
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: cloudfoundry/inigo-ci
+    tag: latest
+
+inputs:
+- name: diego-release
+- name: diego-release-v0
+- name: garden-runc-release
+- name: routing-release
+
+params:
+  INIGO_REPEAT_COUNT: 1
+
+run:
+  path: diego-release/scripts/ci/run_collocated_dusts
