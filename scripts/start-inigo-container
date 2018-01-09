@@ -16,4 +16,10 @@ DO NOT use more than 9 nodes while running inigo.
 EOF
 
 docker pull cloudfoundry/inigo-ci
-docker run --detach-keys "ctrl-z" --privileged -v ~/workspace/diego-release:/diego-release -v ~/workspace/routing-release:/routing-release -v ~/workspace/garden-runc-release:/garden-runc-release -it cloudfoundry/inigo-ci bash -l
+docker run --detach-keys "ctrl-z" --privileged \
+  -v ~/workspace/diego-release:/diego-release \
+  -v ~/workspace/diego-release-v0:/diego-release-v0 \
+  -v ~/workspace/routing-release:/routing-release \
+  -v ~/workspace/garden-runc-release:/garden-runc-release \
+  -v ~/workspace/garden-runc-release-v0:/garden-runc-release-v0 \
+  -it cloudfoundry/inigo-ci bash -l
