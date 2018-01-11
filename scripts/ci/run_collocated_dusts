@@ -1,9 +1,14 @@
 #!/bin/bash
 
+# always use mysql (this isn't configurable atm)
+export SQL_FLAVOR=mysql
+
 dir=$(dirname $0)
 source $dir/setup_inigo
 
 set -e -x
+
+export DEFAULT_EVENTUALLY_TIMEOUT=60s
 
 pushd "${GOPATH_ROOT}/src/code.cloudfoundry.org/diego-upgrade-stability-tests/collocated"
   ginkgo -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=60 -keepGoing $@

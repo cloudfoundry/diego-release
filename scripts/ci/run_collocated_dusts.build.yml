@@ -13,8 +13,5 @@ inputs:
 - name: garden-runc-release
 - name: routing-release
 
-params:
-  INIGO_REPEAT_COUNT: 1
-
 run:
   path: diego-release/scripts/ci/run_collocated_dusts
