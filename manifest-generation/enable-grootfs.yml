@@ -7,7 +7,7 @@ grootfs_overrides:
     privileged_image_plugin_extra_args: ["--config=/var/vcap/jobs/grootfs/config/privileged_grootfs_config.yml"]
   grootfs:
     dropsonde_port: 3457
-    graph_cleanup_threshold_in_mb: (( property_overrides.garden.graph_cleanup_threshold_in_mb || 0 ))
+    graph_cleanup_threshold_in_mb: (( property_overrides.garden.graph_cleanup_threshold_in_mb || nil ))
     insecure_docker_registry_list: (( property_overrides.garden.insecure_docker_registry_list || nil ))
     json_output: (( property_overrides.grootfs.json_output || true ))
     persistent_image_list: (( property_overrides.garden.persistent_image_list || ["/var/vcap/packages/cflinuxfs2/rootfs.tar"] ))
