@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # always use mysql (this isn't configurable atm)
+export USE_GROOTFS=true
 export SQL_FLAVOR=mysql
 
 dir=$(dirname $0)
