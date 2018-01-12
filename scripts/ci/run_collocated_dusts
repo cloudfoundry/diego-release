@@ -2,6 +2,7 @@
 
 logs_dir=$PWD/logs
 mkdir $logs_dir
+log_file=$logs_dir/dusts.0.0.0.$(date +'%s').log
 
 # always use mysql (this isn't configurable atm)
 export USE_GROOTFS=true
@@ -15,5 +16,5 @@ set -e -x
 export DEFAULT_EVENTUALLY_TIMEOUT=60s
 
 pushd "${GOPATH_ROOT}/src/code.cloudfoundry.org/diego-upgrade-stability-tests/collocated"
-  ginkgo -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=60 -keepGoing $@ | tee $logs_dir/dusts.log
+  ginkgo -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=60 -keepGoing $@ | tee $log_file
 popd
