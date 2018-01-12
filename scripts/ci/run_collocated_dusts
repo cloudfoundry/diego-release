@@ -11,7 +11,7 @@ export SQL_FLAVOR=mysql
 dir=$(dirname $0)
 source $dir/setup_inigo
 
-set -e -x
+set -exo pipefail
 
 export DEFAULT_EVENTUALLY_TIMEOUT=60s
 
