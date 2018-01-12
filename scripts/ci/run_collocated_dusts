@@ -1,5 +1,8 @@
 #!/bin/bash
 
+logs_dir=$PWD/logs
+mkdir $logs_dir
+
 # always use mysql (this isn't configurable atm)
 export USE_GROOTFS=true
 export SQL_FLAVOR=mysql
@@ -12,5 +15,5 @@ set -e -x
 export DEFAULT_EVENTUALLY_TIMEOUT=60s
 
 pushd "${GOPATH_ROOT}/src/code.cloudfoundry.org/diego-upgrade-stability-tests/collocated"
-  ginkgo -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=60 -keepGoing $@
+  ginkgo -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=60 -keepGoing $@ | tee $logs_dir/dusts.log
 popd

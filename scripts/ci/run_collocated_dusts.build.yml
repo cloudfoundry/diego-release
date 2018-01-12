@@ -14,5 +14,8 @@ inputs:
 - name: grootfs-release
 - name: routing-release
 
+outputs:
+- name: logs
+
 run:
   path: diego-release/scripts/ci/run_collocated_dusts
