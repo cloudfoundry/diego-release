@@ -5,12 +5,6 @@ templates:
   ca.crt.erb: config/certs/cfdot/ca.crt
   client.crt.erb: config/certs/cfdot/client.crt
   client.key.erb: config/certs/cfdot/client.key
-  bbs_ca.crt.erb: config/certs/bbs/ca.crt
-  bbs_client.crt.erb: config/certs/bbs/client.crt
-  bbs_client.key.erb: config/certs/bbs/client.key
-  locket_ca.crt.erb: config/certs/locket/ca.crt
-  locket_client.crt.erb: config/certs/locket/client.crt
-  locket_client.key.erb: config/certs/locket/client.key
   pre-start.erb: bin/pre-start
   setup.erb: bin/setup
 
@@ -29,8 +23,8 @@ properties:
     description: "true if the bbs requires TLS connections, false otherwise"
     default: true
   diego.cfdot.bbs.ca_cert:
-    description: "PEM-encoded CA certificate. Deprecated in favor of tls.ca_certificate."
+    description: "DEPRECRATED: Use tls.ca_certificate instead"
   diego.cfdot.bbs.client_cert:
-    description: "PEM-encoded client certificate. Deprecated in favor of tls.certificate."
+    description: "DEPRECRATED: Use tls.certificate instead"
   diego.cfdot.bbs.client_key:
-    description: "PEM-encoded client key. Deprecated in favor of tls.private_key."
+    description: "DEPRECRATED: Use tls.private_key instead"
