@@ -15,11 +15,29 @@ DO NOT use more than 9 nodes while running inigo.
 
 EOF
 
+function ensure_exist() {
+    dir=$1
+    repo=$2
+    branch=$3
+    if [ ! -d $dir ]; then
+        read -n 1 -p "$dir not found. Cloning it from $repo Continue [Y/n] ? " answer
+        echo
+        if [ "x$answer" == "xy" -o "x$answer" == "xY" ]; then
+            git clone $repo $dir -b $branch --recursive
+        fi
+    fi
+}
+
+
+ensure_exist $HOME/workspace/diego-release https://github.com/cloudfoundry/diego-release develop
+ensure_exist $HOME/workspace/diego-release-v0 https://github.com/cloudfoundry/diego-release v1.0.0
+ensure_exist $HOME/workspace/garden-runc-release https://github.com/cloudfoundry/garden-runc-release develop
+ensure_exist $HOME/workspace/routing-release https://github.com/cloudfoundry/routing-release develop
+
 docker pull cloudfoundry/inigo-ci
 docker run --detach-keys "ctrl-z" --privileged \
   -v ~/workspace/diego-release:/diego-release \
   -v ~/workspace/diego-release-v0:/diego-release-v0 \
   -v ~/workspace/routing-release:/routing-release \
   -v ~/workspace/garden-runc-release:/garden-runc-release \
-  -v ~/workspace/garden-runc-release-v0:/garden-runc-release-v0 \
   -it cloudfoundry/inigo-ci bash -l
