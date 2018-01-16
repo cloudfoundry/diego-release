@@ -47,7 +47,7 @@ automated system uses, then we manually make the Pull Request as having a CLA on
 ## Initial Setup
 This BOSH release doubles as a `$GOPATH`. It will automatically be set up for you if you have [direnv](http://direnv.net) installed.
 
-**NOTE:** diego-release and its components assume you're running go **1.7**. The project may not compile or work as expected with other versions of go.
+**NOTE:** diego-release and its components assume you're running go **1.9**. The project may not compile or work as expected with other versions of go.
 
     # create parent directory of cf-release and diego-release
     mkdir -p ~/workspace
@@ -100,7 +100,7 @@ To be able to run unit tests, you'll also need to install the following binaries
     go install github.com/apcera/gnatsd
 
     # Install etcd. This is only required for the bbs migration test suite.
-    go install github.com/coreos/etcd   
+    go install github.com/coreos/etcd
 
     # Install consul
     if uname -a | grep Darwin; then os=darwin; else os=linux; fi
@@ -341,12 +341,25 @@ To run cf-smoke-tests you can similarly deploy and run an errand to run the test
 
 **Note**: The test suite mentioned below is experimental.
 
-Run the following command to create a docker container that is suitable for running inigo or vizzini:
+To run the Diego Upgrade Stability Tests (aka DUSTs), you will need an earlier version of the code checked out in a `diego-release-v0` directory. This directory should have the same parent directory as your `diego-release` repo:
 
+    git clone https://github.com/cloudfoundry/diego-release diego-release-v0
+    pushd diego-release-v0
+    git checkout v1.0.0
+    ./scripts/update
+    git clean -dff
+    popd
+
+We currently start our upgrade testing from Diego v1.0.0. Adjust this version to taste.
+
+Once you have a V0 version of Diego, run the following command in the newer version of Diego to create a docker container that is suitable for running inigo or vizzini:
+
+    cd diego-release
     ./scripts/start-inigo-container
 
 **Warning**: The script assumes that you follow the team's conventions:
-1. [diego-release](https://github.com/cloudfoundry/diego-release) is cloned into `~/workspace/diego-release`.
+1. Your older version of [diego-release](https://github.com/cloudfoundry/diego-release) is cloned into `~/workspace/diego-release-v0`.
+1. Your newer (modified) version of [diego-release](https://github.com/cloudfoundry/diego-release) is cloned into `~/workspace/diego-release`.
 1. [garden-runc-release](https://github.com/cloudfoundry/garden-runc-release) is cloned into `~/workspace/garden-runc-release`.
 1. [routing-release](https://github.com/cloudfoundry/routing-release) is cloned into `~/workspace/routing-release`.
 
