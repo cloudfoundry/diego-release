@@ -5,7 +5,6 @@ mkdir $logs_dir
 log_file=$logs_dir/dusts.0.0.0.$(date +'%s').log
 
 # always use mysql (this isn't configurable atm)
-export USE_GROOTFS=true
 export SQL_FLAVOR=mysql
 
 dir=$(dirname $0)
