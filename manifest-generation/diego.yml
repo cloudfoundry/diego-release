@@ -1,6 +1,6 @@
 name: (( config_from_cf.cf_deployment_name "-diego" ))
 
-releases: (( base_releases bbs_overrides.releases volman_overrides.releases cf_networking_overrides.releases [garden_overrides.release] [config_from_cf.cf_release] bridge_overrides.releases grootfs_overrides.releases ))
+releases: (( base_releases bbs_overrides.releases volman_overrides.releases cf_networking_overrides.releases [garden_overrides.release] [config_from_cf.cf_release] bridge_overrides.releases ))
 
 director_uuid: (( config_from_cf.cf_director_uuid ))
 
@@ -232,7 +232,7 @@ base:
           zone: z1
         loggregator: *loggregator-properties
     - name: cell_z1
-      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates grootfs_overrides.templates ))
+      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates ))
       instances: (( instance_count_overrides.cell_z1.instances || 1 ))
       resource_pool: cell_z1
       networks:
@@ -335,7 +335,7 @@ base:
         loggregator: *loggregator-properties
 
     - name: cell_z2
-      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates grootfs_overrides.templates ))
+      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates ))
       instances: (( instance_count_overrides.cell_z2.instances || 1 ))
       resource_pool: cell_z2
       networks:
@@ -425,7 +425,7 @@ base:
         loggregator: *loggregator-properties
 
     - name: cell_z3
-      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates grootfs_overrides.templates ))
+      templates: (( base_job_templates.cell volman_overrides.driver_templates cf_networking_overrides.driver_templates route_emitter_overrides.templates ))
       instances: (( instance_count_overrides.cell_z3.instances || 0 ))
       resource_pool: cell_z3
       networks:
@@ -972,8 +972,6 @@ grootfs_overrides:
     persistent_image_list: (( merge || nil ))
   rep:
     preloaded_rootfses: (( property_overrides.diego.rep.preloaded_rootfses || ["cflinuxfs2:/var/vcap/packages/cflinuxfs2/rootfs"] ))
-  releases: (( merge || [] ))
-  templates: (( merge || [] ))
 
 empty_hash: {}
 

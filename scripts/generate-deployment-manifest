@@ -108,7 +108,7 @@ while getopts "c:i:p:n:k:v:s:d:N:QkrbgxLBRG" opt; do
       sql_lock_overrides="${manifest_generation}/enable-sql-lock.yml"
       ;;
     G)
-      grootfs_properties="${manifest_generation}/enable-grootfs.yml"
+      >&2 echo "DEPRECATED -G flag: grootfs is the default since version 1.11.0 of garden-runc and cannot be disabled."
       ;;
     *)
       echo "Unknown arguments"
@@ -116,6 +116,8 @@ while getopts "c:i:p:n:k:v:s:d:N:QkrbgxLBRG" opt; do
       ;;
   esac
 done
+
+grootfs_properties="${manifest_generation}/enable-grootfs.yml"
 
 if [ "${dash_g_provided}x" != "x" ]; then
   if [ "${garden_properties}x" != "x" ]; then
