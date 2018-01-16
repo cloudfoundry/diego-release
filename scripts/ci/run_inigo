@@ -1,9 +1,8 @@
 #!/bin/bash
 
 dir=$(dirname $0)
-source $dir/setup_inigo
 
-set -e -x
+source $dir/setup_inigo
 
 nodes_flag=""
 if [ "$GINKGO_PARALLEL" = "true" ]; then

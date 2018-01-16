@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ex
+
 export TMP_HOME=${PWD}
 export GOROOT=/usr/local/go
 export PATH=${GOROOT}/bin:${PATH}
@@ -37,17 +39,12 @@ build_gardenrunc () {
     export PATH=${GOPATH}/bin:${PATH}
     export GARDEN_BINPATH=${PWD}/bin/
 
-    if [ -d $GOPATH/src/github.com/cloudfoundry-incubator/guardian ]; then
-        NSTAR_PATH=src/github.com/cloudfoundry-incubator/guardian/rundmc/nstar
-        go install github.com/cloudfoundry-incubator/guardian/rundmc/iodaemon/cmd/iodaemon
-        go install github.com/cloudfoundry-incubator/guardian/cmd/kawasaki/
-        go install github.com/cloudfoundry-incubator/guardian/cmd/init/
-        go install github.com/cloudfoundry-incubator/guardian/cmd/dadoo/
-    else
-        NSTAR_PATH=src/code.cloudfoundry.org/guardian/rundmc/nstar
-        go install code.cloudfoundry.org/guardian/cmd/init/
-        go install code.cloudfoundry.org/guardian/cmd/dadoo/
-    fi
+    mkdir -p $GOPATH/bin
+    NSTAR_PATH=src/code.cloudfoundry.org/guardian/rundmc/nstar
+
+    gcc -static -o $GOPATH/bin/init $GOPATH/src/code.cloudfoundry.org/guardian/cmd/init/init.c
+    go install code.cloudfoundry.org/guardian/cmd/dadoo/
+    go install code.cloudfoundry.org/grootfs/store/filesystems/overlayxfs/tardis
 
     pushd src/github.com/opencontainers/runc
       PKG_CONFIG_PATH=/usr/local/lib/pkgconfig GOPATH=${PWD}/Godeps/_workspace:${GOPATH} BUILDTAGS="seccomp" make static
@@ -88,7 +85,7 @@ mount_btrfs() {
 
 build_grootfs () {
   echo "Building grootfs..."
-  export GROOTFS_GOPATH=${PWD}/grootfs-release
+  export GROOTFS_GOPATH=${PWD}/garden-runc-release
   export GROOTFS_BINPATH=${GROOTFS_GOPATH}/bin
   mkdir -p ${GROOTFS_BINPATH}
 
@@ -118,7 +115,7 @@ build_grootfs () {
 
 set_garden_rootfs () {
   # use the 1.29 version of tar that's installed in the inigo-ci docker image
-  ln -s /usr/local/bin/tar "${GARDEN_BINPATH}"
+  ln -sf /usr/local/bin/tar "${GARDEN_BINPATH}"
 
   if [ "x${USE_GROOTFS}" = "xtrue" ]; then
     tar cpf /tmp/rootfs.tar -C /opt/inigo/rootfs .
@@ -201,9 +198,7 @@ setup_localhost_hosts
 
 build_gardenrunc $PWD/garden-runc-release
 
-if [ "x${USE_GROOTFS}" = "xtrue" ]; then
-	build_grootfs
-fi
+build_grootfs
 
 # setup v0 env vars for dusts-v2
 if [ -d $PWD/diego-release-v0 ]; then
@@ -252,7 +247,7 @@ if ! grep -qs '/sys' /proc/mounts; then
 fi
 
 # shellcheck source=/dev/null
-source "${GARDEN_GOPATH}/ci/scripts/aufs"
+source "${GARDEN_GOPATH}/ci/scripts/device-control"
 permit_device_control
 create_loop_devices 256
 
