@@ -117,15 +117,8 @@ set_garden_rootfs () {
   # use the 1.29 version of tar that's installed in the inigo-ci docker image
   ln -sf /usr/local/bin/tar "${GARDEN_BINPATH}"
 
-  if [ "x${USE_GROOTFS}" = "xtrue" ]; then
-    tar cpf /tmp/rootfs.tar -C /opt/inigo/rootfs .
-    export GARDEN_ROOTFS=/tmp/rootfs.tar
-  else
-    export GARDEN_ROOTFS=/tmp/opt/inigo/rootfs
-    mkdir -p "${GARDEN_ROOTFS}"
-    mount -t tmpfs tmpfs "${GARDEN_ROOTFS}"
-    cp -rp /opt/inigo/rootfs/* "${GARDEN_ROOTFS}"
-  fi
+  tar cpf /tmp/rootfs.tar -C /opt/inigo/rootfs .
+  export GARDEN_ROOTFS=/tmp/rootfs.tar
 }
 
 setup_gopath() {

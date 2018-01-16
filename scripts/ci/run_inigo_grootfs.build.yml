@@ -10,7 +10,6 @@ image_resource:
 inputs:
 - name: diego-release
 - name: garden-runc-release
-- name: grootfs-release
 - name: routing-release
 
 params:
@@ -20,7 +19,6 @@ params:
   SKIP_PACKAGES:
   SKIP_REGEX:
   SQL_FLAVOR:
-  USE_GROOTFS: true
 
 run:
   path: diego-release/scripts/ci/run_inigo
