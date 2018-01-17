@@ -284,7 +284,7 @@ properties:
     default: 18
 
   containers.trusted_ca_certificates:
-    description: "List of PEM-encoded CA certificates to make available inside containers in a conventional location"
+    description: "List of PEM-encoded CA certificates to make available inside containers in a conventional location. List entries may be individual or concatenated CAs."
     example:
     - |
       ----- BEGIN CERTIFICATE -----
@@ -293,4 +293,11 @@ properties:
     - |
       ----- BEGIN CERTIFICATE -----
       CONTENTS OF CERTIFICATE #2
+      ----- END CERTIFICATE -----
+    - |
+      ----- BEGIN CERTIFICATE -----
+      CONTENTS OF CERTIFICATE #3
+      ----- END CERTIFICATE -----
+      ----- BEGIN CERTIFICATE -----
+      CONTENTS OF CERTIFICATE #4
       ----- END CERTIFICATE -----
