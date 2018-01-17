@@ -202,6 +202,7 @@ if [ -d $PWD/diego-release-v0 ]; then
     export REP_GOPATH_V0=${GOPATH_ROOT}
     export ROUTE_EMITTER_GOPATH_V0=${GOPATH_ROOT}
     export SSHD_GOPATH_V0=${GOPATH_ROOT}
+    export SSH_PROXY_GOPATH_V0=${GOPATH_ROOT}
 fi
 
 export ROUTER_GOPATH="$PWD/routing-release"

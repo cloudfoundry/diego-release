@@ -372,19 +372,9 @@ Navigate to the directory of the collocated DUSTs test suite:
     cd /diego-release/src/code.cloudfoundry.org/diego-upgrade-stability-tests/collocated/
     ginkgo
 
-The test suite will start the following jobs, then run the entire [Vizzini](https://github.com/cloudfoundry/vizzini) test suite:
+Note that this suite can not currently be run using multiple ginkgo nodes due to a limitation around port configuration for the file server in Diego 1.0.0. Make sure not to include the `-p` or `-nodes` flags in your Ginkgo run.
 
-- Nats
-- Consul
-- FileServer
-- Garden
-- Locket
-- BBS
-- Auctioneer
-- Router
-- RouteEmitter
-- SSH-Proxy
-- 2 Rep instances
+The test suite will start all necessary Diego dependencies and related components, then run upgrade tests against various configurations of those components. This includes route availability and Diego API features.
 
 ### Running Benchmark Tests
 Running the benchmark tests isn't usually needed for most changes. However, for  changes to the BBS or the protobuf models, it may be helpful to run these tests to understand the performance impact.
