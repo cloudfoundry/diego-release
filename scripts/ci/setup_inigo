@@ -77,7 +77,13 @@ create_garden_storage() {
     mknod -m777 /dev/loop$i b 7 $i
   done
 
+  # Make XFS volume
+  truncate -s 8G /xfs_volume
+  mkfs.xfs -b size=4096 /xfs_volume
+
+  # Mount XFS
   mkdir /mnt/garden-storage
+  mount -t xfs -o pquota,noatime,nobarrier /xfs_volume /mnt/garden-storage
   chmod 777 -R /mnt/garden-storage
 }
 
