@@ -57,30 +57,28 @@ build_gardenrunc () {
   popd
 }
 
-# source: cloudfoundry/grootfs/ci/scripts/test/utils.sh
-mount_btrfs() {
+create_garden_storage() {
   # Configure cgroup
-  mount -tcgroup -odevices cgroup:devices /sys/fs/cgroup
+  mount -t tmpfs cgroup_root /sys/fs/cgroup
+  mkdir -p /sys/fs/cgroup/devices
+  mkdir -p /sys/fs/cgroup/memory
+
+  mount -tcgroup -odevices cgroup:devices /sys/fs/cgroup/devices
   devices_mount_info=$(cat /proc/self/cgroup | grep devices)
   devices_subdir=$(echo $devices_mount_info | cut -d: -f3)
-  echo 'b 7:* rwm' > /sys/fs/cgroup/devices.allow
-  echo 'b 7:* rwm' > /sys/fs/cgroup${devices_subdir}/devices.allow
+
+  # change permission to allow us to run mknod later
+  echo 'b 7:* rwm' > /sys/fs/cgroup/devices/devices.allow
+  echo 'b 7:* rwm' > /sys/fs/cgroup/devices${devices_subdir}/devices.allow
 
   # Setup loop devices
   for i in {0..256}
   do
-    mknod -m777 /dev/loop$i b 7 $i || true
+    mknod -m777 /dev/loop$i b 7 $i
   done
 
-  # Make BTRFS volume
-  truncate -s 8G /btrfs_volume
-  mkfs.btrfs /btrfs_volume
-
-  # Mount BTRFS
-  mkdir /mnt/btrfs
-  mount -t btrfs -o user_subvol_rm_allowed,rw /btrfs_volume /mnt/btrfs
-  chmod 777 -R /mnt/btrfs
-  btrfs quota enable /mnt/btrfs
+  mkdir /mnt/garden-storage
+  chmod 777 -R /mnt/garden-storage
 }
 
 build_grootfs () {
@@ -94,7 +92,7 @@ build_grootfs () {
     export PATH=${GOPATH}/bin:${PATH}
 
     # Set up btrfs volume and loopback devices in environment
-    mount_btrfs
+    create_garden_storage
     umount /sys/fs/cgroup || true
 
     make
