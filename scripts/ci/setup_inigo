@@ -11,23 +11,14 @@ export PATH=${GOROOT}/bin:${PATH}
 # tests were failing because they were unable to resolve DNS names.
 echo "nameserver 8.8.8.8" >> /etc/resolv.conf
 
-# Adds the cell announced urls to the /etc/hosts file. We cannot use consul
-# reliably since there could be multiple consuls running on multiple ginkgo
-# nodes. Adding all of them to the /etc/resolv.conf will lead potential to
-# cross talking across the different tests.
-function setup_localhost_hosts() {
-  local hosts_file
-  hosts_file=/etc/hosts
-  for ginkgoNode in {1..30}; do
-      for repN in {0..30}; do
-          echo "127.0.0.1 the-cell-id-${ginkgoNode}-${repN}.cell.service.cf.internal" >> "${hosts_file}"
-      done
-  done
+# Setup DNS for *.service.cf.internal, used by the Diego components, and
+# *.test.internal, used by the collocated DUSTs as a routable domain.
+function setup_dnsmasq() {
+  local host_addr
+  host_addr=$(ip route get 8.8.8.8 | head -n1 | awk '{print $NF}')
 
-  # The following rep cell ids are used in the evacuation test :(
-  echo "127.0.0.1 cell-a.cell.service.cf.internal" >> "${hosts_file}"
-  echo "127.0.0.1 cell-b.cell.service.cf.internal" >> "${hosts_file}"
-  echo "127.0.0.1 file-server.service.cf.internal" >> "${hosts_file}"
+  dnsmasq --address=/service.cf.internal/127.0.0.1 --address=/test.internal/${host_addr}
+  echo -e "nameserver $host_addr\n$(cat /etc/resolv.conf)" > /etc/resolv.conf
 }
 
 build_gardenrunc () {
@@ -191,7 +182,7 @@ setup_database() {
   fi
 }
 
-setup_localhost_hosts
+setup_dnsmasq
 
 build_gardenrunc $PWD/garden-runc-release
 
@@ -200,6 +191,7 @@ build_grootfs
 # setup v0 env vars for dusts-v2
 if [ -d $PWD/diego-release-v0 ]; then
     setup_gopath $PWD/diego-release-v0
+    export GOPATH_V0=${GOPATH_ROOT}
     export AUCTIONEER_GOPATH_V0=${GOPATH_ROOT}
     export BBS_GOPATH_V0=${GOPATH_ROOT}
     export HEALTHCHECK_GOPATH_V0=${GOPATH_ROOT}
