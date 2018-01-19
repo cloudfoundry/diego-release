@@ -65,7 +65,7 @@ create_garden_storage() {
   # Setup loop devices
   for i in {0..256}
   do
-    mknod -m777 /dev/loop$i b 7 $i
+    mknod -m777 /dev/loop$i b 7 $i || true
   done
 
   # Make XFS volume
