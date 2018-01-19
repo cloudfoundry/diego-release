@@ -77,6 +77,8 @@ create_garden_storage() {
   mkdir /mnt/garden-storage
   mount -t xfs -o pquota,noatime,nobarrier /xfs_volume /mnt/garden-storage
   chmod 777 -R /mnt/garden-storage
+
+  umount /sys/fs/cgroup/devices
 }
 
 build_grootfs () {
@@ -91,7 +93,7 @@ build_grootfs () {
 
     # Set up btrfs volume and loopback devices in environment
     create_garden_storage
-    umount /sys/fs/cgroup || true
+    umount /sys/fs/cgroup
 
     make
 
