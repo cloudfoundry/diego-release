@@ -29,6 +29,7 @@ files:
   - code.cloudfoundry.org/executor/containermetrics/*.go # gosub
   - code.cloudfoundry.org/executor/depot/*.go # gosub
   - code.cloudfoundry.org/executor/depot/containerstore/*.go # gosub
+  - code.cloudfoundry.org/executor/depot/containerstore/envoy/*.go # gosub
   - code.cloudfoundry.org/executor/depot/event/*.go # gosub
   - code.cloudfoundry.org/executor/depot/log_streamer/*.go # gosub
   - code.cloudfoundry.org/executor/depot/metrics/*.go # gosub
@@ -141,3 +142,4 @@ files:
   - google.golang.org/grpc/stats/*.go # gosub
   - google.golang.org/grpc/tap/*.go # gosub
   - google.golang.org/grpc/transport/*.go # gosub
+  - gopkg.in/yaml.v2/*.go # gosub
