@@ -279,7 +279,7 @@ properties:
     default: false
   containers.proxy.additional_memory_allocation_mb:
     description: "EXPERIMENTAL: Additional memory allocated to each container for the envoy proxy. This value must not be negative"
-    default: 18
+    default: 5
 
   containers.trusted_ca_certificates:
     description: "List of PEM-encoded CA certificates to make available inside containers in a conventional location. List entries may be individual or concatenated CAs."
