@@ -76,7 +76,7 @@ properties:
     default: false
 
   loggregator.use_v2_api:
-    description: "True to use local metron agent gRPC v2 api. False, to use UDP v1 api"
+    description: "True to use local metron agent gRPC v2 API. False to use UDP v1 API."
     default: false
   loggregator.v2_api_port:
     description: "Local metron agent gRPC port"

@@ -79,7 +79,7 @@ properties:
     description: The CA certificate of the UAA
 
   diego.ssh_proxy.cc.internal_service_hostname:
-    description: Internal service hostname of Cloud Controller Api
+    description: Internal service hostname of Cloud Controller API
     default: cloud-controller-ng.service.cf.internal
   diego.ssh_proxy.cc.external_port:
     description: External port of the Cloud Controller API
@@ -105,7 +105,7 @@ properties:
     description: "Enable the ssh-proxy to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."
     default: true
   loggregator.use_v2_api:
-    description: "True to use local metron agent gRPC v2 api. False, to use UDP v1 api"
+    description: "True to use local metron agent gRPC v2 API. False to use UDP v1 API."
     default: false
   loggregator.v2_api_port:
     description: "Local metron agent gRPC port"

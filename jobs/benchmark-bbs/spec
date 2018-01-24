@@ -95,7 +95,7 @@ properties:
     default: []
 
   benchmark-bbs.datadog_api_key:
-    description: "the api key for emmitting datadog metrics"
+    description: "the API key for emmitting datadog metrics"
     default: ""
   benchmark-bbs.datadog_app_key:
     description: "the application key for datadog metrics"
@@ -105,10 +105,10 @@ properties:
     default: ""
 
   benchmark-bbs.aws_access_key_id:
-    description: "the aws access key for uploading metrics to s3"
+    description: "the AWS access key for uploading metrics to s3"
     default: ""
   benchmark-bbs.aws_secret_access_key:
-    description: "the aws secret key for uploading metrics to s3"
+    description: "the AWS secret key for uploading metrics to s3"
     default: ""
   benchmark-bbs.aws_bucket_name:
     description: "the S3 bucket to upload metrics to"
