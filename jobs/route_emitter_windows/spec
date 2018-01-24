@@ -126,3 +126,15 @@ properties:
     description: "Cert used to communicate with local metron agent over gRPC"
   loggregator.key:
     description: "Key used to communicate with local metron agent over gRPC"
+  locks.consul.enabled:
+    description: "Whether the route-emitter in global mode should attempt to claim its activity lock via the Consul API."
+    default: true
+  locks.locket.enabled:
+    description: "Whether the route-emitter in global mode should attempt to claim its activity lock via the Locket API."
+    default: false
+  locks.locket.hostname:
+    description: "Hostname at which to discover the Locket API server. The route-emitter will use its BBS client credentials to authenticate to the Locket API."
+    default: "locket.service.cf.internal"
+  locks.locket.port:
+    description: "Port of the Locket API server."
+    default: 8891

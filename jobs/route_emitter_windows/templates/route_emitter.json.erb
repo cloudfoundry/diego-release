@@ -36,12 +36,22 @@
       "#{addr}:#{nats_port}"
     }.join(","),
     consul_cluster: "http://127.0.0.1:8500",
+    consul_enabled: p("locks.consul.enabled"),
     sync_interval: "#{p("diego.route_emitter.sync_interval_in_seconds")}s",
     debug_address: p("diego.route_emitter.debug_addr"),
     dropsonde_port: p("diego.route_emitter.dropsonde_port"),
     log_level: p("diego.route_emitter.log_level"),
     healthcheck_address: p("diego.route_emitter.healthcheck_address"),
   }
+
+  if p("locks.locket.enabled")
+    config[:locket_enabled] = true
+    config[:locket_address] = "#{p("locks.locket.hostname")}:#{p("locks.locket.port")}"
+    config[:uuid] = spec.id
+    config[:locket_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
+    config[:locket_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"
+    config[:locket_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
+  end
 
   if p("diego.route_emitter.bbs.require_ssl")
     config[:bbs_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
