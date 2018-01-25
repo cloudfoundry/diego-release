@@ -1,0 +1,24 @@
+
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: cloudfoundry/inigo-ci
+    tag: latest
+
+inputs:
+- name: diego-release
+- name: diego-release-v0
+- name: garden-runc-release
+- name: routing-release
+
+outputs:
+- name: logs
+
+run:
+  path: diego-release/scripts/ci/run_collocated_dusts
+  args: ["--focus=RollingUpgrade"]
+
+params:
+  DIEGO_VERSION_V0: ~
