@@ -29,6 +29,7 @@ files:
   - code.cloudfoundry.org/diego-ssh/server/*.go # gosub
   - code.cloudfoundry.org/diego-ssh/signals/*.go # gosub
   - code.cloudfoundry.org/diego-ssh/termcodes/*.go # gosub
+  - code.cloudfoundry.org/diego-ssh/winpty/*.go # gosub
   - code.cloudfoundry.org/go-loggregator/*.go # gosub
   - code.cloudfoundry.org/go-loggregator/rpc/loggregator_v2/*.go # gosub
   - code.cloudfoundry.org/go-loggregator/v1/*.go # gosub
@@ -85,6 +86,8 @@ files:
   - golang.org/x/net/internal/timeseries/*.go # gosub
   - golang.org/x/net/lex/httplex/*.go # gosub
   - golang.org/x/net/trace/*.go # gosub
+  - golang.org/x/sys/windows/*.go # gosub
+  - golang.org/x/sys/windows/*.s # gosub
   - golang.org/x/text/secure/bidirule/*.go # gosub
   - golang.org/x/text/transform/*.go # gosub
   - golang.org/x/text/unicode/bidi/*.go # gosub
