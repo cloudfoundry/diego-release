@@ -345,12 +345,12 @@ To run the Diego Upgrade Stability Tests (aka DUSTs), you will need an earlier v
 
     git clone https://github.com/cloudfoundry/diego-release diego-release-v0
     pushd diego-release-v0
-    git checkout v1.0.0
+    git checkout <VERSION_V0>
     ./scripts/update
     git clean -dff
     popd
 
-We currently start our upgrade testing from Diego v1.0.0. Adjust this version to taste.
+We currently test our upgrades from v1.0.0 and v1.25.2 (the first version to add Locket).
 
 Once you have a V0 version of Diego, run the following command in the newer version of Diego to create a docker container that is suitable for running inigo or vizzini:
 
@@ -370,7 +370,10 @@ The script will start a shell inside the container. Once inside the container fo
 Navigate to the directory of the collocated DUSTs test suite:
 
     cd /diego-release/src/code.cloudfoundry.org/diego-upgrade-stability-tests/collocated/
-    ginkgo
+
+If you are running the upgrade routability test, then you will need to set the V0 version in the environment variables by running `export DIEGO_VERSION_V0="v1.0.0"` or `export DIEGO_VERSION_V0="v1.25.2"`. If you don't set this environment variable, the DUSTs will skip the routability upgrade test.
+
+Now you can run the tests by running `ginkgo`.
 
 Note that this suite can not currently be run using multiple ginkgo nodes due to a limitation around port configuration for the file server in Diego 1.0.0. Make sure not to include the `-p` or `-nodes` flags in your Ginkgo run.
 
