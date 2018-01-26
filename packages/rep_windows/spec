@@ -20,6 +20,7 @@ files:
   - code.cloudfoundry.org/cfhttp/unix_transport/*.go # gosub
   - code.cloudfoundry.org/clock/*.go # gosub
   - code.cloudfoundry.org/consuladapter/*.go # gosub
+  - code.cloudfoundry.org/csiplugin/*.go # gosub
   - code.cloudfoundry.org/csishim/*.go # gosub
   - code.cloudfoundry.org/debugserver/*.go # gosub
   - code.cloudfoundry.org/diego-logging-client/*.go # gosub
@@ -84,7 +85,6 @@ files:
   - code.cloudfoundry.org/volman/voldiscoverers/*.go # gosub
   - code.cloudfoundry.org/volman/vollocal/*.go # gosub
   - code.cloudfoundry.org/workpool/*.go # gosub
-  - github.com/Kaixiang/csiplugin/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
