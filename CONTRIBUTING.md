@@ -365,13 +365,13 @@ Once you have a V0 version of Diego, run the following command in the newer vers
 
 The script will start a shell inside the container. Once inside the container follow the instructions printed on the screen, namely run the following:
 
-    source /diego-release/scripts/ci/setup_inigo
+    source /diego-release/scripts/ci/setup_inigo && set +ex
 
 Navigate to the directory of the collocated DUSTs test suite:
 
     cd /diego-release/src/code.cloudfoundry.org/diego-upgrade-stability-tests/collocated/
 
-If you are running the upgrade routability test, then you will need to set the V0 version in the environment variables by running `export DIEGO_VERSION_V0="v1.0.0"` or `export DIEGO_VERSION_V0="v1.25.2"`. If you don't set this environment variable, the DUSTs will skip the routability upgrade test.
+You will need to set the V0 version in the environment variables by running `export DIEGO_VERSION_V0="v1.0.0"` or `export DIEGO_VERSION_V0="v1.25.2"`. If you don't set this environment variable, the DUSTs will fail.
 
 Now you can run the tests by running `ginkgo`.
 
