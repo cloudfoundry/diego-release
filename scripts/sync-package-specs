@@ -71,4 +71,4 @@ sync_package benchmark-bbs \
 
 wait
 
-git diff --name-only packages/*/spec
+git diff-files -- packages/*/spec
