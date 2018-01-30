@@ -363,11 +363,7 @@ Once you have a V0 version of Diego, run the following command in the newer vers
 1. [garden-runc-release](https://github.com/cloudfoundry/garden-runc-release) is cloned into `~/workspace/garden-runc-release`.
 1. [routing-release](https://github.com/cloudfoundry/routing-release) is cloned into `~/workspace/routing-release`.
 
-The script will start a shell inside the container. Once inside the container follow the instructions printed on the screen, namely run the following:
-
-    source /diego-release/scripts/ci/setup_inigo && set +ex
-
-Navigate to the directory of the collocated DUSTs test suite:
+The script will start a shell inside the container and setup the container appropriately. Navigate to the directory of the collocated DUSTs test suite:
 
     cd /diego-release/src/code.cloudfoundry.org/diego-upgrade-stability-tests/collocated/
 

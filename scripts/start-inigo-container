@@ -9,9 +9,7 @@ If containers are failing to be created with 'failed to write 4194304 to memory.
 
 ################################
 
-After starting the inigo container, make sure to run 'source /diego-release/scripts/ci/setup_inigo && set +ex'.
-
-DO NOT use more than 9 nodes while running inigo.
+DO NOT use more than 9 nodes while running inigo. This is a limitation of garden, there are only 9 digits to be used as a garden prefix.
 
 EOF
 
@@ -35,7 +33,7 @@ ensure_exist $HOME/workspace/garden-runc-release https://github.com/cloudfoundry
 ensure_exist $HOME/workspace/routing-release https://github.com/cloudfoundry/routing-release develop
 
 docker pull cloudfoundry/inigo-ci
-docker run --detach-keys "ctrl-z" --privileged \
+docker run -e LOCAL_DEVELOPMENT=true --detach-keys "ctrl-z" --privileged \
   -v ~/workspace/diego-release:/diego-release \
   -v ~/workspace/diego-release-v0:/diego-release-v0 \
   -v ~/workspace/routing-release:/routing-release \
