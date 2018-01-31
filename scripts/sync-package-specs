@@ -71,4 +71,4 @@ sync_package benchmark-bbs \
 
 wait
 
-git diff-files -- packages/*/spec
+git diff --name-only packages/*/spec | tee # pipe through tee to avoid issues with non-interactive shells
