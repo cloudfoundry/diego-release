@@ -148,9 +148,18 @@ setup_gopath() {
 }
 
 setup_database() {
-  ca_file="${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo/fixtures/certs/sql-certs/server-ca.crt"
-  cert_file="${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo/fixtures/certs/sql-certs/server.crt"
-  key_file="${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo/fixtures/certs/sql-certs/server.key"
+  orig_ca_file="${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo/fixtures/certs/sql-certs/server-ca.crt"
+  orig_cert_file="${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo/fixtures/certs/sql-certs/server.crt"
+  orig_key_file="${GOPATH_ROOT}/src/code.cloudfoundry.org/inigo/fixtures/certs/sql-certs/server.key"
+
+  ca_file="/tmp/server-ca.crt"
+  cert_file="/tmp/server.crt"
+  key_file="/tmp/server.key"
+
+  # do not chown/chmod files in the inigo repo that is annoying
+  cp $orig_ca_file $ca_file
+  cp $orig_cert_file $cert_file
+  cp $orig_key_file $key_file
 
   chmod 0600 "$ca_file"
   chmod 0600 "$cert_file"
