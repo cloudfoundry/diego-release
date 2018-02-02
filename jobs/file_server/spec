@@ -7,6 +7,9 @@ templates:
   file_server_ctl.erb: bin/file_server_ctl
   file_server_as_vcap.erb: bin/file_server_as_vcap
   pre-start.erb: bin/pre-start
+  loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
+  loggregator_client.crt.erb: config/certs/loggregator/client.crt
+  loggregator_client.key.erb: config/certs/loggregator/client.key
 
 packages:
   - pid_utils
@@ -38,3 +41,16 @@ properties:
   enable_consul_service_registration:
     description: "Enable the file-server to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."
     default: true
+
+  loggregator.use_v2_api:
+    description: "Whether component should use the v2 loggregator API when sending data to the metron agent instead of the 'legacy' v1 API."
+    default: false
+  loggregator.v2_api_port:
+    description: "Port which the component should use to communicate to the metron agent's v2 API (host is assumed to be `localhost`)."
+    default: 3458
+  loggregator.ca_cert:
+    description: "CA certificate to use to verify the metron agent serving the v2 API."
+  loggregator.cert:
+    description: "Client certificate for the SSH-proxy to use when communicating to the metron agent."
+  loggregator.key:
+    description: "Private key for the SSH-proxy metron client certificate."
