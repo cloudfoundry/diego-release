@@ -51,11 +51,9 @@ This document lists deprecated properties of the job templates in this BOSH rele
 
 The [BBS API docs](https://github.com/cloudfoundry/bbs/tree/master/doc) and [routes](https://github.com/cloudfoundry/bbs/blob/master/routes.go) list the currently deprecated fields and endpoints inline. The current standard practice in Diego is to retain deprecated API fields and endpoints for at least a full major version of the release for cross-version compatibility.
 
-### <a name="component-apis-pre-v1"></a>Deprecated Pre-v1
+### BBS
 
-These API endpoints were deprecated before Diego v1.0.0 and will be removed in Diego v2.0.0.
-
-#### <a name="component-apis-pre-v1-bbs"></a>`bbs`
+#### Endpoints
 
 - `/v1/desired_lrps/list.r1` Method: `POST`
 - `/v1/desired_lrps/get_by_process_guid.r1` Method: `POST`
@@ -64,9 +62,19 @@ These API endpoints were deprecated before Diego v1.0.0 and will be removed in D
 - `/v1/desired_lrp/desire.r1` Method: `POST`
 - `/v1/desired_lrp/desire` Method: `POST`
 - `/v1/tasks/list.r1` Method: `POST`
-- `/v1/tasks/get_by_task_guid.r1` Method: `POST`
 - `/v1/tasks/list` Method: `POST`
+- `/v1/tasks/get_by_task_guid.r1` Method: `POST`
 - `/v1/tasks/get_by_task_guid` Method: `GET`
 - `/v1/tasks/desire.r1` Method: `POST`
 - `/v1/tasks/desire` Method: `POST`
 - `/v1/cells/list.r1` Method: `GET`
+
+**Note** `POST` requests to `/v1/cells/list.r1` are **NOT** deprecated
+
+#### Fields
+
+- [DesiredLRP::deprecated_start_timeout_s](https://github.com/cloudfoundry/bbs/blob/e2ecd53354162c7ba39cb16fcd73e0830041bc11/models/desired_lrp.proto#L88)
+- [TimeoutAction::deprecated_timeout_ns](https://github.com/cloudfoundry/bbs/blob/e2ecd53354162c7ba39cb16fcd73e0830041bc11/models/actions.proto#L62)
+- [VolumeMount::deprecated_volume_id](https://github.com/cloudfoundry/bbs/blob/e2ecd53354162c7ba39cb16fcd73e0830041bc11/models/volume_mount.proto#L20)
+- [VolumeMount::deprecated_mode](https://github.com/cloudfoundry/bbs/blob/e2ecd53354162c7ba39cb16fcd73e0830041bc11/models/volume_mount.proto#L21)
+- [VolumeMount::deprecated_config](https://github.com/cloudfoundry/bbs/blob/e2ecd53354162c7ba39cb16fcd73e0830041bc11/models/volume_mount.proto#L22)
