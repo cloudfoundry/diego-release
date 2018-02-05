@@ -175,6 +175,9 @@ properties:
     description: "Enable the BBS to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."
     default: true
 
+  limits.open_files:
+    description: Maximum number of files (including sockets) the BBS process may have open.
+    default: 100000
 
   loggregator.use_v2_api:
     description: "True to use local metron agent gRPC v2 API. False to use UDP v1 API."

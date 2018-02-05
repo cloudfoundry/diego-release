@@ -5,4 +5,9 @@ processes:
   args:
     - -config=/var/vcap/jobs/bbs/config/bbs.json
   limits:
-    open_files: 100000
+    <%
+    if !p('limits.open_files').is_a?(Integer) || p('limits.open_files') <= 0
+      raise "limits.open_files must be a positive integer"
+    end
+    %>
+    open_files: <%= p('limits.open_files') %>

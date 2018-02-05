@@ -42,8 +42,13 @@ case $1 in
         echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse
     fi
 
-    # Allowed number of open file descriptors
-    ulimit -n 100000
+    # Allowed number of open file descriptors (must be a positive integer)
+    <%
+    if !p('limits.open_files').is_a?(Integer) || p('limits.open_files') <= 0
+      raise "limits.open_files must be a positive integer"
+    end
+    %>
+    ulimit -n <%= p('limits.open_files') %>
 
     exec chpst -u vcap:vcap bash -c  '/var/vcap/jobs/bbs/bin/bbs_as_vcap'
 
