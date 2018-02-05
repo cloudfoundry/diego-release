@@ -37,7 +37,7 @@ properties:
     default: false
     description: "Whether to require mutual TLS for communication to the rep's administrative API. Requires `tls.ca_cert`, `tls.cert`, and `tls.key` to be configured. Deprecated as mutual TLS will be required in v2.0+"
   diego.rep.listen_addr:
-    description: "address to serve auction and LRP stop requests on. Deprecated in favor of diego.rep.listen_addr_admin."
+    description: "address to serve auction and LRP stop requests on. Deprecated in favor of diego.rep.listen_addr_admin and diego.rep.listen_addr_securable."
     default: "0.0.0.0:1800"
   diego.rep.debug_addr:
     description: "address at which to serve debug info"
