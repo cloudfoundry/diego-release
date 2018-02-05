@@ -1,11 +1,7 @@
 ## Instance Identity
 
-**Note** This feature is experimental
-
 The instance identity system in Diego provides each application instance with a PEM-encoded
 [X.509](https://tools.ietf.org/html/rfc5280) certificate and [PKCS#1](https://tools.ietf.org/html/rfc3447) RSA private key.  The values of the environment variables `CF_INSTANCE_CERT` and `CF_INSTANCE_KEY` contain the absolute paths to the certificate and private key files, respectively.
-
-This feature is still experimental, and both developer- and operator-facing aspects of it may be subject to change without notice.
 
 
 ### About the Certificate

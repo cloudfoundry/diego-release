@@ -60,7 +60,7 @@ Diego is typically deployed as part of a Cloud Foundry Application Runtime deplo
 - [TLS Configuration](docs/tls-configuration.md) describes how to generate TLS certificates for secure communication with Consul, the Diego BBS, and the Diego cell reps.
 - [Upgrading the cell rep API to mutual TLS](docs/upgrading-secure-cell-rep-api.md) explains how to transition an existing Diego deployment to use mutual TLS for communication to the cell rep API without incurring downtime.
 - [Upgrading the auctioneer API to mutual TLS](docs/upgrading-secure-auctioneer-api.md) explains how to transition an existing Diego deployment to use mutual TLS for communication from the BBS to the auctioneer API without incurring downtime.
-- (**Experimental**) [Instance Identity](docs/instance-identity.md) explains how to enable instance identity.
+- [Instance Identity](docs/instance-identity.md) explains how to enable instance identity.
 
 
 ### <a name="data-store-configuration"></a>Data Store Configuration
