@@ -35,7 +35,7 @@ properties:
     description: "Log level"
     default: "info"
   diego.file_server.dropsonde_port:
-    description: "local metron agent's port"
+    description: "local metron agent's port. Deprecated, will be removed when loggregator API v1 support is removed."
     default: 3457
 
   enable_consul_service_registration:

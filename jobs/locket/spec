@@ -33,7 +33,7 @@ properties:
     description: "maximum number of open connections to the database"
     default: 200
   dropsonde_port:
-    description: "local metron agent's port"
+    description: "local metron agent's port. Deprecated, will be removed when loggregator API v1 support is removed."
     default: 3457
   diego.locket.listen_addr:
     description: "address at which to serve API requests"

@@ -18,7 +18,7 @@ properties:
   vizzini.bbs.client_key:
     description: "PEM-encoded client key"
   vizzini.bbs.require_ssl:
-    description: "enable ssl for all communication with the bbs"
+    description: "require ssl for all communication with the bbs. Deprecated, TLS will be required for the bbs in Diego v2.0+."
     default: true
 
   vizzini.rep.placement_tags:

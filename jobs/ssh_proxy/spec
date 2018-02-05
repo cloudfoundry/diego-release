@@ -53,7 +53,7 @@ properties:
     description: "Log level"
     default: "info"
   diego.ssh_proxy.dropsonde_port:
-    description: "local metron agent's port"
+    description: "local metron agent's port. Deprecated, will be removed when loggregator API v1 support is removed."
     default: 3457
   diego.ssh_proxy.enable_cf_auth:
     description: Allow ssh access for cf applications
@@ -92,7 +92,7 @@ properties:
   diego.ssh_proxy.bbs.client_key:
     description: "PEM-encoded client key"
   diego.ssh_proxy.bbs.require_ssl:
-    description: "enable ssl for all communication with the bbs"
+    description: "require ssl for all communication with the bbs. Deprecated, TLS will be required for the bbs in Diego v2.0+."
     default: true
   diego.ssh_proxy.bbs.client_session_cache_size:
     description: "capacity of the tls client cache"

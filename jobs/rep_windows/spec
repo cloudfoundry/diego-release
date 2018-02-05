@@ -34,9 +34,9 @@ packages:
 properties:
   admin_api.require_tls:
     default: false
-    description: Whether to require mutual TLS for communication to the rep's administrative API. Requires `tls.ca_cert`, `tls.cert`, and `tls.key` to be configured.
+    description: "Whether to require mutual TLS for communication to the rep's administrative API. Requires `tls.ca_cert`, `tls.cert`, and `tls.key` to be configured. Deprecated as mutual TLS will be required in v2.0+"
   diego.rep.listen_addr:
-    description: "address to serve auction and LRP stop requests on"
+    description: "address to serve auction and LRP stop requests on. Deprecated in favor of diego.rep.listen_addr_admin."
     default: "0.0.0.0:1800"
   diego.rep.debug_addr:
     description: "address at which to serve debug info"
@@ -66,7 +66,7 @@ properties:
     description: "Log level"
     default: "info"
   diego.rep.dropsonde_port:
-    description: "local metron agent's port"
+    description: "local metron agent's port. Deprecated, will be removed when loggregator API v1 support is removed."
     default: 3457
   diego.rep.trusted_certs:
     description: "Concatenation of trusted CA certificates to be made available on the cell. Deprecated in favor of containers.trusted_ca_certificates"
@@ -92,7 +92,7 @@ properties:
     description: "base domain at which the rep should advertise its secure API"
     default: "cell.service.cf.internal"
   diego.rep.enable_legacy_api_endpoints:
-    description: "Whether to enable the auction, LRP, and Task endpoints on the legacy, insecurable API server"
+    description: "Whether to enable the auction, LRP, and Task endpoints on the legacy, insecurable API server. Deprecated since the legacy API server will be removed in Diego v2.0."
     default: true
   diego.rep.listen_addr_admin:
     description: "When enable_legacy_api_endpoints is set to false, serve (insecure) ping and evacuate requests on this address and port"
@@ -101,7 +101,7 @@ properties:
     description: "address where rep listens for LRP and task start auction requests"
     default: "0.0.0.0:1801"
   diego.rep.require_tls:
-    description: "Whether to require mutual TLS for communication to the securable rep API server"
+    description: "Whether to require mutual TLS for communication to the securable rep API server. Deprecated since mutual TLS will be required in Diego v2.0+."
     default: true
   diego.rep.ca_cert:
     description: "PEM-encoded CA certificate"
@@ -162,7 +162,7 @@ properties:
     description: "Network type for the garden server connection (tcp or unix)."
     default: tcp
   diego.executor.export_network_env_vars:
-    description: "Export network environment variables into container (e.g. CF_INSTANCE_IP, CF_INSTANCE_PORT)."
+    description: "Export network environment variables into container (e.g. CF_INSTANCE_IP, CF_INSTANCE_PORT). Deprecated, these will always be exported in Diego v2.0+."
     default: true
   diego.executor.healthy_monitoring_interval_in_seconds:
     description: "Interval to check healthy containers in seconds."
@@ -231,7 +231,7 @@ properties:
   diego.rep.bbs.client_key:
     description: "PEM-encoded client key"
   diego.rep.bbs.require_ssl:
-    description: "enable ssl for all communication with the bbs"
+    description: "require ssl for all communication with the bbs. Deprecated, TLS will be required for the bbs in Diego v2.0+."
     default: true
   diego.rep.bbs.client_session_cache_size:
     description: "capacity of the tls client cache"

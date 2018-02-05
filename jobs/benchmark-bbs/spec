@@ -45,7 +45,7 @@ properties:
   benchmark-bbs.client_timeout:
     description: "the http timeout for bbs client requests in seconds (golang duration formatted string)"
   benchmark-bbs.bbs.require_ssl:
-    description: "enable ssl for all communication with the bbs (false unsupported)"
+    description: "require ssl for all communication with the bbs (false unsupported). Deprecated, TLS will be required for the bbs in Diego v2.0+."
     default: true
   benchmark-bbs.locket.api_location:
     description: "the address of the locket"
@@ -73,20 +73,20 @@ properties:
     default: ""
 
   benchmark-bbs.etcd.machines:
-    description: "Addresses pointing to the ETCD cluster"
+    description: "Addresses pointing to the ETCD cluster. Deprecated, etcd will no longer be supported in Diego v2.0."
   benchmark-bbs.etcd.require_ssl:
-    description: "boolean to configure ssl connections with the etcd cluster"
+    description: "boolean to configure ssl connections with the etcd cluster. Deprecated, etcd will no longer be supported in Diego v2.0."
     default: true
   benchmark-bbs.etcd.client_cert:
-    description: "PEM-encoded client certificate"
+    description: "PEM-encoded client certificate. Deprecated, etcd will no longer be supported in Diego v2.0."
   benchmark-bbs.etcd.client_key:
-    description: "PEM-encoded client key"
+    description: "PEM-encoded client key. Deprecated, etcd will no longer be supported in Diego v2.0."
   benchmark-bbs.etcd.ca_cert:
-    description: "PEM-encoded root CA certificate"
+    description: "PEM-encoded root CA certificate. Deprecated, etcd will no longer be supported in Diego v2.0."
   benchmark-bbs.etcd.client_session_cache_size:
-    description: "capacity of the etcd client tls client cache"
+    description: "capacity of the etcd client tls client cache. Deprecated, etcd will no longer be supported in Diego v2.0."
   benchmark-bbs.bbs.etcd.max_idle_conns_per_host:
-    description: "maximum number of etcd client idle http connections"
+    description: "maximum number of etcd client idle http connections. Deprecated, etcd will no longer be supported in Diego v2.0."
 
   benchmark-bbs.active_key_label:
     description: "the active key for encryption"
