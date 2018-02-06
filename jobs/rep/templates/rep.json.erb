@@ -179,6 +179,31 @@
     config[:locket_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
   end
 
+  if p("use_v2_tls")
+    tls_ca_cert_empty, tls_cert_empty, tls_key_empty = true, true, true
+    if_p("tls.ca_cert", "tls.cert", "tls.key") do |tls_ca_cert, tls_cert, tls_key|
+      tls_ca_cert_empty = tls_ca_cert.empty?
+      tls_cert_empty = tls_cert.empty?
+      tls_key_empty = tls_key.empty?
+    end
+    if tls_ca_cert_empty || tls_cert_empty || tls_key_empty
+      raise "tls.ca_cert, tls.cert, and tls.key must be provided if use_v2_tls is true"
+    end
+
+    config[:ca_cert_file] =  "#{conf_dir}/certs/tls_ca.crt"
+    config[:server_cert_file] =  "#{conf_dir}/certs/tls.crt"
+    config[:server_key_file] =  "#{conf_dir}/certs/tls.key"
+
+    config[:bbs_address] = "https://#{p("diego.rep.bbs.api_location")}"
+    config[:bbs_ca_cert_file] = "#{conf_dir}/certs/tls_ca.crt"
+    config[:bbs_client_cert_file] = "#{conf_dir}/certs/tls.crt"
+    config[:bbs_client_key_file] = "#{conf_dir}/certs/tls.key"
+
+    config[:locket_ca_cert_file] = "#{conf_dir}/certs/tls_ca.crt"
+    config[:locket_client_cert_file] = "#{conf_dir}/certs/tls.crt"
+    config[:locket_client_key_file] = "#{conf_dir}/certs/tls.key"
+  end
+
   if config[:enable_container_proxy]
     begin
       p("diego.executor.instance_identity_ca_cert")

@@ -41,6 +41,10 @@ packages:
   - certsplitter
 
 properties:
+  use_v2_tls:
+    default: false
+    description: "Whether the rep should use mutual TLS for all communications to other Diego components. Requires `tls.ca_cert`, `tls.cert`, and `tls.key` to be configured. Deprecated as mutual TLS will be required in v2.0+"
+
   admin_api.require_tls:
     default: false
     description: "Whether to require mutual TLS for communication to the rep's administrative API. Requires `tls.ca_cert`, `tls.cert`, and `tls.key` to be configured. Deprecated as mutual TLS will be required in v2.0+"
@@ -118,11 +122,11 @@ properties:
     description: "Whether to require mutual TLS for communication to the securable rep API server. Deprecated since mutual TLS will be required in Diego v2.0+."
     default: false
   diego.rep.ca_cert:
-    description: "PEM-encoded CA certificate"
+    description: "PEM-encoded CA certificate. Deprecated in favor of tls.ca_cert"
   diego.rep.server_cert:
-    description: "PEM-encoded server certificate"
+    description: "PEM-encoded server certificate. Deprecated in favor of tls.cert"
   diego.rep.server_key:
-    description: "PEM-encoded server key"
+    description: "PEM-encoded server key. Deprecated in favor of tls.key"
 
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
@@ -249,11 +253,11 @@ properties:
     default: "bbs.service.cf.internal:8889"
 
   diego.rep.bbs.ca_cert:
-    description: "PEM-encoded CA certificate"
+    description: "PEM-encoded CA certificate. Deprecated in favor of tls.ca_cert"
   diego.rep.bbs.client_cert:
-    description: "PEM-encoded client certificate"
+    description: "PEM-encoded client certificate. Deprecated in favor of tls.cert"
   diego.rep.bbs.client_key:
-    description: "PEM-encoded client key"
+    description: "PEM-encoded client key. Deprecated in favor of tls.key"
   diego.rep.bbs.require_ssl:
     description: "require ssl for all communication with the bbs. Deprecated, TLS will be required for the bbs in Diego v2.0+."
     default: true
