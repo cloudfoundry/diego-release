@@ -365,7 +365,7 @@ Once you have a V0 version of Diego, run the following command in the newer vers
 
 The script will start a shell inside the container and setup the container appropriately. Navigate to the directory of the collocated DUSTs test suite:
 
-    cd /diego-release/src/code.cloudfoundry.org/diego-upgrade-stability-tests/collocated/
+    cd /diego-release/src/code.cloudfoundry.org/diego-upgrade-stability-tests/
 
 You will need to set the V0 version in the environment variables by running `export DIEGO_VERSION_V0="v1.0.0"` or `export DIEGO_VERSION_V0="v1.25.2"`. If you don't set this environment variable, the DUSTs will fail.
 

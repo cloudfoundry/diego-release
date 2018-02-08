@@ -14,6 +14,6 @@ set -exo pipefail
 
 export DEFAULT_EVENTUALLY_TIMEOUT=60s
 
-pushd "${GOPATH_ROOT}/src/code.cloudfoundry.org/diego-upgrade-stability-tests/collocated"
+pushd "${GOPATH_ROOT}/src/code.cloudfoundry.org/diego-upgrade-stability-tests"
   ginkgo -failFast -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=60 -keepGoing $@ | tee $log_file
 popd
