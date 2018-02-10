@@ -374,28 +374,3 @@ Now you can run the tests by running `ginkgo`.
 Note that this suite can not currently be run using multiple ginkgo nodes due to a limitation around port configuration for the file server in Diego 1.0.0. Make sure not to include the `-p` or `-nodes` flags in your Ginkgo run.
 
 The test suite will start all necessary Diego dependencies and related components, then run upgrade tests against various configurations of those components. This includes route availability and Diego API features.
-
-### Running Benchmark Tests
-Running the benchmark tests isn't usually needed for most changes. However, for  changes to the BBS or the protobuf models, it may be helpful to run these tests to understand the performance impact.
-
-**WARNING**: Benchmark tests drop the database.
-
-1. Deploy diego-release to an environment (use instance-count-overrides to turn
-   off all components except the database for a cleaner test)
-
-1. Depending on whether you're deploying to AWS or bosh-lite, copy either
-   `manifest-generation/benchmark-errand-stubs/default_aws_benchmark_properties.yml` or
-   `manifest-generation/benchmark-errand-stubs/default_bosh_lite_benchmark_properties.yml`
-   to your local deployments or stubs folder and fill it in.
-
-1. Generate a benchmark deployment manifest using:
-
-        ./scripts/generate-benchmarks-manifest \
-          /path/to/diego.yml \
-          /path/to/benchmark-properties.yml \
-          > benchmark.yml
-
-1. Deploy and run the tests using:
-
-        bosh -d benchmark.yml -n deploy && bosh -d benchmark.yml -n run errand benchmark-bbs
-

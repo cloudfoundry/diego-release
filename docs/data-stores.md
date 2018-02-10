@@ -46,7 +46,7 @@ For a Diego deployment that has previously been configured to use etcd as its da
 
 Converting Diego from standalone etcd to standalone relational requires two deploys:
 
-1. Configure Diego to connect both to etcd and to the relational store, as with the `-s` flag to the [manifest-generation script](./manifest-generation.md).
+1. Configure Diego to connect both to etcd and to the relational store.
 2. Deploy Diego and verify that the BBS nodes have migrated the etcd data to the relational store.
    1. Verifying BBS is using SQL backend
       ```shell
@@ -79,19 +79,7 @@ Converting Diego from standalone etcd to standalone relational requires two depl
       number of desired lrps:5
       ```
 
-3. Configure Diego to connect only to a relational store, as with the `-x` flag to the manifest-generation script.
+3. Configure Diego to connect only to a relational store.
 4. Deploy Diego and verify that the etcd jobs are no longer present in the deployment.
-   Run the following command where `/path/to/diego.yml` is the path to the diego deployment manifest:
-
-   ``` shell
-   bosh -d /path/to/diego.yml ssh database_z1/0 "sudo /var/vcap/bosh/bin/monit summary" 2>&1 | grep etcd | wc -l
-   ```
-
-   Or manually by sshing into all `database_z` vms and running the following:
-   ```shell
-   sudo /var/vcap/bosh/bin/monit summary | grep etcd | wc -l
-   ```
-
-   this command should output `0`. A number larger than `0` means that `ETCD` is still running.
 
 Support for migration from etcd to a relational datastore will be maintained through all 1.x versions of Diego.

@@ -1,7 +1,0 @@
-config_from_cf: (( merge ))
-
-sql_overrides:
-  bbs:
-    db_host: (( config_from_cf.sql.host ))
-    db_port: (( config_from_cf.sql.port ))
-    db_password: (( config_from_cf.sql.password ))

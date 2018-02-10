@@ -17,11 +17,7 @@ The Diego cell rep will supply a new certificate-key pair to the container befor
 
 ### Enabling Instance Identity
 
-Instance Identity can be enabled by setting the following properties in the
-deployment manifest:
-
-- `diego.executor.instance_identity_ca_cert`: The CA certificate used to sign the app container's certificate.
-- `diego.executor.instance_identity_key`: The private key of the given CA certificate.
+Instance Identity is enabled by default in cf-deployment.
 
 
 ### Requirements

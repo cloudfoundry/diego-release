@@ -1,5 +1,0 @@
-bridge_overrides:
-  job_release: capi
-  releases:
-    - name: capi
-      version: (( release_versions.capi || "latest" ))
