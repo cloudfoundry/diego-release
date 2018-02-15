@@ -20,7 +20,6 @@ $env:PATH = $env:GOPATH + "/bin;C:/go/bin;" + $CONSUL_DIR + ";" + $env:PATH
 # Write-Host "PATH is " + $env:PATH
 
 go install github.com/apcera/gnatsd
-go install github.com/coreos/etcd
 
 Write-Host "Installing Ginkgo"
 go install github.com/onsi/ginkgo/ginkgo
