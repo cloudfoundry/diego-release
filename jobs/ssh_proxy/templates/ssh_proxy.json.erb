@@ -17,14 +17,10 @@
     config[:idle_connection_timeout] = "#{value}s"
   end
 
-  if p("diego.ssh_proxy.bbs.require_ssl") then
-    config[:bbs_address] = "https://" + p("diego.ssh_proxy.bbs.api_location")
-    config[:bbs_client_cert] = "/var/vcap/jobs/ssh_proxy/config/certs/bbs/client.crt"
-    config[:bbs_client_key] = "/var/vcap/jobs/ssh_proxy/config/certs/bbs/client.key"
-    config[:bbs_ca_cert] = "/var/vcap/jobs/ssh_proxy/config/certs/bbs/ca.crt"
-  else
-    config[:bbs_address] ="http://" + p("diego.ssh_proxy.bbs.api_location")
-  end
+  config[:bbs_address] = "https://" + p("diego.ssh_proxy.bbs.api_location")
+  config[:bbs_client_cert] = "/var/vcap/jobs/ssh_proxy/config/certs/bbs/client.crt"
+  config[:bbs_client_key] = "/var/vcap/jobs/ssh_proxy/config/certs/bbs/client.key"
+  config[:bbs_ca_cert] = "/var/vcap/jobs/ssh_proxy/config/certs/bbs/ca.crt"
 
   if p("diego.ssh_proxy.enable_diego_auth") then
     config[:enable_diego_auth] = true

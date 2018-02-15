@@ -5,7 +5,6 @@
   log_dir = "/var/vcap/sys/log/bbs"
 
   config = {
-   require_ssl: p("diego.bbs.require_ssl"),
    listen_address: p("diego.bbs.listen_addr"),
    health_address: p("diego.bbs.health_addr"),
    consul_cluster: "http://127.0.0.1:8500",
@@ -158,14 +157,10 @@
     config[:desired_lrp_creation_timeout] = value # add time unit
   end
 
-  if p("diego.bbs.require_ssl")
-    config[:advertise_url] = advertise_url "https"
-    config[:ca_file] = "#{conf_dir}/certs/ca.crt"
-    config[:cert_file] = "#{conf_dir}/certs/server.crt"
-    config[:key_file] = "#{conf_dir}/certs/server.key"
-  else
-    config[:advertise_url] = advertise_url "http"
-  end
+  config[:advertise_url] = advertise_url "https"
+  config[:ca_file] = "#{conf_dir}/certs/ca.crt"
+  config[:cert_file] = "#{conf_dir}/certs/server.crt"
+  config[:key_file] = "#{conf_dir}/certs/server.key"
 
   if p("diego.bbs.enable_access_log")
     config[:access_log_path] = "#{log_dir}/bbs.access.log"

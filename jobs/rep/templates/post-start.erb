@@ -24,20 +24,14 @@
 
 <% if p("diego.rep.enable_legacy_api_endpoints") %>
 address="http://<%=p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:")%>"
-<% elsif p("admin_api.require_tls") %>
-address="https://<%=p("diego.rep.listen_addr_admin")%>"
 <% else %>
-address="http://<%=p("diego.rep.listen_addr_admin")%>"
+address="https://<%=p("diego.rep.listen_addr_admin")%>"
 <% end %>
 
-<% if p("admin_api.require_tls") %>
-  TLS_CA_CERT=<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls_ca.crt"%>
-  TLS_CERT=<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls.crt"%>
-  TLS_KEY=<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls.key"%>
-  curlCmd="--cacert $TLS_CA_CERT --cert $TLS_CERT --key $TLS_KEY $address"
-<% else %>
-  curlCmd="$address"
-<% end %>
+TLS_CA_CERT=<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls_ca.crt"%>
+TLS_CERT=<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls.crt"%>
+TLS_KEY=<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls.key"%>
+curlCmd="--cacert $TLS_CA_CERT --cert $TLS_CERT --key $TLS_KEY $address"
 
 ping() {
   /var/vcap/packages/rep/bin/gocurl ${curlCmd}/ping >/dev/null 2>&1

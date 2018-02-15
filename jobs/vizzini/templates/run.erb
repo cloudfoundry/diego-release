@@ -17,16 +17,10 @@ cd /var/vcap/packages/vizzini/src/code.cloudfoundry.org/vizzini
 
 exitstatus=0
 
-<% if p("vizzini.bbs.require_ssl") %>
-  bbs_sec_flags=" \
-   --bbs-client-cert=${conf_dir}/certs/bbs/client.crt \
-   --bbs-client-key=${conf_dir}/certs/bbs/client.key"
-
-  bbs_api_url="<%= "https://" + p("vizzini.bbs.api_location") %>"
-<% else %>
-  bbs_sec_flags=""
-  bbs_api_url="<%= "http://" + p("vizzini.bbs.api_location") %>"
-<% end %>
+bbs_sec_flags=" \
+ --bbs-client-cert=${conf_dir}/certs/bbs/client.crt \
+ --bbs-client-key=${conf_dir}/certs/bbs/client.key"
+bbs_api_url=https://<%= p("vizzini.bbs.api_location") %>
 
 nodes=<%= properties.vizzini.nodes %>
 verbose=<%= properties.vizzini.verbose %>

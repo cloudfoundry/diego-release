@@ -7,24 +7,16 @@ $logfile="${log_dir}/drain.log"
 
 <% if p("diego.rep.enable_legacy_api_endpoints") %>
 $address="http://<%=p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:")%>"
-<% elsif p("admin_api.require_tls") %>
-$address="https://<%=p("diego.rep.listen_addr_admin")%>"
 <% else %>
-$address="http://<%=p("diego.rep.listen_addr_admin")%>"
+$address="https://<%=p("diego.rep.listen_addr_admin")%>"
 <% end %>
 
 New-Item -ItemType "directory" -Force "${log_dir}" 2>&1 | `
     Out-File -Append -Encoding utf8 -FilePath $logfile
 
-<% if p("admin_api.require_tls") %>
 $tls_ca_cert="<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls_ca.crt"%>"
 $tls_cert="<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls.crt"%>"
 $tls_key="<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls.key"%>"
-<% else %>
-$tls_ca_cert=""
-$tls_cert=""
-$tls_key=""
-<% end %>
 
 function evacuate {
     try {

@@ -76,15 +76,12 @@ properties:
   diego.bbs.encryption_keys:
     description: "List of encryption keys to be used"
     default: []
-  diego.bbs.require_ssl:
-    description: "require ssl for all communication with the bbs. Deprecated, TLS will be required for the bbs in Diego v2.0+."
-    default: true
   diego.bbs.ca_cert:
-    description: "PEM-encoded CA certificate"
+    description: "REQUIRED: PEM-encoded CA certificate"
   diego.bbs.server_cert:
-    description: "PEM-encoded client certificate"
+    description: "REQUIRED: PEM-encoded client certificate"
   diego.bbs.server_key:
-    description: "PEM-encoded client key"
+    description: "REQUIRED: PEM-encoded client key"
   diego.bbs.desired_lrp_creation_timeout:
     description: "expected maximum time to create all components of a desired LRP (golang duration formatted string). Deprecated since this only applies to etcd serialization, which will be removed entirely in Diego v2.0."
 

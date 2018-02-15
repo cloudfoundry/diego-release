@@ -13,15 +13,12 @@ packages:
 
 properties:
   tls.ca_certificate:
-    description: "PEM-encoded CA certificate used for client credentials."
+    description: "REQUIRED: PEM-encoded CA certificate used for client credentials."
   tls.certificate:
-    description: "PEM-encoded certificate used for client credentials."
+    description: "REQUIRED: PEM-encoded certificate used for client credentials."
   tls.private_key:
-    description: "PEM-encoded key used for client credentials."
+    description: "REQUIRED: PEM-encoded key used for client credentials."
 
-  diego.cfdot.bbs.use_ssl:
-    description: "true if the bbs requires TLS connections, false otherwise. Deprecated, TLS will be required for the bbs in Diego v2.0+."
-    default: true
   diego.cfdot.bbs.ca_cert:
     description: "DEPRECRATED: Use tls.ca_certificate instead"
   diego.cfdot.bbs.client_cert:

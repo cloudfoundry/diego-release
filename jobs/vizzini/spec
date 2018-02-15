@@ -14,12 +14,9 @@ properties:
     description: The address of the BBS
     default: bbs.service.cf.internal:8889
   vizzini.bbs.client_cert:
-    description: "PEM-encoded client certificate"
+    description: "REQUIRED: PEM-encoded client certificate"
   vizzini.bbs.client_key:
-    description: "PEM-encoded client key"
-  vizzini.bbs.require_ssl:
-    description: "require ssl for all communication with the bbs. Deprecated, TLS will be required for the bbs in Diego v2.0+."
-    default: true
+    description: "REQUIRED: PEM-encoded client key"
 
   vizzini.rep.placement_tags:
     description: "use placement tags for created LRPs"

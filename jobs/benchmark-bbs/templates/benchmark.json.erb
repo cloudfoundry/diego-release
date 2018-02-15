@@ -105,14 +105,10 @@
     end
   end
 
-  if p("benchmark-bbs.bbs.require_ssl")
-    config[:bbs_address] = "https://#{p("benchmark-bbs.bbs.api_location")}"
-    config[:bbs_ca_cert] = "#{conf_dir}/certs/bbs/ca.crt"
-    config[:bbs_client_cert] = "#{conf_dir}/certs/bbs/client.crt"
-    config[:bbs_client_key] = "#{conf_dir}/certs/bbs/client.key"
-  else
-    config[:bbs_address] = "http://#{p("benchmark-bbs.bbs.api_location")}"
-  end
+  config[:bbs_address] = "https://#{p("benchmark-bbs.bbs.api_location")}"
+  config[:bbs_ca_cert] = "#{conf_dir}/certs/bbs/ca.crt"
+  config[:bbs_client_cert] = "#{conf_dir}/certs/bbs/client.crt"
+  config[:bbs_client_key] = "#{conf_dir}/certs/bbs/client.key"
 
   config.to_json
 %>

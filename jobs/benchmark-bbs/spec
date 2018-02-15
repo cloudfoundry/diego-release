@@ -37,16 +37,13 @@ properties:
     description: "the address of the BBS"
     default: "bbs.service.cf.internal:8889"
   benchmark-bbs.bbs.ca_cert:
-    description: "PEM-encoded CA certificate"
+    description: "REQUIRED: PEM-encoded CA certificate"
   benchmark-bbs.bbs.client_cert:
-    description: "PEM-encoded client certificate"
+    description: "REQUIRED: PEM-encoded client certificate"
   benchmark-bbs.bbs.client_key:
-    description: "PEM-encoded client key"
+    description: "REQUIRED: PEM-encoded client key"
   benchmark-bbs.client_timeout:
     description: "the http timeout for bbs client requests in seconds (golang duration formatted string)"
-  benchmark-bbs.bbs.require_ssl:
-    description: "require ssl for all communication with the bbs (false unsupported). Deprecated, TLS will be required for the bbs in Diego v2.0+."
-    default: true
   benchmark-bbs.locket.api_location:
     description: "the address of the locket"
     default: "locket.service.cf.internal:8891"

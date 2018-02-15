@@ -15,14 +15,10 @@
     starting_container_count_maximum: p("diego.auctioneer.starting_container_count_maximum"),
   }
 
-  if p("diego.auctioneer.bbs.require_ssl")
-    config[:bbs_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
-    config[:bbs_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"
-    config[:bbs_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
-    config[:bbs_address] = "https://#{p("diego.auctioneer.bbs.api_location")}"
-  else
-    config[:bbs_address] = "http://#{p("diego.auctioneer.bbs.api_location")}"
-  end
+  config[:bbs_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
+  config[:bbs_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"
+  config[:bbs_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
+  config[:bbs_address] = "https://#{p("diego.auctioneer.bbs.api_location")}"
 
   if_p("diego.auctioneer.bbs.client_session_cache_size") do |value|
     config[:bbs_client_session_cache_size] = value

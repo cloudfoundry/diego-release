@@ -4,7 +4,7 @@ if ! echo $PATH | grep -q 'cfdot'; then
   export PATH=/var/vcap/packages/cfdot/bin:$PATH
 fi
 
-export BBS_URL=<%= p("diego.cfdot.bbs.use_ssl") ? 'https' : 'http' %>://bbs.service.cf.internal:8889
+export BBS_URL=https://bbs.service.cf.internal:8889
 export LOCKET_API_LOCATION=locket.service.cf.internal:8891
 export CA_CERT_FILE=/var/vcap/jobs/cfdot/config/certs/cfdot/ca.crt
 export CLIENT_CERT_FILE=/var/vcap/jobs/cfdot/config/certs/cfdot/client.crt

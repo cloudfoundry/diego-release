@@ -86,14 +86,11 @@ properties:
     default: 9022
 
   diego.ssh_proxy.bbs.ca_cert:
-    description: "PEM-encoded CA certificate"
+    description: "REQUIRED: PEM-encoded CA certificate"
   diego.ssh_proxy.bbs.client_cert:
-    description: "PEM-encoded client certificate"
+    description: "REQUIRED: PEM-encoded client certificate"
   diego.ssh_proxy.bbs.client_key:
-    description: "PEM-encoded client key"
-  diego.ssh_proxy.bbs.require_ssl:
-    description: "require ssl for all communication with the bbs. Deprecated, TLS will be required for the bbs in Diego v2.0+."
-    default: true
+    description: "REQUIRED: PEM-encoded client key"
   diego.ssh_proxy.bbs.client_session_cache_size:
     description: "capacity of the tls client cache"
   diego.ssh_proxy.bbs.max_idle_conns_per_host:
