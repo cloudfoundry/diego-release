@@ -14,6 +14,7 @@ export PATH=$PWD/bin:$PATH
 SCRIPT=${SCRIPT:-run-unit-tests}
 
 go install github.com/apcera/gnatsd
+go install github.com/coreos/etcd
 go install github.com/onsi/ginkgo/ginkgo
 
 "scripts/${SCRIPT}" "$@"
