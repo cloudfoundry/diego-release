@@ -107,24 +107,6 @@
     config[:trusted_system_certificates_path] = "#{trusted_certs_dir}"
   end
 
-  if_p("tls.cert") do |value|
-    if !value.empty?
-      config[:path_to_tls_cert] = "#{conf_dir}/certs/tls.crt"
-    end
-  end
-
-  if_p("tls.key") do |value|
-    if !value.empty?
-      config[:path_to_tls_key] = "#{conf_dir}/certs/tls.key"
-    end
-  end
-
-  if_p("tls.ca_cert") do |value|
-    if !value.empty?
-      config[:path_to_tls_ca_cert] = "#{conf_dir}/certs/tls_ca.crt"
-    end
-  end
-
   if_p("diego.executor.ca_certs_for_downloads") do |value|
     if !value.empty?
       config[:path_to_ca_certs_for_downloads] = "#{conf_dir}/certs/rep/ca_certs_for_downloads.crt"
@@ -157,14 +139,17 @@
 
   if_p("diego.rep.locket.api_location") do |value|
     config[:locket_address] = value
-    config[:locket_ca_cert_file] = "#{conf_dir}/certs/tls_ca.crt"
-    config[:locket_client_cert_file] = "#{conf_dir}/certs/tls.crt"
-    config[:locket_client_key_file] = "#{conf_dir}/certs/tls.key"
   end
 
-  config[:ca_cert_file] =  "#{conf_dir}/certs/tls_ca.crt"
-  config[:cert_file] =  "#{conf_dir}/certs/tls.crt"
-  config[:key_file] =  "#{conf_dir}/certs/tls.key"
+  config[:locket_ca_cert_file]     = "#{conf_dir}/certs/tls_ca.crt"
+  config[:locket_client_cert_file] = "#{conf_dir}/certs/tls.crt"
+  config[:locket_client_key_file]  = "#{conf_dir}/certs/tls.key"
+  config[:path_to_tls_ca_cert]     = "#{conf_dir}/certs/tls_ca.crt"
+  config[:path_to_tls_cert]        = "#{conf_dir}/certs/tls.crt"
+  config[:path_to_tls_key]         = "#{conf_dir}/certs/tls.key"
+  config[:ca_cert_file]            = "#{conf_dir}/certs/tls_ca.crt"
+  config[:cert_file]               = "#{conf_dir}/certs/tls.crt"
+  config[:key_file]                = "#{conf_dir}/certs/tls.key"
 
   config[:bbs_address] = "https://#{p("diego.rep.bbs.api_location")}"
 
