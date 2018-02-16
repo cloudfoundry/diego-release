@@ -87,24 +87,6 @@
     config[:log_filename] = "#{log_dir}/#{value}"
   end
 
-  if p("benchmark-bbs.etcd.machines").size > 0
-    scheme = "http"
-    if p("benchmark-bbs.etcd.require_ssl")
-      scheme = "https"
-      config[:etcd_cert_file] = "#{conf_dir}/certs/etcd/client.crt"
-      config[:etcd_key_file] = "#{conf_dir}/certs/etcd/client.key"
-      config[:etcd_ca_file] = "#{conf_dir}/certs/etcd/ca.crt"
-    end
-
-    config[:etcd_cluster_urls] = p("benchmark-bbs.etcd.machines").map{|addr| "#{scheme}://#{addr}:4001"}
-      if_p("benchmark-bbs.etcd.client_session_cache_size") do |value|
-      config[:etcd_client_session_cache_size] = value
-    end
-    if_p("benchmark-bbs.etcd.max_idle_conns_per_host") do |value|
-      config[:etcd_max_idle_conns_per_host] = value
-    end
-  end
-
   config[:bbs_address] = "https://#{p("benchmark-bbs.bbs.api_location")}"
   config[:bbs_ca_cert] = "#{conf_dir}/certs/bbs/ca.crt"
   config[:bbs_client_cert] = "#{conf_dir}/certs/bbs/client.crt"

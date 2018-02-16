@@ -99,9 +99,6 @@ To be able to run unit tests, you'll also need to install the following binaries
     # Install gnatsd
     go install github.com/apcera/gnatsd
 
-    # Install etcd. This is only required for the bbs migration test suite.
-    go install github.com/coreos/etcd
-
     # Install consul
     if uname -a | grep Darwin; then os=darwin; else os=linux; fi
     curl -L -o $TMPDIR/consul-0.7.0.zip "https://releases.hashicorp.com/consul/0.7.0/consul_0.7.0_${os}_amd64.zip"

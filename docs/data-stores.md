@@ -6,7 +6,6 @@ This document describes the different types of data store supported by Diego acr
 
 1. [Supported Data Stores](#supported-data-stores)
 1. [Choosing a Relational Data Store Deployment](#choosing-relational-datastore-deployment)
-1. [Automatic Migration of BBS Data from etcd to SQL](#automatic-migration-bbs-data-etcd-sql)
 
 
 ### <a name="supported-data-stores"></a>Supported Data Stores
@@ -40,46 +39,4 @@ For PostgreSQL, operators have at least the following options:
 
 ### <a name="automatic-migration-bbs-data-etcd-sql"></a>Automatic Migration of BBS Data from etcd to SQL
 
-Versions of Diego prior to v1.0 also supported etcd as a data store, and Diego will automatically  migrate this data from etcd to a relational data store through major version 1.
-
-For a Diego deployment that has previously been configured to use etcd as its data store, configuring it also to connect to a relational store will cause the BBS to migrate the etcd data to the relational store automatically. After the migration, the data in etcd is marked as invalid, and Diego will not revert to using its data without manual intervention in the etcd key-value store to reset the version.
-
-Converting Diego from standalone etcd to standalone relational requires two deploys:
-
-1. Configure Diego to connect both to etcd and to the relational store.
-2. Deploy Diego and verify that the BBS nodes have migrated the etcd data to the relational store.
-   1. Verifying BBS is using SQL backend
-      ```shell
-      bosh -d /path/to/diego.yml instances | grep database | awk '{print $2}' | xargs -n1 -P5 -I{} bosh -d /path/to/diego.yml ssh {} "grep bbs.migration-manager.finished-migrations /var/vcap/sys/log/bbs/bbs.stdout.log" 2>&1 | grep migration | grep -v Executing | wc -l
-      ```
-
-      Or manually by sshing into all database_z* vms and running the following:
-      ```shell
-      grep bbs.migration-manager.finished-migrations /var/vcap/sys/log/bbs/bbs.stdout.log | wc -l
-      ```
-
-      The output from the command should larger than `1` on at least one
-      database_z vm. Otherwise, that means `BBS` is still using `ETCD` and
-      hasn't migrated the data over to the SQL backend
-
-   2. Verify that data was migrated succesfully
-      ``` shell
-      bosh -d /path/to/diego.yml ssh database_z1/0 "source /var/vcap/jobs/cfdot/bin/setup && echo -n "number of desired lrps: " && cfdot desired-lrps | wc -l" 2>&1  | grep desired | grep -v Executing
-      ```
-
-      Or manually by sshing into `database_z1` and running the following commands:
-      ```shell
-      source /var/vcap/jobs/cfdot/bin/setup
-      cfdot desired-lrps | wc -l
-      ```
-
-      You should see a number larger than 0, for example:
-
-      ``` shell
-      number of desired lrps:5
-      ```
-
-3. Configure Diego to connect only to a relational store.
-4. Deploy Diego and verify that the etcd jobs are no longer present in the deployment.
-
-Support for migration from etcd to a relational datastore will be maintained through all 1.x versions of Diego.
+As of Diego v2.0, support for automatic data migration from etcd to sql has been removed.

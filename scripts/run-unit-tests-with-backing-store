@@ -12,8 +12,8 @@ elif [ "${SQL_FLAVOR}" = "postgres" ]; then
   echo "Running store-dependent test suites against a Postgres database..."
   DB_UNITS="./bbs/db/sqldb"
 else
-  echo "Running store-dependent test suites against ETCD..."
-  DB_UNITS="./bbs/db/etcd"
+  echo "**** SQL_FLAVOR env var must be set. Support for ETCD has been removed ****"
+  exit 1
 fi
 
 ERROR_CODE=1

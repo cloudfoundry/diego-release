@@ -99,24 +99,6 @@
   end
 
 
-  if p("diego.bbs.etcd.machines").size > 0
-    scheme = "http"
-    if p("diego.bbs.etcd.require_ssl")
-      scheme = "https"
-      config[:etcd_cert_file] = "#{conf_dir}/certs/etcd/client.crt"
-      config[:etcd_key_file] = "#{conf_dir}/certs/etcd/client.key"
-      config[:etcd_ca_file] = "#{conf_dir}/certs/etcd/ca.crt"
-    end
-
-    config[:etcd_cluster_urls] = p("diego.bbs.etcd.machines").map{|addr| "#{scheme}://#{addr}:4001"}
-    if_p("diego.bbs.etcd.client_session_cache_size") do |value|
-      config[:etcd_client_session_cache_size] = value
-    end
-    if_p("diego.bbs.etcd.max_idle_conns_per_host") do |value|
-      config[:etcd_max_idle_conns_per_host] = value
-    end
-  end
-
   if p("diego.bbs.sql.require_ssl")
      config[:sql_ca_cert_file] = "#{conf_dir}/certs/sql/ca.crt"
   end
@@ -151,10 +133,6 @@
 
   if_p("diego.bbs.convergence.kick_task_duration_in_seconds") do |value|
     config[:kick_task_duration] = "#{value}s" # add time unit
-  end
-
-  if_p("diego.bbs.desired_lrp_creation_timeout") do |value|
-    config[:desired_lrp_creation_timeout] = value # add time unit
   end
 
   config[:advertise_url] = advertise_url "https"

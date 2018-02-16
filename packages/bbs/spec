@@ -12,8 +12,6 @@ files:
   - code.cloudfoundry.org/bbs/controllers/*.go # gosub
   - code.cloudfoundry.org/bbs/converger/*.go # gosub
   - code.cloudfoundry.org/bbs/db/*.go # gosub
-  - code.cloudfoundry.org/bbs/db/deprecations/*.go # gosub
-  - code.cloudfoundry.org/bbs/db/etcd/*.go # gosub
   - code.cloudfoundry.org/bbs/db/migrations/*.go # gosub
   - code.cloudfoundry.org/bbs/db/sqldb/*.go # gosub
   - code.cloudfoundry.org/bbs/db/sqldb/helpers/*.go # gosub
@@ -68,7 +66,6 @@ files:
   - github.com/cloudfoundry/gosteno/*.go # gosub
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
   - github.com/cloudfoundry/sonde-go/events/*.go # gosub
-  - github.com/coreos/go-etcd/etcd/*.go # gosub
   - github.com/go-sql-driver/mysql/*.go # gosub
   - github.com/gogo/protobuf/gogoproto/*.go # gosub
   - github.com/gogo/protobuf/proto/*.go # gosub
@@ -86,7 +83,6 @@ files:
   - github.com/tedsuo/ifrit/http_server/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
-  - github.com/ugorji/go/codec/*.go # gosub
   - github.com/vito/go-sse/sse/*.go # gosub
   - golang.org/x/net/context/*.go # gosub
   - golang.org/x/net/http2/*.go # gosub

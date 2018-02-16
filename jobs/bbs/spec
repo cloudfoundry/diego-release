@@ -7,9 +7,6 @@ templates:
   bbs.json.erb: config/bbs.json
   bpm.yml.erb: config/bpm.yml
   drain.erb: bin/drain
-  etcd_ca.crt.erb: config/certs/etcd/ca.crt
-  etcd_client.crt.erb: config/certs/etcd/client.crt
-  etcd_client.key.erb: config/certs/etcd/client.key
   bbs_ca.crt.erb: config/certs/ca.crt
   bbs_server.crt.erb: config/certs/server.crt
   bbs_server.key.erb: config/certs/server.key
@@ -82,25 +79,7 @@ properties:
     description: "REQUIRED: PEM-encoded client certificate"
   diego.bbs.server_key:
     description: "REQUIRED: PEM-encoded client key"
-  diego.bbs.desired_lrp_creation_timeout:
-    description: "expected maximum time to create all components of a desired LRP (golang duration formatted string). Deprecated since this only applies to etcd serialization, which will be removed entirely in Diego v2.0."
-
-  diego.bbs.etcd.machines:
-    description: "Addresses pointing to the ETCD cluster. Deprecated: etcd will no longer be supported in Diego v2.0."
-    default: ["etcd.service.cf.internal"]
-  diego.bbs.etcd.require_ssl:
-    description: "enable ssl for all communication with etcd. Deprecated, etcd will no longer be supported in Diego v2.0."
-    default: true
-  diego.bbs.etcd.ca_cert:
-    description: "PEM-encoded CA certificate. Deprecated, etcd will no longer be supported in Diego v2.0."
-  diego.bbs.etcd.client_cert:
-    description: "PEM-encoded client certificate. Deprecated, etcd will no longer be supported in Diego v2.0."
-  diego.bbs.etcd.client_key:
-    description: "PEM-encoded client key. Deprecated, etcd will no longer be supported in Diego v2.0."
-  diego.bbs.etcd.client_session_cache_size:
-    description: "capacity of the tls client cache. Deprecated, etcd will no longer be supported in Diego v2.0."
-  diego.bbs.etcd.max_idle_conns_per_host:
-    description: "maximum number of idle http connections. Deprecated, etcd will no longer be supported in Diego v2.0."
+    description: "PEM-encoded client key"
 
   diego.bbs.sql.db_host:
     description: "Host for SQL backend"

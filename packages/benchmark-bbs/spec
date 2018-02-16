@@ -9,7 +9,6 @@ files:
   - code.cloudfoundry.org/bbs/*.go # gosub
   - code.cloudfoundry.org/bbs/cmd/bbs/config/*.go # gosub
   - code.cloudfoundry.org/bbs/db/*.go # gosub
-  - code.cloudfoundry.org/bbs/db/etcd/*.go # gosub
   - code.cloudfoundry.org/bbs/db/sqldb/*.go # gosub
   - code.cloudfoundry.org/bbs/db/sqldb/helpers/*.go # gosub
   - code.cloudfoundry.org/bbs/encryption/*.go # gosub
@@ -79,7 +78,6 @@ files:
   - github.com/cloudfoundry/gosteno/*.go # gosub
   - github.com/cloudfoundry/gosteno/syslog/*.go # gosub
   - github.com/cloudfoundry/sonde-go/events/*.go # gosub
-  - github.com/coreos/go-etcd/etcd/*.go # gosub
   - github.com/go-sql-driver/mysql/*.go # gosub
   - github.com/gogo/protobuf/gogoproto/*.go # gosub
   - github.com/gogo/protobuf/proto/*.go # gosub
@@ -135,7 +133,6 @@ files:
   - github.com/tedsuo/ifrit/ginkgomon/*.go # gosub
   - github.com/tedsuo/ifrit/http_server/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
-  - github.com/ugorji/go/codec/*.go # gosub
   - github.com/vaughan0/go-ini/*.go # gosub
   - github.com/vito/go-sse/sse/*.go # gosub
   - github.com/zorkian/go-datadog-api/*.go # gosub

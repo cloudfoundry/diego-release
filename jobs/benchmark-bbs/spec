@@ -7,9 +7,6 @@ packages:
 templates:
   run.erb: bin/run
   benchmark.json.erb: config/benchmark.json
-  etcd_ca.crt.erb: config/certs/etcd/ca.crt
-  etcd_client.crt.erb: config/certs/etcd/client.crt
-  etcd_client.key.erb: config/certs/etcd/client.key
   bbs_ca.crt.erb: config/certs/bbs/ca.crt
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
@@ -68,22 +65,6 @@ properties:
   benchmark-bbs.sql.db_connection_string:
     description: "Connection string to use for SQL backend [username:password@tcp(1.1.1.1:1234)/database]"
     default: ""
-
-  benchmark-bbs.etcd.machines:
-    description: "Addresses pointing to the ETCD cluster. Deprecated, etcd will no longer be supported in Diego v2.0."
-  benchmark-bbs.etcd.require_ssl:
-    description: "boolean to configure ssl connections with the etcd cluster. Deprecated, etcd will no longer be supported in Diego v2.0."
-    default: true
-  benchmark-bbs.etcd.client_cert:
-    description: "PEM-encoded client certificate. Deprecated, etcd will no longer be supported in Diego v2.0."
-  benchmark-bbs.etcd.client_key:
-    description: "PEM-encoded client key. Deprecated, etcd will no longer be supported in Diego v2.0."
-  benchmark-bbs.etcd.ca_cert:
-    description: "PEM-encoded root CA certificate. Deprecated, etcd will no longer be supported in Diego v2.0."
-  benchmark-bbs.etcd.client_session_cache_size:
-    description: "capacity of the etcd client tls client cache. Deprecated, etcd will no longer be supported in Diego v2.0."
-  benchmark-bbs.bbs.etcd.max_idle_conns_per_host:
-    description: "maximum number of etcd client idle http connections. Deprecated, etcd will no longer be supported in Diego v2.0."
 
   benchmark-bbs.active_key_label:
     description: "the active key for encryption"
