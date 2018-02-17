@@ -1,0 +1,62 @@
+---
+- type: remove
+  path: /instance_groups/name=diego-cell
+- type: replace
+  path: /instance_groups/-
+  value:
+    name: diego-benchmarks
+    lifecycle: errand
+    azs:
+    - z1
+    instances: 1
+    vm_type: default
+    stemcell: default
+    networks:
+    - name: default
+    jobs:
+    - name: benchmark-bbs
+      release: diego
+      properties:
+        benchmark-bbs:
+          active_key_label: &benchmark_key_label
+            key-2016-06
+          bbs:
+            ca_cert: "((diego_bbs_client.ca))"
+            client_cert: "((diego_bbs_client.certificate))"
+            client_key: "((diego_bbs_client.private_key))"
+          client_timeout: 30s
+          desired_lrps: 10
+          encryption_keys:
+          - label: *benchmark_key_label
+            passphrase: "((diego_bbs_encryption_keys_passphrase))"
+          etcd:
+            ca_cert: ''
+            client_cert: ''
+            client_key: ''
+            client_session_cache_size:
+            machines: []
+            max_idle_conns_per_host:
+            require_ssl: true
+          local_route_emitters: true
+          log_file: benchmark-bbs.log
+          log_level: info
+          num_populate_workers: 250
+          num_reps: 1
+          num_trials: 1
+          percent_writes: 2
+          sql:
+            ca_cert:
+            db_connection_string: ''
+            db_driver: postgres
+            db_host: sql-db.service.cf.internal
+            db_password: "((diego_database_password))"
+            db_port: 5524
+            db_schema: diego
+            db_username: diego
+            require_ssl:
+    - name: consul_agent
+      release: consul
+      consumes:
+        consul_common: {from: consul_common_link}
+        consul_server: nil
+        consul_client: {from: consul_client_link}
