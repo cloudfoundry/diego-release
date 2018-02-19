@@ -24,17 +24,20 @@ For MySQL, operators have at least the following options:
 * Use the [CF-MySQL release](http://bosh.io/releases/github.com/cloudfoundry/cf-mysql-release?all=1) in standalone mode as a separate BOSH deployment, either as a single node, or as a highly available (HA) cluster.
 * Use an infrastructure-specific database deployment, such as an RDS MySQL instance on AWS.
 
-We recommend using at least version v27 of the CF-MySQL release.
+We recommend using at least version v36 of the CF-MySQL release.
 
+**Note**: Diego requires a MariaDB version of 10.1.24 or higher for its data store.
 
 #### PostgreSQL
 
 For PostgreSQL, operators have at least the following options:
 
-* Use the [PostgreSQL job](https://github.com/cloudfoundry/cf-release/tree/master/jobs/postgres) from the CF release, either sharing an existing instance that houses the CC and UAA databases, or deploying a separate node specifically for Diego.
+* Use the [Postgres release](https://bosh.io/releases/github.com/cloudfoundry/postgres-release?all=1) in standalone mode as a separate BOSH deployment, either as a single node, or as a highly available (HA) cluster.
 * Use an infrastructure-specific database deployment, such as an RDS PostgreSQL instance on AWS.
 
-**Note**: Diego requires a PostgreSQL version of 9.4 or higher for its data store.
+We recommend using at least version v25 of the Postgres release.
+
+**Note**: Diego requires a PostgreSQL version of 9.6.6 or higher for its data store.
 
 
 ### <a name="automatic-migration-bbs-data-etcd-sql"></a>Automatic Migration of BBS Data from etcd to SQL

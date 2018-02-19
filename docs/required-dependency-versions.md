@@ -7,7 +7,7 @@ The [release notes](https://github.com/cloudfoundry/diego-release/releases) also
 
 Deploying diego-release requires the following minimum versions of BOSH dependencies:
 
-- BOSH release v261+.
+- BOSH release v264.7.0+.
 - BOSH stemcell 3263+.
 
 These BOSH versions ensure the following BOSH operations occur on the Diego jobs:
@@ -22,15 +22,15 @@ These BOSH versions ensure the following BOSH operations occur on the Diego jobs
 
 Diego-release also requires the following versions of supported Garden releases:
 
-- Linux cells require garden-runc v1.2.0+. If declarative healthchecks are enabled, Diego requires garden-runc 1.10.0+.
-- Windows cells require garden-windows v0.3.0+.
+- Linux cells require garden-runc v1.11.1+.
+- Windows cells require garden-windows v0.13.0+.
 
-Deploying garden-runc 1.2.0+ and garden-Windows v0.3.0+ ensures the following features are available:
+Deploying garden-runc 1.11.1+ and garden-Windows v0.13.0+ ensures the following features are available:
 
 - The `Image` field is available on the `ContainerSpec` structure in the Garden API.
 - The `NetIn` and `NetOut` fields are available on the `ContainerSpec` structure in the Garden API.
 
-Additionally, garden-runc 1.10.0+ ensures the following:
+Additionally, garden-runc 1.11.1+ ensures the following:
 
 - The `Image` field is available on the `ProcesSpec`. Diego uses this field to run the long-running declarative health-check process in a separate container.
 
