@@ -139,6 +139,7 @@ properties:
 
   diego.bbs.locket.api_location:
     description: "Hostname and port of the Locket server. When set, the BBS attempts to claim a lock from the Locket API and will detect Diego cells registered with the Locket API."
+    default: locket.service.cf.internal:8891
   diego.bbs.skip_consul_lock:
     default: false
     description: "Set to 'true' for the BBS to skip acquiring a Consul lock. Requires 'diego.bbs.locket.api_location' to be set."
@@ -153,6 +154,13 @@ properties:
   limits.open_files:
     description: Maximum number of files (including sockets) the BBS process may have open.
     default: 100000
+
+  locks.locket.enabled:
+    description: When set, the BBS attempts to claim a lock from the Locket API.
+    default: true
+  cell_registrations.locket.enabled:
+    description: When set, the BBS will detect Diego cells registered with the Locket API.
+    default: true
 
   loggregator.use_v2_api:
     description: "True to use local metron agent gRPC v2 API. False to use UDP v1 API."

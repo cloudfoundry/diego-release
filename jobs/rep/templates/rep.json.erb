@@ -15,6 +15,7 @@
     auto_disk_capacity_overhead_mb: p("diego.executor.auto_disk_capacity_overhead_mb"),
     cache_path: "#{download_cache_dir}",
     cell_id: spec.id,
+    cell_registrations_locket_enabled: p("cell_registrations.locket.enabled"),
     container_inode_limit: p("diego.executor.container_inode_limit"),
     container_max_cpu_shares: p("diego.executor.container_max_cpu_shares"),
     create_work_pool_size: p("diego.executor.create_work_pool_size"),

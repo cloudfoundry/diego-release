@@ -241,6 +241,7 @@ properties:
 
   diego.rep.locket.api_location:
     description: "Hostname and port of the Locket server. When set, the cell rep will establish its cell registration in the Locket API instead of in the Consul key-value store."
+    default: locket.service.cf.internal:8891
 
   enable_consul_service_registration:
     description: "Enable the cell rep to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."
@@ -248,6 +249,10 @@ properties:
   enable_declarative_healthcheck:
     description: "EXPERIMENTAL: When set, enables the rep to prefer the LRP CheckDefinition to healthcheck instances over the Monitor action. Requires Garden-Runc v1.10.0+"
     default: false
+
+  cell_registrations.locket.enabled:
+    description: Enable the cell rep to register itself as a service with Locket.
+    default: true
 
   containers.graceful_shutdown_interval_in_seconds:
     description: "EXPERIMENTAL: time in seconds between signalling a container to shutdown gracefully and stopping it forcefully. Should not be less than 10."

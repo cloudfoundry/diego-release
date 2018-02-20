@@ -128,7 +128,7 @@ properties:
     default: true
   locks.locket.enabled:
     description: "Whether the route-emitter in global mode should attempt to claim its activity lock via the Locket API."
-    default: false
+    default: true
   locks.locket.hostname:
     description: "Hostname at which to discover the Locket API server. The route-emitter will use its BBS client credentials to authenticate to the Locket API."
     default: "locket.service.cf.internal"

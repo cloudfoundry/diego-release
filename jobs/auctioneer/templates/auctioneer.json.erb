@@ -7,6 +7,7 @@
     debug_address: p("diego.auctioneer.debug_addr"),
     enable_consul_service_registration: p("enable_consul_service_registration"),
     listen_addr: p("diego.auctioneer.listen_addr"),
+    locks_locket_enabled: p("locks.locket.enabled"),
     log_level: p("diego.auctioneer.log_level"),
     rep_client_session_cache_size: p("diego.auctioneer.rep.client_session_cache_size"),
     rep_require_tls: p("diego.auctioneer.rep.require_tls"),
@@ -50,6 +51,10 @@
 
   if_p("diego.auctioneer.skip_consul_lock") do |skip_consul_lock|
     config[:skip_consul_lock] = skip_consul_lock
+  end
+
+  if p("locks.locket.enabled") == false && p("diego.auctioneer.skip_consul_lock") == true
+    raise "'locks.locket.enabled' can not be false if 'diego.auctioneer.skip_consul_lock' is true."
   end
 
   config[:loggregator]={}

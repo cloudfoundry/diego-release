@@ -14,6 +14,8 @@
    log_level: p("diego.bbs.log_level"),
    active_key_label: p("diego.bbs.active_key_label"),
    debug_address: p("diego.bbs.debug_addr"),
+   locks_locket_enabled: p("locks.locket.enabled"),
+   cell_registrations_locket_enabled: p("cell_registrations.locket.enabled"),
    detect_consul_cell_registrations: p("diego.bbs.detect_consul_cell_registrations"),
   }
 
@@ -154,6 +156,14 @@
 
   if_p("diego.bbs.skip_consul_lock") do |skip_consul_lock|
     config[:skip_consul_lock] = skip_consul_lock
+  end
+
+  if p("locks.locket.enabled") == false && p("diego.bbs.skip_consul_lock") == true
+    raise "'locks.locket.enabled' can not be false if 'diego.bbs.skip_consul_lock' is true."
+  end
+
+  if p("cell_registrations.locket.enabled") == false && p("diego.bbs.detect_consul_cell_registrations") == false
+    raise "'cell_registrations.locket.enabled' and 'diego.bbs.detect_consul_cell_registrations' can not both be false."
   end
 
   config[:loggregator]={}
