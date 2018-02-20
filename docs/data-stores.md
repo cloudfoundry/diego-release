@@ -42,4 +42,4 @@ We recommend using at least version v25 of the Postgres release.
 
 ### <a name="automatic-migration-bbs-data-etcd-sql"></a>Automatic Migration of BBS Data from etcd to SQL
 
-As of Diego v2.0, support for automatic data migration from etcd to sql has been removed.
+As of Diego v2.0, support for automatic data migration from etcd to SQL has been removed.
