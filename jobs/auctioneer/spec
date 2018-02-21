@@ -29,11 +29,11 @@ properties:
     description: "Experimental: use the BOSH Process Manager to manage the auctioneer process."
     default: false
   diego.auctioneer.ca_cert:
-    description: "PEM-encoded CA certificate for the auctioneer API server."
+    description: "REQUIRED: PEM-encoded CA certificate for the auctioneer API server."
   diego.auctioneer.server_cert:
-    description: "PEM-encoded certificate for the auctioneer API server."
+    description: "REQUIRED: PEM-encoded certificate for the auctioneer API server."
   diego.auctioneer.server_key:
-    description: "PEM-encoded key for the auctioneer API server."
+    description: "REQUIRED: PEM-encoded key for the auctioneer API server."
 
   diego.auctioneer.debug_addr:
     description: "address at which to serve debug info"
