@@ -12,7 +12,7 @@ function allowContainerUsersAccess {
 
 Write-Host "Running pre-start"
 
-$port="<%= p("diego.rep.enable_legacy_api_endpoints") ? p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "") : p("diego.rep.listen_addr_admin").sub(/^127\.0\.0\.1:/, "")%>"
+$port="<%= p("diego.rep.listen_addr_admin").sub(/^127\.0\.0\.1:/, "")%>"
 
 if ($port -eq "") {
   Write-Error "Unable to find the port for rep_windows"

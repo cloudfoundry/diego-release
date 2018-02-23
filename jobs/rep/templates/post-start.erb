@@ -22,11 +22,7 @@
   end
 %>
 
-<% if p("diego.rep.enable_legacy_api_endpoints") %>
-address="http://<%=p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:")%>"
-<% else %>
 address="https://<%=p("diego.rep.listen_addr_admin")%>"
-<% end %>
 
 TLS_CA_CERT=<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls_ca.crt"%>
 TLS_CERT=<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls.crt"%>

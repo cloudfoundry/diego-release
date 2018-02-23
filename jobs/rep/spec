@@ -38,9 +38,6 @@ properties:
   bpm.enabled:
     description: "Experimental: use the BOSH Process Manager to manage the cell rep process."
     default: false
-  diego.rep.listen_addr:
-    description: "address to serve auction and LRP stop requests on. Deprecated in favor of diego.rep.listen_addr_admin and diego.rep.listen_addr_securable."
-    default: "0.0.0.0:1800"
   diego.rep.debug_addr:
     description: "address at which to serve debug info"
     default: "127.0.0.1:17008"
@@ -93,9 +90,6 @@ properties:
   loggregator.key:
     description: "Key used to communicate with local metron agent over gRPC"
 
-  diego.rep.enable_legacy_api_endpoints:
-    description: "Whether to enable the auction, LRP, and Task endpoints on the legacy, insecurable API server. Deprecated since the legacy API server will be removed in Diego v2.0."
-    default: true
   diego.rep.listen_addr_admin:
     description: "When enable_legacy_api_endpoints is set to false, serve (insecure) ping and evacuate requests on this address and port"
     default: "127.0.0.1:1800"

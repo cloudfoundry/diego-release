@@ -12,11 +12,7 @@ pidfile=$run_dir/rep.pid
 log_dir=/var/vcap/sys/log/rep
 logfile=$log_dir/drain.log
 
-<% if p("diego.rep.enable_legacy_api_endpoints") %>
-address="http://<%=p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:")%>"
-<% else %>
 address="https://<%=p("diego.rep.listen_addr_admin")%>"
-<% end %>
 
 mkdir -p $log_dir
 

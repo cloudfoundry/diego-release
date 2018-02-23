@@ -5,11 +5,7 @@ $service_name="rep_windows"
 $log_dir="/var/vcap/sys/log/rep_windows"
 $logfile="${log_dir}/drain.log"
 
-<% if p("diego.rep.enable_legacy_api_endpoints") %>
-$address="http://<%=p("diego.rep.listen_addr").sub(/^0\.0\.0\.0:/, "localhost:")%>"
-<% else %>
 $address="https://<%=p("diego.rep.listen_addr_admin")%>"
-<% end %>
 
 New-Item -ItemType "directory" -Force "${log_dir}" 2>&1 | `
     Out-File -Append -Encoding utf8 -FilePath $logfile
