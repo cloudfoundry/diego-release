@@ -61,6 +61,7 @@
     temp_dir: "#{tmp_dir}",
     unhealthy_monitoring_interval: "#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s",
     zone: "#{zone}",
+    container_service_provider: p("diego.executor.container_service_provider"),
   }
 
   if p("containers.graceful_shutdown_interval_in_seconds") < 10
@@ -188,6 +189,10 @@
     config[:loggregator][:loggregator_job_index] = spec.id
     config[:loggregator][:loggregator_job_ip] = spec.address
     config[:loggregator][:loggregator_job_origin] = "rep"
+  end
+
+  if config[:container_service_provider] == "aci"
+    config[:azure_container_provider_cfg] = p("diego.executor.azure_container_provider_cfg")
   end
 
   config.to_json

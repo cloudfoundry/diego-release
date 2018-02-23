@@ -36,6 +36,8 @@ files:
   - code.cloudfoundry.org/executor/depot/steps/*.go # gosub
   - code.cloudfoundry.org/executor/depot/transformer/*.go # gosub
   - code.cloudfoundry.org/executor/depot/uploader/*.go # gosub
+  - code.cloudfoundry.org/executor/depot/vci/aci/*.go # gosub
+  - code.cloudfoundry.org/executor/depot/vci/vgarden/*.go # gosub
   - code.cloudfoundry.org/executor/gardenhealth/*.go # gosub
   - code.cloudfoundry.org/executor/guidgen/*.go # gosub
   - code.cloudfoundry.org/executor/initializer/*.go # gosub
@@ -84,6 +86,7 @@ files:
   - code.cloudfoundry.org/volman/voldiscoverers/*.go # gosub
   - code.cloudfoundry.org/volman/vollocal/*.go # gosub
   - code.cloudfoundry.org/workpool/*.go # gosub
+  - github.com/Azure/go-autorest/autorest/azure/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/cloudfoundry/dropsonde/*.go # gosub
   - github.com/cloudfoundry/dropsonde/emitter/*.go # gosub
@@ -118,6 +121,8 @@ files:
   - github.com/tedsuo/ifrit/http_server/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
+  - github.com/virtualcloudfoundry/goaci/*.go # gosub
+  - github.com/virtualcloudfoundry/goaci/aci/*.go # gosub
   - github.com/vito/go-sse/sse/*.go # gosub
   - golang.org/x/net/context/*.go # gosub
   - golang.org/x/net/http2/*.go # gosub

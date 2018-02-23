@@ -220,6 +220,19 @@ properties:
     description: "Array of optional tags used for scheduling Tasks and LRPs"
     default: []
 
+  diego.executor.container_service_provider:
+    description: "Indicates whether this diego cell uses the azure container instances, 'garden', 'aci' or 'eci'"
+    default: "garden"
+  diego.executor.azure_container_provider_cfg.id:
+    description: "service principal id for managing azure container instances"
+    default: null
+  diego.executor.azure_container_provider_cfg.secret:
+    description: "service principal secret for managing azure container instances"
+    default: null
+  diego.executor.azure_container_provider_cfg.optional_param_1:
+    description: "tenant of service principal for managing azure container instances"
+    default: null
+
   syslog_daemon_config.address:
     description: "Syslog host"
     default: ""
