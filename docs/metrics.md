@@ -103,7 +103,6 @@ A list of component-level metrics emitted by Diego. Contributors interested in a
 | `CredCreationFailedCount`                            | Count of failed instance identity credential creations. Emitted after every failed credential creation.                                                    | number           |
 | `CredCreationSucceededCount`                         | Count of successful instance identity credential creations. Emitted after every successful credential creation.                                            | number           |
 | `CredCreationSucceededDuration`                      | Time the rep took to create instance identity credentials. Emitted after every successful credential creation.                                             | ns               |
-| `GardenContainerCreationDuration`                    | Time the rep's Garden backend took to create a container. Emitted after every successful container creation. (Deprecated)                                  | ns               |
 | `GardenContainerCreationSucceededDuration`           | Time the rep's Garden backend took to create a container. Emitted after every successful container creation.                                               | ns               |
 | `GardenContainerCreationFailedDuration`              | Time the rep's Garden backend took to create a container. Emitted after every failed container creation.                                                   | ns               |
 | `GardenContainerDestructionSucceededDuration`        | Time the rep's Garden backend took to destroy a container. Emitted after every successful container destruction.                                           | ns               |
@@ -137,7 +136,6 @@ A list of component-level metrics emitted by Diego. Contributors interested in a
 | `RoutesTotal`                                     | Number of combined HTTP and TCP route associations (route-endpoint pairs) in the route-emitter's routing table. Emitted periodically.                                  | number           |
 | `RoutesUnregistered`                              | Cumulative number of NATS route unregistrations emitted from the route-emitter as it reacts to changes to LRPs.                                                        | number           |
 | `TCPRouteCount`                                   | Number of TCP route associations (route-endpoint pairs) in the route-emitter's routing table. Emitted periodically when emitter is in local mode.                      | number           |
-| `MessagesEmitted`                                 | Cumulative number of routing messages the route-emitter sends over NATS. Deprecated in favor of `HTTPRouteNATSMessagesEmitted` and `InternalRouteNATSMessagesEmitted`. | number           |
 
 ## SSH Proxy
 
