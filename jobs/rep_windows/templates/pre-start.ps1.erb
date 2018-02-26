@@ -46,16 +46,6 @@ $instance_identity_dir = "/var/vcap/data/rep/instance_identity"
 New-Item -Path $instance_identity_dir -ItemType "directory" -Force
 $bindmountDirs += $instance_identity_dir
 
-<% if_p("diego.rep.trusted_certs") do |value| %>
-  $conf_dir = "C:/var/vcap/jobs/rep_windows/config"
-  $trusted_certs_dir = "C:/var/vcap/data/rep/trusted_certs"
-
-  New-Item -Path $trusted_certs_dir -ItemType "directory" -Force
-  C:/var/vcap/packages/certsplitter_windows/certsplitter $conf_dir/certs/rep/trusted_certs.crt $trusted_certs_dir
-
-  $bindmountDirs += $trusted_certs_dir
-<% end %>
-
 <% if_p("containers.trusted_ca_certificates") do |value| %>
   $conf_dir = "C:/var/vcap/jobs/rep_windows/config"
   $trusted_certs_dir = "C:/var/vcap/data/rep/trusted_certs"

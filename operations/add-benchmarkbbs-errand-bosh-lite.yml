@@ -46,7 +46,6 @@
           percent_writes: 2
           sql:
             ca_cert:
-            db_connection_string: ''
             db_driver: postgres
             db_host: sql-db.service.cf.internal
             db_password: "((diego_database_password))"

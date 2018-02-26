@@ -18,10 +18,3 @@ properties:
     description: "REQUIRED: PEM-encoded certificate used for client credentials."
   tls.private_key:
     description: "REQUIRED: PEM-encoded key used for client credentials."
-
-  diego.cfdot.bbs.ca_cert:
-    description: "DEPRECRATED: Use tls.ca_certificate instead"
-  diego.cfdot.bbs.client_cert:
-    description: "DEPRECRATED: Use tls.certificate instead"
-  diego.cfdot.bbs.client_key:
-    description: "DEPRECRATED: Use tls.private_key instead"

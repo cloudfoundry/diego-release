@@ -32,7 +32,6 @@
     container_proxy_config_path: "/var/vcap/data/rep/proxy_config",
     evacuation_polling_interval: "#{p("diego.rep.evacuation_polling_interval_in_seconds")}s",
     evacuation_timeout: "#{p("diego.rep.evacuation_timeout_in_seconds")}s",
-    export_network_env_vars: p("diego.executor.export_network_env_vars"),
     garden_addr: p("diego.executor.garden.address"),
     garden_healthcheck_command_retry_pause: p("diego.executor.garden_healthcheck.command_retry_pause"),
     garden_healthcheck_interval: p("diego.executor.garden_healthcheck.interval"),
@@ -99,18 +98,8 @@
     config[:bbs_max_idle_conns_per_host] = value
   end
 
-  if_p("diego.rep.trusted_certs") do |value|
-    config[:trusted_system_certificates_path] = "#{trusted_certs_dir}"
-  end
-
   if_p("containers.trusted_ca_certificates") do |value|
     config[:trusted_system_certificates_path] = "#{trusted_certs_dir}"
-  end
-
-  if_p("diego.executor.ca_certs_for_downloads") do |value|
-    if !value.empty?
-      config[:path_to_ca_certs_for_downloads] = "#{conf_dir}/certs/rep/ca_certs_for_downloads.crt"
-    end
   end
 
   if_p("diego.executor.garden_healthcheck.process.dir") do |value|

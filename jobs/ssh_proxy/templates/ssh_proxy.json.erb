@@ -32,12 +32,7 @@
   if p("diego.ssh_proxy.enable_cf_auth") then
     config[:enable_cf_auth] = true
 
-    token_url = ""
-    if_p("diego.ssh_proxy.uaa.url", "diego.ssh_proxy.uaa.port") do |url, port|
-      token_url = "#{url}:#{port}/oauth/token"
-    end.else do
-      token_url = p("diego.ssh_proxy.uaa_token_url")
-    end
+    token_url = "#{p("diego.ssh_proxy.uaa.url")}:#{p("diego.ssh_proxy.uaa.port")}/oauth/token"
 
     if_p("diego.ssh_proxy.uaa.ca_cert") do |value|
       config[:uaa_ca_cert] = "/var/vcap/jobs/ssh_proxy/config/certs/uaa/ca.crt"

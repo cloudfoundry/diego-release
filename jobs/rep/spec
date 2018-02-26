@@ -6,9 +6,7 @@ templates:
   rep_ctl.erb: bin/rep_ctl
   rep_as_vcap.erb: bin/rep_as_vcap
   drain.erb: bin/drain
-  trusted_certs.crt.erb: config/certs/rep/trusted_certs.crt
   trusted_ca_certificates.json.erb: config/certs/rep/trusted_ca_certificates.json
-  ca_certs_for_downloads.crt.erb: config/certs/rep/ca_certs_for_downloads.crt
   instance_identity.crt.erb: config/certs/rep/instance_identity.crt
   instance_identity.key.erb: config/certs/rep/instance_identity.key
   consul_ca.crt.erb: config/certs/consul/ca.crt
@@ -67,9 +65,6 @@ properties:
   diego.rep.dropsonde_port:
     description: "local metron agent's port. Deprecated, will be removed when loggregator API v1 support is removed."
     default: 3457
-  diego.rep.trusted_certs:
-    description: "Concatenation of trusted CA certificates to be made available inside the rootfses. Deprecated in favor of containers.trusted_ca_certificates."
-    default: null
   diego.rep.placement_tags:
     description: "Array of tags used for scheduling Tasks and LRPs"
     default: []
@@ -103,9 +98,6 @@ properties:
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false
-  diego.executor.ca_certs_for_downloads:
-    description: "Concatenation of trusted CA certificates to be used when downloading assets. Deprecated in favor of tls.ca_cert."
-    default: null
   tls.cert:
     description: "REQUIRED: PEM-encoded tls certificate that can be used for client or server auth"
   tls.key:
@@ -152,9 +144,6 @@ properties:
   diego.executor.garden.network:
     description: "Network type for the garden server connection (tcp or unix)."
     default: unix
-  diego.executor.export_network_env_vars:
-    description: "Export network environment variables into container (e.g. CF_INSTANCE_IP, CF_INSTANCE_PORT). Deprecated, these will always be exported in Diego v2.0+."
-    default: true
   diego.executor.healthy_monitoring_interval_in_seconds:
     description: "Interval to check healthy containers in seconds."
     default: 30

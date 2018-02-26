@@ -47,16 +47,7 @@
     end
   end
 
-  connection_string = p('diego.bbs.sql.db_connection_string')
-
-  if connection_string != "" && connection_string_from_db_params != ""
-    raise "You can only specify 'diego.bbs.sql.db_connection_string' or '#{db_params.join(",")}'"
-  end
-
-  if connection_string == ""
-    connection_string = connection_string_from_db_params
-  end
-
+  connection_string = connection_string_from_db_params
   if connection_string == ""
     raise "#{db_params.join(",")} are required fields"
   end
@@ -76,12 +67,7 @@
     config[:encryption_keys][label] = key
   end
 
-  if p("diego.bbs.auctioneer.api_location", "") != ""
-    auctioneer_address = p("diego.bbs.auctioneer.api_location")
-  else
-    auctioneer_uri = URI(p("diego.bbs.auctioneer.api_url"))
-    auctioneer_address = auctioneer_uri.host + ":" + auctioneer_uri.port.to_s
-  end
+  auctioneer_address = p("diego.bbs.auctioneer.api_location")
 
   config[:auctioneer_address] = "http://#{auctioneer_address}"
   if p("diego.bbs.auctioneer.ca_cert", "") != "" ||

@@ -21,15 +21,6 @@ chmod 0700 "$instance_identity_dir"
 
 trusted_certs_dir=${data_dir}/trusted_certs
 rm -rf "$trusted_certs_dir"
-<% if_p("diego.rep.trusted_certs") do |value| %>
-  mkdir -p "$trusted_certs_dir"
-  chown -R vcap:vcap $trusted_certs_dir
-
-  /var/vcap/packages/certsplitter/bin/certsplitter $conf_dir/certs/rep/trusted_certs.crt $trusted_certs_dir
-
-  chmod +r ${trusted_certs_dir}/*
-<% end %>
-
 <% if_p("containers.trusted_ca_certificates") do %>
   mkdir -p "$trusted_certs_dir"
   chown -R vcap:vcap $trusted_certs_dir

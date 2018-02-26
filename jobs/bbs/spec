@@ -31,12 +31,9 @@ properties:
   bpm.enabled:
     description: "Experimental: use the BOSH Process Manager to manage the BBS process."
     default: false
-  diego.bbs.auctioneer.api_url:
-    description: "URL of the auctioneer API. Deprecated in favor of api_location, but in use through Diego v1."
-    default: "http://auctioneer.service.cf.internal:9016"
   diego.bbs.auctioneer.api_location:
-    description: "Hostname and port of the auctioneer API, without URI scheme. Recommended in favor of api_url."
-    example: "auctioneer.service.cf.internal:9016"
+    description: "Hostname and port of the auctioneer API, without URI scheme."
+    default: "auctioneer.service.cf.internal:9016"
   diego.bbs.auctioneer.ca_cert:
     description: "CA cert for communication to the auctioneer."
   diego.bbs.auctioneer.client_cert:
@@ -98,9 +95,6 @@ properties:
   diego.bbs.sql.db_driver:
     description: "Database driver to use for SQL backend (for example: mysql,postgres)"
     default: mysql
-  diego.bbs.sql.db_connection_string:
-    description: "Connection string to use for SQL backend. DEPRECATED, use db_{host,port,schema,username,password} instead"
-    default: ""
   diego.bbs.sql.max_open_connections:
     description: "Maximum number of open connections to the SQL database"
   diego.bbs.sql.max_idle_connections:

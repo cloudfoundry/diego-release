@@ -62,9 +62,6 @@ properties:
     default: ""
   benchmark-bbs.sql.db_driver:
     description: "driver to use, e.g. postgres or mysql"
-  benchmark-bbs.sql.db_connection_string:
-    description: "Connection string to use for SQL backend [username:password@tcp(1.1.1.1:1234)/database]"
-    default: ""
 
   benchmark-bbs.active_key_label:
     description: "the active key for encryption"

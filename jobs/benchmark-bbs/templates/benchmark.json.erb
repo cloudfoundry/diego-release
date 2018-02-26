@@ -56,16 +56,7 @@
     end
   end
 
-  connection_string = p("benchmark-bbs.sql.db_connection_string")
-
-  if connection_string != "" && connection_string_from_db_params != ""
-    raise "You can only specify 'benchmark-bbs.sql.db_connection_string' or '#{db_params.join(",")}'"
-  end
-
-  if connection_string == ""
-    connection_string = connection_string_from_db_params
-  end
-
+  connection_string = connection_string_from_db_params
   if connection_string == ""
     raise "#{db_params.join(",")} are required fields"
   end
