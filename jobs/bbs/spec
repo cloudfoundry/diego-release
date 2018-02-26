@@ -59,9 +59,6 @@ properties:
   diego.bbs.enable_access_log:
     description: "Enable access log, i.e. log every request made to the bbs"
     default: false
-  diego.bbs.dropsonde_port:
-    description: "local metron agent's port. Deprecated, will be removed when loggregator API v1 support is removed."
-    default: 3457
   diego.bbs.advertisement_base_hostname:
     description: "Suffix for the BBS advertised hostname"
     default: "bbs.service.cf.internal"

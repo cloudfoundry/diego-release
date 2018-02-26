@@ -145,7 +145,7 @@ A list of component-level metrics emitted by Diego. Contributors interested in a
 
 ## General Golang metrics
 
-These metrics are automatically emitted by dropsonde on all the Diego components.
+These metrics are automatically emitted on all the Diego components.
 
 | Metric                                      | Description                                                                                                                                                | Unit   |
 | -------------------------------------------    | ----------------------------------------------------------------------------------------------------------------------------------------------------------       | ----             |

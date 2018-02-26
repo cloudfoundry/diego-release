@@ -6,7 +6,6 @@
     consul_cluster: "http://127.0.0.1:8500",
     enable_consul_service_registration: p("enable_consul_service_registration"),
     cc_api_url: "http://#{p("diego.ssh_proxy.cc.internal_service_hostname")}:#{p("diego.ssh_proxy.cc.external_port")}",
-    dropsonde_port: p("diego.ssh_proxy.dropsonde_port"),
     skip_cert_verify:  p("diego.ssl.skip_cert_verify"),
     log_level: p("diego.ssh_proxy.log_level"),
     debug_address: p("diego.ssh_proxy.debug_addr"),

@@ -62,9 +62,9 @@ properties:
   diego.rep.log_level:
     description: "Log level"
     default: "info"
-  diego.rep.dropsonde_port:
-    description: "local metron agent's port. Deprecated, will be removed when loggregator API v1 support is removed."
-    default: 3457
+  diego.rep.trusted_certs:
+    description: "Concatenation of trusted CA certificates to be made available inside the rootfses. Deprecated in favor of containers.trusted_ca_certificates."
+    default: null
   diego.rep.placement_tags:
     description: "Array of tags used for scheduling Tasks and LRPs"
     default: []

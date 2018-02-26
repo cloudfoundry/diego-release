@@ -52,9 +52,6 @@ properties:
   diego.ssh_proxy.log_level:
     description: "Log level"
     default: "info"
-  diego.ssh_proxy.dropsonde_port:
-    description: "local metron agent's port. Deprecated, will be removed when loggregator API v1 support is removed."
-    default: 3457
   diego.ssh_proxy.enable_cf_auth:
     description: Allow ssh access for cf applications
     default: false

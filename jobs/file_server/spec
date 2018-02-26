@@ -34,9 +34,6 @@ properties:
   diego.file_server.log_level:
     description: "Log level"
     default: "info"
-  diego.file_server.dropsonde_port:
-    description: "local metron agent's port. Deprecated, will be removed when loggregator API v1 support is removed."
-    default: 3457
 
   enable_consul_service_registration:
     description: "Enable the file-server to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."

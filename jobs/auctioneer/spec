@@ -53,9 +53,6 @@ properties:
   diego.auctioneer.starting_container_count_maximum:
     description: "Maximum number of inflight container starts allowed globally. Value of 0 or less indicates no limit."
     default: 0
-  diego.auctioneer.dropsonde_port:
-    description: "local metron agent's port. Deprecated, will be removed when loggregator API v1 support is removed."
-    default: 3457
 
   diego.auctioneer.bbs.api_location:
     description: "Address to the BBS Server"

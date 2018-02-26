@@ -103,10 +103,6 @@
     config[:database_driver] = value
   end
 
-  if_p("diego.bbs.dropsonde_port") do |value|
-   config[:dropsonde_port] = value
-  end
-
   if_p("diego.bbs.convergence.expire_completed_task_duration_in_seconds") do |value|
     config[:expire_completed_task_duration] = "#{value}s" # add time unit
   end

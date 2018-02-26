@@ -7,14 +7,14 @@ This document lists deprecated properties of the job templates in this BOSH rele
 
 ### <a name="bosh-job-properties-auctioneer"></a>`auctioneer`
 
-- `diego.auctioneer.dropsonde_port`: Deprecated, will be removed when loggregator API v1 support is removed.
+- `diego.auctioneer.dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
 - `diego.auctioneer.bbs.require_ssl`: Deprecated, TLS will be required for the BBS in Diego v2.0+.
 
 
 ### <a name="bosh-job-properties-bbs"></a>`bbs`
 
 - `diego.bbs.auctioneer.api_url`: Deprecated in favor of `diego.bbs.auctioneer.api_location`.
-- `diego.bbs.dropsonde_port`: Deprecated, will be removed when loggregator API v1 support is removed.
+- `diego.bbs.dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
 - `diego.bbs.desired_lrp_creation_timeout`: Deprecated since this only applies to etcd serialization, which will be removed entirely in Diego v2.0.
 - `diego.bbs.etcd.*`: Deprecated, etcd will no longer be supported in Diego v2.0.
 - `diego.bbs.require_ssl`: Deprecated, TLS will be required for the BBS in Diego v2.0+.
@@ -37,12 +37,12 @@ This document lists deprecated properties of the job templates in this BOSH rele
 
 ### <a name="bosh-job-properties-file-server"></a>`file_server`
 
-- `diego.file_server.dropsonde_port`: Deprecated, will be removed when loggregator API v1 support is removed.
+- `diego.file_server.dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
 
 
 ### <a name="bosh-job-properties-locket"></a>`locket`
 
-- `dropsonde_port`: Deprecated, will be removed when loggregator API v1 support is removed.
+- `dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
 
 
 ### <a name="bosh-job-properties-rep"></a>`rep`
@@ -51,7 +51,7 @@ This document lists deprecated properties of the job templates in this BOSH rele
 - `diego.executor.ca_certs_for_downloads`: Deprecated in favor of `tls.ca_cert`.
 - `diego.executor.export_network_env_vars`: Deprecated, these will always be exported in Diego v2.0+.
 - `diego.rep.listen_addr`: Deprecated in favor of `diego.rep.listen_addr_admin` and `diego.rep.listen_addr_securable`.
-- `diego.rep.dropsonde_port`: Deprecated, will be removed when loggregator API v1 support is removed.
+- `diego.rep.dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
 - `diego.rep.enable_legacy_api_endpoints`: Deprecated since the legacy API server will be removed in Diego v2.0.
 - `diego.rep.require_tls`: Deprecated since mutual TLS will be required in Diego v2.0+.
 - `diego.rep.trusted_certs`: Deprecated in favor of `containers.trusted_ca_certificates`.
@@ -64,7 +64,7 @@ This document lists deprecated properties of the job templates in this BOSH rele
 - `diego.executor.ca_certs_for_downloads`: Deprecated in favor of `tls.ca_cert`.
 - `diego.executor.export_network_env_vars`: Deprecated, these will always be exported in Diego v2.0+.
 - `diego.rep.listen_addr`: Deprecated in favor of `diego.rep.listen_addr_admin` and `diego.rep.listen_addr_securable`.
-- `diego.rep.dropsonde_port`: Deprecated, will be removed when loggregator API v1 support is removed.
+- `diego.rep.dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
 - `diego.rep.enable_legacy_api_endpoints`: Deprecated since the legacy API server will be removed in Diego v2.0.
 - `diego.rep.require_tls`: Deprecated since mutual TLS will be required in Diego v2.0+.
 - `diego.rep.trusted_certs`: Deprecated in favor of `containers.trusted_ca_certificates`.
@@ -74,19 +74,19 @@ This document lists deprecated properties of the job templates in this BOSH rele
 ### <a name="bosh-job-properties-route-emitter"></a>`route_emitter`
 
 - `diego.route_emitter.bbs.require_ssl`: Deprecated, TLS will be required for the BBS in Diego v2.0+.
-- `diego.route_emitter.dropsonde_port`: Deprecated, will be removed when loggregator API v1 support is removed.
+- `diego.route_emitter.dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
 
 
 ### <a name="bosh-job-properties-route-emitter-windows"></a>`route_emitter_windows`
 
 - `diego.route_emitter.bbs.require_ssl`: Deprecated, TLS will be required for the BBS in Diego v2.0+.
-- `diego.route_emitter.dropsonde_port`: Deprecated, will be removed when loggregator API v1 support is removed.
+- `diego.route_emitter.dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
 
 
 ### <a name="bosh-job-properties-ssh-proxy"></a>`ssh_proxy`
 
 - `diego.ssh_proxy.bbs.require_ssl`: Deprecated, TLS will be required for the BBS in Diego v2.0+.
-- `diego.ssh_proxy.dropsonde_port`: Deprecated, will be removed when loggregator API v1 support is removed.
+- `diego.ssh_proxy.dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
 - `diego.ssh_proxy.uaa_token_url`: Deprecated in favor of `diego.ssh_proxy.uaa.url`.
 
 
