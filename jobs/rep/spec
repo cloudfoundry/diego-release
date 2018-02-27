@@ -62,9 +62,6 @@ properties:
   diego.rep.log_level:
     description: "Log level"
     default: "info"
-  diego.rep.trusted_certs:
-    description: "Concatenation of trusted CA certificates to be made available inside the rootfses. Deprecated in favor of containers.trusted_ca_certificates."
-    default: null
   diego.rep.placement_tags:
     description: "Array of tags used for scheduling Tasks and LRPs"
     default: []
@@ -86,7 +83,7 @@ properties:
     description: "Key used to communicate with local metron agent over gRPC"
 
   diego.rep.listen_addr_admin:
-    description: "When enable_legacy_api_endpoints is set to false, serve (insecure) ping and evacuate requests on this address and port"
+    description: "serve (insecure) ping and evacuate requests on this address and port"
     default: "127.0.0.1:1800"
   diego.rep.advertise_domain:
     description: "base domain at which the rep should advertise its secure API"

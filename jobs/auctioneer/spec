@@ -69,7 +69,7 @@ properties:
     description: "maximum number of idle http connections"
 
   diego.auctioneer.rep.require_tls:
-    description: "Whether to require TLS for communication to the securable rep API server"
+    description: "Whether to require TLS for communication to the securable rep API server. Deprecated, Diego V2 and later require Rep communication to use TLS.  This is only relevant when upgrading from V1 to ensure no downtime during the upgrade"
     default: false
   diego.auctioneer.rep.ca_cert:
     description: "CA cert for communication to the rep."

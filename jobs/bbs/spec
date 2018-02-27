@@ -41,7 +41,7 @@ properties:
   diego.bbs.auctioneer.client_key:
     description: "Client key for communication to the auctioneer."
   diego.bbs.auctioneer.require_tls:
-    description: "Whether to use mutual TLS for communication with the auctioneer API."
+    description: "Whether to require mutual TLS for communication with the auctioneer API. Deprecated, Diego V2 and later require Auctioneer communication to use TLS.  This is only relevant when upgrading from V1 to ensure no downtime during the upgrade"
     default: false
 
   diego.bbs.debug_addr:
@@ -116,7 +116,7 @@ properties:
     default: 1800
 
   diego.bbs.rep.require_tls:
-    description: "Whether to require TLS for communication to the securable rep API server"
+    description: "Whether to require TLS for communication to the securable rep API server.  Deprecated, Diego V2 and later require Rep communication to use TLS. This is only relevant when upgrading from V1 to ensure no downtime during the upgrade"
     default: false
   diego.bbs.rep.ca_cert:
     description: "CA cert for communication to the rep."
