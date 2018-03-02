@@ -32,8 +32,13 @@ cat > /tmp/diego_cats_integration_config.json <<EOF
 }
 EOF
 
-pushd ${CF_RELEASE_DIR}/src/github.com/cloudfoundry/cf-acceptance-tests/
-  CONFIG=/tmp/diego_cats_integration_config.json ./bin/test -nodes=4 "$@"
+TMPDIR=$(mktemp -d)
+pushd $TMPDIR
+  export GOPATH=$PWD
+  go get github.com/cloudfoundry/cf-acceptance-tests
+  pushd src/github.com/cloudfoundry/cf-acceptance-tests/
+    CONFIG=/tmp/diego_cats_integration_config.json ./bin/test -nodes=4 "$@"
+  popd
 popd
 
 
