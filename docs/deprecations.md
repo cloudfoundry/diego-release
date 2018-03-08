@@ -8,7 +8,7 @@ This document lists deprecated properties of the job templates in this BOSH rele
 ### <a name="bosh-job-properties-auctioneer"></a>`auctioneer`
 
 | property                         | deprecated | removed | notes                                               |
-|----------------------------------+------------+---------+-----------------------------------------------------|
+|----------------------------------|------------|---------|-----------------------------------------------------|
 | diego.auctioneer.bbs.require_ssl | v1.35.0    | v2.1.0  | Mutual TLS is now required and cannot be disabled   |
 | diego.auctioneer.dropsonde_port  | v1.35.0    | v2.1.0  | Loggregator API v1 is no longer support in Diego v2 |
 | diego.auctioneer.rep.require_tls | v2.1.0     |         | Only relevant when upgrading from Diego V1          |
@@ -17,7 +17,7 @@ This document lists deprecated properties of the job templates in this BOSH rele
 ### <a name="bosh-job-properties-bbs"></a>`bbs`
 
 | property                                 | deprecated | removed | notes                                                             |
-|------------------------------------------+------------+---------+-------------------------------------------------------------------|
+|------------------------------------------|------------|---------|-------------------------------------------------------------------|
 | diego.bbs.auctioneer.api_url             | v1.6.0     | v2.1.0  | Use diego.bbs.auctioneer.api_location instead                     |
 | diego.bbs.dropsonde_port                 | v1.35.0    | v2.1.0  | Loggregator API v1 is no longer support in Diego v2               |
 | diego.bbs.desired_lrp_creation_timeout   | v1.35.0    | v2.1.0  | ETCD is no longer supported in Diego v2                           |
@@ -37,7 +37,7 @@ This document lists deprecated properties of the job templates in this BOSH rele
 ### <a name="bosh-job-properties-benchmark-bbs"></a>`benchmark-bbs`
 
 | property                                       | deprecated | removed | notes                                                             |
-|------------------------------------------------+------------+---------+-------------------------------------------------------------------|
+|------------------------------------------------|------------|---------|-------------------------------------------------------------------|
 | benchmark-bbs.bbs.etcd.max_idle_conns_per_host | v1.35.0    | v2.0.0  | ETCD is no longer supported in Diego v2                           |
 | benchmark-bbs.bbs.require_ssl                  | v1.35.0    | v2.1.0  | Mutual TLS is now required and cannot be disabled                 |
 | benchmark-bbs.etcd.ca_cert                     | v1.35.0    | v2.0.0  | ETCD is no longer supported in Diego v2                           |
@@ -52,7 +52,7 @@ This document lists deprecated properties of the job templates in this BOSH rele
 ### <a name="bosh-job-properties-cfdot"></a>`cfdot`
 
 | property                    | deprecated | removed | notes                                             |
-|-----------------------------+------------+---------+---------------------------------------------------|
+|-----------------------------|------------|---------|---------------------------------------------------|
 | diego.cfdot.bbs.ca_cert     | v1.32.0    | v2.1.0  | Use tls.* instead                                 |
 | diego.cfdot.bbs.client_cert | v1.32.0    | v2.1.0  | Use tls.* instead                                 |
 | diego.cfdot.bbs.client_key  | v1.32.0    | v2.1.0  | Use tls.* instead                                 |
@@ -62,21 +62,21 @@ This document lists deprecated properties of the job templates in this BOSH rele
 ### <a name="bosh-job-properties-file-server"></a>`file_server`
 
 | property                         | deprecated | removed | notes                                               |
-|----------------------------------+------------+---------+-----------------------------------------------------|
+|----------------------------------|------------|---------|-----------------------------------------------------|
 | diego.file_server.dropsonde_port | v1.35.0    | v2.1.0  | Loggregator API v1 is no longer support in Diego v2 |
 
 
 ### <a name="bosh-job-properties-locket"></a>`locket`
 
 | property       | deprecated | removed | notes                                               |
-|----------------+------------+---------+-----------------------------------------------------|
+|----------------|------------|---------|-----------------------------------------------------|
 | dropsonde_port | v1.35.0    | v2.1.0  | Loggregator API v1 is no longer support in Diego v2 |
 
 
 ### <a name="bosh-job-properties-rep"></a>`rep and rep_windows`
 
 | property                               | deprecated | removed | notes                                                                        |
-|----------------------------------------+------------+---------+------------------------------------------------------------------------------|
+|----------------------------------------|------------|---------|------------------------------------------------------------------------------|
 | admin_api.require_tls                  | v1.35.0    | v2.1.0  | Mutual TLS is now required and cannot be disabled                            |
 | diego.executor.ca_certs_for_downloads  | v1.11.0    | v2.1.0  | Use tls.* instead                                                            |
 | diego.executor.export_network_env_vars | v1.35.0    | v2.1.0  | Always enabled in Diego V2                                                   |
@@ -99,7 +99,7 @@ This document lists deprecated properties of the job templates in this BOSH rele
 
 
 | property                            | deprecated | removed | notes                                               |
-|-------------------------------------+------------+---------+-----------------------------------------------------|
+|-------------------------------------|------------|---------|-----------------------------------------------------|
 | diego.route_emitter.bbs.require_ssl | v1.35.0    | v2.1.0  | Mutual TLS is now required and cannot be disabled   |
 | diego.route_emitter.dropsonde_port  | v1.35.0    | v2.1.0  | Loggregator API v1 is no longer support in Diego v2 |
 
@@ -107,7 +107,7 @@ This document lists deprecated properties of the job templates in this BOSH rele
 ### <a name="bosh-job-properties-ssh-proxy"></a>`ssh_proxy`
 
 | property                        | deprecated | removed | notes                                               |
-|---------------------------------+------------+---------+-----------------------------------------------------|
+|---------------------------------|------------|---------|-----------------------------------------------------|
 | diego.ssh_proxy.bbs.require_ssl | v1.35.0    | v2.1.0  | Mutual TLS is now required and cannot be disabled   |
 | diego.ssh_proxy.dropsonde_port  | v1.35.0    | v2.1.0  | Loggregator API v1 is no longer support in Diego v2 |
 | diego.ssh_proxy.uaa_token_url   | v1.32.1    | v2.1.0  | Use diego.ssh_proxy.uaa.url instead                 |
@@ -116,7 +116,7 @@ This document lists deprecated properties of the job templates in this BOSH rele
 ### <a name="bosh-job-properties-vizzini"></a>`vizzini`
 
 | property                | deprecated | removed | notes                                             |
-|-------------------------+------------+---------+---------------------------------------------------|
+|-------------------------|------------|---------|---------------------------------------------------|
 | vizzini.bbs.require_ssl | v1.35.0    | v2.1.0  | Mutual TLS is now required and cannot be disabled |
 
 
