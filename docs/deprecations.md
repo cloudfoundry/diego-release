@@ -7,95 +7,117 @@ This document lists deprecated properties of the job templates in this BOSH rele
 
 ### <a name="bosh-job-properties-auctioneer"></a>`auctioneer`
 
-- `diego.auctioneer.rep.require_tls:`: Deprecated in v2. TLS is now required for the Rep in Diego v2.0+.
-- `diego.auctioneer.bbs.require_ssl`: Removed in v2. TLS is now required for the BBS in Diego v2.0+.
-- `diego.auctioneer.dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
+| property                         | deprecated | removed | notes                                               |
+|----------------------------------+------------+---------+-----------------------------------------------------|
+| diego.auctioneer.bbs.require_ssl | v1.35.0    | v2.1.0  | Mutual TLS is now required and cannot be disabled   |
+| diego.auctioneer.dropsonde_port  | v1.35.0    | v2.1.0  | Loggregator API v1 is no longer support in Diego v2 |
+| diego.auctioneer.rep.require_tls | v2.1.0     |         | Only relevant when upgrading from Diego V1          |
 
 
 ### <a name="bosh-job-properties-bbs"></a>`bbs`
 
-- `diego.bbs.auctioneer.require_tls`: Deprecated in v2. TLS is now required for the Auctioneer in Diego v2.0+.
-- `diego.bbs.rep.require_tls:`: Deprecated in v2. TLS is now required for the Rep in Diego v2.0+.
-- `diego.bbs.auctioneer.api_url`: Removed in v2 in favor of `diego.bbs.auctioneer.api_location`.
-- `diego.bbs.dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
-- `diego.bbs.desired_lrp_creation_timeout`: Removed in v2 as part of removing support for etcd.
-- `diego.bbs.etcd.*`: Removed in v2 as part of removing support for etcd.
-- `diego.bbs.require_ssl`: Removed in v2. TLS is required for the BBS in Diego v2.0+.
-- `diego.bbs.sql.db_connection_string`: Removed in v2 in favor of the other `diego.bbs.sql.db_*` properties.
+| property                                 | deprecated | removed | notes                                                             |
+|------------------------------------------+------------+---------+-------------------------------------------------------------------|
+| diego.bbs.auctioneer.api_url             | v1.6.0     | v2.1.0  | Use diego.bbs.auctioneer.api_location instead                     |
+| diego.bbs.dropsonde_port                 | v1.35.0    | v2.1.0  | Loggregator API v1 is no longer support in Diego v2               |
+| diego.bbs.desired_lrp_creation_timeout   | v1.35.0    | v2.1.0  | ETCD is no longer supported in Diego v2                           |
+| diego.bbs.etcd.ca_cert                   | v1.35.0    | v2.0.0  | ETCD is no longer supported in Diego v2                           |
+| diego.bbs.etcd.client_cert               | v1.35.0    | v2.0.0  | ETCD is no longer supported in Diego v2                           |
+| diego.bbs.etcd.client_key                | v1.35.0    | v2.0.0  | ETCD is no longer supported in Diego v2                           |
+| diego.bbs.etcd.client_session_cache_size | v1.35.0    | v2.0.0  | ETCD is no longer supported in Diego v2                           |
+| diego.bbs.etcd.machines                  | v1.35.0    | v2.0.0  | ETCD is no longer supported in Diego v2                           |
+| diego.bbs.etcd.max_idle_conns_per_host   | v1.35.0    | v2.0.0  | ETCD is no longer supported in Diego v2                           |
+| diego.bbs.etcd.require_ssl               | v1.35.0    | v2.0.0  | ETCD is no longer supported in Diego v2                           |
+| diego.bbs.require_ssl                    | v1.35.0    | v2.1.0  | Mutual TLS is now required and cannot be disabled                 |
+| diego.bbs.sql.db_connection_string       | v0.1490.0  | v2.1.0  | use diego.bbs.sql.db_{host,port,schema,username,password} instead |
+| diego.bbs.auctioneer.require_tls         | v2.1.0     | N/A     | Only relevant when upgrading from Diego V1                        |
+| diego.bbs.rep.require_tls:               | v2.1.0     | N/A     | Only relevant when upgrading from Diego V1                        |
 
 
 ### <a name="bosh-job-properties-benchmark-bbs"></a>`benchmark-bbs`
 
-- `benchmark-bbs.bbs.require_ssl`: Removed in v2. TLS will be required for the BBS in Diego v2.0+.
-- `benchmark-bbs.etcd.*`: Removed in v2. ETCD will no longer be supported in Diego v2.0.
+| property                                       | deprecated | removed | notes                                                             |
+|------------------------------------------------+------------+---------+-------------------------------------------------------------------|
+| benchmark-bbs.bbs.etcd.max_idle_conns_per_host | v1.35.0    | v2.0.0  | ETCD is no longer supported in Diego v2                           |
+| benchmark-bbs.bbs.require_ssl                  | v1.35.0    | v2.1.0  | Mutual TLS is now required and cannot be disabled                 |
+| benchmark-bbs.etcd.ca_cert                     | v1.35.0    | v2.0.0  | ETCD is no longer supported in Diego v2                           |
+| benchmark-bbs.etcd.client_cert                 | v1.35.0    | v2.0.0  | ETCD is no longer supported in Diego v2                           |
+| benchmark-bbs.etcd.client_key                  | v1.35.0    | v2.0.0  | ETCD is no longer supported in Diego v2                           |
+| benchmark-bbs.etcd.client_session_cache_size   | v1.35.0    | v2.0.0  | ETCD is no longer supported in Diego v2                           |
+| benchmark-bbs.etcd.machines                    | v1.35.0    | v2.0.0  | ETCD is no longer supported in Diego v2                           |
+| benchmark-bbs.etcd.require_ssl                 | v1.35.0    | v2.0.0  | ETCD is no longer supported in Diego v2                           |
+| benchmark-bbs.sql.db_connection_string         | N/A        | v2.1.0  | use diego.bbs.sql.db_{host,port,schema,username,password} instead |
 
 
 ### <a name="bosh-job-properties-cfdot"></a>`cfdot`
 
-- `diego.cfdot.bbs.ca_cert`: Removed in v2 in favor of `tls.ca_certificate`.
-- `diego.cfdot.bbs.client_cert`: Removed in v2 in favor of `tls.certificate`.
-- `diego.cfdot.bbs.client_key`: Removed in v2 in favor of `tls.private_key`.
-- `diego.cfdot.bbs.use_ssl`: Removed in v2. TLS will be required for the BBS in Diego v2.0+.
+| property                    | deprecated | removed | notes                                             |
+|-----------------------------+------------+---------+---------------------------------------------------|
+| diego.cfdot.bbs.ca_cert     | v1.32.0    | v2.1.0  | Use tls.* instead                                 |
+| diego.cfdot.bbs.client_cert | v1.32.0    | v2.1.0  | Use tls.* instead                                 |
+| diego.cfdot.bbs.client_key  | v1.32.0    | v2.1.0  | Use tls.* instead                                 |
+| diego.cfdot.bbs.use_ssl     | v1.35.0    | v2.1.0  | Mutual TLS is now required and cannot be disabled |
 
 
 ### <a name="bosh-job-properties-file-server"></a>`file_server`
 
-- `diego.file_server.dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
+| property                         | deprecated | removed | notes                                               |
+|----------------------------------+------------+---------+-----------------------------------------------------|
+| diego.file_server.dropsonde_port | v1.35.0    | v2.1.0  | Loggregator API v1 is no longer support in Diego v2 |
 
 
 ### <a name="bosh-job-properties-locket"></a>`locket`
 
-- `dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
+| property       | deprecated | removed | notes                                               |
+|----------------+------------+---------+-----------------------------------------------------|
+| dropsonde_port | v1.35.0    | v2.1.0  | Loggregator API v1 is no longer support in Diego v2 |
 
 
-### <a name="bosh-job-properties-rep"></a>`rep`
+### <a name="bosh-job-properties-rep"></a>`rep and rep_windows`
 
-- `admin_api.require_tls`: Removed in v2. Mutual TLS will be required in v2.0+.
-- `diego.executor.ca_certs_for_downloads`: Removed in v2 in favor of `tls.ca_cert`.
-- `diego.executor.export_network_env_vars`: Removed in v2. Network environment variables will always be exported in Diego v2.0+.
-- `diego.rep.listen_addr`: Removed in v2 in favor of `diego.rep.listen_addr_admin` and `diego.rep.listen_addr_securable`.
-- `diego.rep.dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
-- `diego.rep.enable_legacy_api_endpoints`: Removed in v2 since the legacy API server will be removed in Diego v2.0.
-- `diego.rep.require_tls`: Removed in v2 since mutual TLS will be required in Diego v2.0+.
-- `diego.rep.trusted_certs`: Removed in v2 in favor of `containers.trusted_ca_certificates`.
-- `diego.rep.bbs.require_ssl`: Removed in v2, TLS will be required for the BBS in Diego v2.0+.
-
-
-### <a name="bosh-job-properties-rep-windows"></a>`rep_windows`
-
-- `admin_api.require_tls`: Removed in v2. Mutual TLS will be required in v2.0+.
-- `diego.executor.ca_certs_for_downloads`: Removed in v2 in favor of `tls.ca_cert`.
-- `diego.executor.export_network_env_vars`: Removed in v2. Network environment variables will always be exported in Diego v2.0+.
-- `diego.rep.listen_addr`: Removed in v2 in favor of `diego.rep.listen_addr_admin` and `diego.rep.listen_addr_securable`.
-- `diego.rep.dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
-- `diego.rep.enable_legacy_api_endpoints`: Removed in v2 since the legacy API server will be removed in Diego v2.0.
-- `diego.rep.require_tls`: Removed in v2 since mutual TLS will be required in Diego v2.0+.
-- `diego.rep.trusted_certs`: Removed in v2 in favor of `containers.trusted_ca_certificates`.
-- `diego.rep.bbs.require_ssl`: Removed in v2, TLS will be required for the BBS in Diego v2.0+.
+| property                               | deprecated | removed | notes                                                                        |
+|----------------------------------------+------------+---------+------------------------------------------------------------------------------|
+| admin_api.require_tls                  | v1.35.0    | v2.1.0  | Mutual TLS is now required and cannot be disabled                            |
+| diego.executor.ca_certs_for_downloads  | v1.11.0    | v2.1.0  | Use tls.* instead                                                            |
+| diego.executor.export_network_env_vars | v1.35.0    | v2.1.0  | Always enabled in Diego V2                                                   |
+| diego.rep.bbs.ca_cert                  | v1.35.0    | v2.0.0  | Use tls.* instead                                                            |
+| diego.rep.bbs.client_cert              | v1.35.0    | v2.0.0  | Use tls.* instead                                                            |
+| diego.rep.bbs.client_key               | v1.35.0    | v2.0.0  | Use tls.* instead                                                            |
+| diego.rep.bbs.require_ssl              | v1.35.0    | v2.1.0  | Mutual TLS is now required and cannot be disabled                            |
+| diego.rep.ca_cert                      | v1.35.0    | v2.0.0  | Use tls.* instead                                                            |
+| diego.rep.dropsonde_port               | v1.35.0    | v2.1.0  | Loggregator API v1 is no longer support in Diego v2                          |
+| diego.rep.enable_legacy_api_endpoints  | v1.35.0    | v2.1.0  | Legacy API is removed in Diego V2                                            |
+| diego.rep.listen_addr                  | v1.35.0    | v2.1.0  | Use diego.rep.listen_addr_admin and diego.rep.listen_addr_securable. instead |
+| diego.rep.require_tls                  | v1.35.0    | v2.1.0  | Mutual TLS is now required and cannot be disabled                            |
+| diego.rep.server_cert                  | v1.35.0    | v2.0.0  | Use tls.* instead                                                            |
+| diego.rep.server_key                   | v1.35.0    | v2.0.0  | Use tls.* instead                                                            |
+| diego.rep.trusted_certs                | v1.30.0    | v2.1.0  | Use containers.trusted_ca_certificates instead                               |
+| use_v2_tls                             | v1.35.0    | v2.0.0  | Mutual TLS is now required and cannot be disabled                            |
 
 
-### <a name="bosh-job-properties-route-emitter"></a>`route_emitter`
-
-- `diego.route_emitter.bbs.require_ssl`: Removed in v2. TLS will be required for the BBS in Diego v2.0+.
-- `diego.route_emitter.dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
+### <a name="bosh-job-properties-route-emitter"></a>`route_emitter and route_emitter_windows`
 
 
-### <a name="bosh-job-properties-route-emitter-windows"></a>`route_emitter_windows`
-
-- `diego.route_emitter.bbs.require_ssl`: Removed in v2. TLS will be required for the BBS in Diego v2.0+.
-- `diego.route_emitter.dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
+| property                            | deprecated | removed | notes                                               |
+|-------------------------------------+------------+---------+-----------------------------------------------------|
+| diego.route_emitter.bbs.require_ssl | v1.35.0    | v2.1.0  | Mutual TLS is now required and cannot be disabled   |
+| diego.route_emitter.dropsonde_port  | v1.35.0    | v2.1.0  | Loggregator API v1 is no longer support in Diego v2 |
 
 
 ### <a name="bosh-job-properties-ssh-proxy"></a>`ssh_proxy`
 
-- `diego.ssh_proxy.bbs.require_ssl`: Removed in v2, TLS will be required for the BBS in Diego v2.0+.
-- `diego.ssh_proxy.dropsonde_port`: Removed in v2 as part of removing support for loggregator API v1.
-- `diego.ssh_proxy.uaa_token_url`: Removed in v2 in favor of `diego.ssh_proxy.uaa.url`.
+| property                        | deprecated | removed | notes                                               |
+|---------------------------------+------------+---------+-----------------------------------------------------|
+| diego.ssh_proxy.bbs.require_ssl | v1.35.0    | v2.1.0  | Mutual TLS is now required and cannot be disabled   |
+| diego.ssh_proxy.dropsonde_port  | v1.35.0    | v2.1.0  | Loggregator API v1 is no longer support in Diego v2 |
+| diego.ssh_proxy.uaa_token_url   | v1.32.1    | v2.1.0  | Use diego.ssh_proxy.uaa.url instead                 |
 
 
 ### <a name="bosh-job-properties-vizzini"></a>`vizzini`
 
-- `vizzini.bbs.require_ssl`: Removed in v2. TLS will be required for the BBS in Diego v2.0+.
+| property                | deprecated | removed | notes                                             |
+|-------------------------+------------+---------+---------------------------------------------------|
+| vizzini.bbs.require_ssl | v1.35.0    | v2.1.0  | Mutual TLS is now required and cannot be disabled |
 
 
 ## <a name="component-metrics"></a>Component metrics
@@ -104,11 +126,9 @@ This document lists deprecated properties of the job templates in this BOSH rele
 
 - `GardenContainerCreationDuration`: Deprecated in favor of `GardenContainerCreationFailedDuration` and `GardenContainerCreationSucceededDuration`.
 
-
 ### <a name="component-metrics-route-emitter"></a>`route_emitter`
 
 - `MessagesEmitted`: Deprecated in favor of `HTTPRouteNATSMessagesEmitted` and `InternalRouteNATSMessagesEmitted`.
-
 
 ## <a name="component-apis"></a>Component APIs
 
@@ -123,6 +143,7 @@ The [BBS API docs](https://github.com/cloudfoundry/bbs/tree/master/doc) and [rou
 - `/v1/desired_lrps/list` Method: `POST`
 - `/v1/desired_lrps/get_by_process_guid` Method: `POST`
 - `/v1/desired_lrp/desire.r1` Method: `POST`
+
 - `/v1/desired_lrp/desire` Method: `POST`
 - `/v1/tasks/list.r1` Method: `POST`
 - `/v1/tasks/list` Method: `POST`
