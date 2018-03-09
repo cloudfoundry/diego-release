@@ -177,7 +177,7 @@ properties:
     default: "/bin/sh"
   diego.executor.garden_healthcheck.process.args:
     description: "List of command line args to pass to the garden health check process"
-    default: "-c, ls > /tmp/test"
+    default: "-c, sleep 2"
   diego.executor.garden_healthcheck.process.user:
     description: "User to use while performing a container healthcheck"
     default: "vcap"
