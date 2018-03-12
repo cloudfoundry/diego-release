@@ -98,10 +98,6 @@ build_grootfs () {
     make
 
     mv grootfs ${GROOTFS_GOPATH}/bin/
-    mv drax /usr/local/bin
-    chown root:root /usr/local/bin/drax
-    chmod u+s /usr/local/bin/drax
-
     echo "grootfs installed."
 
     groupadd iamgroot -g 4294967294
@@ -249,6 +245,6 @@ if ! grep -qs '/sys' /proc/mounts; then
 fi
 
 # shellcheck source=/dev/null
-source "${GARDEN_GOPATH}/ci/scripts/device-control"
+source "${GARDEN_GOPATH}/ci/helpers/device-control"
 permit_device_control
 create_loop_devices 256
