@@ -176,6 +176,15 @@ properties:
     description: "Experimental: arbitrary command to run after setup action"
   diego.executor.post_setup_user:
     description: "Experimental: user to run post setup hook command"
+  diego.executor.volman.driver_paths:
+    description: "Experimental: OS style path string containing the directories volman will look in for voldriver specs (delimited by : or ; depending on the OS)"
+    default: "/var/vcap/data/voldrivers"
+  diego.executor.volman.csi_paths:
+    description: "Experimental: A list of path string containing the directories volman will look in for CSI plugins specs (delimited by : or ; depending on the OS)"
+    default: "/var/vcap/data/csiplugins"
+  diego.executor.volman.csi_mount_root_dir:
+    description: "Experimental: A OS style path string containing the directory under which volman will mount CSI volumes"
+    default: "/var/vcap/data/csimountroot"
   diego.executor.instance_identity_ca_cert:
     description: "PEM-encoded CA used to sign instance identity credentials. Enables instance identity if set along with instance_identity_key"
   diego.executor.instance_identity_key:
