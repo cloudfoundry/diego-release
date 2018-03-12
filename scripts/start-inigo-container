@@ -26,16 +26,21 @@ function ensure_exist() {
     fi
 }
 
+if [[ $(grep "GRUB_CMDLINE_LINUX" /etc/default/grub ) =~ (cgroup_enable=memory) && $(grep "GRUB_CMDLINE_LINUX" /etc/default/grub ) =~ (swapaccount=1) ]];
 
-ensure_exist $HOME/workspace/diego-release https://github.com/cloudfoundry/diego-release develop
-ensure_exist $HOME/workspace/diego-release-v0 https://github.com/cloudfoundry/diego-release v1.0.0
-ensure_exist $HOME/workspace/garden-runc-release https://github.com/cloudfoundry/garden-runc-release develop
-ensure_exist $HOME/workspace/routing-release https://github.com/cloudfoundry/routing-release develop
+then
+    ensure_exist $HOME/workspace/diego-release https://github.com/cloudfoundry/diego-release develop
+    ensure_exist $HOME/workspace/diego-release-v0 https://github.com/cloudfoundry/diego-release v1.0.0
+    ensure_exist $HOME/workspace/garden-runc-release https://github.com/cloudfoundry/garden-runc-release develop
+    ensure_exist $HOME/workspace/routing-release https://github.com/cloudfoundry/routing-release develop
 
-docker pull cloudfoundry/inigo-ci
-docker run --rm -e LOCAL_DEVELOPMENT=true -e DEFAULT_EVENTUALLY_TIMEOUT=60s --detach-keys "ctrl-z" --privileged \
-  -v ~/workspace/diego-release:/diego-release \
-  -v ~/workspace/diego-release-v0:/diego-release-v0 \
-  -v ~/workspace/routing-release:/routing-release \
-  -v ~/workspace/garden-runc-release:/garden-runc-release \
-  -it cloudfoundry/inigo-ci bash -l
+    docker pull cloudfoundry/inigo-ci
+    docker run --rm -e LOCAL_DEVELOPMENT=true -e DEFAULT_EVENTUALLY_TIMEOUT=60s --detach-keys "ctrl-z" --privileged \
+      -v ~/workspace/diego-release:/diego-release \
+      -v ~/workspace/diego-release-v0:/diego-release-v0 \
+      -v ~/workspace/routing-release:/routing-release \
+      -v ~/workspace/garden-runc-release:/garden-runc-release \
+      -it cloudfoundry/inigo-ci bash -l
+fi
+
+
