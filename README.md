@@ -5,7 +5,7 @@ This repository is a [BOSH](https://github.com/cloudfoundry/bosh) release for
 deploying Diego and associated tasks for testing a Diego deployment.
 Diego is the new container runtime system for Cloud Foundry, replacing the DEAs and Health Manager.
 
-This release depends on external services such as a relational database (either [MySQL](https://github.com/cloudfoundry/cf-mysql-release) or [Postgres](https://github.com/cloudfoundry/postgres-release)) for data storage and [Consul](https://github.com/hashicorp/consul) or [BOSH DNS](https://github.com/cloudfoundry/bosh-dns-release) for inter-component service discovery. It also integrates with [NATS](https://github.com/nats-io/gnatsd) to register routes to applications and [Loggregator](https://github.com/cloudfoundry/loggregator) to emit application logs and Diego component metrics. In practice, these dependencies typically come from [cf-deployment](https://github.com/cloudfoundry/cf-deployment) or [cf-release](https://github.com/cloudfoundry/cf-release).
+This release depends on external services such as a relational database (either [MySQL](https://github.com/cloudfoundry/cf-mysql-release) or [Postgres](https://github.com/cloudfoundry/postgres-release)) for data storage and [Consul](https://github.com/hashicorp/consul) or [BOSH DNS](https://github.com/cloudfoundry/bosh-dns-release) for inter-component service discovery. It also integrates with [NATS](https://github.com/nats-io/gnatsd) to register routes to applications and [Loggregator](https://github.com/cloudfoundry/loggregator) to emit application logs and Diego component metrics. In practice, these dependencies typically come from [cf-deployment](https://github.com/cloudfoundry/cf-deployment).
 
 The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) present an overview of Diego, and links to the various Diego components.
 
@@ -30,17 +30,9 @@ The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) pre
 
 Diego is typically deployed as part of a Cloud Foundry Application Runtime deployment to serve as its container runtime. The [cf-deployment](https://github.com/cloudfoundry/cf-deployment) repository contains the latest recommended way to use BOSH to deploy a Cloud Foundry cluster to infrastructure platforms such as AWS, GCP, and Azure.
 
-- For those deployment operators still using the manifests generated from [cf-release](https://github.com/cloudfoundry/cf-release), see "[Deploying Diego Alongside an Existing CF Deployment](docs/deploy-alongside-existing-cf.md)" for general instructions and guidelines to deploy Diego alongside a separate CF deployment. Note that these deployment strategies are now deprecated and will cease development in early 2018 in favor of cf-deployment.
-- [Diego Manifest Generation](docs/manifest-generation.md) describes the manifest-generation scripts in this repository.
 - [Release Compatibility](docs/release-compatibility.md) illustrates how to select versions of CF and other BOSH releases to deploy alongside Diego.
-- [Managing the Migration](https://github.com/cloudfoundry/diego-design-notes/blob/master/migrating-to-diego.md#managing-the-migration) describes how operators can manage a transition from the DEAs to Diego.
 
 ### <a name="deployment-examples"></a>Deployment Examples
-
-#### Deploying to AWS
-
-- [Deploying CF and Diego to AWS](examples/aws) provides detailed instructions to deploy BOSH, CF, and Diego to a new CloudFormation stack. Alternately, follow the [instructions in cf-release](https://github.com/cloudfoundry/cf-release/tree/master/example_manifests) to deploy Diego alongside a minimal CF deployment.
-
 
 #### Deploying to BOSH-Lite
 
@@ -57,10 +49,8 @@ Diego is typically deployed as part of a Cloud Foundry Application Runtime deplo
 
 ### <a name="security-configuration"></a>Security Configuration
 
-- [TLS Configuration](docs/tls-configuration.md) describes how to generate TLS certificates for secure communication with Consul, the Diego BBS, and the Diego cell reps.
-- [Upgrading the cell rep API to mutual TLS](docs/upgrading-secure-cell-rep-api.md) explains how to transition an existing Diego deployment to use mutual TLS for communication to the cell rep API without incurring downtime.
-- [Upgrading the auctioneer API to mutual TLS](docs/upgrading-secure-auctioneer-api.md) explains how to transition an existing Diego deployment to use mutual TLS for communication from the BBS to the auctioneer API without incurring downtime.
-- [Instance Identity](docs/instance-identity.md) explains how to enable instance identity.
+- [TLS Configuration](docs/tls-configuration.md) describes how to generate TLS certificates for secure communication amongst the Diego and greater CF components.
+- [Instance Identity](docs/instance-identity.md) explains how to enable the Diego cell reps to provide per-instance identity credentials.
 
 
 ### <a name="data-store-configuration"></a>Data Store Configuration

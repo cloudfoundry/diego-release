@@ -1,13 +1,17 @@
 ## Release Compatibility
 
-Diego releases are tested against Cloud Foundry, Garden. Compatible versions of
-Garden are listed with Diego on the
-[Github releases page](https://github.com/cloudfoundry/diego-release/releases).
+Diego releases are tested against Garden-Runc, Garden-Windows, and the other
+releases that [cf-deployment](https://github.com/cloudfoundry/cf-deployment)
+provides.
+Each Diego [GitHub release](https://github.com/cloudfoundry/diego-release/releases)
+lists the versions of these resources against which the Diego team
+CI pipeline verified that Diego release.
+
 
 ### Checking out a release of Diego
 
-The Diego git repository is tagged with every release. To move the git repository
-to match a release, do the following:
+The Diego Git repository is tagged with every release. To update the Git repository
+to match a particular release, do the following:
 
 ```bash
 cd diego-release/
