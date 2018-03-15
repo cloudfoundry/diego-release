@@ -223,9 +223,6 @@ On OS X, follow these steps to install and configure MySQL and Postgres:
         git checkout develop
         ./scripts/update
 
-1. Install `spiff` according to its [README](https://github.com/cloudfoundry-incubator/spiff).
-   `spiff` is a tool for generating BOSH manifests that is required in some of the scripts used below.
-
 1. Generate the CF manifest:
 
         cd ~/workspace/cf-release
