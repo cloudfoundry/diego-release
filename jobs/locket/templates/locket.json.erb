@@ -58,11 +58,9 @@ if p("loggregator.use_v2_api") == true
   config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"
   config[:loggregator][:loggregator_cert_path] = "#{conf_dir}/certs/loggregator/client.crt"
   config[:loggregator][:loggregator_key_path] = "#{conf_dir}/certs/loggregator/client.key"
-  config[:loggregator][:loggregator_job_deployment] = spec.deployment
-  config[:loggregator][:loggregator_job_name] = spec.name
-  config[:loggregator][:loggregator_job_index] = spec.id
-  config[:loggregator][:loggregator_job_ip] = spec.address
   config[:loggregator][:loggregator_job_origin] = "locket"
+  config[:loggregator][:loggregator_source_id] = "locket"
+  config[:loggregator][:loggregator_instance_id] = spec.index
 end
 
 config.to_json
