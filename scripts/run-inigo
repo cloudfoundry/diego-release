@@ -24,7 +24,7 @@ else
   target="-t ci"
 fi
 
-fly ${target} execute -p -x \
+fly ${target} execute -p \
     -c $DIEGO_RELEASE_DIR/scripts/ci/run_inigo_grootfs.build.yml \
     -i diego-release=$PWD \
     -i garden-runc-release=$workspace/garden-runc-release \
