@@ -8,8 +8,14 @@
     enable_consul_service_registration: p("enable_consul_service_registration"),
     static_directory: p("diego.file_server.static_directory"),
     log_level: p("diego.file_server.log_level"),
-    human_readable: p("logging.format.timestamp") == "rfc3339",
   }
+
+  if_p("logging.format.timestamp") do |format|
+    if format != "unix-epoch" and format != "rfc3339"
+      raise "logging.format.timestamp should be one of: 'unix-epoch' or 'rfc3339'"
+    end
+    config[:time_format] = format
+  end
 
   config[:loggregator]={}
   config[:loggregator][:loggregator_use_v2_api] = p("loggregator.use_v2_api")
