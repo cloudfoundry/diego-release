@@ -1,0 +1,28 @@
+---
+- type: replace
+  path: /instance_groups/name=database/vm_type
+  value: n1-standard-16
+- type: replace
+  path: /instance_groups/name=database/persistent_disk_type
+  value: 1TB
+- type: replace
+  path: /instance_groups/name=database/instances
+  value: 3
+- type: replace
+  path: /instance_groups/name=database/azs
+  value:
+  - z1
+  - z2
+  - z3
+- type: replace
+  path: /instance_groups/name=database/jobs/name=mysql/properties/cf_mysql/mysql/innodb_buffer_pool_size?
+  value: 12_000_000_000
+- type: replace
+  path: /instance_groups/name=database/jobs/name=mysql/properties/cf_mysql/mysql/innodb_buffer_pool_instances?
+  value: 16
+- type: replace
+  path: /instance_groups/name=database/jobs/name=mysql/properties/cf_mysql/mysql/innodb_flush_log_at_trx_commit?
+  value: 2
+- type: replace
+  path: /instance_groups/name=database/jobs/name=mysql/properties/cf_mysql/mysql/binlog_enabled?
+  value: false

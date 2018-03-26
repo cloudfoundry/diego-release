@@ -1,0 +1,7 @@
+---
+- type: replace
+  path: /instance_groups/name=database/vm_type
+  value: n1-standard-16
+- type: replace
+  path: /instance_groups/name=database/persistent_disk_type
+  value: 1TB
