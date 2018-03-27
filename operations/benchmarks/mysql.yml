@@ -1,10 +1,10 @@
 ---
 - type: replace
   path: /instance_groups/name=database/vm_type
-  value: n1-standard-16
+  value: n1-standard-16         # GCP 16 core 60GB vm
 - type: replace
   path: /instance_groups/name=database/persistent_disk_type
-  value: 1TB
+  value: 1TB                    # large disk mainly to get more IOPs
 - type: replace
   path: /instance_groups/name=database/instances
   value: 3
@@ -16,13 +16,13 @@
   - z3
 - type: replace
   path: /instance_groups/name=database/jobs/name=mysql/properties/cf_mysql/mysql/innodb_buffer_pool_size?
-  value: 12_000_000_000
+  value: 12_000_000_000         # increase innodb_buffer to avoid unecessary disk access and make use of the available memory
 - type: replace
   path: /instance_groups/name=database/jobs/name=mysql/properties/cf_mysql/mysql/innodb_buffer_pool_instances?
-  value: 16
+  value: 16                     # 1 instance per cpu core
 - type: replace
   path: /instance_groups/name=database/jobs/name=mysql/properties/cf_mysql/mysql/innodb_flush_log_at_trx_commit?
-  value: 2
+  value: 2                      # flush to disk every 1 second
 - type: replace
   path: /instance_groups/name=database/jobs/name=mysql/properties/cf_mysql/mysql/binlog_enabled?
-  value: false
+  value: false                  # disable binlog to boost performance
