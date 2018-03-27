@@ -146,6 +146,10 @@ properties:
     description: Maximum number of files (including sockets) the BBS process may have open.
     default: 100000
 
+  logging.format.timestamp:
+    description: "EXPERIMENTAL: Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."
+    default: "unix-epoch"
+
   locks.locket.enabled:
     description: When set, the BBS attempts to claim a lock from the Locket API.
     default: true

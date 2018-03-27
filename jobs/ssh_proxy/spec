@@ -96,6 +96,11 @@ properties:
   enable_consul_service_registration:
     description: "Enable the ssh-proxy to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."
     default: true
+
+  logging.format.timestamp:
+    description: "EXPERIMENTAL: Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."
+    default: "unix-epoch"
+
   loggregator.use_v2_api:
     description: "True to use local metron agent gRPC v2 API. False to use UDP v1 API."
     default: false

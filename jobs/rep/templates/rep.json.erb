@@ -153,15 +153,22 @@
   if_p("diego.executor.instance_identity_ca_cert",
        "diego.executor.instance_identity_key",
        "diego.executor.instance_identity_validity_period_in_hours") do |cert, key, validity_period|
-     if !(cert.empty? || key.empty? || validity_period < 1)
-       config[:instance_identity_ca_path] = "#{conf_dir}/certs/rep/instance_identity.crt"
-       config[:instance_identity_private_key_path] = "#{conf_dir}/certs/rep/instance_identity.key"
-       config[:instance_identity_cred_dir] = instance_identity_dir
-       config[:instance_identity_validity_period] = "#{validity_period}h"
-     elsif validity_period < 1
-       raise '"diego.executor.instance_identity_validity_period_in_hours" should be a positive integer'
-     end
-   end
+    if !(cert.empty? || key.empty? || validity_period < 1)
+      config[:instance_identity_ca_path] = "#{conf_dir}/certs/rep/instance_identity.crt"
+      config[:instance_identity_private_key_path] = "#{conf_dir}/certs/rep/instance_identity.key"
+      config[:instance_identity_cred_dir] = instance_identity_dir
+      config[:instance_identity_validity_period] = "#{validity_period}h"
+    elsif validity_period < 1
+      raise '"diego.executor.instance_identity_validity_period_in_hours" should be a positive integer'
+    end
+  end
+
+  if_p("logging.format.timestamp") do |format|
+    if format != "unix-epoch" and format != "rfc3339"
+      raise "logging.format.timestamp should be one of: 'unix-epoch' or 'rfc3339'"
+    end
+    config[:time_format] = format
+  end
 
   config[:loggregator]={}
   config[:loggregator][:loggregator_use_v2_api] = p("loggregator.use_v2_api")

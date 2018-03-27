@@ -20,6 +20,13 @@
   config[:bbs_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
   config[:bbs_address] = "https://#{p("diego.auctioneer.bbs.api_location")}"
 
+  if_p("logging.format.timestamp") do |format|
+    if format != "unix-epoch" and format != "rfc3339"
+      raise "logging.format.timestamp should be one of: 'unix-epoch' or 'rfc3339'"
+    end
+    config[:time_format] = format
+  end
+
   if_p("diego.auctioneer.bbs.client_session_cache_size") do |value|
     config[:bbs_client_session_cache_size] = value
   end

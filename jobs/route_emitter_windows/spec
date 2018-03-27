@@ -65,6 +65,10 @@ properties:
     description: "The name of the Diego job referenced by this spec (DO NOT override)"
     default: "route_emitter_windows"
 
+  logging.format.timestamp:
+    description: "EXPERIMENTAL: Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."
+    default: "unix-epoch"
+
   syslog_daemon_config.address:
     description: "Syslog host"
     default: ""

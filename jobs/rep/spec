@@ -263,3 +263,6 @@ properties:
       ----- BEGIN CERTIFICATE -----
       CONTENTS OF CERTIFICATE #4
       ----- END CERTIFICATE -----
+  logging.format.timestamp:
+    description: "EXPERIMENTAL: Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."
+    default: "unix-epoch"
