@@ -57,7 +57,7 @@ Diego is typically deployed as part of a Cloud Foundry Application Runtime deplo
 
 - [Supported Data Stores for Diego](docs/data-stores.md) describes how to configure Diego to use SQL for its data store.
 - [Data Store Encryption](docs/data-store-encryption.md) explains how to manage the ring of encryption keys that Diego uses to secure data at rest.
-- [Performance Tuning](docs/performance-tuning.md) describes potential performance improvement recommendations.
+- [Component Scaling & Performance Tuning](docs/scaling-and-performance-tuning.md) describes potential performance improvement recommendations.
 
 
 ### <a name="component-coordination"></a>Component Coordination
