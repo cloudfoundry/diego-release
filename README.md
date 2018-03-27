@@ -69,7 +69,7 @@ Diego is typically deployed as part of a Cloud Foundry Application Runtime deplo
 
 - [Diego Metrics](docs/metrics.md) lists the various metrics that Diego emits through the Loggregator system.
 - [`cfdot` Setup](docs/cfdot-setup.md) shows how to set up the `cfdot` CF Diego Operator Tool CLI for use in inspecting and interacting with a Diego deployment.
-
+- [Logging format](docs/logging-format.md) shows how to configure the logging format for Diego components.
 
 ## <a name="cf-app-developer-resources"></a>CF App Developer Resources
 
