@@ -75,19 +75,20 @@ function wait_pid_death() {
 # kill_and_wait
 #
 # @param pidfile
-# @param timeout [default 25s]
+# @param timeout [default 20s]
 #
-# For a pid found in :pidfile:, send a `kill`, then wait for :timeout: seconds to
-# see if it dies on its own. If not, send it a `kill -9`. If the process does die,
-# exit 0 and remove the :pidfile:. If after all of this, the process does not actually
-# die, exit 1.
+# For a pid found in :pidfile:, send a `term`, then wait for :timeout: seconds to
+# see if it dies on its own. If not, send it a `kill -SIGQUIT`. If the process does
+# not die after 5 seconds send a SIGKILL. If the process is not running exit 0 and 
+# remove the :pidfile:. If after all of this, the process does not actually die,
+# exit 1.
 #
 # Note:
 # Monit default timeout for start/stop is 30s
 # Append 'with timeout {n} seconds' to monit start/stop program configs
 #
 function kill_and_wait() {
-  declare pidfile="$1" timeout="${2:-25}" sigkill_on_timeout="${3:-1}"
+  declare pidfile="$1" timeout="${2:-20}" sigkill_on_timeout="${3:-1}"
 
   if [ ! -f "${pidfile}" ]; then
     echo "Pidfile ${pidfile} doesn't exist"
@@ -113,8 +114,15 @@ function kill_and_wait() {
 
   if ! wait_pid_death "${pid}" "${timeout}"; then
     if [ "${sigkill_on_timeout}" = "1" ]; then
-      echo "Kill timed out, using kill -9 on ${pid}"
-      kill -9 "${pid}"
+      echo "Term timed out, using kill -SIGQUIT on ${pid}"
+      kill -SIGQUIT "${pid}"
+    fi
+  fi
+
+  if ! wait_pid_death "${pid}" "5"; then
+    if [ "${sigkill_on_timeout}" = "1" ]; then
+      echo "Quit timed out, using kill -SIGKILL on ${pid}"
+      kill -SIGKILL "${pid}"
       sleep 0.5
     fi
   fi
