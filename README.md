@@ -15,6 +15,7 @@ The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) pre
     1. [Deploying Diego-Backed Cloud Foundry](#deploying-diego-backed-cloud-foundry)
     1. [Deployment Examples](#deployment-examples)
     1. [Deployment Requirements and Constraints](#deployment-requirements-constraints)
+    1. [Configuration at Scale](#configuration-at-scale)
     1. [Security Configuration](#security-configuration)
     1. [Data Store Configuration](#data-store-configuration)
     1. [Component Coordination](#component-coordination)
@@ -46,6 +47,9 @@ Diego is typically deployed as part of a Cloud Foundry Application Runtime deplo
 - [Deployment Constraints](docs/deployment-constraints.md) describes the dependencies that must be deployed before deploying the Diego cluster and restrictions on Diego instance update order and rates to ensure correct cluster operation.
 - [Deprecations](docs/deprecations.md) lists deprecated BOSH job properties, component metrics, and endpoints and fields for Diego component APIs.
 
+### <a name="configuration-at-scale"></a> Configuration at Scale
+
+- [Component Scaling & Performance Tuning](docs/scaling-and-performance-tuning.md) describes recommendations and considerations on how to scale Diego components and their dependencies effectively.
 
 ### <a name="security-configuration"></a>Security Configuration
 
@@ -57,7 +61,6 @@ Diego is typically deployed as part of a Cloud Foundry Application Runtime deplo
 
 - [Supported Data Stores for Diego](docs/data-stores.md) describes how to configure Diego to use SQL for its data store.
 - [Data Store Encryption](docs/data-store-encryption.md) explains how to manage the ring of encryption keys that Diego uses to secure data at rest.
-- [Component Scaling & Performance Tuning](docs/scaling-and-performance-tuning.md) describes potential performance improvement recommendations.
 
 
 ### <a name="component-coordination"></a>Component Coordination
