@@ -1,0 +1,27 @@
+<%=
+  conf_dir = "/var/vcap/jobs/#{p("diego.vcontainer.job_name")}/config"
+  config = {
+    cell_id: spec.id,
+    container_service_provider: p("diego.vcontainer.container_service_provider"),
+  }
+
+  if_p("diego.vcontainer.api_location") do |value|
+    config[:vcontainer_address] = value
+  end
+
+  if config[:container_service_provider] == "aci"
+    config[:azure_container_provider_cfg] = p("diego.vcontainer.azure_container_provider_cfg")
+  end
+
+  if_p("diego.vcontainer.smb_proxy") do |value|
+    config[:smb_proxy] = value
+  end
+
+  config[:listen_address] = p("diego.vcontainer.api_location")
+  config[:ca_file]     = "#{conf_dir}/certs/ca.crt"
+  config[:cert_file] = "#{conf_dir}/certs/server.crt"
+  config[:key_file]  = "#{conf_dir}/certs/server.key"
+  config[:enable_consul_service_registration] = p("enable_consul_service_registration")
+  config[:consul_cluster] = "http://127.0.0.1:8500"
+  config.to_json
+%>

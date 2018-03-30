@@ -1,0 +1,54 @@
+set -e
+
+temp_path=${PWD}/temp
+mkdir $temp_path
+
+tar xf autoconf-2.69.tar.gz
+
+pushd autoconf-2.69
+  ./configure --prefix=${temp_path}
+  make
+  make install
+  export PATH=${PATH}:${temp_path}/bin
+popd
+
+tar xf automake-1.15.tar.gz
+
+pushd automake-1.15
+  ./configure --prefix=${temp_path}
+  make
+  make install
+popd
+
+tar xf libtool-2.4.6.tar.gz
+
+pushd libtool-2.4.6
+  ./configure --prefix=${temp_path}
+  make
+  make install
+popd
+
+tar xf talloc-2.1.9.tar.gz
+
+pushd talloc-2.1.9
+  ./configure --prefix=${temp_path}
+  make
+  make install
+popd
+
+tar xf pkg-config-0.29.2.tar.gz
+
+pushd pkg-config-0.29.2
+  ./configure --prefix=${temp_path} --with-internal-glib
+  make
+  make install
+popd
+
+tar jxf cifs-utils-6.7.tar.bz2
+
+pushd cifs-utils-6.7
+  autoreconf -i
+  ./configure --prefix=${temp_path}
+  make CPPFLAGS="-I${temp_path}/include"
+  cp mount.cifs ${BOSH_INSTALL_TARGET}
+popd

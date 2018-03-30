@@ -1,0 +1,6 @@
+#!/bin/bash -e
+
+conf_dir=/var/vcap/jobs/vcontainer/config
+
+exec /var/vcap/packages/vcontainer/bin/vcontainer \
+      -config=$conf_dir/vcontainer.json

@@ -1,0 +1,10 @@
+---
+name: cifs-utils
+
+templates:
+  bin/pre-start.erb: bin/pre-start
+
+packages:
+- cifs-utils
+
+properties: {}

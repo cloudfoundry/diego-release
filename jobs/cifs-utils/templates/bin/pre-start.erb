@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e -x
+
+echo "Installing mount.cifs"
+pushd /var/vcap/packages/cifs-utils/
+  cp mount.cifs /sbin/
+popd
+
+echo "Installed mount.cifs"
+exit 0
