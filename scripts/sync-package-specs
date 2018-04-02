@@ -56,10 +56,12 @@ sync_package docker_app_lifecycle    -app  code.cloudfoundry.org/dockerapplifecy
 
 sync_package buildpack_app_lifecycle -app  code.cloudfoundry.org/buildpackapplifecycle/builder \
   -app code.cloudfoundry.org/buildpackapplifecycle/launcher \
+  -app code.cloudfoundry.org/buildpackapplifecycle/getenv \
   -app code.cloudfoundry.org/buildpackapplifecycle/shell/shell &
 
 sync_package windows_app_lifecycle -app  code.cloudfoundry.org/buildpackapplifecycle/builder \
-  -app code.cloudfoundry.org/buildpackapplifecycle/launcher &
+  -app code.cloudfoundry.org/buildpackapplifecycle/launcher \
+  -app code.cloudfoundry.org/buildpackapplifecycle/getenv &
 
 sync_package vizzini \
   -test code.cloudfoundry.org/vizzini/... \
