@@ -13,6 +13,7 @@ CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpacka
 
 GOOS=windows CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/builder
 GOOS=windows CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/launcher
+GOOS=windows CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/getenv
 
 for binary in builder launcher; do
     ldd $binary && echo "$binary must be statically linked" && false
@@ -26,7 +27,7 @@ cp /var/vcap/packages/healthcheck/healthcheck.exe .
 
 tar -czf ${BOSH_INSTALL_TARGET}/buildpack_app_lifecycle.tgz \
   builder launcher shell healthcheck diego-sshd  \
-  builder.exe launcher.exe healthcheck.exe diego-sshd.exe \
+  builder.exe launcher.exe getenv.exe healthcheck.exe diego-sshd.exe \
   winpty-agent.exe winpty.dll
 
 # clean up source artifacts
