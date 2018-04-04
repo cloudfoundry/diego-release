@@ -28,6 +28,8 @@ routable_domain_suffix=<%= properties.vizzini.routable_domain_suffix %>
 ssh_proxy_address=<%= properties.vizzini.ssh.proxy_address  %>
 callback_address=<%= spec.ip %>
 
+max_task_retries=<%= properties.max_task_retries %>
+
 enable_declarative_healthcheck=<%= properties.enable_declarative_healthcheck %>
 enable_container_proxy_tests=<%= properties.enable_container_proxy_tests %>
 <% if_p("vizzini.ssh.proxy_secret") do |proxy_secret| %>
@@ -60,6 +62,7 @@ ginkgo \
   <% Array(p("vizzini.rep.placement_tags")).each do |placement_tag| %> \
   --rep-placement-tag=<%= placement_tag %> \
   <% end %>\
+  --max-task-retries=${max_task_retries} \
   ${ssh_proxy_secret_flag} \
   --routable-domain-suffix=${routable_domain_suffix} \
   2> >(tee -a $log_dir/vizzini.stderr.log) \

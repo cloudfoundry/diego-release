@@ -44,6 +44,10 @@ properties:
     description: "EXPERIMENTAL: When set, enables the declarative check tests in vizzini"
     default: false
 
+  max_task_retries:
+    description: "EXPERIMENTAL: When set, allows for rejected tasks to be retried"
+    default: 0
+
   enable_container_proxy_tests:
     description: "EXPERIMENTAL: When set, enables the container proxy tests in vizzini"
     default: false
