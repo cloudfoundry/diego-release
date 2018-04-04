@@ -70,6 +70,7 @@ properties:
     default: "https://uaa.service.cf.internal"
   diego.ssh_proxy.uaa.port:
     description: The port to contact UAA on
+    default: 8443
   diego.ssh_proxy.uaa.ca_cert:
     description: The CA certificate of the UAA
 
