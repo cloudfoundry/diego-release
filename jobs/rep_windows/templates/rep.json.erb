@@ -182,6 +182,8 @@
     config[:loggregator][:loggregator_job_index] = spec.id
     config[:loggregator][:loggregator_job_ip] = spec.address
     config[:loggregator][:loggregator_job_origin] = "rep"
+    config[:loggregator][:loggregator_source_id] = "rep"
+    config[:loggregator][:loggregator_instance_id] = spec.id
   end
 
   config.to_json
