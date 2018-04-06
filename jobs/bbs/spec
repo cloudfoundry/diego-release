@@ -32,8 +32,8 @@ properties:
     description: "Experimental: use the BOSH Process Manager to manage the BBS process."
     default: false
 
-  tasks.max_placement_retries:
-    description: "Experimental: The number of times task placement should be retried after task placement failure."
+  tasks.max_retries:
+    description: "Experimental: The number of times task placement should be retried after pre-execution task failure."
     default: 0
 
   diego.bbs.auctioneer.api_location:
