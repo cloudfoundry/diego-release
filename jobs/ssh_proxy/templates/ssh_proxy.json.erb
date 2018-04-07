@@ -74,11 +74,9 @@
     config[:loggregator][:loggregator_ca_path] = "/var/vcap/jobs/ssh_proxy/config/certs/loggregator/ca.crt"
     config[:loggregator][:loggregator_cert_path] = "/var/vcap/jobs/ssh_proxy/config/certs/loggregator/client.crt"
     config[:loggregator][:loggregator_key_path] = "/var/vcap/jobs/ssh_proxy/config/certs/loggregator/client.key"
-    config[:loggregator][:loggregator_job_deployment] = spec.deployment
-    config[:loggregator][:loggregator_job_name] = spec.name
-    config[:loggregator][:loggregator_job_index] = spec.id
-    config[:loggregator][:loggregator_job_ip] = spec.address
     config[:loggregator][:loggregator_job_origin] = "ssh_proxy"
+    config[:loggregator][:loggregator_source_id] = "ssh_proxy"
+    config[:loggregator][:loggregator_instance_id] = spec.index
   end
 
   config.to_json
