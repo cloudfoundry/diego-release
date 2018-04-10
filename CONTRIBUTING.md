@@ -197,6 +197,66 @@ On MacOS, follow these steps to install and configure MySQL and Postgres:
    This command will run all regular unit tests, as well as BBS and component
    integration tests where a backing store is required in MySQL-backed and Postgres-backed modes.
 
+#### Docker
+
+If you would prefer to run the databases using docker follow these steps:
+
+1. Write out the MySQL config:
+
+        echo -e "[mysqld]\nsql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES" > my.cnf
+
+1. Run MySQL container. Note: Your `my.cnf` should be in the current directory:
+
+        docker run \
+            --rm \
+            --detach \
+            --name mysql \
+            -p 3306:3306 \
+            -e MYSQL_ROOT_PASSWORD=diego \
+            -v my.cnf:/etc/mysql/conf.d/my.cnf \
+            mysql
+
+1. Run the following SQL commands to create a diego user with the correct permissions:
+
+        docker exec -it mysql /bin/bash
+        mysql -uroot -pdiego -hlocalhost
+        CREATE USER 'diego'@'%' IDENTIFIED BY 'diego_password';
+        GRANT ALL PRIVILEGES ON `diego\_%`.* TO 'diego'@'%';
+        GRANT ALL PRIVILEGES ON `routingapi\_%`.* TO 'diego'@'%';
+
+1. Create a self-signed certificate as described in the [PostgreSQL documentation](https://www.postgresql.org/docs/9.4/static/ssl-tcp.html#SSL-CERTIFICATE-CREATION).
+   Save the certificate and key to a local directory of your choosing.
+
+1. Set the owner to the postgres user:
+
+        sudo chown 999:999 server.key server.crt
+
+1. Run Postgres container. Note: Your `server.crt` and `server.key` should be in the current directory:
+
+        docker run \
+            --rm \
+            --detach \
+            --name pg \
+            -p 5432:5432 \
+            -e POSTGRES_PASSWORD=diego_pw \
+            -e POSTGRES_DB=diego \
+            -e POSTGRES_USER=diego \
+            -v $PWD/server.crt:/var/lib/postgresql/server.crt \
+            -v $PWD/server.key:/var/lib/postgresql/server.key \
+            postgres \
+                -c ssl=on \
+                -c ssl_cert_file=/var/lib/postgresql/server.crt \
+                -c ssl_key_file=/var/lib/postgresql/server.key
+
+1. You should now be able to run the SQL unit tests. To run all the SQL-backed
+   tests, run the following command from
+   the root of diego-release:
+
+        ./scripts/run-unit-tests
+
+   This command will run all regular unit tests, as well as BBS and component
+   integration tests where a backing store is required in MySQL-backed and Postgres-backed modes.
+
 ## <a name="deploy-bosh-lite"></a> Deploying Diego to BOSH-Lite
 
 1. Install and start [BOSH-Lite](https://github.com/cloudfoundry/bosh-lite),
