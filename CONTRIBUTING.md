@@ -122,7 +122,9 @@ Metrics added to any of the Diego components need to follow the naming and docum
 
 As of Diego 1.0, SQL unit tests are the default unit tests for Diego. To run the SQL unit tests locally requires running MySQL and Postgres with the correct configuration.
 
-On OS X, follow these steps to install and configure MySQL and Postgres:
+#### MacOS
+
+On MacOS, follow these steps to install and configure MySQL and Postgres:
 
 1. Install MySQL:
 
