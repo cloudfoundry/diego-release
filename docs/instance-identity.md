@@ -8,7 +8,7 @@ The instance identity system in Diego provides each application instance with a 
 
 - The certificate's `Common Name` property is set to the instance guid.
 - The certificate contains an IP SAN set to the container IP address for the given app instance.
-- For Cloud Foundry apps, the certificate's `Organizational Unit` property is set to the string `app:app-guid`, where `app-guid` is the application guid assigned by Cloud Controller.
+- For Cloud Foundry apps, the `Organizational Unit` in the certificate’s Subject Distinguished Name contains the values `organization:org-guid`, `space:space-guid`, `app:app-guid`. In that order `org-guid`, `space-guid`, and `app-guid` respectively are set to the guids for the organization, space, and application as assigned by Cloud Controller.
 
 By default, the certificate is valid for the 24 hours after the container is created, but the Diego operator may control this validity period with the `diego.executor.instance_identity_validity_period_in_hours` BOSH property. The smallest allowed validity duration is 1 hour.
 
