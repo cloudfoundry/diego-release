@@ -85,11 +85,3 @@ Operators can use the following [cf-deployment](https://github.com/cloudfoundry/
 - Postgres: [postgres.yml](../operations/benchmarks/postgres.yml)
 
 These operations files are the ones used in the Diego team's 250K-instance benchmark tests, and operators may freely change the sizing and scaling parameters in them to match the resource needs of their own CF clusters.
-
-## <a name="compensate-envoy-memory-overhead"></a> Compensating for Envoy's memory overhead
-
-Integrating Envoy in CF doesn't come for free. Envoy has a small memory overhead that some operators might be interested in compensating. This can be achieved by setting `containers.proxy.additional_memory_allocation_mb` bosh property on the `diego-cell` jobs. This property will instruct the `Rep` to adjust the memory quota of all containers by the given amount. For example, if `containers.proxy.additional_memory_allocation_mb` is set to `10` and a container is scheduled on the cell with `256MB` memory limit, the container effective memory limit will be `361MB`. **Note** that the `Rep` will not overcommit its memory as a result of setting the bosh property
-
-### Choosing the right value for the additional memory
-
-It is tricky to choose a value for `containers.proxy.additional_memory_allocation_mb` since Envoy's memory footprint increases linearly with the number of concurrent connections. As of version `0e1d66377d9bf8b8304b65df56a4c88fc01e87e8` of Envoy our measurement shows an increase of `30KB` per connection. The initial memory footprint of Envoy without any connections is between `5MB` and `10MB`. Given that the maximum number of concurrent connections to any app running on a given foundation can be found and is given by `N`, the bosh property should be set to `N*30K+10M`. In the previous formula We used a safety factor of `2`. The safety factor can be omitted, decreased or increased as desired.
