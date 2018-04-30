@@ -8,8 +8,9 @@ templates:
   locket_ca.crt.erb: config/certs/ca.crt
   locket_server.crt.erb: config/certs/server.crt
   locket_server.key.erb: config/certs/server.key
+  bpm-pre-start.erb: bin/bpm-pre-start
   bpm.yml.erb: config/bpm.yml
-  pre-start.erb: bin/pre-start
+  set-locket-kernel-params.erb: bin/set-locket-kernel-params
   sql_ca.crt.erb: config/certs/sql/ca.crt
   loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
   loggregator_client.crt.erb: config/certs/loggregator/client.crt

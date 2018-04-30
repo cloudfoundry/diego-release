@@ -5,13 +5,14 @@ templates:
   bbs_ctl.erb: bin/bbs_ctl
   bbs_as_vcap.erb: bin/bbs_as_vcap
   bbs.json.erb: config/bbs.json
+  bpm-pre-start.erb: bin/bpm-pre-start
   bpm.yml.erb: config/bpm.yml
+  set-bbs-kernel-params.erb: bin/set-bbs-kernel-params
   drain.erb: bin/drain
   bbs_ca.crt.erb: config/certs/ca.crt
   bbs_server.crt.erb: config/certs/server.crt
   bbs_server.key.erb: config/certs/server.key
   sql_ca.crt.erb: config/certs/sql/ca.crt
-  pre-start.erb: bin/pre-start
   post-start.erb: bin/post-start
   rep_ca.crt.erb: config/certs/rep/ca.crt
   rep_client.crt.erb: config/certs/rep/client.crt

@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
-<% if p("bpm.enabled") %>
-/var/vcap/jobs/rep/bin/mount_instance_identity
-<% end %>
+bin_dir=/var/vcap/jobs/rep/bin
+
+$bin_dir/set-rep-kernel-params
+
+$bin_dir/mount_instance_identity

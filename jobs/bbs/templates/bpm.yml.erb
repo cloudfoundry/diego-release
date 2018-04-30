@@ -4,6 +4,8 @@ processes:
   executable: /var/vcap/packages/bbs/bin/bbs
   args:
     - -config=/var/vcap/jobs/bbs/config/bbs.json
+  hooks:
+    pre_start: /var/vcap/jobs/bbs/bin/bpm-pre-start
   limits:
     <%
     if !p('limits.open_files').is_a?(Integer) || p('limits.open_files') <= 0

@@ -3,10 +3,11 @@ name: file_server
 
 templates:
   file_server.json.erb: config/file_server.json
+  bpm-pre-start.erb: bin/bpm-pre-start
   bpm.yml.erb: config/bpm.yml
+  set-file-server-kernel-params.erb: bin/set-file-server-kernel-params
   file_server_ctl.erb: bin/file_server_ctl
   file_server_as_vcap.erb: bin/file_server_as_vcap
-  pre-start.erb: bin/pre-start
   loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
   loggregator_client.crt.erb: config/certs/loggregator/client.crt
   loggregator_client.key.erb: config/certs/loggregator/client.key

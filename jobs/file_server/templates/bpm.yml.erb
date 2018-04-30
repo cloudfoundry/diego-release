@@ -4,5 +4,7 @@ processes:
   executable: /var/vcap/packages/file_server/bin/file-server
   args:
     - -config=/var/vcap/jobs/file_server/config/file_server.json
+  hooks:
+    pre_start: /var/vcap/jobs/file_server/bin/bpm-pre-start
   limits:
     open_files: 100000
