@@ -235,10 +235,10 @@ properties:
     description: "Enable the cell rep to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."
     default: true
   enable_declarative_healthcheck:
-    description: "EXPERIMENTAL: When set, enables the rep to prefer the LRP CheckDefinition to healthcheck instances over the Monitor action."
+    description: "When set, enables the rep to prefer the LRP CheckDefinition to healthcheck instances over the Monitor action."
     default: false
   declarative_healthcheck_path:
-    description: "EXPERIMENTAL: The directory containing the declarative healthcheck binary"
+    description: "The directory containing the declarative healthcheck binary"
     default: "/var/vcap/packages/healthcheck_windows/external"
 
   cell_registrations.locket.enabled:
