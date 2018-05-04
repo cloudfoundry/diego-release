@@ -54,7 +54,7 @@ Diego is typically deployed as part of a Cloud Foundry Application Runtime deplo
 ### <a name="security-configuration"></a>Security Configuration
 
 - [TLS Configuration](docs/tls-configuration.md) describes how to generate TLS certificates for secure communication amongst the Diego and greater CF components.
-- [Instance Identity](docs/instance-identity.md) explains how to enable the Diego cell reps to provide per-instance identity credentials.
+- [Enabling Instance Identity](https://docs.cloudfoundry.org/adminguide/instance-identity.html) explains how to enable the Diego cell reps to provide per-instance identity credentials.
 - [Envoy Proxy Configuration](docs/envoy-proxy-configuration.md) explains how to enable the per-instance Envoy proxy to support improved route integrity, as well as some guidelines for operators to account for its additional memory overhead.
 
 ### <a name="data-store-configuration"></a>Data Store Configuration
