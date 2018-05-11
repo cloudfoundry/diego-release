@@ -4,7 +4,7 @@ The Diego team uses GitHub and accepts contributions via [pull request](https://
 
 The `diego-release` repository is a [BOSH](https://github.com/cloudfoundry/bosh) release for Diego. The root of this repository doubles as a Golang [`GOPATH`](https://golang.org/doc/code.html#GOPATH). For more information about configuring your Golang environment and automatically setting your `GOPATH` to the release directory, see the [instructions below](#initial-setup).
 
-All Diego components are submodules in diego-release and can be found in the [`src/github.com/cloudfoundry`](https://github.com/cloudfoundry/diego-release/tree/master/src/github.com/cloudfoundry) and [`src/github.com/cloudfoundry-incubator`](https://github.com/cloudfoundry/diego-release/tree/master/src/github.com/cloudfoundry-incubator) directories of this repository.
+All Diego components are submodules in diego-release and can be found in the [`src/code.cloudfoundry.org`](https://github.com/cloudfoundry/diego-release/tree/master/src/code.cloudfoundry.org) directory of this repository.
 
 If you wish to make a change to an individual Diego component, submit a pull request to the master branches of its repository. Once accepted, those changes should make their way into `diego-release`.
 
@@ -47,7 +47,7 @@ automated system uses, then we manually make the Pull Request as having a CLA on
 ## Initial Setup
 This BOSH release doubles as a `$GOPATH`. It will automatically be set up for you if you have [direnv](http://direnv.net) installed.
 
-**NOTE:** diego-release and its components assume you're running go **1.9**. The project may not compile or work as expected with other versions of go.
+**NOTE:** diego-release and its components assume you're running go **1.10**. The project may not compile or work as expected with other versions of go.
 
     # create parent directory of cf-release and diego-release
     mkdir -p ~/workspace
@@ -122,7 +122,9 @@ Metrics added to any of the Diego components need to follow the naming and docum
 
 As of Diego 1.0, SQL unit tests are the default unit tests for Diego. To run the SQL unit tests locally requires running MySQL and Postgres with the correct configuration.
 
-On OS X, follow these steps to install and configure MySQL and Postgres:
+#### MacOS
+
+On MacOS, follow these steps to install and configure MySQL and Postgres:
 
 1. Install MySQL:
 
@@ -189,6 +191,66 @@ On OS X, follow these steps to install and configure MySQL and Postgres:
 14. You should now be able to run the SQL unit tests. To run all the SQL-backed
     tests, run the following command from
     the root of diego-release:
+
+        ./scripts/run-unit-tests
+
+   This command will run all regular unit tests, as well as BBS and component
+   integration tests where a backing store is required in MySQL-backed and Postgres-backed modes.
+
+#### Docker
+
+If you would prefer to run the databases using docker follow these steps:
+
+1. Write out the MySQL config:
+
+        echo -e "[mysqld]\nsql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES" > my.cnf
+
+1. Run MySQL container. Note: Your `my.cnf` should be in the current directory:
+
+        docker run \
+            --rm \
+            --detach \
+            --name mysql \
+            -p 3306:3306 \
+            -e MYSQL_ROOT_PASSWORD=diego \
+            -v my.cnf:/etc/mysql/conf.d/my.cnf \
+            mysql
+
+1. Run the following SQL commands to create a diego user with the correct permissions:
+
+        docker exec -it mysql /bin/bash
+        mysql -uroot -pdiego -hlocalhost
+        CREATE USER 'diego'@'%' IDENTIFIED BY 'diego_password';
+        GRANT ALL PRIVILEGES ON `diego\_%`.* TO 'diego'@'%';
+        GRANT ALL PRIVILEGES ON `routingapi\_%`.* TO 'diego'@'%';
+
+1. Create a self-signed certificate as described in the [PostgreSQL documentation](https://www.postgresql.org/docs/9.4/static/ssl-tcp.html#SSL-CERTIFICATE-CREATION).
+   Save the certificate and key to a local directory of your choosing.
+
+1. Set the owner to the postgres user:
+
+        sudo chown 999:999 server.key server.crt
+
+1. Run Postgres container. Note: Your `server.crt` and `server.key` should be in the current directory:
+
+        docker run \
+            --rm \
+            --detach \
+            --name pg \
+            -p 5432:5432 \
+            -e POSTGRES_PASSWORD=diego_pw \
+            -e POSTGRES_DB=diego \
+            -e POSTGRES_USER=diego \
+            -v $PWD/server.crt:/var/lib/postgresql/server.crt \
+            -v $PWD/server.key:/var/lib/postgresql/server.key \
+            postgres \
+                -c ssl=on \
+                -c ssl_cert_file=/var/lib/postgresql/server.crt \
+                -c ssl_key_file=/var/lib/postgresql/server.key
+
+1. You should now be able to run the SQL unit tests. To run all the SQL-backed
+   tests, run the following command from
+   the root of diego-release:
 
         ./scripts/run-unit-tests
 
