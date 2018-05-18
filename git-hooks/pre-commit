@@ -1,5 +1,11 @@
 #!/bin/bash
 
+./scripts/check-metrics-documentation
+if [ $? -ne 0 ]; then
+    echo "metrics documentation isn't up to date. check errors above"
+    exit 1
+fi
+
 diff_output=$(./scripts/check-for-windows-drift)
 if [ $? -ne 0 ] ; then
   echo $'\e[31mdiego and diego windows have diverged. output:\e[0m'
