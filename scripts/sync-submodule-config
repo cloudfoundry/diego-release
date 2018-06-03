@@ -26,7 +26,8 @@ go install github.com/vito/gosub
     -app github.com/apcera/gnatsd \
     -app github.com/apcera/nats \
     -app github.com/golang/protobuf... \
-    -app github.com/maxbrunsfeld/counterfeiter
+    -app github.com/maxbrunsfeld/counterfeiter \
+    -app github.com/virtualcloudfoundry/vcontainer/cmd/... \
 
   # separate these so gosub doesn't asplode
   gosub list -test code.cloudfoundry.org/auctioneer/...

@@ -18,6 +18,9 @@ templates:
   tls.crt.erb: config/certs/tls.crt
   tls.key.erb: config/certs/tls.key
   tls_ca.crt.erb: config/certs/tls_ca.crt
+  vcontainer_client_tls.crt.erb: config/certs/vcontainer_client_tls.crt
+  vcontainer_client_tls.key.erb: config/certs/vcontainer_client_tls.key
+  vcontainer_client_tls_ca.crt.erb: config/certs/vcontainer_client_tls_ca.crt
 
 packages:
   - rep_windows
@@ -213,6 +216,7 @@ properties:
     description: "Array of optional tags used for scheduling Tasks and LRPs"
     default: []
 
+
   syslog_daemon_config.address:
     description: "Syslog host"
     default: ""
@@ -230,6 +234,19 @@ properties:
   diego.rep.locket.api_location:
     description: "Hostname and port of the locket server"
     default: locket.service.cf.internal:8891
+
+  diego.rep.use_vcontainer:
+    description: "Indicates whether this is a virtual rep."
+    default: false
+  diego.rep.vcontainer.api_location:
+    description: "Hostname and port of the VContainer server."
+    default: vcontainer.service.cf.internal:8892
+  diego.rep.vcontainer.ca_cert:
+    description: "PEM-encoded CA certificate"
+  diego.rep.vcontainer.client_cert:
+    description: "PEM-encoded client certificate"
+  diego.rep.vcontainer.client_key:
+    description: "PEM-encoded client key"
 
   enable_consul_service_registration:
     description: "Enable the cell rep to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."

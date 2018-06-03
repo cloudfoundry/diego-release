@@ -1,0 +1,64 @@
+---
+name: vcontainer_windows
+
+templates:
+  vcontainer.erb: bin/vcontainer
+  vcontainer_ctl.erb: bin/vcontainer_ctl
+  vcontainer_as_vcap.erb: bin/vcontainer_as_vcap
+  vcontainer.json.erb: config/vcontainer.json
+  vcontainer_server_ca.crt.erb: config/certs/ca.crt
+  vcontainer_server.crt.erb: config/certs/server.crt
+  vcontainer_server.key.erb: config/certs/server.key
+
+packages:
+  - vcontainer
+
+properties:
+  bpm.enabled:
+    description: "Experimental: use the BOSH Process Manager to manage the cell rep process."
+    default: false
+  diego.vcontainer.job_name:
+    description: "The name of the Diego job referenced by this spec (DO NOT override)"
+    default: "vcontainer_windows"
+  diego.vcontainer.ca_cert:
+    description: "ca cert for vcontainer server mutual auth tls"
+  diego.vcontainer.server_cert:
+    description: "server cert for vcontainer server mutual auth tls"
+  diego.vcontainer.server_key:
+    description: "server key for vcontainer server mutual auth tls"
+  diego.vcontainer.api_location:
+    description: "address at which to serve API requests"
+    default: "0.0.0.0:8892"
+
+  diego.vcontainer.container_service_provider:
+    description: "Indicates whether this diego cell uses the azure container instances, 'garden', 'aci' or 'eci'"
+    default: "garden"
+  diego.vcontainer.azure_container_provider_cfg.location:
+    description: "Indicates which region will diego cell will use. storage account should also be in the same region."
+    default: null
+  diego.vcontainer.azure_container_provider_cfg.subscription_id:
+    description: "Indicates the subscription to use."
+    default: null
+  diego.vcontainer.azure_container_provider_cfg.container_id:
+    description: "service principal id for managing azure container instances"
+    default: null
+  diego.vcontainer.azure_container_provider_cfg.container_secret:
+    description: "service principal secret for managing azure container instances"
+    default: null
+  diego.vcontainer.azure_container_provider_cfg.optional_param_1:
+    description: "tenant of service principal for managing azure container instances"
+    default: null
+  diego.vcontainer.azure_container_provider_cfg.storage_id:
+    description: "storage id"
+    default: null
+  diego.vcontainer.azure_container_provider_cfg.storage_secret:
+    description: "storage secret"
+    default: null
+  diego.vcontainer.smb_proxy.ip:
+    default: null
+  diego.vcontainer.smb_proxy.port:
+    default: null
+
+  enable_consul_service_registration:
+    description: "Enable the vcontainer to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."
+    default: true

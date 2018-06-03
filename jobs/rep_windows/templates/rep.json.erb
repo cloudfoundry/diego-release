@@ -186,5 +186,13 @@
     config[:loggregator][:loggregator_instance_id] = spec.id
   end
 
+  if p("diego.rep.use_vcontainer") == true
+    config[:use_vcontainer] = true
+    config[:vcontainer_address] = p("diego.rep.vcontainer.api_location")
+    config[:vcontainer_ca_cert_file] = "#{conf_dir}/certs/vcontainer_client_tls_ca.crt"
+    config[:vcontainer_client_cert_file] = "#{conf_dir}/certs/vcontainer_client_tls.crt"
+    config[:vcontainer_client_key_file] = "#{conf_dir}/certs/vcontainer_client_tls.key"
+  end
+
   config.to_json
 %>

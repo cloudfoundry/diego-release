@@ -1,0 +1,80 @@
+---
+name: vcontainer
+
+dependencies:
+  - golang
+
+files:
+  - code.cloudfoundry.org/cfhttp/*.go # gosub
+  - code.cloudfoundry.org/cfhttp/unix_transport/*.go # gosub
+  - code.cloudfoundry.org/clock/*.go # gosub
+  - code.cloudfoundry.org/consuladapter/*.go # gosub
+  - code.cloudfoundry.org/diego-logging-client/*.go # gosub
+  - code.cloudfoundry.org/go-diodes/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/*.go # gosub
+  - code.cloudfoundry.org/go-loggregator/rpc/loggregator_v2/*.go # gosub
+  - code.cloudfoundry.org/lager/*.go # gosub
+  - code.cloudfoundry.org/lager/lagerflags/*.go # gosub
+  - code.cloudfoundry.org/locket/*.go # gosub
+  - code.cloudfoundry.org/locket/models/*.go # gosub
+  - github.com/Azure/azure-sdk-for-go/storage/*.go # gosub
+  - github.com/Azure/azure-sdk-for-go/version/*.go # gosub
+  - github.com/Azure/go-autorest/autorest/*.go # gosub
+  - github.com/Azure/go-autorest/autorest/adal/*.go # gosub
+  - github.com/Azure/go-autorest/autorest/azure/*.go # gosub
+  - github.com/Azure/go-autorest/autorest/date/*.go # gosub
+  - github.com/cloudfoundry/sonde-go/events/*.go # gosub
+  - github.com/dgrijalva/jwt-go/*.go # gosub
+  - github.com/dimchansky/utfbom/*.go # gosub
+  - github.com/gogo/protobuf/gogoproto/*.go # gosub
+  - github.com/gogo/protobuf/proto/*.go # gosub
+  - github.com/gogo/protobuf/protoc-gen-gogo/descriptor/*.go # gosub
+  - github.com/gogo/protobuf/sortkeys/*.go # gosub
+  - github.com/gogo/protobuf/types/*.go # gosub
+  - github.com/golang/protobuf/proto/*.go # gosub
+  - github.com/hashicorp/consul/api/*.go # gosub
+  - github.com/hashicorp/consul/vendor/github.com/hashicorp/go-cleanhttp/*.go # gosub
+  - github.com/hashicorp/consul/vendor/github.com/hashicorp/serf/coordinate/*.go # gosub
+  - github.com/marstr/guid/*.go # gosub
+  - github.com/nu7hatch/gouuid/*.go # gosub
+  - github.com/satori/go.uuid/*.go # gosub
+  - github.com/tedsuo/ifrit/*.go # gosub
+  - github.com/tedsuo/ifrit/grouper/*.go # gosub
+  - github.com/tedsuo/ifrit/sigmon/*.go # gosub
+  - github.com/virtualcloudfoundry/goaci/*.go # gosub
+  - github.com/virtualcloudfoundry/goaci/aci/*.go # gosub
+  - github.com/virtualcloudfoundry/goaci/api/*.go # gosub
+  - github.com/virtualcloudfoundry/vcontainer/*.go # gosub
+  - github.com/virtualcloudfoundry/vcontainer/cmd/vcontainer/*.go # gosub
+  - github.com/virtualcloudfoundry/vcontainer/config/*.go # gosub
+  - github.com/virtualcloudfoundry/vcontainer/grpcserver/*.go # gosub
+  - github.com/virtualcloudfoundry/vcontainer/handlers/*.go # gosub
+  - github.com/virtualcloudfoundry/vcontainer/helpers/fsync/*.go # gosub
+  - github.com/virtualcloudfoundry/vcontainer/helpers/mount/*.go # gosub
+  - github.com/virtualcloudfoundry/vcontainer/interop/*.go # gosub
+  - github.com/virtualcloudfoundry/vcontainer/vstore/*.go # gosub
+  - github.com/virtualcloudfoundry/vcontainercommon/*.go # gosub
+  - github.com/virtualcloudfoundry/vcontainercommon/vcontainermodels/*.go # gosub
+  - github.com/virtualcloudfoundry/vcontainercommon/verrors/*.go # gosub
+  - golang.org/x/net/context/*.go # gosub
+  - golang.org/x/net/http2/*.go # gosub
+  - golang.org/x/net/http2/hpack/*.go # gosub
+  - golang.org/x/net/idna/*.go # gosub
+  - golang.org/x/net/internal/timeseries/*.go # gosub
+  - golang.org/x/net/lex/httplex/*.go # gosub
+  - golang.org/x/net/trace/*.go # gosub
+  - golang.org/x/text/secure/bidirule/*.go # gosub
+  - golang.org/x/text/transform/*.go # gosub
+  - golang.org/x/text/unicode/bidi/*.go # gosub
+  - golang.org/x/text/unicode/norm/*.go # gosub
+  - google.golang.org/grpc/*.go # gosub
+  - google.golang.org/grpc/codes/*.go # gosub
+  - google.golang.org/grpc/credentials/*.go # gosub
+  - google.golang.org/grpc/grpclog/*.go # gosub
+  - google.golang.org/grpc/internal/*.go # gosub
+  - google.golang.org/grpc/metadata/*.go # gosub
+  - google.golang.org/grpc/naming/*.go # gosub
+  - google.golang.org/grpc/peer/*.go # gosub
+  - google.golang.org/grpc/stats/*.go # gosub
+  - google.golang.org/grpc/tap/*.go # gosub
+  - google.golang.org/grpc/transport/*.go # gosub

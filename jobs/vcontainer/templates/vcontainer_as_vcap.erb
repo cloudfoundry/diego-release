@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+run_dir=/var/vcap/sys/run/vcontainer
+log_dir=/var/vcap/sys/log/vcontainer
+conf_dir=/var/vcap/jobs/vcontainer/config
+pidfile=$run_dir/vcontainer.pid
+
+echo $$ > $pidfile
+
+exec /var/vcap/packages/vcontainer/bin/vcontainer \
+      -config=$conf_dir/vcontainer.json \
+  2> >(tee -a $log_dir/vcontainer.stderr.log | logger -p user.error -t vcap.vcontainer) \
+  1> >(tee -a $log_dir/vcontainer.stdout.log | logger -t vcap.vcontainer)

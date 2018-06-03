@@ -71,6 +71,8 @@ sync_package benchmark-bbs \
   -test code.cloudfoundry.org/benchmarkbbs/... \
   -app github.com/onsi/ginkgo/ginkgo &
 
+sync_package vcontainer               -app github.com/virtualcloudfoundry/vcontainer/cmd/vcontainer &
+
 wait
 
 git diff --name-only packages/*/spec | tee # pipe through tee to avoid issues with non-interactive shells
