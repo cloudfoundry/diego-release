@@ -190,7 +190,7 @@ setup_database() {
   fi
 }
 
-rm -rf $PWD/diego-release/src/code.cloudfoundry/guardian/vendor
+rm -rf $PWD/diego-release/src/code.cloudfoundry.org/guardian/vendor
 
 setup_dnsmasq
 
