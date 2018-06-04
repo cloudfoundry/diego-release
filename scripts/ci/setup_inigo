@@ -190,6 +190,8 @@ setup_database() {
   fi
 }
 
+rm -rf $PWD/diego-release/src/code.cloudfoundry/guardian/vendor
+
 setup_dnsmasq
 
 build_gardenrunc $PWD/garden-runc-release
