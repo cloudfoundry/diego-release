@@ -51,3 +51,7 @@ properties:
   enable_container_proxy_tests:
     description: "EXPERIMENTAL: When set, enables the container proxy tests in vizzini"
     default: false
+
+  enable_privileged_container_tests:
+    description: "When set, enables the privileged container tests in vizzini"
+    default: true

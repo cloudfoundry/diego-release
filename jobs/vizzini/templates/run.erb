@@ -32,6 +32,7 @@ max_task_retries=<%= properties.max_task_retries %>
 
 enable_declarative_healthcheck=<%= properties.enable_declarative_healthcheck %>
 enable_container_proxy_tests=<%= properties.enable_container_proxy_tests %>
+enable_privileged_container_tests=<%= properties.enable_privileged_container_tests %>
 <% if_p("vizzini.ssh.proxy_secret") do |proxy_secret| %>
   ssh_proxy_secret_flag="--ssh-password=<%= proxy_secret %>"
 <% end %>
@@ -56,6 +57,7 @@ ginkgo \
   ${bbs_sec_flags} \
   --enable-declarative-healthcheck=${enable_declarative_healthcheck} \
   --enable-container-proxy-tests=${enable_container_proxy_tests} \
+  --enable-privileged-container-tests=${enable_privileged_container_tests} \
   --bbs-address=${bbs_api_url} \
   --ssh-address=${ssh_proxy_address} \
   --host-address=${callback_address} \
