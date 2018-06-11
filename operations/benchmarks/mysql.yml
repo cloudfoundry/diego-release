@@ -15,14 +15,14 @@
   - z2
   - z3
 - type: replace
-  path: /instance_groups/name=database/jobs/name=mysql-clustered?/properties/innodb_buffer_pool_size?
+  path: /instance_groups/name=database/jobs/name=pxc-mysql?/properties/innodb_buffer_pool_size?
   value: 12_000_000_000         # increase innodb_buffer to avoid unecessary disk access and make use of the available memory
 - type: replace
-  path: /instance_groups/name=database/jobs/name=mysql-clustered?/properties/innodb_buffer_pool_instances?
+  path: /instance_groups/name=database/jobs/name=pxc-mysql?/properties/innodb_buffer_pool_instances?
   value: 16                     # 1 instance per cpu core
 - type: replace
-  path: /instance_groups/name=database/jobs/name=mysql-clustered?/properties/innodb_flush_log_at_trx_commit?
+  path: /instance_groups/name=database/jobs/name=pxc-mysql?/properties/innodb_flush_log_at_trx_commit?
   value: 2                      # flush to disk every 1 second
 - type: replace
-  path: /instance_groups/name=database/jobs/name=mysql-clustered?/properties/binlog_enabled?
+  path: /instance_groups/name=database/jobs/name=pxc-mysql?/properties/binlog_enabled?
   value: false                  # disable binlog to boost performance
