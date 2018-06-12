@@ -60,8 +60,9 @@ files:
   - github.com/hashicorp/consul/api/*.go # gosub
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/go-cleanhttp/*.go # gosub
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/serf/coordinate/*.go # gosub
-  - github.com/nats-io/nats/*.go # gosub
-  - github.com/nats-io/nats/encoders/builtin/*.go # gosub
+  - github.com/nats-io/go-nats/*.go # gosub
+  - github.com/nats-io/go-nats/encoders/builtin/*.go # gosub
+  - github.com/nats-io/go-nats/util/*.go # gosub
   - github.com/nats-io/nuid/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
