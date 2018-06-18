@@ -18,3 +18,17 @@ properties:
     description: "REQUIRED: PEM-encoded certificate used for client credentials."
   tls.private_key:
     description: "REQUIRED: PEM-encoded key used for client credentials."
+
+  bbs.hostname:
+    description: "Hostname of the BBS service."
+    default: "bbs.service.cf.internal"
+  bbs.port:
+    description: "Port of the BBS service."
+    default: 8889
+
+  locket.hostname:
+    description: "Hostname at which to discover the Locket API server."
+    default: "locket.service.cf.internal"
+  locket.port:
+    description: "Port of the Locket API server."
+    default: 8891
