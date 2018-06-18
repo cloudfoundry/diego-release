@@ -20,6 +20,7 @@
       properties:
         enable_declarative_healthcheck: true
         vizzini:
+          nodes: 1
           bbs:
             ca_cert: "((diego_bbs_client.ca))"
             client_cert: "((diego_bbs_client.certificate))"
