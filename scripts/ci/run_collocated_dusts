@@ -1,9 +1,5 @@
 #!/bin/bash
 
-logs_dir=$PWD/logs
-mkdir $logs_dir
-log_file=$logs_dir/dusts.0.0.0.$(date +'%s').log
-
 # always use mysql (this isn't configurable atm)
 export SQL_FLAVOR=mysql
 
@@ -15,5 +11,5 @@ set -exo pipefail
 export DEFAULT_EVENTUALLY_TIMEOUT=60s
 
 pushd "${GOPATH_ROOT}/src/code.cloudfoundry.org/diego-upgrade-stability-tests"
-  ginkgo -failFast -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=60 -keepGoing $@ | tee $log_file
+  ginkgo -failFast -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=60 -keepGoing $@
 popd
