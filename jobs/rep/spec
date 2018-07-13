@@ -266,3 +266,7 @@ properties:
   logging.format.timestamp:
     description: "EXPERIMENTAL: Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."
     default: "unix-epoch"
+
+  set_kernel_parameters:
+    description: "Enable tuning /proc/sys kernel parameters. **NOTE:** this should be set to `false` when deploying to BOSH-lite"
+    default: true
