@@ -48,6 +48,7 @@ ginkgo -r -keepGoing -trace -randomizeAllSpecs -progress --race `
   cfhttp `
   cacheddownloader `
   certsplitter `
+  diego-logging-client `
   diego-ssh `
   executor `
   bytefmt `
