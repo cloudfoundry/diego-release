@@ -2,7 +2,7 @@
 name: healthcheck
 
 dependencies:
-  - golang
+  - golang-1-linux
 
 files:
   - code.cloudfoundry.org/healthcheck/cmd/healthcheck/*.go # gosub

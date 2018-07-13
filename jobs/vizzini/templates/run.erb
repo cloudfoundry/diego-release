@@ -5,7 +5,7 @@ log_dir=/var/vcap/sys/log/vizzini
 
 set -e -x
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang)
+export GOROOT=$(readlink -nf /var/vcap/packages/golang-1-linux)
 export PATH=${GOROOT}/bin:${PATH}
 
 export GOPATH=/var/vcap/packages/vizzini
