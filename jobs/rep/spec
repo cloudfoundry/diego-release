@@ -268,5 +268,5 @@ properties:
     default: "unix-epoch"
 
   set_kernel_parameters:
-    description: "Enable tuning /proc/sys kernel parameters. **NOTE:** this should be set to `false` when deploying to BOSH-lite"
+    description: "Enable tuning /proc/sys kernel parameters. NOTE: set this property to 'false' when deploying to BOSH-Lite or other containerized BOSH clouds."
     default: true
