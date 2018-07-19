@@ -245,6 +245,37 @@ properties:
     description: "EXPERIMENTAL: Additional memory allocated to each container for the envoy proxy. This value must not be negative"
     default: 32
 
+  containers.proxy.require_and_verify_client_certificates:
+    default: false
+    description: "EXPERIMENTAL: whether the per-container proxy should require and verify a TLS certificate from a client connecting to one of its ingress listeners. Proxy will trust the set of CA certificates supplied in the containers.proxy.trusted_ca_certificates property. Requires containers.proxy.enabled to be set to true to enable."
+
+  containers.proxy.trusted_ca_certificates:
+    default: []
+    description: "EXPERIMENTAL: List of CA certificate bundles against which the per-container proxy will verify certificates for clients connecting to its ingress listeners, if containers.proxy.require_and_verify_client_certificates is enabled."
+    example:
+    - |
+      ----- BEGIN CERTIFICATE -----
+      CONTENTS OF CERTIFICATE #1
+      ----- END CERTIFICATE -----
+    - |
+      ----- BEGIN CERTIFICATE -----
+      CONTENTS OF CERTIFICATE #2
+      ----- END CERTIFICATE -----
+    - |
+      ----- BEGIN CERTIFICATE -----
+      CONTENTS OF CERTIFICATE #3
+      ----- END CERTIFICATE -----
+      ----- BEGIN CERTIFICATE -----
+      CONTENTS OF CERTIFICATE #4
+      ----- END CERTIFICATE -----
+
+  containers.proxy.verify_subject_alt_name:
+    default: []
+    description: "EXPERIMENTAL: If specified when containers.proxy.require_and_verify_client_certificates is enabled, the per-container proxy will also verify that the Subject Alternative Name of the presented certificate matches one of the specified values."
+    example:
+    - gorouter.cf.service.internal
+    - tcp-router.cf.service.internal<Paste>
+
   containers.trusted_ca_certificates:
     description: "List of PEM-encoded CA certificates to make available inside containers in a conventional location. List entries may be individual or concatenated CAs."
     example:

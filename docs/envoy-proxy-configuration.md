@@ -8,6 +8,7 @@ This document describes how to enable the per-container [Envoy proxy](https://gi
 1. [Envoy Proxy Configuration for Route Integrity](#envoy-proxy-configuration-for-route-integrity)
 1. [Additional Per-Instance Memory Allocation](#additional-per-instance-memory-allocation)
 	1. [Choosing a value for the additional memory allocation](#choosing-value-for-additional-memory-allocation)
+1. [Enabling Mutual TLS Configuration](#enabling-mutual-tls-configuration)
 
 
 ## <a name="enabling-per-container-envoy-proxy"/> Enabling Per-Container Envoy Proxy
@@ -77,3 +78,13 @@ Container memory usage metrics sent through the Loggregator system and exposed o
 ### <a name="choosing-value-for-additional-memory-allocation"/> Choosing a value for the additional memory allocation
 
 The Diego team has in [story #155945585](https://www.pivotaltracker.com/story/show/155945585) done some investigation of how the Envoy proxy uses memory in practice, and as of Envoy version `0e1d66377d9bf8b8304b65df56a4c88fc01e87e8` has determined that Envoy initially uses between 5 and 10 MB of memory, and then uses approximately 30KB of memory per concurrent connection. The memory usage also remains at that level even if the number of concurrent connections decreases. Consequently, if operators have an estimate of `N` for the maximum number of concurrent connections from the gorouters to a single app instance, this assessment suggests that the `containers.proxy.additional_memory_allocation_mb` property should be set to the value `10 + 0.03 * N` (rounded to the nearest integer). This additional allocation may of course need to be adjusted according to the specifics of the applications running in each environment.
+
+### <a name="enabling-mutual-tls-configuration"/> Enabling Mutual TLS Configuration
+
+A deployment operator can enable mutual TLS configuration between the Envoy proxy which runs in the application container and the Gorouter by performing the following steps:
+
+1. Create the set of CA certificate, client certificate, and a private key.
+1. In the `gorouter` job for the `routing-release`, set the values of `router.backends.cert_chain` and `router.backends.private_key` properties to the certificate and private key generated in the step above.
+1. In the `rep` job for `diego-release`, set the `containers.proxy.require_and_verify_client_certificates` property to `true`.
+1. In the `rep` job, also set the value of `containers.proxy.trusted_ca_certificates` to the CA certificate created in the first step.
+1. Optionally, you can configure the Envoy proxy to validate the subject alternative name on the certificate provided by the gorouter. To do so, the certificate template needs to contain the subject alternative name, and that same name can be set in `containers.proxy.verify_subject_alt_name` in the `rep` job.

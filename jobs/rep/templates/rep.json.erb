@@ -26,6 +26,9 @@
     enable_declarative_healthcheck: p("enable_declarative_healthcheck"),
     declarative_healthcheck_path: "/var/vcap/packages/healthcheck",
     enable_container_proxy: p("containers.proxy.enabled"),
+    container_proxy_require_and_verify_client_certs: p("containers.proxy.require_and_verify_client_certificates"),
+    container_proxy_trusted_ca_certs: p("containers.proxy.trusted_ca_certificates"),
+    container_proxy_verify_subject_alt_name: p("containers.proxy.verify_subject_alt_name"),
     proxy_memory_allocation_mb: p("containers.proxy.additional_memory_allocation_mb"),
     container_proxy_path: "/var/vcap/packages/proxy",
     container_proxy_config_path: "/var/vcap/data/rep/proxy_config",
@@ -148,6 +151,13 @@
     rescue
       raise '"when containers.proxy.enabled is true, diego.executor.instance_identity_ca_cert" and "diego.executor.instance_identity_key" must both be set'
     end
+  end
+
+  if config[:container_proxy_require_and_verify_client_certs]
+      value = p("containers.proxy.trusted_ca_certificates")
+      if not value.is_a?(Array) or value.empty?
+	raise '"when containers.proxy.require_and_verify_client_certificates is true, "container.proxy.trusted_ca_certificates" must be set to an array of trusted certificates'
+      end
   end
 
   if_p("diego.executor.instance_identity_ca_cert",
