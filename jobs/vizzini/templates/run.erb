@@ -37,6 +37,16 @@ enable_privileged_container_tests=<%= properties.enable_privileged_container_tes
   ssh_proxy_secret_flag="--ssh-password=<%= proxy_secret %>"
 <% end %>
 
+<% if properties.enable_container_proxy_tests %>
+  container_proxy_ca_flag="--proxy-ca=${conf_dir}/certs/container_proxy/ca.crt"
+  <% if_p("vizzini.container_proxy.client_cert") do |_| %>
+    container_proxy_cert_flag="--proxy-client-cert=${conf_dir}/certs/container_proxy/client.crt"
+  <% end %>
+  <% if_p("vizzini.container_proxy.client_key") do |_| %>
+    container_proxy_key_flag="--proxy-client-key=${conf_dir}/certs/container_proxy/client.key"
+  <% end %>
+<% end %>
+
 go install github.com/onsi/ginkgo/ginkgo
 
 
@@ -67,6 +77,9 @@ ginkgo \
   --max-task-retries=${max_task_retries} \
   ${ssh_proxy_secret_flag} \
   --routable-domain-suffix=${routable_domain_suffix} \
+  ${container_proxy_cert_flag} \
+  ${container_proxy_key_flag} \
+  ${container_proxy_ca_flag} \
   2> >(tee -a $log_dir/vizzini.stderr.log) \
   1> >(tee -a $log_dir/vizzini.stdout.log)
 

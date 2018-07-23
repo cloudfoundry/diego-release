@@ -1,0 +1,7 @@
+---
+- type: replace
+  path: /instance_groups/name=vizzini/jobs/name=vizzini/properties/vizzini?/container_proxy?/client_cert?
+  value: ((gorouter_backend_tls.certificate))
+- type: replace
+  path: /instance_groups/name=vizzini/jobs/name=vizzini/properties/vizzini?/container_proxy?/client_key?
+  value: ((gorouter_backend_tls.private_key))

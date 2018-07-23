@@ -8,6 +8,9 @@ templates:
   run.erb: bin/run
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
+  container_proxy_ca.crt.erb: config/certs/container_proxy/ca.crt
+  container_proxy_client.crt.erb: config/certs/container_proxy/client.crt
+  container_proxy_client.key.erb: config/certs/container_proxy/client.key
 
 properties:
   vizzini.bbs.api_location:
@@ -51,6 +54,13 @@ properties:
   enable_container_proxy_tests:
     description: "EXPERIMENTAL: When set, enables the container proxy tests in vizzini"
     default: false
+  vizzini.container_proxy.ca:
+    description: "EXPERIMENTAL: When `enable_container_proxy_tests` is true, is used as the certificate authority for certs presnted by container proxies (required if `enable_container_proxy_tests` is true)"
+
+  vizzini.container_proxy.client_cert:
+    description: "EXPERIMENTAL: When `enable_container_proxy_tests` is true, is used as the client certificate to present to container proxies"
+  vizzini.container_proxy.client_key:
+    description: "EXPERIMENTAL: When `enable_container_proxy_tests` is true, is used as the client private key in mutual TLS connections with the container proxies"
 
   enable_privileged_container_tests:
     description: "When set, enables the privileged container tests in vizzini"

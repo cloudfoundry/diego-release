@@ -274,7 +274,7 @@ properties:
     description: "EXPERIMENTAL: If specified when containers.proxy.require_and_verify_client_certificates is enabled, the per-container proxy will also verify that the Subject Alternative Name of the presented certificate matches one of the specified values."
     example:
     - gorouter.cf.service.internal
-    - tcp-router.cf.service.internal<Paste>
+    - tcp-router.cf.service.internal
 
   containers.trusted_ca_certificates:
     description: "List of PEM-encoded CA certificates to make available inside containers in a conventional location. List entries may be individual or concatenated CAs."
