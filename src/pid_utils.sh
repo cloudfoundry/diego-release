@@ -188,8 +188,3 @@ file_must_include() {
     exit 1
   fi
 }
-
-running_in_container() {
-  # look for a non-root cgroup
-  grep --quiet --invert-match ':/$' /proc/self/cgroup
-}

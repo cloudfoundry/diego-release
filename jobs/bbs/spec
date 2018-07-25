@@ -175,3 +175,7 @@ properties:
     description: "Cert used to communicate with local metron agent over gRPC"
   loggregator.key:
     description: "Key used to communicate with local metron agent over gRPC"
+
+  set_kernel_parameters:
+    description: "Enable tuning /proc/sys kernel parameters. NOTE: set this property to 'false' when deploying to BOSH-Lite or other containerized BOSH clouds."
+    default: true

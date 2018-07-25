@@ -56,3 +56,7 @@ properties:
     description: "Client certificate for the SSH-proxy to use when communicating to the metron agent."
   loggregator.key:
     description: "Private key for the SSH-proxy metron client certificate."
+
+  set_kernel_parameters:
+    description: "Enable tuning /proc/sys kernel parameters. NOTE: set this property to 'false' when deploying to BOSH-Lite or other containerized BOSH clouds."
+    default: true
