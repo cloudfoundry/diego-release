@@ -287,6 +287,10 @@ properties:
     - gorouter.cf.service.internal
     - tcp-router.cf.service.internal
 
+  containers.proxy.enable_unproxied_port_mappings:
+    default: true
+    description: "EXPERIMENTAL: whether the cell should still map host ports directly to the unproxied container ports. Setting to false requires containers.proxy.enabled to be set to true."
+
   containers.trusted_ca_certificates:
     description: "List of PEM-encoded CA certificates to make available inside containers in a conventional location. List entries may be individual or concatenated CAs."
     example:

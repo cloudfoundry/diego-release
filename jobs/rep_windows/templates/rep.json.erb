@@ -29,6 +29,7 @@
     container_proxy_require_and_verify_client_certs: p("containers.proxy.require_and_verify_client_certificates"),
     container_proxy_trusted_ca_certs: p("containers.proxy.trusted_ca_certificates"),
     container_proxy_verify_subject_alt_name: p("containers.proxy.verify_subject_alt_name"),
+    enable_unproxied_port_mappings: p("containers.proxy.enable_unproxied_port_mappings"),
     proxy_memory_allocation_mb: p("containers.proxy.additional_memory_allocation_mb"),
     container_proxy_path: "/var/vcap/packages/proxy",
     container_proxy_config_path: "/var/vcap/data/rep/proxy_config",
@@ -151,6 +152,8 @@
     rescue
       raise '"when containers.proxy.enabled is true, diego.executor.instance_identity_ca_cert" and "diego.executor.instance_identity_key" must both be set'
     end
+  elsif !p("containers.proxy.enable_unproxied_port_mappings")
+    raise 'containers.proxy.enabled must be set to true in order to disable the unproxied port mappings'
   end
 
   if config[:container_proxy_require_and_verify_client_certs]
