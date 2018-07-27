@@ -1,9 +1,9 @@
 <%=
   conf_dir = "/var/vcap/jobs/#{p("diego.rep.job_name")}/config"
   tmp_dir = "/var/vcap/data/rep/tmp"
-  trusted_certs_dir = "/var/vcap/data/rep/trusted_certs"
-  instance_identity_dir = "/var/vcap/data/rep/instance_identity"
-  download_cache_dir= "/var/vcap/data/rep/download_cache"
+  trusted_certs_dir = "/var/vcap/data/rep/shared_data/trusted_certs"
+  instance_identity_dir = "/var/vcap/data/rep/shared_data/instance_identity"
+  download_cache_dir= "/var/vcap/data/rep/shared_data/download_cache"
 
   zone = spec.az
   if_p("diego.rep.zone") do |value|

@@ -6,8 +6,7 @@ conf_dir=/var/vcap/jobs/rep/config
 bin_dir=/var/vcap/jobs/rep/bin
 
 data_dir=/var/vcap/data/rep
-
-cache_dir=${data_dir}/download_cache
+shared_data_dir=${data_dir}/shared_data
 tmp_dir=$data_dir/tmp
 
 pidfile=$run_dir/rep.pid
@@ -28,11 +27,12 @@ case $1 in
     mkdir -p $data_dir
     chown -R vcap:vcap $data_dir
 
+    mkdir -p $shared_data_dir
+    chown -R vcap:vcap $shared_data_dir
+
     mkdir -p $tmp_dir
     chown -R vcap:vcap $tmp_dir
 
-    mkdir -p $cache_dir
-    chown -R vcap:vcap $cache_dir
     # Remove old cache dir so that disk space isn't wasted
     rm -rf /var/vcap/data/executor_cache
 

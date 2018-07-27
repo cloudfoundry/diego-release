@@ -36,19 +36,24 @@ if (-Not (Get-NetFirewallRule | Where-Object { $_.DisplayName -eq "SecureRepPort
   }
 }
 
+# Remove old data dirs so that disk space isn't wasted. This cleanup can be removed in v4
+Remove-Item -Path "/var/vcap/data/rep/download_cache" -Force -Recurse -ErrorAction "Continue"
+Remove-Item -Path "/var/vcap/data/rep/instance_identity" -Force -Recurse -ErrorAction "Continue"
+Remove-Item -Path "/var/vcap/data/rep/trusted_certs" -Force -Recurse -ErrorAction "Continue"
+
 $bindmountDirs = @()
 
-$cache_dir = "/var/vcap/data/rep/download_cache"
+$cache_dir = "/var/vcap/data/rep/shared_data/download_cache"
 New-Item -Path $cache_dir -ItemType "directory" -Force
 $bindmountDirs += $cache_dir
 
-$instance_identity_dir = "/var/vcap/data/rep/instance_identity"
+$instance_identity_dir = "/var/vcap/data/rep/shared_data/instance_identity"
 New-Item -Path $instance_identity_dir -ItemType "directory" -Force
 $bindmountDirs += $instance_identity_dir
 
 <% if_p("containers.trusted_ca_certificates") do |value| %>
   $conf_dir = "C:/var/vcap/jobs/rep_windows/config"
-  $trusted_certs_dir = "C:/var/vcap/data/rep/trusted_certs"
+  $trusted_certs_dir = "C:/var/vcap/data/rep/shared_data/trusted_certs"
 
   New-Item -Path $trusted_certs_dir -ItemType "directory" -Force
   C:/var/vcap/packages/certsplitter_windows/certsplitter $conf_dir/certs/rep/trusted_ca_certificates.json $trusted_certs_dir
