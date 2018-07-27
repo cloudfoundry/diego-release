@@ -284,8 +284,8 @@ properties:
     default: []
     description: "EXPERIMENTAL: If specified when containers.proxy.require_and_verify_client_certificates is enabled, the per-container proxy will also verify that the Subject Alternative Name of the presented certificate matches one of the specified values."
     example:
-    - gorouter.cf.service.internal
-    - tcp-router.cf.service.internal
+    - gorouter.service.cf.internal
+    - tcp-router.service.cf.internal
 
   containers.proxy.enable_unproxied_port_mappings:
     default: true
