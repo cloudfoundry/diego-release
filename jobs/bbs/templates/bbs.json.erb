@@ -172,5 +172,7 @@
     config[:loggregator][:loggregator_instance_id] = spec.id
   end
 
+  config[:generate_suspect_actual_lrps] = p("generate_suspect_actual_lrps")
+
   config.to_json
 %>
