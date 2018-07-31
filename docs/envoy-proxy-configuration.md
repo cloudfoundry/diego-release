@@ -9,6 +9,7 @@ This document describes how to enable the per-container [Envoy proxy](https://gi
 1. [Additional Per-Instance Memory Allocation](#additional-per-instance-memory-allocation)
 	1. [Choosing a value for the additional memory allocation](#choosing-value-for-additional-memory-allocation)
 1. [Enabling Mutual TLS Configuration](#enabling-mutual-tls-configuration)
+1. [Disabling Unproxied Port Mappnigs](#disabling-unproxied-port-mappings)
 
 
 ## <a name="enabling-per-container-envoy-proxy"/> Enabling Per-Container Envoy Proxy
@@ -88,3 +89,11 @@ A deployment operator can enable mutual TLS configuration between the Envoy prox
 1. In the `rep` job for `diego-release`, set the `containers.proxy.require_and_verify_client_certificates` property to `true`.
 1. In the `rep` job, also set the value of `containers.proxy.trusted_ca_certificates` to the CA certificate created in the first step.
 1. Optionally, you can configure the Envoy proxy to validate the subject alternative name on the certificate provided by the gorouter. To do so, the certificate template needs to contain the subject alternative name, and that same name can be set in `containers.proxy.verify_subject_alt_name` in the `rep` job.
+
+### <a name="disabling-unproxied-port-mappings"/> Disabling Unproxied Port Mappnigs
+
+A deployment operator can also disable the legacy port mappings that bypass the Envoy proxy by setting the `containers.proxy.enable_unproxied_port_mappings` property on the `rep` job to `false`. Setting this value requires the Envoy proxies to be enabled.
+
+Note that this configuration is compatible with only the Cloud Foundry routing tiers that support TLS connections to backend instances, which to date includes the HTTP gorouters but does **not** include either the TCP routers or the Diego SSH proxies.
+
+Together with enabling mutual TLS configuration, this configuration can be used to ensure that only certain authenticated clients can send TCP traffic to the application servers inside Diego LRP and CF app containers.
