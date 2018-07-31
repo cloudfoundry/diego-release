@@ -38,7 +38,7 @@ properties:
     description: "address at which to serve debug info"
     default: "127.0.0.1:17009"
   diego.route_emitter.healthcheck_address:
-    description: "address at which to serve debug info"
+    description: "address for the route_emitter health endpoint."
     default: "127.0.0.1:17011"
   diego.route_emitter.sync_interval_in_seconds:
     description: "Interval to sync routes to the router in seconds."
