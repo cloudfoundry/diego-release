@@ -33,7 +33,7 @@ case $1 in
     mkdir -p $tmp_dir
     chown -R vcap:vcap $tmp_dir
 
-    # Remove old cache dir so that disk space isn't wasted
+    # Remove old cache dir so that disk space isn't wasted. This cleanup can be removed in v3
     rm -rf /var/vcap/data/executor_cache
 
     $bin_dir/set-rep-kernel-params
