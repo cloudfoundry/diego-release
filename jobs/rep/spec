@@ -16,7 +16,7 @@ templates:
   bpm.yml.erb: config/bpm.yml
   bpm-pre-start.erb: bin/bpm-pre-start
   set-rep-kernel-params.erb: bin/set-rep-kernel-params
-  mount_instance_identity.erb: bin/mount_instance_identity
+  setup_mounted_data_dirs.erb: bin/setup_mounted_data_dirs
   post-start.erb: bin/post-start
   loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
   loggregator_client.crt.erb: config/certs/loggregator/client.crt
