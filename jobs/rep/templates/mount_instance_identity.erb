@@ -12,6 +12,7 @@ fi
 rm -rf "${old_instance_identity_dir}"
 rm -rf "${old_data_dir}/trusted_certs"
 rm -rf "${old_data_dir}/download_cache"
+rm -rf "${old_data_dir}/proxy_config"
 
 # Key and Cert are generally ~2048 bytes. Add an extra 2048 for extra space
 # add another 4096 to account for the temp files used to do atomic replacement #141163257
@@ -42,4 +43,12 @@ rm -rf "$trusted_certs_dir"
   /var/vcap/packages/certsplitter/bin/certsplitter $conf_dir/certs/rep/trusted_ca_certificates.json $trusted_certs_dir
 
   chmod +r ${trusted_certs_dir}/*
+<% end %>
+
+proxy_config_dir=${shared_data_dir}/proxy_config
+rm -rf "$proxy_config_dir"
+<% if p("containers.proxy.enabled") %>
+  mkdir -p "$proxy_config_dir"
+  chown -R vcap:vcap "$proxy_config_dir"
+  chmod 0700 "$proxy_config_dir"
 <% end %>

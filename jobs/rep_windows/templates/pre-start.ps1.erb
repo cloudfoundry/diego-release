@@ -40,6 +40,7 @@ if (-Not (Get-NetFirewallRule | Where-Object { $_.DisplayName -eq "SecureRepPort
 Remove-Item -Path "/var/vcap/data/rep/download_cache" -Force -Recurse -ErrorAction "Continue"
 Remove-Item -Path "/var/vcap/data/rep/instance_identity" -Force -Recurse -ErrorAction "Continue"
 Remove-Item -Path "/var/vcap/data/rep/trusted_certs" -Force -Recurse -ErrorAction "Continue"
+Remove-Item -Path "/var/vcap/data/rep/proxy_config" -Force -Recurse -ErrorAction "Continue"
 
 $bindmountDirs = @()
 

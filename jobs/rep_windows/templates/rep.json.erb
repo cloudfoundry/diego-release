@@ -32,7 +32,7 @@
     enable_unproxied_port_mappings: p("containers.proxy.enable_unproxied_port_mappings"),
     proxy_memory_allocation_mb: p("containers.proxy.additional_memory_allocation_mb"),
     container_proxy_path: "/var/vcap/packages/proxy",
-    container_proxy_config_path: "/var/vcap/data/rep/proxy_config",
+    container_proxy_config_path: "/var/vcap/data/rep/shared_data/proxy_config",
     evacuation_polling_interval: "#{p("diego.rep.evacuation_polling_interval_in_seconds")}s",
     evacuation_timeout: "#{p("diego.rep.evacuation_timeout_in_seconds")}s",
     garden_addr: p("diego.executor.garden.address"),
