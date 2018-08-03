@@ -9,8 +9,8 @@ processes:
   ephemeral_disk: true
   additional_volumes:
     - path: <%= p("diego.executor.volman.driver_paths") %>
-      writable: true
     - path: <%= p("diego.executor.volman.csi_paths") %>
+    - path: <%= p("diego.executor.volman.csi_mount_root_dir") %>
       writable: true
     - path : /var/vcap/data/garden
       writable: true
