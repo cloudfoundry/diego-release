@@ -10,5 +10,7 @@ processes:
   additional_volumes:
     - path: <%= p("diego.executor.volman.driver_paths") %>
       writable: true
+    - path: <%= p("diego.executor.volman.csi_paths") %>
+      writable: true
     - path : /var/vcap/data/garden
       writable: true
