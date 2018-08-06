@@ -137,23 +137,8 @@ The [BBS API docs](https://github.com/cloudfoundry/bbs/tree/master/doc) and [rou
 ### BBS
 
 #### Endpoints
-
-- `/v1/desired_lrps/list.r1` Method: `POST`
-- `/v1/desired_lrps/get_by_process_guid.r1` Method: `POST`
-- `/v1/desired_lrps/list` Method: `POST`
-- `/v1/desired_lrps/get_by_process_guid` Method: `POST`
-- `/v1/desired_lrp/desire.r1` Method: `POST`
-
-- `/v1/desired_lrp/desire` Method: `POST`
-- `/v1/tasks/list.r1` Method: `POST`
-- `/v1/tasks/list` Method: `POST`
-- `/v1/tasks/get_by_task_guid.r1` Method: `POST`
-- `/v1/tasks/get_by_task_guid` Method: `GET`
-- `/v1/tasks/desire.r1` Method: `POST`
-- `/v1/tasks/desire` Method: `POST`
-- `/v1/cells/list.r1` Method: `GET`
-
-**Note** `POST` requests to `/v1/cells/list.r1` are **NOT** deprecated
+Since [diego-release 2.0.0](https://github.com/cloudfoundry/diego-release/releases/tag/v2.0.0), no endpoints have been revised or deprecated.
+Please update this section if you add revisions to any BBS API endpoints.
 
 #### Fields
 
