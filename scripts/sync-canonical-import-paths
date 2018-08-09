@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 packages() {
   cat <<EOF
 code.cloudfoundry.org/archiver
@@ -35,14 +37,29 @@ code.cloudfoundry.org/vizzini
 EOF
 }
 
+changed=false
+
 check_package() {
   pkg=$1
-  pushd src/$pkg
+  pushd src/$pkg >/dev/null
     package_name=$(basename $pkg | tr '-' '_')
     grep -E --silent 'package main$' $(grep -L '// +build ignore' *.go) && package_name=main
-    echo "package $package_name // import \"$pkg\"" > package.go
-  popd
+    canonical_import_path="package $package_name // import \"$pkg\""
+    if [ "$(cat package.go 2>/dev/null)" != "$canonical_import_path" ]; then
+        echo "updating canonical import path in $PWD/package.go"
+        echo -e $canonical_import_path > package.go
+        changed=true
+    fi
+  popd >/dev/null
 }
 
-go list -e -f '{{.ImportPath}}' code.cloudfoundry.org/... | grep -v vendor | grep -f <(packages) | while read pkg; do check_package $pkg > /dev/null; done
-git diff --name-only src/code.cloudfoundry.org
+pkgs=$(go list -e -f '{{.ImportPath}}' code.cloudfoundry.org/... | grep -v vendor | grep -f <(packages))
+for pkg in $pkgs; do
+    check_package $pkg 2> /dev/null
+done
+
+if [ $changed = "true" ]; then
+    exit 1
+fi
+
+exit 0
