@@ -309,3 +309,7 @@ properties:
       ----- BEGIN CERTIFICATE -----
       CONTENTS OF CERTIFICATE #4
       ----- END CERTIFICATE -----
+
+  containers.set_cpu_weight:
+    description: "EXPERIMENTAL: Set CPU weight on each Garden container to be proportional to its memory limit."
+    default: false
