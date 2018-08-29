@@ -2,5 +2,5 @@ set -e
 
 # Install envoy binary
 cd proxy
-tar -xzf envoy-872728d4ad50acececaeae389da59cb72846cf89.tgz
+tar -xzf envoy-3b47cbabb517db69a40f38843a405d1d6f742f5d.tgz
 mv envoy ${BOSH_INSTALL_TARGET}
