@@ -35,7 +35,7 @@ properties:
 
   tasks.max_retries:
     description: "Experimental: The number of times task placement should be retried after pre-execution task failure."
-    default: 0
+    default: 3
 
   diego.bbs.auctioneer.api_location:
     description: "Hostname and port of the auctioneer API, without URI scheme."
