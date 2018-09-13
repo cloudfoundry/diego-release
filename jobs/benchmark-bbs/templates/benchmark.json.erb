@@ -5,6 +5,7 @@
   log_dir = "/var/vcap/sys/log/benchmark-bbs"
 
   config = {
+    error_tolerance: 0.05,
     active_key_label: p("benchmark-bbs.active_key_label"),
     aws_access_key_id: p("benchmark-bbs.aws_access_key_id"),
     aws_bucket_name: p("benchmark-bbs.aws_bucket_name"),
@@ -27,6 +28,13 @@
     percent_writes: p("benchmark-bbs.percent_writes"),
     reseed_database: p("benchmark-bbs.reseed_database"),
   }
+
+  if_p("logging.format.timestamp") do |format|
+    if format != "unix-epoch" and format != "rfc3339"
+      raise "logging.format.timestamp should be one of: 'unix-epoch' or 'rfc3339'"
+    end
+    config[:time_format] = format
+  end
 
   def db_params
     ['username', 'password', 'host', 'port', 'schema'].map {|name| "benchmark-bbs.sql.db_#{name}"}

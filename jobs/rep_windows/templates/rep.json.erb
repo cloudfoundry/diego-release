@@ -11,6 +11,20 @@
   end
 
   config = {
+    communication_timeout: "10s",
+    lock_retry_interval: "5s",
+    lock_ttl: "15s",
+    session_name: "rep",
+
+    reserved_expiration_time: "1m",
+    container_reap_interval: "1m",
+    container_owner_name: "executor",
+    healthcheck_container_owner_name: "executor-health-check",
+    garden_healthcheck_emission_interval: "30s",
+
+    envoy_config_refresh_delay: "1s",
+    envoy_drain_timeout: "15m",
+
     advertise_domain: p("diego.rep.advertise_domain"),
     auto_disk_capacity_overhead_mb: p("diego.executor.auto_disk_capacity_overhead_mb"),
     cache_path: "#{download_cache_dir}",

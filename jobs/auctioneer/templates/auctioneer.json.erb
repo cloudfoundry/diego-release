@@ -2,10 +2,15 @@
   conf_dir = "/var/vcap/jobs/auctioneer/config"
 
   config = {
+    auction_runner_workers: 1000,
+    communication_timeout: "10s",
+    report_interval: "1m",
+    lock_retry_interval: "5s",
+    lock_ttl: "15s",
     consul_cluster: "http://127.0.0.1:8500",
     debug_address: p("diego.auctioneer.debug_addr"),
     enable_consul_service_registration: p("enable_consul_service_registration"),
-    listen_addr: p("diego.auctioneer.listen_addr"),
+    listen_address: p("diego.auctioneer.listen_addr"),
     locks_locket_enabled: p("locks.locket.enabled"),
     log_level: p("diego.auctioneer.log_level"),
     rep_client_session_cache_size: p("diego.auctioneer.rep.client_session_cache_size"),

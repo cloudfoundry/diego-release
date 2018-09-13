@@ -16,8 +16,10 @@ properties:
     description: "the number of single instance desired lrps to generate and fetch"
   benchmark-bbs.num_trials:
     description: "the number of trials of each benchmark to average across"
+    default: 10
   benchmark-bbs.num_reps:
     description: "the number of rep processes to simulate in test"
+    default: 10
   benchmark-bbs.local_route_emitters:
     description: "whether or not to enable local route emitters"
     default: false
@@ -26,6 +28,7 @@ properties:
     default: 5
   benchmark-bbs.num_populate_workers:
     description: "the number of workers generating desired LRPs during setup"
+    default: 10
   benchmark-bbs.reseed_database:
     description: "boolean flag to turn on database reseeding"
     default: true
@@ -62,7 +65,7 @@ properties:
     default: ""
   benchmark-bbs.sql.db_driver:
     description: "driver to use, e.g. postgres or mysql"
-
+    default: mysql
   benchmark-bbs.active_key_label:
     description: "the active key for encryption"
   benchmark-bbs.encryption_keys:
@@ -90,9 +93,13 @@ properties:
     default: ""
   benchmark-bbs.aws_region:
     description: "the aws region where the S3 bucket lives"
-    default: ""
+    default: "us-west-1"
 
   benchmark-bbs.log_level:
     description: "log level: debug, info, error or fatal"
+    default: "info"
   benchmark-bbs.log_file:
     description: "file name for benchmark log output in the BOSH log dir"
+  logging.format.timestamp:
+    description: "Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."
+    default: "unix-epoch"

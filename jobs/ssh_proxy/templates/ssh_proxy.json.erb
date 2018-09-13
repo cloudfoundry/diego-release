@@ -10,6 +10,7 @@
     log_level: p("diego.ssh_proxy.log_level"),
     debug_address: p("diego.ssh_proxy.debug_addr"),
     connect_to_instance_address: p("connect_to_instance_address"),
+    communication_timeout: "10s"
   }
 
   if_p("diego.ssh_proxy.idle_connection_timeout_in_seconds") do |value|

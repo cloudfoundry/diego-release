@@ -4,6 +4,7 @@ require 'uri'
 conf_dir = "/var/vcap/jobs/locket/config"
 
 config = {
+  report_interval: "1m",
   ca_file: "#{conf_dir}/certs/ca.crt",
   cert_file: "#{conf_dir}/certs/server.crt",
   consul_cluster: "http://127.0.0.1:8500",

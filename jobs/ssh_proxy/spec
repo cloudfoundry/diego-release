@@ -64,6 +64,7 @@ properties:
     description: The oauth client secret used to authenticate the ssh-proxy with the uaa
   diego.ssh_proxy.idle_connection_timeout_in_seconds:
     description: Idle timeout for incoming connections
+    default: 300
 
   diego.ssh_proxy.uaa.url:
     description: The domain name of the UAA
