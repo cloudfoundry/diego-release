@@ -22,7 +22,7 @@
     healthcheck_container_owner_name: "executor-health-check",
     garden_healthcheck_emission_interval: "30s",
 
-    envoy_config_refresh_delay: "1s",
+    envoy_config_reload_duration: p("containers.proxy.configuration_reload_duration"),
     envoy_drain_timeout: "15m",
 
     advertise_domain: p("diego.rep.advertise_domain"),

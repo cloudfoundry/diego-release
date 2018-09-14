@@ -315,3 +315,7 @@ properties:
   containers.set_cpu_weight:
     description: "EXPERIMENTAL: Set CPU weight on each Garden container to be proportional to its memory limit."
     default: false
+
+  containers.proxy.configuration_reload_duration:
+    description: "Duration of time in seconds that the rep grants the container Envoy proxy to reload its listener configuration when shutting down a container gracefully so that TLS-verifying clients will stop making connections. After this time duration, the rep will shut down other processes in the container."
+    default: 5s
