@@ -33,7 +33,7 @@ build_gardenrunc () {
     mkdir -p $GOPATH/bin
     NSTAR_PATH=src/code.cloudfoundry.org/guardian/rundmc/nstar
 
-    gcc -static -o $GOPATH/bin/init $GOPATH/src/code.cloudfoundry.org/guardian/cmd/init/init.c
+    gcc -static -o $GOPATH/bin/init $GOPATH/src/code.cloudfoundry.org/guardian/cmd/init/init.c $GOPATH/src/code.cloudfoundry.org/guardian/cmd/init/ignore_sigchild.c
     go install code.cloudfoundry.org/guardian/cmd/dadoo/
     go install code.cloudfoundry.org/grootfs/store/filesystems/overlayxfs/tardis
 
