@@ -53,9 +53,3 @@
             db_schema: diego
             db_username: diego
             require_ssl:
-    - name: consul_agent
-      release: consul
-      consumes:
-        consul_common: {from: consul_common_link}
-        consul_server: nil
-        consul_client: {from: consul_client_link}

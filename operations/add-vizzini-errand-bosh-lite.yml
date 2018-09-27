@@ -28,13 +28,6 @@
           ssh:
             proxy_secret: "((ssh_proxy_diego_credentials))"
           routable_domain_suffix: "((system_domain))"
-    - name: consul_agent
-      release: consul
-      consumes:
-        consul: nil
-        consul_common: {from: consul_common_link}
-        consul_server: nil
-        consul_client: {from: consul_client_link}
 - type: replace
   path: /instance_groups/name=router/jobs/name=ssh_proxy/properties/diego/ssh_proxy/enable_diego_auth?
   value: true
