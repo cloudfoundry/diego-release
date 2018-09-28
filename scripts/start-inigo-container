@@ -34,9 +34,11 @@ then
     ensure_exist $HOME/workspace/garden-runc-release https://github.com/cloudfoundry/garden-runc-release develop
     ensure_exist $HOME/workspace/routing-release https://github.com/cloudfoundry/routing-release develop
 
+    scripts_dir=$(readlink -f $(dirname $0))
+
     docker pull cloudfoundry/inigo-ci
     docker run --rm -e LOCAL_DEVELOPMENT=true -e DEFAULT_EVENTUALLY_TIMEOUT=60s --detach-keys "ctrl-z" --privileged \
-      -v ~/workspace/diego-release:/diego-release \
+      -v $scripts_dir/..:/diego-release \
       -v ~/workspace/diego-release-v0:/diego-release-v0 \
       -v ~/workspace/routing-release:/routing-release \
       -v ~/workspace/garden-runc-release:/garden-runc-release \
