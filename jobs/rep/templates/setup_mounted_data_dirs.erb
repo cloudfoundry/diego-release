@@ -21,6 +21,10 @@ instance_ca_size=$(wc -c ${conf_dir}/certs/rep/instance_identity.crt | cut -d' '
 max_containers=250
 instance_tmpfs_size=$((($instance_ca_size + $instance_cert_and_key_size) * $max_containers))
 
+mkdir -p /var/vcap/data/rep/shared_data
+flock /var/vcap/sys/run/garden/mount.lock /bin/bash -c 'if ! grep -q " /var/vcap/data/rep/shared_data " /proc/self/mountinfo; then mount --bind /var/vcap/data/rep/shared_data /var/vcap/data/rep/shared_data; fi'
+mount --make-shared /var/vcap/data/rep/shared_data
+
 instance_identity_dir=${shared_data_dir}/instance_identity
 if mount | grep -q $instance_identity_dir; then
   umount -f $instance_identity_dir
