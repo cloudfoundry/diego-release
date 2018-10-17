@@ -137,8 +137,14 @@ The [BBS API docs](https://github.com/cloudfoundry/bbs/tree/master/doc) and [rou
 ### BBS
 
 #### Endpoints
-Since [diego-release 2.0.0](https://github.com/cloudfoundry/diego-release/releases/tag/v2.0.0), no endpoints have been revised or deprecated.
-Please update this section if you add revisions to any BBS API endpoints.
+
+| endpoint                        | deprecated        | removed | notes                                        |
+| --------------------------      | ----------        | ------- | ------------------------------------         |
+| `/v1/tasks/list.r2`             | not yet releassed | N/A     | Use `/v1/tasks/list.r3` instead.             |
+| `/v1/tasks/get_by_task_guid.r2` | not yet releassed | N/A     | Use `/v1/tasks/get_by_task_guid.r3` instead. |
+| `/v1/events`                    | not yet releassed | N/A     | Use `/v1/events.r1` instead.                 |
+| `/v1/events/tasks`              | not yet releassed | N/A     | Use `/v1/events/tasks.r1` instead.           |
+| `/v1/events/lrp_instances`      | not yet releassed | N/A     | Use `/v1/events/lrp_instances.r1` instead.   |
 
 #### Fields
 
