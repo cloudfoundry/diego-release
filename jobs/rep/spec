@@ -305,6 +305,11 @@ properties:
     description: "EXPERIMENTAL: Set CPU weight on each Garden container to be proportional to its memory limit."
     default: false
 
+  containers.proxy.experimental_ads_servers:
+    description: "EXPERIMENTAL:  When set, the envoy proxy consumes dynamic config from the specified Aggregated Discovery Service servers (specified as a list of host:port).  This config is in addition to the static configuration that supports TLS termination / route-integrity."
+    default: []
+    example: [ "169.254.0.2:15001" ]
+
   logging.format.timestamp:
     description: "Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."
     default: "unix-epoch"
