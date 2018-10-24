@@ -89,3 +89,7 @@ properties:
   set_kernel_parameters:
     description: "Enable tuning /proc/sys kernel parameters. NOTE: set this property to 'false' when deploying to BOSH-Lite or other containerized BOSH clouds."
     default: true
+
+  database.tls.enable_identity_verification:
+    default: true
+    description: "Whether to verify the identity of the database host when connecting with TLS. Set this to `false` to allow TLS connections to database providers that do not configure the database's TLS certificate to include its hostname or IP, such as Google Cloud SQL"

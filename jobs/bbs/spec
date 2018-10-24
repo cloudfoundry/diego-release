@@ -185,3 +185,7 @@ properties:
   generate_suspect_actual_lrps:
     description: "EXPERIMENTAL: This is a temporary feature flag for bbs to generate suspect actual lrps when the cell for the actual lrp temporarily loses its presence. If set to false, the actual lrp with missing cell follows the old behavior of getting unclaimed and re-auctioned."
     default: false
+
+  database.tls.enable_identity_verification:
+    default: true
+    description: "Whether to verify the identity of the database host when connecting with TLS. Set this to `false` to allow TLS connections to database providers that do not configure the database's TLS certificate to include its hostname or IP, such as Google Cloud SQL"

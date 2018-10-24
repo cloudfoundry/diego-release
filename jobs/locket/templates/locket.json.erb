@@ -50,6 +50,7 @@ config[:database_driver] = p("diego.locket.sql.db_driver")
 
 if p("diego.locket.sql.require_ssl")
    config[:sql_ca_cert_file] = "#{conf_dir}/certs/sql/ca.crt"
+   config[:sql_enable_identity_verification] = p("database.tls.enable_identity_verification")
 end
 
 if_p("logging.format.timestamp") do |format|

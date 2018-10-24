@@ -100,6 +100,7 @@
 
   if p("diego.bbs.sql.require_ssl")
      config[:sql_ca_cert_file] = "#{conf_dir}/certs/sql/ca.crt"
+     config[:sql_enable_identity_verification] = p("database.tls.enable_identity_verification")
   end
 
   if_p("diego.bbs.sql.max_open_connections") do |value|
