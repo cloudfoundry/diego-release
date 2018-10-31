@@ -320,7 +320,7 @@ properties:
     description: "Duration of time in seconds that the rep grants the container Envoy proxy to reload its listener configuration when shutting down a container gracefully so that TLS-verifying clients will stop making connections. After this time duration, the rep will shut down other processes in the container."
     default: 5s
 
-  containers.proxy.experimental_ads_servers:
+  containers.proxy.ads_addresses:
     description: "EXPERIMENTAL:  When set, the envoy proxy consumes dynamic config from the specified Aggregated Discovery Service servers (specified as a list of host:port).  This config is in addition to the static configuration that supports TLS termination / route-integrity."
     default: []
     example: [ "169.254.0.2:15001" ]
