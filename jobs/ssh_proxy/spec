@@ -13,6 +13,9 @@ templates:
   loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
   loggregator_client.crt.erb: config/certs/loggregator/client.crt
   loggregator_client.key.erb: config/certs/loggregator/client.key
+  backends_tls_ca.crt.erb: config/certs/backends_tls/ca.crt
+  backends_tls_client.crt.erb: config/certs/backends_tls/client.crt
+  backends_tls_client.key.erb: config/certs/backends_tls/client.key
 
 provides:
 - name: ssh_proxy
@@ -26,6 +29,18 @@ properties:
   bpm.enabled:
     description: "Experimental: use the BOSH Process Manager to manage the ssh-proxy process."
     default: false
+
+  backends.tls.enabled:
+    default: false
+    description: "Whether to enable TLS-proxied connections to target backend instances."
+  backends.tls.ca_certificates:
+    default: []
+    description: "List of PEM-encoded CA certificate bundles for the SSH proxy to use to verify backends when connecting via TLS proxy. Should be non-empty if `backends.tls.enabled` is enabled."
+  backends.tls.client_certificate:
+    description: "PEM-encoded certificate for the SSH proxy to present to backends for verification when connecting via TLS proxy."
+  backends.tls.client_private_key:
+    description: "PEM-encoded private key associated to backends.tls.client_certificate."
+
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
     default: false

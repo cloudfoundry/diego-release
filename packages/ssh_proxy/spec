@@ -33,6 +33,7 @@ files:
   - code.cloudfoundry.org/lager/lagerflags/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
   - code.cloudfoundry.org/locket/models/*.go # gosub
+  - code.cloudfoundry.org/systemcerts/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/dgrijalva/jwt-go/*.go # gosub
   - github.com/gogo/protobuf/gogoproto/*.go # gosub
@@ -66,6 +67,8 @@ files:
   - golang.org/x/net/internal/timeseries/*.go # gosub
   - golang.org/x/net/lex/httplex/*.go # gosub
   - golang.org/x/net/trace/*.go # gosub
+  - golang.org/x/sys/windows/*.go # gosub
+  - golang.org/x/sys/windows/*.s # gosub
   - golang.org/x/text/secure/bidirule/*.go # gosub
   - golang.org/x/text/transform/*.go # gosub
   - golang.org/x/text/unicode/bidi/*.go # gosub

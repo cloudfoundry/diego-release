@@ -84,6 +84,19 @@
     config[:loggregator][:loggregator_instance_id] = spec.id
   end
 
+  config[:backends_tls_enabled] = p("backends.tls.enabled")
+  if_p("backends.tls.ca_certificates") do |value|
+    if value.length > 0
+      config[:backends_tls_ca_certificates] = "/var/vcap/jobs/ssh_proxy/config/certs/backends_tls/ca.crt"
+    end
+  end
+  if_p("backends.tls.client_certificate") do |value|
+    config[:backends_tls_client_certificate] = "/var/vcap/jobs/ssh_proxy/config/certs/backends_tls/client.crt"
+  end
+  if_p("backends.tls.client_private_key") do |value|
+    config[:backends_tls_client_private_key] = "/var/vcap/jobs/ssh_proxy/config/certs/backends_tls/client.key"
+  end
+
   config.to_json
 %>
 
