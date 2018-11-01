@@ -241,10 +241,10 @@ properties:
     default: 10
 
   containers.proxy.enabled:
-    description: "EXPERIMENTAL: Enable envoy proxy on garden containers. Requires valid TLS credentials in diego.executor.instance_identity_ca_cert and diego.executor.instance_identity_key."
+    description: "Enable envoy proxy on garden containers. Requires valid TLS credentials in diego.executor.instance_identity_ca_cert and diego.executor.instance_identity_key."
     default: false
   containers.proxy.additional_memory_allocation_mb:
-    description: "EXPERIMENTAL: Additional memory allocated to each container for the envoy proxy. This value must not be negative"
+    description: "Additional memory allocated to each container for the envoy proxy. This value must not be negative"
     default: 32
 
   containers.proxy.require_and_verify_client_certificates:
