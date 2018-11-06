@@ -78,7 +78,7 @@
     temp_dir: "#{tmp_dir}",
     unhealthy_monitoring_interval: "#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s",
     zone: "#{zone}",
-    max_data_string_length: 256,
+    max_data_string_length: p("logging.max_data_string_length"),
   }
 
   if p("containers.graceful_shutdown_interval_in_seconds") < 10

@@ -314,6 +314,10 @@ properties:
     description: "Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."
     default: "unix-epoch"
 
+  logging.max_data_string_length:
+    description: "Length in bytes above which logged strings will be truncated. If set to 0, turns off truncation."
+    default: 256
+
   set_kernel_parameters:
     description: "Enable tuning /proc/sys kernel parameters. NOTE: set this property to 'false' when deploying to BOSH-Lite or other containerized BOSH clouds."
     default: true

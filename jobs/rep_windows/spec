@@ -60,6 +60,10 @@ properties:
     description: "Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."
     default: "unix-epoch"
 
+  logging.max_data_string_length:
+    description: "Length in bytes above which logged strings will be truncated. If set to 0, turns off truncation."
+    default: 256
+
   loggregator.use_v2_api:
     description: "True to use local metron agent gRPC v2 API. False to use UDP v1 API."
     default: false
