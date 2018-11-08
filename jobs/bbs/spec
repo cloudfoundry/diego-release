@@ -160,7 +160,7 @@ properties:
 
   logging.max_data_string_length:
     description: "Length in bytes above which logged strings will be truncated. If set to 0, turns off truncation."
-    default: 256
+    default: 640
 
   locks.locket.enabled:
     description: When set, the BBS attempts to claim a lock from the Locket API.
