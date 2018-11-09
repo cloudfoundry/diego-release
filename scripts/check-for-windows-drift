@@ -2,8 +2,8 @@
 
 cd `dirname $0`/..
 
-rep_json=$(cat jobs/rep/templates/rep.json.erb |  grep -v declarative_healthcheck_path |  grep -v declarative_healthcheck_user)
-rep_windows_json=$(cat jobs/rep_windows/templates/rep.json.erb | grep -v declarative_healthcheck_path |  grep -v declarative_healthcheck_user)
+rep_json=$(cat jobs/rep/templates/rep.json.erb |  grep -v declarative_healthcheck_path |  grep -v declarative_healthcheck_user | grep -v container_proxy_path)
+rep_windows_json=$(cat jobs/rep_windows/templates/rep.json.erb | grep -v declarative_healthcheck_path |  grep -v declarative_healthcheck_user | grep -v container_proxy_path)
 
 if ! diff -u <(echo -e "$rep_windows_json") <(echo -e "$rep_json"); then
     echo "rep json have drifted"
