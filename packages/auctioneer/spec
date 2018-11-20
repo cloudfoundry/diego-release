@@ -49,6 +49,10 @@ files:
   - github.com/gogo/protobuf/protoc-gen-gogo/descriptor/*.go # gosub
   - github.com/gogo/protobuf/sortkeys/*.go # gosub
   - github.com/golang/protobuf/proto/*.go # gosub
+  - github.com/golang/protobuf/ptypes/*.go # gosub
+  - github.com/golang/protobuf/ptypes/any/*.go # gosub
+  - github.com/golang/protobuf/ptypes/duration/*.go # gosub
+  - github.com/golang/protobuf/ptypes/timestamp/*.go # gosub
   - github.com/hashicorp/consul/api/*.go # gosub
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/go-cleanhttp/*.go # gosub
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/serf/coordinate/*.go # gosub
@@ -70,14 +74,27 @@ files:
   - golang.org/x/text/transform/*.go # gosub
   - golang.org/x/text/unicode/bidi/*.go # gosub
   - golang.org/x/text/unicode/norm/*.go # gosub
+  - google.golang.org/genproto/googleapis/rpc/status/*.go # gosub
   - google.golang.org/grpc/*.go # gosub
+  - google.golang.org/grpc/balancer/*.go # gosub
+  - google.golang.org/grpc/balancer/base/*.go # gosub
+  - google.golang.org/grpc/balancer/roundrobin/*.go # gosub
   - google.golang.org/grpc/codes/*.go # gosub
+  - google.golang.org/grpc/connectivity/*.go # gosub
   - google.golang.org/grpc/credentials/*.go # gosub
+  - google.golang.org/grpc/encoding/*.go # gosub
+  - google.golang.org/grpc/encoding/proto/*.go # gosub
+  - google.golang.org/grpc/grpclb/grpc_lb_v1/messages/*.go # gosub
   - google.golang.org/grpc/grpclog/*.go # gosub
   - google.golang.org/grpc/internal/*.go # gosub
+  - google.golang.org/grpc/keepalive/*.go # gosub
   - google.golang.org/grpc/metadata/*.go # gosub
   - google.golang.org/grpc/naming/*.go # gosub
   - google.golang.org/grpc/peer/*.go # gosub
+  - google.golang.org/grpc/resolver/*.go # gosub
+  - google.golang.org/grpc/resolver/dns/*.go # gosub
+  - google.golang.org/grpc/resolver/passthrough/*.go # gosub
   - google.golang.org/grpc/stats/*.go # gosub
+  - google.golang.org/grpc/status/*.go # gosub
   - google.golang.org/grpc/tap/*.go # gosub
   - google.golang.org/grpc/transport/*.go # gosub

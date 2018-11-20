@@ -322,6 +322,7 @@
 [submodule "src/code.cloudfoundry.org/systemcerts"]
 	path = src/code.cloudfoundry.org/systemcerts
 	url = https://github.com/cloudfoundry/systemcerts
+	branch = master
 [submodule "src/golang.org/x/text"]
 	path = src/golang.org/x/text
 	url = https://go.googlesource.com/text
@@ -329,12 +330,10 @@
 [submodule "src/golang.org/x/sys"]
 	path = src/golang.org/x/sys
 	url = https://go.googlesource.com/sys
+	branch = master
 [submodule "src/github.com/paulcwarren/spec"]
 	path = src/github.com/paulcwarren/spec
 	url = https://github.com/paulcwarren/spec.git
-[submodule "src/github.com/jeffpak/local-node-plugin"]
-	path = src/github.com/jeffpak/local-node-plugin
-	url = https://github.com/jeffpak/local-node-plugin
 [submodule "src/code.cloudfoundry.org/diego-logging-client"]
 	path = src/code.cloudfoundry.org/diego-logging-client
 	url = https://github.com/cloudfoundry/diego-logging-client
@@ -414,4 +413,8 @@
 [submodule "src/code.cloudfoundry.org/dockerdriver"]
 	path = src/code.cloudfoundry.org/dockerdriver
 	url = https://github.com/cloudfoundry/dockerdriver
+	branch = master
+[submodule "src/code.cloudfoundry.org/local-node-plugin"]
+	path = src/code.cloudfoundry.org/local-node-plugin
+	url = https://github.com/cloudfoundry/local-node-plugin
 	branch = master
