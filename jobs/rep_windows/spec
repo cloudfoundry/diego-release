@@ -328,3 +328,7 @@ properties:
     description: "EXPERIMENTAL:  When set, the envoy proxy consumes dynamic config from the specified Aggregated Discovery Service servers (specified as a list of host:port).  This config is in addition to the static configuration that supports TLS termination / route-integrity."
     default: []
     example: [ "169.254.0.2:15001" ]
+
+  containers.layering_mode:
+    description: "Configures downloaded container asset management mode. Valid values are 'single-layer' and 'two-layer'. Setting this property to 'two-layer' enables the conversion of some downloaded Task and LRP assets to container image layers."
+    default: "single-layer"

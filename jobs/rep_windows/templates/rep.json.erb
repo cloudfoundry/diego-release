@@ -200,6 +200,13 @@
     config[:time_format] = format
   end
 
+  if_p("containers.layering_mode") do |mode|
+    if mode != "single-layer" and mode != "two-layer"
+      raise "containers.layering_mode should be one of: 'single-layer' or 'two-layer'"
+    end
+    config[:layering_mode] = mode
+  end
+
   config[:loggregator]={}
   config[:loggregator][:loggregator_use_v2_api] = p("loggregator.use_v2_api")
   if p("loggregator.use_v2_api") == true

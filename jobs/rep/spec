@@ -325,3 +325,7 @@ properties:
   containers.proxy.configuration_reload_duration:
     description: "Duration of time in seconds that the rep grants the container Envoy proxy to reload its listener configuration when shutting down a container gracefully so that TLS-verifying clients will stop making connections. After this time duration, the rep will shut down other processes in the container."
     default: 5s
+
+  containers.layering_mode:
+    description: "Configures downloaded container asset management mode. Valid values are 'single-layer' and 'two-layer'. Setting this property to 'two-layer' enables the conversion of some downloaded Task and LRP assets to container image layers."
+    default: "single-layer"
