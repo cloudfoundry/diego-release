@@ -13,5 +13,17 @@ else
   service postgresql start
 fi
 
+cd diego-release/
 
-./diego-release/scripts/ci/run_unit_internal
+export GOROOT=/usr/local/go
+export PATH=$GOROOT/bin:$PATH
+
+export GOPATH=$PWD
+export PATH=$PWD/bin:$PATH
+
+SCRIPT=${SCRIPT:-run-unit-tests}
+
+go install github.com/apcera/gnatsd
+go install github.com/onsi/ginkgo/ginkgo
+
+"scripts/${SCRIPT}" "$@"
