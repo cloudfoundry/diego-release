@@ -3,6 +3,10 @@
 scripts_path=./$(dirname $0)
 eval $($scripts_path/get_paths.sh)
 
+set -e
+go install github.com/apcera/gnatsd
+set +e
+
 ERROR_CODE=0
 
 SQL_FLAVOR=mysql $scripts_path/run-unit-tests-with-backing-store
