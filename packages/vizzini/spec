@@ -27,6 +27,12 @@ files:
   - github.com/gogo/protobuf/protoc-gen-gogo/descriptor/*.go # gosub
   - github.com/gogo/protobuf/sortkeys/*.go # gosub
   - github.com/golang/protobuf/proto/*.go # gosub
+  - github.com/hpcloud/tail/*.go # gosub
+  - github.com/hpcloud/tail/ratelimiter/*.go # gosub
+  - github.com/hpcloud/tail/util/*.go # gosub
+  - github.com/hpcloud/tail/vendor/gopkg.in/fsnotify/fsnotify.v1/*.go # gosub
+  - github.com/hpcloud/tail/vendor/gopkg.in/tomb.v1/*.go # gosub
+  - github.com/hpcloud/tail/watch/*.go # gosub
   - github.com/kr/pty/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/onsi/ginkgo/*.go # gosub
