@@ -42,6 +42,9 @@ properties:
   vizzini.verbose:
     description: Run tests in verbose mode
     default: false
+  vizzini.stream:
+    description: Stream output from parallel test nodes. This option will lead to less coherent output but is useful when debugging
+    default: false
 
   enable_declarative_healthcheck:
     description: "EXPERIMENTAL: When set, enables the declarative check tests in vizzini"

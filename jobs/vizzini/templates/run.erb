@@ -24,6 +24,7 @@ bbs_api_url=https://<%= p("vizzini.bbs.api_location") %>
 
 nodes=<%= properties.vizzini.nodes %>
 verbose=<%= properties.vizzini.verbose %>
+stream=<%= properties.vizzini.stream %>
 routable_domain_suffix=<%= properties.vizzini.routable_domain_suffix %>
 ssh_proxy_address=<%= properties.vizzini.ssh.proxy_address  %>
 callback_address=<%= spec.ip %>
@@ -63,6 +64,7 @@ ginkgo \
   -progress \
   -trace \
   -keepGoing \
+  -stream=${stream} \
   -- \
   ${bbs_sec_flags} \
   --enable-declarative-healthcheck=${enable_declarative_healthcheck} \
