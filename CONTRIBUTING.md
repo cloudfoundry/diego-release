@@ -120,90 +120,13 @@ Metrics added to any of the Diego components need to follow the naming and docum
 
 ### Running the SQL unit tests
 
-As of Diego 1.0, SQL unit tests are the default unit tests for Diego. To run the SQL unit tests locally requires running MySQL and Postgres with the correct configuration.
+As of Diego 1.0, SQL unit tests are the default unit tests for Diego. To run the SQL unit tests locally requires running MySQL and Postgres with the correct configuration. The recommended way to run databases is by using Docker.
 
-#### MacOS
-
-On MacOS, follow these steps to install and configure MySQL and Postgres:
-
-1. Install MySQL:
-
-        brew install mysql
-
-2. Start MySQL:
-
-        mysql.server start
-
-3. Set a root password:
-
-        mysql_secure_installation
-
-   Follow the on-screen prompts to complete the installation. The answers will not affect whether the unit tests can run.
-
-4. Create /etc/my.cnf with the following contents:
-
-        [mysqld]
-        sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
-
-5. Restart MySQL:
-
-        mysql.server restart
-
-6. Log in to the mysql console as root, using the password you specified in step 3:
-
-        mysql -uroot -p<your password>
-
-7. Run the following SQL commands to create a diego user with the correct permissions:
-
-        CREATE USER 'diego'@'localhost' IDENTIFIED BY 'diego_password';
-        GRANT ALL PRIVILEGES ON `diego\_%`.* TO 'diego'@'localhost';
-        GRANT ALL PRIVILEGES ON `routingapi\_%`.* TO 'diego'@'localhost';
-
-8. Install Postgres (version 9.4 or higher is required):
-
-        brew install postgresql
-
-   By default, brew installs Postgres to use `/usr/local/var/postgres` as its
-   data directory, and the instructions below assume that.
-
-9. Create a self-signed certificate as described in the [PostgreSQL documentation](https://www.postgresql.org/docs/9.4/static/ssl-tcp.html#SSL-CERTIFICATE-CREATION). 
-   Save the certificate and key to a local directory of your choosing.
-
-10. Edit the `/usr/local/var/postgres/postgresql.conf` file to set `ssl = on` and to refer to the certificate and key created above. For example:
-
-        ssl = on
-        ssl_cert_file = '/path/to/server.crt'
-        ssl_key_file = '/path/to/server.key'
-        # Other SSL params can be left commented out
-
-11. Run postgres in daemon mode:
-
-        pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
-
-12. Create the diego database:
-
-        createdb diego
-
-13. Create the diego user. When prompted for the password, enter 'diego_pw'.
-
-        createuser -d -P -r -s diego
-
-14. You should now be able to run the SQL unit tests. To run all the SQL-backed
-    tests, run the following command from
-    the root of diego-release:
-
-        ./scripts/run-unit-tests
-
-   This command will run all regular unit tests, as well as BBS and component
-   integration tests where a backing store is required in MySQL-backed and Postgres-backed modes.
-
-#### Docker
-
-If you would prefer to run the databases using docker follow these steps:
+#### Setup Mysql
 
 1. Write out the MySQL config:
 
-        echo -e "[mysqld]\nsql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES" > my.cnf
+        echo -e "[mysqld]\nsql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES\ndefault_authentication_plugin=mysql_native_password" > my.cnf
 
 1. Run MySQL container. Note: Your `my.cnf` should be in the current directory:
 
@@ -214,15 +137,17 @@ If you would prefer to run the databases using docker follow these steps:
             -p 3306:3306 \
             -e MYSQL_ROOT_PASSWORD=diego \
             -v my.cnf:/etc/mysql/conf.d/my.cnf \
+            --tmpfs /var/lib/mysql:rw \
             mysql
 
 1. Run the following SQL commands to create a diego user with the correct permissions:
 
-        docker exec -it mysql /bin/bash
-        mysql -uroot -pdiego -hlocalhost
-        CREATE USER 'diego'@'%' IDENTIFIED BY 'diego_password';
+        mysql -uroot -pdiego -h127.0.0.1
+        CREATE USER 'diego'@'%' IDENTIFIED WITH mysql_native_password BY 'diego_password';
         GRANT ALL PRIVILEGES ON `diego\_%`.* TO 'diego'@'%';
         GRANT ALL PRIVILEGES ON `routingapi\_%`.* TO 'diego'@'%';
+
+#### Setup Postgres
 
 1. Create a self-signed certificate as described in the [PostgreSQL documentation](https://www.postgresql.org/docs/9.4/static/ssl-tcp.html#SSL-CERTIFICATE-CREATION).
    Save the certificate and key to a local directory of your choosing.
@@ -248,14 +173,13 @@ If you would prefer to run the databases using docker follow these steps:
                 -c ssl_cert_file=/var/lib/postgresql/server.crt \
                 -c ssl_key_file=/var/lib/postgresql/server.key
 
-1. You should now be able to run the SQL unit tests. To run all the SQL-backed
-   tests, run the following command from
-   the root of diego-release:
+#### Run unit tests
+
+To run all the SQL-backed tests, run the following command from the root of diego-release:
 
         ./scripts/run-unit-tests
 
-   This command will run all regular unit tests, as well as BBS and component
-   integration tests where a backing store is required in MySQL-backed and Postgres-backed modes.
+This command will run all regular unit tests, as well as BBS and component integration tests where a backing store is required in MySQL-backed and Postgres-backed modes.
 
 ## <a name="deploy-bosh-lite"></a> Deploying Diego to BOSH-Lite
 
