@@ -16,6 +16,7 @@ templates:
   backends_tls_ca.crt.erb: config/certs/backends_tls/ca.crt
   backends_tls_client.crt.erb: config/certs/backends_tls/client.crt
   backends_tls_client.key.erb: config/certs/backends_tls/client.key
+  cc_api_ca_cert.crt.erb: config/certs/cc/cc_api_ca_cert.crt
 
 provides:
 - name: ssh_proxy
@@ -24,6 +25,11 @@ provides:
 packages:
   - pid_utils
   - ssh_proxy
+
+consumes:
+- name: cloud_controller_https_endpoint
+  type: cloud_controller_https_endpoint
+  optional: true
 
 properties:
   bpm.enabled:

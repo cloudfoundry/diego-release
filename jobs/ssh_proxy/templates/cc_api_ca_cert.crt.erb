@@ -1,0 +1,5 @@
+<% if_link('cloud_controller_https_endpoint') do |cc_https_link| %>
+<% cc_https_link.if_p("cc.public_tls.ca_cert") do |ca_cert| %>
+<%= ca_cert %>
+<% end %>
+<% end %>

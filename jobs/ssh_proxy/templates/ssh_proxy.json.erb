@@ -5,13 +5,20 @@
     host_key: p("diego.ssh_proxy.host_key"),
     consul_cluster: "http://127.0.0.1:8500",
     enable_consul_service_registration: p("enable_consul_service_registration"),
-    cc_api_url: "http://#{p("diego.ssh_proxy.cc.internal_service_hostname")}:#{p("diego.ssh_proxy.cc.external_port")}",
     skip_cert_verify:  p("diego.ssl.skip_cert_verify"),
     log_level: p("diego.ssh_proxy.log_level"),
     debug_address: p("diego.ssh_proxy.debug_addr"),
     connect_to_instance_address: p("connect_to_instance_address"),
     communication_timeout: "10s"
   }
+
+  config[:cc_api_url] = "http://#{p("diego.ssh_proxy.cc.internal_service_hostname")}:#{p("diego.ssh_proxy.cc.external_port")}"
+  if_link('cloud_controller_https_endpoint') do |cc_https_link|
+    cc_https_link.if_p('cc.public_tls.ca_cert') do
+      config[:cc_api_url] = "https://#{cc_https_link.p('cc.internal_service_hostname')}:#{cc_https_link.p('cc.public_tls.port')}"
+      config[:cc_api_ca_cert] = "/var/vcap/jobs/ssh_proxy/config/certs/cc/cc_api_ca_cert.crt"
+    end
+  end
 
   if_p("diego.ssh_proxy.idle_connection_timeout_in_seconds") do |value|
     config[:idle_connection_timeout] = "#{value}s"
