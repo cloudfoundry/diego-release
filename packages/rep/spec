@@ -34,7 +34,6 @@ files:
   - code.cloudfoundry.org/executor/containermetrics/*.go # gosub
   - code.cloudfoundry.org/executor/depot/*.go # gosub
   - code.cloudfoundry.org/executor/depot/containerstore/*.go # gosub
-  - code.cloudfoundry.org/executor/depot/containerstore/envoy/*.go # gosub
   - code.cloudfoundry.org/executor/depot/event/*.go # gosub
   - code.cloudfoundry.org/executor/depot/log_streamer/*.go # gosub
   - code.cloudfoundry.org/executor/depot/metrics/*.go # gosub
@@ -94,10 +93,32 @@ files:
   - github.com/container-storage-interface/spec/lib/go/csi/*.go # gosub
   - github.com/cyphar/filepath-securejoin/*.go # gosub
   - github.com/cyphar/filepath-securejoin/vendor/github.com/pkg/errors/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/api/v2/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/api/v2/auth/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/api/v2/cluster/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/api/v2/core/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/api/v2/endpoint/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/api/v2/listener/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/api/v2/route/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/bootstrap/v2/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/filter/accesslog/v2/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/filter/network/tcp_proxy/v2/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/metrics/v2/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/overload/v2alpha/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/ratelimit/v2/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/trace/v2/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/type/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/type/matcher/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/pkg/util/*.go # gosub
+  - github.com/ghodss/yaml/*.go # gosub
+  - github.com/gogo/googleapis/google/api/*.go # gosub
+  - github.com/gogo/googleapis/google/rpc/*.go # gosub
   - github.com/gogo/protobuf/gogoproto/*.go # gosub
+  - github.com/gogo/protobuf/jsonpb/*.go # gosub
   - github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/gogo/protobuf/protoc-gen-gogo/descriptor/*.go # gosub
   - github.com/gogo/protobuf/sortkeys/*.go # gosub
+  - github.com/gogo/protobuf/types/*.go # gosub
   - github.com/golang/protobuf/proto/*.go # gosub
   - github.com/golang/protobuf/protoc-gen-go/descriptor/*.go # gosub
   - github.com/golang/protobuf/ptypes/*.go # gosub
@@ -110,6 +131,12 @@ files:
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/go-cleanhttp/*.go # gosub
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/serf/coordinate/*.go # gosub
   - github.com/hashicorp/go-multierror/*.go # gosub
+  - github.com/lyft/protoc-gen-validate/validate/*.go # gosub
+  - github.com/lyft/protoc-gen-validate/validate/*.h # gosub
+  - github.com/lyft/protoc-gen-validate/vendor/github.com/golang/protobuf/proto/*.go # gosub
+  - github.com/lyft/protoc-gen-validate/vendor/github.com/golang/protobuf/protoc-gen-go/descriptor/*.go # gosub
+  - github.com/lyft/protoc-gen-validate/vendor/github.com/golang/protobuf/ptypes/duration/*.go # gosub
+  - github.com/lyft/protoc-gen-validate/vendor/github.com/golang/protobuf/ptypes/timestamp/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
