@@ -1,5 +1,4 @@
 #!/bin/bash
- 
 set -e -x
 
 # ensure gosub is installed (this will recompile it only if necessary)
@@ -49,4 +48,4 @@ go install github.com/vito/gosub
 
 } | grep -Ev '^github.com/docker/docker($|/)' > /tmp/packages
 
-cat /tmp/packages | xargs gosub sync
+cat /tmp/packages | xargs -s 1048576 gosub sync
