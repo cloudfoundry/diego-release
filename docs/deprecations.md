@@ -138,16 +138,16 @@ The [BBS API docs](https://github.com/cloudfoundry/bbs/tree/master/doc) and [rou
 
 #### Endpoints
 
-| endpoint                                  | deprecated        | removed | notes                                                   |
-| --------------------------                | ----------        | ------- | ------------------------------------                    |
-| `/v1/desired_lrps/list.r2`                | not yet released | N/A     | Use `/v1/desired_lrps/list.r3` instead.                  |
-| `/v1/desired_lrps/get_by_process_guid.r2` | not yet released | N/A     | Use `/v1/desired_lrps/get_by_process_guid.r3` instead.   |
+| endpoint                                  | deprecated       | removed | notes                                                    |
+| --------------------------                | ----------       | ------- | ------------------------------------                     |
+| `/v1/desired_lrps/list.r2`                | v2.20.0          | N/A     | Use `/v1/desired_lrps/list.r3` instead.                  |
+| `/v1/desired_lrps/get_by_process_guid.r2` | v2.20.0          | N/A     | Use `/v1/desired_lrps/get_by_process_guid.r3` instead.   |
 | `/v1/tasks/fail`                          | not yet released | N/A     | Use `/v1/tasks/complete` and `/v1/tasks/cancel` instead. |
-| `/v1/tasks/get_by_task_guid.r2`           | not yet released | N/A     | Use `/v1/tasks/get_by_task_guid.r3` instead.             |
-| `/v1/tasks/list.r2`                       | not yet released | N/A     | Use `/v1/tasks/list.r3` instead.                         |
-| `/v1/events`                              | not yet released | N/A     | Use `/v1/events.r1` instead.                             |
-| `/v1/events/tasks`                        | not yet released | N/A     | Use `/v1/events/tasks.r1` instead.                       |
-| `/v1/events/lrp_instances`                | not yet released | N/A     | Use `/v1/events/lrp_instances.r1` instead.               |
+| `/v1/tasks/get_by_task_guid.r2`           | v2.20.0          | N/A     | Use `/v1/tasks/get_by_task_guid.r3` instead.             |
+| `/v1/tasks/list.r2`                       | v2.20.0          | N/A     | Use `/v1/tasks/list.r3` instead.                         |
+| `/v1/events`                              | v2.20.0          | N/A     | Use `/v1/events.r1` instead.                             |
+| `/v1/events/tasks`                        | v2.20.0          | N/A     | Use `/v1/events/tasks.r1` instead.                       |
+| `/v1/events/lrp_instances`                | v2.20.0          | N/A     | Use `/v1/events/lrp_instances.r1` instead.               |
 
 #### Fields
 
