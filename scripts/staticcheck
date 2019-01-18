@@ -4,7 +4,7 @@ go get honnef.co/go/tools/cmd/staticcheck
 
 pids=""
 run_staticcheck() {
-  staticcheck -checks 'U1000' $1 &
+  staticcheck -checks 'U1000' $1
   pids+=" $!"
 }
 
