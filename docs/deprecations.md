@@ -142,7 +142,7 @@ The [BBS API docs](https://github.com/cloudfoundry/bbs/tree/master/doc) and [rou
 | --------------------------                | ----------       | ------- | ------------------------------------                     |
 | `/v1/desired_lrps/list.r2`                | v2.20.0          | N/A     | Use `/v1/desired_lrps/list.r3` instead.                  |
 | `/v1/desired_lrps/get_by_process_guid.r2` | v2.20.0          | N/A     | Use `/v1/desired_lrps/get_by_process_guid.r3` instead.   |
-| `/v1/tasks/fail`                          | not yet released | N/A     | Use `/v1/tasks/complete` and `/v1/tasks/cancel` instead. |
+| `/v1/tasks/fail`                          | v2.27.0          | N/A     | Use `/v1/tasks/complete` and `/v1/tasks/cancel` instead. |
 | `/v1/tasks/get_by_task_guid.r2`           | v2.20.0          | N/A     | Use `/v1/tasks/get_by_task_guid.r3` instead.             |
 | `/v1/tasks/list.r2`                       | v2.20.0          | N/A     | Use `/v1/tasks/list.r3` instead.                         |
 | `/v1/events`                              | v2.20.0          | N/A     | Use `/v1/events.r1` instead.                             |
