@@ -15,7 +15,7 @@ if(!(Test-Path -Path $CONSUL_DIR )) {
 }
 
 $env:GOPATH=($pwd).path
-$env:PATH = $env:GOPATH + "/bin;C:/go/bin;" + $CONSUL_DIR + ";" + $env:PATH
+$env:PATH = $env:GOPATH + "/bin;" + $CONSUL_DIR + ";" + $env:PATH
 # Write-Host "Gopath is " + $env:GOPATH
 # Write-Host "PATH is " + $env:PATH
 
