@@ -53,13 +53,13 @@ if [ ! -z "$PACKAGE" ]; then
   exit $?
 else
   pushd $DIEGO_RELEASE_DIR/src/github.com/cloudfoundry-incubator/ > /dev/null
-    ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress --race \
+    ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress -race \
       -skipPackage=${SKIP_PACKAGES} "$@"
     let ERROR_CODE+=$?
   popd > /dev/null
 
   pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/ > /dev/null
-    ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress --race \
+    ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress -race \
       -skipPackage=${SKIP_PACKAGES} "$@"
     let ERROR_CODE+=$?
   popd > /dev/null

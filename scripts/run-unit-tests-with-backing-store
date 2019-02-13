@@ -19,7 +19,7 @@ fi
 ERROR_CODE=1
 
 pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/ > /dev/null
-  ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress --race \
+  ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress -race \
     auctioneer/cmd/auctioneer \
     bbs/cmd/bbs \
     bbs/db/migrations \

@@ -43,7 +43,7 @@ $env:SQL_FLAVOR="mysql"
 
 cd src/code.cloudfoundry.org/
 
-ginkgo -r -keepGoing -trace -randomizeAllSpecs -progress --race `
+ginkgo -r -keepGoing -trace -randomizeAllSpecs -progress -race `
   route-emitter `
   cfhttp `
   cacheddownloader `
