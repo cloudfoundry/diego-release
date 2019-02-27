@@ -56,6 +56,9 @@ properties:
   diego.ssh_proxy.healthcheck_listen_addr:
     description: "address for the ssh proxy healthcheck server"
     default: "0.0.0.0:2223"
+  diego.ssh_proxy.disable_healthcheck_server:
+    description: "disable ssh proxy healthcheck server"
+    default: false
   diego.ssh_proxy.bbs.api_location:
     description: "Address to the BBS Server"
     default: "bbs.service.cf.internal:8889"

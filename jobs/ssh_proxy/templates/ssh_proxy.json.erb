@@ -2,6 +2,7 @@
   config = {
     address: p("diego.ssh_proxy.listen_addr"),
     health_check_address: p("diego.ssh_proxy.healthcheck_listen_addr"),
+    disable_health_check_server: p("diego.ssh_proxy.disable_healthcheck_server"),
     host_key: p("diego.ssh_proxy.host_key"),
     consul_cluster: "http://127.0.0.1:8500",
     enable_consul_service_registration: p("enable_consul_service_registration"),
