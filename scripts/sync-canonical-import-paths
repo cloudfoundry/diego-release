@@ -44,6 +44,9 @@ check_package() {
   pushd src/$pkg >/dev/null
     package_name=$(basename $pkg | tr '-' '_')
     grep -E --silent 'package main$' $(grep -L '// +build ignore' *.go) && package_name=main
+    if [[ $pkg =~ .*"/cfhttp/v2".* ]]; then
+      package_name=cfhttp
+    fi
     canonical_import_path="package $package_name // import \"$pkg\""
     if [ "$(cat package.go 2>/dev/null)" != "$canonical_import_path" ]; then
         echo "updating canonical import path in $PWD/package.go"
