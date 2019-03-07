@@ -20,6 +20,10 @@ echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse
 # Default value is 65536. We set it to a larger number to avoid running out of connections.
 echo 262144 > /proc/sys/net/netfilter/nf_conntrack_max
 
+# Default value is 60 (seconds). We set it to a larger number to avoid connection issues with remote endpoints or
+# firewalls which keep sessions for half-closed connections for longer than 1 minute.
+echo 900 > /proc/sys/net/netfilter/nf_conntrack_tcp_timeout_close_wait
+
 echo 2147483647 > /proc/sys/fs/inotify/max_user_watches
 echo 2147483647 > /proc/sys/fs/inotify/max_user_instances
 echo 2147483647 > /proc/sys/fs/inotify/max_queued_events
