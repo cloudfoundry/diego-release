@@ -156,3 +156,8 @@ The [BBS API docs](https://github.com/cloudfoundry/bbs/tree/master/doc) and [rou
 - [VolumeMount::deprecated_volume_id](https://github.com/cloudfoundry/bbs/blob/e2ecd53354162c7ba39cb16fcd73e0830041bc11/models/volume_mount.proto#L20)
 - [VolumeMount::deprecated_mode](https://github.com/cloudfoundry/bbs/blob/e2ecd53354162c7ba39cb16fcd73e0830041bc11/models/volume_mount.proto#L21)
 - [VolumeMount::deprecated_config](https://github.com/cloudfoundry/bbs/blob/e2ecd53354162c7ba39cb16fcd73e0830041bc11/models/volume_mount.proto#L22)
+
+## <a name="docker-registries-supporting-v2s1-manifests"></a>Docker Registries Supporting v2 schema 1 manifests
+
+Support for running LRPs using Docker images from registries that serve only [v2 schema 1 manifests](https://docs.docker.com/registry/spec/manifest-v2-1/) is deprecated and will be removed in 3.0.0. Docker registries should be updated to serve [v2 schema2 manifests](https://docs.docker.com/registry/spec/manifest-v2-2/).
+
