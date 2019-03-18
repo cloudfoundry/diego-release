@@ -51,7 +51,7 @@ properties:
   diego.rep.zone:
     description: "The zone associated with the rep. This will override the BOSH-provided spec.az property if present."
   diego.rep.use_azure_fault_domains:
-    description: "Use Azure Fault-Domains to determine the value of the zone. The value of the zone will be z<FD-index>. e.g. z0, z1, etc."
+    description: "If set to true the rep zone will be determined by IAAS. If VM belongs to Azure Fault-Domain the value of the zone will be z<Fault-Domain-index>. e.g. z0, z1, etc. If VM belongs to Azure Availability Zone the value of zone determined in diego.rep.zone will be used."
     default: false
   diego.rep.preloaded_rootfses:
     description: "Array of name:absolute_path pairs representing root filesystems preloaded onto the underlying garden"
