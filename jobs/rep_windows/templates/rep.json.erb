@@ -183,12 +183,14 @@
 
   if_p("diego.executor.instance_identity_ca_cert",
        "diego.executor.instance_identity_key",
-       "diego.executor.instance_identity_validity_period_in_hours") do |cert, key, validity_period|
+       "diego.executor.instance_identity_validity_period_in_hours",
+       "diego.executor.instance_identity_add_spiffe_uri") do |cert, key, validity_period, add_spiffe_uri|
     if !(cert.empty? || key.empty? || validity_period < 1)
       config[:instance_identity_ca_path] = "#{conf_dir}/certs/rep/instance_identity.crt"
       config[:instance_identity_private_key_path] = "#{conf_dir}/certs/rep/instance_identity.key"
       config[:instance_identity_cred_dir] = instance_identity_dir
       config[:instance_identity_validity_period] = "#{validity_period}h"
+      config[:instance_identity_add_spiffe_uri] = add_spiffe_uri
     elsif validity_period < 1
       raise '"diego.executor.instance_identity_validity_period_in_hours" should be a positive integer'
     end
