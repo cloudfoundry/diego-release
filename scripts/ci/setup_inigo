@@ -23,21 +23,25 @@ function setup_dnsmasq() {
 
 build_gardenrunc () {
   echo "Building garden-runc"
-  export GARDEN_GOPATH=$1
+  export GARDEN_RUNC_PATH=$1
 
-  pushd ${GARDEN_GOPATH}
-    export GOPATH=${PWD}
-    export PATH=${GOPATH}/bin:${PATH}
+  pushd ${GARDEN_RUNC_PATH}
+    export PATH=${PWD}/bin:${PATH}
     export GARDEN_BINPATH=${PWD}/bin/
 
-    mkdir -p $GOPATH/bin
-    NSTAR_PATH=src/code.cloudfoundry.org/guardian/rundmc/nstar
+    mkdir -p ${GARDEN_RUNC_PATH}/bin
+    NSTAR_PATH=src/guardian/rundmc/nstar
 
-    gcc -static -o $GOPATH/bin/init $GOPATH/src/code.cloudfoundry.org/guardian/cmd/init/init.c $GOPATH/src/code.cloudfoundry.org/guardian/cmd/init/ignore_sigchild.c
-    go install code.cloudfoundry.org/guardian/cmd/dadoo/
-    go install code.cloudfoundry.org/grootfs/store/filesystems/overlayxfs/tardis
+    gcc -static -o $GARDEN_BINPATH/init $GARDEN_RUNC_PATH/src/guardian/cmd/init/init.c $GARDEN_RUNC_PATH/src/guardian/cmd/init/ignore_sigchild.c
+    pushd ./src/guardian
+      go build -mod vendor -o "${GARDEN_BINPATH}/dadoo" ./cmd/dadoo
+    popd
+    pushd ./src/grootfs
+      go build -mod vendor -o "${GARDEN_BINPATH}/tardis" ./store/filesystems/overlayxfs/tardis
+    popd
 
-    pushd src/github.com/opencontainers/runc
+    export GOPATH="$PWD/src/gopath"
+    pushd src/gopath/src/github.com/opencontainers/runc
       PKG_CONFIG_PATH=/usr/local/lib/pkgconfig GOPATH=${PWD}/Godeps/_workspace:${GOPATH} BUILDTAGS="seccomp" make static
       mv runc ${GARDEN_BINPATH}
     popd
@@ -83,13 +87,12 @@ create_garden_storage() {
 
 build_grootfs () {
   echo "Building grootfs..."
-  export GROOTFS_GOPATH=${PWD}/garden-runc-release
-  export GROOTFS_BINPATH=${GROOTFS_GOPATH}/bin
+  export GARDEN_RUNC_PATH=${PWD}/garden-runc-release
+  export GROOTFS_BINPATH=${GARDEN_RUNC_PATH}/bin
   mkdir -p ${GROOTFS_BINPATH}
 
-  pushd ${GROOTFS_GOPATH}/src/code.cloudfoundry.org/grootfs
-    export GOPATH=${GROOTFS_GOPATH}
-    export PATH=${GOPATH}/bin:${PATH}
+  pushd ${GARDEN_RUNC_PATH}/src/grootfs
+    export PATH=${GROOTFS_BINPATH}:${PATH}
 
     # Set up btrfs volume and loopback devices in environment
     create_garden_storage
@@ -97,7 +100,7 @@ build_grootfs () {
 
     make
 
-    mv grootfs ${GROOTFS_GOPATH}/bin/
+    mv $PWD/build/grootfs $GROOTFS_BINPATH
     echo "grootfs installed."
 
     groupadd iamgroot -g 4294967294
@@ -227,6 +230,7 @@ export REP_GOPATH=${GOPATH_ROOT}
 export ROUTE_EMITTER_GOPATH=${GOPATH_ROOT}
 export SSHD_GOPATH=${GOPATH_ROOT}
 export SSH_PROXY_GOPATH=${GOPATH_ROOT}
+export GARDEN_GOPATH=${GOPATH_ROOT}
 
 # used for routing to apps; same logic that Garden uses.
 EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\s/\1/;tx;d;:x')
@@ -247,6 +251,6 @@ if ! grep -qs '/sys' /proc/mounts; then
 fi
 
 # shellcheck source=/dev/null
-source "${GARDEN_GOPATH}/ci/helpers/device-control"
+source "${GARDEN_RUNC_PATH}/ci/helpers/device-control"
 permit_device_control
 create_loop_devices 256
