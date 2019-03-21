@@ -36,6 +36,7 @@ files:
   - github.com/containers/image/types/*.go # gosub
   - github.com/docker/distribution/*.go # gosub
   - github.com/docker/distribution/digestset/*.go # gosub
+  - github.com/docker/distribution/metrics/*.go # gosub
   - github.com/docker/distribution/reference/*.go # gosub
   - github.com/docker/distribution/registry/api/errcode/*.go # gosub
   - github.com/docker/distribution/registry/api/v2/*.go # gosub
@@ -44,8 +45,24 @@ files:
   - github.com/docker/distribution/registry/client/transport/*.go # gosub
   - github.com/docker/distribution/registry/storage/cache/*.go # gosub
   - github.com/docker/distribution/registry/storage/cache/memory/*.go # gosub
+  - github.com/docker/distribution/vendor/github.com/beorn7/perks/quantile/*.go # gosub
+  - github.com/docker/distribution/vendor/github.com/docker/go-metrics/*.go # gosub
+  - github.com/docker/distribution/vendor/github.com/golang/protobuf/proto/*.go # gosub
   - github.com/docker/distribution/vendor/github.com/gorilla/mux/*.go # gosub
+  - github.com/docker/distribution/vendor/github.com/matttproud/golang_protobuf_extensions/pbutil/*.go # gosub
   - github.com/docker/distribution/vendor/github.com/opencontainers/go-digest/*.go # gosub
+  - github.com/docker/distribution/vendor/github.com/opencontainers/image-spec/specs-go/*.go # gosub
+  - github.com/docker/distribution/vendor/github.com/opencontainers/image-spec/specs-go/v1/*.go # gosub
+  - github.com/docker/distribution/vendor/github.com/prometheus/client_golang/prometheus/*.go # gosub
+  - github.com/docker/distribution/vendor/github.com/prometheus/client_golang/prometheus/promhttp/*.go # gosub
+  - github.com/docker/distribution/vendor/github.com/prometheus/client_model/go/*.go # gosub
+  - github.com/docker/distribution/vendor/github.com/prometheus/common/expfmt/*.go # gosub
+  - github.com/docker/distribution/vendor/github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg/*.go # gosub
+  - github.com/docker/distribution/vendor/github.com/prometheus/common/model/*.go # gosub
+  - github.com/docker/distribution/vendor/github.com/prometheus/procfs/*.go # gosub
+  - github.com/docker/distribution/vendor/github.com/prometheus/procfs/internal/util/*.go # gosub
+  - github.com/docker/distribution/vendor/github.com/prometheus/procfs/nfs/*.go # gosub
+  - github.com/docker/distribution/vendor/github.com/prometheus/procfs/xfs/*.go # gosub
   - github.com/docker/docker-credential-helpers/client/*.go # gosub
   - github.com/docker/docker-credential-helpers/credentials/*.go # gosub
   - github.com/docker/docker/api/types/versions/*.go # gosub
