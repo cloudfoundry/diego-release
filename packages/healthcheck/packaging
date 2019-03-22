@@ -1,23 +1,19 @@
 set -e
 
+# create GOPATH
 mkdir -p ${BOSH_INSTALL_TARGET}/src
-cp -a . ${BOSH_INSTALL_TARGET}/src
-export GOPATH=$BOSH_INSTALL_TARGET
+mv * ${BOSH_INSTALL_TARGET}/src
+mv ${BOSH_INSTALL_TARGET}/src .
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang-1-linux)
-export PATH=$GOROOT/bin:$PATH
+source /var/vcap/packages/golang-1-linux/bosh/compile.env
 
 CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/healthcheck/cmd/healthcheck
 GOOS=windows CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/healthcheck/cmd/healthcheck
 GOOS=windows CGO_ENABLED=0 go build -o healthcheck-external-port.exe -tags=external -a -installsuffix static code.cloudfoundry.org/healthcheck/cmd/healthcheck
 
-for binary in healthcheck; do
-    ldd $binary && echo "$binary must be statically linked" && false
-done
+ldd healthcheck && echo "healthcheck must be statically linked" && false
 
 cp healthcheck ${BOSH_INSTALL_TARGET}
 cp healthcheck.exe ${BOSH_INSTALL_TARGET}
 cp healthcheck-external-port.exe ${BOSH_INSTALL_TARGET}
 
-# clean up source artifacts
-rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg

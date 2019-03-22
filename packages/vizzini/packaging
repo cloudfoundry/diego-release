@@ -1,19 +1,20 @@
 set -e -x
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang-1-linux)
-export PATH=${GOROOT}/bin:${PATH}
+mkdir -p ${BOSH_INSTALL_TARGET}/src
+cp -a . ${BOSH_INSTALL_TARGET}/src
 
-export GOPATH=$BOSH_INSTALL_TARGET
+pushd ${BOSH_INSTALL_TARGET}
+  source /var/vcap/packages/golang-1-linux/bosh/compile.env
 
-mkdir -p ${GOPATH}/src
-cp -a . ${GOPATH}/src
+  go install github.com/onsi/ginkgo/ginkgo
 
-cd ${GOPATH}/src/code.cloudfoundry.org/vizzini/
+  pushd src/code.cloudfoundry.org/vizzini/
+    go test -c .
 
-go install github.com/onsi/ginkgo/ginkgo
-
-go test -c .
+    # clean up test artifacts
+    rm *.test
+  popd
+popd
 
 # clean up artifacts
-rm *.test
-rm -rf ${GOPATH}/pkg
+rm -rf ${BOSH_INSTALL_TARGET}/pkg

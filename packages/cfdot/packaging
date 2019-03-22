@@ -1,19 +1,17 @@
 set -e -x
 
+# create GOPATH
 mkdir -p ${BOSH_INSTALL_TARGET}/src
-cp -a . ${BOSH_INSTALL_TARGET}/src
-export GOPATH=$BOSH_INSTALL_TARGET
+mv * ${BOSH_INSTALL_TARGET}/src
+mv ${BOSH_INSTALL_TARGET}/src .
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang-1-linux)
-export PATH=$GOROOT/bin:$PATH
+source /var/vcap/packages/golang-1-linux/bosh/compile.env
+
+mkdir ${BOSH_INSTALL_TARGET}/bin
+export GOBIN=${BOSH_INSTALL_TARGET}/bin
+
 go install code.cloudfoundry.org/cfdot
 
-# clean up source artifacts
-rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg
-
 # install jq
-BIN_DIR=${BOSH_INSTALL_TARGET}/bin
-mkdir -p ${BIN_DIR}
-mkdir -p tmp
-tar -xzf jq/jq-*.tgz -C ${BIN_DIR} jq
-chmod +x ${BIN_DIR}/jq
+tar -xzf src/jq/jq-*.tgz -C ${GOBIN} jq
+chmod +x ${GOBIN}/jq

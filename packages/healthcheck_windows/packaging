@@ -8,19 +8,18 @@ if ((Get-Item $BOSH_INSTALL_TARGET).LinkType -ne "") {
   $BOSH_INSTALL_TARGET = (Get-Item $BOSH_INSTALL_TARGET).Target
 }
 
-$env:GOROOT="C:\var\vcap\packages\golang-1-windows\go"
-$env:GOPATH="${BOSH_INSTALL_TARGET}"
-$env:PATH="${env:GOROOT}\bin;${env:PATH}"
+# Create GOPATH
+New-Item -ItemType "directory" -Force src
+
+robocopy.exe /E "${PWD}" src /xd src
+if ($LASTEXITCODE -ge 8) {
+    Write-Error "robocopy.exe /E ${PWD} src /xd src"
+}
+
+. C:\var\vcap\packages\golang-1-windows\bosh\compile.ps1
+
 $pkg_name="healthcheck"
 $pkg_path="code.cloudfoundry.org/healthcheck/cmd/healthcheck"
-
-# Create GOPATH
-New-Item -ItemType "directory" -Force "${BOSH_INSTALL_TARGET}\src"
-
-robocopy.exe /E "${PWD}" "${BOSH_INSTALL_TARGET}\src"
-if ($LASTEXITCODE -ge 8) {
-    Write-Error "robocopy.exe /E ${PWD} ${BOSH_INSTALL_TARGET}\src"
-}
 
 $env:CGO_ENABLED=0
 
@@ -36,16 +35,5 @@ go.exe build -a -installsuffix static -o "${BOSH_INSTALL_TARGET}\internal\${pkg_
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Error compiling: ${pkg_path}"
 }
-
-# Cleanup build artifacts
-New-Item -ItemType directory -Path ".\emptydirectory" -Force
-
-robocopy.exe ".\emptydirectory" "${BOSH_INSTALL_TARGET}\src" /PURGE
-if ($LASTEXITCODE -ge 8) {
-    Write-Error "robocopy.exe .\emptydirectory ${BOSH_INSTALL_TARGET}\src /PURGE"
-}
-
-Remove-Item -Recurse -Path "${BOSH_INSTALL_TARGET}\src" -Force
-Remove-Item -Recurse -Path ".\emptydirectory" -Force
 
 Exit 0

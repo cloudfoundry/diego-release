@@ -1,23 +1,16 @@
 set -e
 
+# create GOPATH
 mkdir -p ${BOSH_INSTALL_TARGET}/src
-cp -a . ${BOSH_INSTALL_TARGET}/src
-export GOPATH=$BOSH_INSTALL_TARGET
+mv * ${BOSH_INSTALL_TARGET}/src
+mv ${BOSH_INSTALL_TARGET}/src .
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang-1-linux)
-export PATH=$GOROOT/bin:$PATH
+source /var/vcap/packages/golang-1-linux/bosh/compile.env
 
-CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/diego-ssh/cmd/sshd
-GOOS=windows CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/diego-ssh/cmd/sshd
-GOOS=windows CGO_ENABLED=0 go build -o diego-sshd-windows2012R2.exe -tags=windows2012R2 -a -installsuffix static code.cloudfoundry.org/diego-ssh/cmd/sshd
+CGO_ENABLED=0 go build -o ${BOSH_INSTALL_TARGET}/diego-sshd -a -installsuffix static code.cloudfoundry.org/diego-ssh/cmd/sshd
+GOOS=windows CGO_ENABLED=0 go build -o ${BOSH_INSTALL_TARGET}/diego-sshd.exe -a -installsuffix static code.cloudfoundry.org/diego-ssh/cmd/sshd
+GOOS=windows CGO_ENABLED=0 go build -o ${BOSH_INSTALL_TARGET}/diego-sshd-windows2012R2.exe -tags=windows2012R2 -a -installsuffix static code.cloudfoundry.org/diego-ssh/cmd/sshd
 
-ldd sshd && echo 'diego-sshd must be statically linked' && false
+ldd ${BOSH_INSTALL_TARGET}/diego-sshd && echo 'diego-sshd must be statically linked' && false
 
-cp sshd ${BOSH_INSTALL_TARGET}/diego-sshd
-cp sshd.exe ${BOSH_INSTALL_TARGET}/diego-sshd.exe
-cp diego-sshd-windows2012R2.exe ${BOSH_INSTALL_TARGET}
-
-tar -xzvf winpty/winpty-*.tgz -C ${BOSH_INSTALL_TARGET}
-
-# clean up source artifacts
-rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg
+tar -xzvf src/winpty/winpty-*.tgz -C ${BOSH_INSTALL_TARGET}

@@ -1,11 +1,11 @@
 set -e
 
+# create GOPATH
 mkdir -p ${BOSH_INSTALL_TARGET}/src
-cp -a . ${BOSH_INSTALL_TARGET}/src
-export GOPATH=$BOSH_INSTALL_TARGET
+mv * ${BOSH_INSTALL_TARGET}/src
+mv ${BOSH_INSTALL_TARGET}/src .
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang-1-linux)
-export PATH=$GOROOT/bin:$PATH
+source /var/vcap/packages/golang-1-linux/bosh/compile.env
 
 CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/builder
 CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/launcher
@@ -16,7 +16,7 @@ GOOS=windows CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.o
 GOOS=windows CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/getenv
 
 for binary in builder launcher; do
-    ldd $binary && echo "$binary must be statically linked" && false
+  ldd $binary && echo "$binary must be statically linked" && false
 done
 
 cp /var/vcap/packages/diego-sshd/diego-sshd .
@@ -30,5 +30,3 @@ tar -czf ${BOSH_INSTALL_TARGET}/buildpack_app_lifecycle.tgz \
   builder.exe launcher.exe getenv.exe healthcheck.exe diego-sshd.exe \
   winpty-agent.exe winpty.dll
 
-# clean up source artifacts
-rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg

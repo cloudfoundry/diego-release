@@ -1,11 +1,11 @@
 set -e
 
+# create GOPATH
 mkdir -p ${BOSH_INSTALL_TARGET}/src
-cp -a . ${BOSH_INSTALL_TARGET}/src
-export GOPATH=$BOSH_INSTALL_TARGET
+mv * ${BOSH_INSTALL_TARGET}/src
+mv ${BOSH_INSTALL_TARGET}/src .
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang-1-linux)
-export PATH=$GOROOT/bin:$PATH
+source /var/vcap/packages/golang-1-linux/bosh/compile.env
 
 CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/dockerapplifecycle/builder
 CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/dockerapplifecycle/launcher
@@ -18,6 +18,3 @@ cp /var/vcap/packages/diego-sshd/diego-sshd .
 cp /var/vcap/packages/healthcheck/healthcheck .
 
 tar -czf ${BOSH_INSTALL_TARGET}/docker_app_lifecycle.tgz builder launcher healthcheck diego-sshd
-
-# clean up source artifacts
-rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg

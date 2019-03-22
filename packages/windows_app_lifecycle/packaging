@@ -1,24 +1,21 @@
 set -e
 
+# create GOPATH
 mkdir -p ${BOSH_INSTALL_TARGET}/src
-cp -a . ${BOSH_INSTALL_TARGET}/src
-export GOPATH=$BOSH_INSTALL_TARGET
+mv * ${BOSH_INSTALL_TARGET}/src
+mv ${BOSH_INSTALL_TARGET}/src .
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang-1-linux)
-export PATH=$GOROOT/bin:$PATH
+source /var/vcap/packages/golang-1-linux/bosh/compile.env
 
 GOOS=windows CGO_ENABLED=0 go build -tags=windows2012R2 -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/builder
 GOOS=windows CGO_ENABLED=0 go build -tags=windows2012R2 -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/launcher
 GOOS=windows CGO_ENABLED=0 go build -tags=windows2012R2 -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/getenv
 
-mkdir -p tmp
-tar -xzf tar/tar-*.tgz -C tmp
-
 cp /var/vcap/packages/diego-sshd/diego-sshd-windows2012R2.exe diego-sshd.exe
 cp /var/vcap/packages/healthcheck/healthcheck-external-port.exe healthcheck.exe
-cp tmp/tar-*.exe tar.exe
+
+mkdir -p tmp
+tar -xzf src/tar/tar-*.tgz -C tmp
+mv tmp/tar-*.exe tar.exe
 
 tar -czf ${BOSH_INSTALL_TARGET}/windows_app_lifecycle.tgz builder.exe launcher.exe getenv.exe healthcheck.exe diego-sshd.exe tar.exe
-
-# clean up source artifacts
-rm -rf ${BOSH_INSTALL_TARGET}/src ${BOSH_INSTALL_TARGET}/pkg
