@@ -5,15 +5,12 @@ log_dir=/var/vcap/sys/log/vizzini
 
 set -e -x
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang-1-linux)
-export PATH=${GOROOT}/bin:${PATH}
-
-export GOPATH=/var/vcap/packages/vizzini
-export PATH=${GOPATH}/bin:${PATH}
+cd /var/vcap/packages/vizzini
+source /var/vcap/packages/golang-1-linux/bosh/runtime.env
 
 export CF_COLOR=false
 
-cd /var/vcap/packages/vizzini/src/code.cloudfoundry.org/vizzini
+cd src/code.cloudfoundry.org/vizzini
 
 exitstatus=0
 
@@ -47,9 +44,6 @@ enable_privileged_container_tests=<%= properties.enable_privileged_container_tes
     container_proxy_key_flag="--proxy-client-key=${conf_dir}/certs/container_proxy/client.key"
   <% end %>
 <% end %>
-
-go install github.com/onsi/ginkgo/ginkgo
-
 
 <% if_p("vizzini.eventually_timeout") do |eventually_timeout| %>
   export DEFAULT_EVENTUALLY_TIMEOUT=<%= eventually_timeout %>

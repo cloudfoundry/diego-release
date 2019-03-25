@@ -4,19 +4,15 @@ set -e -x
 log_dir=/var/vcap/sys/log/benchmark-bbs
 conf_dir=/var/vcap/jobs/benchmark-bbs/config
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang-1-linux)
-export PATH=${GOROOT}/bin:${PATH}
-
-export GOPATH=/var/vcap/packages/benchmark-bbs
-export PATH=${GOPATH}/bin:${PATH}
+cd /var/vcap/packages/benchmark-bbs
+source /var/vcap/packages/golang-1-linux/bosh/runtime.env
 
 export CF_COLOR=false
 
 mkdir -p $log_dir
 chown -R vcap:vcap $log_dir
 
-
-cd /var/vcap/packages/benchmark-bbs/src/code.cloudfoundry.org/benchmarkbbs
+cd src/code.cloudfoundry.org/benchmarkbbs
 
 # Allowed number of open file descriptors
 ulimit -n 100000
