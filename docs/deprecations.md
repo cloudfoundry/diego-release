@@ -156,6 +156,7 @@ The [BBS API docs](https://github.com/cloudfoundry/bbs/tree/master/doc) and [rou
 - [VolumeMount::deprecated_volume_id](https://github.com/cloudfoundry/bbs/blob/e2ecd53354162c7ba39cb16fcd73e0830041bc11/models/volume_mount.proto#L20)
 - [VolumeMount::deprecated_mode](https://github.com/cloudfoundry/bbs/blob/e2ecd53354162c7ba39cb16fcd73e0830041bc11/models/volume_mount.proto#L21)
 - [VolumeMount::deprecated_config](https://github.com/cloudfoundry/bbs/blob/e2ecd53354162c7ba39cb16fcd73e0830041bc11/models/volume_mount.proto#L22)
+- [`ImageLayer::DigestAlgorithm` deprecated algorithm: SHA512](https://github.com/cloudfoundry/bbs/blob/808072216b1ae29e691336057ed0871ee84ab905/models/image_layer.proto#L11)
 
 ## <a name="docker-registries-supporting-v2s1-manifests"></a>Docker Registries Supporting v2 schema 1 manifests
 
