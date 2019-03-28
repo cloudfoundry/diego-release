@@ -14,6 +14,7 @@ config = {
   listen_address: p("diego.locket.listen_addr"),
   log_level: p("diego.locket.log_level"),
   max_open_database_connections: p("database.max_open_connections"),
+  max_database_connection_lifetime: "1h",
 }
 
 def db_params
