@@ -142,6 +142,11 @@ setup_gopath() {
     go install $package
   done
 
+  popd
+}
+
+install_ginkgo() {
+  pushd $1
   go install github.com/onsi/ginkgo/ginkgo
   popd
 }
@@ -218,6 +223,7 @@ export ROUTER_GOPATH="$PWD/routing-release"
 export ROUTING_API_GOPATH=${ROUTER_GOPATH}
 
 setup_gopath $PWD/diego-release
+install_ginkgo $PWD/diego-release
 set_garden_rootfs
 
 export APP_LIFECYCLE_GOPATH=${GOPATH_ROOT}
