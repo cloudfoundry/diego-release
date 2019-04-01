@@ -49,22 +49,9 @@ This BOSH release doubles as a `$GOPATH`. It will automatically be set up for yo
 
 **NOTE:** diego-release and its components assume you're running the latest version of go. The project may not compile or work as expected with older versions of go.
 
-    # create parent directory of cf-release and diego-release
+    # create parent directory of diego-release
     mkdir -p ~/workspace
     cd ~/workspace
-
-    # clone cf-release
-    git clone https://github.com/cloudfoundry/cf-release.git
-    pushd cf-release/
-
-    # if you're making changes to diego-release,
-    git checkout release-candidate
-
-    ## or, if you're making changes to cf-release,
-    # git checkout develop
-
-    ./scripts/update
-    popd
 
     # clone garden-runc-release
     git clone https://github.com/cloudfoundry/garden-runc-release.git
@@ -81,9 +68,6 @@ This BOSH release doubles as a `$GOPATH`. It will automatically be set up for yo
 
     # switch to develop branch to make changes to diego-release,
     git checkout develop
-
-    ## or, if you're only making changes to cf-release,
-    # git checkout master
 
     # initialize and sync submodules
     ./scripts/update
@@ -187,19 +171,16 @@ This command will run all regular unit tests, as well as BBS and component integ
    following its
    [README](https://github.com/cloudfoundry/bosh-lite/blob/master/README.md).
 
-1. Download the latest Warden Trusty Go-Agent stemcell and upload it to BOSH-lite:
+1. [Download the latest Warden Trusty Go-Agent stemcell](https://bosh.io/stemcells) and upload it to BOSH-lite:
 
-        bosh public stemcells
-        bosh download public stemcell (name)
-        bosh upload stemcell (downloaded filename)
+        bosh upload-stemcell (downloaded filename)
 
-1. Check out cf-release (runtime-passed branch) from git:
+1. Check out cf-deployment (release-candidate branch) from git:
 
         cd ~/workspace
-        git clone https://github.com/cloudfoundry/cf-release.git
-        cd ~/workspace/cf-release
+        git clone https://github.com/cloudfoundry/cf-deployment.git
+        cd ~/workspace/cf-deployment
         git checkout release-candidate
-        ./scripts/update
 
 1. Check out diego-release (develop branch) from git:
 
@@ -209,41 +190,18 @@ This command will run all regular unit tests, as well as BBS and component integ
         git checkout develop
         ./scripts/update
 
-1. Generate the CF manifest:
+1. Check out [instructions for deploying CF to local bosh-lite](https://github.com/cloudfoundry/cf-deployment/blob/master/deployment-guide.md#for-operators-deploying-cf-to-local-bosh-lite)
 
-        cd ~/workspace/cf-release
-        ./scripts/generate-bosh-lite-dev-manifest
-
-   **Or if you are running Windows cells** along side this deployment, instead generate the CF manifest as follows:
-
-        cd ~/workspace/cf-release
-        ./scripts/generate-bosh-lite-dev-manifest \
-          ~/workspace/diego-release/manifest-generation/stubs-for-cf-release/enable_diego_windows_in_cc.yml
-
-1. Generate the Diego manifests:
-
-        cd ~/workspace/diego-release
-        ./scripts/generate-bosh-lite-manifests
-
-1. Create, upload, and deploy the CF release:
-
-        cd ~/workspace/cf-release
-        bosh deployment bosh-lite/deployments/cf.yml
-        bosh create release --force &&
-        bosh -n upload release &&
-        bosh -n deploy
-
-1. Upload the latest garden-runc-release:
-
-        bosh upload release https://bosh.io/d/github.com/cloudfoundry/garden-runc-release
-
-1. Create, upload, and deploy the Diego release:
-
-        cd ~/workspace/diego-release
-        bosh deployment bosh-lite/deployments/diego.yml
-        bosh create release --force &&
-        bosh -n upload release &&
-        bosh -n deploy
+1. In order to use the latest diego-release, create and pass the following opsfile when deploying using bosh:
+    ```
+    ---
+    - type: replace
+      path: /releases/name=diego
+      value:
+        name: diego
+        url: file://PATH_TO_HOME/workspace/diego-release
+        version: create
+    ```
 
 1. Login to CF and enable Docker support:
 
@@ -300,7 +258,7 @@ from the root of diego-release to run the integration tests. You can also run th
 
 ### <a name="smokes-and-cats"></a> Running Smoke Tests, and CATs
 
-You can test that your diego-release deployment is working and integrating with cf-release by running the lightweight [cf-smoke-tests](https://github.com/cloudfoundry/cf-smoke-tests) or the more thorough [cf-acceptance-tests](https://github.com/cloudfoundry/cf-acceptance-tests). These test suites assume you have a BOSH environment to deploy cf and diego to. For local development, bosh-lite is an easy way to have a single-VM deployment. To deploy diego to bosh-lite, follow the instructions on [deploying diego to bosh-lite](README.md#deploy-bosh-lite).
+You can test that your diego-release deployment is working and integrating with cf by running the lightweight [cf-smoke-tests](https://github.com/cloudfoundry/cf-smoke-tests) or the more thorough [cf-acceptance-tests](https://github.com/cloudfoundry/cf-acceptance-tests). These test suites assume you have a BOSH environment to deploy cf and diego to. For local development, bosh-lite is an easy way to have a single-VM deployment. To deploy diego to bosh-lite, follow the instructions on [deploying diego to bosh-lite](README.md#deploy-bosh-lite).
 
 The instructions below assume you're using bosh-lite and have generated the
 manifests with the `scripts/generate-bosh-lite-manifests` script. This script
