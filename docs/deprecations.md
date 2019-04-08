@@ -125,6 +125,7 @@ This document lists deprecated properties of the job templates in this BOSH rele
 ### <a name="component-metrics-rep"></a>`rep` and `rep_windows`
 
 - `GardenContainerCreationDuration`: Deprecated in favor of `GardenContainerCreationFailedDuration` and `GardenContainerCreationSucceededDuration`.
+- `UnhealthyCell`: Deprecated in favor of `GardenHealthCheckFailed`.
 
 ### <a name="component-metrics-route-emitter"></a>`route_emitter`
 
