@@ -14,7 +14,7 @@ These BOSH versions ensure the following BOSH operations occur on the Diego jobs
 
 - Drain scripts are called for all jobs on each VM during updates.
 - The `post-start` scripts are called for the `bbs` and `rep` Diego jobs.
-- The `pre-start` script is called for the `cflinuxfs2-rootfs-setup` job co-located on the Linux Diego cells in a typical CF deployment.
+- The `pre-start` script is called for the `cflinuxfs3-rootfs-setup` job co-located on the Linux Diego cells in a typical CF deployment.
 - The `spec.id` field is populated in the Diego job templates.
 
 
