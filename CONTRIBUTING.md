@@ -75,6 +75,8 @@ This BOSH release doubles as a `$GOPATH`. It will automatically be set up for yo
 
 If you do not wish to use direnv, you can simply `source` the `.envrc` file in the root of the release repo.  You may manually need to update your `$GOPATH` and `$PATH` variables as you switch in and out of the directory.
 
+Check out and install `pre-commit` and `pre-push` git hooks, by running `./scripts/install-git-hooks`. This will ensure to catch common drifts for packaging spec and package imports.
+
 To be able to run unit tests, you'll also need to install the following binaries:
 
     # Install ginkgo
