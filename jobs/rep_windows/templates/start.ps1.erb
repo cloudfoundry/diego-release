@@ -1,0 +1,24 @@
+$ErrorActionPreference = "Stop";
+trap { $host.SetShouldExit(1) }
+
+$zone_flag=""
+
+<% if p("diego.rep.use_azure_fault_domains") %>
+  $ErrorActionPreference = "Continue";
+  $url="http://169.254.169.254/metadata/v1/InstanceInfo/FD"
+  $azure_fd=$(C:\var\vcap\packages\rep_windows\gocurl.exe -max-time "5s" $url)
+  if ($LASTEXITCODE -eq 0){
+    $zone_flag="-zone=z${azure_fd}"
+  }
+  $url="http://169.254.169.254/metadata/instance/compute/zone?api-version=2017-12-01&format=text"
+  $azure_fd=$(C:\var\vcap\packages\rep_windows\gocurl.exe -max-time "5s" -H "Metadata=true" $url)
+  if ($LASTEXITCODE -eq 0){
+    if (! [string]::IsNullOrEmpty($azure_fd)) {
+      $zone_flag=""
+    }
+  }
+  $ErrorActionPreference = "Stop";
+<% end %>
+
+C:\\var\\vcap\\packages\\rep_windows\\rep.exe -config="/var/vcap/jobs/rep_windows/config/rep.json" "${zone_flag}"
+

@@ -5,6 +5,7 @@ templates:
   drain.ps1.erb: bin/drain.ps1
   pre-start.ps1.erb: bin/pre-start.ps1
   post-start.ps1.erb: bin/post-start.ps1
+  start.ps1.erb: bin/start.ps1
   trusted_ca_certificates.json.erb: config/certs/rep/trusted_ca_certificates.json
   instance_identity.crt.erb: config/certs/rep/instance_identity.crt
   instance_identity.key.erb: config/certs/rep/instance_identity.key
