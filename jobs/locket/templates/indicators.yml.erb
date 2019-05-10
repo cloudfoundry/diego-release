@@ -1,0 +1,56 @@
+---
+apiVersion: v0
+
+product:
+  name: diego
+  version: latest
+
+metadata:
+  deployment: <%= spec.deployment %>
+
+indicators:
+- name: locket_active_locks
+  promql: ActiveLocks{deployment="$deployment",source_id="locket"}
+  documentation:
+    title: Locket: Active Locks
+    description: |
+      Total count of how many locks the system components are holding.
+
+      Use: If the ActiveLocks count is not equal to the expected value, there is likely a problem with Diego.
+
+      Origin: Firehose
+      Type: Gauge
+      Frequency: 60s
+    recommended_response: |
+      1. Run monit status to inspect for failing processes.
+      2. If there are no failing processes, then review the logs for the components using the Locket service: BBS, Auctioneer, TPS Watcher, Routing API, and Clock Global (Cloud Controller clock). Look for indications that only one of each component is active at a time.
+      3. Focus triage on the BBS first:
+        A healthy BBS shows obvious activity around starting or claiming LRPs.
+        An unhealthy BBS leads to the Auctioneer showing minimal or no activity. The BBS sends work to the Auctioneer.
+        Reference the BBS-level Locket metric Locks Held by BBS. A value of 0 indicates Locket issues at the BBS level.
+      4. If the BBS appears healthy, then check the Auctioneer to ensure it is processing auction payloads.
+        Recent logs for Auctioneer should show all but one of its instances are currently waiting on locks, and the active Auctioneer should show a record of when it last attempted to execute work. This attempt should correspond to app development activity, such as cf push.
+        Reference the Auctioneer-level Locket metric Locks Held by Auctioneer. A value of 0 indicates Locket issues at the Auctioneer level.
+      5. The TPS Watcher is primarily active when app instances crash. Therefore, if the TPS Watcher is suspected, review the most recent logs.
+      6. If you are unable to resolve on-going excessive active locks, pull logs from the Diego BBS and Auctioneer VMs, which includes the Locket service component logs, and contact Pivotal Support.
+
+- name: locket_active_presences
+  promql: ActivePresences{deployment="$deployment",source_id="locket"}
+  documentation:
+    title: Locket: Active Presences
+    description: |
+      Total count of active presences. Presences are defined as the registration records that the cells maintain to advertise themselves to the platform.
+
+      Use: If the Active Presences count is far from the expected, there might be a problem with Diego.
+
+      The number of active presences varies according to the number of cells deployed. Therefore, during purposeful scale adjustments to PAS, this alerting threshold should be adjusted.
+      Establish an initial threshold by observing the historical trends for the deployment over a brief period of time, Increase the threshold as more cells are deployed. During a rolling deploy, this metric shows variance during the BOSH lifecycle when cells are evacuated and restarted. Tolerable variance is within the bounds of the BOSH max inflight range for the instance group.
+
+      Origin: Firehose
+      Type: Gauge
+      Frequency: 60s
+    recommended_response: |
+      1. Ensure that the variance is not the result of an active rolling deploy. Also ensure that the alert threshold is appropriate to the number of cells in the current deployment.
+      2. Run monit status to inspect for failing processes.
+      3. If there are no failing processes, then review the logs for the components using the Locket service itself on Diego BBS instances.
+      4. If you are unable to resolve the problem, pull the logs from the Diego BBS, which include the Locket service component logs, and contact Pivotal Support.

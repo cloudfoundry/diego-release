@@ -15,6 +15,7 @@ templates:
   loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
   loggregator_client.crt.erb: config/certs/loggregator/client.crt
   loggregator_client.key.erb: config/certs/loggregator/client.key
+  indicators.yml.erb: config/indicators.yml
 
 packages:
   - pid_utils
