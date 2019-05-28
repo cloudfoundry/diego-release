@@ -87,6 +87,9 @@ properties:
   diego.rep.listen_addr_securable:
     description: "address where rep listens for LRP and task start auction requests"
     default: "0.0.0.0:1801"
+  diego.rep.advertise_preference_for_instance_address:
+    description: "advertise that containers managed by this rep are directly accessible on the infrastructure network at their instance address. Components like ssh-proxy or routers may use this property when determining how to connect to a container. Set this flag only when using a third-party container-networking solution that provides direct connectivity between containers and VMs"
+    default: false
 
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
