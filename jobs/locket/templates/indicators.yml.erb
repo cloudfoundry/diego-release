@@ -12,7 +12,7 @@ indicators:
 - name: locket_active_locks
   promql: ActiveLocks{deployment="$deployment",source_id="locket"}
   documentation:
-    title: Locket: Active Locks
+    title: Locket - Active Locks
     description: |
       Total count of how many locks the system components are holding.
 
@@ -37,7 +37,7 @@ indicators:
 - name: locket_active_presences
   promql: ActivePresences{deployment="$deployment",source_id="locket"}
   documentation:
-    title: Locket: Active Presences
+    title: Locket - Active Presences
     description: |
       Total count of active presences. Presences are defined as the registration records that the cells maintain to advertise themselves to the platform.
 
