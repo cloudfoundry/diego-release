@@ -10,7 +10,7 @@ metadata:
 
 indicators:
 - name: locket_active_locks
-  promql: ActiveLocks{deployment="$deployment",source_id="locket"}
+  promql: ActiveLocks{source_id="locket"}
   documentation:
     title: Locket - Active Locks
     description: |
@@ -35,7 +35,7 @@ indicators:
       6. If you are unable to resolve on-going excessive active locks, pull logs from the Diego BBS and Auctioneer VMs, which includes the Locket service component logs, and contact Pivotal Support.
 
 - name: locket_active_presences
-  promql: ActivePresences{deployment="$deployment",source_id="locket"}
+  promql: ActivePresences{source_id="locket"}
   documentation:
     title: Locket - Active Presences
     description: |
