@@ -11,6 +11,8 @@ templates:
   loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
   loggregator_client.crt.erb: config/certs/loggregator/client.crt
   loggregator_client.key.erb: config/certs/loggregator/client.key
+  tls.crt.erb: config/certs/tls.crt
+  tls.key.erb: config/certs/tls.key
 
 packages:
   - pid_utils
@@ -35,6 +37,17 @@ properties:
   diego.file_server.log_level:
     description: "Log level"
     default: "info"
+
+  https_server_enabled:
+    description: "Use HTTPS for serving file_server assets"
+    default: false
+  https_listen_addr:
+    description: "Address at which HTTPS server is listening"
+    default: "0.0.0.0:8443"
+  tls.cert:
+    description: "PEM-encoded tls certificate that can be used for server auth"
+  tls.key:
+    description: "PEM-encoded tls key"
 
   enable_consul_service_registration:
     description: "Enable the file-server to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."

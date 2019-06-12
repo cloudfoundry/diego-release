@@ -7,8 +7,13 @@
     debug_address: p("diego.file_server.debug_addr"),
     enable_consul_service_registration: p("enable_consul_service_registration"),
     static_directory: p("diego.file_server.static_directory"),
+    https_server_enabled: p("https_server_enabled"),
+    https_listen_addr: p("https_listen_addr"),
     log_level: p("diego.file_server.log_level"),
   }
+
+  config[:cert_file] = "#{conf_dir}/certs/tls.crt"
+  config[:key_file]  = "#{conf_dir}/certs/tls.key"
 
   if_p("logging.format.timestamp") do |format|
     if format != "unix-epoch" and format != "rfc3339"
