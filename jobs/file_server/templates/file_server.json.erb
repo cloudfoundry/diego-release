@@ -12,8 +12,17 @@
     log_level: p("diego.file_server.log_level"),
   }
 
-  config[:cert_file] = "#{conf_dir}/certs/tls.crt"
-  config[:key_file]  = "#{conf_dir}/certs/tls.key"
+  if_p("tls.cert") do |_|
+    config[:cert_file] = "#{conf_dir}/certs/tls.crt"
+  end
+
+  if_p("tls.key") do |_|
+    config[:key_file]  = "#{conf_dir}/certs/tls.key"
+  end
+
+  if config[:https_server_enabled] && (config[:cert_file].nil? || config[:key_file].nil?)
+    raise "tls.cert and tls.key are required if https_server_enabled is set to true"
+  end
 
   if_p("logging.format.timestamp") do |format|
     if format != "unix-epoch" and format != "rfc3339"
