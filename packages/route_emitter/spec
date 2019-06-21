@@ -38,6 +38,7 @@ files:
   - code.cloudfoundry.org/route-emitter/routingtable/*.go # gosub
   - code.cloudfoundry.org/route-emitter/scheduler/*.go # gosub
   - code.cloudfoundry.org/route-emitter/syncer/*.go # gosub
+  - code.cloudfoundry.org/route-emitter/unregistration/*.go # gosub
   - code.cloudfoundry.org/route-emitter/watcher/*.go # gosub
   - code.cloudfoundry.org/routing-api/*.go # gosub
   - code.cloudfoundry.org/routing-api/models/*.go # gosub
@@ -64,6 +65,7 @@ files:
   - github.com/hashicorp/consul/api/*.go # gosub
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/go-cleanhttp/*.go # gosub
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/serf/coordinate/*.go # gosub
+  - github.com/mitchellh/hashstructure/*.go # gosub
   - github.com/nats-io/go-nats/*.go # gosub
   - github.com/nats-io/go-nats/encoders/builtin/*.go # gosub
   - github.com/nats-io/go-nats/util/*.go # gosub

@@ -49,6 +49,8 @@
     register_direct_instance_routes: p("register_direct_instance_routes"),
     route_emitting_workers: 20,
     tcp_route_ttl: "2m",
+    unregistration_interval: "30s",
+    unregistration_send_count: 20,
   }
 
   if_p("logging.format.timestamp") do |format|
