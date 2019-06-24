@@ -241,7 +241,7 @@ properties:
 
   containers.graceful_shutdown_interval_in_seconds:
     description: "EXPERIMENTAL: time in seconds between signalling a container to shutdown gracefully and stopping it forcefully. Should not be less than 10."
-    default: 15
+    default: 10
 
   containers.proxy.enabled:
     description: "Enable envoy proxy on garden containers. Requires valid TLS credentials in diego.executor.instance_identity_ca_cert and diego.executor.instance_identity_key."
