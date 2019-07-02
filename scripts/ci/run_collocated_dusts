@@ -7,6 +7,8 @@ export DUSTS_COMPONENT_LOG_PATH=$logs_dir/dusts-component-logs.0.0.0.$(date +'%s
 # always use mysql (this isn't configurable atm)
 export SQL_FLAVOR=mysql
 
+export DEFAULT_ROOTFS="preloaded:cflinuxfs3"
+
 dir=$(dirname $0)
 source $dir/setup_inigo
 

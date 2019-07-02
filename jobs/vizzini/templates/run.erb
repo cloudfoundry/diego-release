@@ -67,6 +67,7 @@ ginkgo \
   --bbs-address=${bbs_api_url} \
   --ssh-address=${ssh_proxy_address} \
   --host-address=${callback_address} \
+  --default-rootfs=<%= p("default_rootfs") %>\
   <% Array(p("vizzini.rep.placement_tags")).each do |placement_tag| %> \
   --rep-placement-tag=<%= placement_tag %> \
   <% end %>\

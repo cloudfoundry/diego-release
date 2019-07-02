@@ -68,3 +68,7 @@ properties:
   enable_privileged_container_tests:
     description: "When set, enables the privileged container tests in vizzini"
     default: true
+
+  default_rootfs:
+    description: "Default preloaded rootfs to target for running Tasks and LRPs"
+    default: "preloaded:cflinuxfs3"
