@@ -21,6 +21,13 @@ packages:
   - docker_app_lifecycle
   - windows_app_lifecycle
 
+provides:
+- name: file_server
+  type: file_server
+  properties:
+  - https_server_enabled
+  - https_url
+
 properties:
   bpm.enabled:
     description: "Experimental: use the BOSH Process Manager to manage the file-server process."
@@ -44,6 +51,9 @@ properties:
   https_listen_addr:
     description: "Address at which HTTPS server is listening"
     default: "0.0.0.0:8443"
+  https_url:
+    description: "The URL provided in file_server link"
+    default: "https://file-server.service.cf.internal:8443"
   tls.cert:
     description: "PEM-encoded tls certificate that can be used for server auth"
   tls.key:
