@@ -18,6 +18,7 @@ echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse
 
 # NF_CONNTRACK_MAX
 # Default value is 65536. We set it to a larger number to avoid running out of connections.
+modprobe nf_conntrack
 echo 262144 > /proc/sys/net/netfilter/nf_conntrack_max
 
 echo 2147483647 > /proc/sys/fs/inotify/max_user_watches
