@@ -1,0 +1,28 @@
+---
+apiVersion: v0
+
+product:
+  name: diego
+  version: latest
+
+metadata:
+  deployment: <%= spec.deployment %>
+
+indicators:
+- name: route_emitter_sync_duration
+  promql: max_over_time(RouteEmitterSyncDuration{source_id="route_emitter"}[15m]) / 1000000000
+  documentation:
+    title: Route Emitter - Sync Duration
+    description: |
+      Time in ns that the active Route Emitter took to perform its synchronization pass.
+
+      Use: Increases in this metric indicate that the Route Emitter may have trouble maintaining an accurate routing table to broadcast to the Gorouters. Tune alerting values to your deployment based on historical data and adjust based on observations over time. The suggested starting point is ≥ 5 for the yellow threshold and ≥ 10 for the critical threshold.
+
+      Origin: Firehose
+      Type: Gauge (Float in ns)
+      Frequency: 60s
+    recommended_response: |
+      If all or many jobs showing as impacted, there is likely an issue with Diego.
+      1. Investigate the Route Emitter and Diego BBS logs for errors.
+      2. Verify that app routes are functional by making a request to an app, pushing an app and pinging it, or if applicable, checking that your smoke tests have passed.
+      If one or a few jobs showing as impacted, there is likely a connectivity issue and the impacted job should be investigated further.
