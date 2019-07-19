@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -e
+
+scripts_path=./$(dirname $0)
+eval $($scripts_path/get_paths.sh)
+
+workspace=${WORKSPACE:-"$HOME/workspace"}
+
+echo "checking code for compilation errors..."
+
+# pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/inigo > /dev/null
+#   for pkg in `find . -maxdepth 1 -type d ! -path . -not -path '*/\.*'`; do
+#     echo $pkg
+#     GOOS=windows go test -c ./${pkg} > /dev/null
+#   done
+# popd > /dev/null
+
+echo "compilation done"
+
+if [ -n "${DIEGO_CI_TARGET}" ]; then
+  target="-t ${DIEGO_CI_TARGET}"
+else
+  target="-t ci"
+fi
+
+fly ${target} execute -p \
+    -c $DIEGO_RELEASE_DIR/scripts/ci/run_inigo_windows.build.yml \
+    -i diego-release=$PWD \
+    -i garden-runc-release=$workspace/garden-runc-release \
+    -i routing-release=$workspace/routing-release \
+    -i winc-release=$workspace/winc-release \
+    -i envoy-nginx-release=$workspace/envoy-nginx-release \
+    --tag inigo-windows-worker \
+    -- "$@"

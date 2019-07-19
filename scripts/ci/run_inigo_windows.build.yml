@@ -1,0 +1,27 @@
+
+platform: windows
+
+inputs:
+- name: diego-release
+- name: routing-release
+- name: garden-runc-release
+- name: winc-release
+- name: envoy-nginx-release
+
+params:
+  GINKGO_PARALLEL: "true" # we check for the literal string "true" in the run_inigo script
+  DEFAULT_EVENTUALLY_TIMEOUT: 2m
+  START_CHECK_TIMEOUT_DURATION:
+  INIGO_REPEAT_COUNT: 1
+  SKIP_PACKAGES: "volman,executor,certauthority"
+  SKIP_REGEX:
+  SQL_FLAVOR: mysql
+  GARDEN_ROOTFS: "docker:///cloudfoundry/windows2016fs:2019"
+
+run:
+  path: powershell
+  args:
+  - "-ExecutionPolicy"
+  - "Bypass"
+  - "-File"
+  - diego-release/scripts/ci/run_inigo.ps1
