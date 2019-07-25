@@ -10,13 +10,13 @@ inputs:
 
 params:
   GINKGO_PARALLEL: "true" # we check for the literal string "true" in the run_inigo script
-  DEFAULT_EVENTUALLY_TIMEOUT: 2m
+  DEFAULT_EVENTUALLY_TIMEOUT:
   START_CHECK_TIMEOUT_DURATION:
   INIGO_REPEAT_COUNT: 1
-  SKIP_PACKAGES: "volman,executor,certauthority"
+  SKIP_PACKAGES:
   SKIP_REGEX:
-  SQL_FLAVOR: mysql
-  GARDEN_ROOTFS: "docker:///cloudfoundry/windows2016fs:2019"
+  SQL_FLAVOR:
+  GARDEN_ROOTFS:
 
 run:
   path: powershell
