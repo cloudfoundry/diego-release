@@ -167,3 +167,15 @@ The [BBS API docs](https://github.com/cloudfoundry/bbs/tree/master/doc) and [rou
 
 Support for running LRPs using Docker images from registries that serve only [v2 schema 1 manifests](https://docs.docker.com/registry/spec/manifest-v2-1/) is deprecated and will be removed in 3.0.0. Docker registries should be updated to serve [v2 schema2 manifests](https://docs.docker.com/registry/spec/manifest-v2-2/).
 
+## <a name="cfdot"></a>cfdot
+
+| command                      | deprecated | removed | notes                                                     |
+|------------------------------|------------|---------|-----------------------------------------------------------|
+| `actual-lrp-groups`          | v2.36.0    | N/A     | Use `actual-lrps` instead.                                |
+| `actual-lrp-groups-for-guid` | v2.36.0    | N/A     | Use `actual-lrps` with the `--process-guid` flag instead. |
+
+#### Commands output
+
+| command      | notes                                                                                                                                                   |
+|--------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lrp-events` | Event types `actual_lrp_created`, `actual_lrp_changed` and `actual_lrp_removed` are deprecated. Use `--exclude-actual-lrp-groups` flag to exclude them. |
