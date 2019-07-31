@@ -169,10 +169,10 @@ Support for running LRPs using Docker images from registries that serve only [v2
 
 ## <a name="cfdot"></a>cfdot
 
-| command                      | deprecated | removed | notes                                                     |
-|------------------------------|------------|---------|-----------------------------------------------------------|
-| `actual-lrp-groups`          | v2.36.0    | N/A     | Use `actual-lrps` instead.                                |
-| `actual-lrp-groups-for-guid` | v2.36.0    | N/A     | Use `actual-lrps` with the `--process-guid` flag instead. |
+| command                      | deprecated | removed | notes                                                                               |
+|------------------------------|------------|---------|-------------------------------------------------------------------------------------|
+| `actual-lrp-groups`          | v2.36.0    | N/A     | Use `actual-lrps` instead. Will be removed in v3.0.0                                |
+| `actual-lrp-groups-for-guid` | v2.36.0    | N/A     | Use `actual-lrps` with the `--process-guid` flag instead. Will be removed in v3.0.0 |
 
 #### Commands output
 
