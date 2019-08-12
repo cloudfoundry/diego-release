@@ -95,14 +95,6 @@
     config[:volman_driver_paths] = value
   end
 
-  if_p("diego.executor.volman.csi_paths") do |value|
-    config[:csi_paths] = value.split(File::PATH_SEPARATOR).map(&:strip)
-  end
-
-  if_p("diego.executor.volman.csi_mount_root_dir") do |value|
-    config[:csi_mount_root_dir] = value
-  end
-
   if p("diego.rep.consul.require_tls")
     config[:consul_cluster] = "https://127.0.0.1:8500"
     config[:consul_ca_cert] = "#{conf_dir}/certs/consul/ca.crt"
