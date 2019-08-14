@@ -98,7 +98,7 @@ indicators:
       1. Look at the BBS logs for apps that are crashing and at the cell logs to see if the problem is with the apps themselves, rather than a platform issue.
 
 - name: lrps_running
-  promql: delta(LRPsRunning{source_id="bbs"}[60m])
+  promql: avg_over_time(LRPsRunning{source_id="bbs"}[1h]) - avg_over_time(LRPsRunning{source_id="bbs"}[1h]  offset 1h)
   documentation:
     title: BBS - Running App Instances, Rate of Change
     description: |
