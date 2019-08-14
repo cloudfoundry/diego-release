@@ -19,6 +19,7 @@ templates:
   tls.crt.erb: config/certs/tls.crt
   tls.key.erb: config/certs/tls.key
   tls_ca.crt.erb: config/certs/tls_ca.crt
+  indicators.yml.erb: config/indicators.yml
 
 packages:
   - rep_windows

@@ -1,0 +1,84 @@
+---
+apiVersion: v0
+
+product:
+  name: diego
+  version: latest
+
+metadata:
+  deployment: <%= spec.deployment %>
+
+indicators:
+- name: capacity_remaining_memory
+  promql: min_over_time(CapacityRemainingMemory{source_id="rep"}[5m]) / 1024
+  documentation:
+    title: Diego Cell - Remaining Memory Available - Overall Remaining Memory Available
+    description: |
+      Remaining amount of memory in MiB available for this Diego cell to allocate to containers.
+
+      Use: Can indicate low memory capacity overall in the platform. Low memory can prevent app scaling and new deployments. The overall sum of capacity can indicate that you need to scale the platform. Observing capacity consumption trends over time helps with capacity planning.
+
+      Origin: Firehose
+      Type: Gauge (Integer in MiB)
+      Frequency: 60 s
+    recommended_response: |
+      1. Assign more resources to the cells
+      2. Assign more cells.
+
+- name: capacity_remaining_disk
+  promql: min_over_time(CapacityRemainingDisk{source_id="rep"}[5m]) / 1024
+  documentation:
+    title: Diego Cell - Remaining Disk Available - Overall Remaining Disk Available
+    description: |
+      Remaining amount of disk in MiB available for this Diego cell to allocate to containers.
+
+      Use: Low disk capacity can prevent app scaling and new deployments. Because Diego staging Tasks can fail without at least 6 GB free, the recommended red threshold is based on the minimum disk capacity across the deployment falling below 6 GB in the previous 5 minutes.
+
+      It can also be meaningful to assess how many chunks of free disk space are above a given threshold, similar to rep.CapacityRemainingMemory.
+
+      Origin: Firehose
+      Type: Gauge (Integer in MiB)
+      Frequency: 60 s
+    recommended_response: |
+      1. Assign more resources to the cells.
+      2. Assign more cells.
+
+- name: garden_health_check_failed
+  promql: max_over_time(GardenHealthCheckFailed{source_id="rep"}[5m])
+  documentation:
+    title: Diego Cell - Garden Healthcheck Failed
+    description: |
+      The Diego cell periodically checks its health against the garden backend. For Diego cells, 0 means healthy, and 1 means unhealthy.
+
+      Use: Set an alert for further investigation if multiple unhealthy Diego cells are detected in the given time window. If one cell is impacted, it does not participate in auctions, but end-user impact is usually low. If multiple cells are impacted, this can indicate a larger problem with Diego, and should be considered a more critical investigation need.
+
+      Suggested alert threshold based on multiple unhealthy cells in the given time window.
+
+      Although end-user impact is usually low if only one cell is impacted, this should still be investigated. Particularly in a lower capacity environment, this situation could result in negative end-user impact if left unresolved.
+
+      Origin: Firehose
+      Type: Gauge (Float, 0-1)
+      Frequency: 30 s
+    recommended_response: |
+      1. Investigate Diego cell servers for faults and errors.
+      2. If a particular cell or cells appear problematic:
+         a. Determine a time interval during which the metrics from the cell changed from healthy to unhealthy.
+         b. Pull the logs that the cell generated over that interval. The Cell ID is the same as the BOSH instance ID.
+         c. Pull the BBS logs over that same time interval.
+      3. As a last resort, it sometimes helps to recreate the cell by running bosh recreate. See the BOSH documentation for bosh recreate command syntax.
+
+- name: rep_bulk_sync_duration
+  promql: max_over_time(RepBulkSyncDuration{source_id="rep"}[15m]) / 1000000000
+  documentation:
+    title: Diego Cell - Time to Sync
+    description: |
+      Time in ns that the Diego Cell Rep took to sync the ActualLRPs that it claimed with its actual garden containers.
+
+      Use: Sync times that are too high can indicate issues with the BBS.
+
+      Origin: Firehose
+      Type: Gauge (Float in ns)
+      Frequency: 30 s
+    recommended_response: |
+      1. Investigate BBS logs for faults and errors.
+      2. If a particular cell or cells appear problematic, investigate logs for the cells.
