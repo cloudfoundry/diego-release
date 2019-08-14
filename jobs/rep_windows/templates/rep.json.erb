@@ -78,6 +78,7 @@
     supported_providers: p("diego.rep.rootfs_providers"),
     temp_dir: "#{tmp_dir}",
     unhealthy_monitoring_interval: "#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s",
+    use_schedulable_disk_size: p("diego.executor.use_schedulable_disk_size"),
     zone: "#{zone}",
     report_interval: "1m",
     max_data_string_length: p("logging.max_data_string_length"),

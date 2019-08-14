@@ -136,6 +136,9 @@ properties:
   diego.executor.max_cache_size_in_bytes:
     description: "maximum size of the cache in bytes - this should leave a healthy overhead for temporary items, etc."
     default: 10000000000
+  diego.executor.use_schedulable_disk_size:
+    description: "Use total space available to containers reported by Garden. If false the total size of image plugin store minus max_cache_size_in_bytes is used."
+    default: false
   diego.executor.garden.address:
     description: "Garden server listening address."
     default: 127.0.0.1:9241
