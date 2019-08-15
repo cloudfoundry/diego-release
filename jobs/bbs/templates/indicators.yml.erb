@@ -125,7 +125,7 @@ indicators:
       Type: Gauge
       Frequency: Periodically
     recommended_response: |
-      1. Run monit status on the Diego database VM to check for failing processes.
+      1. Run monit status on the instance group that the BBS job is running on to check for failing processes.
       2. If there are no failing processes, then review the logs for BBS.
          - A healthy BBS shows obvious activity around starting or claiming LRPs.
          - An unhealthy BBS leads to the Auctioneer showing minimal or no activity. The BBS sends work to the Auctioneer.

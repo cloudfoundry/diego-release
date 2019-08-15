@@ -90,3 +90,20 @@ indicators:
 
       1. Investigate the health of Diego cells.
       2. Consider scaling additional cells.
+
+- name: auctioneer_lock_held
+  promql: max_over_time(LockHeld{source_id="auctioneer"}[5m])
+  documentation:
+    title: Auctioneer - Lock Held
+    description: |
+      Whether an Auctioneer instance holds the expected Auctioneer lock (in Locket). 1 means the active Auctioneer holds the lock, and 0 means the lock was lost.
+
+      Use: This metric is complimentary to Active Locks, and it offers an Auctioneer-level version of the Locket metrics. Although it is emitted per Auctioneer instance, only 1 active lock is held by Auctioneer. Therefore, the expected value is 1. The metric may occasionally be 0 when the Auctioneer instances are performing a leader transition, but a prolonged value of 0 indicates an issue with Auctioneer.
+
+      Origin: Firehose
+      Type: Gauge
+      Frequency: Periodically
+    recommended_response: |
+      1. Run monit status on the instance group that the Auctioneer job is running on to check for failing processes.
+      2. If there are no failing processes, then review the logs for Auctioneer.
+         - Recent logs for Auctioneer should show all but one of its instances are currently waiting on locks, and the active Auctioneer should show a record of when it last attempted to execute work. This attempt should correspond to app development activity, such as cf push.
