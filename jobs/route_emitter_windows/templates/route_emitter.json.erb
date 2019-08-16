@@ -100,6 +100,7 @@
     if p("tcp.enabled") && value then
       config[:oauth] = {}
       config[:oauth][:uaa_url] = "https://" + p("uaa.hostname") + ":" + p("uaa.port").to_s
+      config[:oauth][:uaa_request_timeout] = "10s"
       config[:oauth][:client_name] = p("uaa.client_name")
       config[:oauth][:client_secret] = p("uaa.client_secret")
       config[:oauth][:skip_cert_verify] = p("uaa.skip_cert_verify")
