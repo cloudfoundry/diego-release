@@ -11,6 +11,9 @@ templates:
   loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
   loggregator_client.crt.erb: config/certs/loggregator/client.crt
   loggregator_client.key.erb: config/certs/loggregator/client.key
+  routing_api_ca.crt.erb: config/certs/routing_api/ca.crt
+  routing_api_client.crt.erb: config/certs/routing_api/client.crt
+  routing_api_client.key.erb: config/certs/routing_api/client.key
   indicators.yml.erb: config/indicators.yml
 
 packages:
@@ -19,6 +22,9 @@ packages:
 consumes:
 - name: nats
   type: nats
+  optional: true
+- name: routing_api
+  type: routing_api
   optional: true
 
 properties:

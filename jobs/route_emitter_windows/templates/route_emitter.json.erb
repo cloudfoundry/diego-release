@@ -94,6 +94,18 @@
   if_p("routing_api.port") do |value|
     config[:routing_api][:port] = value
   end
+  if_link("routing_api") do |routing_api_link|
+    routing_api_link.if_p("routing_api.mtls_port") do |mtls_port|
+      routing_api_url = URI.parse(config[:routing_api][:url])
+      routing_api_url.scheme = "https"
+      config[:routing_api][:url] = routing_api_url.to_s
+
+      config[:routing_api][:port] = mtls_port
+      config[:routing_api][:ca_cert_file] = "#{conf_dir}/certs/routing_api/ca.crt"
+      config[:routing_api][:client_cert_file] = "#{conf_dir}/certs/routing_api/client.crt"
+      config[:routing_api][:client_key_file] = "#{conf_dir}/certs/routing_api/client.key"
+    end
+  end
   if_p("routing_api.auth_enabled") do |value|
     config[:routing_api][:auth_enabled] = value
 
