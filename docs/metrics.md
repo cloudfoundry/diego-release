@@ -170,12 +170,8 @@ A list of component-level metrics emitted by Diego. Contributors interested in a
 These metrics are automatically emitted on all the Diego components.
 
 | Metric                                      | Description                                                                                                                                                | Unit   |
-| -------------------------------------------    | ----------------------------------------------------------------------------------------------------------------------------------------------------------       | ----             |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
 | `memoryStats.lastGCPauseTimeNS`             | Amount of time the Golang process paused for garbage collection.                                                                                           | ns     |
 | `memoryStats.numBytesAllocatedHeap`         | Number of bytes the Golang process has allocated on the heap.                                                                                              | bytes  |
 | `memoryStats.numBytesAllocatedStack`        | Number of bytes the Golang process has allocated on the stack.                                                                                             | bytes  |
-| `memoryStats.numBytesAllocated`             | Total number of bytes allocated by the Golang process.                                                                                                     | bytes  |
-| `memoryStats.numFrees`                      | Number of memory deallocations the Golang process has performed.                                                                                           | number |
-| `memoryStats.numMallocs`                    | Number of memory allocations the Golang process has performed.                                                                                             | number |
-| `numCPUS`                                   | Number of CPU cores available for the Golang process to use.                                                                                               | ns     |
 | `numGoRoutines`                             | Number of goroutines the Golang process is running.                                                                                                        | number |

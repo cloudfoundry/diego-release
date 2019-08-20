@@ -57,7 +57,7 @@ metrics_in_code() {
     fi
 
     IFS=$'\n'
-    result=$(grep -n --exclude={*_test.go,*fake*.go} --exclude-dir={go-loggregator,gorouter,volman,guardian} -I -E -e "($search_term)\(" -r src/code.cloudfoundry.org)
+    result=$(grep -n --exclude={*_test.go,*fake*.go} --exclude-dir={gorouter,volman,guardian} -I -E -e "($search_term)\(" -r src/code.cloudfoundry.org)
     for line in $result; do
         file_location=$(echo -e "$line" | cut -d: -f1)
         client_call=$(echo -e "$line" | cut -d: -f3-)
@@ -70,8 +70,8 @@ metrics_in_code() {
         if [ ! -z $metric_name ]; then
             echo $metric_name
         else
-            echo "cannot find constant $var_name in $file_location. Are you missing 'const $var_name = \"...\"' at the beginning of the file ?" >&2
-            exit 1
+            str_metric_name=$(echo $var_name | sed -E 's/"([^"]*)"/\1/')
+            echo $str_metric_name
         fi
     done
 }
@@ -97,7 +97,7 @@ if [ $(echo -n "$diff" | wc -c) -ne 0 ] ; then
   EXIT_CODE=1
 fi
 
-diff=$(diff <(metrics_in_code | sort | uniq) <(documented_metrics | grep -Ev 'Volman|memoryStats|numGoRoutines|numCPUS') | grep '^>' | awk '{print $2}')
+diff=$(diff <(metrics_in_code | sort | uniq) <(documented_metrics | grep -Ev 'Volman') | grep '^>' | awk '{print $2}')
 
 # Check for Unemitted Metrics
 if [ $(echo -n "$diff" | wc -c) -ne 0 ] ; then
