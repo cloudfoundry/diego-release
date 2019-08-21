@@ -33,6 +33,7 @@ files:
   - code.cloudfoundry.org/lager/lagerflags/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
   - code.cloudfoundry.org/locket/models/*.go # gosub
+  - code.cloudfoundry.org/rfc5424/*.go # gosub
   - code.cloudfoundry.org/tlsconfig/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/dgrijalva/jwt-go/*.go # gosub
@@ -40,10 +41,12 @@ files:
   - github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/gogo/protobuf/protoc-gen-gogo/descriptor/*.go # gosub
   - github.com/gogo/protobuf/sortkeys/*.go # gosub
+  - github.com/golang/protobuf/jsonpb/*.go # gosub
   - github.com/golang/protobuf/proto/*.go # gosub
   - github.com/golang/protobuf/ptypes/*.go # gosub
   - github.com/golang/protobuf/ptypes/any/*.go # gosub
   - github.com/golang/protobuf/ptypes/duration/*.go # gosub
+  - github.com/golang/protobuf/ptypes/struct/*.go # gosub
   - github.com/golang/protobuf/ptypes/timestamp/*.go # gosub
   - github.com/hashicorp/consul/api/*.go # gosub
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/go-cleanhttp/*.go # gosub
