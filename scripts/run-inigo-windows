@@ -31,5 +31,5 @@ fly ${target} execute -p \
     -i routing-release=$workspace/routing-release \
     -i winc-release=$workspace/winc-release \
     -i envoy-nginx-release=$workspace/envoy-nginx-release \
-    --tag inigo-windows-worker \
+    --tag inigo-windows \
     -- "$@"
