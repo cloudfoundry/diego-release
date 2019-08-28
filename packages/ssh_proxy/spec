@@ -97,6 +97,7 @@ files:
   - google.golang.org/grpc/grpclog/*.go # gosub
   - google.golang.org/grpc/internal/*.go # gosub
   - google.golang.org/grpc/internal/backoff/*.go # gosub
+  - google.golang.org/grpc/internal/balancerload/*.go # gosub
   - google.golang.org/grpc/internal/binarylog/*.go # gosub
   - google.golang.org/grpc/internal/channelz/*.go # gosub
   - google.golang.org/grpc/internal/envconfig/*.go # gosub
@@ -111,6 +112,7 @@ files:
   - google.golang.org/grpc/resolver/*.go # gosub
   - google.golang.org/grpc/resolver/dns/*.go # gosub
   - google.golang.org/grpc/resolver/passthrough/*.go # gosub
+  - google.golang.org/grpc/serviceconfig/*.go # gosub
   - google.golang.org/grpc/stats/*.go # gosub
   - google.golang.org/grpc/status/*.go # gosub
   - google.golang.org/grpc/tap/*.go # gosub
