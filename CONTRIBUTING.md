@@ -156,6 +156,7 @@ As of Diego 1.0, SQL unit tests are the default unit tests for Diego. To run the
             -v $PWD/server.key:/var/lib/postgresql/server.key \
             postgres \
                 -c ssl=on \
+                -c max_connections=300 \
                 -c ssl_cert_file=/var/lib/postgresql/server.crt \
                 -c ssl_key_file=/var/lib/postgresql/server.key
 
