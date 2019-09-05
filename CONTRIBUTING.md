@@ -128,7 +128,8 @@ As of Diego 1.0, SQL unit tests are the default unit tests for Diego. To run the
 
 1. Run the following SQL commands to create a diego user with the correct permissions:
 
-        mysql -uroot -pdiego -h127.0.0.1
+        // manual password entry: diego
+        mysql -uroot -p -h127.0.0.1
         CREATE USER 'diego'@'%' IDENTIFIED WITH mysql_native_password BY 'diego_password';
         GRANT ALL PRIVILEGES ON `diego\_%`.* TO 'diego'@'%';
         GRANT ALL PRIVILEGES ON `routingapi\_%`.* TO 'diego'@'%';
