@@ -9,7 +9,7 @@ This document describes recommendations for performance tuning of the Diego Data
 1. [BBS Performance Tuning](#bbs-tuning)
 1. [Locket Performance Tuning](#locket-tuning)
 1. [SQL Performance Tuning](#sql-performance-tuning)
-1. [Compensating for Envoy memory overhead](#compensating-envoy-memory-overhead)
+1. [Compensating for Envoy memory overhead](#envoy-proxy-configuration.md)
 
 ## <a name="#component-scaling-guidelines"/> Component Scaling Guidelines
 
