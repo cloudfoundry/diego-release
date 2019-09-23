@@ -1,109 +1,113 @@
 ---
-apiVersion: v0
-
-product:
-  name: diego
-  version: latest
+apiVersion: indicatorprotocol.io/v1
+kind: IndicatorDocument
 
 metadata:
-  deployment: <%= spec.deployment %>
+  labels:
+    deployment: <%= spec.deployment %>
+    component: auctioneer
 
-indicators:
-- name: auctioneer_lrp_auctions_failed
-  promql: rate(AuctioneerLRPAuctionsFailed{source_id="auctioneer"}[5m]) * 60
-  documentation:
-    title: Auctioneer - App Instance (AI) Placement Failures
-    description: |
-      The number of Long Running Process (LRP) instances that the auctioneer failed to place on Diego cells. This metric is cumulative over the lifetime of the auctioneer job.
+spec:
+  product:
+    name: diego
+    version: latest
 
-      Use: This metric can indicate that Diego is out of container space or that there is a lack of resources within your environment. This indicator also increases when the LRP is requesting an isolation segment, volume drivers, or a stack that is unavailable, either not deployed or lacking sufficient resources to accept the work.
+  indicators:
+  - name: auctioneer_lrp_auctions_failed
+    promql: rate(AuctioneerLRPAuctionsFailed{source_id="auctioneer"}[5m]) * 60
+    documentation:
+      title: Auctioneer - App Instance (AI) Placement Failures
+      description: |
+        The number of Long Running Process (LRP) instances that the auctioneer failed to place on Diego cells. This metric is cumulative over the lifetime of the auctioneer job.
 
-      This metric is emitted on event, and therefore gaps in receipt of this metric can be normal during periods of no app instances being scheduled.
+        Use: This metric can indicate that Diego is out of container space or that there is a lack of resources within your environment. This indicator also increases when the LRP is requesting an isolation segment, volume drivers, or a stack that is unavailable, either not deployed or lacking sufficient resources to accept the work.
 
-      This error is most common due to capacity issues, for example, if cells do not have enough resources, or if cells are going back and forth between a healthy and unhealthy state.
+        This metric is emitted on event, and therefore gaps in receipt of this metric can be normal during periods of no app instances being scheduled.
 
-      Origin: Firehose
-      Type: Counter (Integer)
-      Frequency: During each auction
-    recommended_response: |
-      1. To best determine the root cause, examine the Auctioneer logs. Depending on the specific error and resource constraint, you may also find a failure reason in the Cloud Controller (CC) API.
-      2. Investigate the health of your Diego cells to determine if they are the resource type causing the problem.
-      3. Consider scaling additional cells.
+        This error is most common due to capacity issues, for example, if cells do not have enough resources, or if cells are going back and forth between a healthy and unhealthy state.
 
-- name: auctioneer_states_duration
-  promql: max_over_time(AuctioneerFetchStatesDuration{source_id="auctioneer"}[5m]) / 1000000000
-  documentation:
-    title: Auctioneer - Time to Fetch Cell State
-    description: |
-      Time in ns that the auctioneer took to fetch state from all the Diego cells when running its auction.
+        Origin: Firehose
+        Type: Counter (Integer)
+        Frequency: During each auction
+      recommended_response: |
+        1. To best determine the root cause, examine the Auctioneer logs. Depending on the specific error and resource constraint, you may also find a failure reason in the Cloud Controller (CC) API.
+        2. Investigate the health of your Diego cells to determine if they are the resource type causing the problem.
+        3. Consider scaling additional cells.
 
-      Use: Indicates how the cells themselves are performing. Alerting on this metric helps alert that app staging requests to Diego may be failing.
+  - name: auctioneer_states_duration
+    promql: max_over_time(AuctioneerFetchStatesDuration{source_id="auctioneer"}[5m]) / 1000000000
+    documentation:
+      title: Auctioneer - Time to Fetch Cell State
+      description: |
+        Time in ns that the auctioneer took to fetch state from all the Diego cells when running its auction.
 
-      Origin: Firehose
-      Type: Gauge, integer in ns
-      Frequency: During event, during each auction
-    recommended_response: |
-      1. Check the health of the cells by reviewing the logs and looking for errors.
-      2. Review IaaS console metrics.
-      3. Inspect the Auctioneer logs to determine if one or more cells is taking significantly longer to fetch state than other cells. Relevant log lines will have wording like `fetched cell state`.
+        Use: Indicates how the cells themselves are performing. Alerting on this metric helps alert that app staging requests to Diego may be failing.
 
-- name: auctioneer_lrp_auctions_started
-  promql: rate(AuctioneerLRPAuctionsStarted{source_id="auctioneer"}[5m]) * 60
-  documentation:
-    title: Auctioneer - App Instance Starts
-    description: |
-      The number of LRP instances that the auctioneer successfully placed on Diego cells. This metric is cumulative over the lifetime of the auctioneer job.
+        Origin: Firehose
+        Type: Gauge, integer in ns
+        Frequency: During event, during each auction
+      recommended_response: |
+        1. Check the health of the cells by reviewing the logs and looking for errors.
+        2. Review IaaS console metrics.
+        3. Inspect the Auctioneer logs to determine if one or more cells is taking significantly longer to fetch state than other cells. Relevant log lines will have wording like `fetched cell state`.
 
-      Use: Provides a sense of running system activity levels in your environment. Can also give you a sense of how many app instances have been started over time. The provided measurement can help indicate a significant amount of container churn. However, for capacity planning purposes, it is more helpful to observe deltas over a long time window.
+  - name: auctioneer_lrp_auctions_started
+    promql: rate(AuctioneerLRPAuctionsStarted{source_id="auctioneer"}[5m]) * 60
+    documentation:
+      title: Auctioneer - App Instance Starts
+      description: |
+        The number of LRP instances that the auctioneer successfully placed on Diego cells. This metric is cumulative over the lifetime of the auctioneer job.
 
-      This metric is emitted on event, and therefore gaps in receipt of this metric can be normal during periods of no app instances being scheduled.
+        Use: Provides a sense of running system activity levels in your environment. Can also give you a sense of how many app instances have been started over time. The provided measurement can help indicate a significant amount of container churn. However, for capacity planning purposes, it is more helpful to observe deltas over a long time window.
 
-      Origin: Firehose
-      Type: Counter (Integer)
-      Frequency: During event, during each auction
-    recommended_response: |
-      When observing a significant amount of container churn, do the following:
+        This metric is emitted on event, and therefore gaps in receipt of this metric can be normal during periods of no app instances being scheduled.
 
-      1. Look to eliminate explainable causes of temporary churn, such as a deployment or increased developer activity.
-      2. If container churn appears to continue over an extended period, inspect Diego Auctioneer and BBS logs.
+        Origin: Firehose
+        Type: Counter (Integer)
+        Frequency: During event, during each auction
+      recommended_response: |
+        When observing a significant amount of container churn, do the following:
 
-      When observing extended periods of high or low activity trends, scale up or down CF components as needed.
+        1. Look to eliminate explainable causes of temporary churn, such as a deployment or increased developer activity.
+        2. If container churn appears to continue over an extended period, inspect Diego Auctioneer and BBS logs.
 
-- name: auctioneer_task_auctions_failed
-  promql: rate(AuctioneerTaskAuctionsFailed{source_id="auctioneer"}[5m]) * 60
-  documentation:
-    title: Auctioneer - Task Placement Failures
-    description: |
-      The number of Tasks that the auctioneer failed to place on Diego cells. This metric is cumulative over the lifetime of the auctioneer job.
+        When observing extended periods of high or low activity trends, scale up or down CF components as needed.
 
-      Use: Failing Task auctions indicate a lack of resources within your environment and that you likely need to scale. This indicator also increases when the Task is requesting an isolation segment, volume drivers, or a stack that is unavailable, either not deployed or lacking sufficient resources to accept the work.
+  - name: auctioneer_task_auctions_failed
+    promql: rate(AuctioneerTaskAuctionsFailed{source_id="auctioneer"}[5m]) * 60
+    documentation:
+      title: Auctioneer - Task Placement Failures
+      description: |
+        The number of Tasks that the auctioneer failed to place on Diego cells. This metric is cumulative over the lifetime of the auctioneer job.
 
-      This metric is emitted on event, and therefore gaps in receipt of this metric can be normal during periods of no tasks being scheduled.
+        Use: Failing Task auctions indicate a lack of resources within your environment and that you likely need to scale. This indicator also increases when the Task is requesting an isolation segment, volume drivers, or a stack that is unavailable, either not deployed or lacking sufficient resources to accept the work.
 
-      This error is most common due to capacity issues, for example, if cells do not have enough resources, or if cells are going back and forth between a healthy and unhealthy state.
+        This metric is emitted on event, and therefore gaps in receipt of this metric can be normal during periods of no tasks being scheduled.
 
-      Origin: Firehose
-      Type: Counter (Float)
-      Frequency: During event, during each auction
-    recommended_response: |
-      In order to best determine the root cause, examine the Auctioneer logs. Depending on the specific error or resource constraint, you may also find a failure reason in the CC API.
+        This error is most common due to capacity issues, for example, if cells do not have enough resources, or if cells are going back and forth between a healthy and unhealthy state.
 
-      1. Investigate the health of Diego cells.
-      2. Consider scaling additional cells.
+        Origin: Firehose
+        Type: Counter (Float)
+        Frequency: During event, during each auction
+      recommended_response: |
+        In order to best determine the root cause, examine the Auctioneer logs. Depending on the specific error or resource constraint, you may also find a failure reason in the CC API.
 
-- name: auctioneer_lock_held
-  promql: max_over_time(LockHeld{source_id="auctioneer"}[5m])
-  documentation:
-    title: Auctioneer - Lock Held
-    description: |
-      Whether an Auctioneer instance holds the expected Auctioneer lock (in Locket). 1 means the active Auctioneer holds the lock, and 0 means the lock was lost.
+        1. Investigate the health of Diego cells.
+        2. Consider scaling additional cells.
 
-      Use: This metric is complimentary to Active Locks, and it offers an Auctioneer-level version of the Locket metrics. Although it is emitted per Auctioneer instance, only 1 active lock is held by Auctioneer. Therefore, the expected value is 1. The metric may occasionally be 0 when the Auctioneer instances are performing a leader transition, but a prolonged value of 0 indicates an issue with Auctioneer.
+  - name: auctioneer_lock_held
+    promql: max_over_time(LockHeld{source_id="auctioneer"}[5m])
+    documentation:
+      title: Auctioneer - Lock Held
+      description: |
+        Whether an Auctioneer instance holds the expected Auctioneer lock (in Locket). 1 means the active Auctioneer holds the lock, and 0 means the lock was lost.
 
-      Origin: Firehose
-      Type: Gauge
-      Frequency: Periodically
-    recommended_response: |
-      1. Run monit status on the instance group that the Auctioneer job is running on to check for failing processes.
-      2. If there are no failing processes, then review the logs for Auctioneer.
-         - Recent logs for Auctioneer should show all but one of its instances are currently waiting on locks, and the active Auctioneer should show a record of when it last attempted to execute work. This attempt should correspond to app development activity, such as cf push.
+        Use: This metric is complimentary to Active Locks, and it offers an Auctioneer-level version of the Locket metrics. Although it is emitted per Auctioneer instance, only 1 active lock is held by Auctioneer. Therefore, the expected value is 1. The metric may occasionally be 0 when the Auctioneer instances are performing a leader transition, but a prolonged value of 0 indicates an issue with Auctioneer.
+
+        Origin: Firehose
+        Type: Gauge
+        Frequency: Periodically
+      recommended_response: |
+        1. Run monit status on the instance group that the Auctioneer job is running on to check for failing processes.
+        2. If there are no failing processes, then review the logs for Auctioneer.
+           - Recent logs for Auctioneer should show all but one of its instances are currently waiting on locks, and the active Auctioneer should show a record of when it last attempted to execute work. This attempt should correspond to app development activity, such as cf push.

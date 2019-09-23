@@ -1,148 +1,152 @@
 ---
-apiVersion: v0
-
-product:
-  name: diego
-  version: latest
+apiVersion: indicatorprotocol.io/v1
+kind: IndicatorDocument
 
 metadata:
-  deployment: <%= spec.deployment %>
+  labels:
+    deployment: <%= spec.deployment %>
+    component: bbs
 
-indicators:
-- name: convergence_lrp_duration
-  promql: max_over_time(ConvergenceLRPDuration{source_id="bbs"}[15m]) / 1000000000
-  documentation:
-    title: BBS - Time to Run LRP Convergence
-    description: |
-      Time in ns that the BBS took to run its LRP convergence pass.
+spec:
+  product:
+    name: diego
+    version: latest
 
-      Use: If the convergence run begins taking too long, apps or Tasks may be crashing without restarting. This symptom can also indicate loss of connectivity to the BBS database.
+  indicators:
+  - name: convergence_lrp_duration
+    promql: max_over_time(ConvergenceLRPDuration{source_id="bbs"}[15m]) / 1000000000
+    documentation:
+      title: BBS - Time to Run LRP Convergence
+      description: |
+        Time in ns that the BBS took to run its LRP convergence pass.
 
-      Origin: Firehose
-      Type: Gauge (Integer in ns)
-      Frequency: 30 s
-    recommended_response: |
-      1. Check BBS logs for errors.
-      2. Try vertically scaling the BBS VM resources up. For example, add more CPUs or memory depending on its system.cpu/system.memory metrics.
-      3. Consider vertically scaling the backing database, if system.cpu and system.memory metrics for the database instances are high.
+        Use: If the convergence run begins taking too long, apps or Tasks may be crashing without restarting. This symptom can also indicate loss of connectivity to the BBS database.
 
-- name: request_latency
-  promql: avg_over_time(RequestLatency{source_id="bbs"}[15m]) / 1000000000
-  documentation:
-    title: BBS - Time to Handle Requests
-    description: |
-      The maximum observed latency time over the past 60 seconds that the BBS took to handle requests across all its API endpoints.
+        Origin: Firehose
+        Type: Gauge (Integer in ns)
+        Frequency: 30 s
+      recommended_response: |
+        1. Check BBS logs for errors.
+        2. Try vertically scaling the BBS VM resources up. For example, add more CPUs or memory depending on its system.cpu/system.memory metrics.
+        3. Consider vertically scaling the backing database, if system.cpu and system.memory metrics for the database instances are high.
 
-      Diego is now aggregating this metric to emit the max value observed over 60 seconds.
+  - name: request_latency
+    promql: avg_over_time(RequestLatency{source_id="bbs"}[15m]) / 1000000000
+    documentation:
+      title: BBS - Time to Handle Requests
+      description: |
+        The maximum observed latency time over the past 60 seconds that the BBS took to handle requests across all its API endpoints.
 
-      Use: If this metric rises, the BBS API is slowing. Response to certain operations is slow if request latency is high.
+        Diego is now aggregating this metric to emit the max value observed over 60 seconds.
 
-      Origin: Firehose
-      Type: Gauge (Integer in ns)
-      Frequency: 60 s
-    recommended_response: |
-      1. Check CPU and memory statistics.
-      2. Check BBS logs for faults and errors that can indicate issues with BBS.
-      3. Try scaling the BBS VM resources up. For example, add more CPUs/memory depending on its system.cpu/system.memory metrics.
-      4. Consider vertically scaling the backing database, if system.cpu and system.memory metrics for the database instances are high.
+        Use: If this metric rises, the BBS API is slowing. Response to certain operations is slow if request latency is high.
 
-- name: lrps_extra
-  promql: avg_over_time(LRPsExtra{source_id="bbs"}[5m])
-  documentation:
-    title: BBS - More App Instances Than Expected
-    description: |
-      Total number of LRP instances that are no longer desired but still have a BBS record. When Diego wants to add more apps, the BBS sends a request to the auctioneer to spin up additional LRPs. LRPsExtra is the total number of LRP instances that are no longer desired but still have a BBS record.
+        Origin: Firehose
+        Type: Gauge (Integer in ns)
+        Frequency: 60 s
+      recommended_response: |
+        1. Check CPU and memory statistics.
+        2. Check BBS logs for faults and errors that can indicate issues with BBS.
+        3. Try scaling the BBS VM resources up. For example, add more CPUs/memory depending on its system.cpu/system.memory metrics.
+        4. Consider vertically scaling the backing database, if system.cpu and system.memory metrics for the database instances are high.
 
-      Use: If Diego has more LRPs running than expected, there may be problems with the BBS.
+  - name: lrps_extra
+    promql: avg_over_time(LRPsExtra{source_id="bbs"}[5m])
+    documentation:
+      title: BBS - More App Instances Than Expected
+      description: |
+        Total number of LRP instances that are no longer desired but still have a BBS record. When Diego wants to add more apps, the BBS sends a request to the auctioneer to spin up additional LRPs. LRPsExtra is the total number of LRP instances that are no longer desired but still have a BBS record.
 
-      Deleting an app with many instances can temporarily spike this metric. However, a sustained spike in bbs.LRPsExtra is unusual and should be investigated.
+        Use: If Diego has more LRPs running than expected, there may be problems with the BBS.
 
-      Origin: Firehose
-      Type: Gauge (Float)
-      Frequency: 30 s
-    recommended_response: |
-      1. Review the BBS logs for proper operation or errors, looking for detailed error messages.
-      2. Check the Domain freshness.
+        Deleting an app with many instances can temporarily spike this metric. However, a sustained spike in bbs.LRPsExtra is unusual and should be investigated.
 
-- name: lrps_missing
-  promql: avg_over_time(LRPsMissing{source_id="bbs"}[5m])
-  documentation:
-    title: BBS - Fewer App Instances Than Expected
-    description: |
-      Total number of LRP instances that are desired but have no record in the BBS. When Diego wants to add more apps, the BBS sends a request to the auctioneer to spin up additional LRPs. LRPsMissing is the total number of LRP instances that are desired but have no BBS record.
+        Origin: Firehose
+        Type: Gauge (Float)
+        Frequency: 30 s
+      recommended_response: |
+        1. Review the BBS logs for proper operation or errors, looking for detailed error messages.
+        2. Check the Domain freshness.
 
-      Use: If Diego has less LRP running than expected, there may be problems with the BBS.
+  - name: lrps_missing
+    promql: avg_over_time(LRPsMissing{source_id="bbs"}[5m])
+    documentation:
+      title: BBS - Fewer App Instances Than Expected
+      description: |
+        Total number of LRP instances that are desired but have no record in the BBS. When Diego wants to add more apps, the BBS sends a request to the auctioneer to spin up additional LRPs. LRPsMissing is the total number of LRP instances that are desired but have no BBS record.
 
-      An app push with many instances can temporarily spike this metric. However, a sustained spike in bbs.LRPsMissing is unusual and should be investigated.
+        Use: If Diego has less LRP running than expected, there may be problems with the BBS.
 
-      Origin: Firehose
-      Type: Gauge (Float)
-      Frequency: 30 s
-    recommended_response: |
-      1. Review the BBS logs for proper operation or errors, looking for detailed error messages.
-      2. Check the Domain freshness.
+        An app push with many instances can temporarily spike this metric. However, a sustained spike in bbs.LRPsMissing is unusual and should be investigated.
 
-- name: crashed_actual_lrps
-  promql: avg_over_time(CrashedActualLRPs{source_id="bbs"}[5m])
-  documentation:
-    title: BBS - Crashed App Instances
-    description: |
-      Total number of LRP instances that have crashed.
+        Origin: Firehose
+        Type: Gauge (Float)
+        Frequency: 30 s
+      recommended_response: |
+        1. Review the BBS logs for proper operation or errors, looking for detailed error messages.
+        2. Check the Domain freshness.
 
-      Use: Indicates how many instances in the deployment are in a crashed state. An increase in bbs.CrashedActualLRPs can indicate several problems, from a bad app with many instances associated, to a platform issue that is resulting in app crashes. Use this metric to help create a baseline for your deployment. After you have a baseline, you can create a deployment-specific alert to notify of a spike in crashes above the trend line. Tune alert values to your deployment.
+  - name: crashed_actual_lrps
+    promql: avg_over_time(CrashedActualLRPs{source_id="bbs"}[5m])
+    documentation:
+      title: BBS - Crashed App Instances
+      description: |
+        Total number of LRP instances that have crashed.
 
-      Origin: Firehose
-      Type: Gauge (Float)
-      Frequency: 30 s
-    recommended_response: |
-      1. Look at the BBS logs for apps that are crashing and at the cell logs to see if the problem is with the apps themselves, rather than a platform issue.
+        Use: Indicates how many instances in the deployment are in a crashed state. An increase in bbs.CrashedActualLRPs can indicate several problems, from a bad app with many instances associated, to a platform issue that is resulting in app crashes. Use this metric to help create a baseline for your deployment. After you have a baseline, you can create a deployment-specific alert to notify of a spike in crashes above the trend line. Tune alert values to your deployment.
 
-- name: lrps_running
-  promql: avg_over_time(LRPsRunning{source_id="bbs"}[1h]) - avg_over_time(LRPsRunning{source_id="bbs"}[1h]  offset 1h)
-  documentation:
-    title: BBS - Running App Instances, Rate of Change
-    description: |
-      Rate of change in app instances being started or stopped on the platform. It is derived from bbs.LRPsRunning and represents the total number of LRP instances that are running on Diego cells.
+        Origin: Firehose
+        Type: Gauge (Float)
+        Frequency: 30 s
+      recommended_response: |
+        1. Look at the BBS logs for apps that are crashing and at the cell logs to see if the problem is with the apps themselves, rather than a platform issue.
 
-      Use: Delta reflects upward or downward trend for app instances started or stopped. Helps to provide a picture of the overall growth trend of the environment for capacity planning. You may want to alert on delta values outside of the expected range.
+  - name: lrps_running
+    promql: avg_over_time(LRPsRunning{source_id="bbs"}[1h]) - avg_over_time(LRPsRunning{source_id="bbs"}[1h]  offset 1h)
+    documentation:
+      title: BBS - Running App Instances, Rate of Change
+      description: |
+        Rate of change in app instances being started or stopped on the platform. It is derived from bbs.LRPsRunning and represents the total number of LRP instances that are running on Diego cells.
 
-      Origin: Firehose
-      Type: Gauge (Float)
-      Frequency: During event, emission should be constant on a running deployment.
-    recommended_response: |
-      1. Scale components as necessary.
+        Use: Delta reflects upward or downward trend for app instances started or stopped. Helps to provide a picture of the overall growth trend of the environment for capacity planning. You may want to alert on delta values outside of the expected range.
 
-- name: bbs_lock_held
-  promql: max_over_time(LockHeld{source_id="bbs"}[5m])
-  documentation:
-    title: BBS - Lock Held
-    description: |
-      Whether a BBS instance holds the expected BBS lock (in Locket). 1 means the active BBS server holds the lock, and 0 means the lock was lost.
+        Origin: Firehose
+        Type: Gauge (Float)
+        Frequency: During event, emission should be constant on a running deployment.
+      recommended_response: |
+        1. Scale components as necessary.
 
-      Use: This metric is complimentary to Active Locks, and it offers a BBS-level version of the Locket metrics. Although it is emitted per BBS instance, only 1 active lock is held by BBS. Therefore, the expected value is 1. The metric may occasionally be 0 when the BBS instances are performing a leader transition, but a prolonged value of 0 indicates an issue with BBS.
+  - name: bbs_lock_held
+    promql: max_over_time(LockHeld{source_id="bbs"}[5m])
+    documentation:
+      title: BBS - Lock Held
+      description: |
+        Whether a BBS instance holds the expected BBS lock (in Locket). 1 means the active BBS server holds the lock, and 0 means the lock was lost.
 
-      Origin: Firehose
-      Type: Gauge
-      Frequency: Periodically
-    recommended_response: |
-      1. Run monit status on the instance group that the BBS job is running on to check for failing processes.
-      2. If there are no failing processes, then review the logs for BBS.
-         - A healthy BBS shows obvious activity around starting or claiming LRPs.
-         - An unhealthy BBS leads to the Auctioneer showing minimal or no activity. The BBS sends work to the Auctioneer.
+        Use: This metric is complimentary to Active Locks, and it offers a BBS-level version of the Locket metrics. Although it is emitted per BBS instance, only 1 active lock is held by BBS. Therefore, the expected value is 1. The metric may occasionally be 0 when the BBS instances are performing a leader transition, but a prolonged value of 0 indicates an issue with BBS.
 
-- name: domain_cf_apps
-  promql: max_over_time(Domain_cf_apps{source_id="bbs"}[5m])
-  documentation:
-    title: BBS - Cloud Controller and Diego in Sync
-    description: |
-      Indicates if the cf-apps Domain is up-to-date, meaning that CF App requests from Cloud Controller are synchronized to bbs.LRPsDesired (Diego-desired AIs) for execution.
-      - 1 means cf-apps Domain is up-to-date
-      - No data received means cf-apps Domain is not up-to-date
+        Origin: Firehose
+        Type: Gauge
+        Frequency: Periodically
+      recommended_response: |
+        1. Run monit status on the instance group that the BBS job is running on to check for failing processes.
+        2. If there are no failing processes, then review the logs for BBS.
+           - A healthy BBS shows obvious activity around starting or claiming LRPs.
+           - An unhealthy BBS leads to the Auctioneer showing minimal or no activity. The BBS sends work to the Auctioneer.
 
-      Use: If the cf-apps Domain does not stay up-to-date, changes requested in the Cloud Controller are not guaranteed to propagate throughout the system. If the Cloud Controller and Diego are out of sync, then apps running could vary from those desired.
+  - name: domain_cf_apps
+    promql: max_over_time(Domain_cf_apps{source_id="bbs"}[5m])
+    documentation:
+      title: BBS - Cloud Controller and Diego in Sync
+      description: |
+        Indicates if the cf-apps Domain is up-to-date, meaning that CF App requests from Cloud Controller are synchronized to bbs.LRPsDesired (Diego-desired AIs) for execution.
+        - 1 means cf-apps Domain is up-to-date
+        - No data received means cf-apps Domain is not up-to-date
 
-      Origin: Firehose
-      Type: Gauge (Float)
-      Frequency: 30 s
-    recommended_response: |
-      1. Check the BBS and Clock Global (Cloud Controller clock) logs.
+        Use: If the cf-apps Domain does not stay up-to-date, changes requested in the Cloud Controller are not guaranteed to propagate throughout the system. If the Cloud Controller and Diego are out of sync, then apps running could vary from those desired.
+
+        Origin: Firehose
+        Type: Gauge (Float)
+        Frequency: 30 s
+      recommended_response: |
+        1. Check the BBS and Clock Global (Cloud Controller clock) logs.
