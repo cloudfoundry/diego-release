@@ -24,6 +24,8 @@ else
   git submodule sync --recursive && git submodule foreach --recursive git submodule sync  && git submodule update --init --recursive
 fi
 
+git clean -ffd
+
 if [ -d "$(dirname "$scripts_dir")/.git" ] ; then
   "$scripts_dir"/install-git-hooks
 fi
