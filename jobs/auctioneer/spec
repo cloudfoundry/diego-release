@@ -48,6 +48,9 @@ properties:
   diego.auctioneer.cell_state_timeout:
     description: "Timeout applied to HTTP requests to the Cell State endpoint."
     default: "10s"
+  diego.auctioneer.bin_pack_first_fit_weight:
+    description: "Factor to bias against BOSH instance index number of a cell. Instead of spreading containers equally accross all cells, cells with a lower index number will be deployed to first when this setting is > 0. (0.0 - 1.0)"
+    default: 0.0
   diego.auctioneer.starting_container_weight:
     description: "Factor to bias against cells with starting containers (0.0 - 1.0)"
     default: 0.25
