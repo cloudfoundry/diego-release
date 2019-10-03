@@ -9,12 +9,12 @@ This document describes how to enable the per-container [Envoy proxy](https://gi
 1. [Additional Per-Instance Memory Allocation](#additional-per-instance-memory-allocation)
 	1. [Choosing a value for the additional memory allocation](#choosing-value-for-additional-memory-allocation)
 1. [Enabling Mutual TLS Configuration](#enabling-mutual-tls-configuration)
-1. [Disabling Unproxied Port Mappnigs](#disabling-unproxied-port-mappings)
+1. [Disabling Unproxied Port Mappings](#disabling-unproxied-port-mappings)
 
 
 ## <a name="enabling-per-container-envoy-proxy"/> Enabling Per-Container Envoy Proxy
 
-A deployment operator enables the Linux cell reps to run an Envoy proxy process in each container by setting the `containers.proxy.enabled` property on the `rep` job to `true`.
+A deployment operator enables the Linux cell reps to run an Envoy proxy process for each container by setting the `containers.proxy.enabled` property on the `rep` job to `true`.
 
 [Instance Identity Credentials](https://docs.cloudfoundry.org/adminguide/instance-identity.html) must also be enabled on the Diego cell rep so that it can configure the Envoy proxy process with the required TLS configuration.
 
@@ -69,7 +69,7 @@ Additionally, the cell rep configures the Envoy proxy to bind its administrative
 
 ## <a name="additional-per-instance-memory-allocation"/> Additional Per-Instance Memory Allocation
 
-Integrating Envoy into Cloud Foundry for route integrity and other use cases does not come for free. Each Envoy proxy process currently runs in the same container as the application process and so itself uses memory inside the application instance's memory quota. Consequently, operators will likely be interested in compensating for this overhead to reduce the incidence of out-of-memory errors inside application containers, and can do so by setting the `containers.proxy.additional_memory_allocation_mb` property on the `rep` job.
+Integrating Envoy into Cloud Foundry for route integrity and other use cases does not come for free. Each Envoy proxy process currently runs in the sidecar container to the application container process. It shares network namespace and resources with the main container and so it uses the memory inside the application instance's memory quota. Consequently, operators will likely be interested in compensating for this overhead to reduce the incidence of out-of-memory errors inside application containers, and can do so by setting the `containers.proxy.additional_memory_allocation_mb` property on the `rep` job.
 
 This property instructs the cell rep to increase the memory quota of all containers by the given amount. For example, if `containers.proxy.additional_memory_allocation_mb` is set to `16` and a container is scheduled on the cell with a memory limit of 256 MB, the actual container effective memory limit will be 256 + 16 = 272 MB. Please note that the cell rep will not overcommit its memory as a result of setting the bosh property, and operators opting into this mode should make sure that they have enough additional memory.
 
@@ -90,7 +90,7 @@ A deployment operator can enable mutual TLS configuration between the Envoy prox
 1. In the `rep` job, also set the value of `containers.proxy.trusted_ca_certificates` to the CA certificate created in the first step.
 1. Optionally, you can configure the Envoy proxy to validate the subject alternative name on the certificate provided by the gorouter. To do so, the certificate template needs to contain the subject alternative name, and that same name can be set in `containers.proxy.verify_subject_alt_name` in the `rep` job.
 
-### <a name="disabling-unproxied-port-mappings"/> Disabling Unproxied Port Mappnigs
+### <a name="disabling-unproxied-port-mappings"/> Disabling Unproxied Port Mappings
 
 A deployment operator can also disable the legacy port mappings that bypass the Envoy proxy by setting the `containers.proxy.enable_unproxied_port_mappings` property on the `rep` job to `false`. Setting this value requires the Envoy proxies to be enabled.
 
