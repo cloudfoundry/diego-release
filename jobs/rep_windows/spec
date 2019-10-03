@@ -194,9 +194,6 @@ properties:
     description: "Experimental: arbitrary command to run after setup action"
   diego.executor.post_setup_user:
     description: "Experimental: user to run post setup hook command"
-  diego.executor.volman.driver_paths:
-    description: "Experimental: OS style path string containing the directories volman will look in for voldriver specs (delimited by : or ; depending on the OS)"
-    default: "/var/vcap/data/voldrivers"
   diego.executor.instance_identity_ca_cert:
     description: "PEM-encoded CA used to sign instance identity credentials. Enables instance identity if set along with instance_identity_key"
   diego.executor.instance_identity_key:
@@ -254,7 +251,7 @@ properties:
     default: true
 
   containers.graceful_shutdown_interval_in_seconds:
-    description: "EXPERIMENTAL: time in seconds between signalling a container to shutdown gracefully and stopping it forcefully. Should not be less than 10."
+    description: "time in seconds between signalling a container to shutdown gracefully and stopping it forcefully. Should not be less than 10."
     default: 10
 
   containers.proxy.enabled:
@@ -266,11 +263,11 @@ properties:
 
   containers.proxy.require_and_verify_client_certificates:
     default: false
-    description: "EXPERIMENTAL: whether the per-container proxy should require and verify a TLS certificate from a client connecting to one of its ingress listeners. Proxy will trust the set of CA certificates supplied in the containers.proxy.trusted_ca_certificates property. Requires containers.proxy.enabled to be set to true to enable."
+    description: "whether the per-container proxy should require and verify a TLS certificate from a client connecting to one of its ingress listeners. Proxy will trust the set of CA certificates supplied in the containers.proxy.trusted_ca_certificates property. Requires containers.proxy.enabled to be set to true to enable."
 
   containers.proxy.trusted_ca_certificates:
     default: []
-    description: "EXPERIMENTAL: List of CA certificate bundles against which the per-container proxy will verify certificates for clients connecting to its ingress listeners, if containers.proxy.require_and_verify_client_certificates is enabled."
+    description: "List of CA certificate bundles against which the per-container proxy will verify certificates for clients connecting to its ingress listeners, if containers.proxy.require_and_verify_client_certificates is enabled."
     example:
     - |
       ----- BEGIN CERTIFICATE -----
@@ -290,7 +287,7 @@ properties:
 
   containers.proxy.verify_subject_alt_name:
     default: []
-    description: "EXPERIMENTAL: If specified when containers.proxy.require_and_verify_client_certificates is enabled, the per-container proxy will also verify that the Subject Alternative Name of the presented certificate matches one of the specified values."
+    description: "If specified when containers.proxy.require_and_verify_client_certificates is enabled, the per-container proxy will also verify that the Subject Alternative Name of the presented certificate matches one of the specified values."
     example:
     - gorouter.service.cf.internal
     - tcp-router.service.cf.internal

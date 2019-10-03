@@ -47,23 +47,23 @@ properties:
     default: false
 
   enable_declarative_healthcheck:
-    description: "EXPERIMENTAL: When set, enables the declarative check tests in vizzini"
+    description: "When set, enables the declarative check tests in vizzini"
     default: false
 
   max_task_retries:
-    description: "EXPERIMENTAL: When set, allows for rejected tasks to be retried"
+    description: "When set, allows for rejected tasks to be retried"
     default: 3
 
   enable_container_proxy_tests:
-    description: "EXPERIMENTAL: When set, enables the container proxy tests in vizzini"
+    description: "When set, enables the container proxy tests in vizzini"
     default: false
   vizzini.container_proxy.ca:
-    description: "EXPERIMENTAL: When `enable_container_proxy_tests` is true, is used as the certificate authority for certs presnted by container proxies (required if `enable_container_proxy_tests` is true)"
+    description: "When `enable_container_proxy_tests` is true, is used as the certificate authority for certs presnted by container proxies (required if `enable_container_proxy_tests` is true)"
 
   vizzini.container_proxy.client_cert:
-    description: "EXPERIMENTAL: When `enable_container_proxy_tests` is true, is used as the client certificate to present to container proxies"
+    description: "When `enable_container_proxy_tests` is true, is used as the client certificate to present to container proxies"
   vizzini.container_proxy.client_key:
-    description: "EXPERIMENTAL: When `enable_container_proxy_tests` is true, is used as the client private key in mutual TLS connections with the container proxies"
+    description: "When `enable_container_proxy_tests` is true, is used as the client private key in mutual TLS connections with the container proxies"
 
   enable_privileged_container_tests:
     description: "When set, enables the privileged container tests in vizzini"
