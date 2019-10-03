@@ -70,7 +70,8 @@ Diego is typically deployed as part of a Cloud Foundry Application Runtime deplo
 
 ### <a name="monitoring-inspection"></a>Monitoring and Inspection
 
-- [Diego Metrics](docs/metrics.md) lists the various metrics that Diego emits through the Loggregator system.
+- [Diego Metrics](docs/metrics.md) lists the various component metrics that Diego emits through the Loggregator system.
+- [Container Metrics](docs/container-metrics.md) lists the various container metrics that Diego emits through the Loggregator system.
 - [`cfdot` Setup](docs/cfdot-setup.md) shows how to set up the `cfdot` CF Diego Operator Tool CLI for use in inspecting and interacting with a Diego deployment.
 - [Logging format](docs/logging-format.md) shows how to configure the logging format for Diego components.
 
