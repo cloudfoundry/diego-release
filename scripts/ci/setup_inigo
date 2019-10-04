@@ -125,9 +125,9 @@ setup_gopath() {
 
 
   if [ -d "$1/blobs/proxy" ]; then
-    mkdir /tmp/envoy
-    tar -C /tmp/envoy -xf blobs/proxy/envoy*.tgz
-    export ENVOY_PATH=/tmp/envoy
+    tmpdir=$(mktemp -d)
+    tar -C "$tmpdir" -xf blobs/proxy/envoy*.tgz
+    export ENVOY_PATH="$tmpdir"
     chmod 777 $ENVOY_PATH
   fi
 
