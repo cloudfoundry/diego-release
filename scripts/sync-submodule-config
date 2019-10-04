@@ -48,4 +48,4 @@ go install github.com/vito/gosub
 
 } | grep -Ev '^github.com/docker/docker($|/)' > /tmp/packages
 
-cat /tmp/packages | xargs -s 1048576 gosub sync
+cat /tmp/packages | xargs -s 1048576 gosub sync --force-https=$FORCE_SUBMODULE_HTTPS
