@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Stop";
 trap { $host.SetShouldExit(1) }
 
-$env:GOROOT="C:\var\vcap\packages\golang-1.12-windows\go"
+$env:GOROOT=(Get-ChildItem "C:\var\vcap\packages\golang-*-windows\go").FullName
 $env:PATH= "$env:GOROOT\bin;$env:PATH"
 $env:TMP = "C:\var\vcap\data\tmp"
 $env:TEMP = "C:\var\vcap\data\tmp"
