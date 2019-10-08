@@ -198,9 +198,11 @@ function Setup-Database() {
   cp $origCertFile $certFile
   cp $origKeyFile $keyFile
 
-  Set-Content -Path "C:\tools\mysql\current\my.ini" -Encoding Ascii -Value "[mysqld]
-basedir=C:\\tools\\mysql\\current
-datadir=C:\\ProgramData\\MySQL\\data
+  $mySqlBaseDir=(Get-ChildItem "C:\var\vcap\packages\mysql\mysql-*").FullName
+
+  Set-Content -Path "$mySqlBaseDir\my.ini" -Encoding Ascii -Value "[mysqld]
+basedir=$mySqlBaseDir
+datadir=C:\\var\\vcap\\data\\mysql
 ssl-cert=$certFile
 ssl-key=$keyFile
 ssl-ca=$caFile"
