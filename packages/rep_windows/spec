@@ -222,6 +222,8 @@ files:
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
   - github.com/vito/go-sse/sse/*.go # gosub
+  - golang.org/x/crypto/cryptobyte/*.go # gosub
+  - golang.org/x/crypto/cryptobyte/asn1/*.go # gosub
   - golang.org/x/net/context/*.go # gosub
   - golang.org/x/net/http/httpguts/*.go # gosub
   - golang.org/x/net/http2/*.go # gosub
@@ -231,8 +233,6 @@ files:
   - golang.org/x/net/trace/*.go # gosub
   - golang.org/x/sys/unix/*.go # gosub
   - golang.org/x/sys/unix/*.s # gosub
-  - golang.org/x/sys/windows/*.go # gosub
-  - golang.org/x/sys/windows/*.s # gosub
   - golang.org/x/text/secure/bidirule/*.go # gosub
   - golang.org/x/text/transform/*.go # gosub
   - golang.org/x/text/unicode/bidi/*.go # gosub
