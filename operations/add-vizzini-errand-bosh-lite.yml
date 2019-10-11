@@ -19,6 +19,7 @@
       release: diego
       properties:
         enable_declarative_healthcheck: true
+        grace_tarball_checksum: "((grace_tarball_checksum))"
         vizzini:
           nodes: 1
           bbs:

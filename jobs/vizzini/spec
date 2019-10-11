@@ -73,3 +73,14 @@ properties:
   default_rootfs:
     description: "Default preloaded rootfs to target for running Tasks and LRPs"
     default: "preloaded:cflinuxfs3"
+
+  grace_tarball_url:
+    description: "URL for the grace test asset"
+    default: "https://storage.googleapis.com/diego-assets-bucket/grace.tar.gz"
+
+  grace_tarball_checksum:
+    description: "grace test asset sha1 checksum"
+
+  grace_busybox_image_url:
+    description: "grace test asset busybox container image"
+    default: "docker:///cfdiegodocker/grace"

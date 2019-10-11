@@ -14,6 +14,9 @@ config = {
   rep_placement_tags: p("vizzini.rep.placement_tags"),
   max_task_retries: p("max_task_retries"),
   default_rootfs: p("default_rootfs"),
+  grace_tarball_url: p("grace_tarball_url"),
+  grace_tarball_checksum: p("grace_tarball_checksum"),
+  grace_busybox_image_url: p("grace_busybox_image_url")
 }
 
 if_p("vizzini.ssh.proxy_secret") do |value|

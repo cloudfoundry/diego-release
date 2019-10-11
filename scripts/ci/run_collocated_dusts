@@ -16,6 +16,8 @@ set -exo pipefail
 
 export DEFAULT_EVENTUALLY_TIMEOUT=60s
 
+export GRACE_TARBALL_CHECKSUM=$(cut -d':' -f2 diego-ci/vars/grace-config-vars.yml | xargs)
+
 pushd "${GOPATH_ROOT}/src/code.cloudfoundry.org/diego-upgrade-stability-tests"
   ginkgo -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=60 -keepGoing $@
 popd

@@ -18,6 +18,7 @@
     - name: vizzini
       release: diego
       properties:
+        grace_tarball_checksum: "((grace_tarball_checksum))"
         vizzini:
           bbs:
             ca_cert: "((diego_bbs_client.ca))"
