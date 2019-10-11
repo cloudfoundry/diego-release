@@ -62,6 +62,7 @@ if (evacuate) {
     }
     # NOTE: rep invokes 'kill_and_wait' here
 } else {
+    "$(Get-Date): Evacuate failed, drain exiting (exit 1)" | Out-File -Append -Encoding utf8 -FilePath $logfile
     Exit 1 # NOTE: matching behavior of 'rep' drain script
 }
 
