@@ -1,6 +1,5 @@
 #!/bin/bash -l
 
-conf_dir=/var/vcap/jobs/vizzini/config
 log_dir=/var/vcap/sys/log/vizzini
 
 set -e -x
@@ -14,71 +13,24 @@ cd src/code.cloudfoundry.org/vizzini
 
 exitstatus=0
 
-bbs_sec_flags=" \
- --bbs-client-cert=${conf_dir}/certs/bbs/client.crt \
- --bbs-client-key=${conf_dir}/certs/bbs/client.key"
-bbs_api_url=https://<%= p("vizzini.bbs.api_location") %>
-
-nodes=<%= properties.vizzini.nodes %>
-verbose=<%= properties.vizzini.verbose %>
-stream=<%= properties.vizzini.stream %>
-routable_domain_suffix=<%= properties.vizzini.routable_domain_suffix %>
-ssh_proxy_address=<%= properties.vizzini.ssh.proxy_address  %>
-callback_address=<%= spec.ip %>
-
-max_task_retries=<%= properties.max_task_retries %>
-
-enable_declarative_healthcheck=<%= properties.enable_declarative_healthcheck %>
-enable_container_proxy_tests=<%= properties.enable_container_proxy_tests %>
-enable_privileged_container_tests=<%= properties.enable_privileged_container_tests %>
-<% if_p("vizzini.ssh.proxy_secret") do |proxy_secret| %>
-  ssh_proxy_secret_flag="--ssh-password=<%= proxy_secret %>"
-<% end %>
-
-<% if properties.enable_container_proxy_tests %>
-  container_proxy_ca_flag="--proxy-ca=${conf_dir}/certs/container_proxy/ca.crt"
-  <% if_p("vizzini.container_proxy.client_cert") do |_| %>
-    container_proxy_cert_flag="--proxy-client-cert=${conf_dir}/certs/container_proxy/client.crt"
-  <% end %>
-  <% if_p("vizzini.container_proxy.client_key") do |_| %>
-    container_proxy_key_flag="--proxy-client-key=${conf_dir}/certs/container_proxy/client.key"
-  <% end %>
-<% end %>
-
 <% if_p("vizzini.eventually_timeout") do |eventually_timeout| %>
   export DEFAULT_EVENTUALLY_TIMEOUT=<%= eventually_timeout %>
 <% end %>
 
 mkdir -p $log_dir
 
+export VIZZINI_CONFIG_PATH="/var/vcap/jobs/vizzini/config/vizzini.json"
+
 ginkgo \
-  -nodes=${nodes} \
-  -v=${verbose} \
+  -nodes=<%= properties.vizzini.nodes %> \
+  -v=<%= properties.vizzini.verbose %> \
   -randomizeAllSpecs \
   -progress \
   -trace \
   -keepGoing \
-  -stream=${stream} \
-  -- \
-  ${bbs_sec_flags} \
-  --enable-declarative-healthcheck=${enable_declarative_healthcheck} \
-  --enable-container-proxy-tests=${enable_container_proxy_tests} \
-  --enable-privileged-container-tests=${enable_privileged_container_tests} \
-  --bbs-address=${bbs_api_url} \
-  --ssh-address=${ssh_proxy_address} \
-  --host-address=${callback_address} \
-  --default-rootfs=<%= p("default_rootfs") %>\
-  <% Array(p("vizzini.rep.placement_tags")).each do |placement_tag| %> \
-  --rep-placement-tag=<%= placement_tag %> \
-  <% end %>\
-  --max-task-retries=${max_task_retries} \
-  ${ssh_proxy_secret_flag} \
-  --routable-domain-suffix=${routable_domain_suffix} \
-  ${container_proxy_cert_flag} \
-  ${container_proxy_key_flag} \
-  ${container_proxy_ca_flag} \
-  2> >(tee -a $log_dir/vizzini.stderr.log) \
-  1> >(tee -a $log_dir/vizzini.stdout.log)
+  -stream=<%= properties.vizzini.stream %> \
+  2> >(tee -a ${log_dir}/vizzini.stderr.log) \
+  1> >(tee -a ${log_dir}/vizzini.stdout.log)
 
 echo "Vizzini Complete; exit status: $exitstatus"
 

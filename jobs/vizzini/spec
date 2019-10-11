@@ -6,6 +6,7 @@ packages:
 
 templates:
   run.erb: bin/run
+  vizzini.json.erb: config/vizzini.json
   bbs_client.crt.erb: config/certs/bbs/client.crt
   bbs_client.key.erb: config/certs/bbs/client.key
   container_proxy_ca.crt.erb: config/certs/container_proxy/ca.crt

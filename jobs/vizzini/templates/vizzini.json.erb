@@ -1,0 +1,36 @@
+<%=
+conf_dir="/var/vcap/jobs/vizzini/config"
+
+config = {
+  bbs_address: 'https://p("vizzini.bbs.api_location")',
+  bbs_client_cert_path: "#{conf_dir}/certs/bbs/client.crt",
+  bbs_client_key_path: "#{conf_dir}/certs/bbs/client.key",
+  ssh_address: p("vizzini.ssh.proxy_address"),
+  routable_domain_suffix: p("vizzini.routable_domain_suffix"),
+  host_addresss: spec.ip,
+  enable_declarative_healthcheck: p("enable_declarative_healthcheck"),
+  enable_container_proxy_tests: p("enable_container_proxy_tests"),
+  enable_privileged_container_tests: p("enable_privileged_container_tests"),
+  rep_placement_tags: p("vizzini.rep.placement_tags"),
+  max_task_retries: p("max_task_retries"),
+  default_rootfs: p("default_rootfs"),
+}
+
+if_p("vizzini.ssh.proxy_secret") do |value|
+  config[:ssh_password] = value
+end
+
+if p("properties.enable_container_proxy_tests") == true
+  config[:proxy_ca_path] = "#{conf_dir}/certs/container_proxy/ca.crt"
+
+  if_p("vizzini.container_proxy.client_cert") do |_|
+    config[:proxy_client_cert_path] = "#{conf_dir}/certs/container_proxy/client.crt"
+  end
+
+  if_p("vizzini.container_proxy.client_key") do |_|
+    config[:proxy_client_key_path] = "#{conf_dir}/certs/container_proxy/client.key"
+  end
+end
+
+config.to_json
+%>
