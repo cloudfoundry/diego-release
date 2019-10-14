@@ -23,7 +23,7 @@ if_p("vizzini.ssh.proxy_secret") do |value|
   config[:ssh_password] = value
 end
 
-if p("properties.enable_container_proxy_tests") == true
+if p("enable_container_proxy_tests") == true
   config[:proxy_ca_path] = "#{conf_dir}/certs/container_proxy/ca.crt"
 
   if_p("vizzini.container_proxy.client_cert") do |_|
