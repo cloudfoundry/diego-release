@@ -2,7 +2,7 @@
 conf_dir="/var/vcap/jobs/vizzini/config"
 
 config = {
-  bbs_address: 'https://p("vizzini.bbs.api_location")',
+  bbs_address: "https://#{p("vizzini.bbs.api_location")}",
   bbs_client_cert_path: "#{conf_dir}/certs/bbs/client.crt",
   bbs_client_key_path: "#{conf_dir}/certs/bbs/client.key",
   ssh_address: p("vizzini.ssh.proxy_address"),
