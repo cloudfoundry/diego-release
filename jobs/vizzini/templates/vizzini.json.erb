@@ -16,7 +16,8 @@ config = {
   default_rootfs: p("default_rootfs"),
   grace_tarball_url: p("grace_tarball_url"),
   grace_tarball_checksum: p("grace_tarball_checksum"),
-  grace_busybox_image_url: p("grace_busybox_image_url")
+  grace_busybox_image_url: p("grace_busybox_image_url"),
+  file_server_address: "http://#{p("vizzini.file_server.address")}"
 }
 
 if_p("vizzini.ssh.proxy_secret") do |value|

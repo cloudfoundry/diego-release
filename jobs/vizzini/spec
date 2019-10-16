@@ -22,6 +22,10 @@ properties:
   vizzini.bbs.client_key:
     description: "REQUIRED: PEM-encoded client key"
 
+  vizzini.file_server.address:
+    description: The address of the file-server
+    default: file-server.service.cf.internal:8080
+
   vizzini.rep.placement_tags:
     description: "use placement tags for created LRPs"
     default: []
