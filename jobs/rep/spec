@@ -210,9 +210,11 @@ properties:
     default: 24
 
   diego.rep.bbs.api_location:
-    description: "Address to the BBS Server"
+    description: "Address of the BBS server"
     default: "bbs.service.cf.internal:8889"
-
+  diego.rep.bbs.request_timeout:
+    description: "Request timeout to the BBS server"
+    default: "10s"
   diego.rep.bbs.client_session_cache_size:
     description: "capacity of the tls client cache"
   diego.rep.bbs.max_idle_conns_per_host:

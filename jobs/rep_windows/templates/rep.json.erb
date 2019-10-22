@@ -11,7 +11,7 @@
   end
 
   config = {
-    communication_timeout: "10s",
+    communication_timeout: p("diego.rep.bbs.request_timeout"),
     lock_retry_interval: "5s",
     lock_ttl: "15s",
     session_name: "rep",
