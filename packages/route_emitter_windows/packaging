@@ -4,9 +4,6 @@ $ErrorActionPreference = "Stop";
 trap { $host.SetShouldExit(1) }
 
 $BOSH_INSTALL_TARGET = Resolve-Path "${env:BOSH_INSTALL_TARGET}"
-if ((Get-Item $BOSH_INSTALL_TARGET).LinkType -ne "") {
-  $BOSH_INSTALL_TARGET = (Get-Item $BOSH_INSTALL_TARGET).Target
-}
 
 # Create GOPATH
 New-Item -ItemType "directory" -Force src
