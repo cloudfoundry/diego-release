@@ -6,6 +6,14 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+modified_src=$(./scripts/reformat)
+if [ -n "$modified_src" ]; then
+  echo $'\e[31mthe following src files are reformatted and not staged:\e[0m'
+  echo
+  echo "$modified_src"
+  exit 1
+fi
+
 diff_output=$(./scripts/check-for-windows-drift)
 if [ $? -ne 0 ] ; then
   echo $'\e[31mdiego and diego windows have diverged. output:\e[0m'
@@ -15,7 +23,6 @@ if [ $? -ne 0 ] ; then
 fi
 
 modified_packages=$(./scripts/sync-package-specs)
-
 if [ -n "$modified_packages" ]; then
   echo $'\e[31mthe following package specs are not staged:\e[0m'
   echo
