@@ -94,6 +94,6 @@ A deployment operator can enable mutual TLS configuration between the Envoy prox
 
 A deployment operator can also disable the legacy port mappings that bypass the Envoy proxy by setting the `containers.proxy.enable_unproxied_port_mappings` property on the `rep` job to `false`. Setting this value requires the Envoy proxies to be enabled.
 
-Note that this configuration is compatible with only the Cloud Foundry routing tiers that support TLS connections to backend instances, which to date includes the HTTP gorouters but does **not** include either the TCP routers or the Diego SSH proxies.
+Note that this configuration is compatible with only the Cloud Foundry routing tiers that support TLS connections to backend instances, which to date includes the HTTP gorouters but does **not** include the TCP router.
 
 Together with enabling mutual TLS configuration, this configuration can be used to ensure that only certain authenticated clients can send TCP traffic to the application servers inside Diego LRP and CF app containers.
