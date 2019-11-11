@@ -3,6 +3,7 @@ set -e -x
 
 # ensure gosub is installed (this will recompile it only if necessary)
 GO111MODULE=on go get github.com/vito/gosub
+FORCE_SUBMODULE_HTTPS="${FORCE_SUBMODULE_HTTPS:-false}"
 
 {
   gosub list \
