@@ -136,6 +136,12 @@ setup_gopath() {
   export GOPATH=${GOPATH_ROOT}
   export PATH=${GOPATH_ROOT}/bin:${PATH}
 
+  popd
+}
+
+install_go_dependencies() {
+  pushd $1
+
   # install application dependencies
   echo "Installing go dependencies ..."
   for package in github.com/nats-io/nats-server; do
@@ -223,6 +229,7 @@ export ROUTER_GOPATH="$PWD/routing-release"
 export ROUTING_API_GOPATH=${ROUTER_GOPATH}
 
 setup_gopath $PWD/diego-release
+install_go_dependencies $PWD/diego-release
 install_ginkgo $PWD/diego-release
 set_garden_rootfs
 
