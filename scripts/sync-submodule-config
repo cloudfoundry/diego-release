@@ -21,8 +21,7 @@ GO111MODULE=on go get github.com/vito/gosub
     -app code.cloudfoundry.org/rep/cmd/... \
     -app code.cloudfoundry.org/route-emitter/cmd/... \
     -app code.cloudfoundry.org/routing-api/cmd/routing-api \
-    -app github.com/apcera/gnatsd \
-    -app github.com/apcera/nats \
+    -app github.com/nats-io/nats.go \
     -app github.com/golang/protobuf... \
     -app github.com/maxbrunsfeld/counterfeiter
 

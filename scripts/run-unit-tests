@@ -4,7 +4,7 @@ scripts_path=./$(dirname $0)
 eval $($scripts_path/get_paths.sh)
 
 set -e
-go install github.com/apcera/gnatsd
+go install github.com/nats-io/nats-server
 set +e
 
 ERROR_CODE=0

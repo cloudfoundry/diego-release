@@ -136,10 +136,10 @@ function Setup-Gopath() {
     $env:PATH="${env:GOPATH_ROOT}/bin:${env:PATH}"
 
     # install application dependencies
-    echo "Installing gnatsd ..."
-    go install github.com/apcera/gnatsd
+    echo "Installing nats-server ..."
+    go install github.com/nats-io/nats-server
     if ($LastExitCode -ne 0) {
-      throw "Installing gnatsd returned error code: $LastExitCode"
+      throw "Installing nats-server returned error code: $LastExitCode"
     }
   Pop-Location
 }

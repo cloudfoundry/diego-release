@@ -82,8 +82,8 @@ To be able to run unit tests, you'll also need to install the following binaries
     # Install ginkgo
     go install github.com/onsi/ginkgo/ginkgo
 
-    # Install gnatsd
-    go install github.com/apcera/gnatsd
+    # Install nats-server
+    go install github.com/nats-io/nats-server
 
     # Install consul
     if uname -a | grep Darwin; then os=darwin; else os=linux; fi

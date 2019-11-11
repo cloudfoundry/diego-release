@@ -11,7 +11,7 @@ export PATH=$GOROOT/bin:$PATH
 export GOPATH=$PWD
 export PATH=$PWD/bin:$PATH
 
-go install github.com/apcera/gnatsd
+go install github.com/nats-io/nats-server
 go install github.com/onsi/ginkgo/ginkgo
 
 cd src/code.cloudfoundry.org/auction/simulation

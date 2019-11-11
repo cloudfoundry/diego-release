@@ -69,9 +69,11 @@ files:
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/go-cleanhttp/*.go # gosub
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/serf/coordinate/*.go # gosub
   - github.com/mitchellh/hashstructure/*.go # gosub
-  - github.com/nats-io/go-nats/*.go # gosub
-  - github.com/nats-io/go-nats/encoders/builtin/*.go # gosub
-  - github.com/nats-io/go-nats/util/*.go # gosub
+  - github.com/nats-io/jwt/*.go # gosub
+  - github.com/nats-io/nats.go/*.go # gosub
+  - github.com/nats-io/nats.go/encoders/builtin/*.go # gosub
+  - github.com/nats-io/nats.go/util/*.go # gosub
+  - github.com/nats-io/nkeys/*.go # gosub
   - github.com/nats-io/nuid/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/pkg/errors/*.go # gosub
@@ -81,6 +83,7 @@ files:
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - github.com/tedsuo/rata/*.go # gosub
   - github.com/vito/go-sse/sse/*.go # gosub
+  - golang.org/x/crypto/ed25519/*.go # gosub
   - golang.org/x/net/context/*.go # gosub
   - golang.org/x/net/http/httpguts/*.go # gosub
   - golang.org/x/net/http2/*.go # gosub
