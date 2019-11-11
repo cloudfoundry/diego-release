@@ -15,14 +15,14 @@ $tls_cert="<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls.crt"%>
 $tls_key="<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls.key"%>"
 
 function evacuate {
-    try {
+    $origErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
     <%="/var/vcap/packages/#{p("diego.rep.job_name")}/gocurl.exe"%> -X "POST" `
         --cacert=${tls_ca_cert} --cert=${tls_cert} --key=${tls_key} "$address/evacuate" 2>&1 | `
         Out-File -Append -Encoding utf8 -FilePath $logfile
-    } catch {
-        return $false
-    }
-    return $true
+    $evacuateSucceeded = $?
+    $ErrorActionPreference = $origErrorActionPreference
+    return $evacuateSucceeded
 }
 
 function heartbeat {
