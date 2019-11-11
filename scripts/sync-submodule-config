@@ -23,6 +23,7 @@ FORCE_SUBMODULE_HTTPS="${FORCE_SUBMODULE_HTTPS:-false}"
     -app code.cloudfoundry.org/route-emitter/cmd/... \
     -app code.cloudfoundry.org/routing-api/cmd/routing-api \
     -app github.com/nats-io/nats.go \
+    -app github.com/nats-io/nats-server \
     -app github.com/golang/protobuf... \
     -app github.com/maxbrunsfeld/counterfeiter
 
