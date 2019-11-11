@@ -2,8 +2,7 @@
 set -e -x
 
 # ensure gosub is installed (this will recompile it only if necessary)
-go get github.com/vito/gosub
-go install github.com/vito/gosub
+GO111MODULE=on go get github.com/vito/gosub
 
 {
   gosub list \
