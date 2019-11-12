@@ -20,6 +20,7 @@ $env:PATH = $env:GOPATH + "/bin;" + $CONSUL_DIR + ";" + $env:PATH
 # Write-Host "PATH is " + $env:PATH
 
 go install github.com/nats-io/nats-server
+$env:NATS_DOCKERIZED = "1"
 
 Write-Host "Installing Ginkgo"
 go install github.com/onsi/ginkgo/ginkgo
