@@ -19,7 +19,13 @@ $env:PATH = $env:GOPATH + "/bin;" + $CONSUL_DIR + ";" + $env:PATH
 # Write-Host "Gopath is " + $env:GOPATH
 # Write-Host "PATH is " + $env:PATH
 
+Write-Host "Installing nats-server"
 go install github.com/nats-io/nats-server
+if ($LastExitCode -ne 0) {
+    throw "nats-server installation process returned error code: $LastExitCode"
+} else {
+  Write-Host "nats-server successfully installed"
+}
 $env:NATS_DOCKERIZED = "1"
 
 Write-Host "Installing Ginkgo"

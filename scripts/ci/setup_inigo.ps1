@@ -141,6 +141,7 @@ function Setup-Gopath() {
     if ($LastExitCode -ne 0) {
       throw "Installing nats-server returned error code: $LastExitCode"
     }
+    $env:NATS_DOCKERIZED = "1"
   Pop-Location
 }
 
