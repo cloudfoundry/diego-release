@@ -150,3 +150,22 @@ spec:
         Frequency: 30 s
       recommended_response: |
         1. Check the BBS and Clock Global (Cloud Controller clock) logs.
+
+  - name: bbs_master_elected
+    promql: BBSMasterElected{source_id="bbs"}
+    presentation:
+      chartType: bar
+    documentation:
+      title: BBS - Master Elected
+      description: |
+        Indicates when there is a BBS master election, meaning that a BBS instance has taken over as the active instance. A value of 1 is emitted when the election takes place.
+
+        Use: This metric will be emitted when a redeployment of the BBS occurs. If this metric is emitted frequently outside of a deployment, this may be a signal of underlying problems that should be investigated. If the active BBS is continually changing, this can cause application push downtime.
+
+        Origin: Firehose
+        Type: Gauge (Float)
+        Frequency: On event
+      recommended_response: |
+        1. Check the BBS logs.
+        1. Check the BBS VM load average and instance group size.
+        1. Check the health of the connection to the backing SQL database and network latency.
