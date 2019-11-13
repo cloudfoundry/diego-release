@@ -4,29 +4,38 @@
   nats_machines = nil
   if_p('diego.route_emitter.nats.machines') do |ips|
     nats_machines = ips.compact
-  end.else do
+  end.else_if_link('nats') do
     nats_machines = link('nats').instances.map { |instance| instance.address }
   end
 
   nats_port = nil
   if_p('diego.route_emitter.nats.port') do |prop|
     nats_port = prop
-  end.else do
+  end.else_if_link('nats') do
     nats_port = link('nats').p("nats.port")
   end
 
   nats_user = nil
   if_p('diego.route_emitter.nats.user') do |prop|
     nats_user = prop
-  end.else do
+  end.else_if_link('nats') do
     nats_user = link('nats').p("nats.user")
   end
 
   nats_password = nil
   if_p('diego.route_emitter.nats.password') do |prop|
     nats_password = prop
-  end.else do
+  end.else_if_link('nats') do
     nats_password = link('nats').p("nats.password")
+  end
+
+  if_link('nats-tls') do |nats_link|
+    if p("diego.route_emitter.nats.tls.enabled")
+      nats_machines = nats_link.instances.map { |instance| instance.address }
+      nats_port = nats_link.p("nats.port")
+      nats_user = nats_link.p("nats.user")
+      nats_password = nats_link.p("nats.password")
+    end
   end
 
   config = {
@@ -35,6 +44,10 @@
     nats_addresses: nats_machines.collect { |addr|
       "#{addr}:#{nats_port}"
     }.join(","),
+    nats_tls_enabled: p("diego.route_emitter.nats.tls.enabled"),
+    nats_ca_cert_file: "#{conf_dir}/certs/nats/ca.crt",
+    nats_client_cert_file: "#{conf_dir}/certs/nats/client.crt",
+    nats_client_key_file: "#{conf_dir}/certs/nats/client.key",
     consul_cluster: "http://127.0.0.1:8500",
     consul_enabled: p("locks.consul.enabled"),
     consul_down_mode_notification_interval: "1m",

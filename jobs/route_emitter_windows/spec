@@ -11,6 +11,9 @@ templates:
   loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
   loggregator_client.crt.erb: config/certs/loggregator/client.crt
   loggregator_client.key.erb: config/certs/loggregator/client.key
+  nats_ca.crt.erb: config/certs/nats/ca.crt
+  nats_client.crt.erb: config/certs/nats/client.crt
+  nats_client.key.erb: config/certs/nats/client.key
   routing_api_ca.crt.erb: config/certs/routing_api/ca.crt
   routing_api_client.crt.erb: config/certs/routing_api/client.crt
   routing_api_client.key.erb: config/certs/routing_api/client.key
@@ -22,6 +25,9 @@ packages:
 consumes:
 - name: nats
   type: nats
+  optional: true
+- name: nats-tls
+  type: nats-tls
   optional: true
 - name: routing_api
   type: routing_api
@@ -40,6 +46,13 @@ properties:
     default: 4222
   diego.route_emitter.nats.machines:
     description: "IP of each NATS cluster member."
+  diego.route_emitter.nats.tls.enabled:
+    description: "Enable connecting to NATS server via TLS."
+    default: false
+  diego.route_emitter.nats.tls.client_cert:
+    description: "PEM-encoded certificate for the route-emitter to present to NATS for verification when connecting via TLS."
+  diego.route_emitter.nats.tls.client_key:
+    description: "PEM-encoded private key for the route-emitter to present to NATS for verification when connecting via TLS."
 
   diego.route_emitter.debug_addr:
     description: "address at which to serve debug info"
