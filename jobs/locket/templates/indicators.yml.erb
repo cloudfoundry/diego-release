@@ -25,9 +25,10 @@ spec:
         Origin: Firehose
         Type: Gauge
         Frequency: 60s
+      recommended_alert_thresholds: Dynamic
       recommended_response: |
         1. Run monit status to inspect for failing processes.
-        2. If there are no failing processes, then review the logs for the components using the Locket service: BBS, Auctioneer, TPS Watcher, Routing API, and Clock Global (Cloud Controller clock). Look for indications that only one of each component is active at a time.
+        2. If there are no failing processes, then review the logs for the components using the Locket service: BBS, Auctioneer, TPS Watcher, Routing API, Clock Global (Cloud Controller clock), and others. Look for indications that only one of each component is active at a time.
         3. Focus triage on the BBS first:
           A healthy BBS shows obvious activity around starting or claiming LRPs.
           An unhealthy BBS leads to the Auctioneer showing minimal or no activity. The BBS sends work to the Auctioneer.
@@ -52,6 +53,7 @@ spec:
         Origin: Firehose
         Type: Gauge
         Frequency: 60s
+      recommended_alert_thresholds: Dynamic
       recommended_response: |
         1. Ensure that the variance is not the result of an active rolling deploy. Also ensure that the alert threshold is appropriate to the number of cells in the current deployment.
         2. Run monit status to inspect for failing processes.

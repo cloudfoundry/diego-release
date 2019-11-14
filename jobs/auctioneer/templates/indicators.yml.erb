@@ -29,6 +29,9 @@ spec:
         Origin: Firehose
         Type: Counter (Integer)
         Frequency: During each auction
+      recommended_alert_thresholds: |
+          Yellow warning: ≥ 0.5
+          Red critical: ≥ 1
       recommended_response: |
         1. To best determine the root cause, examine the Auctioneer logs. Depending on the specific error and resource constraint, you may also find a failure reason in the Cloud Controller (CC) API.
         2. Investigate the health of your Diego cells to determine if they are the resource type causing the problem.
@@ -46,6 +49,9 @@ spec:
         Origin: Firehose
         Type: Gauge, integer in ns
         Frequency: During event, during each auction
+      recommended_alert_thresholds: |
+          Yellow warning: ≥ 2s
+          Red critical: ≥ 5s
       recommended_response: |
         1. Check the health of the cells by reviewing the logs and looking for errors.
         2. Review IaaS console metrics.
@@ -65,6 +71,7 @@ spec:
         Origin: Firehose
         Type: Counter (Integer)
         Frequency: During event, during each auction
+      recommended_alert_thresholds: Dynamic
       recommended_response: |
         When observing a significant amount of container churn, do the following:
 
@@ -89,6 +96,9 @@ spec:
         Origin: Firehose
         Type: Counter (Float)
         Frequency: During event, during each auction
+      recommended_alert_thresholds: |
+          Yellow warning: ≥ 0.5
+          Red critical: ≥ 1
       recommended_response: |
         In order to best determine the root cause, examine the Auctioneer logs. Depending on the specific error or resource constraint, you may also find a failure reason in the CC API.
 
@@ -107,6 +117,8 @@ spec:
         Origin: Firehose
         Type: Gauge
         Frequency: Periodically
+      recommended_alert_thresholds: |
+        Red critical: any value other than 1
       recommended_response: |
         1. Run monit status on the instance group that the Auctioneer job is running on to check for failing processes.
         2. If there are no failing processes, then review the logs for Auctioneer.

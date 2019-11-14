@@ -25,6 +25,7 @@ spec:
         Origin: Firehose
         Type: Gauge (Float in ns)
         Frequency: 60s
+      recommended_alert_thresholds: Dynamic
       recommended_response: |
         If all or many jobs showing as impacted, there is likely an issue with Diego.
         1. Investigate the Route Emitter and Diego BBS logs for errors.

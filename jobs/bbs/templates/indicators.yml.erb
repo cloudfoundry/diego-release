@@ -25,6 +25,9 @@ spec:
         Origin: Firehose
         Type: Gauge (Integer in ns)
         Frequency: 30 s
+      recommended_alert_thresholds: |
+          Yellow warning: ≥ 10 s
+          Red critical: ≥ 20 s
       recommended_response: |
         1. Check BBS logs for errors.
         2. Try vertically scaling the BBS VM resources up. For example, add more CPUs or memory depending on its system.cpu/system.memory metrics.
@@ -44,6 +47,9 @@ spec:
         Origin: Firehose
         Type: Gauge (Integer in ns)
         Frequency: 60 s
+      recommended_alert_thresholds: |
+        Yellow warning: ≥ 5s
+        Red critical: ≥ 10s
       recommended_response: |
         1. Check CPU and memory statistics.
         2. Check BBS logs for faults and errors that can indicate issues with BBS.
@@ -64,6 +70,9 @@ spec:
         Origin: Firehose
         Type: Gauge (Float)
         Frequency: 30 s
+      recommended_alert_thresholds: |
+        Yellow warning: ≥ 5
+        Red critical: ≥ 10
       recommended_response: |
         1. Review the BBS logs for proper operation or errors, looking for detailed error messages.
         2. Check the Domain freshness.
@@ -82,6 +91,9 @@ spec:
         Origin: Firehose
         Type: Gauge (Float)
         Frequency: 30 s
+      recommended_alert_thresholds: |
+        Yellow warning: ≥ 5
+        Red critical: ≥ 10
       recommended_response: |
         1. Review the BBS logs for proper operation or errors, looking for detailed error messages.
         2. Check the Domain freshness.
@@ -98,8 +110,10 @@ spec:
         Origin: Firehose
         Type: Gauge (Float)
         Frequency: 30 s
+      recommended_alert_thresholds: Dynamic
       recommended_response: |
         1. Look at the BBS logs for apps that are crashing and at the cell logs to see if the problem is with the apps themselves, rather than a platform issue.
+        1. Alerting thresholds for this metric will vary depending on your deployment’s size and utilization. Monitoring crashed LRPs and investigating their cause (a troublesome application or a problem with the deployment itself) can help determine what levels to set for alerts.
 
   - name: lrps_running
     promql: avg_over_time(LRPsRunning{source_id="bbs"}[1h]) - avg_over_time(LRPsRunning{source_id="bbs"}[1h]  offset 1h)
@@ -113,6 +127,7 @@ spec:
         Origin: Firehose
         Type: Gauge (Float)
         Frequency: During event, emission should be constant on a running deployment.
+      recommended_alert_thresholds: Dynamic
       recommended_response: |
         1. Scale components as necessary.
 
@@ -128,6 +143,8 @@ spec:
         Origin: Firehose
         Type: Gauge
         Frequency: Periodically
+      recommended_alert_thresholds: |
+        Red critical: any value other than 1
       recommended_response: |
         1. Run monit status on the instance group that the BBS job is running on to check for failing processes.
         2. If there are no failing processes, then review the logs for BBS.
@@ -165,6 +182,7 @@ spec:
         Origin: Firehose
         Type: Gauge (Float)
         Frequency: On event
+      recommended_alert_thresholds: Dynamic
       recommended_response: |
         1. Check the BBS logs.
         1. Check the BBS VM load average and instance group size.

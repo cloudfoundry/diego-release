@@ -25,6 +25,7 @@ spec:
         Origin: Firehose
         Type: Gauge (Integer in MiB)
         Frequency: 60 s
+      recommended_alert_thresholds: < 35%
       recommended_response: |
         1. Assign more resources to the cells
         2. Assign more cells.
@@ -43,6 +44,7 @@ spec:
         Origin: Firehose
         Type: Gauge (Integer in MiB)
         Frequency: 60 s
+      recommended_alert_thresholds: < 35%
       recommended_response: |
         1. Assign more resources to the cells.
         2. Assign more cells.
@@ -63,6 +65,9 @@ spec:
         Origin: Firehose
         Type: Gauge (Float, 0-1)
         Frequency: 30 s
+      recommended_alert_thresholds: |
+          Yellow warning: = 1
+          Red critical: > 1
       recommended_response: |
         1. Investigate Diego cell servers for faults and errors.
         2. If a particular cell or cells appear problematic:
@@ -83,6 +88,9 @@ spec:
         Origin: Firehose
         Type: Gauge (Float in ns)
         Frequency: 30 s
+      recommended_alert_thresholds: |
+          Yellow warning: ≥ 5 s
+          Red critical: ≥ 10 s
       recommended_response: |
         1. Investigate BBS logs for faults and errors.
         2. If a particular cell or cells appear problematic, investigate logs for the cells.
