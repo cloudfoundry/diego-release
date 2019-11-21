@@ -63,7 +63,7 @@
 [submodule "src/golang.org/x/crypto"]
 	path = src/golang.org/x/crypto
 	url = https://go.googlesource.com/crypto
-	branch = master
+	branch = release-branch.go1.13
 [submodule "src/github.com/kr/pty"]
 	path = src/github.com/kr/pty
 	url = https://github.com/kr/pty
@@ -103,6 +103,7 @@
 [submodule "src/golang.org/x/net"]
 	path = src/golang.org/x/net
 	url = https://go.googlesource.com/net
+	branch = release-branch.go1.13
 [submodule "src/github.com/docker/distribution"]
 	path = src/github.com/docker/distribution
 	url = https://github.com/docker/distribution
@@ -266,6 +267,7 @@
 [submodule "src/code.cloudfoundry.org/uaa-go-client"]
 	path = src/code.cloudfoundry.org/uaa-go-client
 	url = https://github.com/cloudfoundry-incubator/uaa-go-client
+	branch = master
 [submodule "src/code.cloudfoundry.org/routing-api"]
 	path = src/code.cloudfoundry.org/routing-api
 	url = https://github.com/cloudfoundry-incubator/routing-api
@@ -308,11 +310,11 @@
 [submodule "src/golang.org/x/text"]
 	path = src/golang.org/x/text
 	url = https://go.googlesource.com/text
-	branch = master
+	branch = release-branch.go1.13
 [submodule "src/golang.org/x/sys"]
 	path = src/golang.org/x/sys
 	url = https://go.googlesource.com/sys
-	branch = master
+	branch = release-branch.go1.13
 [submodule "src/code.cloudfoundry.org/diego-logging-client"]
 	path = src/code.cloudfoundry.org/diego-logging-client
 	url = https://github.com/cloudfoundry/diego-logging-client
@@ -358,7 +360,7 @@
 [submodule "src/golang.org/x/tools"]
 	path = src/golang.org/x/tools
 	url = https://go.googlesource.com/tools
-	branch = master
+	branch = release-branch.go1.13
 [submodule "src/github.com/docker/docker-credential-helpers"]
 	path = src/github.com/docker/docker-credential-helpers
 	url = https://github.com/docker/docker-credential-helpers
@@ -395,13 +397,6 @@
 [submodule "src/github.com/envoyproxy/go-control-plane"]
 	path = src/github.com/envoyproxy/go-control-plane
 	url = https://github.com/envoyproxy/go-control-plane
-[submodule "src/github.com/gogo/googleapis"]
-	path = src/github.com/gogo/googleapis
-	url = https://github.com/gogo/googleapis
-[submodule "src/github.com/lyft/protoc-gen-validate"]
-	path = src/github.com/lyft/protoc-gen-validate
-	url = https://github.com/lyft/protoc-gen-validate
-	branch = master
 [submodule "src/github.com/fsnotify/fsnotify"]
 	path = src/github.com/fsnotify/fsnotify
 	url = https://github.com/fsnotify/fsnotify
@@ -419,12 +414,14 @@
 [submodule "src/code.cloudfoundry.org/rfc5424"]
 	path = src/code.cloudfoundry.org/rfc5424
 	url = https://github.com/cloudfoundry-incubator/rfc5424
+	branch = master
 [submodule "src/github.com/awslabs/amazon-ecr-credential-helper"]
 	path = src/github.com/awslabs/amazon-ecr-credential-helper
 	url = https://github.com/awslabs/amazon-ecr-credential-helper
 [submodule "src/code.cloudfoundry.org/ecrhelper"]
 	path = src/code.cloudfoundry.org/ecrhelper
 	url = https://github.com/cloudfoundry/ecrhelper
+	branch = master
 [submodule "src/github.com/nats-io/nats.go"]
 	path = src/github.com/nats-io/nats.go
 	url = https://github.com/nats-io/nats.go
@@ -444,3 +441,9 @@
 [submodule "src/github.com/nats-io/nuid"]
 	path = src/github.com/nats-io/nuid
 	url = https://github.com/nats-io/nuid
+[submodule "src/github.com/census-instrumentation/opencensus-proto"]
+	path = src/github.com/census-instrumentation/opencensus-proto
+	url = https://github.com/census-instrumentation/opencensus-proto
+[submodule "src/github.com/envoyproxy/protoc-gen-validate"]
+	path = src/github.com/envoyproxy/protoc-gen-validate
+	url = https://github.com/envoyproxy/protoc-gen-validate

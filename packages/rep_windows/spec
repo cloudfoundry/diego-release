@@ -168,6 +168,8 @@ files:
   - github.com/awslabs/amazon-ecr-credential-helper/ecr-login/vendor/golang.org/x/sys/unix/*.s # gosub
   - github.com/awslabs/amazon-ecr-credential-helper/ecr-login/version/*.go # gosub
   - github.com/bmizerany/pat/*.go # gosub
+  - github.com/census-instrumentation/opencensus-proto/gen-go/resource/v1/*.go # gosub
+  - github.com/census-instrumentation/opencensus-proto/gen-go/trace/v1/*.go # gosub
   - github.com/cyphar/filepath-securejoin/*.go # gosub
   - github.com/cyphar/filepath-securejoin/vendor/github.com/pkg/errors/*.go # gosub
   - github.com/envoyproxy/go-control-plane/envoy/api/v2/*.go # gosub
@@ -180,41 +182,40 @@ files:
   - github.com/envoyproxy/go-control-plane/envoy/config/bootstrap/v2/*.go # gosub
   - github.com/envoyproxy/go-control-plane/envoy/config/filter/accesslog/v2/*.go # gosub
   - github.com/envoyproxy/go-control-plane/envoy/config/filter/network/tcp_proxy/v2/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/listener/v2/*.go # gosub
   - github.com/envoyproxy/go-control-plane/envoy/config/metrics/v2/*.go # gosub
   - github.com/envoyproxy/go-control-plane/envoy/config/overload/v2alpha/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/config/ratelimit/v2/*.go # gosub
   - github.com/envoyproxy/go-control-plane/envoy/config/trace/v2/*.go # gosub
   - github.com/envoyproxy/go-control-plane/envoy/type/*.go # gosub
   - github.com/envoyproxy/go-control-plane/envoy/type/matcher/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/pkg/util/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/pkg/conversion/*.go # gosub
+  - github.com/envoyproxy/protoc-gen-validate/validate/*.go # gosub
+  - github.com/envoyproxy/protoc-gen-validate/validate/*.h # gosub
+  - github.com/envoyproxy/protoc-gen-validate/vendor/github.com/golang/protobuf/proto/*.go # gosub
+  - github.com/envoyproxy/protoc-gen-validate/vendor/github.com/golang/protobuf/protoc-gen-go/descriptor/*.go # gosub
+  - github.com/envoyproxy/protoc-gen-validate/vendor/github.com/golang/protobuf/ptypes/duration/*.go # gosub
+  - github.com/envoyproxy/protoc-gen-validate/vendor/github.com/golang/protobuf/ptypes/timestamp/*.go # gosub
   - github.com/ghodss/yaml/*.go # gosub
-  - github.com/gogo/googleapis/google/api/*.go # gosub
-  - github.com/gogo/googleapis/google/rpc/*.go # gosub
   - github.com/gogo/protobuf/gogoproto/*.go # gosub
-  - github.com/gogo/protobuf/jsonpb/*.go # gosub
   - github.com/gogo/protobuf/proto/*.go # gosub
   - github.com/gogo/protobuf/protoc-gen-gogo/descriptor/*.go # gosub
   - github.com/gogo/protobuf/sortkeys/*.go # gosub
-  - github.com/gogo/protobuf/types/*.go # gosub
   - github.com/golang/protobuf/jsonpb/*.go # gosub
   - github.com/golang/protobuf/proto/*.go # gosub
+  - github.com/golang/protobuf/protoc-gen-go/descriptor/*.go # gosub
   - github.com/golang/protobuf/ptypes/*.go # gosub
   - github.com/golang/protobuf/ptypes/any/*.go # gosub
   - github.com/golang/protobuf/ptypes/duration/*.go # gosub
+  - github.com/golang/protobuf/ptypes/empty/*.go # gosub
   - github.com/golang/protobuf/ptypes/struct/*.go # gosub
   - github.com/golang/protobuf/ptypes/timestamp/*.go # gosub
+  - github.com/golang/protobuf/ptypes/wrappers/*.go # gosub
   - github.com/google/shlex/*.go # gosub
   - github.com/hashicorp/consul/api/*.go # gosub
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/go-cleanhttp/*.go # gosub
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/serf/coordinate/*.go # gosub
   - github.com/hashicorp/errwrap/*.go # gosub
   - github.com/hashicorp/go-multierror/*.go # gosub
-  - github.com/lyft/protoc-gen-validate/validate/*.go # gosub
-  - github.com/lyft/protoc-gen-validate/validate/*.h # gosub
-  - github.com/lyft/protoc-gen-validate/vendor/github.com/golang/protobuf/proto/*.go # gosub
-  - github.com/lyft/protoc-gen-validate/vendor/github.com/golang/protobuf/protoc-gen-go/descriptor/*.go # gosub
-  - github.com/lyft/protoc-gen-validate/vendor/github.com/golang/protobuf/ptypes/duration/*.go # gosub
-  - github.com/lyft/protoc-gen-validate/vendor/github.com/golang/protobuf/ptypes/timestamp/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/pkg/errors/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
@@ -238,6 +239,7 @@ files:
   - golang.org/x/text/transform/*.go # gosub
   - golang.org/x/text/unicode/bidi/*.go # gosub
   - golang.org/x/text/unicode/norm/*.go # gosub
+  - google.golang.org/genproto/googleapis/api/annotations/*.go # gosub
   - google.golang.org/genproto/googleapis/rpc/status/*.go # gosub
   - google.golang.org/grpc/*.go # gosub
   - google.golang.org/grpc/balancer/*.go # gosub
