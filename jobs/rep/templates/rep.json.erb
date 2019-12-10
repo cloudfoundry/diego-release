@@ -82,6 +82,7 @@
     zone: "#{zone}",
     report_interval: "1m",
     max_data_string_length: p("logging.max_data_string_length"),
+    max_log_lines_per_second: p("diego.executor.max_log_lines_per_second"),
   }
 
   if p("containers.graceful_shutdown_interval_in_seconds") < 10
