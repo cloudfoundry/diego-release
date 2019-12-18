@@ -65,6 +65,7 @@
     listen_addr: p("diego.rep.listen_addr_admin"),
     listen_addr_securable: p("diego.rep.listen_addr_securable"),
     log_level: p("diego.rep.log_level"),
+    log_rate_limit_exceeded_report_interval: "5m",
     max_cache_size_in_bytes: p("diego.executor.max_cache_size_in_bytes"),
     max_concurrent_downloads: p("diego.executor.max_concurrent_downloads"),
     memory_mb: p("diego.executor.memory_capacity_mb").to_s,

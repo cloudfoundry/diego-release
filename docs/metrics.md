@@ -102,6 +102,7 @@ A list of component-level metrics emitted by Diego. Contributors interested in a
 
 | Metric                                               | Description                                                                                                                                                | Unit             |
 | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----             |
+| `AppInstanceExceededLogRateLimitCount`               | Number of application instances that exceeded log rate limit. Emitter after application instance exceeds log rate limit once per 5 minutes.                | number           |
 | `CapacityAllocatedDisk`                              | Amount of disk allocated to containers on this cell.  Emitted periodically.                                                                                | mebibytes        |
 | `CapacityAllocatedMemory`                            | Amount of memory allocated to containers on this cell.  Emitted periodically.                                                                              | mebibytes        |
 | `CapacityRemainingContainers`                        | Remaining number of containers this cell can host. Emitted periodically.                                                                                   | number           |
