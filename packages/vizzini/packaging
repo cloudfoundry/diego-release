@@ -8,13 +8,5 @@ pushd ${BOSH_INSTALL_TARGET}
 
   go install github.com/onsi/ginkgo/ginkgo
 
-  pushd src/code.cloudfoundry.org/vizzini/
-    go test -c .
-
-    # clean up test artifacts
-    rm *.test
-  popd
+  ginkgo build -r src/code.cloudfoundry.org/vizzini/
 popd
-
-# clean up artifacts
-rm -rf ${BOSH_INSTALL_TARGET}/pkg

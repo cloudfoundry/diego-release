@@ -29,6 +29,7 @@ ginkgo \
   -trace \
   -keepGoing \
   -stream=<%= properties.vizzini.stream %> \
+  vizzini.test \
   2> >(tee -a ${log_dir}/vizzini.stderr.log) \
   1> >(tee -a ${log_dir}/vizzini.stdout.log)
 
