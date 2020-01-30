@@ -8,12 +8,10 @@ assignees: ''
 
 ---
 
-**This is only for PR's submitted to one of diego's sub-components**
+## Welcome!
+If you're here request review of a PR submitted to one of diego's sub-components, you're in the right place.
 ***************************************************************************************************
 
-Thanks for your contribution.
-Please provide a link to the PR you'd like us to review and we'll take a look!
-
-### URL to the PR:
+**Simply provide a URL to the PR you'd like us to review, submit this issue and we'll take a look!**
 
 *URL here*
