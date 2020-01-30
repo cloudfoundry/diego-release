@@ -9,9 +9,10 @@ assignees: ''
 ---
 
 ## Welcome!
-If you're here request review of a PR submitted to one of diego's sub-components, you're in the right place.
+
+If you're here to request review of a PR submitted to a diego sub-component repo, you're in the right place.
 ****************************************************************************************
 
-**Simply provide a URL to the PR you'd like us to review, submit this issue and we'll take a look!**
+**Simply provide a URL to the PR you'd like us to review, submit this issue, and we'll take a look!**
 
 *URL here*
