@@ -6,6 +6,9 @@ labels: ''
 assignees: ''
 
 ---
+Thank you for suggesting a new feature for diego.
+To help us understand and consider your idea, please fill out this template to the best of your ability.
+
 
 ## Is your feature request related to a problem?
 
