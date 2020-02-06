@@ -49,6 +49,8 @@ properties:
   diego.route_emitter.nats.tls.enabled:
     description: "Enable connecting to NATS server via TLS."
     default: false
+  diego.route_emitter.nats.tls.hostname:
+    description: "Hostname of the NATS cluster."
   diego.route_emitter.nats.tls.client_cert:
     description: "PEM-encoded certificate for the route-emitter to present to NATS for verification when connecting via TLS."
   diego.route_emitter.nats.tls.client_key:

@@ -32,6 +32,9 @@
   if_link('nats-tls') do |nats_link|
     if p("diego.route_emitter.nats.tls.enabled")
       nats_machines = nats_link.instances.map { |instance| instance.address }
+      if_p("diego.route_emitter.nats.tls.hostname") do | prop |
+        nats_machines = [prop]
+      end
       nats_port = nats_link.p("nats.port")
       nats_user = nats_link.p("nats.user")
       nats_password = nats_link.p("nats.password")
