@@ -49,6 +49,24 @@ spec:
         1. Assign more resources to the cells.
         2. Assign more cells.
 
+  - name: cell_unhealthy
+    promql: max_over_time(CellUnhealthy{source_id="rep"}[5m])
+    documentation:
+      title: Diego Cell - Cell Unhealthy
+      description: |
+        The Diego cell is unhealthy and unrecoverable if healthcheck container reaches its timeout. For Diego cells, 1 means unhealthy.
+
+        Use: If one cell is impacted, it does not participate in auctions and will require a re-create of the cell, but end-user impact is usually low.
+
+        Origin: Firehose
+        Type: Gauge (Float, 1)
+        Frequency: Once, during event.
+      recommended_alert_thresholds: |
+          Yellow warning: = 1
+      recommended_response: |
+        1. Investigate Diego cell servers for faults and errors.
+        2. recreate the cell by running bosh recreate. See the BOSH documentation for bosh recreate command syntax.
+
   - name: garden_health_check_failed
     promql: max_over_time(GardenHealthCheckFailed{source_id="rep"}[5m])
     documentation:
