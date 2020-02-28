@@ -4,6 +4,7 @@ Thank you for submitting a pull request to the diego-release repository. We appr
 
 * [ ] Check the [Contributing document](https://github.com/cloudfoundry/diego-release/blob/develop/CONTRIBUTING.md) on how to sign the CLA and run tests in diego-release.
 * [ ] Make sure a pull request is done against the `develop` branch.
+* [ ] After PR Submission, Submit a [PR Review Request](https://github.com/cloudfoundry/diego-release/issues/new?assignees=&labels=&template=pr-review-request.md&title=%5BPR+REVIEW%5D%3A)
 
 ## Please provide the following information when submitting pull request:
 
