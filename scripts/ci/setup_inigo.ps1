@@ -93,7 +93,6 @@ function Build-GardenRunc(){
 
 function Set-GardenRootfs() {
   Write-Host "Set-GardenRootfs"
-  $env:GARDEN_ROOTFS="docker:///cloudfoundry/windows2016fs:2019"
   if (-not (Test-Path 'env:GARDEN_ROOTFS')) {
     throw "Please set GARDEN_ROOTFS environment variable"
   }
