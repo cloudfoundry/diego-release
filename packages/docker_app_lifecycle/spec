@@ -163,6 +163,7 @@ files:
   - github.com/docker/go-connections/tlsconfig/*.go # gosub
   - github.com/docker/libtrust/*.go # gosub
   - github.com/ghodss/yaml/*.go # gosub
+  - github.com/konsorten/go-windows-terminal-sequences/*.go # gosub
   - github.com/opencontainers/go-digest/*.go # gosub
   - github.com/opencontainers/image-spec/specs-go/*.go # gosub
   - github.com/opencontainers/image-spec/specs-go/v1/*.go # gosub
@@ -171,7 +172,6 @@ files:
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
-  - golang.org/x/crypto/ssh/terminal/*.go # gosub
   - golang.org/x/net/internal/socks/*.go # gosub
   - golang.org/x/net/proxy/*.go # gosub
   - golang.org/x/sys/unix/*.go # gosub
