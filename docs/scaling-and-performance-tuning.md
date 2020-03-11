@@ -11,6 +11,7 @@ Data Store.
 1. [Locket Performance Tuning](#locket-tuning)
 1. [SQL Performance Tuning](#sql-performance-tuning)
 1. [Compensating for Envoy memory overhead](#envoy-proxy-configuration.md)
+1. [VM Size Recommendation](#vm-size-recommendation)
 
 ## <a name="#component-scaling-guidelines"/> Component Scaling Guidelines
 
@@ -139,3 +140,13 @@ or Postgres databases to support a large CF cluster:
 These operations files are the ones used in the Diego team's 250K-instance
 benchmark tests, and operators may freely change the sizing and scaling
 parameters in them to match the resource needs of their own CF clusters.
+```
+
+## <a name="#vm-size-recommendation"/> VM Size Recommendation
+
+### BBS & Locket
+10K app instances: Minimum 7.5GB Memory and 2vCPU
+20K app instances: Minimum 15GB Memory and 4vCPU
+
+### Auctioneer
+10k app instances: Minimum 3.75GB memory and 1vCPU
