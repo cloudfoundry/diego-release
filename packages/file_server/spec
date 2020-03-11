@@ -59,6 +59,8 @@ files:
   - golang.org/x/text/unicode/norm/*.go # gosub
   - google.golang.org/genproto/googleapis/rpc/status/*.go # gosub
   - google.golang.org/grpc/*.go # gosub
+  - google.golang.org/grpc/attributes/*.go # gosub
+  - google.golang.org/grpc/backoff/*.go # gosub
   - google.golang.org/grpc/balancer/*.go # gosub
   - google.golang.org/grpc/balancer/base/*.go # gosub
   - google.golang.org/grpc/balancer/roundrobin/*.go # gosub
@@ -74,10 +76,15 @@ files:
   - google.golang.org/grpc/internal/backoff/*.go # gosub
   - google.golang.org/grpc/internal/balancerload/*.go # gosub
   - google.golang.org/grpc/internal/binarylog/*.go # gosub
+  - google.golang.org/grpc/internal/buffer/*.go # gosub
   - google.golang.org/grpc/internal/channelz/*.go # gosub
   - google.golang.org/grpc/internal/envconfig/*.go # gosub
+  - google.golang.org/grpc/internal/grpclog/*.go # gosub
   - google.golang.org/grpc/internal/grpcrand/*.go # gosub
   - google.golang.org/grpc/internal/grpcsync/*.go # gosub
+  - google.golang.org/grpc/internal/grpcutil/*.go # gosub
+  - google.golang.org/grpc/internal/resolver/dns/*.go # gosub
+  - google.golang.org/grpc/internal/resolver/passthrough/*.go # gosub
   - google.golang.org/grpc/internal/syscall/*.go # gosub
   - google.golang.org/grpc/internal/transport/*.go # gosub
   - google.golang.org/grpc/keepalive/*.go # gosub
@@ -85,8 +92,6 @@ files:
   - google.golang.org/grpc/naming/*.go # gosub
   - google.golang.org/grpc/peer/*.go # gosub
   - google.golang.org/grpc/resolver/*.go # gosub
-  - google.golang.org/grpc/resolver/dns/*.go # gosub
-  - google.golang.org/grpc/resolver/passthrough/*.go # gosub
   - google.golang.org/grpc/serviceconfig/*.go # gosub
   - google.golang.org/grpc/stats/*.go # gosub
   - google.golang.org/grpc/status/*.go # gosub
