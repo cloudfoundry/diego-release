@@ -13,7 +13,7 @@ Data Store.
 1. [Compensating for Envoy memory overhead](#envoy-proxy-configuration.md)
 1. [VM Size Recommendation](#vm-size-recommendation)
 
-## <a name="#component-scaling-guidelines"/> Component Scaling Guidelines
+## <a name="component-scaling-guidelines"/> Component Scaling Guidelines
 
 ### Scaling vertically
 
@@ -142,7 +142,7 @@ benchmark tests, and operators may freely change the sizing and scaling
 parameters in them to match the resource needs of their own CF clusters.
 ```
 
-## <a name="#vm-size-recommendation"/> VM Size Recommendation
+## <a name="vm-size-recommendation"/> VM Size Recommendation
 
 ### BBS & Locket
 10K app instances: Minimum 7.5GB Memory and 2vCPU
