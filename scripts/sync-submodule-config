@@ -48,4 +48,8 @@ FORCE_SUBMODULE_HTTPS="${FORCE_SUBMODULE_HTTPS:-false}"
 
 } | grep -Ev '^github.com/docker/docker($|/)' > /tmp/packages
 
+#HACK to get the OSL pipeline green, we should remove these submodules once the OSL process doesn't require test dependencies to be submoduled
+echo "code.cloudfoundry.org/idmapper" >> /tmp/packages
+echo "code.cloudfoundry.org/grootfs" >> /tmp/packages
+
 cat /tmp/packages | xargs -s 1048576 gosub sync --force-https=$FORCE_SUBMODULE_HTTPS
