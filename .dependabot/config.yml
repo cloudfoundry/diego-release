@@ -1,0 +1,9 @@
+version: 1
+update_configs:
+  - package_manager: "submodules"
+    directory: "/"
+    update_schedule: "daily"
+    target_branch: "develop"
+    allowed_updates:
+    - match:
+        update_type: "security"
