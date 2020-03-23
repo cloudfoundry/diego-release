@@ -15,6 +15,7 @@ files:
   - code.cloudfoundry.org/dockerapplifecycle/launcher/*.go # gosub
   - code.cloudfoundry.org/dockerapplifecycle/protocol/*.go # gosub
   - code.cloudfoundry.org/ecrhelper/*.go # gosub
+  - github.com/BurntSushi/toml/*.go # gosub
   - github.com/Microsoft/go-winio/*.go # gosub
   - github.com/aws/aws-sdk-go/aws/*.go # gosub
   - github.com/aws/aws-sdk-go/aws/awserr/*.go # gosub
@@ -106,15 +107,25 @@ files:
   - github.com/containers/image/docker/policyconfiguration/*.go # gosub
   - github.com/containers/image/docker/reference/*.go # gosub
   - github.com/containers/image/image/*.go # gosub
+  - github.com/containers/image/internal/iolimits/*.go # gosub
+  - github.com/containers/image/internal/pkg/keyctl/*.go # gosub
+  - github.com/containers/image/internal/pkg/platform/*.go # gosub
   - github.com/containers/image/manifest/*.go # gosub
+  - github.com/containers/image/pkg/blobinfocache/none/*.go # gosub
+  - github.com/containers/image/pkg/compression/*.go # gosub
+  - github.com/containers/image/pkg/compression/internal/*.go # gosub
+  - github.com/containers/image/pkg/compression/types/*.go # gosub
   - github.com/containers/image/pkg/docker/config/*.go # gosub
   - github.com/containers/image/pkg/strslice/*.go # gosub
+  - github.com/containers/image/pkg/sysregistriesv2/*.go # gosub
   - github.com/containers/image/pkg/tlsclientconfig/*.go # gosub
   - github.com/containers/image/transports/*.go # gosub
   - github.com/containers/image/types/*.go # gosub
+  - github.com/containers/libtrust/*.go # gosub
+  - github.com/containers/ocicrypt/spec/*.go # gosub
+  - github.com/containers/storage/pkg/homedir/*.go # gosub
   - github.com/docker/distribution/*.go # gosub
   - github.com/docker/distribution/digestset/*.go # gosub
-  - github.com/docker/distribution/metrics/*.go # gosub
   - github.com/docker/distribution/reference/*.go # gosub
   - github.com/docker/distribution/registry/api/errcode/*.go # gosub
   - github.com/docker/distribution/registry/api/v2/*.go # gosub
@@ -123,24 +134,8 @@ files:
   - github.com/docker/distribution/registry/client/transport/*.go # gosub
   - github.com/docker/distribution/registry/storage/cache/*.go # gosub
   - github.com/docker/distribution/registry/storage/cache/memory/*.go # gosub
-  - github.com/docker/distribution/vendor/github.com/beorn7/perks/quantile/*.go # gosub
-  - github.com/docker/distribution/vendor/github.com/docker/go-metrics/*.go # gosub
-  - github.com/docker/distribution/vendor/github.com/golang/protobuf/proto/*.go # gosub
   - github.com/docker/distribution/vendor/github.com/gorilla/mux/*.go # gosub
-  - github.com/docker/distribution/vendor/github.com/matttproud/golang_protobuf_extensions/pbutil/*.go # gosub
   - github.com/docker/distribution/vendor/github.com/opencontainers/go-digest/*.go # gosub
-  - github.com/docker/distribution/vendor/github.com/opencontainers/image-spec/specs-go/*.go # gosub
-  - github.com/docker/distribution/vendor/github.com/opencontainers/image-spec/specs-go/v1/*.go # gosub
-  - github.com/docker/distribution/vendor/github.com/prometheus/client_golang/prometheus/*.go # gosub
-  - github.com/docker/distribution/vendor/github.com/prometheus/client_golang/prometheus/promhttp/*.go # gosub
-  - github.com/docker/distribution/vendor/github.com/prometheus/client_model/go/*.go # gosub
-  - github.com/docker/distribution/vendor/github.com/prometheus/common/expfmt/*.go # gosub
-  - github.com/docker/distribution/vendor/github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg/*.go # gosub
-  - github.com/docker/distribution/vendor/github.com/prometheus/common/model/*.go # gosub
-  - github.com/docker/distribution/vendor/github.com/prometheus/procfs/*.go # gosub
-  - github.com/docker/distribution/vendor/github.com/prometheus/procfs/internal/util/*.go # gosub
-  - github.com/docker/distribution/vendor/github.com/prometheus/procfs/nfs/*.go # gosub
-  - github.com/docker/distribution/vendor/github.com/prometheus/procfs/xfs/*.go # gosub
   - github.com/docker/docker-credential-helpers/client/*.go # gosub
   - github.com/docker/docker-credential-helpers/credentials/*.go # gosub
   - github.com/docker/docker/api/types/versions/*.go # gosub
@@ -161,8 +156,16 @@ files:
   - github.com/docker/docker/vendor/golang.org/x/sys/unix/*.s # gosub
   - github.com/docker/go-connections/sockets/*.go # gosub
   - github.com/docker/go-connections/tlsconfig/*.go # gosub
-  - github.com/docker/libtrust/*.go # gosub
   - github.com/ghodss/yaml/*.go # gosub
+  - github.com/klauspost/compress/flate/*.go # gosub
+  - github.com/klauspost/compress/fse/*.go # gosub
+  - github.com/klauspost/compress/huff0/*.go # gosub
+  - github.com/klauspost/compress/snappy/*.go # gosub
+  - github.com/klauspost/compress/snappy/*.s # gosub
+  - github.com/klauspost/compress/zstd/*.go # gosub
+  - github.com/klauspost/compress/zstd/internal/xxhash/*.go # gosub
+  - github.com/klauspost/compress/zstd/internal/xxhash/*.s # gosub
+  - github.com/klauspost/pgzip/*.go # gosub
   - github.com/konsorten/go-windows-terminal-sequences/*.go # gosub
   - github.com/opencontainers/go-digest/*.go # gosub
   - github.com/opencontainers/image-spec/specs-go/*.go # gosub
@@ -172,6 +175,10 @@ files:
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
+  - github.com/ulikunitz/xz/*.go # gosub
+  - github.com/ulikunitz/xz/internal/hash/*.go # gosub
+  - github.com/ulikunitz/xz/internal/xlog/*.go # gosub
+  - github.com/ulikunitz/xz/lzma/*.go # gosub
   - golang.org/x/net/internal/socks/*.go # gosub
   - golang.org/x/net/proxy/*.go # gosub
   - golang.org/x/sys/unix/*.go # gosub
