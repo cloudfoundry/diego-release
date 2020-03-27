@@ -7,6 +7,8 @@ dependencies:
   - diego-sshd
 
 files:
+  - github.com/containers/image/go.mod
+  - github.com/containers/image/go.sum
   - code.cloudfoundry.org/buildpackapplifecycle/databaseuri/*.go # gosub
   - code.cloudfoundry.org/dockerapplifecycle/*.go # gosub
   - code.cloudfoundry.org/dockerapplifecycle/builder/*.go # gosub
