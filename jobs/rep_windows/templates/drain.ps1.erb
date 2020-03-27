@@ -36,38 +36,46 @@ function heartbeat {
     return $true
 }
 
+function date {
+<% if p("logging.format.timestamp") == "rfc3339" %>
+    return Get-Date
+<% else %>
+    return [Xml.XmlConvert]::ToString((get-date),[Xml.XmlDateTimeSerializationMode]::Utc)
+<% end %>
+}
+
 $svc = (Get-Service | Where { $_.Name -eq $service_name })
 if ($svc -eq $null) {
-    "$(Get-Date): service not found: '${service_name}'" | `
+    "$(date): service not found: '${service_name}'" | `
         Out-File -Append -Encoding utf8 -FilePath $logfile
     "0"
     Exit 0
 }
 if ($svc.Status -ne 'Running') {
-    "$(Get-Date): service '${service_name}' not running" | `
+    "$(date): service '${service_name}' not running" | `
         Out-File -Append -Encoding utf8 -FilePath $logfile
     "0"
     Exit 0
 }
 
 $svc | Set-Service -StartupType Disabled
-"$(Get-Date): service '${service_name}' StartupType set to 'Disabled'" | `
+"$(date): service '${service_name}' StartupType set to 'Disabled'" | `
     Out-File -Append -Encoding utf8 -FilePath $logfile
 
-"$(Get-Date): drain triggered" | Out-File -Append -Encoding utf8 -FilePath $logfile
+"$(date): drain triggered" | Out-File -Append -Encoding utf8 -FilePath $logfile
 if (evacuate) {
     while (heartbeat) {
         Start-Sleep -Seconds 5
-        "$(Get-Date): waiting" | Out-File -Append -Encoding utf8 -FilePath $logfile
+        "$(date): waiting" | Out-File -Append -Encoding utf8 -FilePath $logfile
     }
     # NOTE: rep invokes 'kill_and_wait' here
 } else {
-    "$(Get-Date): Evacuate failed, drain exiting (exit 1)" | Out-File -Append -Encoding utf8 -FilePath $logfile
+    "$(date): Evacuate failed, drain exiting (exit 1)" | Out-File -Append -Encoding utf8 -FilePath $logfile
     Exit 1 # NOTE: matching behavior of 'rep' drain script
 }
 
 $svc | Set-Service -StartupType Automatic
-"$(Get-Date): service '${service_name}' StartupType set to 'Automatic'" | `
+"$(date): service '${service_name}' StartupType set to 'Automatic'" | `
     Out-File -Append -Encoding utf8 -FilePath $logfile
 
 "0"
