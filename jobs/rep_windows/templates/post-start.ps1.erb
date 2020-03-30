@@ -47,28 +47,20 @@ function ping {
     return $true
 }
 
-function date {
-<% if p("logging.format.timestamp") == "rfc3339" %>
-    return Get-Date
-<% else %>
-    return [Xml.XmlConvert]::ToString((get-date),[Xml.XmlDateTimeSerializationMode]::Utc)
-<% end %>
-}
-
 $i = 1
-$StartDate = (date)
+$StartDate = (Get-Date)
 $timeout = <%= convert_to_seconds p("diego.executor.garden_healthcheck.timeout") %>
-"$(date): Pinging rep..." | Out-File -Append -Encoding utf8 -FilePath $logfile
-while ( $(date) -lt $StartDate.AddSeconds($timeout) ) {
+"$(Get-Date): Pinging rep..." | Out-File -Append -Encoding utf8 -FilePath $logfile
+while ( $(Get-Date) -lt $StartDate.AddSeconds($timeout) ) {
     if (ping) {
-        "$(date): Success!" | Out-File -Append -Encoding utf8 -FilePath $logfile
+        "$(Get-Date): Success!" | Out-File -Append -Encoding utf8 -FilePath $logfile
         Exit 0
     }
-    "$(date): Attempt $i failed. Trying again..." | Out-File -Append -Encoding utf8 -FilePath $logfile
+    "$(Get-Date): Attempt $i failed. Trying again..." | Out-File -Append -Encoding utf8 -FilePath $logfile
     $i++
     Start-Sleep -Seconds 1
-    "$(date): waiting" | Out-File -Append -Encoding utf8 -FilePath $logfile
+    "$(Get-Date): waiting" | Out-File -Append -Encoding utf8 -FilePath $logfile
 }
 
-"$(date): Timed out pinging rep. Failing post-start." | Out-File -Append -Encoding utf8 -FilePath $logfile
+"$(Get-Date): Timed out pinging rep. Failing post-start." | Out-File -Append -Encoding utf8 -FilePath $logfile
 Exit 1
