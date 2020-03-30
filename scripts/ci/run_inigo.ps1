@@ -16,7 +16,7 @@ $dir=[System.IO.Path]::GetDirectoryName($PSScriptRoot)
      $PACKAGES_TO_SKIP=$PACKAGES_TO_SKIP + "," + $env:SKIP_PACKAGES
    }
 
-   ginkgo $nodes_flag -r -skipPackage="${PACKAGES_TO_SKIP}" -skip="${env:SKIP_REGEX}" -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=60 -keepGoing
+   ginkgo $nodes_flag -r -skipPackage="${PACKAGES_TO_SKIP}" -skip="${env:SKIP_REGEX}" -failOnPending -randomizeAllSpecs -trace -race -slowSpecThreshold=60 -keepGoing -flakeAttempts=$env:FLAKE_ATTEMPTS
 
    if ($LASTEXITCODE -ne 0) {
       Write-Host "Failed to run inigo"
