@@ -16,7 +16,9 @@ go install github.com/onsi/ginkgo/ginkgo
 
 cd src/code.cloudfoundry.org/auction/simulation
 
-ginkgo -r -p -v
+# Tee output to a log file but exclude component/test logs from stdout so
+# concourse output is not overloaded
+ginkgo -r -p -v | tee simulation-output.log | grep -v '{"timestamp"'
 ERROR_CODE=$?
 
 if [ ${ERROR_CODE} -eq 0 ]; then
