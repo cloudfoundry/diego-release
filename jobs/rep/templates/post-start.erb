@@ -36,18 +36,18 @@ ping() {
 start=`date +%s`
 timeout=<%= convert_to_seconds p("diego.executor.garden_healthcheck.timeout") %>
 
-echo "$(date): Pinging rep..."
+echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): Pinging rep..."
 i=1
 
 while [ $(( $(date +%s) - $timeout )) -lt $start ]; do
   if ping; then
-    echo "$(date): Success!"
+    echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): Success!"
     exit 0
   fi
-  echo "$(date): Attempt $i failed. Trying again..."
+  echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): Attempt $i failed. Trying again..."
   i=$((i + 1))
   sleep 1
 done
 
-echo "$(date): Timed out pinging rep. Failing post-start."
+echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): Timed out pinging rep. Failing post-start."
 exit 1

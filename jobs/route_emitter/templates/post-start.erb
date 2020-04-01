@@ -10,7 +10,7 @@ while [ $(( $(date +%s) - 25 )) -lt $start ]; do
   if curl --fail --silent http://$address/ping 1>/dev/null 2>&1; then
     exit 0
   fi
-  echo "Failed 'curl --fail --silent http://$address/ping' on attempt $i"
+  echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): Failed 'curl --fail --silent http://$address/ping' on attempt $i"
   sleep 1
 done
 

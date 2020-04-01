@@ -36,9 +36,9 @@ output_for_bosh() {
   exit_code=$?
 
   if [ $exit_code -eq 0 ]; then
-    echo "$(date): rep exited"
+    echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): rep exited"
   else
-    echo "$(date): evacuation failed"
+    echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): evacuation failed"
   fi
 
   echo $exit_code >&3
@@ -48,16 +48,16 @@ trap output_for_bosh EXIT
 
 <% if p("bpm.enabled") %>
 if ! /var/vcap/jobs/bpm/bin/bpm pid rep >/dev/null 2>&1; then
-  echo "$(date): rep process not running"
+  echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): rep process not running"
   exit 0
 fi
 
-echo "$(date): drain triggered"
+echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): drain triggered"
 
 if evacuate; then
   while heartbeat; do
     sleep 5
-    echo "$(date): waiting"
+    echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): waiting"
   done
 
   /var/vcap/jobs/bpm/bin/bpm stop rep
@@ -67,22 +67,22 @@ fi
 <% else %>
 
 if [ ! -f $pidfile ]; then
-  echo "$(date): pidfile does not exist"
+  echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): pidfile does not exist"
   exit 0
 fi
 
 pid=$(cat $pidfile)
 
 if [ ! -e /proc/$pid ]; then
-  echo "$(date): rep process not running"
+  echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): rep process not running"
   exit 0
 fi
 
-echo "$(date): drain triggered"
+echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): drain triggered"
 if evacuate; then
   while heartbeat; do
     sleep 5
-    echo "$(date): waiting"
+    echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): waiting"
   done
 
   kill_and_wait $pidfile
