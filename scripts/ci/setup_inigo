@@ -79,7 +79,7 @@ create_garden_storage() {
 
   # Mount XFS
   mkdir /mnt/garden-storage
-  mount -t xfs -o pquota,noatime,nobarrier /xfs_volume /mnt/garden-storage
+  mount -t xfs -o pquota,noatime /xfs_volume /mnt/garden-storage
   chmod 777 -R /mnt/garden-storage
 
   umount /sys/fs/cgroup/devices
