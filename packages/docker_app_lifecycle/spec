@@ -10,6 +10,29 @@ files:
   - github.com/containers/image/go.mod
   - github.com/containers/image/go.sum
   - code.cloudfoundry.org/buildpackapplifecycle/databaseuri/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/credhub/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/credhub/auth/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/credhub/auth/uaa/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/credhub/credentials/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/credhub/credentials/generate/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/credhub/credentials/values/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/credhub/permissions/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/credhub/server/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/errors/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/vendor/github.com/cloudfoundry/go-socks5/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/vendor/github.com/cloudfoundry/socks5-proxy/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/vendor/github.com/hashicorp/go-version/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/crypto/curve25519/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/crypto/curve25519/*.s # gosub
+  - code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/crypto/curve25519/*.h # gosub
+  - code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/crypto/ed25519/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/crypto/ed25519/internal/edwards25519/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/crypto/internal/chacha20/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/crypto/poly1305/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/crypto/poly1305/*.s # gosub
+  - code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/crypto/ssh/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/net/context/*.go # gosub
+  - code.cloudfoundry.org/credhub-cli/vendor/golang.org/x/net/proxy/*.go # gosub
   - code.cloudfoundry.org/dockerapplifecycle/*.go # gosub
   - code.cloudfoundry.org/dockerapplifecycle/builder/*.go # gosub
   - code.cloudfoundry.org/dockerapplifecycle/docker/nat/*.go # gosub
@@ -96,15 +119,6 @@ files:
   - github.com/awslabs/amazon-ecr-credential-helper/ecr-login/vendor/golang.org/x/sys/unix/*.go # gosub
   - github.com/awslabs/amazon-ecr-credential-helper/ecr-login/vendor/golang.org/x/sys/unix/*.s # gosub
   - github.com/awslabs/amazon-ecr-credential-helper/ecr-login/version/*.go # gosub
-  - github.com/cloudfoundry-incubator/credhub-cli/credhub/*.go # gosub
-  - github.com/cloudfoundry-incubator/credhub-cli/credhub/auth/*.go # gosub
-  - github.com/cloudfoundry-incubator/credhub-cli/credhub/auth/uaa/*.go # gosub
-  - github.com/cloudfoundry-incubator/credhub-cli/credhub/credentials/*.go # gosub
-  - github.com/cloudfoundry-incubator/credhub-cli/credhub/credentials/generate/*.go # gosub
-  - github.com/cloudfoundry-incubator/credhub-cli/credhub/credentials/values/*.go # gosub
-  - github.com/cloudfoundry-incubator/credhub-cli/credhub/permissions/*.go # gosub
-  - github.com/cloudfoundry-incubator/credhub-cli/credhub/server/*.go # gosub
-  - github.com/cloudfoundry-incubator/credhub-cli/vendor/github.com/hashicorp/go-version/*.go # gosub
   - github.com/containers/image/docker/*.go # gosub
   - github.com/containers/image/docker/policyconfiguration/*.go # gosub
   - github.com/containers/image/docker/reference/*.go # gosub
