@@ -4,6 +4,9 @@ update_configs:
     directory: "/"
     update_schedule: "daily"
     target_branch: "develop"
+    default_labels:
+      - "dependencies"
+      - "security"
     allowed_updates:
     - match:
         update_type: "security"
