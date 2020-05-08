@@ -80,6 +80,10 @@ properties:
   loggregator.key:
     description: "Private key for the SSH-proxy metron client certificate."
 
+  set_ulimit_fds:
+    description: "Set an ulimit on the number of open file descriptors. NOTE: set this property to 'false' when deploying to a containerized cloud"
+    default: true
+
   set_kernel_parameters:
     description: "Enable tuning /proc/sys kernel parameters. NOTE: set this property to 'false' when deploying to BOSH-Lite or other containerized BOSH clouds."
     default: true

@@ -20,8 +20,10 @@ case $1 in
 
     $bin_dir/set-file-server-kernel-params
 
+<% if p("set_ulimit_fds") %>
     # Allowed number of open file descriptors
     ulimit -n 100000
+<% end %>
 
     exec chpst -u vcap:vcap bash -c '/var/vcap/jobs/file_server/bin/file_server_as_vcap'
 
