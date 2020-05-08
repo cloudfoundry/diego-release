@@ -39,8 +39,10 @@ case $1 in
     $bin_dir/set-rep-kernel-params
     $bin_dir/setup_mounted_data_dirs
 
+<% if p("set_ulimit_fds") %>
     # Allowed number of open file descriptors
     ulimit -n 100000
+<% end %>
 
     exec chpst -u vcap:vcap /var/vcap/jobs/rep/bin/rep_as_vcap
 
