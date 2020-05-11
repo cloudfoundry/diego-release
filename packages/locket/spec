@@ -45,13 +45,20 @@ files:
   - github.com/hashicorp/consul/api/*.go # gosub
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/go-cleanhttp/*.go # gosub
   - github.com/hashicorp/consul/vendor/github.com/hashicorp/serf/coordinate/*.go # gosub
-  - github.com/lib/pq/*.go # gosub
-  - github.com/lib/pq/oid/*.go # gosub
+  - github.com/jackc/pgx/*.go # gosub
+  - github.com/jackc/pgx/chunkreader/*.go # gosub
+  - github.com/jackc/pgx/internal/sanitize/*.go # gosub
+  - github.com/jackc/pgx/pgio/*.go # gosub
+  - github.com/jackc/pgx/pgproto3/*.go # gosub
+  - github.com/jackc/pgx/pgtype/*.go # gosub
+  - github.com/jackc/pgx/stdlib/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
+  - github.com/pkg/errors/*.go # gosub
   - github.com/tedsuo/ifrit/*.go # gosub
   - github.com/tedsuo/ifrit/grouper/*.go # gosub
   - github.com/tedsuo/ifrit/http_server/*.go # gosub
   - github.com/tedsuo/ifrit/sigmon/*.go # gosub
+  - golang.org/x/crypto/pbkdf2/*.go # gosub
   - golang.org/x/net/context/*.go # gosub
   - golang.org/x/net/http/httpguts/*.go # gosub
   - golang.org/x/net/http2/*.go # gosub
@@ -61,10 +68,19 @@ files:
   - golang.org/x/net/trace/*.go # gosub
   - golang.org/x/sys/unix/*.go # gosub
   - golang.org/x/sys/unix/*.s # gosub
+  - golang.org/x/text/cases/*.go # gosub
+  - golang.org/x/text/internal/*.go # gosub
+  - golang.org/x/text/internal/language/*.go # gosub
+  - golang.org/x/text/internal/language/compact/*.go # gosub
+  - golang.org/x/text/internal/tag/*.go # gosub
+  - golang.org/x/text/language/*.go # gosub
+  - golang.org/x/text/runes/*.go # gosub
   - golang.org/x/text/secure/bidirule/*.go # gosub
+  - golang.org/x/text/secure/precis/*.go # gosub
   - golang.org/x/text/transform/*.go # gosub
   - golang.org/x/text/unicode/bidi/*.go # gosub
   - golang.org/x/text/unicode/norm/*.go # gosub
+  - golang.org/x/text/width/*.go # gosub
   - google.golang.org/genproto/googleapis/rpc/status/*.go # gosub
   - google.golang.org/grpc/*.go # gosub
   - google.golang.org/grpc/attributes/*.go # gosub

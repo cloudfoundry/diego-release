@@ -149,8 +149,13 @@ files:
   - github.com/hpcloud/tail/vendor/gopkg.in/fsnotify/fsnotify.v1/*.go # gosub
   - github.com/hpcloud/tail/vendor/gopkg.in/tomb.v1/*.go # gosub
   - github.com/hpcloud/tail/watch/*.go # gosub
-  - github.com/lib/pq/*.go # gosub
-  - github.com/lib/pq/oid/*.go # gosub
+  - github.com/jackc/pgx/*.go # gosub
+  - github.com/jackc/pgx/chunkreader/*.go # gosub
+  - github.com/jackc/pgx/internal/sanitize/*.go # gosub
+  - github.com/jackc/pgx/pgio/*.go # gosub
+  - github.com/jackc/pgx/pgproto3/*.go # gosub
+  - github.com/jackc/pgx/pgtype/*.go # gosub
+  - github.com/jackc/pgx/stdlib/*.go # gosub
   - github.com/nu7hatch/gouuid/*.go # gosub
   - github.com/onsi/ginkgo/*.go # gosub
   - github.com/onsi/ginkgo/config/*.go # gosub
@@ -197,6 +202,7 @@ files:
   - github.com/tedsuo/rata/*.go # gosub
   - github.com/vito/go-sse/sse/*.go # gosub
   - github.com/zorkian/go-datadog-api/*.go # gosub
+  - golang.org/x/crypto/pbkdf2/*.go # gosub
   - golang.org/x/net/context/*.go # gosub
   - golang.org/x/net/html/*.go # gosub
   - golang.org/x/net/html/atom/*.go # gosub
@@ -209,6 +215,7 @@ files:
   - golang.org/x/net/trace/*.go # gosub
   - golang.org/x/sys/unix/*.go # gosub
   - golang.org/x/sys/unix/*.s # gosub
+  - golang.org/x/text/cases/*.go # gosub
   - golang.org/x/text/encoding/*.go # gosub
   - golang.org/x/text/encoding/charmap/*.go # gosub
   - golang.org/x/text/encoding/htmlindex/*.go # gosub
@@ -219,6 +226,7 @@ files:
   - golang.org/x/text/encoding/simplifiedchinese/*.go # gosub
   - golang.org/x/text/encoding/traditionalchinese/*.go # gosub
   - golang.org/x/text/encoding/unicode/*.go # gosub
+  - golang.org/x/text/internal/*.go # gosub
   - golang.org/x/text/internal/language/*.go # gosub
   - golang.org/x/text/internal/language/compact/*.go # gosub
   - golang.org/x/text/internal/tag/*.go # gosub
@@ -226,9 +234,11 @@ files:
   - golang.org/x/text/language/*.go # gosub
   - golang.org/x/text/runes/*.go # gosub
   - golang.org/x/text/secure/bidirule/*.go # gosub
+  - golang.org/x/text/secure/precis/*.go # gosub
   - golang.org/x/text/transform/*.go # gosub
   - golang.org/x/text/unicode/bidi/*.go # gosub
   - golang.org/x/text/unicode/norm/*.go # gosub
+  - golang.org/x/text/width/*.go # gosub
   - google.golang.org/genproto/googleapis/rpc/status/*.go # gosub
   - google.golang.org/grpc/*.go # gosub
   - google.golang.org/grpc/attributes/*.go # gosub
