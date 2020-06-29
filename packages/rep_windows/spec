@@ -170,25 +170,27 @@ files:
   - github.com/bmizerany/pat/*.go # gosub
   - github.com/census-instrumentation/opencensus-proto/gen-go/resource/v1/*.go # gosub
   - github.com/census-instrumentation/opencensus-proto/gen-go/trace/v1/*.go # gosub
+  - github.com/cncf/udpa/go/udpa/annotations/*.go # gosub
   - github.com/cyphar/filepath-securejoin/*.go # gosub
   - github.com/cyphar/filepath-securejoin/vendor/github.com/pkg/errors/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/api/v2/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/api/v2/auth/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/api/v2/cluster/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/api/v2/core/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/api/v2/endpoint/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/api/v2/listener/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/api/v2/route/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/config/bootstrap/v2/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/config/filter/accesslog/v2/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/config/filter/network/tcp_proxy/v2/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/config/listener/v2/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/config/metrics/v2/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/config/overload/v2alpha/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/config/trace/v2/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/type/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/envoy/type/matcher/*.go # gosub
-  - github.com/envoyproxy/go-control-plane/pkg/conversion/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/annotations/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/accesslog/v3/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/bootstrap/v3/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/cluster/v3/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/core/v3/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/endpoint/v3/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/listener/v3/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/metrics/v3/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/overload/v3/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/route/v3/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/config/trace/v3/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/extensions/filters/network/tcp_proxy/v3/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/extensions/transport_sockets/tls/v3/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/service/discovery/v3/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/type/matcher/v3/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/type/metadata/v3/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/type/tracing/v3/*.go # gosub
+  - github.com/envoyproxy/go-control-plane/envoy/type/v3/*.go # gosub
   - github.com/envoyproxy/protoc-gen-validate/validate/*.go # gosub
   - github.com/envoyproxy/protoc-gen-validate/validate/*.h # gosub
   - github.com/envoyproxy/protoc-gen-validate/vendor/github.com/golang/protobuf/proto/*.go # gosub
