@@ -4,8 +4,12 @@
   nats_machines = nil
   if_p('diego.route_emitter.nats.machines') do |ips|
     nats_machines = ips.compact
-  end.else_if_link('nats') do
-    nats_machines = link('nats').instances.map { |instance| instance.address }
+  end.else do
+    link('nats').if_p("nats.hostname") do |hostname|
+      nats_machines = [hostname]
+    end.else do
+      nats_machines = link('nats').instances.map { |instance| instance.address }
+    end
   end
 
   nats_port = nil
@@ -32,6 +36,9 @@
   if_link('nats-tls') do |nats_link|
     if p("diego.route_emitter.nats.tls.enabled")
       nats_machines = nats_link.instances.map { |instance| instance.address }
+      nats_link.if_p("nats.hostname") do |hostname|
+        nats_machines = [hostname]
+      end
       if_p("diego.route_emitter.nats.tls.hostname") do | prop |
         nats_machines = [prop]
       end
