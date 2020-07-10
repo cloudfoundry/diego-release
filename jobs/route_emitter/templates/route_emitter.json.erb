@@ -4,7 +4,7 @@
   nats_machines = nil
   if_p('diego.route_emitter.nats.machines') do |ips|
     nats_machines = ips.compact
-  end.else do
+  end.else_if_link('nats') do
     link('nats').if_p("nats.hostname") do |hostname|
       nats_machines = [hostname]
     end.else do
