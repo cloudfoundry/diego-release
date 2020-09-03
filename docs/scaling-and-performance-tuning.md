@@ -7,7 +7,7 @@ Data Store.
 ## Table of Contents
 
 1. [Component scaling guidelines](#component-scaling-guidelines)
-1. [BBS Performance Tuning](#bbs-tuning)
+1. [Foundation Level Tuning](#foundation-level-tuning)
 1. [Locket Performance Tuning](#locket-tuning)
 1. [SQL Performance Tuning](#sql-performance-tuning)
 1. [Compensating for Envoy memory overhead](#envoy-proxy-configuration.md)
@@ -89,6 +89,15 @@ The Diego team currently benchmarks the BBS and Locket together on a VM with 16
 CPU cores and 60GB memory. The MySQL and Postgres backends have the same number
 of cores and memory. This setup can handle load from 1000 simulated cells
 (running `rep` and `route-emitter`) with a total of 250K LRPs.
+
+## <a name="foundation-level-tuning"></a> Foundation Level Tuning
+1. [Tips for Large Deployments with CF Networking and Silk
+   Release](https://github.com/cloudfoundry/cf-networking-release/blob/a14fd8e9eaa46f399be15ad3b298c3be7e3359ab/docs/large_deployments.md)
+1. [ARP Cache Limit for Large
+   foundations](https://community.pivotal.io/s/article/5000e00001k5E3I1591986522237?language=en_US)
+1. [Known Loggregator Scaling
+   Issues](https://community.pivotal.io/s/article/known-loggregator-scaling-issues?language=en_US)
+
 
 ## <a name="bbs-tuning"></a> BBS Performance Tuning
 
