@@ -309,7 +309,13 @@ The script will start a shell inside the container and setup the container appro
 
     cd /diego-release/src/code.cloudfoundry.org/diego-upgrade-stability-tests/
 
-You will need to set the V0 version in the environment variables by running `export DIEGO_VERSION_V0="v1.0.0"` or `export DIEGO_VERSION_V0="v1.25.2"`. If you don't set this environment variable, the DUSTs will fail.
+You will need to set the following environment variables:
+ - `DIEGO_VERSION_V0`, the V0 version in the environment variables by running `export DIEGO_VERSION_V0="v1.0.0"` or `export DIEGO_VERSION_V0="v1.25.2"`. If
+you don't set this environment variable, the DUSTs will fail.
+- `GRACE_TARBALL_CHECKSUM` to the SHA1 checksum of the grace
+tarball that can be found [here](https://github.com/cloudfoundry/diego-release/blob/9d995def9b692e6796e671eceb269d769db89997/jobs/vizzini/spec#L81-L83).
+- `DEFAULT_ROOTFS` to the rootfs located in the
+inigo container: `export DEFAULT_ROOTFS=/tmp/rootfs.tar`.
 
 Now you can run the tests by running `ginkgo`.
 
