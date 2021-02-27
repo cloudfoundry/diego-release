@@ -1,6 +1,7 @@
 #!/bin/bash
-
 set -e
+
+CI_TARGET=diego
 
 scripts_path=./$(dirname $0)
 eval $($scripts_path/get_paths.sh)
@@ -21,7 +22,7 @@ echo "compilation done"
 if [ -n "${DIEGO_CI_TARGET}" ]; then
   target="-t ${DIEGO_CI_TARGET}"
 else
-  target="-t ci"
+  target="-t $CI_TARGET"
 fi
 
 fly ${target} execute -p \
