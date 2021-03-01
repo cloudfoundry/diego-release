@@ -1,15 +1,23 @@
 #!/bin/bash
 
-./scripts/check-metrics-documentation
-if [ $? -ne 0 ]; then
-    echo "metrics documentation isn't up to date. check errors above"
-    exit 1
-fi
+function check-metrics-documentation() {
+  ./scripts/check-metrics-documentation
+  if [ $? -ne 0 ]; then
+      echo "metrics documentation isn't up to date. check errors above"
+      exit 1
+  fi
+}
 
-modified_src=$(./scripts/reformat)
-if [ -n "$modified_src" ]; then
-  echo $'\e[31mthe following src files are reformatted and not staged:\e[0m'
-  echo
-  echo "$modified_src"
-  exit 1
-fi
+function reformat() {
+  modified_src=$(./scripts/reformat)
+  if [ -n "$modified_src" ]; then
+    echo $'\e[31mthe following src files are reformatted and not staged:\e[0m'
+    echo
+    echo "$modified_src"
+    exit 1
+  fi
+}
+
+check-metrics-documentation
+reformat
+
