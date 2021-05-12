@@ -13,15 +13,19 @@ function sync_package() {
   (
     set -e
 
-    cd packages/${bosh_pkg}
+    cd src/code.cloudfoundry.org
+
+    spec=../../packages/${bosh_pkg}/spec
 
     {
-      cat spec | grep -v '# gosub'
+      cat $spec | grep -v '# gosub'
 
       for package in $(gosub list "$@"); do
         repo=$(echo ${2} | cut -f1-3 -d/)
         if [ -d "../../src/${repo}/Godeps/_workspace/src/${package}" ]; then
           package="${repo}/Godeps/_workspace/src/${package}"
+        elif [ -d "../../src/code.cloudfoundry.org/vendor/${package}" ]; then
+          package="code.cloudfoundry.org/vendor/${package}"
         fi
         echo ${package} | sed -e 's/\(.*\)/  - \1\/*.go # gosub/g'
         if ls ../../src/${package}/*.s >/dev/null 2>&1; then
@@ -31,9 +35,9 @@ function sync_package() {
           echo ${package} | sed -e 's/\(.*\)/  - \1\/*.h # gosub/g'
         fi
       done
-    } > spec.new
+    } > $spec.new
 
-    mv spec.new spec
+    mv $spec.new $spec
   )
 }
 
@@ -63,12 +67,10 @@ sync_package windows_app_lifecycle -app  code.cloudfoundry.org/buildpackapplifec
   -app code.cloudfoundry.org/buildpackapplifecycle/getenv &
 
 sync_package vizzini \
-  -test code.cloudfoundry.org/vizzini/... \
-  -app github.com/onsi/ginkgo/ginkgo &
+  -test code.cloudfoundry.org/vizzini/... &
 
 sync_package benchmark-bbs \
-  -test code.cloudfoundry.org/benchmarkbbs/... \
-  -app github.com/onsi/ginkgo/ginkgo &
+  -test code.cloudfoundry.org/benchmarkbbs/... &
 
 wait
 
