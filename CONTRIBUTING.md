@@ -83,7 +83,10 @@ To be able to run unit tests, you'll also need to install the following binaries
     go install github.com/onsi/ginkgo/ginkgo
 
     # Install nats-server
-    go install github.com/nats-io/nats-server
+    wget https://github.com/nats-io/nats-server/releases/download/v2.1.2/nats-server-v2.1.2-linux-amd64.zip
+    unzip -j nats-server-v2.1.2-linux-amd64.zip nats-server-v2.1.2-linux-amd64/nats-server
+    rm nats-server-v2.1.2-linux-amd64.zip
+    mv ./nats-server "$GOBIN/nats-server"
 
     # Install consul
     if uname -a | grep Darwin; then os=darwin; else os=linux; fi

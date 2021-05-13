@@ -23,7 +23,11 @@ export PATH=$PWD/bin:$PATH
 
 SCRIPT=${SCRIPT:-run-unit-tests}
 
-go install github.com/nats-io/nats-server
+wget https://github.com/nats-io/nats-server/releases/download/v2.1.2/nats-server-v2.1.2-linux-amd64.zip
+unzip -j nats-server-v2.1.2-linux-amd64.zip nats-server-v2.1.2-linux-amd64/nats-server
+rm nats-server-v2.1.2-linux-amd64.zip
+mv ./nats-server "$GOBIN/nats-server"
+
 go install github.com/onsi/ginkgo/ginkgo
 
 "scripts/${SCRIPT}" "$@"

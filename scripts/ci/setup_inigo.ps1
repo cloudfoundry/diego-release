@@ -136,10 +136,16 @@ function Setup-Gopath() {
 
     # install application dependencies
     echo "Installing nats-server ..."
-    go install github.com/nats-io/nats-server
-    if ($LastExitCode -ne 0) {
-      throw "Installing nats-server returned error code: $LastExitCode"
+
+    $NATS_DIR = "C:/nats-server"
+    # Remove-Item $NATS_DIR -Force
+    if(!(Test-Path -Path $NATS_DIR )) {
+      New-Item -ItemType directory -Path $NATS_DIR
+      (New-Object System.Net.WebClient).DownloadFile('https://github.com/nats-io/nats-server/releases/download/v2.1.2/nats-server-v2.1.2-windows-amd64.zip', "nats-server.zip")
+	[System.IO.Compression.ZipFile]::ExtractToDirectory("nats-server.zip", "$NATS_DIR")
+	Move-Item -Path "$NATS_DIR/*/nats-server.exe" "$env:GOPATH/bin/nats-server.exe"
     }
+
     $env:NATS_DOCKERIZED = "1"
   Pop-Location
 }
