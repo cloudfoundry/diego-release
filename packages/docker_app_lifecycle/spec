@@ -7,8 +7,6 @@ dependencies:
   - diego-sshd
 
 files:
-  - github.com/containers/image/go.mod
-  - github.com/containers/image/go.sum
   - code.cloudfoundry.org/buildpackapplifecycle/databaseuri/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/credhub-cli/credhub/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/credhub-cli/credhub/auth/*.go # gosub

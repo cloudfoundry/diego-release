@@ -6,14 +6,13 @@ dependencies:
 
 files:
   - winpty/winpty-*.tgz
-  - golang.org/x/sys/windows/**/*
   - code.cloudfoundry.org/bbs/*.go # gosub
   - code.cloudfoundry.org/bbs/encryption/*.go # gosub
   - code.cloudfoundry.org/bbs/events/*.go # gosub
   - code.cloudfoundry.org/bbs/format/*.go # gosub
   - code.cloudfoundry.org/bbs/models/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/cfhttp/v2/*.go # gosub
-  - code.cloudfoundry.org/debugserver/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/debugserver/*.go # gosub
   - code.cloudfoundry.org/diego-logging-client/*.go # gosub
   - code.cloudfoundry.org/diego-ssh/authenticators/*.go # gosub
   - code.cloudfoundry.org/diego-ssh/cmd/sshd/*.go # gosub
@@ -34,9 +33,9 @@ files:
   - code.cloudfoundry.org/go-diodes/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/rpc/loggregator_v2/*.go # gosub
-  - code.cloudfoundry.org/lager/*.go # gosub
-  - code.cloudfoundry.org/lager/internal/truncate/*.go # gosub
-  - code.cloudfoundry.org/lager/lagerflags/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/internal/truncate/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/lagerflags/*.go # gosub
   - code.cloudfoundry.org/rfc5424/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/tlsconfig/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/bmizerany/pat/*.go # gosub

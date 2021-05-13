@@ -5,51 +5,54 @@ set -e -x
 GO111MODULE=on go get github.com/vito/gosub
 FORCE_SUBMODULE_HTTPS="${FORCE_SUBMODULE_HTTPS:-false}"
 
-{
-  gosub list \
-    -app code.cloudfoundry.org/certsplitter/cmd/... \
-    -app code.cloudfoundry.org/auctioneer/cmd/... \
-    -app code.cloudfoundry.org/bbs/cmd/bbs \
-    -app code.cloudfoundry.org/buildpackapplifecycle/... \
-    -app code.cloudfoundry.org/cfdot/... \
-    -app code.cloudfoundry.org/diego-ssh/... \
-    -app code.cloudfoundry.org/dockerapplifecycle/... \
-    -app code.cloudfoundry.org/fileserver/cmd/... \
-    -app code.cloudfoundry.org/guardian/gqt/runner \
-    -app code.cloudfoundry.org/healthcheck/cmd/... \
-    -app code.cloudfoundry.org/localdriver/cmd/... \
-    -app code.cloudfoundry.org/locket/cmd/locket \
-    -app code.cloudfoundry.org/rep/cmd/... \
-    -app code.cloudfoundry.org/route-emitter/cmd/... \
-    -app code.cloudfoundry.org/routing-api/cmd/routing-api \
-    -app github.com/nats-io/nats.go \
-    -app github.com/nats-io/nats-server \
-    -app github.com/golang/protobuf... \
-    -app github.com/maxbrunsfeld/counterfeiter
-
-  # separate these so gosub doesn't asplode
-  gosub list -test code.cloudfoundry.org/auctioneer/...
-  gosub list -test code.cloudfoundry.org/bbs/...
-  gosub list -test code.cloudfoundry.org/benchmarkbbs/...
-  gosub list -test code.cloudfoundry.org/buildpackapplifecycle/...
-  gosub list -test code.cloudfoundry.org/cfdot/...
-  gosub list -test code.cloudfoundry.org/diego-ssh/...
-  gosub list -test code.cloudfoundry.org/dockerapplifecycle/...
-  gosub list -test code.cloudfoundry.org/executor/...
-  gosub list -test code.cloudfoundry.org/fileserver/...
-  gosub list -test code.cloudfoundry.org/locket/...
-  gosub list -test code.cloudfoundry.org/rep/...
-  gosub list -test code.cloudfoundry.org/route-emitter/...
-  gosub list -test code.cloudfoundry.org/vizzini/...
-  gosub list -test code.cloudfoundry.org/auction/... \
-             -test code.cloudfoundry.org/inigo/... \
-             -test code.cloudfoundry.org/diego-upgrade-stability-tests/...
-  gosub list -test code.cloudfoundry.org/localdriver/...
-
-} | grep -Ev '^github.com/docker/docker($|/)' > /tmp/packages
-
-#HACK to get the OSL pipeline green, we should remove these submodules once the OSL process doesn't require test dependencies to be submoduled
-echo "code.cloudfoundry.org/idmapper" >> /tmp/packages
-echo "code.cloudfoundry.org/grootfs" >> /tmp/packages
+rm -rf /tmp/packages
+cat >> /tmp/packages <<EOF
+code.cloudfoundry.org/auction
+code.cloudfoundry.org/auctioneer
+code.cloudfoundry.org/bbs
+code.cloudfoundry.org/benchmarkbbs
+code.cloudfoundry.org/buildpackapplifecycle
+code.cloudfoundry.org/bytefmt
+code.cloudfoundry.org/cacheddownloader
+code.cloudfoundry.org/certsplitter
+code.cloudfoundry.org/cfdot
+code.cloudfoundry.org/consuladapter
+code.cloudfoundry.org/credhub-cli
+code.cloudfoundry.org/diego-logging-client
+code.cloudfoundry.org/diego-ssh
+code.cloudfoundry.org/diego-upgrade-stability-tests
+code.cloudfoundry.org/dockerapplifecycle
+code.cloudfoundry.org/dockerdriver
+code.cloudfoundry.org/durationjson
+code.cloudfoundry.org/ecrhelper
+code.cloudfoundry.org/eventhub
+code.cloudfoundry.org/executor
+code.cloudfoundry.org/fileserver
+code.cloudfoundry.org/garden
+code.cloudfoundry.org/go-diodes
+code.cloudfoundry.org/go-loggregator
+code.cloudfoundry.org/goshims
+code.cloudfoundry.org/grootfs
+code.cloudfoundry.org/guardian
+code.cloudfoundry.org/healthcheck
+code.cloudfoundry.org/idmapper
+code.cloudfoundry.org/inigo
+code.cloudfoundry.org/localdriver
+code.cloudfoundry.org/locket
+code.cloudfoundry.org/operationq
+code.cloudfoundry.org/rep
+code.cloudfoundry.org/rfc5424
+code.cloudfoundry.org/route-emitter
+code.cloudfoundry.org/routing-api
+code.cloudfoundry.org/routing-info
+code.cloudfoundry.org/systemcerts
+code.cloudfoundry.org/tlsconfig
+code.cloudfoundry.org/trace-logger
+code.cloudfoundry.org/uaa-go-client
+code.cloudfoundry.org/vendor
+code.cloudfoundry.org/vizzini
+code.cloudfoundry.org/volman
+code.cloudfoundry.org/workpool
+EOF
 
 cat /tmp/packages | xargs -s 1048576 gosub sync --force-https=$FORCE_SUBMODULE_HTTPS

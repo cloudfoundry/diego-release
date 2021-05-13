@@ -8,9 +8,8 @@ dependencies:
 
 files:
   - tar/tar-*.tgz
-  - golang.org/x/sys/windows/**/* #gosub
-  - code.cloudfoundry.org/archiver/compressor/*.go # gosub
-  - code.cloudfoundry.org/archiver/extractor/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/archiver/compressor/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/archiver/extractor/*.go # gosub
   - code.cloudfoundry.org/buildpackapplifecycle/*.go # gosub
   - code.cloudfoundry.org/buildpackapplifecycle/builder/*.go # gosub
   - code.cloudfoundry.org/buildpackapplifecycle/buildpackrunner/*.go # gosub
@@ -35,8 +34,8 @@ files:
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/credhub-cli/credhub/server/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/credhub-cli/errors/*.go # gosub
   - code.cloudfoundry.org/goshims/osshim/*.go # gosub
-  - code.cloudfoundry.org/lager/*.go # gosub
-  - code.cloudfoundry.org/lager/internal/truncate/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/internal/truncate/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/cloudfoundry/go-socks5/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/cloudfoundry/socks5-proxy/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/cyphar/filepath-securejoin/*.go # gosub

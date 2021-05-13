@@ -11,9 +11,9 @@ files:
   - code.cloudfoundry.org/bbs/format/*.go # gosub
   - code.cloudfoundry.org/bbs/models/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/cfhttp/v2/*.go # gosub
-  - code.cloudfoundry.org/clock/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/clock/*.go # gosub
   - code.cloudfoundry.org/consuladapter/*.go # gosub
-  - code.cloudfoundry.org/debugserver/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/debugserver/*.go # gosub
   - code.cloudfoundry.org/diego-logging-client/*.go # gosub
   - code.cloudfoundry.org/diego-ssh/authenticators/*.go # gosub
   - code.cloudfoundry.org/diego-ssh/cmd/ssh-proxy/*.go # gosub
@@ -28,9 +28,9 @@ files:
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/rpc/loggregator_v2/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/runtimeemitter/*.go # gosub
-  - code.cloudfoundry.org/lager/*.go # gosub
-  - code.cloudfoundry.org/lager/internal/truncate/*.go # gosub
-  - code.cloudfoundry.org/lager/lagerflags/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/internal/truncate/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/lagerflags/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
   - code.cloudfoundry.org/locket/models/*.go # gosub
   - code.cloudfoundry.org/rfc5424/*.go # gosub

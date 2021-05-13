@@ -10,6 +10,8 @@ replace code.cloudfoundry.org/grootfs => ./grootfs
 
 replace code.cloudfoundry.org/idmapper => ./idmapper
 
+replace code.cloudfoundry.org/lager => code.cloudfoundry.org/lager v1.1.1-0.20210513163233-569157d2803b
+
 replace github.com/go-sql-driver/mysql => github.com/cloudfoundry/mysql v0.0.0-20170831183307-75d9a366f9b0
 
 replace github.com/hashicorp/consul => github.com/hashicorp/consul v0.7.0
@@ -26,21 +28,21 @@ replace github.com/gogo/protobuf => github.com/gogo/protobuf v1.2.0
 
 replace google.golang.org/genproto => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
 
-
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20180525162158-e135af3d5a2a // indirect
+	code.cloudfoundry.org/archiver v0.0.0-20210513174409-5fc719cc9491
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20200827173955-6ac4653025b4
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20210401153245-254a1ad317ab
-	code.cloudfoundry.org/cfhttp/v2 v2.0.0
-	code.cloudfoundry.org/clock v1.0.0 // indirect
+	code.cloudfoundry.org/cfhttp v1.0.1-0.20210513172332-4c5ee488a657
+	code.cloudfoundry.org/cfhttp/v2 v2.0.1-0.20210513172332-4c5ee488a657
+	code.cloudfoundry.org/clock v1.0.1-0.20210513171101-3765e64694c4
 	code.cloudfoundry.org/commandrunner v0.0.0-20180212143422-501fd662150b // indirect
 	code.cloudfoundry.org/credhub-cli v0.0.0-20210503130106-06d45be736ac
-	code.cloudfoundry.org/debugserver v0.0.0-20170501225606-70715da12ee9 // indirect
+	code.cloudfoundry.org/debugserver v0.0.0-20210513170648-513d45197033
 	code.cloudfoundry.org/garden v0.0.0-00010101000000-000000000000
 	code.cloudfoundry.org/go-loggregator v7.4.0+incompatible
 	code.cloudfoundry.org/guardian v0.0.0-00010101000000-000000000000
-	code.cloudfoundry.org/lager v2.0.0+incompatible // indirect
-	code.cloudfoundry.org/localip v0.0.0-20170223024724-b88ad0dea95c // indirect
+	code.cloudfoundry.org/lager v2.0.0+incompatible
+	code.cloudfoundry.org/localip v0.0.0-20210513163154-20d795cea8ec
 	code.cloudfoundry.org/tlsconfig v0.0.0-20200131000646-bbe0f8da39b3
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/Microsoft/go-winio v0.4.16 // indirect
@@ -115,8 +117,8 @@ require (
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/nxadm/tail v1.4.8 // indirect
-	github.com/onsi/ginkgo v1.16.1
-	github.com/onsi/gomega v1.11.0
+	github.com/onsi/ginkgo v1.16.2
+	github.com/onsi/gomega v1.12.0
 	github.com/onsi/say v1.0.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/opencontainers/image-spec v1.0.1
@@ -153,3 +155,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 	launchpad.net/gocheck v0.0.0-20140225173054-000000000087 // indirect
 )
+

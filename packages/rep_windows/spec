@@ -6,8 +6,8 @@ dependencies:
 
 files:
   - exiter.ps1
-  - code.cloudfoundry.org/archiver/compressor/*.go # gosub
-  - code.cloudfoundry.org/archiver/extractor/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/archiver/compressor/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/archiver/extractor/*.go # gosub
   - code.cloudfoundry.org/bbs/*.go # gosub
   - code.cloudfoundry.org/bbs/encryption/*.go # gosub
   - code.cloudfoundry.org/bbs/events/*.go # gosub
@@ -16,12 +16,12 @@ files:
   - code.cloudfoundry.org/bytefmt/*.go # gosub
   - code.cloudfoundry.org/cacheddownloader/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/cfhttp/*.go # gosub
-  - code.cloudfoundry.org/cfhttp/handlers/*.go # gosub
-  - code.cloudfoundry.org/cfhttp/unix_transport/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/cfhttp/handlers/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/cfhttp/unix_transport/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/cfhttp/v2/*.go # gosub
-  - code.cloudfoundry.org/clock/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/clock/*.go # gosub
   - code.cloudfoundry.org/consuladapter/*.go # gosub
-  - code.cloudfoundry.org/debugserver/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/debugserver/*.go # gosub
   - code.cloudfoundry.org/diego-logging-client/*.go # gosub
   - code.cloudfoundry.org/dockerdriver/*.go # gosub
   - code.cloudfoundry.org/dockerdriver/driverhttp/*.go # gosub
@@ -58,10 +58,10 @@ files:
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/runtimeemitter/*.go # gosub
   - code.cloudfoundry.org/goshims/http_wrap/*.go # gosub
   - code.cloudfoundry.org/goshims/osshim/*.go # gosub
-  - code.cloudfoundry.org/lager/*.go # gosub
-  - code.cloudfoundry.org/lager/internal/truncate/*.go # gosub
-  - code.cloudfoundry.org/lager/lagerflags/*.go # gosub
-  - code.cloudfoundry.org/localip/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/internal/truncate/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/lagerflags/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/localip/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
   - code.cloudfoundry.org/locket/lock/*.go # gosub
   - code.cloudfoundry.org/locket/metrics/helpers/*.go # gosub
