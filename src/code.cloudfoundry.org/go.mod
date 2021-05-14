@@ -2,13 +2,13 @@ module code.cloudfoundry.org
 
 go 1.16
 
-replace code.cloudfoundry.org/guardian => ./guardian
+replace code.cloudfoundry.org/guardian => ../guardian
 
-replace code.cloudfoundry.org/garden => ./garden
+replace code.cloudfoundry.org/garden => ../garden
 
-replace code.cloudfoundry.org/grootfs => ./grootfs
+replace code.cloudfoundry.org/grootfs => ../grootfs
 
-replace code.cloudfoundry.org/idmapper => ./idmapper
+replace code.cloudfoundry.org/idmapper => ../idmapper
 
 replace code.cloudfoundry.org/lager => code.cloudfoundry.org/lager v1.1.1-0.20210513163233-569157d2803b
 

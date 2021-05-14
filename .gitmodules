@@ -99,7 +99,7 @@
 	url = https://github.com/cloudfoundry/goshims
 	branch = master
 [submodule "src/code.cloudfoundry.org/garden"]
-	path = src/code.cloudfoundry.org/garden
+	path = src/garden
 	url = https://github.com/cloudfoundry/garden
 	branch = master
 [submodule "src/code.cloudfoundry.org/routing-info"]
@@ -117,7 +117,7 @@
 	path = src/code.cloudfoundry.org/trace-logger
 	url = https://github.com/cloudfoundry-incubator/trace-logger
 [submodule "src/code.cloudfoundry.org/guardian"]
-	path = src/code.cloudfoundry.org/guardian
+	path = src/guardian
 	url = https://github.com/cloudfoundry/guardian
 	branch = master
 [submodule "src/code.cloudfoundry.org/workpool"]
@@ -160,11 +160,23 @@
 	url = https://github.com/cloudfoundry/ecrhelper
 	branch = master
 [submodule "src/code.cloudfoundry.org/idmapper"]
-	path = src/code.cloudfoundry.org/idmapper
+	path = src/idmapper
 	url = https://github.com/cloudfoundry/idmapper
 [submodule "src/code.cloudfoundry.org/grootfs"]
-	path = src/code.cloudfoundry.org/grootfs
+	path = src/grootfs
 	url = https://github.com/cloudfoundry/grootfs
 [submodule "src/code.cloudfoundry.org/credhub-cli"]
 	path = src/code.cloudfoundry.org/credhub-cli
 	url = https://github.com/cloudfoundry-incubator/credhub-cli/
+[submodule "src/garden"]
+	path = src/garden
+	url = https://github.com/cloudfoundry/garden
+[submodule "src/guardian"]
+	path = src/guardian
+	url = https://github.com/cloudfoundry/guardian
+[submodule "src/idmapper"]
+	path = src/idmapper
+	url = https://github.com/cloudfoundry/idmapper
+[submodule "src/grootfs"]
+	path = src/grootfs
+	url = https://github.com/cloudfoundry/grootfs
