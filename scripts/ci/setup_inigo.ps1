@@ -132,7 +132,8 @@ function Setup-Gopath() {
     $env:GOPATH_ROOT="$PWD"
 
     $env:GOPATH="${env:GOPATH_ROOT}"
-    $env:PATH="${env:GOPATH_ROOT}/bin:${env:PATH}"
+    $env:GOBIN="${env:GOPATH_ROOT}/bin"
+    $env:PATH="${env:GOBIN};${env:PATH}"
 
     # install application dependencies
     echo "Installing nats-server ..."
@@ -178,7 +179,7 @@ function Install-Ginkgo() {
 
   Write-Host "Install-Ginkgo"
   Push-Location $dir
-    go install github.com/onsi/ginkgo/ginkgo
+    go get github.com/onsi/ginkgo/ginkgo
     if ($LastExitCode -ne 0) {
       throw "Installing ginkgo returned error code: $LastExitCode"
     }

@@ -19,7 +19,8 @@ export GOROOT=/usr/local/go
 export PATH=$GOROOT/bin:$PATH
 
 export GOPATH=$PWD
-export PATH=$PWD/bin:$PATH
+export GOBIN="$PWD/bin"
+export PATH=$GOBIN:$PATH
 
 SCRIPT=${SCRIPT:-run-unit-tests}
 
@@ -28,6 +29,6 @@ unzip -j nats-server-v2.1.2-linux-amd64.zip nats-server-v2.1.2-linux-amd64/nats-
 rm nats-server-v2.1.2-linux-amd64.zip
 mv ./nats-server "$GOBIN/nats-server"
 
-go install github.com/onsi/ginkgo/ginkgo
+go get github.com/onsi/ginkgo/ginkgo
 
 "scripts/${SCRIPT}" "$@"

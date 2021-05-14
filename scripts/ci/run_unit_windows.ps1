@@ -15,7 +15,8 @@ if(!(Test-Path -Path $CONSUL_DIR )) {
 }
 
 $env:GOPATH=($pwd).path
-$env:PATH = $env:GOPATH + "/bin;" + $CONSUL_DIR + ";" + $env:PATH
+$env:GOBIN=$env:GOPATH + "/bin"
+$env:PATH = $env:GOBIN +  ";" + $CONSUL_DIR + ";" + $env:PATH
 # Write-Host "Gopath is " + $env:GOPATH
 # Write-Host "PATH is " + $env:PATH
 
@@ -32,7 +33,7 @@ if(!(Test-Path -Path $NATS_DIR )) {
 $env:NATS_DOCKERIZED = "1"
 
 Write-Host "Installing Ginkgo"
-go install github.com/onsi/ginkgo/ginkgo
+go get github.com/onsi/ginkgo/ginkgo
 if ($LastExitCode -ne 0) {
     throw "Ginkgo installation process returned error code: $LastExitCode"
 } else {

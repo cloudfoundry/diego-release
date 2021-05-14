@@ -134,7 +134,8 @@ setup_gopath() {
   export GOPATH_ROOT=$PWD
 
   export GOPATH=${GOPATH_ROOT}
-  export PATH=${GOPATH_ROOT}/bin:${PATH}
+  export GOBIN="${GOPATH_ROOT}/bin"
+  export PATH=${GOBIN}:${PATH}
 
   popd
 }
@@ -142,18 +143,18 @@ setup_gopath() {
 install_go_dependencies() {
   pushd $1
 
-  # install application dependencies
-  echo "Installing go dependencies ..."
-  for package in github.com/nats-io/nats-server; do
-    go install $package
-  done
+
+  wget https://github.com/nats-io/nats-server/releases/download/v2.1.2/nats-server-v2.1.2-linux-amd64.zip
+  unzip -j nats-server-v2.1.2-linux-amd64.zip nats-server-v2.1.2-linux-amd64/nats-server
+  rm nats-server-v2.1.2-linux-amd64.zip
+  mv ./nats-server "$GOBIN/nats-server"
 
   popd
 }
 
 install_ginkgo() {
   pushd $1
-  go install github.com/onsi/ginkgo/ginkgo
+  go get github.com/onsi/ginkgo/ginkgo
   popd
 }
 
