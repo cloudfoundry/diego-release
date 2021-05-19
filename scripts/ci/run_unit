@@ -15,21 +15,6 @@ fi
 
 cd diego-release/
 
-export GOROOT=/usr/local/go
-export PATH=$GOROOT/bin:$PATH
-
-export GOPATH=$PWD
-export GOBIN="$PWD/bin"
-mkdir -p "$GOBIN"
-export PATH=$GOBIN:$PATH
-
 SCRIPT=${SCRIPT:-run-unit-tests}
-
-wget https://github.com/nats-io/nats-server/releases/download/v2.1.2/nats-server-v2.1.2-linux-amd64.zip
-unzip -oj nats-server-v2.1.2-linux-amd64.zip nats-server-v2.1.2-linux-amd64/nats-server
-rm nats-server-v2.1.2-linux-amd64.zip
-mv nats-server "$GOBIN/nats-server"
-
-go get github.com/onsi/ginkgo/ginkgo
 
 "scripts/${SCRIPT}" "$@"

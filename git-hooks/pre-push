@@ -1,6 +1,9 @@
 #!/bin/bash
 
-diff_output=$(./scripts/check-for-windows-drift)
+gitHooksDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+SCRIPTS_DIR="$(realpath ${gitHooksDir}/../scripts)"
+
+diff_output=$(${SCRIPTS_DIR}/check-for-windows-drift)
 if [ $? -ne 0 ] ; then
   echo $'\e[31mdiego and diego windows have diverged. output:\e[0m'
   echo
@@ -8,7 +11,7 @@ if [ $? -ne 0 ] ; then
   exit 1
 fi
 
-modified_packages=$(./scripts/sync-package-specs)
+modified_packages=$(${SCRIPTS_DIR}/sync-package-specs)
 if [ -n "$modified_packages" ]; then
   echo $'\e[31mthe following package specs are not staged:\e[0m'
   echo
@@ -16,7 +19,7 @@ if [ -n "$modified_packages" ]; then
   exit 1
 fi
 
-canonical_import_paths_enforced=$(./scripts/sync-canonical-import-paths)
+canonical_import_paths_enforced=$(${SCRIPTS_DIR}/sync-canonical-import-paths)
 if [ -n "$canonical_import_paths_enforced" ]; then
   echo $'\e[31mthe following submodules are not properly enforcing canonical import paths:\e[0m'
   echo

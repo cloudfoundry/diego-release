@@ -2,13 +2,17 @@
 
 set -e
 
-scripts_path=./$(dirname $0)
-eval $($scripts_path/get_paths.sh)
+SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+. "${SCRIPTS_DIR}/get_paths.sh"
 
 if [ -n "${DIEGO_CI_TARGET}" ]; then
   target="-t ${DIEGO_CI_TARGET}"
 else
-  target="-t ci"
+  target="-t runtime-diego"
 fi
 
-fly ${target} execute -p -c $DIEGO_RELEASE_DIR/scripts/ci/run_unit_windows.build.yml -i diego-release=$PWD -- "$@"
+fly ${target} execute \
+  --privileged \
+  --config "${DIEGO_RELEASE_DIR}/scripts/ci/run_unit_windows.build.yml" \
+  --input="diego-release=$DIEGO_RELEASE_DIR" \
+  -- "$@"

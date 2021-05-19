@@ -5,11 +5,8 @@
 # 2. We don't document the metrics sent with SendApp.*
 # 3. The IngressClient methods that should be documented always have the documented name as the first arg
 
-absolute_path() {
-  (cd $1 && pwd)
-}
-scripts_path=./$(dirname $0)
-DIEGO_RELEASE_DIR=${DIEGO_RELEASE_DIR:-$(absolute_path $scripts_path/..)}
+SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+. "${SCRIPTS_DIR}/get_paths.sh"
 
 set -eu
 
