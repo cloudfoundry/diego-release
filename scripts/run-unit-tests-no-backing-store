@@ -3,6 +3,22 @@
 SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 . "${SCRIPTS_DIR}/get_paths.sh"
 
+BIN_DIR="${DIEGO_RELEASE_DIR}/bin"
+mkdir -p "${BIN_DIR}"
+export PATH="${PATH}:${BIN_DIR}"
+
+set -e
+pushd "${BIN_DIR}"
+  wget https://github.com/nats-io/nats-server/releases/download/v2.1.2/nats-server-v2.1.2-linux-amd64.zip
+  unzip -oj nats-server-v2.1.2-linux-amd64.zip nats-server-v2.1.2-linux-amd64/nats-server
+  rm nats-server-v2.1.2-linux-amd64.zip
+
+  wget https://releases.hashicorp.com/consul/0.7.0/consul_0.7.0_linux_amd64.zip
+  unzip -oj consul_0.7.0_linux_amd64.zip
+  rm consul_0.7.0_linux_amd64.zip
+popd
+set +e
+
 set -e
 ${SCRIPTS_DIR}/check-metrics-documentation
 set +e
