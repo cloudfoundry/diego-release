@@ -231,6 +231,7 @@ fi
 
 export ROUTER_GOPATH="$PWD/routing-release"
 export ROUTING_API_GOPATH=${ROUTER_GOPATH}
+export DIEGO_RELEASE_DIR="$PWD/diego-release"
 
 setup_gopath $PWD/diego-release
 install_go_dependencies $PWD/diego-release
