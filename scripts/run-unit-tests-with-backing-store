@@ -40,7 +40,7 @@ fi
 ERROR_CODE=1
 
 pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/ > /dev/null
-  go run github.com/onsi/ginkgo/ginkgo -r -keepGoing -p -trace -randomizeAllSpecs -progress -race \
+  go run github.com/onsi/ginkgo/ginkgo -r -keepGoing -nodes 8 -trace -randomizeAllSpecs -progress -race \
     auctioneer/cmd/auctioneer \
     bbs/cmd/bbs \
     bbs/db/migrations \
