@@ -131,8 +131,8 @@ function Setup-Gopath() {
   Push-Location $dir
     $env:GOPATH_ROOT="$PWD"
 
-    $env:CODE_CLOUDFOUNDRY_ORG_MODULE="$env:GOPATH/src/code.cloudfoundry.org"
-    $env:GUARDIAN_MODULE="$env:GOPATH/src/guardian"
+    $env:CODE_CLOUDFOUNDRY_ORG_MODULE="$env:GOPATH_ROOT/src/code.cloudfoundry.org"
+    $env:GUARDIAN_MODULE="$env:GOPATH_ROOT/src/guardian"
 
     $env:GOPATH="${env:GOPATH_ROOT}"
     $env:GOBIN="${env:GOPATH_ROOT}/bin"
