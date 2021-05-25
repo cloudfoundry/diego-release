@@ -28,6 +28,8 @@ replace github.com/gogo/protobuf => github.com/gogo/protobuf v1.2.0
 
 replace google.golang.org/genproto => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
 
+replace github.com/onsi/gomega => github.com/onsi/gomega v1.7.0
+
 require (
 	code.cloudfoundry.org/archiver v0.0.0-20210513174409-5fc719cc9491
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20200827173955-6ac4653025b4
