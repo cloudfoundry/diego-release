@@ -142,12 +142,12 @@ function Setup-Gopath() {
     echo "Installing nats-server ..."
 
     $NATS_DIR = "C:/nats-server"
-    # Remove-Item $NATS_DIR -Force
+    Remove-Item -Force -Recurse -ErrorAction Ignore $NATS_DIR
     if(!(Test-Path -Path $NATS_DIR )) {
       New-Item -ItemType directory -Path $NATS_DIR
-      (New-Object System.Net.WebClient).DownloadFile('https://github.com/nats-io/nats-server/releases/download/v2.1.2/nats-server-v2.1.2-windows-amd64.zip', "nats-server.zip")
-	[System.IO.Compression.ZipFile]::ExtractToDirectory("nats-server.zip", "$NATS_DIR")
-	Move-Item -Path "$NATS_DIR/*/nats-server.exe" "$env:GOPATH/bin/nats-server.exe"
+      (New-Object System.Net.WebClient).DownloadFile('https://github.com/nats-io/nats-server/releases/download/v2.1.2/nats-server-v2.1.2-windows-amd64.zip', "$NATS_DIR/nats-server.zip")
+	[System.IO.Compression.ZipFile]::ExtractToDirectory("$NATS_DIR/nats-server.zip", "$NATS_DIR")
+	Copy-Item -Path "$NATS_DIR/nats-server-*/nats-server.exe" -Destination "$env:GOBIN/nats-server.exe"
     }
 
     $env:NATS_DOCKERIZED = "1"
