@@ -147,7 +147,7 @@ function Setup-Gopath() {
       New-Item -ItemType directory -Path $NATS_DIR
       (New-Object System.Net.WebClient).DownloadFile('https://github.com/nats-io/nats-server/releases/download/v2.1.2/nats-server-v2.1.2-windows-amd64.zip', "$NATS_DIR/nats-server.zip")
 	[System.IO.Compression.ZipFile]::ExtractToDirectory("$NATS_DIR/nats-server.zip", "$NATS_DIR")
-	Copy-Item -Path "$NATS_DIR/nats-server-*/nats-server.exe" -Destination "$env:GOBIN/nats-server.exe"
+	Copy-Item -Path "$NATS_DIR/nats-server-*/nats-server.exe" -Destination "$env:GOBIN"
     }
 
     $env:NATS_DOCKERIZED = "1"
