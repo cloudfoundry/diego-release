@@ -145,14 +145,14 @@ setup_gopath() {
 }
 
 install_go_dependencies() {
-  pushd ./tools/nats-server
+  pushd "$1/tools/nats-server"
     go mod vendor
     go build -o "$GOBIN/nats-server" -mod vendor .
   popd
 }
 
 install_ginkgo() {
-  pushd ./tools/ginkgo
+  pushd "$1/tools/ginkgo"
     go mod vendor
     go build -o "$GOBIN/ginkgo" -mod vendor .
   popd
