@@ -20,7 +20,7 @@ Push-Location "$env:DIEGO_RELEASE_DIR/tools/nats-server"
   $NATS_DIR = "C:\nats-server"
   Write-Host "Installing nats-server ..."
   go mod vendor
-  go build -o "$env:NATS_DIR/nats-server.exe" -mod vendor .
+  go build -o "$NATS_DIR/nats-server.exe" -mod vendor .
   $env:NATS_DOCKERIZED = "1"
   $env:PATH += ";$NATS_DIR"
   $env:NATS_DOCKERIZED = "1"
