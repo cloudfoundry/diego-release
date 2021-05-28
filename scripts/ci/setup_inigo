@@ -154,7 +154,7 @@ install_go_dependencies() {
 install_ginkgo() {
   pushd "$1/tools/ginkgo"
     go mod vendor
-    go build -o "$GOBIN/ginkgo" -mod vendor .
+    go build -o "$GOBIN/ginkgo" -mod vendor ./ginkgo
   popd
 }
 

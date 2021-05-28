@@ -20,7 +20,7 @@ popd
 
 pushd ./tools/ginkgo
   go mod vendor
-  go build -o "$GOBIN/ginkgo" -mod vendor .
+  go build -o "$GOBIN/ginkgo" -mod vendor ./ginkgo
 popd
 
 cd src/code.cloudfoundry.org/auction/simulation
