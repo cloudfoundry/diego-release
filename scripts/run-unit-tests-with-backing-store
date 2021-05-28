@@ -10,11 +10,14 @@ mkdir -p "${BIN_DIR}"
 export PATH="${PATH}:${BIN_DIR}"
 
 set -e
-pushd "${BIN_DIR}"
-  wget https://github.com/nats-io/nats-server/releases/download/v2.1.2/nats-server-v2.1.2-linux-amd64.zip
-  unzip -oj nats-server-v2.1.2-linux-amd64.zip nats-server-v2.1.2-linux-amd64/nats-server
-  rm nats-server-v2.1.2-linux-amd64.zip
+pushd "${DIEGO_RELEASE_DIR}/tools/nats-server"
+  go mod vendor
+  go build -o "$BIN_DIR/nats-server" -mod vendor .
+popd
+set +e
 
+set -e
+pushd "${BIN_DIR}"
   wget https://releases.hashicorp.com/consul/0.7.0/consul_0.7.0_linux_amd64.zip
   unzip -oj consul_0.7.0_linux_amd64.zip
   rm consul_0.7.0_linux_amd64.zip

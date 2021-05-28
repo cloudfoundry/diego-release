@@ -13,12 +13,15 @@ export GOBIN="$PWD/bin"
 mkdir -p "$GOBIN"
 export PATH="$GOBIN:$PATH"
 
-wget https://github.com/nats-io/nats-server/releases/download/v2.1.2/nats-server-v2.1.2-linux-amd64.zip
-unzip -oj nats-server-v2.1.2-linux-amd64.zip nats-server-v2.1.2-linux-amd64/nats-server
-rm nats-server-v2.1.2-linux-amd64.zip
-mv nats-server "$GOBIN/nats-server"
+pushd ./tools/nats-server
+  go mod vendor
+  go build -o "$GOBIN/nats-server" -mod vendor .
+popd
 
-go install github.com/onsi/ginkgo/ginkgo
+pushd ./tools/ginkgo
+  go mod vendor
+  go build -o "$GOBIN/ginkgo" -mod vendor .
+popd
 
 cd src/code.cloudfoundry.org/auction/simulation
 

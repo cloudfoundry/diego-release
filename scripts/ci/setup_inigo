@@ -145,19 +145,16 @@ setup_gopath() {
 }
 
 install_go_dependencies() {
-  pushd $1
-
-  wget https://github.com/nats-io/nats-server/releases/download/v2.1.2/nats-server-v2.1.2-linux-amd64.zip
-  unzip -oj nats-server-v2.1.2-linux-amd64.zip nats-server-v2.1.2-linux-amd64/nats-server
-  rm nats-server-v2.1.2-linux-amd64.zip
-  mv nats-server "$GOBIN/nats-server"
-
+  pushd ./tools/nats-server
+    go mod vendor
+    go build -o "$GOBIN/nats-server" -mod vendor .
   popd
 }
 
 install_ginkgo() {
-  pushd $1
-  go get github.com/onsi/ginkgo/ginkgo
+  pushd ./tools/ginkgo
+    go mod vendor
+    go build -o "$GOBIN/ginkgo" -mod vendor .
   popd
 }
 

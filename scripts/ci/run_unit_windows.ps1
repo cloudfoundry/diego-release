@@ -16,17 +16,15 @@ if(!(Test-Path -Path $CONSUL_DIR )) {
 }
 $env:PATH += ";$CONSUL_DIR"
 
-Write-Host "Installing nats-server"
-$NATS_DIR = "C:\nats-server"
-Remove-Item -Force -Recurse -ErrorAction Ignore $NATS_DIR
-if(!(Test-Path -Path $NATS_DIR )) {
-  New-Item -ItemType directory -Path $NATS_DIR
-  (New-Object System.Net.WebClient).DownloadFile('https://github.com/nats-io/nats-server/releases/download/v2.1.2/nats-server-v2.1.2-windows-amd64.zip', "$NATS_DIR/nats-server.zip")
-  [System.IO.Compression.ZipFile]::ExtractToDirectory("$NATS_DIR/nats-server.zip", "$NATS_DIR")
-  Copy-Item -Path "$NATS_DIR/nats-server-*/nats-server.exe" -Destination "$NATS_DIR"
-}
-$env:PATH += ";$NATS_DIR"
-$env:NATS_DOCKERIZED = "1"
+Push-Location "./tools/nats-server"
+  $NATS_DIR = "C:\nats-server"
+  Write-Host "Installing nats-server ..."
+  go mod vendor
+  go build -o "$env:NATS_DIR/nats-server.exe" -mod vendor .
+  $env:NATS_DOCKERIZED = "1"
+  $env:PATH += ";$NATS_DIR"
+  $env:NATS_DOCKERIZED = "1"
+Pop-Location
 
 Write-Host "Downloading winpty DLL"
 $WINPTY_DIR = "C:\winpty"
