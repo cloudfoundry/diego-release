@@ -16,7 +16,7 @@ if(!(Test-Path -Path $CONSUL_DIR )) {
 }
 $env:PATH += ";$CONSUL_DIR"
 
-Push-Location "./tools/nats-server"
+Push-Location "$env:DIEGO_RELEASE_DIR/tools/nats-server"
   $NATS_DIR = "C:\nats-server"
   Write-Host "Installing nats-server ..."
   go mod vendor
