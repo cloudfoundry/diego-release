@@ -30,6 +30,8 @@ replace google.golang.org/genproto => google.golang.org/genproto v0.0.0-20180817
 
 replace github.com/onsi/gomega => github.com/onsi/gomega v1.7.0
 
+replace github.com/nats-io/nats.go => github.com/nats-io/nats.go v1.9.1
+
 require (
 	code.cloudfoundry.org/archiver v0.0.0-20210513174409-5fc719cc9491
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20200827173955-6ac4653025b4
@@ -59,6 +61,7 @@ require (
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
 	github.com/charlievieth/fs v0.0.1 // indirect
+	github.com/checkpoint-restore/go-criu/v4 v4.1.0 // indirect
 	github.com/cloudfoundry/bosh-cli v6.4.1+incompatible // indirect
 	github.com/cloudfoundry/dropsonde v1.0.0
 	github.com/cloudfoundry/gosigar v1.1.0 // indirect
@@ -124,7 +127,6 @@ require (
 	github.com/onsi/say v1.0.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/opencontainers/image-spec v1.0.1
-	github.com/opencontainers/runc v1.0.0-rc93 // indirect
 	github.com/pborman/getopt v1.1.0
 	github.com/pivotal-cf/paraphernalia v0.0.0-20180203224945-a64ae2051c20 // indirect
 	github.com/pkg/errors v0.9.1
@@ -157,4 +159,3 @@ require (
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 	launchpad.net/gocheck v0.0.0-20140225173054-000000000087 // indirect
 )
-

@@ -17,6 +17,7 @@ import (
 	"bytes"
 	"encoding/base32"
 	"encoding/binary"
+
 	"golang.org/x/crypto/ed25519"
 )
 
@@ -46,7 +47,7 @@ const (
 	PrefixByteUser PrefixByte = 20 << 3 // Base32-encodes to 'U...'
 
 	// PrefixByteUnknown is for unknown prefixes.
-	PrefixByteUnknown PrefixByte = 23 << 3 // Base32-encodes to 'X...'
+	PrefixByteUknown PrefixByte = 23 << 3 // Base32-encodes to 'X...'
 )
 
 // Set our encoding to not include padding '=='
@@ -187,11 +188,10 @@ func DecodeSeed(src []byte) (PrefixByte, []byte, error) {
 	return PrefixByte(b2), raw[2:], nil
 }
 
-// Prefix returns PrefixBytes of its input
 func Prefix(src string) PrefixByte {
 	b, err := decode([]byte(src))
 	if err != nil {
-		return PrefixByteUnknown
+		return PrefixByteUknown
 	}
 	prefix := PrefixByte(b[0])
 	err = checkValidPrefixByte(prefix)
@@ -203,7 +203,7 @@ func Prefix(src string) PrefixByte {
 	if PrefixByte(b1) == PrefixByteSeed {
 		return PrefixByteSeed
 	}
-	return PrefixByteUnknown
+	return PrefixByteUknown
 }
 
 // IsValidPublicKey will decode and verify that the string is a valid encoded public key.
@@ -287,20 +287,4 @@ func (p PrefixByte) String() string {
 		return "private"
 	}
 	return "unknown"
-}
-
-// CompatibleKeyPair returns an error if the KeyPair doesn't match expected PrefixByte(s)
-func CompatibleKeyPair(kp KeyPair, expected ...PrefixByte) error {
-	pk, err := kp.PublicKey()
-	if err != nil {
-		return err
-	}
-	pkType := Prefix(pk)
-	for _, k := range expected {
-		if pkType == k {
-			return nil
-		}
-	}
-
-	return ErrIncompatibleKey
 }
