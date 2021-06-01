@@ -48,6 +48,7 @@ require (
 	code.cloudfoundry.org/lager v2.0.0+incompatible
 	code.cloudfoundry.org/localip v0.0.0-20210513163154-20d795cea8ec
 	code.cloudfoundry.org/tlsconfig v0.0.0-20200131000646-bbe0f8da39b3
+	github.com/DataDog/datadog-go v4.7.0+incompatible // indirect
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/Microsoft/go-winio v0.4.16 // indirect
 	github.com/Microsoft/hcsshim/test v0.0.0-20201001234239-936eeeb286fd // indirect
@@ -71,7 +72,6 @@ require (
 	github.com/cloudfoundry/sonde-go v0.0.0-20171206171820-b33733203bb4 // indirect
 	github.com/containerd/cgroups v0.0.0-20201119153540-4cbc285b3327 // indirect
 	github.com/containerd/containerd v1.4.4 // indirect
-	github.com/containerd/continuity v0.0.0-20201201154230-62ef0fffa6a1 // indirect
 	github.com/containerd/fifo v0.0.0-20201026212402-0724c46b320c // indirect
 	github.com/containerd/go-runc v0.0.0-20200707131846-23d84c510c41 // indirect
 	github.com/containerd/ttrpc v1.0.2 // indirect
@@ -82,13 +82,14 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/docker/distribution v2.7.1+incompatible // indirect
 	github.com/docker/docker v20.10.6+incompatible
-	github.com/docker/go-connections v0.3.0 // indirect
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/eapache/go-resiliency v1.2.0 // indirect
+	github.com/elazarl/go-bindata-assetfs v1.0.1 // indirect
 	github.com/envoyproxy/go-control-plane v0.9.4
 	github.com/fatih/color v1.10.0 // indirect
 	github.com/fortytw2/leaktest v1.3.0
 	github.com/fsnotify/fsnotify v1.4.9
+	github.com/fsouza/go-dockerclient v1.7.2 // indirect
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/go-task/slim-sprig v0.0.0-20210107165309-348f09dbbbc0 // indirect
@@ -101,10 +102,20 @@ require (
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/hashicorp/consul v0.0.0-00010101000000-000000000000
 	github.com/hashicorp/errwrap v1.1.0
+	github.com/hashicorp/go-checkpoint v0.5.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
+	github.com/hashicorp/go-memdb v1.3.2 // indirect
 	github.com/hashicorp/go-multierror v1.1.1
+	github.com/hashicorp/go-reap v0.0.0-20170704170343-bf58d8a43e7b // indirect
 	github.com/hashicorp/go-version v1.3.0 // indirect
+	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/hashicorp/hil v0.0.0-20210521165536-27a72121fd40 // indirect
+	github.com/hashicorp/net-rpc-msgpackrpc v0.0.0-20151116020338-a14192a58a69 // indirect
+	github.com/hashicorp/raft v1.3.1 // indirect
+	github.com/hashicorp/raft-boltdb v0.0.0-20210422161416-485fa74b0b01 // indirect
+	github.com/hashicorp/scada-client v0.0.0-20160601224023-6e896784f66f // indirect
 	github.com/hashicorp/serf v0.9.5 // indirect
+	github.com/hashicorp/yamux v0.0.0-20210316155119-a95892c5f864 // indirect
 	github.com/howeyc/gopass v0.0.0-20190910152052-7cb4b85ec19c // indirect
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jessevdk/go-flags v1.5.0 // indirect

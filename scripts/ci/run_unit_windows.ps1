@@ -7,22 +7,17 @@ cd diego-release/
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-$CONSUL_DIR = "C:\consul"
-# Remove-Item $CONSUL_DIR -Force
-if(!(Test-Path -Path $CONSUL_DIR )) {
-    New-Item -ItemType directory -Path $CONSUL_DIR
-    (New-Object System.Net.WebClient).DownloadFile('https://releases.hashicorp.com/consul/0.7.0/consul_0.7.0_windows_amd64.zip', "$CONSUL_DIR/consul.zip")
-    [System.IO.Compression.ZipFile]::ExtractToDirectory("$CONSUL_DIR/consul.zip", "$CONSUL_DIR")
-}
-$env:PATH += ";$CONSUL_DIR"
 
 Push-Location "$env:DIEGO_RELEASE_DIR/src/code.cloudfoundry.org"
   $NATS_DIR = "C:\nats-server"
   Write-Host "Installing nats-server ..."
   go build -o "$NATS_DIR/nats-server.exe" github.com/nats-io/nats-server
   $env:NATS_DOCKERIZED = "1"
-  $env:PATH += ";$NATS_DIR"
   $env:NATS_DOCKERIZED = "1"
+  $CONSUL_DIR = "C:\consul"
+  Write-Host "Installing nats-server ..."
+  go build -o "$CONSUL_DIR/consul.exe" github.com/hashicorp/consul
+  $env:PATH += ";$NATS_DIR;$CONSUL_DIR"
 Pop-Location
 
 Write-Host "Downloading winpty DLL"

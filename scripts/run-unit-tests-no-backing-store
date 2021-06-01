@@ -10,17 +10,9 @@ export PATH="${PATH}:${BIN_DIR}"
 set -e
 pushd "${DIEGO_RELEASE_DIR}/src/code.cloudfoundry.org"
   go build -o "$BIN_DIR/nats-server" github.com/nats-io/nats-server
+  go build -o "$BIN_DIR/consul" github.com/hashicorp/consul
 popd
 set +e
-
-set -e
-pushd "${BIN_DIR}"
-  wget https://releases.hashicorp.com/consul/0.7.0/consul_0.7.0_linux_amd64.zip
-  unzip -oj consul_0.7.0_linux_amd64.zip
-  rm consul_0.7.0_linux_amd64.zip
-popd
-set +e
-
 
 set -e
 ${SCRIPTS_DIR}/check-metrics-documentation

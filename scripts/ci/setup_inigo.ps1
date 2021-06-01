@@ -144,6 +144,8 @@ function Setup-Gopath() {
       $env:NATS_DOCKERIZED = "1"
       echo "Installing ginkgo ..."
       go build -o "$env:GOBIN/ginkgo.exe" github.com/onsi/ginkgo/ginkgo
+      echo "Installing consul ..."
+      go build -o "$env:GOBIN/consul.exe" github.com/hashicorp/consul
     Pop-Location
   Pop-Location
 }
@@ -201,18 +203,6 @@ ssl-ca=$caFile"
   Restart-Service Mysql
 }
 
-function Setup-Consul {
-  Write-Host "Setup-Consul"
-  $CONSUL_DIR = "C:/consul"
-  if(!(Test-Path -Path $CONSUL_DIR )) {
-      New-Item -ItemType directory -Path $CONSUL_DIR
-      (New-Object System.Net.WebClient).DownloadFile('https://releases.hashicorp.com/consul/0.7.0/consul_0.7.0_windows_amd64.zip', "$CONSUL_DIR/consul.zip")
-      [System.IO.Compression.ZipFile]::ExtractToDirectory("$CONSUL_DIR/consul.zip", "$CONSUL_DIR")
-  }
-
-  $env:PATH = "$env:PATH;$CONSUL_DIR"
-}
-
 Remove-Item -Recurse -Force -ErrorAction Ignore $PWD/diego-release/src/code.cloudfoundry.org/guardian/vendor/github.com/onsi/ginkgo
 Remove-Item -Recurse -Force -ErrorAction Ignore $PWD/diego-release/src/code.cloudfoundry.org/guardian/vendor/github.com/onsi/gomega
 
@@ -222,7 +212,6 @@ Setup-Gopath "$PWD/diego-release"
 Set-GardenRootfs
 Setup-ContainerNetworking
 Setup-Database
-Setup-Consul
 Setup-DnsNames
 Setup-TempDirContainerAccess
 

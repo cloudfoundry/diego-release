@@ -82,16 +82,13 @@ To be able to run unit tests, you'll also need to install the following binaries
     cd src/code.cloudfoundry.org
 
     # Install ginkgo
-    go build -o ./bin/ginkgo github.com/onsi/ginkgo/ginkgo
+    go build -o ../../bin/ginkgo github.com/onsi/ginkgo/ginkgo
 
     # Install nats-server
-    go build -o ./bin/nats-server github.com/nats-io/nats-server
+    go build -o ../../bin/nats-server github.com/nats-io/nats-server
 
     # Install consul
-    if uname -a | grep Darwin; then os=darwin; else os=linux; fi
-    curl -L -o $TMPDIR/consul-0.7.1.zip "https://releases.hashicorp.com/consul/0.7.1/consul_0.7.1_${os}_amd64.zip"
-    unzip $TMPDIR/consul-0.7.1.zip -d $GOPATH/bin
-    rm $TMPDIR/consul-0.7.1.zip
+    go build -o ../../bin/consul github.com/hashicorp/consul
 
 To be able to run the integration test suite ("inigo"), you'll need to have a local [Concourse](http://concourse.ci) VM. Follow the instructions on the Concourse [README](https://github.com/concourse/concourse/blob/master/README.md) to set it up locally using [vagrant](https://www.vagrantup.com/). Download the fly CLI as instructed and move it somewhere visible to your `$PATH`.
 
