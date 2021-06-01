@@ -145,16 +145,9 @@ setup_gopath() {
 }
 
 install_go_dependencies() {
-  pushd "$1/tools/nats-server"
-    go mod vendor
-    go build -o "$GOBIN/nats-server" -mod vendor .
-  popd
-}
-
-install_ginkgo() {
-  pushd "$1/tools/ginkgo"
-    go mod vendor
-    go build -o "$GOBIN/ginkgo" -mod vendor ./ginkgo
+  pushd "$1"
+    go build -o "$GOBIN/nats-server" github.com/nats-io/nats-server
+    go build -o "$GOBIN/ginkgo" github.com/onsi/ginkgo/ginkgo
   popd
 }
 
@@ -231,8 +224,7 @@ export ROUTING_API_GOPATH=${ROUTER_GOPATH}
 export DIEGO_RELEASE_DIR="$PWD/diego-release"
 
 setup_gopath $PWD/diego-release
-install_go_dependencies $PWD/diego-release
-install_ginkgo $PWD/diego-release
+install_go_dependencies "${CODE_CLOUDFOUNDRY_ORG_MODULE}"
 set_garden_rootfs
 
 export APP_LIFECYCLE_GOPATH=${CODE_CLOUDFOUNDRY_ORG_MODULE}

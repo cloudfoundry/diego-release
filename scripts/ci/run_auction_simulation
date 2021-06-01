@@ -13,14 +13,9 @@ export GOBIN="$PWD/bin"
 mkdir -p "$GOBIN"
 export PATH="$GOBIN:$PATH"
 
-pushd ./tools/nats-server
-  go mod vendor
-  go build -o "$GOBIN/nats-server" -mod vendor .
-popd
-
-pushd ./tools/ginkgo
-  go mod vendor
-  go build -o "$GOBIN/ginkgo" -mod vendor ./ginkgo
+pushd "./src/code.cloudfoundry.org"
+  go build -o "$GOBIN/nats-server" github.com/nats-io/nats-server
+  go build -o "$GOBIN/ginkgo" github.com/onsi/ginkgo/ginkgo
 popd
 
 cd src/code.cloudfoundry.org/auction/simulation

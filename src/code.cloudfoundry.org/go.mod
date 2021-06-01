@@ -118,6 +118,8 @@ require (
 	github.com/mitchellh/cli v1.1.2 // indirect
 	github.com/mitchellh/hashstructure v1.1.0
 	github.com/moby/term v0.0.0-20201216013528-df9cb8a40635 // indirect
+	github.com/nats-io/gnatsd v1.4.1 // indirect
+	github.com/nats-io/nats-server v1.4.1
 	github.com/nats-io/nats.go v1.11.0
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d

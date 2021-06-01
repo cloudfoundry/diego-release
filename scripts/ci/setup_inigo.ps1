@@ -138,11 +138,12 @@ function Setup-Gopath() {
     $env:GOBIN="${env:GOPATH_ROOT}/bin"
     $env:PATH="${env:GOBIN};${env:PATH}"
 
-    Push-Location "./tools/nats-server"
+    Push-Location "./src/code.cloudfoundry.org"
       echo "Installing nats-server ..."
-      go mod vendor
-      go build -o "$env:GOBIN/nats-server.exe" -mod vendor .
+      go build -o "$env:GOBIN/nats-server.exe" github.com/nats-io/nats-server
       $env:NATS_DOCKERIZED = "1"
+      echo "Installing ginkgo ..."
+      go build -o "$env:GOBIN/ginkgo.exe" github.com/onsi/ginkgo/ginkgo
     Pop-Location
   Pop-Location
 }
@@ -167,19 +168,6 @@ function Setup-Envoy() {
     if ($LastExitCode -ne 0) {
       throw "Building envoy.exe process returned error code: $LastExitCode"
     }
-  Pop-Location
-}
-
-function Install-Ginkgo() {
-  param([string] $dir)
-
-  Write-Host "Install-Ginkgo"
-  Push-Location $dir
-    go get github.com/onsi/ginkgo/ginkgo
-    if ($LastExitCode -ne 0) {
-      throw "Installing ginkgo returned error code: $LastExitCode"
-    }
-    $env:PATH="$env:PATH;$PWD/bin"
   Pop-Location
 }
 
@@ -231,7 +219,6 @@ Remove-Item -Recurse -Force -ErrorAction Ignore $PWD/diego-release/src/code.clou
 Build-GardenRunc "$PWD\garden-runc-release" "$PWD\winc-release"
 Setup-Envoy "$PWD/envoy-nginx-release"
 Setup-Gopath "$PWD/diego-release"
-Install-Ginkgo "$PWD/diego-release"
 Set-GardenRootfs
 Setup-ContainerNetworking
 Setup-Database

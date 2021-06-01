@@ -10,9 +10,8 @@ mkdir -p "${BIN_DIR}"
 export PATH="${PATH}:${BIN_DIR}"
 
 set -e
-pushd "${DIEGO_RELEASE_DIR}/tools/nats-server"
-  go mod vendor
-  go build -o "$BIN_DIR/nats-server" -mod vendor .
+pushd "${DIEGO_RELEASE_DIR}/src/code.cloudfoundry.org"
+  go build -o "$BIN_DIR/nats-server" github.com/nats-io/nats-server
 popd
 set +e
 

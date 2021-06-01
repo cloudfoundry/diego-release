@@ -3,6 +3,7 @@
 package tools
 
 import (
+	_ "github.com/nats-io/nats-server"
 	_ "github.com/onsi/ginkgo/ginkgo"
 )
 

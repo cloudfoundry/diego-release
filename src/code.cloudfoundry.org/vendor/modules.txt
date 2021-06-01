@@ -456,8 +456,17 @@ github.com/moby/sys/mountinfo
 ## explicit
 github.com/moby/term
 github.com/moby/term/windows
+# github.com/nats-io/gnatsd v1.4.1
+## explicit
+github.com/nats-io/gnatsd/conf
+github.com/nats-io/gnatsd/logger
+github.com/nats-io/gnatsd/server
+github.com/nats-io/gnatsd/server/pse
 # github.com/nats-io/jwt v0.3.0
 github.com/nats-io/jwt
+# github.com/nats-io/nats-server v1.4.1
+## explicit
+github.com/nats-io/nats-server
 # github.com/nats-io/nats.go v1.11.0 => github.com/nats-io/nats.go v1.9.1
 ## explicit
 github.com/nats-io/nats.go
@@ -620,6 +629,7 @@ github.com/zorkian/go-datadog-api
 ## explicit
 # golang.org/x/crypto v0.0.0-20210506145944-38f3c27a63bf
 ## explicit
+golang.org/x/crypto/bcrypt
 golang.org/x/crypto/blowfish
 golang.org/x/crypto/chacha20
 golang.org/x/crypto/cryptobyte
@@ -653,6 +663,11 @@ golang.org/x/sys/cpu
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
+golang.org/x/sys/windows/registry
+golang.org/x/sys/windows/svc
+golang.org/x/sys/windows/svc/debug
+golang.org/x/sys/windows/svc/eventlog
+golang.org/x/sys/windows/svc/mgr
 # golang.org/x/term v0.0.0-20210503060354-a79de5458b56
 ## explicit
 # golang.org/x/text v0.3.6
