@@ -31,10 +31,9 @@ type IDMap struct {
 // for syscalls. Additional architectures can be added by specifying them in
 // Architectures.
 type Seccomp struct {
-	DefaultAction   Action     `json:"default_action"`
-	Architectures   []string   `json:"architectures"`
-	Syscalls        []*Syscall `json:"syscalls"`
-	DefaultErrnoRet *uint      `json:"default_errno_ret"`
+	DefaultAction Action     `json:"default_action"`
+	Architectures []string   `json:"architectures"`
+	Syscalls      []*Syscall `json:"syscalls"`
 }
 
 // Action is taken upon rule match in Seccomp
@@ -223,25 +222,25 @@ const (
 	// the runtime environment has been created but before the pivot_root has been executed.
 	// CreateRuntime is called immediately after the deprecated Prestart hook.
 	// CreateRuntime commands are called in the Runtime Namespace.
-	CreateRuntime HookName = "createRuntime"
+	CreateRuntime = "createRuntime"
 
 	// CreateContainer commands MUST be called as part of the create operation after
 	// the runtime environment has been created but before the pivot_root has been executed.
 	// CreateContainer commands are called in the Container namespace.
-	CreateContainer HookName = "createContainer"
+	CreateContainer = "createContainer"
 
 	// StartContainer commands MUST be called as part of the start operation and before
 	// the container process is started.
 	// StartContainer commands are called in the Container namespace.
-	StartContainer HookName = "startContainer"
+	StartContainer = "startContainer"
 
 	// Poststart commands are executed after the container init process starts.
 	// Poststart commands are called in the Runtime Namespace.
-	Poststart HookName = "poststart"
+	Poststart = "poststart"
 
 	// Poststop commands are executed after the container init process exits.
 	// Poststop commands are called in the Runtime Namespace.
-	Poststop HookName = "poststop"
+	Poststop = "poststop"
 )
 
 type Capabilities struct {
@@ -388,7 +387,7 @@ func (c Command) Run(s *specs.State) error {
 		return err
 	case <-timerCh:
 		cmd.Process.Kill()
-		<-errC
+		cmd.Wait()
 		return fmt.Errorf("hook ran past specified timeout of %.1fs", c.Timeout.Seconds())
 	}
 }
