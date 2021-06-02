@@ -229,6 +229,8 @@ $env:SSHD_GOPATH=${env:CODE_CLOUDFOUNDRY_ORG_MODULE}
 $env:SSH_PROXY_GOPATH=${env:CODE_CLOUDFOUNDRY_ORG_MODULE}
 $env:GARDEN_GOPATH=${env:GUARDIAN_MODULE}
 
+$env:DIEGO_RELEASE_DIR=$env:GOPATH
+
 # used for routing to apps; same logic that Garden uses.
 $ipAddressObject = Find-NetRoute -RemoteIPAddress "8.8.8.8" | Select-Object IpAddress
 $ipAddress = $ipAddressObject.IpAddress
