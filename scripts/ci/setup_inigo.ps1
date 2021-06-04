@@ -173,11 +173,13 @@ function Setup-Envoy() {
 
     Expand-Archive -Force -Path "blobs\envoy-nginx\envoy-nginx*.zip" -DestinationPath "$env:ENVOY_PATH"
 
-    $env:GOPATH="$PWD"
-    go build -o "$env:ENVOY_PATH\envoy.exe" "code.cloudfoundry.org/envoy-nginx"
+    push-location "src/code.cloudfoundry.org/envoy-nginx"
+    go build -o "$env:ENVOY_PATH\envoy.exe" .
     if ($LastExitCode -ne 0) {
       throw "Building envoy.exe process returned error code: $LastExitCode"
     }
+    pop-location
+
   Pop-Location
 }
 
