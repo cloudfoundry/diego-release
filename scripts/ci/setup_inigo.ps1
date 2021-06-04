@@ -59,15 +59,20 @@ function Build-GardenRunc(){
 
     $env:GOPATH="$PWD"
 
-    go build -o "$env:GARDEN_BINPATH\nstar.exe" "nstar"
+    push-location "src/nstar"
+    go build -o "$env:GARDEN_BINPATH\nstar.exe" .
     if ($LastExitCode -ne 0) {
       throw "Building nstar.exe process returned error code: $LastExitCode"
     }
 
-    go build -o "$env:GROOTFS_BINPATH\grootfs.exe" "code.cloudfoundry.org/groot-windows"
+    pop-location
+
+    push-location "src/code.cloudfoundry.org/groot-windows"
+    go build -o "$env:GROOTFS_BINPATH\grootfs.exe" .
     if ($LastExitCode -ne 0) {
       throw "Building grootfs.exe process returned error code: $LastExitCode"
     }
+    pop-location
 
     gcc -c ".\src\code.cloudfoundry.org\groot-windows\volume\quota\quota.c" -o "$env:GROOTFS_BINPATH\quota.o"
     if ($LastExitCode -ne 0) {
@@ -79,15 +84,18 @@ function Build-GardenRunc(){
       throw "Building quota.dll process returned error code: $LastExitCode"
     }
 
-    go build -o "$env:GARDEN_BINPATH\winc.exe" "code.cloudfoundry.org/winc/cmd/winc"
+    push-location "src/code.cloudfoundry.org/winc"
+    go build -o "$env:GARDEN_BINPATH\winc.exe" "./cmd/winc"
     if ($LastExitCode -ne 0) {
       throw "Building winc.exe process returned error code: $LastExitCode"
     }
 
-    go build -o "$env:GARDEN_BINPATH\winc-network.exe" -tags "hnsAcls" "code.cloudfoundry.org/winc/cmd/winc-network"
+    go build -o "$env:GARDEN_BINPATH\winc-network.exe" -tags "hnsAcls" "./cmd/winc-network"
     if ($LastExitCode -ne 0) {
       throw "Building winc-network.exe process returned error code: $LastExitCode"
     }
+    pop-location
+
   pop-location
 }
 
