@@ -15,7 +15,7 @@ Push-Location "$env:DIEGO_RELEASE_DIR/src/code.cloudfoundry.org"
   $env:NATS_DOCKERIZED = "1"
   $env:NATS_DOCKERIZED = "1"
   $CONSUL_DIR = "C:\consul"
-  Write-Host "Installing nats-server ..."
+  Write-Host "Installing consul ..."
   go build -o "$CONSUL_DIR/consul.exe" github.com/hashicorp/consul
   $env:PATH += ";$NATS_DIR;$CONSUL_DIR"
 Pop-Location
