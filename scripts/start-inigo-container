@@ -36,8 +36,10 @@ then
 
     scripts_dir=$(readlink -f $(dirname $0))
 
+    SQL_FLAVOR=${SQL_FLAVOR:-postgres}
+
     docker pull cloudfoundry/inigo-ci
-    docker run --rm -e LOCAL_DEVELOPMENT=true -e DEFAULT_EVENTUALLY_TIMEOUT=60s --detach-keys "ctrl-z" --privileged \
+    docker run --rm -e SQL_FLAVOR="$SQL_FLAVOR" -e LOCAL_DEVELOPMENT=true -e DEFAULT_EVENTUALLY_TIMEOUT=60s --detach-keys "ctrl-z" --privileged \
       -v $scripts_dir/..:/diego-release \
       -v ~/workspace/diego-release-v0:/diego-release-v0 \
       -v ~/workspace/routing-release:/routing-release \
