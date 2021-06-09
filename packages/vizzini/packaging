@@ -3,10 +3,10 @@ set -e -x
 mkdir -p ${BOSH_INSTALL_TARGET}/src
 cp -a . ${BOSH_INSTALL_TARGET}/src
 
-pushd ${BOSH_INSTALL_TARGET}
+pushd "${BOSH_INSTALL_TARGET}/src/code.cloudfoundry.org"
   source /var/vcap/packages/golang-1-linux/bosh/compile.env
 
   go install github.com/onsi/ginkgo/ginkgo
 
-  ginkgo build -r src/code.cloudfoundry.org/vizzini/
+  ginkgo build -r vizzini/
 popd

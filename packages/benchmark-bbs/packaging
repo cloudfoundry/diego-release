@@ -6,7 +6,9 @@ cp -a . ${BOSH_INSTALL_TARGET}/src
 pushd ${BOSH_INSTALL_TARGET}
   source /var/vcap/packages/golang-1-linux/bosh/compile.env
 
+  pushd src/code.cloudfoundry.org
   go install github.com/onsi/ginkgo/ginkgo
+  popd
 
   pushd src/code.cloudfoundry.org/benchmarkbbs/
     go test -c .

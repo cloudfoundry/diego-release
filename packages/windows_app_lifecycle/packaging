@@ -5,17 +5,22 @@ mkdir -p ${BOSH_INSTALL_TARGET}/src
 mv * ${BOSH_INSTALL_TARGET}/src
 mv ${BOSH_INSTALL_TARGET}/src .
 
+DEST="$PWD/bin"
+mkdir -p ${DEST}
+
 source /var/vcap/packages/golang-1-linux/bosh/compile.env
 
-GOOS=windows CGO_ENABLED=0 go build -tags=windows2012R2 -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/builder
-GOOS=windows CGO_ENABLED=0 go build -tags=windows2012R2 -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/launcher
-GOOS=windows CGO_ENABLED=0 go build -tags=windows2012R2 -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/getenv
+pushd src/code.cloudfoundry.org
+GOOS=windows CGO_ENABLED=0 go build -o ${DEST}/builder.exe -tags=windows2012R2 -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/builder
+GOOS=windows CGO_ENABLED=0 go build -o ${DEST}/launcher.exe -tags=windows2012R2 -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/launcher
+GOOS=windows CGO_ENABLED=0 go build -o ${DEST}/getenv.exe -tags=windows2012R2 -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/getenv
+popd
 
-cp /var/vcap/packages/diego-sshd/diego-sshd-windows2012R2.exe diego-sshd.exe
-cp /var/vcap/packages/healthcheck/healthcheck-external-port.exe healthcheck.exe
+cp /var/vcap/packages/diego-sshd/diego-sshd-windows2012R2.exe ${DEST}/diego-sshd.exe
+cp /var/vcap/packages/healthcheck/healthcheck-external-port.exe ${DEST}/healthcheck.exe
 
 mkdir -p tmp
 tar -xzf src/tar/tar-*.tgz -C tmp
-mv tmp/tar-*.exe tar.exe
+mv tmp/tar-*.exe ${DEST}/tar.exe
 
-tar -czf ${BOSH_INSTALL_TARGET}/windows_app_lifecycle.tgz builder.exe launcher.exe getenv.exe healthcheck.exe diego-sshd.exe tar.exe
+tar -czf ${BOSH_INSTALL_TARGET}/windows_app_lifecycle.tgz -C ${DEST} builder.exe launcher.exe getenv.exe healthcheck.exe diego-sshd.exe tar.exe

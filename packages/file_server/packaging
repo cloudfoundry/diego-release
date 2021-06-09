@@ -8,4 +8,6 @@ mv ${BOSH_INSTALL_TARGET}/src .
 source /var/vcap/packages/golang-1-linux/bosh/compile.env
 export GOBIN=${BOSH_INSTALL_TARGET}/bin
 
+pushd src/code.cloudfoundry.org
 go install code.cloudfoundry.org/fileserver/cmd/file-server
+popd

@@ -7,9 +7,11 @@ mv ${BOSH_INSTALL_TARGET}/src .
 
 source /var/vcap/packages/golang-1-linux/bosh/compile.env
 
+pushd src/code.cloudfoundry.org
 CGO_ENABLED=0 go build -o ${BOSH_INSTALL_TARGET}/diego-sshd -a -installsuffix static code.cloudfoundry.org/diego-ssh/cmd/sshd
 GOOS=windows CGO_ENABLED=0 go build -o ${BOSH_INSTALL_TARGET}/diego-sshd.exe -a -installsuffix static code.cloudfoundry.org/diego-ssh/cmd/sshd
 GOOS=windows CGO_ENABLED=0 go build -o ${BOSH_INSTALL_TARGET}/diego-sshd-windows2012R2.exe -tags=windows2012R2 -a -installsuffix static code.cloudfoundry.org/diego-ssh/cmd/sshd
+popd
 
 ldd ${BOSH_INSTALL_TARGET}/diego-sshd && echo 'diego-sshd must be statically linked' && false
 

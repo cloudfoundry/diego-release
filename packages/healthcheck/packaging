@@ -7,13 +7,12 @@ mv ${BOSH_INSTALL_TARGET}/src .
 
 source /var/vcap/packages/golang-1-linux/bosh/compile.env
 
-CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/healthcheck/cmd/healthcheck
-GOOS=windows CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/healthcheck/cmd/healthcheck
-GOOS=windows CGO_ENABLED=0 go build -o healthcheck-external-port.exe -tags=external -a -installsuffix static code.cloudfoundry.org/healthcheck/cmd/healthcheck
+pushd src/code.cloudfoundry.org
+CGO_ENABLED=0 go build -o ${BOSH_INSTALL_TARGET}/healthcheck -a -installsuffix static code.cloudfoundry.org/healthcheck/cmd/healthcheck
+GOOS=windows CGO_ENABLED=0 go build -o ${BOSH_INSTALL_TARGET}/healthcheck.exe -a -installsuffix static code.cloudfoundry.org/healthcheck/cmd/healthcheck
+GOOS=windows CGO_ENABLED=0 go build -o ${BOSH_INSTALL_TARGET}/healthcheck-external-port.exe -tags=external -a -installsuffix static code.cloudfoundry.org/healthcheck/cmd/healthcheck
+popd
 
-ldd healthcheck && echo "healthcheck must be statically linked" && false
+ldd ${BOSH_INSTALL_TARGET}/healthcheck && echo "healthcheck must be statically linked" && false
 
-cp healthcheck ${BOSH_INSTALL_TARGET}
-cp healthcheck.exe ${BOSH_INSTALL_TARGET}
-cp healthcheck-external-port.exe ${BOSH_INSTALL_TARGET}
-
+exit 0

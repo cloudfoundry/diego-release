@@ -5,27 +5,33 @@ mkdir -p ${BOSH_INSTALL_TARGET}/src
 mv * ${BOSH_INSTALL_TARGET}/src
 mv ${BOSH_INSTALL_TARGET}/src .
 
+DEST="$PWD/bin"
+mkdir -p ${DEST}
+
 source /var/vcap/packages/golang-1-linux/bosh/compile.env
 
-CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/builder
-CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/launcher
-CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/shell/shell
+pushd src/code.cloudfoundry.org
 
-GOOS=windows CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/builder
-GOOS=windows CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/launcher
-GOOS=windows CGO_ENABLED=0 go build -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/getenv
+CGO_ENABLED=0 go build -o ${DEST}/builder -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/builder
+CGO_ENABLED=0 go build -o ${DEST}/launcher -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/launcher
+CGO_ENABLED=0 go build -o ${DEST}/shell -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/shell/shell
 
-for binary in builder launcher; do
-  ldd $binary && echo "$binary must be statically linked" && false
-done
+GOOS=windows CGO_ENABLED=0 go build -o ${DEST}/builder.exe -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/builder
+GOOS=windows CGO_ENABLED=0 go build -o ${DEST}/launcher.exe -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/launcher
+GOOS=windows CGO_ENABLED=0 go build -o ${DEST}/getenv.exe -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/getenv
+popd
 
-cp /var/vcap/packages/diego-sshd/diego-sshd .
-cp /var/vcap/packages/diego-sshd/*.exe .
-cp /var/vcap/packages/diego-sshd/winpty.dll .
-cp /var/vcap/packages/healthcheck/healthcheck .
-cp /var/vcap/packages/healthcheck/healthcheck.exe .
+ldd $DEST/builder && echo "builder must be statically linked" && false
+ldd $DEST/launcher && echo "launcher must be statically linked" && false
+
+cp /var/vcap/packages/diego-sshd/diego-sshd ${DEST}/diego-sshd
+cp /var/vcap/packages/diego-sshd/*.exe ${DEST}
+cp /var/vcap/packages/diego-sshd/winpty.dll ${DEST}/winpty.dll
+cp /var/vcap/packages/healthcheck/healthcheck ${DEST}/healthcheck
+cp /var/vcap/packages/healthcheck/healthcheck.exe ${DEST}/healthcheck.exe
 
 tar -czf ${BOSH_INSTALL_TARGET}/buildpack_app_lifecycle.tgz \
+  -C ${DEST} \
   builder launcher shell healthcheck diego-sshd  \
   builder.exe launcher.exe getenv.exe healthcheck.exe diego-sshd.exe \
   winpty-agent.exe winpty.dll

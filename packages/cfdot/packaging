@@ -10,7 +10,9 @@ source /var/vcap/packages/golang-1-linux/bosh/compile.env
 mkdir ${BOSH_INSTALL_TARGET}/bin
 export GOBIN=${BOSH_INSTALL_TARGET}/bin
 
+pushd src/code.cloudfoundry.org
 go install code.cloudfoundry.org/cfdot
+popd
 
 # install jq
 tar -xzf src/jq/jq-*.tgz -C ${GOBIN} jq

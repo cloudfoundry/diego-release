@@ -18,9 +18,11 @@ if ($LASTEXITCODE -ge 8) {
 $pkg_name="route-emitter"
 $pkg_path="code.cloudfoundry.org/route-emitter/cmd/route-emitter"
 
+Push-Location src/code.cloudfoundry.org
 go.exe build -o "${BOSH_INSTALL_TARGET}\${pkg_name}.exe" "${pkg_path}"
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Error compiling: ${pkg_path}"
 }
+Pop-Location
 
 Exit 0

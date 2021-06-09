@@ -5,6 +5,9 @@ dependencies:
   - golang-1-linux
 
 files:
+  - code.cloudfoundry.org/go.mod
+  - code.cloudfoundry.org/go.sum
+  - code.cloudfoundry.org/vendor/modules.txt
   - jq/jq-1.6-linux64.tgz
   - code.cloudfoundry.org/bbs/*.go # gosub
   - code.cloudfoundry.org/bbs/encryption/*.go # gosub

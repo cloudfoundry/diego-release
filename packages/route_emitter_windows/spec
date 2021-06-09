@@ -5,6 +5,9 @@ dependencies:
   - golang-1-windows
 
 files:
+  - code.cloudfoundry.org/go.mod
+  - code.cloudfoundry.org/go.sum
+  - code.cloudfoundry.org/vendor/modules.txt
   - exiter.ps1
   - code.cloudfoundry.org/bbs/*.go # gosub
   - code.cloudfoundry.org/bbs/encryption/*.go # gosub
