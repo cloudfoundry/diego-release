@@ -41,6 +41,7 @@ require (
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1-0.20210513172332-4c5ee488a657
 	code.cloudfoundry.org/clock v1.0.1-0.20210513171101-3765e64694c4
 	code.cloudfoundry.org/commandrunner v0.0.0-20180212143422-501fd662150b // indirect
+	code.cloudfoundry.org/consuladapter v0.0.0-20210610172021-6135ad176324
 	code.cloudfoundry.org/credhub-cli v0.0.0-20210503130106-06d45be736ac
 	code.cloudfoundry.org/debugserver v0.0.0-20210513170648-513d45197033
 	code.cloudfoundry.org/garden v0.0.0-00010101000000-000000000000
@@ -51,7 +52,6 @@ require (
 	code.cloudfoundry.org/tlsconfig v0.0.0-20200131000646-bbe0f8da39b3
 	github.com/DataDog/datadog-go v4.7.0+incompatible // indirect
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
-	github.com/Microsoft/go-winio v0.4.16 // indirect
 	github.com/Microsoft/hcsshim/test v0.0.0-20201001234239-936eeeb286fd // indirect
 	github.com/ajstarks/svgo v0.0.0-20210406150507-75cfd577ce75
 	github.com/apoydence/eachers v0.0.0-20181020210610-23942921fe77 // indirect
@@ -82,7 +82,7 @@ require (
 	github.com/cppforlife/go-patch v0.2.0 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/docker/distribution v2.7.1+incompatible // indirect
-	github.com/docker/docker v20.10.6+incompatible
+	github.com/docker/docker v20.10.7+incompatible
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/eapache/go-resiliency v1.2.0 // indirect
 	github.com/elazarl/go-bindata-assetfs v1.0.1 // indirect
@@ -90,7 +90,6 @@ require (
 	github.com/fatih/color v1.10.0 // indirect
 	github.com/fortytw2/leaktest v1.3.0
 	github.com/fsnotify/fsnotify v1.4.9
-	github.com/fsouza/go-dockerclient v1.7.2 // indirect
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/go-task/slim-sprig v0.0.0-20210107165309-348f09dbbbc0 // indirect

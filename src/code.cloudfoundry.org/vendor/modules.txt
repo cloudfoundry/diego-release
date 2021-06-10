@@ -27,6 +27,11 @@ code.cloudfoundry.org/clock/fakeclock
 # code.cloudfoundry.org/commandrunner v0.0.0-20180212143422-501fd662150b
 ## explicit
 code.cloudfoundry.org/commandrunner
+# code.cloudfoundry.org/consuladapter v0.0.0-20210610172021-6135ad176324
+## explicit
+code.cloudfoundry.org/consuladapter
+code.cloudfoundry.org/consuladapter/consulrunner
+code.cloudfoundry.org/consuladapter/fakes
 # code.cloudfoundry.org/credhub-cli v0.0.0-20210503130106-06d45be736ac
 ## explicit
 code.cloudfoundry.org/credhub-cli/credhub
@@ -103,8 +108,7 @@ github.com/Masterminds/goutils
 github.com/Masterminds/semver
 # github.com/Masterminds/sprig v2.22.0+incompatible
 github.com/Masterminds/sprig
-# github.com/Microsoft/go-winio v0.4.16
-## explicit
+# github.com/Microsoft/go-winio v0.5.0
 github.com/Microsoft/go-winio
 github.com/Microsoft/go-winio/pkg/guid
 github.com/Microsoft/go-winio/pkg/security
@@ -330,7 +334,7 @@ github.com/docker/distribution/registry/client/auth/challenge
 github.com/docker/distribution/registry/client/transport
 github.com/docker/distribution/registry/storage/cache
 github.com/docker/distribution/registry/storage/cache/memory
-# github.com/docker/docker v20.10.6+incompatible
+# github.com/docker/docker v20.10.7+incompatible
 ## explicit
 github.com/docker/docker/api/types/blkiodev
 github.com/docker/docker/api/types/container
@@ -403,8 +407,7 @@ github.com/fortytw2/leaktest
 # github.com/fsnotify/fsnotify v1.4.9
 ## explicit
 github.com/fsnotify/fsnotify
-# github.com/fsouza/go-dockerclient v1.7.2
-## explicit
+# github.com/fsouza/go-dockerclient v1.7.3
 github.com/fsouza/go-dockerclient
 # github.com/ghodss/yaml v1.0.0
 ## explicit
@@ -638,7 +641,7 @@ github.com/miekg/dns
 # github.com/mitchellh/cli v1.1.2
 ## explicit
 github.com/mitchellh/cli
-# github.com/mitchellh/copystructure v1.0.0
+# github.com/mitchellh/copystructure v1.2.0
 github.com/mitchellh/copystructure
 # github.com/mitchellh/go-homedir v1.1.0
 github.com/mitchellh/go-homedir
@@ -647,7 +650,7 @@ github.com/mitchellh/go-homedir
 github.com/mitchellh/hashstructure
 # github.com/mitchellh/mapstructure v1.1.2
 github.com/mitchellh/mapstructure
-# github.com/mitchellh/reflectwalk v1.0.0
+# github.com/mitchellh/reflectwalk v1.0.2
 github.com/mitchellh/reflectwalk
 # github.com/moby/sys/mount v0.2.0
 github.com/moby/sys/mount
