@@ -34,6 +34,7 @@ replace github.com/nats-io/nats.go => github.com/nats-io/nats.go v1.9.1
 
 require (
 	code.cloudfoundry.org/archiver v0.0.0-20210513174409-5fc719cc9491
+	code.cloudfoundry.org/certsplitter v0.0.0-20210609184434-2de18d24e399
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20200827173955-6ac4653025b4
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20210401153245-254a1ad317ab
 	code.cloudfoundry.org/cfhttp v1.0.1-0.20210513172332-4c5ee488a657
@@ -135,8 +136,8 @@ require (
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/nxadm/tail v1.4.8 // indirect
-	github.com/onsi/ginkgo v1.16.2
-	github.com/onsi/gomega v1.12.0
+	github.com/onsi/ginkgo v1.16.4
+	github.com/onsi/gomega v1.13.0
 	github.com/onsi/say v1.0.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/opencontainers/image-spec v1.0.1
