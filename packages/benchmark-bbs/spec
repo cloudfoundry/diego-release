@@ -107,6 +107,7 @@ files:
   - code.cloudfoundry.org/vendor/github.com/cenkalti/backoff/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/fsnotify/fsnotify/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/go-sql-driver/mysql/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/go-task/slim-sprig/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/gogoproto/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/proto/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/protoc-gen-gogo/descriptor/*.go # gosub
@@ -140,6 +141,14 @@ files:
   - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/config/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/formatter/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/ginkgo/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/ginkgo/convert/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/ginkgo/interrupthandler/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/ginkgo/nodot/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/ginkgo/outline/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/ginkgo/testrunner/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/ginkgo/testsuite/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/ginkgo/watch/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/internal/codelocation/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/internal/containernode/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/internal/failer/*.go # gosub
@@ -218,6 +227,7 @@ files:
   - code.cloudfoundry.org/vendor/golang.org/x/text/unicode/bidi/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/text/unicode/norm/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/text/width/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/tools/go/ast/inspector/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/genproto/googleapis/rpc/status/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/attributes/*.go # gosub

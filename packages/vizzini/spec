@@ -28,6 +28,7 @@ files:
   - code.cloudfoundry.org/vendor/github.com/bmizerany/pat/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/creack/pty/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/fsnotify/fsnotify/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/go-task/slim-sprig/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/gogoproto/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/proto/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/protoc-gen-gogo/descriptor/*.go # gosub
@@ -42,6 +43,14 @@ files:
   - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/config/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/formatter/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/ginkgo/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/ginkgo/convert/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/ginkgo/interrupthandler/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/ginkgo/nodot/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/ginkgo/outline/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/ginkgo/testrunner/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/ginkgo/testsuite/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/ginkgo/watch/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/internal/codelocation/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/internal/containernode/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/onsi/ginkgo/internal/failer/*.go # gosub
@@ -100,5 +109,6 @@ files:
   - code.cloudfoundry.org/vendor/golang.org/x/text/language/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/text/runes/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/text/transform/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/tools/go/ast/inspector/*.go # gosub
   - code.cloudfoundry.org/vendor/gopkg.in/tomb.v1/*.go # gosub
   - code.cloudfoundry.org/vendor/gopkg.in/yaml.v2/*.go # gosub

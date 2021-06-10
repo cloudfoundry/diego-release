@@ -21,7 +21,7 @@ mkdir -p $log_dir
 
 export VIZZINI_CONFIG_PATH="/var/vcap/jobs/vizzini/config/vizzini.json"
 
-go run github.com/onsi/ginkgo/ginkgo \
+ginkgo \
   -nodes=<%= properties.vizzini.nodes %> \
   -v=<%= properties.vizzini.verbose %> \
   -randomizeAllSpecs \

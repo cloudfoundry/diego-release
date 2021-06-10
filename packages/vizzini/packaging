@@ -7,6 +7,7 @@ pushd "${BOSH_INSTALL_TARGET}"
   source /var/vcap/packages/golang-1-linux/bosh/compile.env
 
   pushd src/code.cloudfoundry.org
-      go test -c -o vizzini.test ./vizzini/
+      go install github.com/onsi/ginkgo/ginkgo
+      ginkgo build -r ./vizzini/
   popd
 popd
