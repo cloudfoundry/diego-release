@@ -3,7 +3,6 @@
 package tools
 
 import (
-	_ "code.cloudfoundry.org/certsplitter/cmd/certsplitter"
 	_ "github.com/gogo/protobuf/protoc-gen-gogoslick"
 	_ "github.com/hashicorp/consul"
 	_ "github.com/nats-io/nats-server"
