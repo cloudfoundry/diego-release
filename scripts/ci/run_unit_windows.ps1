@@ -11,7 +11,7 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 Push-Location "$env:DIEGO_RELEASE_DIR/src/code.cloudfoundry.org"
   $NATS_DIR = "C:\nats-server"
   Write-Host "Installing nats-server ..."
-  go build -o "$NATS_DIR/nats-server.exe" github.com/nats-io/nats-server
+  go build -o "$NATS_DIR/nats-server.exe" github.com/nats-io/nats-server/v2
   $env:NATS_DOCKERIZED = "1"
   $env:NATS_DOCKERIZED = "1"
   $CONSUL_DIR = "C:\consul"

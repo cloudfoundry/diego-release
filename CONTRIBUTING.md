@@ -85,7 +85,7 @@ To be able to run unit tests, you'll also need to install the following binaries
     go build -o ../../bin/ginkgo github.com/onsi/ginkgo/ginkgo
 
     # Install nats-server
-    go build -o ../../bin/nats-server github.com/nats-io/nats-server
+    go build -o ../../bin/nats-server github.com/nats-io/nats-server/v2
 
     # Install consul
     go build -o ../../bin/consul github.com/hashicorp/consul

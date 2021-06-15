@@ -40,7 +40,7 @@ ingress_client_functions() {
 }
 
 metrics_in_code() {
-    client_file=$DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/diego-logging-client/client.go
+    client_file=$DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/vendor/code.cloudfoundry.org/diego-logging-client/client.go
 
     if [ ! -f $client_file ]; then
         echo "Failed to find $client_file" >&2

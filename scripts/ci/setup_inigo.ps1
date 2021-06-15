@@ -148,7 +148,7 @@ function Setup-Gopath() {
 
     Push-Location "./src/code.cloudfoundry.org"
       echo "Installing nats-server ..."
-      go build -o "$env:GOBIN/nats-server.exe" github.com/nats-io/nats-server
+      go build -o "$env:GOBIN/nats-server.exe" github.com/nats-io/nats-server/v2
       $env:NATS_DOCKERIZED = "1"
       echo "Installing ginkgo ..."
       go build -o "$env:GOBIN/ginkgo.exe" github.com/onsi/ginkgo/ginkgo

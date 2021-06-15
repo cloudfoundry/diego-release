@@ -1,0 +1,41 @@
+
+dist: focal
+
+language: go
+go:
+- 1.16.x
+- 1.15.x
+addons:
+  apt:
+    packages:
+    - rpm
+env:
+- GO111MODULE=off
+go_import_path: github.com/nats-io/nats-server
+install:
+- go get github.com/nats-io/nats.go/
+- go get github.com/nats-io/nkeys
+- go get github.com/nats-io/jwt
+- go get -u honnef.co/go/tools/cmd/staticcheck
+- go get -u github.com/client9/misspell/cmd/misspell
+before_script:
+- GO_LIST=$(go list ./...)
+- go build
+- $(exit $(go fmt $GO_LIST | wc -l))
+- go vet $GO_LIST
+- find . -type f -name "*.go" | grep -v "/vendor/" | xargs misspell -error -locale US
+- staticcheck $GO_LIST
+script:
+- set -e
+- if [[ $TRAVIS_TAG ]]; then go test -v -run=TestVersionMatchesTag ./server; fi
+- if [[ ! $TRAVIS_TAG ]]; then go test -v -run=TestNoRace --failfast -p=1 ./...; fi
+- if [[ ! $TRAVIS_TAG ]]; then if [[ "$TRAVIS_GO_VERSION" =~ 1.15 ]]; then ./scripts/cov.sh TRAVIS; else go test -v -race -p=1 --failfast ./...; fi; fi
+- set +e
+
+deploy:
+  provider: script
+  cleanup: true
+  script: curl -sL http://git.io/goreleaser | VERSION=v0.160.0 bash
+  on:
+    tags: true
+    condition: $TRAVIS_GO_VERSION =~ 1.16

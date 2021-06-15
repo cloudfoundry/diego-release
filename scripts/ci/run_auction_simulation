@@ -14,7 +14,7 @@ mkdir -p "$GOBIN"
 export PATH="$GOBIN:$PATH"
 
 pushd "./src/code.cloudfoundry.org"
-  go build -o "$GOBIN/nats-server" github.com/nats-io/nats-server
+  go build -o "$GOBIN/nats-server" github.com/nats-io/nats-server/v2
   go build -o "$GOBIN/ginkgo" github.com/onsi/ginkgo/ginkgo
 popd
 
