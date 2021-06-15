@@ -173,7 +173,7 @@ These metrics are automatically emitted on all the Diego components.
 
 | Metric                                      | Description                                                                                                                                                | Unit   |
 | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| `memoryStats.lastGCPauseTimeNS`             | Amount of time the Golang process paused for garbage collection.                                                                                           | ns     |
-| `memoryStats.numBytesAllocatedHeap`         | Number of bytes the Golang process has allocated on the heap.                                                                                              | bytes  |
-| `memoryStats.numBytesAllocatedStack`        | Number of bytes the Golang process has allocated on the stack.                                                                                             | bytes  |
-| `numGoRoutines`                             | Number of goroutines the Golang process is running.                                                                                                        | number |
+| memoryStats.lastGCPauseTimeNS             | Amount of time the Golang process paused for garbage collection.                                                                                           | ns     |
+| memoryStats.numBytesAllocatedHeap         | Number of bytes the Golang process has allocated on the heap.                                                                                              | bytes  |
+| memoryStats.numBytesAllocatedStack        | Number of bytes the Golang process has allocated on the stack.                                                                                             | bytes  |
+| numGoRoutines                             | Number of goroutines the Golang process is running.                                                                                                        | number |
