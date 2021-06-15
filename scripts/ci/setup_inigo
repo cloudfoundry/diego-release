@@ -146,7 +146,7 @@ setup_gopath() {
 
 install_go_dependencies() {
   pushd "$1"
-    go build -o "$GOBIN/nats-server" github.com/nats-io/nats-server
+    go build -o "$GOBIN/nats-server" github.com/nats-io/nats-server/v2
     go build -o "$GOBIN/ginkgo" github.com/onsi/ginkgo/ginkgo
   popd
 }
