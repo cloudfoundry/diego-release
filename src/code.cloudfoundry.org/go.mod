@@ -46,6 +46,8 @@ require (
 	code.cloudfoundry.org/credhub-cli v0.0.0-20210503130106-06d45be736ac
 	code.cloudfoundry.org/debugserver v0.0.0-20210513170648-513d45197033
 	code.cloudfoundry.org/diego-logging-client v0.0.0-20210615134703-f80b45b205d4
+	code.cloudfoundry.org/durationjson v0.0.0-20210615172401-3a89d41c90da
+	code.cloudfoundry.org/eventhub v0.0.0-20210615172938-0b896ce72257
 	code.cloudfoundry.org/garden v0.0.0-00010101000000-000000000000
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.3
 	code.cloudfoundry.org/guardian v0.0.0-00010101000000-000000000000
