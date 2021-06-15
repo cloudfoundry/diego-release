@@ -17,51 +17,52 @@ import (
 // Event is a single event. If this is being used to post an event, then not
 // all fields will be filled out.
 type Event struct {
-	Id          *int     `json:"id,omitempty"`
-	Title       *string  `json:"title,omitempty"`
-	Text        *string  `json:"text,omitempty"`
-	Time        *int     `json:"date_happened,omitempty"` // UNIX time.
-	Priority    *string  `json:"priority,omitempty"`
-	AlertType   *string  `json:"alert_type,omitempty"`
-	Host        *string  `json:"host,omitempty"`
-	Aggregation *string  `json:"aggregation_key,omitempty"`
-	SourceType  *string  `json:"source_type_name,omitempty"`
-	Tags        []string `json:"tags,omitempty"`
-	Url         *string  `json:"url,omitempty"`
-	Resource    *string  `json:"resource,omitempty"`
-	EventType   *string  `json:"event_type,omitempty"`
+	Id          int      `json:"id"`
+	Title       string   `json:"title"`
+	Text        string   `json:"text"`
+	Time        int      `json:"date_happened"` // UNIX time.
+	Priority    string   `json:"priority"`
+	AlertType   string   `json:"alert_type"`
+	Host        string   `json:"host"`
+	Aggregation string   `json:"aggregation_key"`
+	SourceType  string   `json:"source_type"`
+	Tags        []string `json:"tags"`
+	Url         string   `json:"url"`
+	Resource    string   `json:"resource"`
 }
 
 // reqGetEvent is the container for receiving a single event.
 type reqGetEvent struct {
-	Event *Event `json:"event,omitempty"`
+	Event Event `json:"event"`
 }
 
 // reqGetEvents is for returning many events.
 type reqGetEvents struct {
-	Events []Event `json:"events,omitempty"`
+	Events []Event `json:"events"`
 }
 
 // PostEvent takes as input an event and then posts it to the server.
-func (client *Client) PostEvent(event *Event) (*Event, error) {
+func (self *Client) PostEvent(event *Event) (*Event, error) {
 	var out reqGetEvent
-	if err := client.doJsonRequest("POST", "/v1/events", event, &out); err != nil {
+	err := self.doJsonRequest("POST", "/v1/events", event, &out)
+	if err != nil {
 		return nil, err
 	}
-	return out.Event, nil
+	return &out.Event, nil
 }
 
 // GetEvent gets a single event given an identifier.
-func (client *Client) GetEvent(id int) (*Event, error) {
+func (self *Client) GetEvent(id int) (*Event, error) {
 	var out reqGetEvent
-	if err := client.doJsonRequest("GET", fmt.Sprintf("/v1/events/%d", id), nil, &out); err != nil {
+	err := self.doJsonRequest("GET", fmt.Sprintf("/v1/events/%d", id), nil, &out)
+	if err != nil {
 		return nil, err
 	}
-	return out.Event, nil
+	return &out.Event, nil
 }
 
-// GetEvents returns a slice of events from the query stream.
-func (client *Client) GetEvents(start, end int,
+// QueryEvents returns a slice of events from the query stream.
+func (self *Client) GetEvents(start, end int,
 	priority, sources, tags string) ([]Event, error) {
 	// Since this is a GET request, we need to build a query string.
 	vals := url.Values{}
@@ -79,8 +80,9 @@ func (client *Client) GetEvents(start, end int,
 
 	// Now the request and response.
 	var out reqGetEvents
-	if err := client.doJsonRequest("GET",
-		fmt.Sprintf("/v1/events?%s", vals.Encode()), nil, &out); err != nil {
+	err := self.doJsonRequest("GET",
+		fmt.Sprintf("/v1/events?%s", vals.Encode()), nil, &out)
+	if err != nil {
 		return nil, err
 	}
 	return out.Events, nil

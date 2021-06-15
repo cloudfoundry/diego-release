@@ -1,32 +1,39 @@
-TEST?=$$(go list ./... | grep -v '/go-datadog-api/vendor/')
-GOFMT_FILES?=$$(find . -name '*.go' | grep -v vendor)
+TEST?=.
+VETARGS?=-asmdecl -atomic -bool -buildtags -copylocks -methods -nilfunc -printf -rangeloops -shift -structtags -unsafeptr
 
-default: test fmt
+default: test
 
-generate:
-	go generate
+# get dependencies
+updatedeps:
+	go list ./... \
+        | xargs go list -f '{{join .Deps "\n"}}' \
+		| grep -v go-datadog-api\
+        | grep -v '/internal/' \
+        | sort -u \
+        | xargs go get -f -u -v
 
 # test runs the unit tests and vets the code
 test:
-	go test . $(TESTARGS) -v -timeout=30s -parallel=4
+	TF_ACC= go test . $(TESTARGS) -timeout=30s -parallel=4
 	@$(MAKE) vet
 
 # testacc runs acceptance tests
 testacc:
-	go test integration/* -v $(TESTARGS) -timeout 90m
+	TF_ACC=1 go test integration_test/dashboards/*.go -v $(TESTARGS) -timeout 90m
+	TF_ACC=1 go test integration_test/screenboards/*.go -v $(TESTARGS) -timeout 90m
 
 # testrace runs the race checker
 testrace:
-	go test -race $(TEST) $(TESTARGS)
-
-fmt:
-	gofmt -w -s $(GOFMT_FILES)
+	TF_ACC= go test -race $(TEST) $(TESTARGS)
 
 # vet runs the Go source code static analysis tool `vet` to find
 # any common errors.
 vet:
-	@echo "go vet"
-	@go vet; if [ $$? -ne 0 ]; then \
+	@go tool vet 2>/dev/null ; if [ $$? -eq 3 ]; then \
+		go get golang.org/x/tools/cmd/vet; \
+	fi
+	@echo "go tool vet $(VETARGS) $(TEST) "
+	@go tool vet $(VETARGS) $(TEST) ; if [ $$? -eq 1 ]; then \
 		echo ""; \
 		echo "Vet found suspicious constructs. Please check the reported constructs"; \
 		echo "and fix them if necessary before submitting the code for review."; \

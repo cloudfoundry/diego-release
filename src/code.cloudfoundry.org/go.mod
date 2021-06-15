@@ -32,6 +32,8 @@ replace github.com/onsi/gomega => github.com/onsi/gomega v1.7.0
 
 replace github.com/nats-io/nats.go => github.com/nats-io/nats.go v1.9.1
 
+replace github.com/zorkian/go-datadog-api => github.com/zorkian/go-datadog-api v0.0.0-20150915071709-8f1192dcd661
+
 require (
 	code.cloudfoundry.org/archiver v0.0.0-20210513174409-5fc719cc9491
 	code.cloudfoundry.org/certsplitter v0.0.0-20210609184434-2de18d24e399

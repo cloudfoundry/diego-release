@@ -15,63 +15,81 @@ import (
 // Screenboard represents a user created screenboard. This is the full screenboard
 // struct when we load a screenboard in detail.
 type Screenboard struct {
-	Id                *int               `json:"id,omitempty"`
-	NewId             *string            `json:"new_id,omitempty"`
-	Title             *string            `json:"board_title,omitempty"`
-	Height            *int               `json:"height,omitempty"`
-	Width             *int               `json:"width,omitempty"`
-	Shared            *bool              `json:"shared,omitempty"`
+	Id                int                `json:"id,omitempty"`
+	Title             string             `json:"board_title"`
+	Height            string             `json:"height,omitempty"`
+	Width             string             `json:"width,omitempty"`
+	Shared            bool               `json:"shared"`
+	Templated         bool               `json:"templated,omitempty"`
 	TemplateVariables []TemplateVariable `json:"template_variables,omitempty"`
 	Widgets           []Widget           `json:"widgets"`
-	ReadOnly          *bool              `json:"read_only,omitempty"`
+}
+
+//type Widget struct {
+type Widget struct {
+	Default             string              `json:"default"`
+	Name                string              `json:"name"`
+	Prefix              string              `json:"prefix"`
+	TimeseriesWidget    TimeseriesWidget    `json:"timeseries"`
+	QueryValueWidget    QueryValueWidget    `json:"query_value"`
+	EventStreamWidget   EventStreamWidget   `json:"event_stream"`
+	FreeTextWidget      FreeTextWidget      `json:"free_text"`
+	ToplistWidget       ToplistWidget       `json:"toplist"`
+	ImageWidget         ImageWidget         `json:"image"`
+	ChangeWidget        ChangeWidget        `json:"change"`
+	GraphWidget         GraphWidget         `json:"graph"`
+	EventTimelineWidget EventTimelineWidget `json:"event_timeline"`
+	AlertValueWidget    AlertValueWidget    `json:"alert_value"`
+	AlertGraphWidget    AlertGraphWidget    `json:"alert_graph"`
+	HostMapWidget       HostMapWidget       `json:"hostmap"`
+	CheckStatusWidget   CheckStatusWidget   `json:"check_status"`
+	IFrameWidget        IFrameWidget        `json:"iframe"`
+	NoteWidget          NoteWidget          `json:"frame"`
 }
 
 // ScreenboardLite represents a user created screenboard. This is the mini
 // struct when we load the summaries.
 type ScreenboardLite struct {
-	Id       *int    `json:"id,omitempty"`
-	Resource *string `json:"resource,omitempty"`
-	Title    *string `json:"title,omitempty"`
+	Id       int    `json:"id"`
+	Resource string `json:"resource"`
+	Title    string `json:"title"`
 }
 
 // reqGetScreenboards from /api/v1/screen
 type reqGetScreenboards struct {
-	Screenboards []*ScreenboardLite `json:"screenboards,omitempty"`
+	Screenboards []*ScreenboardLite `json:"screenboards"`
 }
 
 // GetScreenboard returns a single screenboard created on this account.
-func (client *Client) GetScreenboard(id interface{}) (*Screenboard, error) {
-	stringId, err := GetStringId(id)
-	if err != nil {
-		return nil, err
-	}
-
+func (self *Client) GetScreenboard(id int) (*Screenboard, error) {
 	out := &Screenboard{}
-	if err := client.doJsonRequest("GET", fmt.Sprintf("/v1/screen/%s", stringId), nil, out); err != nil {
+	err := self.doJsonRequest("GET", fmt.Sprintf("/v1/screen/%d", id), nil, out)
+	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
 // GetScreenboards returns a list of all screenboards created on this account.
-func (client *Client) GetScreenboards() ([]*ScreenboardLite, error) {
+func (self *Client) GetScreenboards() ([]*ScreenboardLite, error) {
 	var out reqGetScreenboards
-	if err := client.doJsonRequest("GET", "/v1/screen", nil, &out); err != nil {
+	err := self.doJsonRequest("GET", "/v1/screen", nil, &out)
+	if err != nil {
 		return nil, err
 	}
 	return out.Screenboards, nil
 }
 
 // DeleteScreenboard deletes a screenboard by the identifier.
-func (client *Client) DeleteScreenboard(id int) error {
-	return client.doJsonRequest("DELETE", fmt.Sprintf("/v1/screen/%d", id), nil, nil)
+func (self *Client) DeleteScreenboard(id int) error {
+	return self.doJsonRequest("DELETE", fmt.Sprintf("/v1/screen/%d", id), nil, nil)
 }
 
 // CreateScreenboard creates a new screenboard when given a Screenboard struct. Note
 // that the Id, Resource, Url and similar elements are not used in creation.
-func (client *Client) CreateScreenboard(board *Screenboard) (*Screenboard, error) {
+func (self *Client) CreateScreenboard(board *Screenboard) (*Screenboard, error) {
 	out := &Screenboard{}
-	if err := client.doJsonRequest("POST", "/v1/screen", board, out); err != nil {
+	if err := self.doJsonRequest("POST", "/v1/screen", board, out); err != nil {
 		return nil, err
 	}
 	return out, nil
@@ -79,8 +97,8 @@ func (client *Client) CreateScreenboard(board *Screenboard) (*Screenboard, error
 
 // UpdateScreenboard in essence takes a Screenboard struct and persists it back to
 // the server. Use this if you've updated your local and need to push it back.
-func (client *Client) UpdateScreenboard(board *Screenboard) error {
-	return client.doJsonRequest("PUT", fmt.Sprintf("/v1/screen/%d", *board.Id), board, nil)
+func (self *Client) UpdateScreenboard(board *Screenboard) error {
+	return self.doJsonRequest("PUT", fmt.Sprintf("/v1/screen/%d", board.Id), board, nil)
 }
 
 type ScreenShareResponse struct {
@@ -89,11 +107,11 @@ type ScreenShareResponse struct {
 }
 
 // ShareScreenboard shares an existing screenboard, it takes and updates ScreenShareResponse
-func (client *Client) ShareScreenboard(id int, response *ScreenShareResponse) error {
-	return client.doJsonRequest("POST", fmt.Sprintf("/v1/screen/share/%d", id), nil, response)
+func (self *Client) ShareScreenboard(id int, response *ScreenShareResponse) error {
+	return self.doJsonRequest("GET", fmt.Sprintf("/v1/screen/share/%d", id), nil, response)
 }
 
 // RevokeScreenboard revokes a currently shared screenboard
-func (client *Client) RevokeScreenboard(id int) error {
-	return client.doJsonRequest("DELETE", fmt.Sprintf("/v1/screen/share/%d", id), nil, nil)
+func (self *Client) RevokeScreenboard(id int) error {
+	return self.doJsonRequest("DELETE", fmt.Sprintf("/v1/screen/share/%d", id), nil, nil)
 }

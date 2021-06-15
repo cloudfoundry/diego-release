@@ -11,24 +11,26 @@ package datadog
 // reqSearch is the container for receiving search results.
 type reqSearch struct {
 	Results struct {
-		Hosts   []string `json:"hosts,omitempty"`
-		Metrics []string `json:"metrics,omitempty"`
+		Hosts   []string `json:"hosts"`
+		Metrics []string `json:"metrics"`
 	} `json:"results"`
 }
 
 // SearchHosts searches through the hosts facet, returning matching hostnames.
-func (client *Client) SearchHosts(search string) ([]string, error) {
+func (self *Client) SearchHosts(search string) ([]string, error) {
 	var out reqSearch
-	if err := client.doJsonRequest("GET", "/v1/search?q=hosts:"+search, nil, &out); err != nil {
+	err := self.doJsonRequest("GET", "/v1/search?q=hosts:"+search, nil, &out)
+	if err != nil {
 		return nil, err
 	}
 	return out.Results.Hosts, nil
 }
 
 // SearchMetrics searches through the metrics facet, returning matching ones.
-func (client *Client) SearchMetrics(search string) ([]string, error) {
+func (self *Client) SearchMetrics(search string) ([]string, error) {
 	var out reqSearch
-	if err := client.doJsonRequest("GET", "/v1/search?q=metrics:"+search, nil, &out); err != nil {
+	err := self.doJsonRequest("GET", "/v1/search?q=metrics:"+search, nil, &out)
+	if err != nil {
 		return nil, err
 	}
 	return out.Results.Metrics, nil

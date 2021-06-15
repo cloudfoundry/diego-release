@@ -1,25 +1,20 @@
 language: go
 
 go:
-  - "1.9"
-  - "1.10.x"
-  - "1.11.x"
-  - "tip"
+  - 1.4
+  - 1.5
+  - tip
 
 env:
   - "PATH=/home/travis/gopath/bin:$PATH"
+script:
+  - go get -u github.com/golang/lint/golint
+  - golint ./...
+  - test `gofmt -l . | wc -l` = 0
+  - make test
 
 install:
-  - go get -v -t .
-
-script:
-  - scripts/check-fmt.sh
-  - go get -u golang.org/x/lint/golint
-  - golint ./... | grep -v vendor/
-  - make
-  - scripts/check-code-generation-ran.sh
-  # PR's don't have access to Travis EnvVars with DDog API Keys. Skip acceptance tests on PR.
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then make testacc; fi'
+  - go get -v -t . && make updatedeps
 
 matrix:
     allow_failures:
