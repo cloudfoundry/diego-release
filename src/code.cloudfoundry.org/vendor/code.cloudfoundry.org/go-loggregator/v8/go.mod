@@ -1,10 +1,9 @@
 module code.cloudfoundry.org/go-loggregator/v8
 
-go 1.12
+go 1.16
 
 require (
 	code.cloudfoundry.org/go-diodes v0.0.0-20180905200951-72629b5276e3
-	code.cloudfoundry.org/rfc5424 v0.0.0-20180905210152-236a6d29298a
 	code.cloudfoundry.org/tlsconfig v0.0.0-20200131000646-bbe0f8da39b3
 	github.com/apoydence/eachers v0.0.0-20181020210610-23942921fe77 // indirect
 	github.com/cloudfoundry/dropsonde v1.0.0
@@ -14,14 +13,16 @@ require (
 	github.com/gogo/protobuf v1.2.1
 	github.com/golang/protobuf v1.3.2
 	github.com/kr/pretty v0.1.0 // indirect
+	github.com/loggregator/go-bindata v0.0.0-20190422223605-5f11cfb2d7d9 // indirect
 	github.com/mailru/easyjson v0.0.0-20190626092158-b2ccc519800e // indirect
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d // indirect
 	github.com/onsi/ginkgo v1.8.0
 	github.com/onsi/gomega v1.5.0
 	github.com/poy/eachers v0.0.0-20181020210610-23942921fe77 // indirect
+	github.com/square/certstrap v1.2.0 // indirect
 	golang.org/x/net v0.0.0-20190613194153-d28f0bde5980
 	golang.org/x/sys v0.0.0-20190712062909-fae7ac547cb7 // indirect
 	google.golang.org/grpc v1.23.0
-	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
+	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127
 	launchpad.net/gocheck v0.0.0-20140225173054-000000000087 // indirect
 )

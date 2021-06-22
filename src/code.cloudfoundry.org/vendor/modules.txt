@@ -45,7 +45,7 @@ code.cloudfoundry.org/credhub-cli/errors
 # code.cloudfoundry.org/debugserver v0.0.0-20210513170648-513d45197033
 ## explicit
 code.cloudfoundry.org/debugserver
-# code.cloudfoundry.org/diego-logging-client v0.0.0-20210615134703-f80b45b205d4
+# code.cloudfoundry.org/diego-logging-client v0.0.0-20210622170659-8861ae5ba2ed
 ## explicit
 code.cloudfoundry.org/diego-logging-client
 code.cloudfoundry.org/diego-logging-client/testhelpers
@@ -70,9 +70,10 @@ code.cloudfoundry.org/garden/server/timebomb
 code.cloudfoundry.org/garden/transport
 # code.cloudfoundry.org/go-diodes v0.0.0-20190809170250-f77fb823c7ee
 code.cloudfoundry.org/go-diodes
-# code.cloudfoundry.org/go-loggregator/v8 v8.0.3
+# code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 ## explicit
 code.cloudfoundry.org/go-loggregator/v8
+code.cloudfoundry.org/go-loggregator/v8/rfc5424
 code.cloudfoundry.org/go-loggregator/v8/rpc/loggregator_v2
 code.cloudfoundry.org/go-loggregator/v8/runtimeemitter
 # code.cloudfoundry.org/guardian v0.0.0-00010101000000-000000000000 => ../guardian
@@ -98,9 +99,7 @@ code.cloudfoundry.org/lager/lagertest
 # code.cloudfoundry.org/localip v0.0.0-20210513163154-20d795cea8ec
 ## explicit
 code.cloudfoundry.org/localip
-# code.cloudfoundry.org/rfc5424 v0.0.0-20180905210152-236a6d29298a
-code.cloudfoundry.org/rfc5424
-# code.cloudfoundry.org/tlsconfig v0.0.0-20200131000646-bbe0f8da39b3
+# code.cloudfoundry.org/tlsconfig v0.0.0-20210615191307-5d92ef3894a7
 ## explicit
 code.cloudfoundry.org/tlsconfig
 code.cloudfoundry.org/tlsconfig/certtest
@@ -794,7 +793,7 @@ golang.org/x/crypto/poly1305
 golang.org/x/crypto/scrypt
 golang.org/x/crypto/ssh
 golang.org/x/crypto/ssh/internal/bcrypt_pbkdf
-# golang.org/x/net v0.0.0-20210610132358-84b48f89b13b
+# golang.org/x/net v0.0.0-20210614182718-04defd469f4e
 ## explicit
 golang.org/x/net/bpf
 golang.org/x/net/context
@@ -813,7 +812,7 @@ golang.org/x/net/ipv4
 golang.org/x/net/ipv6
 golang.org/x/net/proxy
 golang.org/x/net/trace
-# golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1
+# golang.org/x/sys v0.0.0-20210616094352-59db8d763f22
 ## explicit
 golang.org/x/sys/cpu
 golang.org/x/sys/execabs
@@ -854,7 +853,8 @@ golang.org/x/text/width
 golang.org/x/time/rate
 # golang.org/x/tools v0.0.0-20201224043029-2b0845dc783e
 golang.org/x/tools/go/ast/inspector
-# google.golang.org/genproto v0.0.0-20201201144952-b05cb90ed32e => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
+# google.golang.org/genproto v0.0.0-20210617175327-b9e0b3197ced => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
+## explicit
 google.golang.org/genproto/googleapis/api/annotations
 google.golang.org/genproto/googleapis/rpc/status
 # google.golang.org/grpc v1.38.0 => google.golang.org/grpc v1.29.0-dev.0.20200306163155-d179e8f5cd96

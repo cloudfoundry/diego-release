@@ -42,5 +42,8 @@ func (d *OneToOneEnvelopeBatch) TryNext() ([]*loggregator_v2.Envelope, bool) {
 // read.
 func (d *OneToOneEnvelopeBatch) Next() []*loggregator_v2.Envelope {
 	data := d.d.Next()
+	if data == nil {
+		return nil
+	}
 	return *(*[]*loggregator_v2.Envelope)(data)
 }

@@ -45,15 +45,15 @@ require (
 	code.cloudfoundry.org/consuladapter v0.0.0-20210610172021-6135ad176324
 	code.cloudfoundry.org/credhub-cli v0.0.0-20210503130106-06d45be736ac
 	code.cloudfoundry.org/debugserver v0.0.0-20210513170648-513d45197033
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20210615134703-f80b45b205d4
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20210622170659-8861ae5ba2ed
 	code.cloudfoundry.org/durationjson v0.0.0-20210615172401-3a89d41c90da
 	code.cloudfoundry.org/eventhub v0.0.0-20210615172938-0b896ce72257
 	code.cloudfoundry.org/garden v0.0.0-00010101000000-000000000000
-	code.cloudfoundry.org/go-loggregator/v8 v8.0.3
+	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/guardian v0.0.0-00010101000000-000000000000
 	code.cloudfoundry.org/lager v2.0.0+incompatible
 	code.cloudfoundry.org/localip v0.0.0-20210513163154-20d795cea8ec
-	code.cloudfoundry.org/tlsconfig v0.0.0-20200131000646-bbe0f8da39b3
+	code.cloudfoundry.org/tlsconfig v0.0.0-20210615191307-5d92ef3894a7
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20210406150507-75cfd577ce75
 	github.com/aws/aws-sdk-go v1.38.34
@@ -104,9 +104,10 @@ require (
 	github.com/vito/go-sse v1.0.0
 	github.com/zorkian/go-datadog-api v2.30.0+incompatible
 	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a
-	golang.org/x/net v0.0.0-20210610132358-84b48f89b13b
-	golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1
+	golang.org/x/net v0.0.0-20210614182718-04defd469f4e
+	golang.org/x/sys v0.0.0-20210616094352-59db8d763f22
 	golang.org/x/time v0.0.0-20210220033141-f8bda1e9f3ba
+	google.golang.org/genproto v0.0.0-20210617175327-b9e0b3197ced // indirect
 	google.golang.org/grpc v1.38.0
 	gopkg.in/asn1-ber.v1 v1.0.0-20181015200546-f715ec2f112d // indirect
 	gopkg.in/ldap.v2 v2.5.1

@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"code.cloudfoundry.org/rfc5424"
+	"code.cloudfoundry.org/go-loggregator/v8/rfc5424"
 )
 
 // 47450 is the registered enterprise ID for the Cloud Foundry Foundation.

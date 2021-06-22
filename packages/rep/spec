@@ -56,6 +56,7 @@ files:
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/garden/transport/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-diodes/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/v8/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/v8/rfc5424/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/v8/rpc/loggregator_v2/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/v8/runtimeemitter/*.go # gosub
   - code.cloudfoundry.org/goshims/http_wrap/*.go # gosub
@@ -81,7 +82,6 @@ files:
   - code.cloudfoundry.org/rep/handlers/*.go # gosub
   - code.cloudfoundry.org/rep/harmonizer/*.go # gosub
   - code.cloudfoundry.org/rep/maintain/*.go # gosub
-  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/rfc5424/*.go # gosub
   - code.cloudfoundry.org/systemcerts/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/tlsconfig/*.go # gosub
   - code.cloudfoundry.org/volman/*.go # gosub
