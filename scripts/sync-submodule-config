@@ -1,8 +1,8 @@
 #!/bin/bash
-set -e -x
+set -exuo pipefail
 
 # ensure gosub is installed (this will recompile it only if necessary)
-GO111MODULE=on go get github.com/vito/gosub
+go install github.com/vito/gosub@latest
 FORCE_SUBMODULE_HTTPS="${FORCE_SUBMODULE_HTTPS:-false}"
 
 rm -rf /tmp/packages
