@@ -28,6 +28,7 @@ files:
   - code.cloudfoundry.org/dockerapplifecycle/protocol/*.go # gosub
   - code.cloudfoundry.org/ecrhelper/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/BurntSushi/toml/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/BurntSushi/toml/internal/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/Microsoft/go-winio/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/Microsoft/go-winio/pkg/guid/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/*.go # gosub
@@ -76,6 +77,8 @@ files:
   - code.cloudfoundry.org/vendor/github.com/awslabs/amazon-ecr-credential-helper/ecr-login/config/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/awslabs/amazon-ecr-credential-helper/ecr-login/version/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/beorn7/perks/quantile/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/cespare/xxhash/v2/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/cespare/xxhash/v2/*.s # gosub
   - code.cloudfoundry.org/vendor/github.com/cloudfoundry/go-socks5/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/cloudfoundry/socks5-proxy/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/containers/image/docker/*.go # gosub
@@ -112,6 +115,10 @@ files:
   - code.cloudfoundry.org/vendor/github.com/docker/libtrust/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/ghodss/yaml/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/golang/protobuf/proto/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/golang/protobuf/ptypes/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/golang/protobuf/ptypes/any/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/golang/protobuf/ptypes/duration/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/golang/protobuf/ptypes/timestamp/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/gorilla/mux/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/hashicorp/go-version/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jmespath/go-jmespath/*.go # gosub
@@ -150,6 +157,7 @@ files:
   - code.cloudfoundry.org/vendor/golang.org/x/net/context/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/internal/socks/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/proxy/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/sys/execabs/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/sys/internal/unsafeheader/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/sys/unix/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/sys/unix/*.s # gosub
