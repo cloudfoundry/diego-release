@@ -224,17 +224,17 @@ func init() {
 	proto.RegisterType((*Envelope)(nil), "events.Envelope")
 	proto.RegisterEnum("events.Envelope_EventType", Envelope_EventType_name, Envelope_EventType_value)
 }
-func (m *Envelope) Marshal() (data []byte, err error) {
+func (m *Envelope) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
-	data = make([]byte, size)
-	n, err := m.MarshalTo(data)
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
 	if err != nil {
 		return nil, err
 	}
-	return data[:n], nil
+	return dAtA[:n], nil
 }
 
-func (m *Envelope) MarshalTo(data []byte) (int, error) {
+func (m *Envelope) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -242,159 +242,159 @@ func (m *Envelope) MarshalTo(data []byte) (int, error) {
 	if m.Origin == nil {
 		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("origin")
 	} else {
-		data[i] = 0xa
+		dAtA[i] = 0xa
 		i++
-		i = encodeVarintEnvelope(data, i, uint64(len(*m.Origin)))
-		i += copy(data[i:], *m.Origin)
+		i = encodeVarintEnvelope(dAtA, i, uint64(len(*m.Origin)))
+		i += copy(dAtA[i:], *m.Origin)
 	}
 	if m.EventType == nil {
 		return 0, github_com_gogo_protobuf_proto.NewRequiredNotSetError("eventType")
 	} else {
-		data[i] = 0x10
+		dAtA[i] = 0x10
 		i++
-		i = encodeVarintEnvelope(data, i, uint64(*m.EventType))
+		i = encodeVarintEnvelope(dAtA, i, uint64(*m.EventType))
 	}
 	if m.Timestamp != nil {
-		data[i] = 0x30
+		dAtA[i] = 0x30
 		i++
-		i = encodeVarintEnvelope(data, i, uint64(*m.Timestamp))
+		i = encodeVarintEnvelope(dAtA, i, uint64(*m.Timestamp))
 	}
 	if m.HttpStartStop != nil {
-		data[i] = 0x3a
+		dAtA[i] = 0x3a
 		i++
-		i = encodeVarintEnvelope(data, i, uint64(m.HttpStartStop.Size()))
-		n1, err := m.HttpStartStop.MarshalTo(data[i:])
+		i = encodeVarintEnvelope(dAtA, i, uint64(m.HttpStartStop.Size()))
+		n1, err := m.HttpStartStop.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
 		i += n1
 	}
 	if m.LogMessage != nil {
-		data[i] = 0x42
+		dAtA[i] = 0x42
 		i++
-		i = encodeVarintEnvelope(data, i, uint64(m.LogMessage.Size()))
-		n2, err := m.LogMessage.MarshalTo(data[i:])
+		i = encodeVarintEnvelope(dAtA, i, uint64(m.LogMessage.Size()))
+		n2, err := m.LogMessage.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
 		i += n2
 	}
 	if m.ValueMetric != nil {
-		data[i] = 0x4a
+		dAtA[i] = 0x4a
 		i++
-		i = encodeVarintEnvelope(data, i, uint64(m.ValueMetric.Size()))
-		n3, err := m.ValueMetric.MarshalTo(data[i:])
+		i = encodeVarintEnvelope(dAtA, i, uint64(m.ValueMetric.Size()))
+		n3, err := m.ValueMetric.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
 		i += n3
 	}
 	if m.CounterEvent != nil {
-		data[i] = 0x52
+		dAtA[i] = 0x52
 		i++
-		i = encodeVarintEnvelope(data, i, uint64(m.CounterEvent.Size()))
-		n4, err := m.CounterEvent.MarshalTo(data[i:])
+		i = encodeVarintEnvelope(dAtA, i, uint64(m.CounterEvent.Size()))
+		n4, err := m.CounterEvent.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
 		i += n4
 	}
 	if m.Error != nil {
-		data[i] = 0x5a
+		dAtA[i] = 0x5a
 		i++
-		i = encodeVarintEnvelope(data, i, uint64(m.Error.Size()))
-		n5, err := m.Error.MarshalTo(data[i:])
+		i = encodeVarintEnvelope(dAtA, i, uint64(m.Error.Size()))
+		n5, err := m.Error.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
 		i += n5
 	}
 	if m.ContainerMetric != nil {
-		data[i] = 0x62
+		dAtA[i] = 0x62
 		i++
-		i = encodeVarintEnvelope(data, i, uint64(m.ContainerMetric.Size()))
-		n6, err := m.ContainerMetric.MarshalTo(data[i:])
+		i = encodeVarintEnvelope(dAtA, i, uint64(m.ContainerMetric.Size()))
+		n6, err := m.ContainerMetric.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
 		i += n6
 	}
 	if m.Deployment != nil {
-		data[i] = 0x6a
+		dAtA[i] = 0x6a
 		i++
-		i = encodeVarintEnvelope(data, i, uint64(len(*m.Deployment)))
-		i += copy(data[i:], *m.Deployment)
+		i = encodeVarintEnvelope(dAtA, i, uint64(len(*m.Deployment)))
+		i += copy(dAtA[i:], *m.Deployment)
 	}
 	if m.Job != nil {
-		data[i] = 0x72
+		dAtA[i] = 0x72
 		i++
-		i = encodeVarintEnvelope(data, i, uint64(len(*m.Job)))
-		i += copy(data[i:], *m.Job)
+		i = encodeVarintEnvelope(dAtA, i, uint64(len(*m.Job)))
+		i += copy(dAtA[i:], *m.Job)
 	}
 	if m.Index != nil {
-		data[i] = 0x7a
+		dAtA[i] = 0x7a
 		i++
-		i = encodeVarintEnvelope(data, i, uint64(len(*m.Index)))
-		i += copy(data[i:], *m.Index)
+		i = encodeVarintEnvelope(dAtA, i, uint64(len(*m.Index)))
+		i += copy(dAtA[i:], *m.Index)
 	}
 	if m.Ip != nil {
-		data[i] = 0x82
+		dAtA[i] = 0x82
 		i++
-		data[i] = 0x1
+		dAtA[i] = 0x1
 		i++
-		i = encodeVarintEnvelope(data, i, uint64(len(*m.Ip)))
-		i += copy(data[i:], *m.Ip)
+		i = encodeVarintEnvelope(dAtA, i, uint64(len(*m.Ip)))
+		i += copy(dAtA[i:], *m.Ip)
 	}
 	if len(m.Tags) > 0 {
 		for k, _ := range m.Tags {
-			data[i] = 0x8a
+			dAtA[i] = 0x8a
 			i++
-			data[i] = 0x1
+			dAtA[i] = 0x1
 			i++
 			v := m.Tags[k]
 			mapSize := 1 + len(k) + sovEnvelope(uint64(len(k))) + 1 + len(v) + sovEnvelope(uint64(len(v)))
-			i = encodeVarintEnvelope(data, i, uint64(mapSize))
-			data[i] = 0xa
+			i = encodeVarintEnvelope(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
 			i++
-			i = encodeVarintEnvelope(data, i, uint64(len(k)))
-			i += copy(data[i:], k)
-			data[i] = 0x12
+			i = encodeVarintEnvelope(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
 			i++
-			i = encodeVarintEnvelope(data, i, uint64(len(v)))
-			i += copy(data[i:], v)
+			i = encodeVarintEnvelope(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
 		}
 	}
 	if m.XXX_unrecognized != nil {
-		i += copy(data[i:], m.XXX_unrecognized)
+		i += copy(dAtA[i:], m.XXX_unrecognized)
 	}
 	return i, nil
 }
 
-func encodeFixed64Envelope(data []byte, offset int, v uint64) int {
-	data[offset] = uint8(v)
-	data[offset+1] = uint8(v >> 8)
-	data[offset+2] = uint8(v >> 16)
-	data[offset+3] = uint8(v >> 24)
-	data[offset+4] = uint8(v >> 32)
-	data[offset+5] = uint8(v >> 40)
-	data[offset+6] = uint8(v >> 48)
-	data[offset+7] = uint8(v >> 56)
+func encodeFixed64Envelope(dAtA []byte, offset int, v uint64) int {
+	dAtA[offset] = uint8(v)
+	dAtA[offset+1] = uint8(v >> 8)
+	dAtA[offset+2] = uint8(v >> 16)
+	dAtA[offset+3] = uint8(v >> 24)
+	dAtA[offset+4] = uint8(v >> 32)
+	dAtA[offset+5] = uint8(v >> 40)
+	dAtA[offset+6] = uint8(v >> 48)
+	dAtA[offset+7] = uint8(v >> 56)
 	return offset + 8
 }
-func encodeFixed32Envelope(data []byte, offset int, v uint32) int {
-	data[offset] = uint8(v)
-	data[offset+1] = uint8(v >> 8)
-	data[offset+2] = uint8(v >> 16)
-	data[offset+3] = uint8(v >> 24)
+func encodeFixed32Envelope(dAtA []byte, offset int, v uint32) int {
+	dAtA[offset] = uint8(v)
+	dAtA[offset+1] = uint8(v >> 8)
+	dAtA[offset+2] = uint8(v >> 16)
+	dAtA[offset+3] = uint8(v >> 24)
 	return offset + 4
 }
-func encodeVarintEnvelope(data []byte, offset int, v uint64) int {
+func encodeVarintEnvelope(dAtA []byte, offset int, v uint64) int {
 	for v >= 1<<7 {
-		data[offset] = uint8(v&0x7f | 0x80)
+		dAtA[offset] = uint8(v&0x7f | 0x80)
 		v >>= 7
 		offset++
 	}
-	data[offset] = uint8(v)
+	dAtA[offset] = uint8(v)
 	return offset + 1
 }
 func (m *Envelope) Size() (n int) {
@@ -477,9 +477,9 @@ func sovEnvelope(x uint64) (n int) {
 func sozEnvelope(x uint64) (n int) {
 	return sovEnvelope(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *Envelope) Unmarshal(data []byte) error {
+func (m *Envelope) Unmarshal(dAtA []byte) error {
 	var hasFields [1]uint64
-	l := len(data)
+	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
 		preIndex := iNdEx
@@ -491,7 +491,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
 			}
-			b := data[iNdEx]
+			b := dAtA[iNdEx]
 			iNdEx++
 			wire |= (uint64(b) & 0x7F) << shift
 			if b < 0x80 {
@@ -519,7 +519,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				stringLen |= (uint64(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -534,7 +534,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
+			s := string(dAtA[iNdEx:postIndex])
 			m.Origin = &s
 			iNdEx = postIndex
 			hasFields[0] |= uint64(0x00000001)
@@ -550,7 +550,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				v |= (Envelope_EventType(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -571,7 +571,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				v |= (int64(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -591,7 +591,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				msglen |= (int(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -608,7 +608,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 			if m.HttpStartStop == nil {
 				m.HttpStartStop = &HttpStartStop{}
 			}
-			if err := m.HttpStartStop.Unmarshal(data[iNdEx:postIndex]); err != nil {
+			if err := m.HttpStartStop.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -624,7 +624,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				msglen |= (int(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -641,7 +641,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 			if m.LogMessage == nil {
 				m.LogMessage = &LogMessage{}
 			}
-			if err := m.LogMessage.Unmarshal(data[iNdEx:postIndex]); err != nil {
+			if err := m.LogMessage.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -657,7 +657,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				msglen |= (int(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -674,7 +674,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 			if m.ValueMetric == nil {
 				m.ValueMetric = &ValueMetric{}
 			}
-			if err := m.ValueMetric.Unmarshal(data[iNdEx:postIndex]); err != nil {
+			if err := m.ValueMetric.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -690,7 +690,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				msglen |= (int(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -707,7 +707,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 			if m.CounterEvent == nil {
 				m.CounterEvent = &CounterEvent{}
 			}
-			if err := m.CounterEvent.Unmarshal(data[iNdEx:postIndex]); err != nil {
+			if err := m.CounterEvent.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -723,7 +723,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				msglen |= (int(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -740,7 +740,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 			if m.Error == nil {
 				m.Error = &Error{}
 			}
-			if err := m.Error.Unmarshal(data[iNdEx:postIndex]); err != nil {
+			if err := m.Error.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -756,7 +756,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				msglen |= (int(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -773,7 +773,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 			if m.ContainerMetric == nil {
 				m.ContainerMetric = &ContainerMetric{}
 			}
-			if err := m.ContainerMetric.Unmarshal(data[iNdEx:postIndex]); err != nil {
+			if err := m.ContainerMetric.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -789,7 +789,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				stringLen |= (uint64(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -804,7 +804,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
+			s := string(dAtA[iNdEx:postIndex])
 			m.Deployment = &s
 			iNdEx = postIndex
 		case 14:
@@ -819,7 +819,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				stringLen |= (uint64(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -834,7 +834,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
+			s := string(dAtA[iNdEx:postIndex])
 			m.Job = &s
 			iNdEx = postIndex
 		case 15:
@@ -849,7 +849,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				stringLen |= (uint64(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -864,7 +864,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
+			s := string(dAtA[iNdEx:postIndex])
 			m.Index = &s
 			iNdEx = postIndex
 		case 16:
@@ -879,7 +879,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				stringLen |= (uint64(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -894,7 +894,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := string(data[iNdEx:postIndex])
+			s := string(dAtA[iNdEx:postIndex])
 			m.Ip = &s
 			iNdEx = postIndex
 		case 17:
@@ -909,7 +909,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				msglen |= (int(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -931,7 +931,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				keykey |= (uint64(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -946,7 +946,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				stringLenmapkey |= (uint64(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -961,7 +961,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 			if postStringIndexmapkey > l {
 				return io.ErrUnexpectedEOF
 			}
-			mapkey := string(data[iNdEx:postStringIndexmapkey])
+			mapkey := string(dAtA[iNdEx:postStringIndexmapkey])
 			iNdEx = postStringIndexmapkey
 			if m.Tags == nil {
 				m.Tags = make(map[string]string)
@@ -975,7 +975,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 					if iNdEx >= l {
 						return io.ErrUnexpectedEOF
 					}
-					b := data[iNdEx]
+					b := dAtA[iNdEx]
 					iNdEx++
 					valuekey |= (uint64(b) & 0x7F) << shift
 					if b < 0x80 {
@@ -990,7 +990,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 					if iNdEx >= l {
 						return io.ErrUnexpectedEOF
 					}
-					b := data[iNdEx]
+					b := dAtA[iNdEx]
 					iNdEx++
 					stringLenmapvalue |= (uint64(b) & 0x7F) << shift
 					if b < 0x80 {
@@ -1005,7 +1005,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 				if postStringIndexmapvalue > l {
 					return io.ErrUnexpectedEOF
 				}
-				mapvalue := string(data[iNdEx:postStringIndexmapvalue])
+				mapvalue := string(dAtA[iNdEx:postStringIndexmapvalue])
 				iNdEx = postStringIndexmapvalue
 				m.Tags[mapkey] = mapvalue
 			} else {
@@ -1015,7 +1015,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
-			skippy, err := skipEnvelope(data[iNdEx:])
+			skippy, err := skipEnvelope(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
@@ -1025,7 +1025,7 @@ func (m *Envelope) Unmarshal(data []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, data[iNdEx:iNdEx+skippy]...)
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
@@ -1041,8 +1041,8 @@ func (m *Envelope) Unmarshal(data []byte) error {
 	}
 	return nil
 }
-func skipEnvelope(data []byte) (n int, err error) {
-	l := len(data)
+func skipEnvelope(dAtA []byte) (n int, err error) {
+	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
 		var wire uint64
@@ -1053,7 +1053,7 @@ func skipEnvelope(data []byte) (n int, err error) {
 			if iNdEx >= l {
 				return 0, io.ErrUnexpectedEOF
 			}
-			b := data[iNdEx]
+			b := dAtA[iNdEx]
 			iNdEx++
 			wire |= (uint64(b) & 0x7F) << shift
 			if b < 0x80 {
@@ -1071,7 +1071,7 @@ func skipEnvelope(data []byte) (n int, err error) {
 					return 0, io.ErrUnexpectedEOF
 				}
 				iNdEx++
-				if data[iNdEx-1] < 0x80 {
+				if dAtA[iNdEx-1] < 0x80 {
 					break
 				}
 			}
@@ -1088,7 +1088,7 @@ func skipEnvelope(data []byte) (n int, err error) {
 				if iNdEx >= l {
 					return 0, io.ErrUnexpectedEOF
 				}
-				b := data[iNdEx]
+				b := dAtA[iNdEx]
 				iNdEx++
 				length |= (int(b) & 0x7F) << shift
 				if b < 0x80 {
@@ -1111,7 +1111,7 @@ func skipEnvelope(data []byte) (n int, err error) {
 					if iNdEx >= l {
 						return 0, io.ErrUnexpectedEOF
 					}
-					b := data[iNdEx]
+					b := dAtA[iNdEx]
 					iNdEx++
 					innerWire |= (uint64(b) & 0x7F) << shift
 					if b < 0x80 {
@@ -1122,7 +1122,7 @@ func skipEnvelope(data []byte) (n int, err error) {
 				if innerWireType == 4 {
 					break
 				}
-				next, err := skipEnvelope(data[start:])
+				next, err := skipEnvelope(dAtA[start:])
 				if err != nil {
 					return 0, err
 				}

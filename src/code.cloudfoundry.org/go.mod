@@ -35,7 +35,7 @@ replace github.com/nats-io/nats.go => github.com/nats-io/nats.go v1.9.1
 replace github.com/zorkian/go-datadog-api => github.com/zorkian/go-datadog-api v0.0.0-20150915071709-8f1192dcd661
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20210513174409-5fc719cc9491
+	code.cloudfoundry.org/archiver v0.0.0-20210609160716-67523bd33dbf
 	code.cloudfoundry.org/certsplitter v0.0.0-20210609184434-2de18d24e399
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20200827173955-6ac4653025b4
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20210401153245-254a1ad317ab
@@ -44,15 +44,15 @@ require (
 	code.cloudfoundry.org/clock v1.0.1-0.20210513171101-3765e64694c4
 	code.cloudfoundry.org/consuladapter v0.0.0-20210610172021-6135ad176324
 	code.cloudfoundry.org/credhub-cli v0.0.0-20210503130106-06d45be736ac
-	code.cloudfoundry.org/debugserver v0.0.0-20210513170648-513d45197033
+	code.cloudfoundry.org/debugserver v0.0.0-20210608171006-d7658ce493f4
 	code.cloudfoundry.org/diego-logging-client v0.0.0-20210622170659-8861ae5ba2ed
 	code.cloudfoundry.org/durationjson v0.0.0-20210615172401-3a89d41c90da
 	code.cloudfoundry.org/eventhub v0.0.0-20210615172938-0b896ce72257
-	code.cloudfoundry.org/garden v0.0.0-00010101000000-000000000000
+	code.cloudfoundry.org/garden v0.0.0-20210608104724-fa3a10d59c82
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/guardian v0.0.0-00010101000000-000000000000
 	code.cloudfoundry.org/lager v2.0.0+incompatible
-	code.cloudfoundry.org/localip v0.0.0-20210513163154-20d795cea8ec
+	code.cloudfoundry.org/localip v0.0.0-20210608161955-43c3ec713c20
 	code.cloudfoundry.org/tlsconfig v0.0.0-20210615191307-5d92ef3894a7
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20210406150507-75cfd577ce75
@@ -63,7 +63,7 @@ require (
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/containers/image v3.0.2+incompatible
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/docker/docker v20.10.7+incompatible
+	github.com/docker/docker v20.10.8+incompatible
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/envoyproxy/go-control-plane v0.9.4
 	github.com/fortytw2/leaktest v1.3.0
@@ -89,10 +89,10 @@ require (
 	github.com/nats-io/nats.go v1.11.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/onsi/ginkgo v1.16.4
-	github.com/onsi/gomega v1.13.0
+	github.com/onsi/gomega v1.15.0
 	github.com/onsi/say v1.0.0
 	github.com/opencontainers/go-digest v1.0.0
-	github.com/opencontainers/image-spec v1.0.1
+	github.com/opencontainers/image-spec v1.0.2-0.20190823105129-775207bd45b6
 	github.com/pborman/getopt v1.1.0
 	github.com/pkg/errors v0.9.1
 	github.com/pkg/sftp v1.13.0
@@ -104,11 +104,10 @@ require (
 	github.com/vito/go-sse v1.0.0
 	github.com/zorkian/go-datadog-api v2.30.0+incompatible
 	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a
-	golang.org/x/net v0.0.0-20210614182718-04defd469f4e
-	golang.org/x/sys v0.0.0-20210616094352-59db8d763f22
+	golang.org/x/net v0.0.0-20210805182204-aaa1db679c0d
+	golang.org/x/sys v0.0.0-20210809222454-d867a43fc93e
 	golang.org/x/time v0.0.0-20210220033141-f8bda1e9f3ba
-	google.golang.org/genproto v0.0.0-20210617175327-b9e0b3197ced // indirect
-	google.golang.org/grpc v1.38.0
+	google.golang.org/grpc v1.40.0
 	gopkg.in/asn1-ber.v1 v1.0.0-20181015200546-f715ec2f112d // indirect
 	gopkg.in/ldap.v2 v2.5.1
 	gopkg.in/yaml.v2 v2.4.0
