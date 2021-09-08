@@ -1,0 +1,9 @@
+version: 2
+updates:
+  - package-ecosystem: "gomod"
+    directory: "src/code.cloudfoundry.org"
+    schedule:
+      interval: "weekly"
+    target-branch: "develop"
+    labels:
+      - "dependencies"
