@@ -2,14 +2,14 @@ $ErrorActionPreference = "Stop";
 trap { $host.SetShouldExit(1) }
 
 $garden_tag = "v" + (cat garden-runc-release-tarball/version)
-Push-Location garden-runc-release-master
+Push-Location garden-runc-release
    git fetch --tags
    git checkout $garden_tag
    git submodule update --init --recursive
 Pop-Location
 
 $routing_tag = cat routing-release-tarball/version
-Push-Location routing-release-master
+Push-Location routing-release
    git fetch --tags
    git checkout $routing_tag
    git submodule update --init --recursive
