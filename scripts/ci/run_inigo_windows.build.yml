@@ -3,8 +3,10 @@ platform: windows
 
 inputs:
 - name: diego-release
-- name: routing-release
-- name: garden-runc-release
+- name: garden-runc-release-tarball
+- name: garden-runc-release-master
+- name: routing-release-tarball
+- name: routing-release-master
 - name: winc-release
 - name: envoy-nginx-release
 

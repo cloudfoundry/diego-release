@@ -1,6 +1,20 @@
 $ErrorActionPreference = "Stop";
 trap { $host.SetShouldExit(1) }
 
+$garden_tag = "v" + (cat garden-runc-release-tarball/version)
+Push-Location garden-runc-release-master
+   git fetch --tags
+   git checkout $garden_tag
+   git submodule update --init --recursive
+Pop-Location
+
+$routing_tag = cat routing-release-tarball/version
+Push-Location routing-release-master
+   git fetch --tags
+   git checkout $routing_tag
+   git submodule update --init --recursive
+Pop-Location
+
 $dir=[System.IO.Path]::GetDirectoryName($PSScriptRoot)
 . $dir/ci/setup_inigo.ps1
 
