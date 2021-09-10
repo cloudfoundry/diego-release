@@ -265,6 +265,9 @@ properties:
   containers.proxy.additional_memory_allocation_mb:
     description: "EXPERIMENTAL: Additional memory allocated to each container for the envoy proxy. This must not be negative. Currently doesn't work on windows cells but left here for compatability with the linux Rep"
     default: 32
+  containers.proxy.enable_http2:
+    description: "EXPERIMENTAL: Whether envoy proxy advertises HTTP/2 support via ALPN. Currently doesn't work on windows cells but left here for compatability with the linux Rep"
+    default: true
 
   containers.proxy.require_and_verify_client_certificates:
     default: false
