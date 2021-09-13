@@ -7,3 +7,8 @@ updates:
     target-branch: "develop"
     labels:
       - "dependencies"
+    ignore:
+    - dependency-name: "garden"
+    - dependency-name: "guardian"
+    - dependency-name: "grootfs"
+    - dependency-name: "idmapper"
