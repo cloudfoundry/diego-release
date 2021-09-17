@@ -4,6 +4,8 @@ go 1.16
 
 replace code.cloudfoundry.org/guardian => ../guardian
 
+replace code.cloudfoundry.org/garden => ../garden
+
 replace code.cloudfoundry.org/grootfs => ../grootfs
 
 replace code.cloudfoundry.org/idmapper => ../idmapper
