@@ -252,6 +252,9 @@ properties:
   containers.proxy.additional_memory_allocation_mb:
     description: "Additional memory allocated to each container for the envoy proxy. This value must not be negative"
     default: 32
+  containers.proxy.enable_http2:
+    description: "Whether envoy proxy advertises HTTP/2 support via ALPN."
+    default: true
 
   containers.proxy.require_and_verify_client_certificates:
     default: false
