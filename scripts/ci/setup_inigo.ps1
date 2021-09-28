@@ -225,7 +225,7 @@ Setup-Database
 Setup-DnsNames
 Setup-TempDirContainerAccess
 
-$env:ROUTER_GOPATH="$PWD\routing-release"
+$env:ROUTER_GOPATH="$PWD\routing-release\src\code.cloudfoundry.org"
 $env:ROUTING_API_GOPATH=$env:ROUTER_GOPATH
 $env:APP_LIFECYCLE_GOPATH=${env:CODE_CLOUDFOUNDRY_ORG_MODULE}
 $env:AUCTIONEER_GOPATH=${env:CODE_CLOUDFOUNDRY_ORG_MODULE}

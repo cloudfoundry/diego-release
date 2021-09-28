@@ -219,7 +219,7 @@ if [ -d $PWD/diego-release-v0 ]; then
     export SSH_PROXY_GOPATH_V0=${GOPATH_ROOT}
 fi
 
-export ROUTER_GOPATH="$PWD/routing-release"
+export ROUTER_GOPATH="$PWD/routing-release/src/code.cloudfoundry.org"
 export ROUTING_API_GOPATH=${ROUTER_GOPATH}
 export DIEGO_RELEASE_DIR="$PWD/diego-release"
 
