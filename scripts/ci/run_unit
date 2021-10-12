@@ -5,12 +5,9 @@ set -e
 source diego-release/scripts/ci/initialize_mysql.sh
 
 if [ "${SQL_FLAVOR}" = "mysql" ]; then
-  initialize_mysql
+  bootDB mysql
 elif [ "${SQL_FLAVOR}" = "postgres" ]; then
-  service postgresql start
-else
-  initialize_mysql
-  service postgresql start
+  bootDB postgres
 fi
 
 cd diego-release/

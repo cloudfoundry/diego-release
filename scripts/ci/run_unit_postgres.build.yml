@@ -1,0 +1,24 @@
+---
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    repository: cfdiegodocker/diego-units-postgres
+    tag: latest
+
+inputs:
+  - name: diego-release
+
+params:
+  PACKAGE:
+  SCRIPT:
+  SQL_FLAVOR:
+  ECR_TEST_REPO_URI:
+  ECR_TEST_AWS_ACCESS_KEY_ID:
+  ECR_TEST_AWS_SECRET_ACCESS_KEY:
+  POSTGRES_USER: ~
+  POSTGRES_PASSWORD: ~
+
+run:
+  path: diego-release/scripts/ci/run_unit

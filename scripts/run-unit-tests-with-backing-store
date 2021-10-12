@@ -39,9 +39,11 @@ pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/ > /dev/null
     auctioneer/cmd/auctioneer \
     bbs/cmd/bbs \
     bbs/db/migrations \
+    bbs/handlers \
     converger/cmd/converger \
     locket/cmd/locket \
     locket/db \
+    locket/handlers \
     rep/cmd/rep \
     cfdot/integration \
     rep/generator/internal \
