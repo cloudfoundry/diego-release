@@ -12,8 +12,6 @@ replace code.cloudfoundry.org/idmapper => ../idmapper
 
 replace code.cloudfoundry.org/lager => code.cloudfoundry.org/lager v1.1.1-0.20210513163233-569157d2803b
 
-replace github.com/go-sql-driver/mysql => github.com/cloudfoundry/mysql v0.0.0-20170831183307-75d9a366f9b0
-
 replace github.com/hashicorp/consul => github.com/hashicorp/consul v0.7.0
 
 replace github.com/spf13/cobra => github.com/spf13/cobra v0.0.0-20160722081547-f62e98d28ab7
