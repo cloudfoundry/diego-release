@@ -208,7 +208,8 @@ basedir=$mySqlBaseDir
 datadir=C:\\var\\vcap\\data\\mysql
 ssl-cert=$certFile
 ssl-key=$keyFile
-ssl-ca=$caFile"
+ssl-ca=$caFile
+max_connections=1000"
 
   Restart-Service Mysql
 }
