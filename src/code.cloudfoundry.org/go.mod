@@ -101,8 +101,8 @@ require (
 	github.com/tedsuo/rata v1.0.0
 	github.com/vito/go-sse v1.0.0
 	github.com/zorkian/go-datadog-api v2.30.0+incompatible
-	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a
-	golang.org/x/net v0.0.0-20211008194852-3b03d305991f
+	golang.org/x/crypto v0.0.0-20211202192323-5770296d904e
+	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2
 	golang.org/x/sys v0.0.0-20211007075335-d3039528d8ac
 	golang.org/x/time v0.0.0-20210220033141-f8bda1e9f3ba
 	google.golang.org/grpc v1.40.0
