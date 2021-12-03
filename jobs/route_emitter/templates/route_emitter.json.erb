@@ -43,8 +43,12 @@
         nats_machines = [prop]
       end
       nats_port = nats_link.p("nats.port")
-      nats_user = nats_link.p("nats.user")
-      nats_password = nats_link.p("nats.password")
+      nats_link.if_p("nats.user") do |prop|
+        nats_user = prop
+      end
+      nats_link.if_p("nats.password") do |prop|
+        nats_password = prop
+      end
     end
   end
 
