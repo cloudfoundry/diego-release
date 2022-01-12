@@ -1,4 +1,20 @@
 <%=
+
+  def parse_ip (ip, var_name)
+    unless ip.empty?
+      ip = ip.split(":")[0]
+    begin
+      parsed = IPAddr.new ip
+    rescue  => e
+      raise "Invalid #{var_name} '#{ip}': #{e}"
+    end
+    end
+  end
+
+  parse_ip(p('diego.ssh_proxy.debug_addr'), 'diego.ssh_proxy.debug_addr')
+  parse_ip(p('diego.ssh_proxy.healthcheck_listen_addr'), 'diego.ssh_proxy.healthcheck_listen_addr')
+  parse_ip(p('diego.ssh_proxy.listen_addr'), 'diego.ssh_proxy.listen_addr')
+
   config = {
     address: p("diego.ssh_proxy.listen_addr"),
     health_check_address: p("diego.ssh_proxy.healthcheck_listen_addr"),

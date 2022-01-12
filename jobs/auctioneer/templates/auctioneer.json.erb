@@ -1,6 +1,20 @@
 <%=
   conf_dir = "/var/vcap/jobs/auctioneer/config"
 
+  def parse_ip (ip, var_name)
+    unless ip.empty?
+      ip = ip.split(":")[0]
+	begin
+	  parsed = IPAddr.new ip
+	rescue  => e
+	  raise "Invalid #{var_name} '#{ip}': #{e}"
+	end
+    end
+  end
+
+  parse_ip(p('diego.auctioneer.debug_addr'), 'diego.auctioneer.debug_addr')
+  parse_ip(p('diego.auctioneer.listen_addr'), 'diego.auctioneer.listen_addr')
+
   config = {
     auction_runner_workers: 1000,
     communication_timeout: "10s",

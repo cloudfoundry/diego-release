@@ -3,6 +3,20 @@ require 'uri'
 
 conf_dir = "/var/vcap/jobs/locket/config"
 
+def parse_ip (ip, var_name)
+  unless ip.empty?
+    ip = ip.split(":")[0]
+  begin
+    parsed = IPAddr.new ip
+  rescue  => e
+    raise "Invalid #{var_name} '#{ip}': #{e}"
+  end
+  end
+end
+
+parse_ip(p('diego.locket.debug_addr'), 'diego.locket.debug_addr')
+parse_ip(p('diego.locket.listen_addr'), 'diego.locket.listen_addr')
+
 config = {
   report_interval: "1m",
   ca_file: "#{conf_dir}/certs/ca.crt",
