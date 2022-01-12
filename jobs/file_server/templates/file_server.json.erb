@@ -1,6 +1,21 @@
 <%=
   conf_dir = "/var/vcap/jobs/file_server/config"
 
+  def parse_ip (ip, var_name)
+    unless ip.empty?
+      ip = ip.split(":")[0]
+	begin
+	  parsed = IPAddr.new ip
+	rescue  => e
+	  raise "Invalid #{var_name} '#{ip}': #{e}"
+	end
+    end
+  end
+
+  parse_ip(p('diego.file_server.debug_addr'), 'diego.file_server.debug_addr')
+  parse_ip(p('diego.file_server.listen_addr'), 'diego.file_server.listen_addr')
+  parse_ip(p('https_listen_addr'), 'https_listen_addr')
+
   config = {
     server_address: p("diego.file_server.listen_addr"),
     consul_cluster: "http://127.0.0.1:8500",

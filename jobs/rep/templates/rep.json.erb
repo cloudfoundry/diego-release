@@ -10,6 +10,24 @@
     zone = value
   end
 
+  def parse_ip (ip, var_name)
+    unless ip.empty?
+      ip = ip.split(":")[0]
+	begin
+	  parsed = IPAddr.new ip
+	rescue  => e
+	  raise "Invalid #{var_name} '#{ip}': #{e}"
+	end
+    end
+  end
+
+  parse_ip(p('diego.rep.debug_addr'), 'diego.rep.debug_addr')
+  parse_ip(p('diego.rep.listen_addr_admin'), 'diego.rep.listen_addr_admin')
+  parse_ip(p('diego.rep.listen_addr_securable'), 'diego.rep.listen_addr_securable')
+  if p("diego.executor.garden.network") == "tcp"
+    parse_ip(p('diego.executor.garden.address'), 'diego.executor.garden.address')
+  end
+
   config = {
     communication_timeout: p("diego.rep.bbs.request_timeout"),
     lock_retry_interval: "5s",

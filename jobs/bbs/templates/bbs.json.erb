@@ -4,6 +4,21 @@
   conf_dir = "/var/vcap/jobs/bbs/config"
   log_dir = "/var/vcap/sys/log/bbs"
 
+  def parse_ip (ip, var_name)
+    unless ip.empty?
+      ip = ip.split(":")[0]
+	begin
+	  parsed = IPAddr.new ip
+	rescue  => e
+	  raise "Invalid #{var_name} '#{ip}': #{e}"
+	end
+    end
+  end
+
+  parse_ip(p('diego.bbs.debug_addr'), 'diego.bbs.debug_addr')
+  parse_ip(p('diego.bbs.listen_addr'), 'diego.bbs.listen_addr')
+  parse_ip(p('diego.bbs.health_addr'), 'diego.bbs.health_addr')
+
   config = {
     session_name: "bbs",
     require_ssl: true,

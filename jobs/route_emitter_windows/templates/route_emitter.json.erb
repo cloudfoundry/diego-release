@@ -1,6 +1,20 @@
 <%=
   conf_dir = "/var/vcap/jobs/#{p("diego.route_emitter.job_name")}/config"
 
+  def parse_ip (ip, var_name)
+    unless ip.empty?
+      ip = ip.split(":")[0]
+    begin
+      parsed = IPAddr.new ip
+    rescue  => e
+      raise "Invalid #{var_name} '#{ip}': #{e}"
+    end
+    end
+  end
+
+  parse_ip(p('diego.route_emitter.debug_addr'), 'diego.route_emitter.debug_addr')
+  parse_ip(p('diego.route_emitter.healthcheck_addr'), 'diego.route_emitter.healthcheck_addr')
+
   nats_machines = nil
   if_p('diego.route_emitter.nats.machines') do |ips|
     nats_machines = ips.compact
