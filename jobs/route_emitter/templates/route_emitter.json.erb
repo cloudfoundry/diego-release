@@ -13,7 +13,7 @@
   end
 
   parse_ip(p('diego.route_emitter.debug_addr'), 'diego.route_emitter.debug_addr')
-  parse_ip(p('diego.route_emitter.healthcheck_addr'), 'diego.route_emitter.healthcheck_addr')
+  parse_ip(p('diego.route_emitter.healthcheck_address'), 'diego.route_emitter.healthcheck_address')
 
   nats_machines = nil
   if_p('diego.route_emitter.nats.machines') do |ips|
