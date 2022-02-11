@@ -153,6 +153,8 @@ The [BBS API docs](https://github.com/cloudfoundry/bbs/tree/master/doc) and [rou
 | `/v1/actual_lrp_groups/list`                          | v2.31.0    | N/A     | Use `/v1/actual_lrps/list` instead. Will be removed in v4.0.0        |
 | `/v1/actual_lrp_groups/list_by_process_guid`          | v2.31.0    | N/A     | Use `/v1/actual_lrps/list` instead. Will be removed in v4.0.0        |
 | `/v1/actual_lrp_groups/get_by_process_guid_and_index` | v2.31.0    | N/A     | Use `/v1/actual_lrps/list` instead. Will be removed in v4.0.0        |
+| `/v1/actual_lrps/start`                               | v2.59.0    | N/A     | Use `/v1/actual_lrps/start.r1` instead.                              |
+| `/v1/actual_lrps/evacuate_running`                    | v2.59.0    | N/A     | Use `/v1/actual_lrps/evacuate_running.r1` instead.                   |
 
 #### Fields
 
