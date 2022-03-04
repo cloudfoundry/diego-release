@@ -41,7 +41,7 @@ require (
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1-0.20210513172332-4c5ee488a657
 	code.cloudfoundry.org/clock v1.0.1-0.20210513171101-3765e64694c4
 	code.cloudfoundry.org/consuladapter v0.0.0-20210610172021-6135ad176324
-	code.cloudfoundry.org/credhub-cli v0.0.0-20210503130106-06d45be736ac
+	code.cloudfoundry.org/credhub-cli v0.0.0-20220228140414-459eb2d27a1c
 	code.cloudfoundry.org/debugserver v0.0.0-20210608171006-d7658ce493f4
 	code.cloudfoundry.org/diego-logging-client v0.0.0-20210622170659-8861ae5ba2ed
 	code.cloudfoundry.org/durationjson v0.0.0-20210615172401-3a89d41c90da
@@ -51,10 +51,10 @@ require (
 	code.cloudfoundry.org/guardian v0.0.0-00010101000000-000000000000
 	code.cloudfoundry.org/lager v2.0.0+incompatible
 	code.cloudfoundry.org/localip v0.0.0-20210608161955-43c3ec713c20
-	code.cloudfoundry.org/tlsconfig v0.0.0-20210615191307-5d92ef3894a7
+	code.cloudfoundry.org/tlsconfig v0.0.0-20211123175040-23cc9f05b6b3
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20210406150507-75cfd577ce75
-	github.com/aws/aws-sdk-go v1.38.34
+	github.com/aws/aws-sdk-go v1.43.11
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20210324191134-efd1603705e9
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cloudfoundry/dropsonde v1.0.0
@@ -87,7 +87,7 @@ require (
 	github.com/nats-io/nats.go v1.11.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/onsi/ginkgo v1.16.5
-	github.com/onsi/gomega v1.17.0
+	github.com/onsi/gomega v1.18.1
 	github.com/onsi/say v1.0.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/opencontainers/image-spec v1.0.2
@@ -101,9 +101,9 @@ require (
 	github.com/tedsuo/rata v1.0.0
 	github.com/vito/go-sse v1.0.0
 	github.com/zorkian/go-datadog-api v2.30.0+incompatible
-	golang.org/x/crypto v0.0.0-20211202192323-5770296d904e
-	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2
-	golang.org/x/sys v0.0.0-20211111213525-f221eed1c01e
+	golang.org/x/crypto v0.0.0-20220214200702-86341886e292
+	golang.org/x/net v0.0.0-20220225172249-27dd8689420f
+	golang.org/x/sys v0.0.0-20220227234510-4e6760a101f9
 	golang.org/x/time v0.0.0-20210220033141-f8bda1e9f3ba
 	google.golang.org/grpc v1.40.0
 	gopkg.in/asn1-ber.v1 v1.0.0-20181015200546-f715ec2f112d // indirect

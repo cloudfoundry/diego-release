@@ -31,7 +31,7 @@ code.cloudfoundry.org/commandrunner
 code.cloudfoundry.org/consuladapter
 code.cloudfoundry.org/consuladapter/consulrunner
 code.cloudfoundry.org/consuladapter/fakes
-# code.cloudfoundry.org/credhub-cli v0.0.0-20210503130106-06d45be736ac
+# code.cloudfoundry.org/credhub-cli v0.0.0-20220228140414-459eb2d27a1c
 ## explicit
 code.cloudfoundry.org/credhub-cli/credhub
 code.cloudfoundry.org/credhub-cli/credhub/auth
@@ -99,7 +99,7 @@ code.cloudfoundry.org/lager/lagertest
 # code.cloudfoundry.org/localip v0.0.0-20210608161955-43c3ec713c20
 ## explicit
 code.cloudfoundry.org/localip
-# code.cloudfoundry.org/tlsconfig v0.0.0-20210615191307-5d92ef3894a7
+# code.cloudfoundry.org/tlsconfig v0.0.0-20211123175040-23cc9f05b6b3
 ## explicit
 code.cloudfoundry.org/tlsconfig
 code.cloudfoundry.org/tlsconfig/certtest
@@ -157,7 +157,7 @@ github.com/armon/go-metrics/circonus
 github.com/armon/go-metrics/datadog
 # github.com/armon/go-radix v1.0.0
 github.com/armon/go-radix
-# github.com/aws/aws-sdk-go v1.38.34
+# github.com/aws/aws-sdk-go v1.43.11
 ## explicit
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/arn
@@ -261,7 +261,7 @@ github.com/cloudfoundry/go-socks5
 # github.com/cloudfoundry/gosteno v0.0.0-20150423193413-0c8581caea35
 github.com/cloudfoundry/gosteno
 github.com/cloudfoundry/gosteno/syslog
-# github.com/cloudfoundry/socks5-proxy v0.2.4
+# github.com/cloudfoundry/socks5-proxy v0.2.44
 github.com/cloudfoundry/socks5-proxy
 # github.com/cloudfoundry/sonde-go v0.0.0-20200416163440-a42463ba266b
 github.com/cloudfoundry/sonde-go/events
@@ -369,7 +369,7 @@ github.com/envoyproxy/go-control-plane/envoy/type/tracing/v3
 github.com/envoyproxy/go-control-plane/envoy/type/v3
 # github.com/envoyproxy/protoc-gen-validate v0.1.0
 github.com/envoyproxy/protoc-gen-validate/validate
-# github.com/fatih/color v1.10.0
+# github.com/fatih/color v1.13.0
 github.com/fatih/color
 # github.com/fortytw2/leaktest v1.3.0
 ## explicit
@@ -494,7 +494,7 @@ github.com/hashicorp/go-sockaddr
 github.com/hashicorp/go-syslog
 # github.com/hashicorp/go-uuid v1.0.1
 github.com/hashicorp/go-uuid
-# github.com/hashicorp/go-version v1.3.0
+# github.com/hashicorp/go-version v1.4.0
 github.com/hashicorp/go-version
 # github.com/hashicorp/golang-lru v0.5.4
 github.com/hashicorp/golang-lru
@@ -578,9 +578,9 @@ github.com/mailru/easyjson
 github.com/mailru/easyjson/buffer
 github.com/mailru/easyjson/jlexer
 github.com/mailru/easyjson/jwriter
-# github.com/mattn/go-colorable v0.1.8
+# github.com/mattn/go-colorable v0.1.12
 github.com/mattn/go-colorable
-# github.com/mattn/go-isatty v0.0.12
+# github.com/mattn/go-isatty v0.0.14
 github.com/mattn/go-isatty
 # github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182affec369
 github.com/matttproud/golang_protobuf_extensions/pbutil
@@ -673,7 +673,7 @@ github.com/onsi/ginkgo/reporters/stenographer
 github.com/onsi/ginkgo/reporters/stenographer/support/go-colorable
 github.com/onsi/ginkgo/reporters/stenographer/support/go-isatty
 github.com/onsi/ginkgo/types
-# github.com/onsi/gomega v1.17.0 => github.com/onsi/gomega v1.7.0
+# github.com/onsi/gomega v1.18.1 => github.com/onsi/gomega v1.7.0
 ## explicit
 github.com/onsi/gomega
 github.com/onsi/gomega/format
@@ -782,7 +782,7 @@ go.opencensus.io/internal
 go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
-# golang.org/x/crypto v0.0.0-20211202192323-5770296d904e
+# golang.org/x/crypto v0.0.0-20220214200702-86341886e292
 ## explicit
 golang.org/x/crypto/bcrypt
 golang.org/x/crypto/blowfish
@@ -792,14 +792,13 @@ golang.org/x/crypto/cryptobyte/asn1
 golang.org/x/crypto/curve25519
 golang.org/x/crypto/curve25519/internal/field
 golang.org/x/crypto/ed25519
-golang.org/x/crypto/ed25519/internal/edwards25519
 golang.org/x/crypto/internal/poly1305
 golang.org/x/crypto/internal/subtle
 golang.org/x/crypto/pbkdf2
 golang.org/x/crypto/scrypt
 golang.org/x/crypto/ssh
 golang.org/x/crypto/ssh/internal/bcrypt_pbkdf
-# golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2
+# golang.org/x/net v0.0.0-20220225172249-27dd8689420f
 ## explicit
 golang.org/x/net/bpf
 golang.org/x/net/context
@@ -818,7 +817,7 @@ golang.org/x/net/ipv4
 golang.org/x/net/ipv6
 golang.org/x/net/proxy
 golang.org/x/net/trace
-# golang.org/x/sys v0.0.0-20211111213525-f221eed1c01e
+# golang.org/x/sys v0.0.0-20220227234510-4e6760a101f9
 ## explicit
 golang.org/x/sys/cpu
 golang.org/x/sys/execabs
