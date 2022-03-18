@@ -60,7 +60,7 @@ require (
 	github.com/cloudfoundry/dropsonde v1.0.0
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/containers/image v3.0.2+incompatible
-	github.com/docker/docker v20.10.10+incompatible
+	github.com/docker/docker v20.10.12+incompatible
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/envoyproxy/go-control-plane v0.9.4
 	github.com/fortytw2/leaktest v1.3.0
@@ -90,12 +90,12 @@ require (
 	github.com/onsi/gomega v1.18.1
 	github.com/onsi/say v1.0.0
 	github.com/opencontainers/go-digest v1.0.0
-	github.com/opencontainers/image-spec v1.0.2
+	github.com/opencontainers/image-spec v1.0.3-0.20211202193544-a5463b7f9c84
 	github.com/pborman/getopt v1.1.0
 	github.com/pkg/errors v0.9.1
 	github.com/pkg/sftp v1.13.0
 	github.com/shopspring/decimal v1.2.0 // indirect
-	github.com/spf13/cobra v1.1.1
+	github.com/spf13/cobra v1.3.0
 	github.com/square/certstrap v1.2.0
 	github.com/tedsuo/ifrit v0.0.0-20191009134036-9a97d0632f00
 	github.com/tedsuo/rata v1.0.0
@@ -103,7 +103,7 @@ require (
 	github.com/zorkian/go-datadog-api v2.30.0+incompatible
 	golang.org/x/crypto v0.0.0-20220214200702-86341886e292
 	golang.org/x/net v0.0.0-20220225172249-27dd8689420f
-	golang.org/x/sys v0.0.0-20220227234510-4e6760a101f9
+	golang.org/x/sys v0.0.0-20220317061510-51cd9980dadf
 	golang.org/x/time v0.0.0-20210220033141-f8bda1e9f3ba
 	google.golang.org/grpc v1.40.0
 	gopkg.in/asn1-ber.v1 v1.0.0-20181015200546-f715ec2f112d // indirect
