@@ -1,6 +1,8 @@
 #!/bin/bash
 
 SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+# shellcheck source=/dev/null
 . "${SCRIPTS_DIR}/get_paths.sh"
 
 BIN_DIR="${DIEGO_RELEASE_DIR}/bin"
@@ -15,7 +17,7 @@ popd
 set +e
 
 set -e
-${SCRIPTS_DIR}/check-metrics-documentation
+"${SCRIPTS_DIR}/check-metrics-documentation"
 set +e
 
 SKIP_PACKAGES="./inigo"
@@ -55,22 +57,23 @@ SKIP_PACKAGES="$SKIP_PACKAGES,./cfdot/integration"
 SKIP_PACKAGES="$SKIP_PACKAGES,./rfc5424"
 SKIP_PACKAGES="$SKIP_PACKAGES,./grootfs"
 SKIP_PACKAGES="$SKIP_PACKAGES,./idmapper"
+SKIP_PACKAGES="$SKIP_PACKAGES,./dockerapplifecycle/launcher"
 ERROR_CODE=0
 
 if [ -z "${RUN_SQL_TESTS}" ]; then
   SKIP_PACKAGES="$SKIP_PACKAGES,./bbs/db/sqldb"
 fi
 
-if [ ! -z "$PACKAGE" ]; then
-  pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/ > /dev/null
+if [ -n "$PACKAGE" ]; then
+  pushd "${DIEGO_RELEASE_DIR}/src/code.cloudfoundry.org/" > /dev/null
     go run github.com/onsi/ginkgo/ginkgo -r -nodes 8 "$@" "$PACKAGE"
   popd > /dev/null
   exit $?
 else
-  pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/ > /dev/null
+  pushd "${DIEGO_RELEASE_DIR}/src/code.cloudfoundry.org/" > /dev/null
     go run github.com/onsi/ginkgo/ginkgo -r -keepGoing -nodes 8 -trace -randomizeAllSpecs -progress -race \
-      -skipPackage=${SKIP_PACKAGES} "$@"
-    let ERROR_CODE+=$?
+      -skipPackage="$SKIP_PACKAGES" "$@"
+    (( ERROR_CODE+=$? ))
   popd > /dev/null
   exit $ERROR_CODE
 fi
