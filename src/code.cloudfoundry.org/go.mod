@@ -2,35 +2,24 @@ module code.cloudfoundry.org
 
 go 1.16
 
-replace code.cloudfoundry.org/guardian => ../guardian
+replace (
+	code.cloudfoundry.org/garden => ../garden
+	code.cloudfoundry.org/grootfs => ../grootfs
+	code.cloudfoundry.org/guardian => ../guardian
+	code.cloudfoundry.org/idmapper => ../idmapper
 
-replace code.cloudfoundry.org/garden => ../garden
-
-replace code.cloudfoundry.org/grootfs => ../grootfs
-
-replace code.cloudfoundry.org/idmapper => ../idmapper
-
-replace code.cloudfoundry.org/lager => code.cloudfoundry.org/lager v1.1.1-0.20210513163233-569157d2803b
-
-replace github.com/hashicorp/consul => github.com/hashicorp/consul v0.7.0
-
-replace github.com/spf13/cobra => github.com/spf13/cobra v0.0.0-20160722081547-f62e98d28ab7
-
-replace github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.9.5
-
-replace google.golang.org/grpc => google.golang.org/grpc v1.29.0-dev.0.20200306163155-d179e8f5cd96
-
-replace github.com/golang/protobuf => github.com/golang/protobuf v1.3.2
-
-replace github.com/gogo/protobuf => github.com/gogo/protobuf v1.2.0
-
-replace google.golang.org/genproto => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
-
-replace github.com/onsi/gomega => github.com/onsi/gomega v1.7.0
-
-replace github.com/nats-io/nats.go => github.com/nats-io/nats.go v1.9.1
-
-replace github.com/zorkian/go-datadog-api => github.com/zorkian/go-datadog-api v0.0.0-20150915071709-8f1192dcd661
+	code.cloudfoundry.org/lager => code.cloudfoundry.org/lager v1.1.1-0.20210513163233-569157d2803b
+	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.9.5
+	github.com/gogo/protobuf => github.com/gogo/protobuf v1.2.0
+	github.com/golang/protobuf => github.com/golang/protobuf v1.3.2
+	github.com/hashicorp/consul => github.com/hashicorp/consul v0.7.0
+	github.com/nats-io/nats.go => github.com/nats-io/nats.go v1.9.1
+	github.com/onsi/gomega => github.com/onsi/gomega v1.7.0
+	github.com/spf13/cobra => github.com/spf13/cobra v0.0.0-20160722081547-f62e98d28ab7
+	github.com/zorkian/go-datadog-api => github.com/zorkian/go-datadog-api v0.0.0-20150915071709-8f1192dcd661
+	google.golang.org/genproto => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
+	google.golang.org/grpc => google.golang.org/grpc v1.29.0-dev.0.20200306163155-d179e8f5cd96
+)
 
 require (
 	code.cloudfoundry.org/archiver v0.0.0-20210609160716-67523bd33dbf
