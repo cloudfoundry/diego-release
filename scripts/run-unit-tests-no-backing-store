@@ -62,7 +62,9 @@ if [ -z "${RUN_SQL_TESTS}" ]; then
 fi
 
 if [ ! -z "$PACKAGE" ]; then
-  ginkgo -r -nodes 8 "$@" "./src/${PACKAGE}"
+  pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/ > /dev/null
+    go run github.com/onsi/ginkgo/ginkgo -r -nodes 8 "$@" "$PACKAGE"
+  popd > /dev/null
   exit $?
 else
   pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/ > /dev/null
