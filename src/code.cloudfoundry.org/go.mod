@@ -11,7 +11,7 @@ replace (
 	code.cloudfoundry.org/lager => code.cloudfoundry.org/lager v1.1.1-0.20210513163233-569157d2803b
 	github.com/docker/docker => github.com/docker/docker v20.10.13+incompatible
 	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.9.5
-	github.com/gogo/protobuf => github.com/gogo/protobuf v1.3.2
+	github.com/gogo/protobuf => github.com/gogo/protobuf v1.2.0
 	github.com/golang/protobuf => github.com/golang/protobuf v1.3.2
 	github.com/hashicorp/consul => github.com/hashicorp/consul v0.7.0
 	github.com/nats-io/nats.go => github.com/nats-io/nats.go v1.9.1
