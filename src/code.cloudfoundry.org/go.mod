@@ -30,7 +30,7 @@ require (
 	code.cloudfoundry.org/cfhttp v1.0.1-0.20210513172332-4c5ee488a657
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1-0.20210513172332-4c5ee488a657
 	code.cloudfoundry.org/clock v1.0.1-0.20210513171101-3765e64694c4
-	code.cloudfoundry.org/consuladapter v0.0.0-20210610172021-6135ad176324
+	code.cloudfoundry.org/consuladapter v0.0.0-20211122211027-9dbbfa656ee0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20220228140414-459eb2d27a1c
 	code.cloudfoundry.org/debugserver v0.0.0-20210608171006-d7658ce493f4
 	code.cloudfoundry.org/diego-logging-client v0.0.0-20210622170659-8861ae5ba2ed
@@ -44,6 +44,7 @@ require (
 	code.cloudfoundry.org/tlsconfig v0.0.0-20211123175040-23cc9f05b6b3
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20210406150507-75cfd577ce75
+	github.com/armon/go-metrics v0.3.10 // indirect
 	github.com/aws/aws-sdk-go v1.43.11
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20210324191134-efd1603705e9
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
@@ -63,9 +64,11 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.1.0
 	github.com/golang/protobuf v1.5.2
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510
-	github.com/hashicorp/consul v0.0.0-00010101000000-000000000000
+	github.com/hashicorp/consul v1.11.4
 	github.com/hashicorp/errwrap v1.1.0
+	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
 	github.com/hashicorp/go-multierror v1.1.1
+	github.com/hashicorp/serf v0.9.7 // indirect
 	github.com/jackc/fake v0.0.0-20150926172116-812a484cc733 // indirect
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jinzhu/gorm v1.9.16
