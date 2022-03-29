@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -499,7 +498,7 @@ func (s *Serf) UserEvent(name string, payload []byte, coalesce bool) error {
 
 	if len(raw) > UserEventSizeLimit {
 		return fmt.Errorf(
-			"encoded user event exceeds sane limit of %d bytes before encoding",
+			"encoded user event exceeds reasonable limit of %d bytes after encoding",
 			UserEventSizeLimit,
 		)
 	}
@@ -685,6 +684,7 @@ func (s *Serf) broadcastJoin(ltime LamportTime) error {
 
 // Leave gracefully exits the cluster. It is safe to call this multiple
 // times.
+// If the Leave broadcast timeout, Leave() will try to finish the sequence as best effort.
 func (s *Serf) Leave() error {
 	// Check the current state
 	s.stateLock.Lock()
@@ -727,14 +727,14 @@ func (s *Serf) Leave() error {
 		select {
 		case <-notifyCh:
 		case <-time.After(s.config.BroadcastTimeout):
-			return errors.New("timeout while waiting for graceful leave")
+			s.logger.Printf("[WARN] serf: timeout while waiting for graceful leave")
 		}
 	}
 
 	// Attempt the memberlist leave
 	err := s.memberlist.Leave(s.config.BroadcastTimeout)
 	if err != nil {
-		return err
+		s.logger.Printf("[WARN] serf: timeout waiting for leave broadcast: %s", err.Error())
 	}
 
 	// Wait for the leave to propagate through the cluster. The broadcast
@@ -958,7 +958,7 @@ func (s *Serf) handleNodeJoin(n *memberlist.Node) {
 
 		member.Status = StatusAlive
 		member.leaveTime = time.Time{}
-		member.Addr = net.IP(n.Addr)
+		member.Addr = n.Addr
 		member.Port = n.Port
 		member.Tags = s.decodeTags(n.Meta)
 	}
@@ -1088,6 +1088,7 @@ func (s *Serf) handleNodeUpdate(n *memberlist.Node) {
 
 // handleNodeLeaveIntent is called when an intent to leave is received.
 func (s *Serf) handleNodeLeaveIntent(leaveMsg *messageLeave) bool {
+	state := s.State()
 
 	// Witness a potentially newer time
 	s.clock.Witness(leaveMsg.LTime)
@@ -1108,7 +1109,7 @@ func (s *Serf) handleNodeLeaveIntent(leaveMsg *messageLeave) bool {
 
 	// Refute us leaving if we are in the alive state
 	// Must be done in another goroutine since we have the memberLock
-	if leaveMsg.Node == s.config.NodeName && s.state == SerfAlive {
+	if leaveMsg.Node == s.config.NodeName && state == SerfAlive {
 		s.logger.Printf("[DEBUG] serf: Refuting an older leave intent")
 		go s.broadcastJoin(s.clock.Time())
 		return false
@@ -1639,7 +1640,6 @@ func (s *Serf) reconnect() {
 	// Select a random member to try and join
 	idx := rand.Int31n(int32(n))
 	mem := s.failedMembers[idx]
-	s.memberLock.RUnlock()
 
 	// Format the addr
 	addr := net.UDPAddr{IP: mem.Addr, Port: int(mem.Port)}
@@ -1649,6 +1649,7 @@ func (s *Serf) reconnect() {
 	if mem.Name != "" {
 		joinAddr = mem.Name + "/" + addr.String()
 	}
+	s.memberLock.RUnlock()
 
 	// Attempt to join at the memberlist level
 	s.memberlist.Join([]string{joinAddr})
