@@ -10,7 +10,7 @@ $zone_flag=""
   if ($LASTEXITCODE -eq 0){
     $zone_flag="-zone=z${azure_fd}"
   } else {
-    Write-Error "Failed to curl azure metadata endpoint for fault domain"
+    Write-Error "Warning: Failed to curl azure metadata endpoint for fault domain"
   }
   $url="http://169.254.169.254/metadata/instance/compute/zone?api-version=2017-12-01&format=text"
   $azure_fd=$(C:\var\vcap\packages\rep_windows\gocurl.exe -max-time "5s" -H "Metadata=true" $url)
@@ -19,7 +19,7 @@ $zone_flag=""
       $zone_flag=""
     }
   } else {
-    Write-Error "Failed to curl azure metadata endpoint for availability zone"
+    Write-Error "Warning: Failed to curl azure metadata endpoint for availability zone"
   }
   $ErrorActionPreference = "Stop";
 <% end %>
