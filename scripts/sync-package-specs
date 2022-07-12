@@ -3,7 +3,7 @@
 set -e
 
 # ensure gosub is installed (this will recompile it only if necessary)
-GO111MODULE=on go get github.com/vito/gosub
+GO111MODULE=on go install github.com/vito/gosub@latest
 
 function sync_package() {
   bosh_pkg=${1}
