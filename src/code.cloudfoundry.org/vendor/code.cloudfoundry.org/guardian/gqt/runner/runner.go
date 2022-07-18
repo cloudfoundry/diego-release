@@ -216,7 +216,7 @@ func init() {
 
 func DefaultGdnRunnerConfig(binaries Binaries) GdnRunnerConfig {
 	var config GdnRunnerConfig
-	config.Tag = fmt.Sprintf("%d", GinkgoParallelNode())
+	config.Tag = fmt.Sprintf("%d", GinkgoParallelProcess())
 
 	var err error
 	config.TmpDir, err = ioutil.TempDir("", fmt.Sprintf("test-garden-%s-", config.Tag))
@@ -235,8 +235,8 @@ func DefaultGdnRunnerConfig(binaries Binaries) GdnRunnerConfig {
 		config.BindSocket = fmt.Sprintf("/tmp/garden_%s.sock", config.Tag)
 	}
 
-	config.NetworkPool = fmt.Sprintf("10.254.%d.0/22", 4*GinkgoParallelNode())
-	config.PortPoolStart = intptr(GinkgoParallelNode() * 7000)
+	config.NetworkPool = fmt.Sprintf("10.254.%d.0/22", 4*GinkgoParallelProcess())
+	config.PortPoolStart = intptr(GinkgoParallelProcess() * 7000)
 
 	config.UIDMapStart = uint32ptr(1)
 	config.UIDMapLength = uint32ptr(100000)
