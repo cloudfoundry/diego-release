@@ -240,7 +240,7 @@ export SSH_PROXY_GOPATH=${CODE_CLOUDFOUNDRY_ORG_MODULE}
 export GARDEN_GOPATH=${GUARDIAN_MODULE}
 
 # used for routing to apps; same logic that Garden uses.
-EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\s/\1/;tx;d;:x')
+EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\suid.*/\1/;tx;d;:x')
 export EXTERNAL_ADDRESS
 
 setup_database
