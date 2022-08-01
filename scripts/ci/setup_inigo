@@ -15,7 +15,7 @@ echo "nameserver 8.8.8.8" >> /etc/resolv.conf
 # *.test.internal, used by the collocated DUSTs as a routable domain.
 function setup_dnsmasq() {
   local host_addr
-  host_addr=$(ip route get 8.8.8.8 | head -n1 | awk '{print $NF}')
+  host_addr=$(ip route get 8.8.8.8 | head -n1 | awk '{print $7}')
 
   dnsmasq --address=/service.cf.internal/127.0.0.1 --address=/test.internal/${host_addr}
   echo -e "nameserver $host_addr\n$(cat /etc/resolv.conf)" > /etc/resolv.conf
