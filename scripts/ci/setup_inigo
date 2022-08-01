@@ -172,15 +172,15 @@ setup_database() {
   if [ "${SQL_FLAVOR}" = "mysql" ]; then
     source ${GOPATH_ROOT}/scripts/ci/initialize_mysql.sh
 
-    sed -i 's/#max_connections.*= 100/max_connections = 2000/g' /etc/mysql/mysql.conf.d/mysqld.cnf
+    sed -i 's/#max_connections.*= 100/max_connections = 2000/g' /etc/mysql/mariadb.conf.d/50-server.cnf
 
     chown mysql:mysql "$ca_file"
     chown mysql:mysql "$cert_file"
     chown mysql:mysql "$key_file"
 
-    sed -i "s%# ssl-cert=/etc/mysql/server-cert.pem%ssl-cert=$cert_file%g" /etc/mysql/mysql.conf.d/mysqld.cnf
-    sed -i "s%# ssl-key=/etc/mysql/server-key.pem%ssl-key=$key_file%g" /etc/mysql/mysql.conf.d/mysqld.cnf
-    sed -i "s%# ssl-ca=/etc/mysql/cacert.pem%ssl-ca=$ca_file%g" /etc/mysql/mysql.conf.d/mysqld.cnf
+    sed -i "s%# ssl-cert=/etc/mysql/server-cert.pem%ssl-cert=$cert_file%g" /etc/mysql/mariadb.conf.d/50-server.cnf
+    sed -i "s%# ssl-key=/etc/mysql/server-key.pem%ssl-key=$key_file%g" /etc/mysql/mariadb.conf.d/50-server.cnf
+    sed -i "s%# ssl-ca=/etc/mysql/cacert.pem%ssl-ca=$ca_file%g" /etc/mysql/mariadb.conf.d/50-server.cnf
     initialize_mysql
   else
     sed -i 's/max_connections = 100/max_connections = 2000/g' /etc/postgresql/9.4/main/postgresql.conf
