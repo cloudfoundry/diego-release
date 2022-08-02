@@ -14,6 +14,10 @@ EOF
   service mariadb start
 }
 
+function cleanup_mysql {
+  service mariadb stop
+}
+
 function bootDB {
   db=$1
 

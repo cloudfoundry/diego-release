@@ -3,6 +3,7 @@
 dir=$(dirname $0)
 
 source $dir/setup_inigo
+trap cleanup EXIT
 
 nodes_flag=""
 if [ "$GINKGO_PARALLEL" = "true" ]; then
