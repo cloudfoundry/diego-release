@@ -198,6 +198,12 @@ setup_database() {
   fi
 }
 
+cleanup() {
+  if [ "${SQL_FLAVOR}" = "mysql" ]; then
+    cleanup_mysql
+  fi
+}
+
 rm -rf $PWD/diego-release/src/code.cloudfoundry.org/guardian/vendor/github.com/onsi/{ginkgo,gomega}
 
 setup_dnsmasq
