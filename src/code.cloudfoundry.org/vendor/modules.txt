@@ -45,7 +45,7 @@ code.cloudfoundry.org/credhub-cli/errors
 # code.cloudfoundry.org/debugserver v0.0.0-20210608171006-d7658ce493f4
 ## explicit
 code.cloudfoundry.org/debugserver
-# code.cloudfoundry.org/diego-logging-client v0.0.0-20210622170659-8861ae5ba2ed
+# code.cloudfoundry.org/diego-logging-client v0.0.0-20220819172429-0486fc549e79
 ## explicit
 code.cloudfoundry.org/diego-logging-client
 code.cloudfoundry.org/diego-logging-client/testhelpers
@@ -68,7 +68,8 @@ code.cloudfoundry.org/garden/server/bomberman
 code.cloudfoundry.org/garden/server/streamer
 code.cloudfoundry.org/garden/server/timebomb
 code.cloudfoundry.org/garden/transport
-# code.cloudfoundry.org/go-diodes v0.0.0-20190809170250-f77fb823c7ee
+# code.cloudfoundry.org/go-diodes v0.0.0-20220725190411-383eb6634c40
+## explicit
 code.cloudfoundry.org/go-diodes
 # code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 ## explicit
@@ -99,7 +100,7 @@ code.cloudfoundry.org/lager/lagertest
 # code.cloudfoundry.org/localip v0.0.0-20210608161955-43c3ec713c20
 ## explicit
 code.cloudfoundry.org/localip
-# code.cloudfoundry.org/tlsconfig v0.0.0-20211123175040-23cc9f05b6b3
+# code.cloudfoundry.org/tlsconfig v0.0.0-20220621140725-0e6fbd869921
 ## explicit
 code.cloudfoundry.org/tlsconfig
 code.cloudfoundry.org/tlsconfig/certtest
@@ -677,7 +678,7 @@ github.com/onsi/ginkgo/reporters/stenographer
 github.com/onsi/ginkgo/reporters/stenographer/support/go-colorable
 github.com/onsi/ginkgo/reporters/stenographer/support/go-isatty
 github.com/onsi/ginkgo/types
-# github.com/onsi/gomega v1.19.0 => github.com/onsi/gomega v1.7.0
+# github.com/onsi/gomega v1.20.0 => github.com/onsi/gomega v1.7.0
 ## explicit
 github.com/onsi/gomega
 github.com/onsi/gomega/format
@@ -802,7 +803,7 @@ golang.org/x/crypto/pbkdf2
 golang.org/x/crypto/scrypt
 golang.org/x/crypto/ssh
 golang.org/x/crypto/ssh/internal/bcrypt_pbkdf
-# golang.org/x/net v0.0.0-20220412020605-290c469a71a5
+# golang.org/x/net v0.0.0-20220812174116-3211cb980234
 ## explicit
 golang.org/x/net/bpf
 golang.org/x/net/context
@@ -821,7 +822,7 @@ golang.org/x/net/ipv4
 golang.org/x/net/ipv6
 golang.org/x/net/proxy
 golang.org/x/net/trace
-# golang.org/x/sys v0.0.0-20220412211240-33da011f77ad
+# golang.org/x/sys v0.0.0-20220818161305-2296e01440c6
 ## explicit
 golang.org/x/sys/cpu
 golang.org/x/sys/execabs
@@ -863,10 +864,11 @@ golang.org/x/time/rate
 # golang.org/x/tools v0.1.10
 golang.org/x/tools/go/ast/inspector
 golang.org/x/tools/internal/typeparams
-# google.golang.org/genproto v0.0.0-20211208223120-3a66f561d7aa => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
+# google.golang.org/genproto v0.0.0-20220819153447-c7cd466b0e09 => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
+## explicit
 google.golang.org/genproto/googleapis/api/annotations
 google.golang.org/genproto/googleapis/rpc/status
-# google.golang.org/grpc v1.43.0 => google.golang.org/grpc v1.29.0-dev.0.20200306163155-d179e8f5cd96
+# google.golang.org/grpc v1.48.0 => google.golang.org/grpc v1.29.0-dev.0.20200306163155-d179e8f5cd96
 ## explicit
 google.golang.org/grpc
 google.golang.org/grpc/attributes

@@ -1,5 +1,5 @@
 module code.cloudfoundry.org/tlsconfig
 
-require github.com/square/certstrap v1.2.0
+go 1.17
 
-go 1.16
+require github.com/square/certstrap v1.2.0

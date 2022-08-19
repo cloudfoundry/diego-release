@@ -59,6 +59,19 @@ type FakeIngressClient struct {
 	sendAppLogReturnsOnCall map[int]struct {
 		result1 error
 	}
+	SendAppLogRateStub        func(float64, float64, map[string]string) error
+	sendAppLogRateMutex       sync.RWMutex
+	sendAppLogRateArgsForCall []struct {
+		arg1 float64
+		arg2 float64
+		arg3 map[string]string
+	}
+	sendAppLogRateReturns struct {
+		result1 error
+	}
+	sendAppLogRateReturnsOnCall map[int]struct {
+		result1 error
+	}
 	SendAppMetricsStub        func(diego_logging_client.ContainerMetric) error
 	sendAppMetricsMutex       sync.RWMutex
 	sendAppMetricsArgsForCall []struct {
@@ -406,6 +419,69 @@ func (fake *FakeIngressClient) SendAppLogReturnsOnCall(i int, result1 error) {
 		})
 	}
 	fake.sendAppLogReturnsOnCall[i] = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeIngressClient) SendAppLogRate(arg1 float64, arg2 float64, arg3 map[string]string) error {
+	fake.sendAppLogRateMutex.Lock()
+	ret, specificReturn := fake.sendAppLogRateReturnsOnCall[len(fake.sendAppLogRateArgsForCall)]
+	fake.sendAppLogRateArgsForCall = append(fake.sendAppLogRateArgsForCall, struct {
+		arg1 float64
+		arg2 float64
+		arg3 map[string]string
+	}{arg1, arg2, arg3})
+	stub := fake.SendAppLogRateStub
+	fakeReturns := fake.sendAppLogRateReturns
+	fake.recordInvocation("SendAppLogRate", []interface{}{arg1, arg2, arg3})
+	fake.sendAppLogRateMutex.Unlock()
+	if stub != nil {
+		return stub(arg1, arg2, arg3)
+	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fakeReturns.result1
+}
+
+func (fake *FakeIngressClient) SendAppLogRateCallCount() int {
+	fake.sendAppLogRateMutex.RLock()
+	defer fake.sendAppLogRateMutex.RUnlock()
+	return len(fake.sendAppLogRateArgsForCall)
+}
+
+func (fake *FakeIngressClient) SendAppLogRateCalls(stub func(float64, float64, map[string]string) error) {
+	fake.sendAppLogRateMutex.Lock()
+	defer fake.sendAppLogRateMutex.Unlock()
+	fake.SendAppLogRateStub = stub
+}
+
+func (fake *FakeIngressClient) SendAppLogRateArgsForCall(i int) (float64, float64, map[string]string) {
+	fake.sendAppLogRateMutex.RLock()
+	defer fake.sendAppLogRateMutex.RUnlock()
+	argsForCall := fake.sendAppLogRateArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
+}
+
+func (fake *FakeIngressClient) SendAppLogRateReturns(result1 error) {
+	fake.sendAppLogRateMutex.Lock()
+	defer fake.sendAppLogRateMutex.Unlock()
+	fake.SendAppLogRateStub = nil
+	fake.sendAppLogRateReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *FakeIngressClient) SendAppLogRateReturnsOnCall(i int, result1 error) {
+	fake.sendAppLogRateMutex.Lock()
+	defer fake.sendAppLogRateMutex.Unlock()
+	fake.SendAppLogRateStub = nil
+	if fake.sendAppLogRateReturnsOnCall == nil {
+		fake.sendAppLogRateReturnsOnCall = make(map[int]struct {
+			result1 error
+		})
+	}
+	fake.sendAppLogRateReturnsOnCall[i] = struct {
 		result1 error
 	}{result1}
 }
@@ -919,6 +995,8 @@ func (fake *FakeIngressClient) Invocations() map[string][][]interface{} {
 	defer fake.sendAppErrorLogMutex.RUnlock()
 	fake.sendAppLogMutex.RLock()
 	defer fake.sendAppLogMutex.RUnlock()
+	fake.sendAppLogRateMutex.RLock()
+	defer fake.sendAppLogRateMutex.RUnlock()
 	fake.sendAppMetricsMutex.RLock()
 	defer fake.sendAppMetricsMutex.RUnlock()
 	fake.sendBytesPerSecondMutex.RLock()

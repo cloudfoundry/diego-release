@@ -61,6 +61,7 @@ type IngressClient interface {
 	SendAppLog(message, sourceType string, tags map[string]string) error
 	SendAppErrorLog(message, sourceType string, tags map[string]string) error
 	SendAppMetrics(metrics ContainerMetric) error
+	SendAppLogRate(rate, rateLimit float64, tags map[string]string) error
 	SendSpikeMetrics(metrics SpikeMetric) error
 	SendComponentMetric(name string, value float64, unit string) error
 }
@@ -238,6 +239,16 @@ func (c client) SendAppMetrics(m ContainerMetric) error {
 		loggregator.WithEnvelopeTags(m.Tags),
 	)
 
+	return nil
+}
+
+func (c client) SendAppLogRate(rate, rateLimit float64, tags map[string]string) error {
+	c.client.EmitGauge(
+		loggregator.WithGaugeSourceInfo(tags["source_id"], tags["instance_id"]),
+		loggregator.WithGaugeValue("log_rate", rate, "B/s"),
+		loggregator.WithGaugeValue("log_rate_limit", rateLimit, "B/s"),
+		loggregator.WithEnvelopeTags(tags),
+	)
 	return nil
 }
 

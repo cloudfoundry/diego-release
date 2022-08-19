@@ -38,6 +38,9 @@ func (*noopIngressClient) SendAppErrorLog(message, sourceType string, tags map[s
 func (*noopIngressClient) SendAppMetrics(metrics ContainerMetric) error {
 	return nil
 }
+func (*noopIngressClient) SendAppLogRate(rate, rateLimit float64, tags map[string]string) error {
+	return nil
+}
 func (*noopIngressClient) SendSpikeMetrics(metrics SpikeMetric) error {
 	return nil
 }

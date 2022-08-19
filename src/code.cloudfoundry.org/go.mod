@@ -33,15 +33,16 @@ require (
 	code.cloudfoundry.org/consuladapter v0.0.0-20211122211027-9dbbfa656ee0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20220228140414-459eb2d27a1c
 	code.cloudfoundry.org/debugserver v0.0.0-20210608171006-d7658ce493f4
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20210622170659-8861ae5ba2ed
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20220819172429-0486fc549e79
 	code.cloudfoundry.org/durationjson v0.0.0-20210615172401-3a89d41c90da
 	code.cloudfoundry.org/eventhub v0.0.0-20210615172938-0b896ce72257
 	code.cloudfoundry.org/garden v0.0.0-20210608104724-fa3a10d59c82
+	code.cloudfoundry.org/go-diodes v0.0.0-20220725190411-383eb6634c40 // indirect
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/guardian v0.0.0-00010101000000-000000000000
 	code.cloudfoundry.org/lager v2.0.0+incompatible
 	code.cloudfoundry.org/localip v0.0.0-20210608161955-43c3ec713c20
-	code.cloudfoundry.org/tlsconfig v0.0.0-20211123175040-23cc9f05b6b3
+	code.cloudfoundry.org/tlsconfig v0.0.0-20220621140725-0e6fbd869921
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20210406150507-75cfd577ce75
 	github.com/armon/go-metrics v0.3.10 // indirect
@@ -80,7 +81,7 @@ require (
 	github.com/nats-io/nats.go v1.11.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/onsi/ginkgo v1.16.5
-	github.com/onsi/gomega v1.19.0
+	github.com/onsi/gomega v1.20.0
 	github.com/onsi/say v1.0.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/opencontainers/image-spec v1.0.3-0.20211202193544-a5463b7f9c84
@@ -95,10 +96,11 @@ require (
 	github.com/vito/go-sse v1.0.0
 	github.com/zorkian/go-datadog-api v2.30.0+incompatible
 	golang.org/x/crypto v0.0.0-20220214200702-86341886e292
-	golang.org/x/net v0.0.0-20220412020605-290c469a71a5
-	golang.org/x/sys v0.0.0-20220412211240-33da011f77ad
+	golang.org/x/net v0.0.0-20220812174116-3211cb980234
+	golang.org/x/sys v0.0.0-20220818161305-2296e01440c6
 	golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac
-	google.golang.org/grpc v1.43.0
+	google.golang.org/genproto v0.0.0-20220819153447-c7cd466b0e09 // indirect
+	google.golang.org/grpc v1.48.0
 	gopkg.in/asn1-ber.v1 v1.0.0-20181015200546-f715ec2f112d // indirect
 	gopkg.in/ldap.v2 v2.5.1
 	gopkg.in/yaml.v2 v2.4.0
