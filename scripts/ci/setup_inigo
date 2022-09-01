@@ -169,32 +169,21 @@ setup_database() {
   chmod 0600 "$cert_file"
   chmod 0600 "$key_file"
 
-  if [ "${SQL_FLAVOR}" = "mysql" ] || [ "${SQL_FLAVOR}" = "mysql8" ]; then
+  if [ "${SQL_FLAVOR}" = "mysql" ]; then
     source ${GOPATH_ROOT}/scripts/ci/initialize_mysql.sh
 
     chown mysql:mysql "$ca_file"
     chown mysql:mysql "$cert_file"
     chown mysql:mysql "$key_file"
 
-    if [ "${SQL_FLAVOR}" = "mysql8" ]; then
-      server_cnf_path="/etc/mysql/mysql.conf.d/mysqld.cnf"
+    server_cnf_path="/etc/mysql/mysql.conf.d/mysqld.cnf"
 
-      sed -i 's/# max_connections.*= 151/max_connections = 2000/g' "${server_cnf_path}"
-      echo "ssl-cert = $cert_file" >> "${server_cnf_path}"
-      echo "ssl-key = $key_file" >> "${server_cnf_path}"
-      echo "ssl-ca = $ca_file" >> "${server_cnf_path}"
+    sed -i 's/# max_connections.*= 151/max_connections = 2000/g' "${server_cnf_path}"
+    echo "ssl-cert = $cert_file" >> "${server_cnf_path}"
+    echo "ssl-key = $key_file" >> "${server_cnf_path}"
+    echo "ssl-ca = $ca_file" >> "${server_cnf_path}"
 
-      initialize_mysql8
-    else
-      server_cnf_path="/etc/mysql/mariadb.conf.d/50-server.cnf"
-
-      sed -i 's/#max_connections.*= 100/max_connections = 2000/g' "${server_cnf_path}"
-      sed -i "s%#ssl-cert = /etc/mysql/server-cert.pem%ssl-cert = $cert_file%g" "${server_cnf_path}"
-      sed -i "s%#ssl-key = /etc/mysql/server-key.pem%ssl-key = $key_file%g" "${server_cnf_path}"
-      sed -i "s%#ssl-ca = /etc/mysql/cacert.pem%ssl-ca = $ca_file%g" "${server_cnf_path}"
-
-      initialize_mysql
-    fi
+    initialize_mysql
   else
     sed -i 's/max_connections = 100/max_connections = 2000/g' /etc/postgresql/9.4/main/postgresql.conf
 
@@ -208,14 +197,6 @@ setup_database() {
     sed -i "s%#ssl_ca_file = ''%ssl_ca_file = '$ca_file'%g" /etc/postgresql/9.4/main/postgresql.conf
 
     service postgresql start
-  fi
-}
-
-cleanup() {
-  if [ "${SQL_FLAVOR}" = "mysql" ]; then
-    cleanup_mysql
-  elif [ "${SQL_FLAVOR}" = "mysql8" ]; then
-    cleanup_mysql8
   fi
 }
 
