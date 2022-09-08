@@ -14,7 +14,7 @@ replace (
 	github.com/gogo/protobuf => github.com/gogo/protobuf v1.3.2
 	github.com/golang/protobuf => github.com/golang/protobuf v1.3.2
 	github.com/hashicorp/consul => github.com/hashicorp/consul v0.7.0
-	github.com/nats-io/nats.go => github.com/nats-io/nats.go v1.9.1
+	github.com/nats-io/nats.go => github.com/nats-io/nats.go v1.16.0
 	github.com/onsi/gomega => github.com/onsi/gomega v1.7.0
 	github.com/spf13/cobra => github.com/spf13/cobra v0.0.0-20160722081547-f62e98d28ab7
 	github.com/zorkian/go-datadog-api => github.com/zorkian/go-datadog-api v0.0.0-20150915071709-8f1192dcd661
