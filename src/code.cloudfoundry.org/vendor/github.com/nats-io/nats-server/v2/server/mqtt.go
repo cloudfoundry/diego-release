@@ -1,4 +1,4 @@
-// Copyright 2020 The NATS Authors
+// Copyright 2020-2021 The NATS Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -113,6 +113,10 @@ const (
 	mqttRetainedMsgsStreamName    = mqttStreamNamePrefix + "rmsgs"
 	mqttRetainedMsgsStreamSubject = "$MQTT.rmsgs"
 
+	// Stream name for MQTT sessions on a given account
+	mqttSessStreamName          = mqttStreamNamePrefix + "sess"
+	mqttSessStreamSubjectPrefix = "$MQTT.sess."
+
 	// Stream name prefix for MQTT sessions on a given account
 	mqttSessionsStreamNamePrefix = mqttStreamNamePrefix + "sess_"
 
@@ -143,11 +147,14 @@ const (
 	mqttJSAStreamLookup   = "SL"
 	mqttJSAStreamDel      = "SD"
 	mqttJSAConsumerCreate = "CC"
+	mqttJSAConsumerLookup = "CL"
 	mqttJSAConsumerDel    = "CD"
 	mqttJSAMsgStore       = "MS"
 	mqttJSAMsgLoad        = "ML"
+	mqttJSAMsgDelete      = "MD"
 	mqttJSASessPersist    = "SP"
 	mqttJSARetainedMsgDel = "RD"
+	mqttJSAStreamNames    = "SN"
 
 	// Name of the header key added to NATS message to carry mqtt PUBLISH information
 	mqttNatsHeader = "Nmqtt-Pub"
@@ -159,6 +166,12 @@ const (
 
 	// This is how frequently the timer to cleanup the sessions flappers map is firing.
 	mqttSessFlappingCleanupInterval = 5 * time.Second
+
+	// Default retry delay if transfer of old session streams to new one fails
+	mqttDefaultTransferRetry = 5 * time.Second
+
+	// For Websocket URLs
+	mqttWSPath = "/mqtt"
 )
 
 var (
@@ -172,7 +185,7 @@ var (
 )
 
 var (
-	errMQTTWebsocketNotSupported    = errors.New("invalid connection, websocket currently not supported")
+	errMQTTNotWebsocketPort         = errors.New("MQTT clients over websocket must connect to the Websocket port, not the MQTT port")
 	errMQTTTopicFilterCannotBeEmpty = errors.New("topic filter cannot be empty")
 	errMQTTMalformedVarInt          = errors.New("malformed variable int")
 	errMQTTSecondConnectPacket      = errors.New("received a second CONNECT packet")
@@ -214,20 +227,23 @@ type mqttAccountSessionManager struct {
 	sl         *Sublist                    // sublist allowing to find retained messages for given subscription
 	retmsgs    map[string]*mqttRetainedMsg // retained messages
 	jsa        mqttJSA
-	replicas   int
 	rrmLastSeq uint64        // Restore retained messages expected last sequence
 	rrmDoneCh  chan struct{} // To notify the caller that all retained messages have been loaded
+	sp         *ipQueue      // of uint64. Used for cluster-wide processing of session records being persisted
+	domainTk   string        // Domain (with trailing "."), or possibly empty. This is added to session subject.
 }
 
 type mqttJSA struct {
-	mu      sync.Mutex
-	id      string
-	c       *client
-	sendq   chan *mqttJSPubMsg
-	rplyr   string
-	replies sync.Map
-	nuid    *nuid.NUID
-	quitCh  chan struct{}
+	mu        sync.Mutex
+	id        string
+	c         *client
+	sendq     *ipQueue // of *mqttJSPubMsg
+	rplyr     string
+	replies   sync.Map
+	nuid      *nuid.NUID
+	quitCh    chan struct{}
+	domain    string // Domain or possibly empty. This is added to session subject.
+	domainSet bool   // covers if domain was set, even to empty
 }
 
 type mqttJSPubMsg struct {
@@ -257,6 +273,7 @@ type mqttSession struct {
 	maxp     uint16
 	tmaxack  int
 	clean    bool
+	domainTk string
 }
 
 type mqttPersistedSession struct {
@@ -295,6 +312,7 @@ type mqtt struct {
 	pp   *mqttPublish
 	asm  *mqttAccountSessionManager // quick reference to account session manager, immutable after processConnect()
 	sess *mqttSession               // quick reference to session, immutable after processConnect()
+	cid  string                     // client ID
 }
 
 type mqttPending struct {
@@ -304,10 +322,9 @@ type mqttPending struct {
 }
 
 type mqttConnectProto struct {
-	clientID string
-	rd       time.Duration
-	will     *mqttWill
-	flags    byte
+	rd    time.Duration
+	will  *mqttWill
+	flags byte
 }
 
 type mqttIOReader interface {
@@ -319,6 +336,8 @@ type mqttReader struct {
 	reader mqttIOReader
 	buf    []byte
 	pos    int
+	pstart int
+	pbuf   []byte
 }
 
 type mqttWriter struct {
@@ -383,14 +402,14 @@ func (s *Server) startMQTT() {
 		scheme = "tls"
 	}
 	s.Noticef("Listening for MQTT clients on %s://%s:%d", scheme, o.Host, o.Port)
-	go s.acceptConnections(hl, "MQTT", func(conn net.Conn) { s.createMQTTClient(conn) }, nil)
+	go s.acceptConnections(hl, "MQTT", func(conn net.Conn) { s.createMQTTClient(conn, nil) }, nil)
 	s.mu.Unlock()
 }
 
 // This is similar to createClient() but has some modifications specifi to MQTT clients.
 // The comments have been kept to minimum to reduce code size. Check createClient() for
 // more details.
-func (s *Server) createMQTTClient(conn net.Conn) *client {
+func (s *Server) createMQTTClient(conn net.Conn, ws *websocket) *client {
 	opts := s.getOpts()
 
 	maxPay := int32(opts.MaxPayload)
@@ -400,7 +419,7 @@ func (s *Server) createMQTTClient(conn net.Conn) *client {
 	}
 	now := time.Now().UTC()
 
-	c := &client{srv: s, nc: conn, mpay: maxPay, msubs: maxSubs, start: now, last: now, mqtt: &mqtt{}}
+	c := &client{srv: s, nc: conn, mpay: maxPay, msubs: maxSubs, start: now, last: now, mqtt: &mqtt{}, ws: ws}
 	c.headers = true
 	c.mqtt.pp = &mqttPublish{}
 	// MQTT clients don't send NATS CONNECT protocols. So make it an "echo"
@@ -439,7 +458,8 @@ func (s *Server) createMQTTClient(conn net.Conn) *client {
 	}
 	s.clients[c.cid] = c
 
-	tlsRequired := opts.MQTT.TLSConfig != nil
+	// Websocket TLS handshake is already done when getting to this function.
+	tlsRequired := opts.MQTT.TLSConfig != nil && ws == nil
 	s.mu.Unlock()
 
 	c.mu.Lock()
@@ -557,6 +577,10 @@ func validateMQTTOptions(o *Options) error {
 	if err := validatePinnedCerts(mo.TLSPinnedCerts); err != nil {
 		return fmt.Errorf("mqtt: %v", err)
 	}
+	if mo.ConsumerReplicas > 0 && mo.StreamReplicas > 0 && mo.ConsumerReplicas > mo.StreamReplicas {
+		return fmt.Errorf("mqtt: consumer_replicas (%v) cannot be higher than stream_replicas (%v)",
+			mo.ConsumerReplicas, mo.StreamReplicas)
+	}
 	return nil
 }
 
@@ -564,6 +588,16 @@ func validateMQTTOptions(o *Options) error {
 // Lock held on entry.
 func (c *client) isMqtt() bool {
 	return c.mqtt != nil
+}
+
+// If this is an MQTT client, returns the session client ID,
+// otherwise returns the empty string.
+// Lock held on entry
+func (c *client) getMQTTClientID() string {
+	if !c.isMqtt() {
+		return _EMPTY_
+	}
+	return c.mqtt.cid
 }
 
 // Parse protocols inside the given buffer.
@@ -589,8 +623,12 @@ func (c *client) mqttParse(buf []byte) error {
 	var err error
 	var b byte
 	var pl int
+	var complete bool
 
 	for err == nil && r.hasMore() {
+
+		// Keep track of the starting of the packet, in case we have a partial
+		r.pstart = r.pos
 
 		// Read packet type and flags
 		if b, err = r.readByte("packet type"); err != nil {
@@ -603,17 +641,19 @@ func (c *client) mqttParse(buf []byte) error {
 		// If client was not connected yet, the first packet must be
 		// a mqttPacketConnect otherwise we fail the connection.
 		if !connected && pt != mqttPacketConnect {
-			// Try to guess if the client is trying to connect using Websocket,
-			// which is currently not supported
-			if bytes.HasPrefix(buf, []byte("GET ")) {
-				err = errMQTTWebsocketNotSupported
+			// If the buffer indicates that it may be a websocket handshake
+			// but the client is not websocket, it means that the client
+			// connected to the MQTT port instead of the Websocket port.
+			if bytes.HasPrefix(buf, []byte("GET ")) && !c.isWebsocket() {
+				err = errMQTTNotWebsocketPort
 			} else {
 				err = fmt.Errorf("the first packet should be a CONNECT (%v), got %v", mqttPacketConnect, pt)
 			}
 			break
 		}
 
-		if pl, err = r.readPacketLen(); err != nil {
+		pl, complete, err = r.readPacketLen()
+		if err != nil || !complete {
 			break
 		}
 
@@ -698,6 +738,10 @@ func (c *client) mqttParse(buf []byte) error {
 			var cp *mqttConnectProto
 			var sessp bool
 			rc, cp, err = c.mqttParseConnect(r, pl)
+			// Add the client id to the client's string, regardless of error.
+			// We may still get the client_id if the call above fails somewhere
+			// after parsing the client ID itself.
+			c.ncs.Store(fmt.Sprintf("%s - %q", c, c.mqtt.cid))
 			if trace && cp != nil {
 				c.traceInOp("CONNECT", errOrTrace(err, c.mqttConnectTrace(cp)))
 			}
@@ -710,6 +754,9 @@ func (c *client) mqttParse(buf []byte) error {
 				if err = s.mqttProcessConnect(c, cp, trace); err != nil {
 					err = fmt.Errorf("unable to connect: %v", err)
 				} else {
+					// Add this debug statement so users running in Debug mode
+					// will have the client id printed here for the first time.
+					c.Debugf("Client connected")
 					connected = true
 					rd = cp.rd
 				}
@@ -790,7 +837,9 @@ func (s *Server) mqttHandleClosedClient(c *client) {
 
 	// This needs to be done outside of any lock.
 	if doClean {
-		sess.clear(true)
+		if err := sess.clear(); err != nil {
+			c.Errorf(err.Error())
+		}
 	}
 
 	// Now handle the "will". This function will be a no-op if there is no "will" to send.
@@ -873,26 +922,62 @@ func (s *Server) mqttCreateAccountSessionManager(acc *Account, quitCh chan struc
 
 	accName := acc.GetName()
 
+	opts := s.getOpts()
 	c := s.createInternalAccountClient()
 	c.acc = acc
 
 	id := string(getHash(s.Name()))
-	replicas := s.mqttDetermineReplicas()
-	s.Noticef("Creating MQTT streams/consumers with replicas %v for account %q", replicas, accName)
+	replicas := opts.MQTT.StreamReplicas
+	if replicas <= 0 {
+		replicas = s.mqttDetermineReplicas()
+	}
+	qname := fmt.Sprintf("[ACC:%s] MQTT ", accName)
 	as := &mqttAccountSessionManager{
 		sessions:   make(map[string]*mqttSession),
 		sessByHash: make(map[string]*mqttSession),
 		sessLocked: make(map[string]struct{}),
 		flappers:   make(map[string]int64),
-		replicas:   replicas,
 		jsa: mqttJSA{
 			id:     id,
 			c:      c,
 			rplyr:  mqttJSARepliesPrefix + id + ".",
-			sendq:  make(chan *mqttJSPubMsg, 8192),
+			sendq:  s.newIPQueue(qname + "send"), // of *mqttJSPubMsg
 			nuid:   nuid.New(),
 			quitCh: quitCh,
 		},
+		sp: s.newIPQueue(qname + "sp"), // of uint64
+	}
+	// TODO record domain name in as here
+
+	// The domain to communicate with may be required for JS calls.
+	// Search from specific (per account setting) to generic (mqtt setting)
+	if opts.JsAccDefaultDomain != nil {
+		if d, ok := opts.JsAccDefaultDomain[accName]; ok {
+			if d != _EMPTY_ {
+				as.jsa.domain = d
+			}
+			as.jsa.domainSet = true
+		}
+		// in case domain was set to empty, check if there are more generic domain overwrites
+	}
+	if as.jsa.domain == _EMPTY_ {
+		if d := opts.MQTT.JsDomain; d != _EMPTY_ {
+			as.jsa.domain = d
+			as.jsa.domainSet = true
+		}
+	}
+	// We need to include the domain in the subject prefix used to store sessions in the $MQTT_sess stream.
+	if as.jsa.domainSet {
+		if as.jsa.domain != _EMPTY_ {
+			as.domainTk = as.jsa.domain + "."
+		}
+	} else if d := s.getOpts().JetStreamDomain; d != _EMPTY_ {
+		as.domainTk = d + "."
+	}
+	if as.jsa.domainSet {
+		s.Noticef("Creating MQTT streams/consumers with replicas %v for account %q in domain %q", replicas, accName, as.jsa.domain)
+	} else {
+		s.Noticef("Creating MQTT streams/consumers with replicas %v for account %q", replicas, accName)
 	}
 
 	var subs []*subscription
@@ -954,34 +1039,94 @@ func (s *Server) mqttCreateAccountSessionManager(acc *Account, quitCh chan struc
 		as.sendJSAPIrequests(s, c, accName, closeCh)
 	})
 
-	// Create the stream for the messages.
-	cfg := &StreamConfig{
-		Name:      mqttStreamName,
-		Subjects:  []string{mqttStreamSubjectPrefix + ">"},
-		Storage:   FileStorage,
-		Retention: InterestPolicy,
-		Replicas:  as.replicas,
-	}
-	if _, err := jsa.createStream(cfg); isErrorOtherThan(err, ErrJetStreamStreamAlreadyUsed) {
-		return nil, fmt.Errorf("create messages stream for account %q: %v", acc.GetName(), err)
+	// Start the go routine that will handle network updates regarding sessions
+	s.startGoRoutine(func() {
+		defer s.grWG.Done()
+		as.sessPersistProcessing(closeCh)
+	})
+
+	lookupStream := func(stream, txt string) (*StreamInfo, error) {
+		si, err := jsa.lookupStream(stream)
+		if err != nil {
+			if IsNatsErr(err, JSStreamNotFoundErr) {
+				return nil, nil
+			}
+			return nil, fmt.Errorf("lookup %s stream for account %q: %v", txt, accName, err)
+		}
+		if opts.MQTT.StreamReplicas == 0 {
+			return si, nil
+		}
+		sr := 1
+		if si.Cluster != nil {
+			sr += len(si.Cluster.Replicas)
+		}
+		if replicas != sr {
+			s.Warnf("MQTT %s stream replicas mismatch: current is %v but configuration is %v for '%s > %s'",
+				txt, sr, replicas, accName, stream)
+		}
+		return si, nil
 	}
 
-	// Create the stream for retained messages.
-	cfg = &StreamConfig{
-		Name:      mqttRetainedMsgsStreamName,
-		Subjects:  []string{mqttRetainedMsgsStreamSubject},
-		Storage:   FileStorage,
-		Retention: LimitsPolicy,
-		Replicas:  as.replicas,
+	if si, err := lookupStream(mqttSessStreamName, "sessions"); err != nil {
+		return nil, err
+	} else if si == nil {
+		// Create the stream for the sessions.
+		cfg := &StreamConfig{
+			Name:       mqttSessStreamName,
+			Subjects:   []string{mqttSessStreamSubjectPrefix + as.domainTk + ">"},
+			Storage:    FileStorage,
+			Retention:  LimitsPolicy,
+			Replicas:   replicas,
+			MaxMsgsPer: 1,
+		}
+		if _, created, err := jsa.createStream(cfg); err == nil && created {
+			as.transferUniqueSessStreamsToMuxed(s)
+		} else if isErrorOtherThan(err, JSStreamNameExistErr) {
+			return nil, fmt.Errorf("create sessions stream for account %q: %v", accName, err)
+		}
 	}
-	si, err := jsa.createStream(cfg)
-	if isErrorOtherThan(err, ErrJetStreamStreamAlreadyUsed) {
-		return nil, fmt.Errorf("create retained messages stream for account %q: %v", acc.GetName(), err)
+
+	if si, err := lookupStream(mqttStreamName, "messages"); err != nil {
+		return nil, err
+	} else if si == nil {
+		// Create the stream for the messages.
+		cfg := &StreamConfig{
+			Name:      mqttStreamName,
+			Subjects:  []string{mqttStreamSubjectPrefix + ">"},
+			Storage:   FileStorage,
+			Retention: InterestPolicy,
+			Replicas:  replicas,
+		}
+		if _, _, err := jsa.createStream(cfg); isErrorOtherThan(err, JSStreamNameExistErr) {
+			return nil, fmt.Errorf("create messages stream for account %q: %v", accName, err)
+		}
 	}
+
+	// This is the only case where we need "si" after lookup/create
+	si, err := lookupStream(mqttRetainedMsgsStreamName, "retained messages")
 	if err != nil {
-		si, err = jsa.lookupStream(mqttRetainedMsgsStreamName)
+		return nil, err
+	} else if si == nil {
+		// Create the stream for retained messages.
+		cfg := &StreamConfig{
+			Name:      mqttRetainedMsgsStreamName,
+			Subjects:  []string{mqttRetainedMsgsStreamSubject},
+			Storage:   FileStorage,
+			Retention: LimitsPolicy,
+			Replicas:  replicas,
+		}
+		// We will need "si" outside of this block.
+		si, _, err = jsa.createStream(cfg)
 		if err != nil {
-			return nil, fmt.Errorf("lookup retained messages stream for account %q: %v", acc.GetName(), err)
+			if isErrorOtherThan(err, JSStreamNameExistErr) {
+				return nil, fmt.Errorf("create retained messages stream for account %q: %v", accName, err)
+			}
+			// Suppose we had a race and the stream was actually created by another
+			// node, we really need "si" after that, so lookup the stream again here.
+			si, err = lookupStream(mqttRetainedMsgsStreamName, "retained messages")
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 
@@ -999,15 +1144,14 @@ func (s *Server) mqttCreateAccountSessionManager(acc *Account, quitCh chan struc
 
 	// Using ephemeral consumer is too risky because if this server were to be
 	// disconnected from the rest for few seconds, then the leader would remove
-	// the consumer, so even after a reconnect, we would not longer receive
+	// the consumer, so even after a reconnect, we would no longer receive
 	// retained messages. Delete any existing durable that we have for that
 	// and recreate here.
 	// The name for the durable is $MQTT_rmsgs_<server name hash> (which is jsa.id)
 	rmDurName := mqttRetainedMsgsStreamName + "_" + jsa.id
-	resp, err := jsa.deleteConsumer(mqttRetainedMsgsStreamName, rmDurName)
 	// If error other than "not found" then fail, otherwise proceed with creating
 	// the durable consumer.
-	if err != nil && (resp == nil || resp.Error.Code != 404) {
+	if _, err := jsa.deleteConsumer(mqttRetainedMsgsStreamName, rmDurName); isErrorOtherThan(err, JSConsumerNotFoundErr) {
 		return nil, err
 	}
 	ccfg := &CreateConsumerRequest{
@@ -1021,7 +1165,7 @@ func (s *Server) mqttCreateAccountSessionManager(acc *Account, quitCh chan struc
 		},
 	}
 	if _, err := jsa.createConsumer(ccfg); err != nil {
-		return nil, fmt.Errorf("create retained messages consumer for account %q: %v", acc.GetName(), err)
+		return nil, fmt.Errorf("create retained messages consumer for account %q: %v", accName, err)
 	}
 
 	if lastSeq > 0 {
@@ -1075,23 +1219,39 @@ func (jsa *mqttJSA) newRequest(kind, subject string, hdr int, msg []byte) (inter
 	return jsa.newRequestEx(kind, subject, hdr, msg, mqttJSAPITimeout)
 }
 
+func (jsa *mqttJSA) prefixDomain(subject string) string {
+	if jsa.domain != _EMPTY_ {
+		// rewrite js api prefix with domain
+		if sub := strings.TrimPrefix(subject, JSApiPrefix+"."); sub != subject {
+			subject = fmt.Sprintf("$JS.%s.API.%s", jsa.domain, sub)
+		}
+	}
+	return subject
+}
+
 func (jsa *mqttJSA) newRequestEx(kind, subject string, hdr int, msg []byte, timeout time.Duration) (interface{}, error) {
 	jsa.mu.Lock()
 	// Either we use nuid.Next() which uses a global lock, or our own nuid object, but
 	// then it needs to be "write" protected. This approach will reduce across account
 	// contention since we won't use the global nuid's lock.
-	reply := jsa.rplyr + kind + "." + jsa.nuid.Next()
+	var sb strings.Builder
+	sb.WriteString(jsa.rplyr)
+	sb.WriteString(kind)
+	sb.WriteByte(btsep)
+	sb.WriteString(jsa.nuid.Next())
+	reply := sb.String()
 	jsa.mu.Unlock()
 
 	ch := make(chan interface{}, 1)
 	jsa.replies.Store(reply, ch)
 
-	jsa.sendq <- &mqttJSPubMsg{
+	subject = jsa.prefixDomain(subject)
+	jsa.sendq.push(&mqttJSPubMsg{
 		subj:  subject,
 		reply: reply,
 		hdr:   hdr,
 		msg:   msg,
-	}
+	})
 
 	var i interface{}
 	// We don't want to use time.After() which causes memory growth because the timer
@@ -1110,18 +1270,6 @@ func (jsa *mqttJSA) newRequestEx(kind, subject string, hdr int, msg []byte, time
 	return i, nil
 }
 
-// If `e` is not nil, returns an error corresponding to e.Description, if not empty,
-// or an error of the form: "code %d".
-func convertApiErrorToError(e *ApiError) error {
-	if e == nil {
-		return nil
-	}
-	if e.Description == _EMPTY_ {
-		return fmt.Errorf("code %d", e.Code)
-	}
-	return errors.New(e.Description)
-}
-
 func (jsa *mqttJSA) createConsumer(cfg *CreateConsumerRequest) (*JSApiConsumerCreateResponse, error) {
 	cfgb, err := json.Marshal(cfg)
 	if err != nil {
@@ -1138,7 +1286,7 @@ func (jsa *mqttJSA) createConsumer(cfg *CreateConsumerRequest) (*JSApiConsumerCr
 		return nil, err
 	}
 	ccr := ccri.(*JSApiConsumerCreateResponse)
-	return ccr, convertApiErrorToError(ccr.Error)
+	return ccr, ccr.ToError()
 }
 
 func (jsa *mqttJSA) deleteConsumer(streamName, consName string) (*JSApiConsumerDeleteResponse, error) {
@@ -1148,20 +1296,20 @@ func (jsa *mqttJSA) deleteConsumer(streamName, consName string) (*JSApiConsumerD
 		return nil, err
 	}
 	cdr := cdri.(*JSApiConsumerDeleteResponse)
-	return cdr, convertApiErrorToError(cdr.Error)
+	return cdr, cdr.ToError()
 }
 
-func (jsa *mqttJSA) createStream(cfg *StreamConfig) (*StreamInfo, error) {
+func (jsa *mqttJSA) createStream(cfg *StreamConfig) (*StreamInfo, bool, error) {
 	cfgb, err := json.Marshal(cfg)
 	if err != nil {
-		return nil, err
+		return nil, false, err
 	}
 	scri, err := jsa.newRequest(mqttJSAStreamCreate, fmt.Sprintf(JSApiStreamCreateT, cfg.Name), 0, cfgb)
 	if err != nil {
-		return nil, err
+		return nil, false, err
 	}
 	scr := scri.(*JSApiStreamCreateResponse)
-	return scr.StreamInfo, convertApiErrorToError(scr.Error)
+	return scr.StreamInfo, scr.DidCreate, scr.ToError()
 }
 
 func (jsa *mqttJSA) lookupStream(name string) (*StreamInfo, error) {
@@ -1170,7 +1318,7 @@ func (jsa *mqttJSA) lookupStream(name string) (*StreamInfo, error) {
 		return nil, err
 	}
 	slr := slri.(*JSApiStreamInfoResponse)
-	return slr.StreamInfo, convertApiErrorToError(slr.Error)
+	return slr.StreamInfo, slr.ToError()
 }
 
 func (jsa *mqttJSA) deleteStream(name string) (bool, error) {
@@ -1179,7 +1327,21 @@ func (jsa *mqttJSA) deleteStream(name string) (bool, error) {
 		return false, err
 	}
 	sdr := sdri.(*JSApiStreamDeleteResponse)
-	return sdr.Success, convertApiErrorToError(sdr.Error)
+	return sdr.Success, sdr.ToError()
+}
+
+func (jsa *mqttJSA) loadLastMsgFor(streamName string, subject string) (*StoredMsg, error) {
+	mreq := &JSApiMsgGetRequest{LastFor: subject}
+	req, err := json.Marshal(mreq)
+	if err != nil {
+		return nil, err
+	}
+	lmri, err := jsa.newRequest(mqttJSAMsgLoad, fmt.Sprintf(JSApiMsgGetT, streamName), 0, req)
+	if err != nil {
+		return nil, err
+	}
+	lmr := lmri.(*JSApiMsgGetResponse)
+	return lmr.Message, lmr.ToError()
 }
 
 func (jsa *mqttJSA) loadMsg(streamName string, seq uint64) (*StoredMsg, error) {
@@ -1193,7 +1355,7 @@ func (jsa *mqttJSA) loadMsg(streamName string, seq uint64) (*StoredMsg, error) {
 		return nil, err
 	}
 	lmr := lmri.(*JSApiMsgGetResponse)
-	return lmr.Message, convertApiErrorToError(lmr.Error)
+	return lmr.Message, lmr.ToError()
 }
 
 func (jsa *mqttJSA) storeMsg(subject string, headers int, msg []byte) (*JSPubAckResponse, error) {
@@ -1206,16 +1368,26 @@ func (jsa *mqttJSA) storeMsgWithKind(kind, subject string, headers int, msg []by
 		return nil, err
 	}
 	smr := smri.(*JSPubAckResponse)
-	return smr, convertApiErrorToError(smr.Error)
+	return smr, smr.ToError()
 }
 
-func (jsa *mqttJSA) deleteMsg(stream string, seq uint64) {
+func (jsa *mqttJSA) deleteMsg(stream string, seq uint64, wait bool) error {
 	dreq := JSApiMsgDeleteRequest{Seq: seq, NoErase: true}
 	req, _ := json.Marshal(dreq)
-	jsa.sendq <- &mqttJSPubMsg{
-		subj: fmt.Sprintf(JSApiMsgDeleteT, stream),
-		msg:  req,
+	subj := jsa.prefixDomain(fmt.Sprintf(JSApiMsgDeleteT, stream))
+	if !wait {
+		jsa.sendq.push(&mqttJSPubMsg{
+			subj: subj,
+			msg:  req,
+		})
+		return nil
 	}
+	dmi, err := jsa.newRequest(mqttJSAMsgDelete, subj, 0, req)
+	if err != nil {
+		return err
+	}
+	dm := dmi.(*JSApiMsgDeleteResponse)
+	return dm.ToError()
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -1224,17 +1396,15 @@ func (jsa *mqttJSA) deleteMsg(stream string, seq uint64) {
 //
 //////////////////////////////////////////////////////////////////////////////
 
-// Returns true if `err1` is not nil and does not match `err2`, that is
-// their error strings are different.
-// Assumes that `err2` is never nil.
-func isErrorOtherThan(err1, err2 error) bool {
-	return err1 != nil && err1.Error() != err2.Error()
+// Returns true if `err` is not nil and does not match the api error with ErrorIdentifier id
+func isErrorOtherThan(err error, id ErrorIdentifier) bool {
+	return err != nil && !IsNatsErr(err, id)
 }
 
 // Process JS API replies.
 //
 // Can run from various go routines (consumer's loop, system send loop, etc..).
-func (as *mqttAccountSessionManager) processJSAPIReplies(_ *subscription, pc *client, subject, _ string, msg []byte) {
+func (as *mqttAccountSessionManager) processJSAPIReplies(_ *subscription, pc *client, _ *Account, subject, _ string, msg []byte) {
 	token := tokenAt(subject, mqttJSATokenPos)
 	if token == _EMPTY_ {
 		return
@@ -1250,43 +1420,55 @@ func (as *mqttAccountSessionManager) processJSAPIReplies(_ *subscription, pc *cl
 	case mqttJSAStreamCreate:
 		var resp = &JSApiStreamCreateResponse{}
 		if err := json.Unmarshal(msg, resp); err != nil {
-			resp.Error = jsInvalidJSONErr
+			resp.Error = NewJSInvalidJSONError()
 		}
 		ch <- resp
 	case mqttJSAStreamLookup:
 		var resp = &JSApiStreamInfoResponse{}
 		if err := json.Unmarshal(msg, &resp); err != nil {
-			resp.Error = jsInvalidJSONErr
+			resp.Error = NewJSInvalidJSONError()
 		}
 		ch <- resp
 	case mqttJSAStreamDel:
 		var resp = &JSApiStreamDeleteResponse{}
 		if err := json.Unmarshal(msg, &resp); err != nil {
-			resp.Error = jsInvalidJSONErr
+			resp.Error = NewJSInvalidJSONError()
 		}
 		ch <- resp
 	case mqttJSAConsumerCreate:
 		var resp = &JSApiConsumerCreateResponse{}
 		if err := json.Unmarshal(msg, resp); err != nil {
-			resp.Error = jsInvalidJSONErr
+			resp.Error = NewJSInvalidJSONError()
 		}
 		ch <- resp
 	case mqttJSAConsumerDel:
 		var resp = &JSApiConsumerDeleteResponse{}
 		if err := json.Unmarshal(msg, resp); err != nil {
-			resp.Error = jsInvalidJSONErr
+			resp.Error = NewJSInvalidJSONError()
 		}
 		ch <- resp
 	case mqttJSAMsgStore, mqttJSASessPersist:
 		var resp = &JSPubAckResponse{}
 		if err := json.Unmarshal(msg, resp); err != nil {
-			resp.Error = jsInvalidJSONErr
+			resp.Error = NewJSInvalidJSONError()
 		}
 		ch <- resp
 	case mqttJSAMsgLoad:
 		var resp = &JSApiMsgGetResponse{}
 		if err := json.Unmarshal(msg, resp); err != nil {
-			resp.Error = jsInvalidJSONErr
+			resp.Error = NewJSInvalidJSONError()
+		}
+		ch <- resp
+	case mqttJSAStreamNames:
+		var resp = &JSApiStreamNamesResponse{}
+		if err := json.Unmarshal(msg, resp); err != nil {
+			resp.Error = NewJSInvalidJSONError()
+		}
+		ch <- resp
+	case mqttJSAMsgDelete:
+		var resp = &JSApiMsgDeleteResponse{}
+		if err := json.Unmarshal(msg, resp); err != nil {
+			resp.Error = NewJSInvalidJSONError()
 		}
 		ch <- resp
 	default:
@@ -1298,7 +1480,7 @@ func (as *mqttAccountSessionManager) processJSAPIReplies(_ *subscription, pc *cl
 //
 // Run from various go routines (JS consumer, etc..).
 // No lock held on entry.
-func (as *mqttAccountSessionManager) processRetainedMsg(_ *subscription, c *client, subject, reply string, rmsg []byte) {
+func (as *mqttAccountSessionManager) processRetainedMsg(_ *subscription, c *client, _ *Account, subject, reply string, rmsg []byte) {
 	_, msg := c.msgParts(rmsg)
 	rm := &mqttRetainedMsg{}
 	if err := json.Unmarshal(msg, rm); err != nil {
@@ -1324,7 +1506,7 @@ func (as *mqttAccountSessionManager) processRetainedMsg(_ *subscription, c *clie
 	}
 }
 
-func (as *mqttAccountSessionManager) processRetainedMsgDel(_ *subscription, c *client, subject, reply string, rmsg []byte) {
+func (as *mqttAccountSessionManager) processRetainedMsgDel(_ *subscription, c *client, _ *Account, subject, reply string, rmsg []byte) {
 	idHash := tokenAt(subject, 3)
 	if idHash == _EMPTY_ || idHash == as.jsa.id {
 		return
@@ -1348,7 +1530,7 @@ func (as *mqttAccountSessionManager) processRetainedMsgDel(_ *subscription, c *c
 //
 // Can run from various go routines (system send loop, etc..).
 // No lock held on entry.
-func (as *mqttAccountSessionManager) processSessionPersist(_ *subscription, pc *client, subject, _ string, rmsg []byte) {
+func (as *mqttAccountSessionManager) processSessionPersist(_ *subscription, pc *client, _ *Account, subject, _ string, rmsg []byte) {
 	// Ignore our own responses here (they are handled elsewhere)
 	if tokenAt(subject, mqttJSAIdTokenPos) == as.jsa.id {
 		return
@@ -1361,10 +1543,32 @@ func (as *mqttAccountSessionManager) processSessionPersist(_ *subscription, pc *
 	if err := json.Unmarshal(msg, par); err != nil {
 		return
 	}
-	if err := convertApiErrorToError(par.Error); err != nil {
+	if err := par.Error; err != nil {
 		return
 	}
-	cIDHash := strings.TrimPrefix(par.Stream, mqttSessionsStreamNamePrefix)
+	as.mu.RLock()
+	// Note that as.domainTk includes a terminal '.', so strip to compare to PubAck.Domain.
+	dl := len(as.domainTk)
+	if dl > 0 {
+		dl--
+	}
+	ignore := par.Domain != as.domainTk[:dl]
+	as.mu.RUnlock()
+	if ignore {
+		return
+	}
+	// We would need to lookup the message and that would be a request/reply,
+	// which we can't do in place here. So move that to a long-running routine
+	// that will process the session persist record.
+	as.sp.push(par.Sequence)
+}
+
+func (as *mqttAccountSessionManager) processSessPersistRecord(seq uint64) {
+	smsg, err := as.jsa.loadMsg(mqttSessStreamName, seq)
+	if err != nil {
+		return
+	}
+	cIDHash := strings.TrimPrefix(smsg.Subject, mqttSessStreamSubjectPrefix+as.domainTk)
 
 	as.mu.Lock()
 	defer as.mu.Unlock()
@@ -1374,7 +1578,10 @@ func (as *mqttAccountSessionManager) processSessionPersist(_ *subscription, pc *
 	}
 	// If our current session's stream sequence is higher, it means that this
 	// update is stale, so we don't do anything here.
-	if par.Sequence < sess.seq {
+	sess.mu.Lock()
+	ignore := seq < sess.seq
+	sess.mu.Unlock()
+	if ignore {
 		return
 	}
 	as.removeSession(sess, false)
@@ -1390,6 +1597,28 @@ func (as *mqttAccountSessionManager) processSessionPersist(_ *subscription, pc *
 		go ec.closeConnection(DuplicateClientID)
 	}
 	sess.mu.Unlock()
+}
+
+func (as *mqttAccountSessionManager) sessPersistProcessing(closeCh chan struct{}) {
+	as.mu.RLock()
+	sp := as.sp
+	quitCh := as.jsa.quitCh
+	as.mu.RUnlock()
+
+	for {
+		select {
+		case <-sp.ch:
+			seqs := sp.pop()
+			for _, seq := range seqs {
+				as.processSessPersistRecord(seq.(uint64))
+			}
+			sp.recycle(&seqs)
+		case <-closeCh:
+			return
+		case <-quitCh:
+			return
+		}
+	}
 }
 
 // Adds this client ID to the flappers map, and if needed start the timer
@@ -1446,7 +1675,8 @@ func (as *mqttAccountSessionManager) createSubscription(subject string, cb msgHa
 // No lock held on entry.
 func (as *mqttAccountSessionManager) sendJSAPIrequests(s *Server, c *client, accName string, closeCh chan struct{}) {
 	var cluster string
-	if s.JetStreamEnabled() {
+	if s.JetStreamEnabled() && !as.jsa.domainSet {
+		// Only request the own cluster when it is clear that
 		cluster = s.cachedClusterName()
 	}
 	as.mu.RLock()
@@ -1477,44 +1707,49 @@ func (as *mqttAccountSessionManager) sendJSAPIrequests(s *Server, c *client, acc
 
 	for {
 		select {
-		case r := <-sendq:
+		case <-sendq.ch:
+			pmis := sendq.pop()
+			for _, pmi := range pmis {
+				r := pmi.(*mqttJSPubMsg)
 
-			var nsize int
+				var nsize int
 
-			msg := r.msg
-			// If r.hdr is set to -1, it means that there is no need for any header.
-			if r.hdr != -1 {
-				bb := bytes.Buffer{}
-				if r.hdr > 0 {
-					// This means that the header has been set by the caller and is
-					// already part of `msg`, so simply set c.pa.hdr to the given value.
-					c.pa.hdr = r.hdr
+				msg := r.msg
+				// If r.hdr is set to -1, it means that there is no need for any header.
+				if r.hdr != -1 {
+					bb := bytes.Buffer{}
+					if r.hdr > 0 {
+						// This means that the header has been set by the caller and is
+						// already part of `msg`, so simply set c.pa.hdr to the given value.
+						c.pa.hdr = r.hdr
+						nsize = len(msg)
+						msg = append(msg, _CRLF_...)
+					} else {
+						// We need the ClientInfo header, so add it here.
+						bb.Write(hdrb)
+						c.pa.hdr = bb.Len()
+						bb.Write(r.msg)
+						nsize = bb.Len()
+						bb.WriteString(_CRLF_)
+						msg = bb.Bytes()
+					}
+					c.pa.hdb = []byte(strconv.Itoa(c.pa.hdr))
+				} else {
+					c.pa.hdr = -1
+					c.pa.hdb = nil
 					nsize = len(msg)
 					msg = append(msg, _CRLF_...)
-				} else {
-					// We need the ClientInfo header, so add it here.
-					bb.Write(hdrb)
-					c.pa.hdr = bb.Len()
-					bb.Write(r.msg)
-					nsize = bb.Len()
-					bb.WriteString(_CRLF_)
-					msg = bb.Bytes()
 				}
-				c.pa.hdb = []byte(strconv.Itoa(c.pa.hdr))
-			} else {
-				c.pa.hdr = -1
-				c.pa.hdb = nil
-				nsize = len(msg)
-				msg = append(msg, _CRLF_...)
+
+				c.pa.subject = []byte(r.subj)
+				c.pa.reply = []byte(r.reply)
+				c.pa.size = nsize
+				c.pa.szb = []byte(strconv.Itoa(nsize))
+
+				c.processInboundClientMsg(msg)
+				c.flushClients(0)
 			}
-
-			c.pa.subject = []byte(r.subj)
-			c.pa.reply = []byte(r.reply)
-			c.pa.size = nsize
-			c.pa.szb = []byte(strconv.Itoa(nsize))
-
-			c.processInboundClientMsg(msg)
-			c.flushClients(0)
+			sendq.recycle(&pmis)
 
 		case <-closeCh:
 			return
@@ -1712,12 +1947,18 @@ func (as *mqttAccountSessionManager) processSubs(sess *mqttSession, c *client,
 	// Helper that sets the sub's mqtt fields and possibly serialize retained messages.
 	// Assumes account manager and session lock held.
 	setupSub := func(sub *subscription, qos byte) {
-		if sub.mqtt == nil {
-			sub.mqtt = &mqttSub{}
+		subs := []*subscription{sub}
+		if len(sub.shadow) > 0 {
+			subs = append(subs, sub.shadow...)
 		}
-		sub.mqtt.qos = qos
-		if fromSubProto {
-			as.serializeRetainedMsgsForSub(sess, c, sub, trace)
+		for _, sub := range subs {
+			if sub.mqtt == nil {
+				sub.mqtt = &mqttSub{}
+			}
+			sub.mqtt.qos = qos
+			if fromSubProto {
+				as.serializeRetainedMsgsForSub(sess, c, sub, trace)
+			}
 		}
 	}
 
@@ -1863,69 +2104,33 @@ func (as *mqttAccountSessionManager) getRetainedPublishMsgs(subject string, rms 
 // Runs from the client's readLoop.
 // Lock not held on entry, but session is in the locked map.
 func (as *mqttAccountSessionManager) createOrRestoreSession(clientID string, opts *Options) (*mqttSession, bool, error) {
-	// Add the JS domain (possibly empty) to the client ID, which will make
-	// session stream/filter subject be unique per domain. So if an application
-	// with the same client ID moves to the other domain, then there won't be
-	// conflict of session message in one domain updating the session's stream
-	// in others.
-	hash := string(getHash(opts.JetStreamDomain + clientID))
-	sname := mqttSessionsStreamNamePrefix + hash
-	cfg := &StreamConfig{
-		Name:      sname,
-		Subjects:  []string{sname},
-		Storage:   FileStorage,
-		Retention: LimitsPolicy,
-		MaxMsgs:   1,
-		Replicas:  as.replicas,
-	}
 	jsa := &as.jsa
 	formatError := func(errTxt string, err error) (*mqttSession, bool, error) {
 		accName := jsa.c.acc.GetName()
 		return nil, false, fmt.Errorf("%s for account %q, session %q: %v", errTxt, accName, clientID, err)
 	}
-CREATE_STREAM:
-	// Send a request to create the stream for this session.
-	si, err := jsa.createStream(cfg)
+
+	hash := string(getHash(clientID))
+	subject := mqttSessStreamSubjectPrefix + as.domainTk + hash
+	smsg, err := jsa.loadLastMsgFor(mqttSessStreamName, subject)
 	if err != nil {
-		// Check for insufficient resources. If that is the case, and if possible, try
-		// again with a lower replicas value.
-		if cfg.Replicas > 1 && err.Error() == jsInsufficientErr.Description {
-			cfg.Replicas--
-			goto CREATE_STREAM
+		if isErrorOtherThan(err, JSNoMessageFoundErr) {
+			return formatError("loading session record", err)
 		}
-		// If there is an error and not simply "already used" (which means that the
-		// stream already exists) then we fail.
-		if isErrorOtherThan(err, ErrJetStreamStreamAlreadyUsed) {
-			return formatError("create session stream", err)
-		}
-	}
-	if err != nil {
-		// Since we have returned if error is not "stream already exist", then
-		// it means that the stream already exists and so we now need to recover
-		// the existing record.
-		si, err = jsa.lookupStream(sname)
-		if err != nil {
-			return formatError("lookup session stream", err)
-		}
-	}
-	// The stream is supposed to have at most 1 record, if it is empty, it means
-	// that we just created it.
-	if si.State.Msgs == 0 {
+		// Message not found, so reate the session...
 		// Create a session and indicate that this session did not exist.
 		sess := mqttSessionCreate(jsa, clientID, hash, 0, opts)
+		sess.domainTk = as.domainTk
 		return sess, false, nil
 	}
 	// We need to recover the existing record now.
-	smsg, err := jsa.loadMsg(sname, si.State.LastSeq)
-	if err != nil {
-		return formatError("loading session record", err)
-	}
 	ps := &mqttPersistedSession{}
 	if err := json.Unmarshal(smsg.Data, ps); err != nil {
 		return formatError(fmt.Sprintf("unmarshal of session record at sequence %v", smsg.Sequence), err)
 	}
 	// Restore this session (even if we don't own it), the caller will do the right thing.
 	sess := mqttSessionCreate(jsa, clientID, hash, smsg.Sequence, opts)
+	sess.domainTk = as.domainTk
 	sess.clean = ps.Clean
 	sess.subs = ps.Subs
 	sess.cons = ps.Cons
@@ -1937,7 +2142,7 @@ CREATE_STREAM:
 //
 // No lock held on entry.
 func (as *mqttAccountSessionManager) deleteRetainedMsg(seq uint64) {
-	as.jsa.deleteMsg(mqttRetainedMsgsStreamName, seq)
+	as.jsa.deleteMsg(mqttRetainedMsgsStreamName, seq, false)
 }
 
 // Sends a message indicating that a retained message on a given subject and stream sequence
@@ -1949,10 +2154,70 @@ func (as *mqttAccountSessionManager) notifyRetainedMsgDeleted(subject string, se
 	}
 	b, _ := json.Marshal(&req)
 	jsa := &as.jsa
-	jsa.sendq <- &mqttJSPubMsg{
+	jsa.sendq.push(&mqttJSPubMsg{
 		subj: jsa.rplyr + mqttJSARetainedMsgDel,
 		msg:  b,
+	})
+}
+
+func (as *mqttAccountSessionManager) transferUniqueSessStreamsToMuxed(log *Server) {
+	// Set retry to true, will be set to false on success.
+	retry := true
+	defer func() {
+		if retry {
+			next := mqttDefaultTransferRetry
+			log.Warnf("Failed to transfer all MQTT session streams, will try again in %v", next)
+			time.AfterFunc(next, func() { as.transferUniqueSessStreamsToMuxed(log) })
+		}
+	}()
+
+	jsa := &as.jsa
+	sni, err := jsa.newRequestEx(mqttJSAStreamNames, JSApiStreams, 0, nil, 5*time.Second)
+	if err != nil {
+		log.Errorf("Unable to transfer MQTT session streams: %v", err)
+		return
 	}
+	snames := sni.(*JSApiStreamNamesResponse)
+	if snames.Error != nil {
+		log.Errorf("Unable to transfer MQTT session streams: %v", snames.ToError())
+		return
+	}
+	var oldMQTTSessStreams []string
+	for _, sn := range snames.Streams {
+		if strings.HasPrefix(sn, mqttSessionsStreamNamePrefix) {
+			oldMQTTSessStreams = append(oldMQTTSessStreams, sn)
+		}
+	}
+	ns := len(oldMQTTSessStreams)
+	if ns == 0 {
+		// Nothing to do
+		retry = false
+		return
+	}
+	log.Noticef("Transferring %v MQTT session streams...", ns)
+	for _, sn := range oldMQTTSessStreams {
+		log.Noticef("  Transferring stream %q to %q", sn, mqttSessStreamName)
+		smsg, err := jsa.loadLastMsgFor(sn, sn)
+		if err != nil {
+			log.Errorf("   Unable to load session record: %v", err)
+			return
+		}
+		ps := &mqttPersistedSession{}
+		if err := json.Unmarshal(smsg.Data, ps); err != nil {
+			log.Warnf("    Unable to unmarshal the content of this stream, may not be a legitimate MQTT session stream, skipping")
+			continue
+		}
+		// Compute subject where the session is being stored
+		subject := mqttSessStreamSubjectPrefix + as.domainTk + string(getHash(ps.ID))
+		// Store record to MQTT session stream
+		if _, err := jsa.storeMsgWithKind(mqttJSASessPersist, subject, 0, smsg.Data); err != nil {
+			log.Errorf("    Unable to transfer the session record: %v", err)
+			return
+		}
+		jsa.deleteStream(sn)
+	}
+	log.Noticef("Transfer of %v MQTT session streams done!", ns)
+	retry = false
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -1986,23 +2251,27 @@ func (sess *mqttSession) save() error {
 	}
 	b, _ := json.Marshal(&ps)
 
-	sname := mqttSessionsStreamNamePrefix + sess.idHash
+	subject := mqttSessStreamSubjectPrefix + sess.domainTk + sess.idHash
 	seq := sess.seq
 	sess.mu.Unlock()
 
-	bb := bytes.Buffer{}
-	bb.WriteString(hdrLine)
-	bb.WriteString(JSExpectedLastSeq)
-	bb.WriteString(":")
-	bb.WriteString(strconv.FormatInt(int64(seq), 10))
-	bb.WriteString(CR_LF)
-	bb.WriteString(CR_LF)
-	hdr := bb.Len()
-	bb.Write(b)
+	var hdr int
+	if seq != 0 {
+		bb := bytes.Buffer{}
+		bb.WriteString(hdrLine)
+		bb.WriteString(JSExpectedLastSubjSeq)
+		bb.WriteString(":")
+		bb.WriteString(strconv.FormatInt(int64(seq), 10))
+		bb.WriteString(CR_LF)
+		bb.WriteString(CR_LF)
+		hdr = bb.Len()
+		bb.Write(b)
+		b = bb.Bytes()
+	}
 
-	resp, err := sess.jsa.storeMsgWithKind(mqttJSASessPersist, sname, hdr, bb.Bytes())
+	resp, err := sess.jsa.storeMsgWithKind(mqttJSASessPersist, subject, hdr, b)
 	if err != nil {
-		return err
+		return fmt.Errorf("unable to persist session %q (seq=%v): %v", ps.ID, seq, err)
 	}
 	sess.mu.Lock()
 	sess.seq = resp.Sequence
@@ -2010,22 +2279,36 @@ func (sess *mqttSession) save() error {
 	return nil
 }
 
-// Clear the session. If `deleteStream` is true, the stream is deleted,
-// otherwise only the consumers (if present) are deleted.
+// Clear the session.
 //
 // Runs from the client's readLoop.
 // Lock not held on entry, but session is in the locked map.
-func (sess *mqttSession) clear(deleteStream bool) {
-	for sid, cc := range sess.cons {
-		delete(sess.cons, sid)
-		sess.deleteConsumer(cc)
-	}
-	if deleteStream {
-		sess.jsa.deleteStream(mqttSessionsStreamNamePrefix + sess.idHash)
-	}
+func (sess *mqttSession) clear() error {
+	var durs []string
 	sess.mu.Lock()
+	id := sess.id
+	seq := sess.seq
+	if l := len(sess.cons); l > 0 {
+		durs = make([]string, 0, l)
+		for sid, cc := range sess.cons {
+			delete(sess.cons, sid)
+			durs = append(durs, cc.Durable)
+		}
+	}
 	sess.subs, sess.pending, sess.cpending, sess.seq, sess.tmaxack = nil, nil, nil, 0, 0
+	for _, dur := range durs {
+		if _, err := sess.jsa.deleteConsumer(mqttStreamName, dur); isErrorOtherThan(err, JSConsumerNotFoundErr) {
+			sess.mu.Unlock()
+			return fmt.Errorf("unable to delete consumer %q for session %q: %v", dur, sess.id, err)
+		}
+	}
 	sess.mu.Unlock()
+	if seq > 0 {
+		if err := sess.jsa.deleteMsg(mqttSessStreamName, seq, true); err != nil {
+			return fmt.Errorf("unable to delete session %q record at sequence %v", id, seq)
+		}
+	}
+	return nil
 }
 
 // This will update the session record for this client in the account's MQTT
@@ -2170,8 +2453,8 @@ func (sess *mqttSession) createConsumer(consConfig *ConsumerConfig) error {
 func (sess *mqttSession) deleteConsumer(cc *ConsumerConfig) {
 	sess.mu.Lock()
 	sess.tmaxack -= cc.MaxAckPending
+	sess.jsa.sendq.push(&mqttJSPubMsg{subj: sess.jsa.prefixDomain(fmt.Sprintf(JSApiConsumerDeleteT, mqttStreamName, cc.Durable))})
 	sess.mu.Unlock()
-	sess.jsa.sendq <- &mqttJSPubMsg{subj: fmt.Sprintf(JSApiConsumerDeleteT, mqttStreamName, cc.Durable)}
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -2182,13 +2465,6 @@ func (sess *mqttSession) deleteConsumer(cc *ConsumerConfig) {
 
 // Parse the MQTT connect protocol
 func (c *client) mqttParseConnect(r *mqttReader, pl int) (byte, *mqttConnectProto, error) {
-
-	// Make sure that we have the expected length in the buffer,
-	// and if not, this will read it from the underlying reader.
-	if err := r.ensurePacketInBuffer(pl); err != nil {
-		return 0, nil, err
-	}
-
 	// Protocol name
 	proto, err := r.readBytes("protocol name", false)
 	if err != nil {
@@ -2271,21 +2547,21 @@ func (c *client) mqttParseConnect(r *mqttReader, pl int) (byte, *mqttConnectProt
 	// Spec [MQTT-3.1.3-1]: client ID, will topic, will message, username, password
 
 	// Client ID
-	cp.clientID, err = r.readString("client ID")
+	c.mqtt.cid, err = r.readString("client ID")
 	if err != nil {
 		return 0, nil, err
 	}
 	// Spec [MQTT-3.1.3-7]
-	if cp.clientID == _EMPTY_ {
+	if c.mqtt.cid == _EMPTY_ {
 		if cp.flags&mqttConnFlagCleanSession == 0 {
 			return mqttConnAckRCIdentifierRejected, nil, errMQTTCIDEmptyNeedsCleanFlag
 		}
 		// Spec [MQTT-3.1.3-6]
-		cp.clientID = nuid.Next()
+		c.mqtt.cid = nuid.Next()
 	}
 	// Spec [MQTT-3.1.3-4] and [MQTT-3.1.3-9]
-	if !utf8.ValidString(cp.clientID) {
-		return mqttConnAckRCIdentifierRejected, nil, fmt.Errorf("invalid utf8 for client ID: %q", cp.clientID)
+	if !utf8.ValidString(c.mqtt.cid) {
+		return mqttConnAckRCIdentifierRejected, nil, fmt.Errorf("invalid utf8 for client ID: %q", c.mqtt.cid)
 	}
 
 	if hasWill {
@@ -2345,7 +2621,7 @@ func (c *client) mqttParseConnect(r *mqttReader, pl int) (byte, *mqttConnectProt
 }
 
 func (c *client) mqttConnectTrace(cp *mqttConnectProto) string {
-	trace := fmt.Sprintf("clientID=%s", cp.clientID)
+	trace := fmt.Sprintf("clientID=%s", c.mqtt.cid)
 	if cp.rd > 0 {
 		trace += fmt.Sprintf(" keepAlive=%v", cp.rd)
 	}
@@ -2389,19 +2665,21 @@ func (s *Server) mqttProcessConnect(c *client, cp *mqttConnectProto, trace bool)
 	}
 
 	c.mu.Lock()
+	cid := c.mqtt.cid
 	c.clearAuthTimer()
 	c.mu.Unlock()
 	if !s.isClientAuthorized(c) {
-		c.Errorf(ErrAuthentication.Error())
-		sendConnAck(mqttConnAckRCNotAuthorized, false)
-		c.closeConnection(AuthenticationViolation)
+		if trace {
+			c.traceOutOp("CONNACK", []byte(fmt.Sprintf("sp=%v rc=%v", false, mqttConnAckRCNotAuthorized)))
+		}
+		c.authViolation()
 		return ErrAuthentication
 	}
 	// Now that we are are authenticated, we have the client bound to the account.
 	// Get the account's level MQTT sessions manager. If it does not exists yet,
 	// this will create it along with the streams where sessions and messages
 	// are stored.
-	asm, err := s.getOrCreateMQTTAccountSessionManager(cp.clientID, c)
+	asm, err := s.getOrCreateMQTTAccountSessionManager(cid, c)
 	if err != nil {
 		return err
 	}
@@ -2421,41 +2699,47 @@ CHECK:
 	asm.mu.Lock()
 	// Check if different applications keep trying to connect with the same
 	// client ID at the same time.
-	if tm, ok := asm.flappers[cp.clientID]; ok {
+	if tm, ok := asm.flappers[cid]; ok {
 		// If the last time it tried to connect was more than 1 sec ago,
 		// then accept and remove from flappers map.
 		if time.Now().UnixNano()-tm > int64(mqttSessJailDur) {
-			asm.removeSessFromFlappers(cp.clientID)
+			asm.removeSessFromFlappers(cid)
 		} else {
 			// Will hold this client for a second and then close it. We
 			// do this so that if the client has a reconnect feature we
 			// don't end-up with very rapid flapping between apps.
-			time.AfterFunc(mqttSessJailDur, func() {
-				c.closeConnection(DuplicateClientID)
-			})
+			// We need to wait in place and not schedule the connection
+			// close because if this is a misbehaved client that does
+			// not wait for the CONNACK and sends other protocols, the
+			// server would not have a fully setup client and may panic.
 			asm.mu.Unlock()
-			return nil
+			select {
+			case <-s.quitCh:
+			case <-time.After(mqttSessJailDur):
+			}
+			c.closeConnection(DuplicateClientID)
+			return ErrConnectionClosed
 		}
 	}
 	// If an existing session is in the process of processing some packet, we can't
 	// evict the old client just yet. So try again to see if the state clears, but
 	// if it does not, then we have no choice but to fail the new client instead of
 	// the old one.
-	if _, ok := asm.sessLocked[cp.clientID]; ok {
+	if _, ok := asm.sessLocked[cid]; ok {
 		asm.mu.Unlock()
 		if locked++; locked == 10 {
-			return fmt.Errorf("other session with client ID %q is in the process of connecting", cp.clientID)
+			return fmt.Errorf("other session with client ID %q is in the process of connecting", cid)
 		}
 		time.Sleep(100 * time.Millisecond)
 		goto CHECK
 	}
 
 	// Register this client ID the "locked" map for the duration if this function.
-	asm.sessLocked[cp.clientID] = struct{}{}
+	asm.sessLocked[cid] = struct{}{}
 	// And remove it on exit, regardless of error or not.
 	defer func() {
 		asm.mu.Lock()
-		delete(asm.sessLocked, cp.clientID)
+		delete(asm.sessLocked, cid)
 		asm.mu.Unlock()
 	}()
 
@@ -2464,13 +2748,13 @@ CHECK:
 	// Session present? Assume false, will be set to true only when applicable.
 	sessp := false
 	// Do we have an existing session for this client ID
-	es, exists := asm.sessions[cp.clientID]
+	es, exists := asm.sessions[cid]
 	asm.mu.Unlock()
 
 	// The session is not in the map, but may be on disk, so try to recover
 	// or create the stream if not.
 	if !exists {
-		es, exists, err = asm.createOrRestoreSession(cp.clientID, s.getOpts())
+		es, exists, err = asm.createOrRestoreSession(cid, s.getOpts())
 		if err != nil {
 			return err
 		}
@@ -2484,7 +2768,10 @@ CHECK:
 			// This Session lasts as long as the Network Connection. State data
 			// associated with this Session MUST NOT be reused in any subsequent
 			// Session.
-			es.clear(false)
+			if err := es.clear(); err != nil {
+				asm.removeSession(es, true)
+				return err
+			}
 		} else {
 			// Report to the client that the session was present
 			sessp = true
@@ -2506,9 +2793,9 @@ CHECK:
 			ec.mu.Unlock()
 			// Add to the map of the flappers
 			asm.mu.Lock()
-			asm.addSessToFlappers(cp.clientID)
+			asm.addSessToFlappers(cid)
 			asm.mu.Unlock()
-			c.Warnf("Replacing old client %q since both have the same client ID %q", ec.String(), cp.clientID)
+			c.Warnf("Replacing old client %q since both have the same client ID %q", ec, cid)
 			// Close old client in separate go routine
 			go ec.closeConnection(DuplicateClientID)
 		}
@@ -2601,9 +2888,6 @@ func (c *client) mqttParsePub(r *mqttReader, pl int, pp *mqttPublish) error {
 	qos := mqttGetQoS(pp.flags)
 	if qos > 1 {
 		return fmt.Errorf("publish QoS=%v not supported", qos)
-	}
-	if err := r.ensurePacketInBuffer(pl); err != nil {
-		return err
 	}
 	// Keep track of where we are when starting to read the variable header
 	start := r.pos
@@ -2884,9 +3168,6 @@ func (c *client) mqttEnqueuePubAck(pi uint16) {
 }
 
 func mqttParsePubAck(r *mqttReader, pl int) (uint16, error) {
-	if err := r.ensurePacketInBuffer(pl); err != nil {
-		return 0, err
-	}
 	pi, err := r.readUint16("packet identifier")
 	if err != nil {
 		return 0, err
@@ -2924,14 +3205,13 @@ func (c *client) mqttProcessPubAck(pi uint16) {
 		}
 		ackSubject = ack.subject
 	}
-	sess.mu.Unlock()
-
-	// Send the ack if applicable, this is done outside of the session lock.
+	// Send the ack if applicable.
 	if ackSubject != _EMPTY_ {
 		// We pass -1 for the hdr so that the send loop does not need to
 		// add the "client info" header. This is not a JS API request per se.
-		sess.jsa.sendq <- &mqttJSPubMsg{subj: ackSubject, hdr: -1}
+		sess.jsa.sendq.push(&mqttJSPubMsg{subj: ackSubject, hdr: -1})
 	}
+	sess.mu.Unlock()
 }
 
 // Return the QoS from the given PUBLISH protocol's flags
@@ -2965,9 +3245,6 @@ func (c *client) mqttParseSubsOrUnsubs(r *mqttReader, b byte, pl int, sub bool) 
 	// Spec [MQTT-3.8.1-1], [MQTT-3.10.1-1]
 	if rf := b & 0xf; rf != expectedFlag {
 		return 0, nil, fmt.Errorf("wrong %ssubscribe reserved flags: %x", action, rf)
-	}
-	if err := r.ensurePacketInBuffer(pl); err != nil {
-		return 0, nil, err
 	}
 	pi, err := r.readUint16("packet identifier")
 	if err != nil {
@@ -3055,7 +3332,7 @@ func mqttSubscribeTrace(pi uint16, filters []*mqttFilter) string {
 // message and this is the callback for a QoS1 subscription because in
 // that case, it will be handled by the other callback. This avoid getting
 // duplicate deliveries.
-func mqttDeliverMsgCbQos0(sub *subscription, pc *client, subject, _ string, rmsg []byte) {
+func mqttDeliverMsgCbQos0(sub *subscription, pc *client, _ *Account, subject, _ string, rmsg []byte) {
 	if pc.kind == JETSTREAM {
 		return
 	}
@@ -3118,7 +3395,7 @@ func mqttDeliverMsgCbQos0(sub *subscription, pc *client, subject, _ string, rmsg
 // associated with the JS durable consumer), but in cluster mode, this can be coming
 // from a route, gw, etc... We make sure that if this is the case, the message contains
 // a NATS/MQTT header that indicates that this is a published QoS1 message.
-func mqttDeliverMsgCbQos1(sub *subscription, pc *client, subject, reply string, rmsg []byte) {
+func mqttDeliverMsgCbQos1(sub *subscription, pc *client, _ *Account, subject, reply string, rmsg []byte) {
 	var retained bool
 
 	// Message on foo.bar is stored under $MQTT.msgs.foo.bar, so the subject has to be
@@ -3346,6 +3623,13 @@ func (sess *mqttSession) processJSConsumer(c *client, subject, sid string,
 			FilterSubject:  mqttStreamSubjectPrefix + subject,
 			AckWait:        ackWait,
 			MaxAckPending:  maxAckPending,
+			MemoryStorage:  opts.MQTT.ConsumerMemoryStorage,
+		}
+		if r := opts.MQTT.ConsumerReplicas; r > 0 {
+			cc.Replicas = r
+		}
+		if opts.MQTT.ConsumerInactiveThreshold > 0 {
+			cc.InactiveThreshold = opts.MQTT.ConsumerInactiveThreshold
 		}
 		if err := sess.createConsumer(cc); err != nil {
 			c.Errorf("Unable to add JetStream consumer for subscription on %q: err=%v", subject, err)
@@ -3547,11 +3831,11 @@ func mqttFilterToNATSSubject(filter []byte) ([]byte, error) {
 // - '/' is the topic level separator.
 //
 // Conversion that occurs:
-// - '/' is replaced with '/.' if it is the first character in mt
-// - '/' is replaced with './' if the last or next character in mt is '/'
-//   For instance, foo//bar would become foo./.bar
-// - '/' is replaced with '.' for all other conditions (foo/bar -> foo.bar)
-// - '.' and ' ' cause an error to be returned.
+//   - '/' is replaced with '/.' if it is the first character in mt
+//   - '/' is replaced with './' if the last or next character in mt is '/'
+//     For instance, foo//bar would become foo./.bar
+//   - '/' is replaced with '.' for all other conditions (foo/bar -> foo.bar)
+//   - '.' and ' ' cause an error to be returned.
 //
 // If there is no need to convert anything (say "foo" remains "foo"), then
 // the no memory is allocated and the returned slice is the original `mt`.
@@ -3667,18 +3951,17 @@ func mqttNeedSubForLevelUp(subject string) bool {
 //
 //////////////////////////////////////////////////////////////////////////////
 
-func copyBytes(b []byte) []byte {
-	if b == nil {
-		return nil
-	}
-	cbuf := make([]byte, len(b))
-	copy(cbuf, b)
-	return cbuf
-}
-
 func (r *mqttReader) reset(buf []byte) {
+	if l := len(r.pbuf); l > 0 {
+		tmp := make([]byte, l+len(buf))
+		copy(tmp, r.pbuf)
+		copy(tmp[l:], buf)
+		buf = tmp
+		r.pbuf = nil
+	}
 	r.buf = buf
 	r.pos = 0
+	r.pstart = 0
 }
 
 func (r *mqttReader) hasMore() bool {
@@ -3694,7 +3977,11 @@ func (r *mqttReader) readByte(field string) (byte, error) {
 	return b, nil
 }
 
-func (r *mqttReader) readPacketLen() (int, error) {
+func (r *mqttReader) readPacketLen() (int, bool, error) {
+	return r.readPacketLenWithCheck(true)
+}
+
+func (r *mqttReader) readPacketLenWithCheck(check bool) (int, bool, error) {
 	m := 1
 	v := 0
 	for {
@@ -3703,45 +3990,23 @@ func (r *mqttReader) readPacketLen() (int, error) {
 			b = r.buf[r.pos]
 			r.pos++
 		} else {
-			var buf [1]byte
-			if _, err := r.reader.Read(buf[:1]); err != nil {
-				if err == io.EOF {
-					return 0, io.ErrUnexpectedEOF
-				}
-				return 0, fmt.Errorf("error reading packet length: %v", err)
-			}
-			b = buf[0]
+			break
 		}
 		v += int(b&0x7f) * m
 		if (b & 0x80) == 0 {
-			return v, nil
+			if check && r.pos+v > len(r.buf) {
+				break
+			}
+			return v, true, nil
 		}
 		m *= 0x80
 		if m > 0x200000 {
-			return 0, errMQTTMalformedVarInt
+			return 0, false, errMQTTMalformedVarInt
 		}
 	}
-}
-
-func (r *mqttReader) ensurePacketInBuffer(pl int) error {
-	rem := len(r.buf) - r.pos
-	if rem >= pl {
-		return nil
-	}
-	b := make([]byte, pl)
-	start := copy(b, r.buf[r.pos:])
-	for start != pl {
-		n, err := r.reader.Read(b[start:cap(b)])
-		if err != nil {
-			if err == io.EOF {
-				err = io.ErrUnexpectedEOF
-			}
-			return fmt.Errorf("error ensuring protocol is loaded: %v", err)
-		}
-		start += n
-	}
-	r.reset(b)
-	return nil
+	r.pbuf = make([]byte, len(r.buf)-r.pstart)
+	copy(r.pbuf, r.buf[r.pstart:])
+	return 0, false, nil
 }
 
 func (r *mqttReader) readString(field string) (string, error) {

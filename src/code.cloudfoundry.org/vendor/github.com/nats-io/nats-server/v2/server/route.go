@@ -1,4 +1,4 @@
-// Copyright 2013-2020 The NATS Authors
+// Copyright 2013-2022 The NATS Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -582,7 +582,7 @@ func (c *client) processRouteInfo(info *Info) {
 		c.mu.Unlock()
 		// This is now an error and we close the connection. We need unique names for JetStream clustering.
 		c.Errorf("Remote server has a duplicate name: %q", info.Name)
-		c.closeConnection(DuplicateRoute)
+		c.closeConnection(DuplicateServerName)
 		return
 	}
 
@@ -710,7 +710,7 @@ func (c *client) updateRemoteRoutePerms(sl *Sublist, info *Info) {
 		_localSubs [4096]*subscription
 		localSubs  = _localSubs[:0]
 	)
-	sl.localSubs(&localSubs)
+	sl.localSubs(&localSubs, false)
 
 	c.sendRouteSubProtos(localSubs, false, func(sub *subscription) bool {
 		subj := string(sub.subject)
@@ -1035,20 +1035,17 @@ func (c *client) processRemoteSub(argo []byte, hasOrigin bool) (err error) {
 		acc = v.(*Account)
 	}
 	if acc == nil {
-		expire := false
 		isNew := false
-		if !srv.NewAccountsAllowed() {
-			// if the option of retrieving accounts later exists, create an expired one.
-			// When a client comes along, expiration will prevent it from being used,
-			// cause a fetch and update the account to what is should be.
-			if staticResolver {
-				c.Errorf("Unknown account %q for remote subject %q", accountName, sub.subject)
-				return
-			}
-			c.Debugf("Unknown account %q for remote subject %q", accountName, sub.subject)
-			expire = true
+		// if the option of retrieving accounts later exists, create an expired one.
+		// When a client comes along, expiration will prevent it from being used,
+		// cause a fetch and update the account to what is should be.
+		if staticResolver {
+			c.Errorf("Unknown account %q for remote subject %q", accountName, sub.subject)
+			return
 		}
-		if acc, isNew = srv.LookupOrRegisterAccount(accountName); isNew && expire {
+		c.Debugf("Unknown account %q for remote subject %q", accountName, sub.subject)
+
+		if acc, isNew = srv.LookupOrRegisterAccount(accountName); isNew {
 			acc.mu.Lock()
 			acc.expired = true
 			acc.incomplete = true
@@ -1292,7 +1289,7 @@ func (s *Server) createRoute(conn net.Conn, rURL *url.URL) *client {
 		}
 	}
 
-	c := &client{srv: s, nc: conn, opts: ClientOpts{}, kind: ROUTER, msubs: -1, mpay: -1, route: r}
+	c := &client{srv: s, nc: conn, opts: ClientOpts{}, kind: ROUTER, msubs: -1, mpay: -1, route: r, start: time.Now()}
 
 	// Grab server variables
 	s.mu.Lock()
@@ -1333,6 +1330,7 @@ func (s *Server) createRoute(conn net.Conn, rURL *url.URL) *client {
 		}
 		// Perform (server or client side) TLS handshake.
 		if _, err := c.doTLSHandshake("route", didSolicit, rURL, tlsConfig, _EMPTY_, opts.Cluster.TLSTimeout, opts.Cluster.TLSPinnedCerts); err != nil {
+			c.mu.Unlock()
 			return nil
 		}
 	}
@@ -1348,7 +1346,7 @@ func (s *Server) createRoute(conn net.Conn, rURL *url.URL) *client {
 	}
 
 	// Set the Ping timer
-	s.setFirstPingTimer(c)
+	c.setFirstPingTimer()
 
 	// For routes, the "client" is added to s.routes only when processing
 	// the INFO protocol, that is much later.
@@ -1419,7 +1417,11 @@ func (s *Server) addRoute(c *client, info *Info) (bool, bool) {
 	if !exists {
 		s.routes[c.cid] = c
 		s.remotes[id] = c
-		s.nodeToInfo.Store(c.route.hash, nodeInfo{c.route.remoteName, s.info.Cluster, id, false, info.JetStream})
+		// check to be consistent and future proof. but will be same domain
+		if s.sameDomain(info.Domain) {
+			s.nodeToInfo.Store(c.route.hash,
+				nodeInfo{c.route.remoteName, s.info.Version, s.info.Cluster, info.Domain, id, nil, nil, nil, false, info.JetStream})
+		}
 		c.mu.Lock()
 		c.route.connectURLs = info.ClientConnectURLs
 		c.route.wsConnURLs = info.WSConnectURLs
@@ -1457,8 +1459,8 @@ func (s *Server) addRoute(c *client, info *Info) (bool, bool) {
 		// Since this duplicate route is going to be removed, make sure we clear
 		// c.route.leafnodeURL, otherwise, when processing the disconnect, this
 		// would cause the leafnode URL for that remote server to be removed
-		// from our list.
-		c.route.leafnodeURL = _EMPTY_
+		// from our list. Same for gateway...
+		c.route.leafnodeURL, c.route.gatewayURL = _EMPTY_, _EMPTY_
 		// Same for the route hash otherwise it would be removed from s.routesByHash.
 		c.route.hash, c.route.idHash = _EMPTY_, _EMPTY_
 		c.mu.Unlock()
@@ -1606,7 +1608,7 @@ func (s *Server) updateRouteSubscriptionMap(acc *Account, sub *subscription, del
 		if ls, ok := lqws[key]; ok && ls == n {
 			acc.mu.Unlock()
 			return
-		} else {
+		} else if n > 0 {
 			lqws[key] = n
 		}
 		acc.mu.Unlock()
@@ -1690,6 +1692,7 @@ func (s *Server) startRouteAcceptLoop() {
 		GatewayURL:   s.getGatewayURL(),
 		Headers:      s.supportsHeaders(),
 		Cluster:      s.info.Cluster,
+		Domain:       s.info.Domain,
 		Dynamic:      s.isClusterNameDynamic(),
 		LNOC:         true,
 	}
@@ -2023,4 +2026,25 @@ func (s *Server) removeRoute(c *client) {
 	}
 	s.removeFromTempClients(cid)
 	s.mu.Unlock()
+}
+
+func (s *Server) isDuplicateServerName(name string) bool {
+	if name == _EMPTY_ {
+		return false
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	if s.info.Name == name {
+		return true
+	}
+	for _, r := range s.routes {
+		r.mu.Lock()
+		duplicate := r.route.remoteName == name
+		r.mu.Unlock()
+		if duplicate {
+			return true
+		}
+	}
+	return false
 }

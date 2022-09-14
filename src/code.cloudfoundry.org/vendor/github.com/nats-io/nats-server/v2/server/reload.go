@@ -1,4 +1,4 @@
-// Copyright 2017-2021 The NATS Authors
+// Copyright 2017-2022 The NATS Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -50,6 +50,9 @@ type option interface {
 	// IsAuthChange indicates if this option requires reloading authorization.
 	IsAuthChange() bool
 
+	// IsTLSChange indicates if this option requires reloading TLS.
+	IsTLSChange() bool
+
 	// IsClusterPermsChange indicates if this option requires reloading
 	// cluster permissions.
 	IsClusterPermsChange() bool
@@ -57,6 +60,9 @@ type option interface {
 	// IsJetStreamChange inidicates a change in the servers config for JetStream.
 	// Account changes will be handled separately in reloadAuthorization.
 	IsJetStreamChange() bool
+
+	// Indicates a change in the server that requires publishing the server's statz
+	IsStatszChange() bool
 }
 
 // noopOption is a base struct that provides default no-op behaviors.
@@ -74,11 +80,19 @@ func (n noopOption) IsAuthChange() bool {
 	return false
 }
 
+func (n noopOption) IsTLSChange() bool {
+	return false
+}
+
 func (n noopOption) IsClusterPermsChange() bool {
 	return false
 }
 
 func (n noopOption) IsJetStreamChange() bool {
+	return false
+}
+
+func (n noopOption) IsStatszChange() bool {
 	return false
 }
 
@@ -202,6 +216,10 @@ func (t *tlsOption) Apply(server *Server) {
 	server.Noticef("Reloaded: tls = %s", message)
 }
 
+func (t *tlsOption) IsTLSChange() bool {
+	return true
+}
+
 // tlsTimeoutOption implements the option interface for the tls `timeout`
 // setting.
 type tlsTimeoutOption struct {
@@ -280,6 +298,19 @@ type authTimeoutOption struct {
 // applied.
 func (a *authTimeoutOption) Apply(server *Server) {
 	server.Noticef("Reloaded: authorization timeout = %v", a.newValue)
+}
+
+// tagsOption implements the option interface for the `tags` setting.
+type tagsOption struct {
+	noopOption // Not authOption because this is a no-op; will be reloaded with options.
+}
+
+func (u *tagsOption) Apply(server *Server) {
+	server.Noticef("Reloaded: tags")
+}
+
+func (u *tagsOption) IsStatszChange() bool {
+	return true
 }
 
 // usersOption implements the option interface for the authorization `users`
@@ -571,6 +602,19 @@ func (jso jetStreamOption) IsJetStreamChange() bool {
 	return true
 }
 
+func (jso jetStreamOption) IsStatszChange() bool {
+	return true
+}
+
+type ocspOption struct {
+	noopOption
+	newValue *OCSPConfig
+}
+
+func (a *ocspOption) Apply(s *Server) {
+	s.Noticef("Reloaded: OCSP")
+}
+
 // connectErrorReports implements the option interface for the `connect_error_reports`
 // setting.
 type connectErrorReports struct {
@@ -628,6 +672,42 @@ func (o *mqttMaxAckPendingReload) Apply(s *Server) {
 	s.Noticef("Reloaded: MQTT max_ack_pending = %v", o.newValue)
 }
 
+type mqttStreamReplicasReload struct {
+	noopOption
+	newValue int
+}
+
+func (o *mqttStreamReplicasReload) Apply(s *Server) {
+	s.Noticef("Reloaded: MQTT stream_replicas = %v", o.newValue)
+}
+
+type mqttConsumerReplicasReload struct {
+	noopOption
+	newValue int
+}
+
+func (o *mqttConsumerReplicasReload) Apply(s *Server) {
+	s.Noticef("Reloaded: MQTT consumer_replicas = %v", o.newValue)
+}
+
+type mqttConsumerMemoryStorageReload struct {
+	noopOption
+	newValue bool
+}
+
+func (o *mqttConsumerMemoryStorageReload) Apply(s *Server) {
+	s.Noticef("Reloaded: MQTT consumer_memory_storage = %v", o.newValue)
+}
+
+type mqttInactiveThresholdReload struct {
+	noopOption
+	newValue time.Duration
+}
+
+func (o *mqttInactiveThresholdReload) Apply(s *Server) {
+	s.Noticef("Reloaded: MQTT consumer_inactive_threshold = %v", o.newValue)
+}
+
 // Compares options and disconnects clients that are no longer listed in pinned certs. Lock must not be held.
 func (s *Server) recheckPinnedCerts(curOpts *Options, newOpts *Options) {
 	s.mu.Lock()
@@ -681,10 +761,29 @@ func (s *Server) recheckPinnedCerts(curOpts *Options, newOpts *Options) {
 	}
 }
 
-// Reload reads the current configuration file and applies any supported
-// changes. This returns an error if the server was not started with a config
-// file or an option which doesn't support hot-swapping was changed.
+// Reload reads the current configuration file and calls out to ReloadOptions
+// to apply the changes. This returns an error if the server was not started
+// with a config file or an option which doesn't support hot-swapping was changed.
 func (s *Server) Reload() error {
+	s.mu.Lock()
+	configFile := s.configFile
+	s.mu.Unlock()
+	if configFile == "" {
+		return errors.New("can only reload config when a file is provided using -c or --config")
+	}
+
+	newOpts, err := ProcessConfigFile(configFile)
+	if err != nil {
+		// TODO: Dump previous good config to a .bak file?
+		return err
+	}
+	return s.ReloadOptions(newOpts)
+}
+
+// ReloadOptions applies any supported options from the provided Option
+// type. This returns an error if an option which doesn't support
+// hot-swapping was changed.
+func (s *Server) ReloadOptions(newOpts *Options) error {
 	s.mu.Lock()
 
 	s.reloading = true
@@ -693,18 +792,6 @@ func (s *Server) Reload() error {
 		s.reloading = false
 		s.mu.Unlock()
 	}()
-
-	if s.configFile == "" {
-		s.mu.Unlock()
-		return errors.New("can only reload config when a file is provided using -c or --config")
-	}
-
-	newOpts, err := ProcessConfigFile(s.configFile)
-	if err != nil {
-		s.mu.Unlock()
-		// TODO: Dump previous good config to a .bak file?
-		return err
-	}
 
 	curOpts := s.getOpts()
 
@@ -767,7 +854,6 @@ func (s *Server) Reload() error {
 	s.mu.Unlock()
 	return nil
 }
-
 func applyBoolFlags(newOpts, flagOpts *Options) {
 	// Reset fields that may have been set to `true` in
 	// MergeOptions() when some of the flags default to `true`
@@ -857,8 +943,9 @@ func imposeOrder(value interface{}) error {
 		})
 	case WebsocketOpts:
 		sort.Strings(value.AllowedOrigins)
-	case string, bool, int, int32, int64, time.Duration, float64, nil, LeafNodeOpts, ClusterOpts, *tls.Config, PinnedCertSet,
-		*URLAccResolver, *MemAccResolver, *DirAccResolver, *CacheDirAccResolver, Authentication, MQTTOpts, jwt.TagList:
+	case string, bool, uint8, int, int32, int64, time.Duration, float64, nil, LeafNodeOpts, ClusterOpts, *tls.Config, PinnedCertSet,
+		*URLAccResolver, *MemAccResolver, *DirAccResolver, *CacheDirAccResolver, Authentication, MQTTOpts, jwt.TagList,
+		*OCSPConfig, map[string]string, JSLimitOpts, StoreCipher:
 		// explicitly skipped types
 	default:
 		// this will fail during unit tests
@@ -889,7 +976,7 @@ func (s *Server) diffOptions(newOpts *Options) ([]option, error) {
 		field := oldConfig.Type().Field(i)
 		// field.PkgPath is empty for exported fields, and is not for unexported ones.
 		// We skip the unexported fields.
-		if field.PkgPath != "" {
+		if field.PkgPath != _EMPTY_ {
 			continue
 		}
 		var (
@@ -903,16 +990,22 @@ func (s *Server) diffOptions(newOpts *Options) ([]option, error) {
 			return nil, err
 		}
 
-		if changed := !reflect.DeepEqual(oldValue, newValue); !changed {
-			// Check to make sure we are running JetStream if we think we should be.
-			if strings.ToLower(field.Name) == "jetstream" && newValue.(bool) {
-				if !jsEnabled {
-					diffOpts = append(diffOpts, &jetStreamOption{newValue: true})
+		optName := strings.ToLower(field.Name)
+		// accounts and users (referencing accounts) will always differ as accounts
+		// contain internal state, say locks etc..., so we don't bother here.
+		// This also avoids races with atomic stats counters
+		if optName != "accounts" && optName != "users" {
+			if changed := !reflect.DeepEqual(oldValue, newValue); !changed {
+				// Check to make sure we are running JetStream if we think we should be.
+				if optName == "jetstream" && newValue.(bool) {
+					if !jsEnabled {
+						diffOpts = append(diffOpts, &jetStreamOption{newValue: true})
+					}
 				}
+				continue
 			}
-			continue
 		}
-		switch optName := strings.ToLower(field.Name); optName {
+		switch optName {
 		case "traceverbose":
 			diffOpts = append(diffOpts, &traceVerboseOption{newValue: newValue.(bool)})
 		case "trace":
@@ -937,6 +1030,8 @@ func (s *Server) diffOptions(newOpts *Options) ([]option, error) {
 			diffOpts = append(diffOpts, &usernameOption{})
 		case "password":
 			diffOpts = append(diffOpts, &passwordOption{})
+		case "tags":
+			diffOpts = append(diffOpts, &tagsOption{})
 		case "authorization":
 			diffOpts = append(diffOpts, &authorizationOption{})
 		case "authtimeout":
@@ -1002,6 +1097,8 @@ func (s *Server) diffOptions(newOpts *Options) ([]option, error) {
 			tmpNew := newValue.(GatewayOpts)
 			tmpOld.TLSConfig = nil
 			tmpNew.TLSConfig = nil
+			tmpOld.tlsConfigOpts = nil
+			tmpNew.tlsConfigOpts = nil
 
 			// Need to do the same for remote gateways' TLS configs.
 			// But we can't just set remotes' TLSConfig to nil otherwise this
@@ -1021,24 +1118,30 @@ func (s *Server) diffOptions(newOpts *Options) ([]option, error) {
 			tmpNew := newValue.(LeafNodeOpts)
 			tmpOld.TLSConfig = nil
 			tmpNew.TLSConfig = nil
+			tmpOld.tlsConfigOpts = nil
+			tmpNew.tlsConfigOpts = nil
 
 			// Need to do the same for remote leafnodes' TLS configs.
 			// But we can't just set remotes' TLSConfig to nil otherwise this
 			// would lose the real TLS configuration.
-			tmpOld.Remotes = copyRemoteLNConfigWithoutTLSConfig(tmpOld.Remotes)
-			tmpNew.Remotes = copyRemoteLNConfigWithoutTLSConfig(tmpNew.Remotes)
+			tmpOld.Remotes = copyRemoteLNConfigForReloadCompare(tmpOld.Remotes)
+			tmpNew.Remotes = copyRemoteLNConfigForReloadCompare(tmpNew.Remotes)
 
 			// Special check for leafnode remotes changes which are not supported right now.
 			leafRemotesChanged := func(a, b LeafNodeOpts) bool {
-				if len(tmpOld.Remotes) != len(tmpNew.Remotes) {
+				if len(a.Remotes) != len(b.Remotes) {
 					return true
 				}
 
 				// Check whether all remotes URLs are still the same.
-				for _, oldRemote := range tmpOld.Remotes {
+				for _, oldRemote := range a.Remotes {
 					var found bool
 
-					for _, newRemote := range tmpNew.Remotes {
+					if oldRemote.LocalAccount == _EMPTY_ {
+						oldRemote.LocalAccount = globalAccountName
+					}
+
+					for _, newRemote := range b.Remotes {
 						// Bind to global account in case not defined.
 						if newRemote.LocalAccount == _EMPTY_ {
 							newRemote.LocalAccount = globalAccountName
@@ -1049,7 +1152,6 @@ func (s *Server) diffOptions(newOpts *Options) ([]option, error) {
 							break
 						}
 					}
-
 					if !found {
 						return true
 					}
@@ -1063,6 +1165,41 @@ func (s *Server) diffOptions(newOpts *Options) ([]option, error) {
 			if !leafRemotesChanged(tmpOld, tmpNew) {
 				tmpOld.Remotes = nil
 				tmpNew.Remotes = nil
+			}
+
+			// Special check for auth users to detect changes.
+			// If anything is off will fall through and fail below.
+			// If we detect they are semantically the same we nil them out
+			// to pass the check below.
+			if tmpOld.Users != nil || tmpNew.Users != nil {
+				if len(tmpOld.Users) == len(tmpNew.Users) {
+					oua := make(map[string]*User, len(tmpOld.Users))
+					nua := make(map[string]*User, len(tmpOld.Users))
+					for _, u := range tmpOld.Users {
+						oua[u.Username] = u
+					}
+					for _, u := range tmpNew.Users {
+						nua[u.Username] = u
+					}
+					same := true
+					for uname, u := range oua {
+						// If we can not find new one with same name, drop through to fail.
+						nu, ok := nua[uname]
+						if !ok {
+							same = false
+							break
+						}
+						// If username or password or account different break.
+						if u.Username != nu.Username || u.Password != nu.Password || u.Account.GetName() != nu.Account.GetName() {
+							same = false
+							break
+						}
+					}
+					// We can nil out here.
+					if same {
+						tmpOld.Users, tmpNew.Users = nil, nil
+					}
+				}
 			}
 
 			// If there is really a change prevents reload.
@@ -1143,12 +1280,20 @@ func (s *Server) diffOptions(newOpts *Options) ([]option, error) {
 		case "mqtt":
 			diffOpts = append(diffOpts, &mqttAckWaitReload{newValue: newValue.(MQTTOpts).AckWait})
 			diffOpts = append(diffOpts, &mqttMaxAckPendingReload{newValue: newValue.(MQTTOpts).MaxAckPending})
+			diffOpts = append(diffOpts, &mqttStreamReplicasReload{newValue: newValue.(MQTTOpts).StreamReplicas})
+			diffOpts = append(diffOpts, &mqttConsumerReplicasReload{newValue: newValue.(MQTTOpts).ConsumerReplicas})
+			diffOpts = append(diffOpts, &mqttConsumerMemoryStorageReload{newValue: newValue.(MQTTOpts).ConsumerMemoryStorage})
+			diffOpts = append(diffOpts, &mqttInactiveThresholdReload{newValue: newValue.(MQTTOpts).ConsumerInactiveThreshold})
+
 			// Nil out/set to 0 the options that we allow to be reloaded so that
 			// we only fail reload if some that we don't support are changed.
 			tmpOld := oldValue.(MQTTOpts)
 			tmpNew := newValue.(MQTTOpts)
-			tmpOld.TLSConfig, tmpOld.AckWait, tmpOld.MaxAckPending = nil, 0, 0
-			tmpNew.TLSConfig, tmpNew.AckWait, tmpNew.MaxAckPending = nil, 0, 0
+			tmpOld.TLSConfig, tmpOld.AckWait, tmpOld.MaxAckPending, tmpOld.StreamReplicas, tmpOld.ConsumerReplicas, tmpOld.ConsumerMemoryStorage = nil, 0, 0, 0, 0, false
+			tmpOld.ConsumerInactiveThreshold = 0
+			tmpNew.TLSConfig, tmpNew.AckWait, tmpNew.MaxAckPending, tmpNew.StreamReplicas, tmpNew.ConsumerReplicas, tmpNew.ConsumerMemoryStorage = nil, 0, 0, 0, 0, false
+			tmpNew.ConsumerInactiveThreshold = 0
+
 			if !reflect.DeepEqual(tmpOld, tmpNew) {
 				// See TODO(ik) note below about printing old/new values.
 				return nil, fmt.Errorf("config reload not supported for %s: old=%v, new=%v",
@@ -1156,6 +1301,10 @@ func (s *Server) diffOptions(newOpts *Options) ([]option, error) {
 			}
 			tmpNew.AckWait = newValue.(MQTTOpts).AckWait
 			tmpNew.MaxAckPending = newValue.(MQTTOpts).MaxAckPending
+			tmpNew.StreamReplicas = newValue.(MQTTOpts).StreamReplicas
+			tmpNew.ConsumerReplicas = newValue.(MQTTOpts).ConsumerReplicas
+			tmpNew.ConsumerMemoryStorage = newValue.(MQTTOpts).ConsumerMemoryStorage
+			tmpNew.ConsumerInactiveThreshold = newValue.(MQTTOpts).ConsumerInactiveThreshold
 		case "connecterrorreports":
 			diffOpts = append(diffOpts, &connectErrorReports{newValue: newValue.(int)})
 		case "reconnecterrorreports":
@@ -1193,6 +1342,8 @@ func (s *Server) diffOptions(newOpts *Options) ([]option, error) {
 				return nil, fmt.Errorf("config reload not supported for %s: old=%v, new=%v",
 					field.Name, oldValue, newValue)
 			}
+		case "ocspconfig":
+			diffOpts = append(diffOpts, &ocspOption{newValue: newValue.(*OCSPConfig)})
 		default:
 			// TODO(ik): Implement String() on those options to have a nice print.
 			// %v is difficult to figure what's what, %+v print private fields and
@@ -1227,12 +1378,13 @@ func copyRemoteGWConfigsWithoutTLSConfig(current []*RemoteGatewayOpts) []*Remote
 	for _, rcfg := range current {
 		cp := *rcfg
 		cp.TLSConfig = nil
+		cp.tlsConfigOpts = nil
 		rgws = append(rgws, &cp)
 	}
 	return rgws
 }
 
-func copyRemoteLNConfigWithoutTLSConfig(current []*RemoteLeafOpts) []*RemoteLeafOpts {
+func copyRemoteLNConfigForReloadCompare(current []*RemoteLeafOpts) []*RemoteLeafOpts {
 	l := len(current)
 	if l == 0 {
 		return nil
@@ -1241,9 +1393,13 @@ func copyRemoteLNConfigWithoutTLSConfig(current []*RemoteLeafOpts) []*RemoteLeaf
 	for _, rcfg := range current {
 		cp := *rcfg
 		cp.TLSConfig = nil
+		cp.tlsConfigOpts = nil
 		// This is set only when processing a CONNECT, so reset here so that we
 		// don't fail the DeepEqual comparison.
 		cp.TLS = false
+		// For now, remove DenyImports/Exports since those get modified at runtime
+		// to add JS APIs.
+		cp.DenyImports, cp.DenyExports = nil, nil
 		rlns = append(rlns, &cp)
 	}
 	return rlns
@@ -1257,6 +1413,8 @@ func (s *Server) applyOptions(ctx *reloadContext, opts []option) {
 		reloadClientTrcLvl = false
 		reloadJetstream    = false
 		jsEnabled          = false
+		reloadTLS          = false
+		isStatszChange     = false
 	)
 	for _, opt := range opts {
 		opt.Apply(s)
@@ -1269,12 +1427,18 @@ func (s *Server) applyOptions(ctx *reloadContext, opts []option) {
 		if opt.IsAuthChange() {
 			reloadAuth = true
 		}
+		if opt.IsTLSChange() {
+			reloadTLS = true
+		}
 		if opt.IsClusterPermsChange() {
 			reloadClusterPerms = true
 		}
 		if opt.IsJetStreamChange() {
 			reloadJetstream = true
 			jsEnabled = opt.(*jetStreamOption).newValue
+		}
+		if opt.IsStatszChange() {
+			isStatszChange = true
 		}
 	}
 
@@ -1299,6 +1463,11 @@ func (s *Server) applyOptions(ctx *reloadContext, opts []option) {
 				s.Warnf("Can't start JetStream: %v", err)
 			}
 		}
+		// Make sure to reset the internal loop's version of JS.
+		s.resetInternalLoopInfo()
+	}
+	if isStatszChange {
+		s.sendStatszUpdate()
 	}
 
 	// For remote gateways and leafnodes, make sure that their TLS configuration
@@ -1312,7 +1481,29 @@ func (s *Server) applyOptions(ctx *reloadContext, opts []option) {
 		s.updateRemoteLeafNodesTLSConfig(newOpts)
 	}
 
+	if reloadTLS {
+		// Restart OCSP monitoring.
+		if err := s.reloadOCSP(); err != nil {
+			s.Warnf("Can't restart OCSP Stapling: %v", err)
+		}
+	}
+
 	s.Noticef("Reloaded server configuration")
+}
+
+// This will send a reset to the internal send loop.
+func (s *Server) resetInternalLoopInfo() {
+	var resetCh chan struct{}
+	s.mu.Lock()
+	if s.sys != nil {
+		// can't hold the lock as go routine reading it may be waiting for lock as well
+		resetCh = s.sys.resetCh
+	}
+	s.mu.Unlock()
+
+	if resetCh != nil {
+		resetCh <- struct{}{}
+	}
 }
 
 // Update all cached debug and trace settings for every client
@@ -1384,9 +1575,12 @@ func (s *Server) reloadAuthorization() {
 		oldAccounts := make(map[string]*Account)
 		s.accounts.Range(func(k, v interface{}) bool {
 			acc := v.(*Account)
-			acc.mu.RLock()
+			acc.mu.Lock()
 			oldAccounts[acc.Name] = acc
-			acc.mu.RUnlock()
+			// Need to clear out eventing timers since they close over this account and not the new one.
+			clearTimer(&acc.etmr)
+			clearTimer(&acc.ctmr)
+			acc.mu.Unlock()
 			s.accounts.Delete(k)
 			return true
 		})
@@ -1408,11 +1602,28 @@ func (s *Server) reloadAuthorization() {
 						newAcc.clients[c] = struct{}{}
 					}
 				}
+				// Same for leafnodes
+				newAcc.lleafs = append([]*client(nil), acc.lleafs...)
 
 				newAcc.sl = acc.sl
-				newAcc.rm = acc.rm
+				if acc.rm != nil {
+					newAcc.rm = make(map[string]int32)
+				}
+				for k, v := range acc.rm {
+					newAcc.rm[k] = v
+				}
+				// Transfer internal client state. The configureAccounts call from above may have set up a new one.
+				// We need to use the old one, and the isid to not confuse internal subs.
+				newAcc.ic, newAcc.isid = acc.ic, acc.isid
+				// Transfer any JetStream state.
 				newAcc.js = acc.js
-
+				// Also transfer any internal accounting on different client types. We copy over all clients
+				// so need to copy this as well for proper accounting going forward.
+				newAcc.nrclients = acc.nrclients
+				newAcc.sysclients = acc.sysclients
+				newAcc.nleafs = acc.nleafs
+				newAcc.nrleafs = acc.nrleafs
+				// Process any reverse map entries.
 				if len(acc.imports.rrMap) > 0 {
 					newAcc.imports.rrMap = make(map[string][]*serviceRespEntry)
 					for k, v := range acc.imports.rrMap {
@@ -1475,8 +1686,6 @@ func (s *Server) reloadAuthorization() {
 		}
 	}
 
-	// Gather clients that changed accounts. We will close them and they
-	// will reconnect, doing the right thing.
 	var (
 		cclientsa [64]*client
 		cclients  = cclientsa[:0]
@@ -1485,6 +1694,9 @@ func (s *Server) reloadAuthorization() {
 		routesa   [64]*client
 		routes    = routesa[:0]
 	)
+
+	// Gather clients that changed accounts. We will close them and they
+	// will reconnect, doing the right thing.
 	for _, client := range s.clients {
 		if s.clientHasMovedToDifferentAccount(client) {
 			cclients = append(cclients, client)
@@ -1495,6 +1707,26 @@ func (s *Server) reloadAuthorization() {
 	for _, route := range s.routes {
 		routes = append(routes, route)
 	}
+	// Check here for any system/internal clients which will not be in the servers map of normal clients.
+	if s.sys != nil && s.sys.account != nil && !s.opts.NoSystemAccount {
+		s.accounts.Store(s.sys.account.Name, s.sys.account)
+	}
+
+	s.accounts.Range(func(k, v interface{}) bool {
+		acc := v.(*Account)
+		acc.mu.RLock()
+		// Check for sysclients accounting, ignore the system account.
+		if acc.sysclients > 0 && (s.sys == nil || s.sys.account != acc) {
+			for c := range acc.clients {
+				if c.kind != CLIENT && c.kind != LEAF {
+					clients = append(clients, c)
+				}
+			}
+		}
+		acc.mu.RUnlock()
+		return true
+	})
+
 	var resetCh chan struct{}
 	if s.sys != nil {
 		// can't hold the lock as go routine reading it may be waiting for lock as well
@@ -1514,16 +1746,17 @@ func (s *Server) reloadAuthorization() {
 		client.closeConnection(ClientClosed)
 	}
 
-	for _, client := range clients {
+	for _, c := range clients {
 		// Disconnect any unauthorized clients.
-		if !s.isClientAuthorized(client) {
-			client.authViolation()
+		// Ignore internal clients.
+		if (c.kind == CLIENT || c.kind == LEAF) && !s.isClientAuthorized(c) {
+			c.authViolation()
 			continue
 		}
 		// Check to make sure account is correct.
-		client.swapAccountAfterReload()
+		c.swapAccountAfterReload()
 		// Remove any unauthorized subscriptions and check for account imports.
-		client.processSubsOnConfigReload(awcsti)
+		c.processSubsOnConfigReload(awcsti)
 	}
 
 	for _, route := range routes {
@@ -1543,7 +1776,6 @@ func (s *Server) reloadAuthorization() {
 
 	// We will double check all JetStream configs on a reload.
 	if checkJetStream {
-		s.getJetStream().clearResources()
 		if err := s.enableJetStreamAccounts(); err != nil {
 			s.Errorf(err.Error())
 		}
@@ -1651,7 +1883,7 @@ func (s *Server) reloadClusterPermissions(oldPerms *RoutePermissions) {
 		deleteRoutedSubs []*subscription
 	)
 	// FIXME(dlc) - Change for accounts.
-	gacc.sl.localSubs(&localSubs)
+	gacc.sl.localSubs(&localSubs, false)
 
 	// Go through all local subscriptions
 	for _, sub := range localSubs {

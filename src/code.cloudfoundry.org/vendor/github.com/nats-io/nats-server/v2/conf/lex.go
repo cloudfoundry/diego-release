@@ -1010,8 +1010,13 @@ func lexConvenientNumber(lx *lexer) stateFn {
 		return lexConvenientNumber
 	}
 	lx.backup()
-	lx.emit(itemInteger)
-	return lx.pop()
+	if isNL(r) || r == eof || r == mapEnd || r == optValTerm || r == mapValTerm || isWhitespace(r) || unicode.IsDigit(r) {
+		lx.emit(itemInteger)
+		return lx.pop()
+	}
+	// This is not a number, so treat it as a string.
+	lx.stringStateFn = lexString
+	return lexString
 }
 
 // lexDateAfterYear consumes a full Zulu Datetime in ISO8601 format.

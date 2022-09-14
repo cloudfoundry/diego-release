@@ -64,6 +64,9 @@ var (
 	// has been reached.
 	ErrTooManySubs = errors.New("maximum subscriptions exceeded")
 
+	// ErrTooManySubTokens signals a client that the subject has too many tokens.
+	ErrTooManySubTokens = errors.New("subject has exceeded number of tokens limit")
+
 	// ErrClientConnectedToRoutePort represents an error condition when a client
 	// attempted to connect to the route listen port.
 	ErrClientConnectedToRoutePort = errors.New("attempted to connect to route port")
@@ -71,6 +74,13 @@ var (
 	// ErrClientConnectedToLeafNodePort represents an error condition when a client
 	// attempted to connect to the leaf node listen port.
 	ErrClientConnectedToLeafNodePort = errors.New("attempted to connect to leaf node port")
+
+	// ErrLeafNodeHasSameClusterName represents an error condition when a leafnode is a cluster
+	// and it has the same cluster name as the hub cluster.
+	ErrLeafNodeHasSameClusterName = errors.New("remote leafnode has same cluster name")
+
+	// ErrLeafNodeDisabled is when we disable leafnodes.
+	ErrLeafNodeDisabled = errors.New("leafnodes disabled")
 
 	// ErrConnectedToWrongPort represents an error condition when a connection is attempted
 	// to the wrong listen port (for instance a LeafNode to a client port, etc...)
@@ -171,50 +181,59 @@ var (
 	ErrMalformedSubject = errors.New("malformed subject")
 
 	// ErrSubscribePermissionViolation is returned when processing of a subscription fails due to permissions.
-	ErrSubscribePermissionViolation = errors.New("subscribe permission viloation")
+	ErrSubscribePermissionViolation = errors.New("subscribe permission violation")
 
 	// ErrNoTransforms signals no subject transforms are available to map this subject.
 	ErrNoTransforms = errors.New("no matching transforms available")
 
-	// ErrJetStreamNotEnabled is returned when JetStream is not enabled.
-	ErrJetStreamNotEnabled = errors.New("jetstream not enabled")
-
-	// ErrJetStreamStreamNotFound is returned when a stream can not be found.
-	ErrJetStreamStreamNotFound = errors.New("stream not found")
-
-	// ErrJetStreamStreamAlreadyUsed is returned when a stream name has already been taken.
-	ErrJetStreamStreamAlreadyUsed = errors.New("stream name already in use")
-
-	// ErrJetStreamConsumerAlreadyUsed is returned when a consumer name has already been taken.
-	ErrJetStreamConsumerAlreadyUsed = errors.New("consumer name already in use")
-
-	// ErrJetStreamNotEnabledForAccount is returned JetStream is not enabled for this account.
-	ErrJetStreamNotEnabledForAccount = errors.New("jetstream not enabled for account")
-
-	// ErrJetStreamNotLeader is returned when issuing commands to a cluster on the wrong server.
-	ErrJetStreamNotLeader = errors.New("jetstream cluster can not handle request")
-
-	// ErrJetStreamNotAssigned is returned when the resource (stream or consumer) is not assigned.
-	ErrJetStreamNotAssigned = errors.New("jetstream cluster not assigned to this server")
-
-	// ErrJetStreamNotClustered is returned when a call requires clustering and we are not.
-	ErrJetStreamNotClustered = errors.New("jetstream not in clustered mode")
-
-	// ErrJetStreamResourcesExceeded is returned when a call would exceed internal resource limits.
-	ErrJetStreamResourcesExceeded = errors.New("jetstream resources exceeded for server")
-
-	// ErrStorageResourcesExceeded is returned when storage resources would be exceeded.
-	ErrStorageResourcesExceeded = errors.New("insufficient storage resources available")
-
-	// ErrMemoryResourcesExceeded is returned when memory resources would be exceeded.
-	ErrMemoryResourcesExceeded = errors.New("insufficient memory resources available")
-
-	// ErrReplicasNotSupported is returned when a stream with replicas > 1 in non-clustered mode.
-	ErrReplicasNotSupported = errors.New("replicas > 1 not supported in non-clustered mode")
-
 	// ErrCertNotPinned is returned when pinned certs are set and the certificate is not in it
 	ErrCertNotPinned = errors.New("certificate not pinned")
+
+	// ErrDuplicateServerName is returned when processing a server remote connection and
+	// the server reports that this server name is already used in the cluster.
+	ErrDuplicateServerName = errors.New("duplicate server name")
+
+	// ErrMinimumVersionRequired is returned when a connection is not at the minimum version required.
+	ErrMinimumVersionRequired = errors.New("minimum version required")
+
+	// ErrInvalidMappingDestination is used for all subject mapping destination errors
+	ErrInvalidMappingDestination = errors.New("invalid mapping destination")
+
+	// ErrInvalidMappingDestinationSubject is used to error on a bad transform destination mapping
+	ErrInvalidMappingDestinationSubject = fmt.Errorf("%w: invalid subject", ErrInvalidMappingDestination)
+
+	// ErrMappingDestinationNotUsingAllWildcards is used to error on a transform destination not using all of the token wildcards
+	ErrMappingDestinationNotUsingAllWildcards = fmt.Errorf("%w: not using all of the token wildcard(s)", ErrInvalidMappingDestination)
+
+	// ErrUnknownMappingDestinationFunction is returned when a subject mapping destination contains an unknown mustache-escaped mapping function.
+	ErrUnknownMappingDestinationFunction = fmt.Errorf("%w: unknown function", ErrInvalidMappingDestination)
+
+	// ErrorMappingDestinationFunctionWildcardIndexOutOfRange is returned when the mapping destination function is passed an out of range wildcard index value for one of it's arguments
+	ErrorMappingDestinationFunctionWildcardIndexOutOfRange = fmt.Errorf("%w: wildcard index out of range", ErrInvalidMappingDestination)
+
+	// ErrorMappingDestinationFunctionNotEnoughArguments is returned when the mapping destination function is not passed enough arguments
+	ErrorMappingDestinationFunctionNotEnoughArguments = fmt.Errorf("%w: not enough arguments passed to the function", ErrInvalidMappingDestination)
+
+	// ErrorMappingDestinationFunctionInvalidArgument is returned when the mapping destination function is passed and invalid argument
+	ErrorMappingDestinationFunctionInvalidArgument = fmt.Errorf("%w: function argument is invalid or in the wrong format", ErrInvalidMappingDestination)
+
+	// ErrorMappingDestinationFunctionTooManyArguments is returned when the mapping destination function is passed too many arguments
+	ErrorMappingDestinationFunctionTooManyArguments = fmt.Errorf("%w: too many arguments passed to the function", ErrInvalidMappingDestination)
 )
+
+// mappingDestinationErr is a type of subject mapping destination error
+type mappingDestinationErr struct {
+	token string
+	err   error
+}
+
+func (e *mappingDestinationErr) Error() string {
+	return fmt.Sprintf("%s in %s", e.err, e.token)
+}
+
+func (e *mappingDestinationErr) Is(target error) bool {
+	return target == ErrInvalidMappingDestination
+}
 
 // configErr is a configuration error.
 type configErr struct {
@@ -297,7 +316,7 @@ func NewErrorCtx(err error, format string, args ...interface{}) error {
 	return &errCtx{err, fmt.Sprintf(format, args...)}
 }
 
-// implement to work with errors.Is and errors.As
+// Unwrap implement to work with errors.Is and errors.As
 func (e *errCtx) Unwrap() error {
 	if e == nil {
 		return nil
@@ -313,7 +332,7 @@ func (e *errCtx) Context() string {
 	return e.ctx
 }
 
-// Return Error or, if type is right error and context
+// UnpackIfErrorCtx return Error or, if type is right error and context
 func UnpackIfErrorCtx(err error) string {
 	if e, ok := err.(*errCtx); ok {
 		if _, ok := e.error.(*errCtx); ok {
@@ -336,7 +355,7 @@ func errorsUnwrap(err error) error {
 	return u.Unwrap()
 }
 
-// implements: go 1.13 errors.Is(err, target error) bool
+// ErrorIs implements: go 1.13 errors.Is(err, target error) bool
 // TODO replace with native code once we no longer support go1.12
 func ErrorIs(err, target error) bool {
 	// this is an outright copy of go 1.13 errors.Is(err, target error) bool

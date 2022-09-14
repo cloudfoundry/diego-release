@@ -14,9 +14,9 @@ builds:
 - main: ./main.go
   binary: nats-server
   ldflags:
-    - -s -w -X github.com/nats-io/nats-server/server.gitCommit={{.ShortCommit}}
+    - -w -X github.com/nats-io/nats-server/v2/server.gitCommit={{.ShortCommit}}
   env:
-    - GO111MODULE=off
+    - GO111MODULE=on
     - CGO_ENABLED=0
   goos:
   - darwin
@@ -29,6 +29,7 @@ builds:
   - arm64
   - 386
   - mips64le
+  - s390x
   goarm:
   - 6
   - 7
@@ -52,6 +53,10 @@ nfpms:
     formats:
     - deb
     - rpm
+    contents:
+    - src: /usr/bin/nats-server
+      dst: /usr/local/bin/nats-server
+      type: "symlink"
 
 archives:
   - name_template: '{{.ProjectName}}-{{.Tag}}-{{.Os}}-{{.Arch}}{{if .Arm}}{{.Arm}}{{end}}'

@@ -1,4 +1,4 @@
-// Copyright 2012-2019 The NATS Authors
+// Copyright 2012-2022 The NATS Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -13,12 +13,15 @@
 
 package main
 
+//go:generate go run server/errors_gen.go
+
 import (
 	"flag"
 	"fmt"
 	"os"
 
 	"github.com/nats-io/nats-server/v2/server"
+	"go.uber.org/automaxprocs/maxprocs"
 )
 
 var usageStr = `
@@ -116,5 +119,14 @@ func main() {
 	if err := server.Run(s); err != nil {
 		server.PrintAndDie(err.Error())
 	}
+
+	// Adjust MAXPROCS if running under linux/cgroups quotas.
+	undo, err := maxprocs.Set(maxprocs.Logger(s.Debugf))
+	if err != nil {
+		s.Warnf("Failed to set GOMAXPROCS: %v", err)
+	} else {
+		defer undo()
+	}
+
 	s.WaitForShutdown()
 }

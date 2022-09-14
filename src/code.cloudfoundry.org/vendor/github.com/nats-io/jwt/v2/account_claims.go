@@ -30,13 +30,14 @@ type AccountLimits struct {
 	Imports         int64 `json:"imports,omitempty"`   // Max number of imports
 	Exports         int64 `json:"exports,omitempty"`   // Max number of exports
 	WildcardExports bool  `json:"wildcards,omitempty"` // Are wildcards allowed in exports
-	Conn            int64 `json:"conn,omitempty"`      // Max number of active connections
-	LeafNodeConn    int64 `json:"leaf,omitempty"`      // Max number of active leaf node connections
+	DisallowBearer  bool  `json:"disallow_bearer,omitempty"` // User JWT can't be bearer token
+	Conn            int64 `json:"conn,omitempty"` // Max number of active connections
+	LeafNodeConn    int64 `json:"leaf,omitempty"` // Max number of active leaf node connections
 }
 
 // IsUnlimited returns true if all limits are unlimited
 func (a *AccountLimits) IsUnlimited() bool {
-	return *a == AccountLimits{NoLimit, NoLimit, true, NoLimit, NoLimit}
+	return *a == AccountLimits{NoLimit, NoLimit, true, false, NoLimit, NoLimit}
 }
 
 type NatsLimits struct {
@@ -51,37 +52,81 @@ func (n *NatsLimits) IsUnlimited() bool {
 }
 
 type JetStreamLimits struct {
-	MemoryStorage int64 `json:"mem_storage,omitempty"`  // Max number of bytes stored in memory across all streams. (0 means disabled)
-	DiskStorage   int64 `json:"disk_storage,omitempty"` // Max number of bytes stored on disk across all streams. (0 means disabled)
-	Streams       int64 `json:"streams,omitempty"`      // Max number of streams
-	Consumer      int64 `json:"consumer,omitempty"`     // Max number of consumer
+	MemoryStorage        int64 `json:"mem_storage,omitempty"`           // Max number of bytes stored in memory across all streams. (0 means disabled)
+	DiskStorage          int64 `json:"disk_storage,omitempty"`          // Max number of bytes stored on disk across all streams. (0 means disabled)
+	Streams              int64 `json:"streams,omitempty"`               // Max number of streams
+	Consumer             int64 `json:"consumer,omitempty"`              // Max number of consumers
+	MaxAckPending        int64 `json:"max_ack_pending,omitempty"`       // Max ack pending of a Stream
+	MemoryMaxStreamBytes int64 `json:"mem_max_stream_bytes,omitempty"`  // Max bytes a memory backed stream can have. (0 means disabled/unlimited)
+	DiskMaxStreamBytes   int64 `json:"disk_max_stream_bytes,omitempty"` // Max bytes a disk backed stream can have. (0 means disabled/unlimited)
+	MaxBytesRequired     bool  `json:"max_bytes_required,omitempty"`    // Max bytes required by all Streams
 }
 
 // IsUnlimited returns true if all limits are unlimited
 func (j *JetStreamLimits) IsUnlimited() bool {
-	return *j == JetStreamLimits{NoLimit, NoLimit, NoLimit, NoLimit}
+	lim := *j
+	// workaround in case NoLimit was used instead of 0
+	if lim.MemoryMaxStreamBytes < 0 {
+		lim.MemoryMaxStreamBytes = 0
+	}
+	if lim.DiskMaxStreamBytes < 0 {
+		lim.DiskMaxStreamBytes = 0
+	}
+	if lim.MaxAckPending < 0 {
+		lim.MaxAckPending = 0
+	}
+	return lim == JetStreamLimits{NoLimit, NoLimit, NoLimit, NoLimit, 0, 0, 0, false}
 }
+
+type JetStreamTieredLimits map[string]JetStreamLimits
 
 // OperatorLimits are used to limit access by an account
 type OperatorLimits struct {
 	NatsLimits
 	AccountLimits
 	JetStreamLimits
+	JetStreamTieredLimits `json:"tiered_limits,omitempty"`
 }
 
-// IsEmpty returns true if all of the limits are 0/false.
+// IsJSEnabled returns if this account claim has JS enabled either through a tier or the non tiered limits.
+func (o *OperatorLimits) IsJSEnabled() bool {
+	if len(o.JetStreamTieredLimits) > 0 {
+		for _, l := range o.JetStreamTieredLimits {
+			if l.MemoryStorage != 0 || l.DiskStorage != 0 {
+				return true
+			}
+		}
+		return false
+	}
+	l := o.JetStreamLimits
+	return l.MemoryStorage != 0 || l.DiskStorage != 0
+}
+
+// IsEmpty returns true if all limits are 0/false/empty.
 func (o *OperatorLimits) IsEmpty() bool {
-	return *o == OperatorLimits{}
+	return o.NatsLimits == NatsLimits{} &&
+		o.AccountLimits == AccountLimits{} &&
+		o.JetStreamLimits == JetStreamLimits{} &&
+		len(o.JetStreamTieredLimits) == 0
 }
 
 // IsUnlimited returns true if all limits are unlimited
 func (o *OperatorLimits) IsUnlimited() bool {
-	return o.AccountLimits.IsUnlimited() && o.NatsLimits.IsUnlimited() && o.JetStreamLimits.IsUnlimited()
+	return o.AccountLimits.IsUnlimited() && o.NatsLimits.IsUnlimited() &&
+		o.JetStreamLimits.IsUnlimited() && len(o.JetStreamTieredLimits) == 0
 }
 
 // Validate checks that the operator limits contain valid values
-func (o *OperatorLimits) Validate(_ *ValidationResults) {
+func (o *OperatorLimits) Validate(vr *ValidationResults) {
 	// negative values mean unlimited, so all numbers are valid
+	if len(o.JetStreamTieredLimits) > 0 {
+		if (o.JetStreamLimits != JetStreamLimits{}) {
+			vr.AddError("JetStream Limits and tiered JetStream Limits are mutually exclusive")
+		}
+		if _, ok := o.JetStreamTieredLimits[""]; ok {
+			vr.AddError(`Tiered JetStream Limits can not contain a blank "" tier name`)
+		}
+	}
 }
 
 // Mapping for publishes
@@ -187,8 +232,10 @@ func NewAccountClaims(subject string) *AccountClaims {
 	// errors if we add to the OperatorLimits.
 	c.Limits = OperatorLimits{
 		NatsLimits{NoLimit, NoLimit, NoLimit},
-		AccountLimits{NoLimit, NoLimit, true, NoLimit, NoLimit},
-		JetStreamLimits{0, 0, 0, 0}}
+		AccountLimits{NoLimit, NoLimit, true, false, NoLimit, NoLimit},
+		JetStreamLimits{0, 0, 0, 0, 0, 0, 0, false},
+		JetStreamTieredLimits{},
+	}
 	c.Subject = subject
 	c.Mappings = Mapping{}
 	return c
