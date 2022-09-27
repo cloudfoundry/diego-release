@@ -19,12 +19,12 @@ $rep_pkg_path="code.cloudfoundry.org/rep/cmd/rep"
 $gocurl_pkg_path="code.cloudfoundry.org/rep/cmd/gocurl"
 
 Push-Location src/code.cloudfoundry.org
-go.exe build -o "${BOSH_INSTALL_TARGET}\rep.exe" "${rep_pkg_path}"
+go.exe build -buildvcs=false -o "${BOSH_INSTALL_TARGET}\rep.exe" "${rep_pkg_path}"
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Error compiling: ${rep_pkg_path}"
 }
 
-go.exe build -o "${BOSH_INSTALL_TARGET}\gocurl.exe" "${gocurl_pkg_path}"
+go.exe build -buildvcs=false -o "${BOSH_INSTALL_TARGET}\gocurl.exe" "${gocurl_pkg_path}"
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Error compiling: ${gocurl_pkg_path}"
 }

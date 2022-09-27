@@ -24,12 +24,12 @@ New-Item -ItemType directory -Path "${BOSH_INSTALL_TARGET}\internal" -Force
 New-Item -ItemType directory -Path "${BOSH_INSTALL_TARGET}\external" -Force
 
 Push-Location src/code.cloudfoundry.org
-go.exe build -tags=external -a -installsuffix static -o "${BOSH_INSTALL_TARGET}\external\${pkg_name}.exe" "${pkg_path}"
+go.exe build -buildvcs=false -tags=external -a -installsuffix static -o "${BOSH_INSTALL_TARGET}\external\${pkg_name}.exe" "${pkg_path}"
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Error compiling: ${pkg_path}"
 }
 
-go.exe build -a -installsuffix static -o "${BOSH_INSTALL_TARGET}\internal\${pkg_name}.exe" "${pkg_path}"
+go.exe build -buildvcs=false -a -installsuffix static -o "${BOSH_INSTALL_TARGET}\internal\${pkg_name}.exe" "${pkg_path}"
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Error compiling: ${pkg_path}"
 }
