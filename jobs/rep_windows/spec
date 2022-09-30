@@ -9,9 +9,6 @@ templates:
   trusted_ca_certificates.json.erb: config/certs/rep/trusted_ca_certificates.json
   instance_identity.crt.erb: config/certs/rep/instance_identity.crt
   instance_identity.key.erb: config/certs/rep/instance_identity.key
-  consul_ca.crt.erb: config/certs/consul/ca.crt
-  consul_client.crt.erb: config/certs/consul/client.crt
-  consul_client.key.erb: config/certs/consul/client.key
   rep.json.erb: config/rep.json
   loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
   loggregator_client.crt.erb: config/certs/loggregator/client.crt
@@ -101,16 +98,6 @@ properties:
     description: "REQUIRED: PEM-encoded tls client key"
   tls.ca_cert:
     description: "REQUIRED: PEM-encoded tls client CA certificate for asset upload/download"
-
-  diego.rep.consul.require_tls:
-    description: "Require mutual TLS to talk to the local consul API"
-    default: false
-  diego.rep.consul.ca_cert:
-    description: "PEM-encoded CA certificate"
-  diego.rep.consul.client_cert:
-    description: "PEM-encoded client certificate"
-  diego.rep.consul.client_key:
-    description: "PEM-encoded client key"
 
   diego.executor.memory_capacity_mb:
     description: "the memory capacity the executor should manage.  this should not be greater than the actual memory on the VM"
@@ -241,9 +228,6 @@ properties:
     description: "Hostname and port of the locket server"
     default: locket.service.cf.internal:8891
 
-  enable_consul_service_registration:
-    description: "Enable the cell rep to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."
-    default: true
   enable_declarative_healthcheck:
     description: "When set, enables the rep to prefer the LRP CheckDefinition to healthcheck instances over the Monitor action."
     default: false

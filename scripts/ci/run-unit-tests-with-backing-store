@@ -1,0 +1,59 @@
+#!/bin/bash
+
+set -e
+
+SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+SCRIPTS_DIR="$(realpath ${SCRIPTS_DIR}/..)"
+. "${SCRIPTS_DIR}/get_paths.sh"
+
+BIN_DIR="${DIEGO_RELEASE_DIR}/bin"
+mkdir -p "${BIN_DIR}"
+export PATH="${PATH}:${BIN_DIR}"
+
+set -e
+pushd "${DIEGO_RELEASE_DIR}/src/code.cloudfoundry.org"
+  go build -o "$BIN_DIR/nats-server" github.com/nats-io/nats-server/v2
+popd
+set +e
+
+echo "DEBUG INFO"
+echo "SCRIPTS_DIR = ${SCRIPTS_DIR}"
+echo "DIEGO_RELEASE_DIR = ${DIEGO_RELEASE_DIR}"
+echo "PATH = ${PATH}"
+
+if [ "${SQL_FLAVOR}" = "mysql" ]; then
+  echo "Running store-dependent test suites against a MySQL database..."
+  DB_UNITS="./bbs/db/sqldb"
+elif [ "${SQL_FLAVOR}" = "postgres" ]; then
+  echo "Running store-dependent test suites against a Postgres database..."
+  DB_UNITS="./bbs/db/sqldb"
+else
+  echo "**** SQL_FLAVOR env var must be set. Support for ETCD has been removed ****"
+  exit 1
+fi
+
+ERROR_CODE=1
+
+pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/ > /dev/null
+  go run github.com/onsi/ginkgo/ginkgo -r -keepGoing -nodes 8 -trace -randomizeAllSpecs -progress -race \
+    auctioneer/cmd/auctioneer \
+    bbs/cmd/bbs \
+    bbs/db/migrations \
+    bbs/handlers \
+    converger/cmd/converger \
+    locket/cmd/locket \
+    locket/db \
+    locket/handlers \
+    rep/cmd/rep \
+    cfdot/integration \
+    rep/generator/internal \
+    route-emitter/cmd/route-emitter \
+    ${DB_UNITS}
+
+  ERROR_CODE=$?
+popd > /dev/null
+
+
+
+exit $ERROR_CODE
+

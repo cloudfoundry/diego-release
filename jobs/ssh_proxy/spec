@@ -119,9 +119,6 @@ properties:
   connect_to_instance_address:
     description: "Connect directly to container IP instead of to the host IP and external port. Suitable only for deployments in which the gorouters and TCP routers can route directly to the container IP of instances."
     default: false
-  enable_consul_service_registration:
-    description: "Enable the ssh-proxy to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."
-    default: true
 
   logging.format.timestamp:
     description: "Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."

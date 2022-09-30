@@ -5,14 +5,10 @@ set -e
 SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 . "${SCRIPTS_DIR}/get_paths.sh"
 
-if [ -n "${DIEGO_CI_TARGET}" ]; then
-  target="-t ${DIEGO_CI_TARGET}"
-else
-  target="-t runtime-diego"
-fi
+DIEGO_CI_TARGET="${DIEGO_CI_TARGET:-runtime-diego}"
 
-fly ${target} execute \
+fly --target "${DIEGO_CI_TARGET}" execute \
   --privileged \
   --config "${DIEGO_RELEASE_DIR}/scripts/ci/run_unit_windows.build.yml" \
-  --input="diego-release=$DIEGO_RELEASE_DIR" \
+  --input="diego-release=${DIEGO_RELEASE_DIR}" \
   -- "$@"
