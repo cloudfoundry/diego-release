@@ -23,7 +23,6 @@ files:
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/cfhttp/unix_transport/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/cfhttp/v2/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/clock/*.go # gosub
-  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/consuladapter/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/debugserver/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/diego-logging-client/*.go # gosub
   - code.cloudfoundry.org/dockerdriver/*.go # gosub
@@ -82,7 +81,6 @@ files:
   - code.cloudfoundry.org/rep/generator/internal/*.go # gosub
   - code.cloudfoundry.org/rep/handlers/*.go # gosub
   - code.cloudfoundry.org/rep/harmonizer/*.go # gosub
-  - code.cloudfoundry.org/rep/maintain/*.go # gosub
   - code.cloudfoundry.org/routing-info/internalroutes/*.go # gosub
   - code.cloudfoundry.org/systemcerts/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/tlsconfig/*.go # gosub
@@ -91,7 +89,6 @@ files:
   - code.cloudfoundry.org/volman/voldocker/*.go # gosub
   - code.cloudfoundry.org/volman/vollocal/*.go # gosub
   - code.cloudfoundry.org/workpool/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/armon/go-metrics/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/awserr/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/awsutil/*.go # gosub
@@ -178,13 +175,8 @@ files:
   - code.cloudfoundry.org/vendor/github.com/golang/protobuf/ptypes/timestamp/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/golang/protobuf/ptypes/wrappers/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/google/shlex/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/hashicorp/consul/api/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/hashicorp/errwrap/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/hashicorp/go-cleanhttp/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/hashicorp/go-immutable-radix/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/hashicorp/go-multierror/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/hashicorp/golang-lru/simplelru/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/hashicorp/serf/coordinate/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jmespath/go-jmespath/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/mitchellh/go-homedir/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/nu7hatch/gouuid/*.go # gosub
