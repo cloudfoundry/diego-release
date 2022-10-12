@@ -66,9 +66,6 @@ properties:
     default: false
   diego.locket.sql.ca_cert:
     description: "Bundle of CA certificates for the Locket to verify the SQL server SSL certificate when connecting via SSL"
-  enable_consul_service_registration:
-    description: "Enable the Locket server to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."
-    default: true
 
   logging.format.timestamp:
     description: "Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."
