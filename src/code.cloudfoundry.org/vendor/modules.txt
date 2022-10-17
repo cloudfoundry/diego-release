@@ -30,7 +30,6 @@ code.cloudfoundry.org/commandrunner
 ## explicit
 code.cloudfoundry.org/consuladapter
 code.cloudfoundry.org/consuladapter/consulrunner
-code.cloudfoundry.org/consuladapter/fakes
 # code.cloudfoundry.org/credhub-cli v0.0.0-20220228140414-459eb2d27a1c
 ## explicit
 code.cloudfoundry.org/credhub-cli/credhub
@@ -110,57 +109,18 @@ github.com/Azure/go-ansiterm/winterm
 # github.com/BurntSushi/toml v1.2.0
 github.com/BurntSushi/toml
 github.com/BurntSushi/toml/internal
-# github.com/DataDog/datadog-go v4.7.0+incompatible
-github.com/DataDog/datadog-go/statsd
 # github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 ## explicit
 github.com/GaryBoone/GoStats/stats
-# github.com/Masterminds/goutils v1.1.0
-github.com/Masterminds/goutils
-# github.com/Masterminds/semver v1.5.0
-github.com/Masterminds/semver
-# github.com/Masterminds/sprig v2.22.0+incompatible
-github.com/Masterminds/sprig
 # github.com/Microsoft/go-winio v0.5.1
 github.com/Microsoft/go-winio
 github.com/Microsoft/go-winio/pkg/guid
-github.com/Microsoft/go-winio/pkg/security
-github.com/Microsoft/go-winio/vhd
-# github.com/Microsoft/hcsshim v0.9.4
-github.com/Microsoft/hcsshim
-github.com/Microsoft/hcsshim/computestorage
-github.com/Microsoft/hcsshim/internal/cow
-github.com/Microsoft/hcsshim/internal/hcs
-github.com/Microsoft/hcsshim/internal/hcs/schema1
-github.com/Microsoft/hcsshim/internal/hcs/schema2
-github.com/Microsoft/hcsshim/internal/hcserror
-github.com/Microsoft/hcsshim/internal/hns
-github.com/Microsoft/hcsshim/internal/interop
-github.com/Microsoft/hcsshim/internal/jobobject
-github.com/Microsoft/hcsshim/internal/log
-github.com/Microsoft/hcsshim/internal/logfields
-github.com/Microsoft/hcsshim/internal/longpath
-github.com/Microsoft/hcsshim/internal/mergemaps
-github.com/Microsoft/hcsshim/internal/oc
-github.com/Microsoft/hcsshim/internal/queue
-github.com/Microsoft/hcsshim/internal/safefile
-github.com/Microsoft/hcsshim/internal/timeout
-github.com/Microsoft/hcsshim/internal/vmcompute
-github.com/Microsoft/hcsshim/internal/wclayer
-github.com/Microsoft/hcsshim/internal/winapi
-github.com/Microsoft/hcsshim/osversion
 # github.com/ajstarks/svgo v0.0.0-20210406150507-75cfd577ce75
 ## explicit
 github.com/ajstarks/svgo
-# github.com/armon/circbuf v0.0.0-20150827004946-bbbad097214e
-github.com/armon/circbuf
 # github.com/armon/go-metrics v0.3.10
 ## explicit
 github.com/armon/go-metrics
-github.com/armon/go-metrics/circonus
-github.com/armon/go-metrics/datadog
-# github.com/armon/go-radix v1.0.0
-github.com/armon/go-radix
 # github.com/aws/aws-sdk-go v1.43.11
 ## explicit
 github.com/aws/aws-sdk-go/aws
@@ -224,12 +184,8 @@ github.com/awslabs/amazon-ecr-credential-helper/ecr-login/config
 github.com/awslabs/amazon-ecr-credential-helper/ecr-login/version
 # github.com/beorn7/perks v1.0.1
 github.com/beorn7/perks/quantile
-# github.com/bgentry/speakeasy v0.1.0
-github.com/bgentry/speakeasy
 # github.com/bmizerany/pat v0.0.0-20210406213842-e4b6760bdd6f
 github.com/bmizerany/pat
-# github.com/boltdb/bolt v1.3.1
-github.com/boltdb/bolt
 # github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 ## explicit
 github.com/cactus/go-statsd-client/statsd
@@ -238,13 +194,6 @@ github.com/census-instrumentation/opencensus-proto/gen-go/resource/v1
 github.com/census-instrumentation/opencensus-proto/gen-go/trace/v1
 # github.com/cespare/xxhash/v2 v2.1.2
 github.com/cespare/xxhash/v2
-# github.com/circonus-labs/circonus-gometrics v2.3.1+incompatible
-github.com/circonus-labs/circonus-gometrics
-github.com/circonus-labs/circonus-gometrics/api
-github.com/circonus-labs/circonus-gometrics/api/config
-github.com/circonus-labs/circonus-gometrics/checkmgr
-# github.com/circonus-labs/circonusllhist v0.1.3
-github.com/circonus-labs/circonusllhist
 # github.com/cloudfoundry/dropsonde v1.0.0
 ## explicit
 github.com/cloudfoundry/dropsonde
@@ -273,11 +222,6 @@ github.com/cloudfoundry/sonde-go/events
 github.com/cncf/udpa/go/udpa/annotations
 # github.com/cockroachdb/apd v1.1.0
 ## explicit
-# github.com/containerd/cgroups v1.0.3
-github.com/containerd/cgroups/stats/v1
-# github.com/containerd/containerd v1.6.8
-github.com/containerd/containerd/pkg/userns
-github.com/containerd/containerd/sys
 # github.com/containers/image v3.0.2+incompatible
 ## explicit
 github.com/containers/image/docker
@@ -313,43 +257,20 @@ github.com/docker/distribution/registry/storage/cache
 github.com/docker/distribution/registry/storage/cache/memory
 # github.com/docker/docker v20.10.17+incompatible => github.com/docker/docker v20.10.13+incompatible
 ## explicit
-github.com/docker/docker/api/types/blkiodev
-github.com/docker/docker/api/types/container
-github.com/docker/docker/api/types/filters
-github.com/docker/docker/api/types/mount
-github.com/docker/docker/api/types/network
-github.com/docker/docker/api/types/registry
-github.com/docker/docker/api/types/strslice
-github.com/docker/docker/api/types/swarm
-github.com/docker/docker/api/types/swarm/runtime
 github.com/docker/docker/api/types/versions
-github.com/docker/docker/pkg/archive
-github.com/docker/docker/pkg/fileutils
 github.com/docker/docker/pkg/homedir
-github.com/docker/docker/pkg/idtools
-github.com/docker/docker/pkg/ioutils
-github.com/docker/docker/pkg/jsonmessage
-github.com/docker/docker/pkg/longpath
-github.com/docker/docker/pkg/pools
-github.com/docker/docker/pkg/stdcopy
-github.com/docker/docker/pkg/system
 github.com/docker/docker/pkg/term
 # github.com/docker/docker-credential-helpers v0.6.4
 github.com/docker/docker-credential-helpers/client
 github.com/docker/docker-credential-helpers/credentials
 # github.com/docker/go-connections v0.4.0
-github.com/docker/go-connections/nat
 github.com/docker/go-connections/sockets
 github.com/docker/go-connections/tlsconfig
 # github.com/docker/go-metrics v0.0.1
 github.com/docker/go-metrics
-# github.com/docker/go-units v0.4.0
-github.com/docker/go-units
 # github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 ## explicit
 github.com/docker/libtrust
-# github.com/elazarl/go-bindata-assetfs v1.0.1
-github.com/elazarl/go-bindata-assetfs
 # github.com/envoyproxy/go-control-plane v0.9.4 => github.com/envoyproxy/go-control-plane v0.9.5
 ## explicit
 github.com/envoyproxy/go-control-plane/envoy/annotations
@@ -372,16 +293,12 @@ github.com/envoyproxy/go-control-plane/envoy/type/tracing/v3
 github.com/envoyproxy/go-control-plane/envoy/type/v3
 # github.com/envoyproxy/protoc-gen-validate v0.1.0
 github.com/envoyproxy/protoc-gen-validate/validate
-# github.com/fatih/color v1.13.0
-github.com/fatih/color
 # github.com/fortytw2/leaktest v1.3.0
 ## explicit
 github.com/fortytw2/leaktest
 # github.com/fsnotify/fsnotify v1.5.1
 ## explicit
 github.com/fsnotify/fsnotify
-# github.com/fsouza/go-dockerclient v1.7.3
-github.com/fsouza/go-dockerclient
 # github.com/ghodss/yaml v1.0.0
 ## explicit
 github.com/ghodss/yaml
@@ -429,8 +346,6 @@ github.com/gogo/protobuf/vanity/command
 # github.com/golang-jwt/jwt/v4 v4.1.0
 ## explicit
 github.com/golang-jwt/jwt/v4
-# github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da
-github.com/golang/groupcache/lru
 # github.com/golang/protobuf v1.5.2 => github.com/golang/protobuf v1.3.2
 ## explicit
 github.com/golang/protobuf/jsonpb
@@ -443,104 +358,32 @@ github.com/golang/protobuf/ptypes/empty
 github.com/golang/protobuf/ptypes/struct
 github.com/golang/protobuf/ptypes/timestamp
 github.com/golang/protobuf/ptypes/wrappers
-# github.com/google/btree v1.0.1
-github.com/google/btree
 # github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510
 ## explicit
 github.com/google/shlex
-# github.com/google/uuid v1.3.0
-github.com/google/uuid
 # github.com/gorilla/mux v1.8.0
 github.com/gorilla/mux
 # github.com/hashicorp/consul v1.11.4 => github.com/hashicorp/consul v0.7.0
 ## explicit
-github.com/hashicorp/consul
-github.com/hashicorp/consul/acl
 github.com/hashicorp/consul/api
-github.com/hashicorp/consul/command
-github.com/hashicorp/consul/command/agent
-github.com/hashicorp/consul/consul
-github.com/hashicorp/consul/consul/agent
-github.com/hashicorp/consul/consul/prepared_query
-github.com/hashicorp/consul/consul/servers
-github.com/hashicorp/consul/consul/state
-github.com/hashicorp/consul/consul/structs
-github.com/hashicorp/consul/lib
-github.com/hashicorp/consul/tlsutil
-github.com/hashicorp/consul/types
-github.com/hashicorp/consul/watch
 # github.com/hashicorp/errwrap v1.1.0
 ## explicit
 github.com/hashicorp/errwrap
-# github.com/hashicorp/go-checkpoint v0.5.0
-github.com/hashicorp/go-checkpoint
 # github.com/hashicorp/go-cleanhttp v0.5.2
 github.com/hashicorp/go-cleanhttp
-# github.com/hashicorp/go-hclog v0.9.1
-github.com/hashicorp/go-hclog
 # github.com/hashicorp/go-immutable-radix v1.3.1
 ## explicit
 github.com/hashicorp/go-immutable-radix
-# github.com/hashicorp/go-memdb v1.3.2
-github.com/hashicorp/go-memdb
-# github.com/hashicorp/go-msgpack v0.5.5
-github.com/hashicorp/go-msgpack/codec
 # github.com/hashicorp/go-multierror v1.1.1
 ## explicit
 github.com/hashicorp/go-multierror
-# github.com/hashicorp/go-reap v0.0.0-20170704170343-bf58d8a43e7b
-github.com/hashicorp/go-reap
-# github.com/hashicorp/go-retryablehttp v0.5.3
-github.com/hashicorp/go-retryablehttp
-# github.com/hashicorp/go-sockaddr v1.0.0
-github.com/hashicorp/go-sockaddr
-# github.com/hashicorp/go-syslog v1.0.0
-github.com/hashicorp/go-syslog
-# github.com/hashicorp/go-uuid v1.0.1
-github.com/hashicorp/go-uuid
 # github.com/hashicorp/go-version v1.4.0
 github.com/hashicorp/go-version
 # github.com/hashicorp/golang-lru v0.5.4
-github.com/hashicorp/golang-lru
 github.com/hashicorp/golang-lru/simplelru
-# github.com/hashicorp/hcl v1.0.0
-github.com/hashicorp/hcl
-github.com/hashicorp/hcl/hcl/ast
-github.com/hashicorp/hcl/hcl/parser
-github.com/hashicorp/hcl/hcl/scanner
-github.com/hashicorp/hcl/hcl/strconv
-github.com/hashicorp/hcl/hcl/token
-github.com/hashicorp/hcl/json/parser
-github.com/hashicorp/hcl/json/scanner
-github.com/hashicorp/hcl/json/token
-# github.com/hashicorp/hil v0.0.0-20210521165536-27a72121fd40
-github.com/hashicorp/hil
-github.com/hashicorp/hil/ast
-github.com/hashicorp/hil/parser
-github.com/hashicorp/hil/scanner
-# github.com/hashicorp/logutils v1.0.0
-github.com/hashicorp/logutils
-# github.com/hashicorp/memberlist v0.3.0
-github.com/hashicorp/memberlist
-# github.com/hashicorp/net-rpc-msgpackrpc v0.0.0-20151116020338-a14192a58a69
-github.com/hashicorp/net-rpc-msgpackrpc
-# github.com/hashicorp/raft v1.3.1
-github.com/hashicorp/raft
-# github.com/hashicorp/raft-boltdb v0.0.0-20210422161416-485fa74b0b01
-github.com/hashicorp/raft-boltdb
-# github.com/hashicorp/scada-client v0.0.0-20160601224023-6e896784f66f
-github.com/hashicorp/scada-client
-github.com/hashicorp/scada-client/scada
 # github.com/hashicorp/serf v0.9.7
 ## explicit
 github.com/hashicorp/serf/coordinate
-github.com/hashicorp/serf/serf
-# github.com/hashicorp/yamux v0.0.0-20210316155119-a95892c5f864
-github.com/hashicorp/yamux
-# github.com/huandu/xstrings v1.3.2
-github.com/huandu/xstrings
-# github.com/imdario/mergo v0.3.12
-github.com/imdario/mergo
 # github.com/inconshreveable/mousetrap v1.0.0
 github.com/inconshreveable/mousetrap
 # github.com/jackc/fake v0.0.0-20150926172116-812a484cc733
@@ -583,39 +426,20 @@ github.com/mailru/easyjson
 github.com/mailru/easyjson/buffer
 github.com/mailru/easyjson/jlexer
 github.com/mailru/easyjson/jwriter
-# github.com/mattn/go-colorable v0.1.12
-github.com/mattn/go-colorable
-# github.com/mattn/go-isatty v0.0.14
-github.com/mattn/go-isatty
 # github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182affec369
 github.com/matttproud/golang_protobuf_extensions/pbutil
-# github.com/miekg/dns v1.1.41
-github.com/miekg/dns
 # github.com/minio/highwayhash v1.0.2
 github.com/minio/highwayhash
-# github.com/mitchellh/cli v1.1.2
-## explicit
-github.com/mitchellh/cli
-# github.com/mitchellh/copystructure v1.2.0
-github.com/mitchellh/copystructure
 # github.com/mitchellh/go-homedir v1.1.0
 github.com/mitchellh/go-homedir
 # github.com/mitchellh/hashstructure v1.1.0
 ## explicit
 github.com/mitchellh/hashstructure
-# github.com/mitchellh/mapstructure v1.1.2
-github.com/mitchellh/mapstructure
-# github.com/mitchellh/reflectwalk v1.0.2
-github.com/mitchellh/reflectwalk
-# github.com/moby/sys/mount v0.2.0
-github.com/moby/sys/mount
 # github.com/moby/sys/mountinfo v0.5.0
 github.com/moby/sys/mountinfo
 # github.com/moby/term v0.0.0-20210610120745-9d4ed1856297
 github.com/moby/term
 github.com/moby/term/windows
-# github.com/morikuni/aec v1.0.0
-github.com/morikuni/aec
 # github.com/nats-io/jwt/v2 v2.3.0
 github.com/nats-io/jwt/v2
 # github.com/nats-io/nats-server/v2 v2.9.0
@@ -726,10 +550,6 @@ github.com/pkg/errors
 # github.com/pkg/sftp v1.13.0
 ## explicit
 github.com/pkg/sftp
-# github.com/posener/complete v1.2.3
-github.com/posener/complete
-github.com/posener/complete/cmd
-github.com/posener/complete/cmd/install
 # github.com/prometheus/client_golang v1.11.1
 github.com/prometheus/client_golang/prometheus
 github.com/prometheus/client_golang/prometheus/internal
@@ -744,10 +564,6 @@ github.com/prometheus/common/model
 github.com/prometheus/procfs
 github.com/prometheus/procfs/internal/fs
 github.com/prometheus/procfs/internal/util
-# github.com/ryanuber/columnize v0.0.0-20160712163229-9b3edd62028f
-github.com/ryanuber/columnize
-# github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529
-github.com/sean-/seed
 # github.com/shopspring/decimal v1.2.0
 ## explicit
 # github.com/sirupsen/logrus v1.9.0
@@ -771,20 +587,12 @@ github.com/tedsuo/ifrit/sigmon
 # github.com/tedsuo/rata v1.0.0
 ## explicit
 github.com/tedsuo/rata
-# github.com/tv42/httpunix v0.0.0-20191220191345-2ba4b9c3382c
-github.com/tv42/httpunix
 # github.com/vito/go-sse v1.0.0
 ## explicit
 github.com/vito/go-sse/sse
 # github.com/zorkian/go-datadog-api v2.30.0+incompatible => github.com/zorkian/go-datadog-api v0.0.0-20150915071709-8f1192dcd661
 ## explicit
 github.com/zorkian/go-datadog-api
-# go.opencensus.io v0.23.0
-go.opencensus.io
-go.opencensus.io/internal
-go.opencensus.io/trace
-go.opencensus.io/trace/internal
-go.opencensus.io/trace/tracestate
 # go.uber.org/automaxprocs v1.5.1
 go.uber.org/automaxprocs/internal/cgroups
 go.uber.org/automaxprocs/internal/runtime
@@ -804,12 +612,10 @@ golang.org/x/crypto/internal/alias
 golang.org/x/crypto/internal/poly1305
 golang.org/x/crypto/ocsp
 golang.org/x/crypto/pbkdf2
-golang.org/x/crypto/scrypt
 golang.org/x/crypto/ssh
 golang.org/x/crypto/ssh/internal/bcrypt_pbkdf
 # golang.org/x/net v0.0.0-20220812174116-3211cb980234
 ## explicit
-golang.org/x/net/bpf
 golang.org/x/net/context
 golang.org/x/net/html
 golang.org/x/net/html/atom
@@ -818,12 +624,8 @@ golang.org/x/net/http/httpguts
 golang.org/x/net/http2
 golang.org/x/net/http2/hpack
 golang.org/x/net/idna
-golang.org/x/net/internal/iana
-golang.org/x/net/internal/socket
 golang.org/x/net/internal/socks
 golang.org/x/net/internal/timeseries
-golang.org/x/net/ipv4
-golang.org/x/net/ipv6
 golang.org/x/net/proxy
 golang.org/x/net/trace
 # golang.org/x/sys v0.0.0-20220906135438-9e1f76180b77
