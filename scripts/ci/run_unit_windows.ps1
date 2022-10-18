@@ -14,10 +14,7 @@ Push-Location "$env:DIEGO_RELEASE_DIR/src/code.cloudfoundry.org"
   go build -o "$NATS_DIR/nats-server.exe" github.com/nats-io/nats-server/v2
   $env:NATS_DOCKERIZED = "1"
   $env:NATS_DOCKERIZED = "1"
-  $CONSUL_DIR = "C:\consul"
-  Write-Host "Installing consul ..."
-  go build -o "$CONSUL_DIR/consul.exe" github.com/hashicorp/consul
-  $env:PATH += ";$NATS_DIR;$CONSUL_DIR"
+  $env:PATH += ";$NATS_DIR"
 Pop-Location
 
 Write-Host "Downloading winpty DLL"

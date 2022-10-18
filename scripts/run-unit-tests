@@ -11,7 +11,6 @@ export GOFLAGS="-buildvcs=false"
 set -e
 pushd "${DIEGO_RELEASE_DIR}/src/code.cloudfoundry.org"
   go build -o "$BIN_DIR/nats-server" github.com/nats-io/nats-server/v2
-  go build -o "$BIN_DIR/consul" github.com/hashicorp/consul
 popd
 set +e
 

@@ -152,8 +152,6 @@ function Setup-Gopath() {
       $env:NATS_DOCKERIZED = "1"
       echo "Installing ginkgo ..."
       go build -o "$env:GOBIN/ginkgo.exe" github.com/onsi/ginkgo/ginkgo
-      echo "Installing consul ..."
-      go build -o "$env:GOBIN/consul.exe" github.com/hashicorp/consul
     Pop-Location
   Pop-Location
 }
