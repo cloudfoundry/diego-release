@@ -34,8 +34,8 @@ function bootDB {
     testConnection="psql -h localhost -U $POSTGRES_USER -c '\conninfo' &>/dev/null"
   elif [[ "$db" == "mysql"* ]]; then
     chown -R mysql:mysql /var/run/mysqld
-    launchDB="(MYSQL_ROOT_PASSWORD=password /entrypoint.sh mysqld &> /var/log/mysql-boot.log) &"
-    testConnection="mysql -h 127.0.0.1 -uroot --password=password -e 'quit'"
+    launchDB="(MYSQL_USER='' MYSQL_ROOT_PASSWORD=$MYSQL_PASSWORD /entrypoint.sh mysqld &> /var/log/mysql-boot.log) &"
+    testConnection="echo '\s;' | mysql -h127.0.0.1 -uroot --password=$MYSQL_PASSWORD &>/dev/null"
   else
     echo "skipping database"
     return 0

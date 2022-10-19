@@ -6,7 +6,6 @@ SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 BIN_DIR="${DIEGO_RELEASE_DIR}/bin"
 mkdir -p "${BIN_DIR}"
 export PATH="${PATH}:${BIN_DIR}"
-export GOFLAGS="-buildvcs=false"
 
 set -e
 pushd "${DIEGO_RELEASE_DIR}/src/code.cloudfoundry.org"

@@ -11,12 +11,8 @@ else
   target="-t runtime-diego"
 fi
 
-export MYSQL_PASSWORD=password
-export MYSQL_USER=root
-export SCRIPT=run-unit-tests-with-backing-store
-export SQL_FLAVOR=mysql
 fly ${target} execute \
   --privileged \
-  --config "${DIEGO_RELEASE_DIR}/scripts/ci/run_unit_mysql.build.yml" \
+  --config "${DIEGO_RELEASE_DIR}/scripts/ci/run_unit.build.yml" \
   --input="diego-release=$DIEGO_RELEASE_DIR" \
   -- "$@"
