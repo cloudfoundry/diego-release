@@ -2,6 +2,8 @@
 
 dir=$(dirname $0)
 
+export GOFLAGS="-buildvcs=false"
+
 source $dir/setup_inigo
 
 nodes_flag=""

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-CI_TARGET=diego
+CI_TARGET=runtime-diego
 
 scripts_path=./$(dirname $0)
 eval $($scripts_path/get_paths.sh)
