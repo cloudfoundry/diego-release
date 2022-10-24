@@ -70,7 +70,7 @@ if [ -n "$PACKAGE" ]; then
   exit $?
 else
   pushd "${DIEGO_RELEASE_DIR}/src/code.cloudfoundry.org/" > /dev/null
-    go run github.com/onsi/ginkgo/ginkgo -r -keepGoing -nodes 8 -trace -randomizeAllSpecs -progress -race \
+    go run github.com/onsi/ginkgo/ginkgo -r -v -keepGoing -nodes 8 -trace -randomizeAllSpecs -progress -race \
       -skipPackage="$SKIP_PACKAGES" "$@"
     (( ERROR_CODE+=$? ))
   popd > /dev/null
