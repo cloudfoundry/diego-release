@@ -46,17 +46,17 @@ files:
   - code.cloudfoundry.org/route-emitter/watcher/*.go # gosub
   - code.cloudfoundry.org/routing-api/*.go # gosub
   - code.cloudfoundry.org/routing-api/models/*.go # gosub
+  - code.cloudfoundry.org/routing-api/uaaclient/*.go # gosub
   - code.cloudfoundry.org/routing-info/cfroutes/*.go # gosub
   - code.cloudfoundry.org/routing-info/internalroutes/*.go # gosub
   - code.cloudfoundry.org/routing-info/tcp_routes/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/tlsconfig/*.go # gosub
   - code.cloudfoundry.org/trace-logger/*.go # gosub
-  - code.cloudfoundry.org/uaa-go-client/*.go # gosub
-  - code.cloudfoundry.org/uaa-go-client/config/*.go # gosub
-  - code.cloudfoundry.org/uaa-go-client/schema/*.go # gosub
   - code.cloudfoundry.org/workpool/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/armon/go-metrics/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/bmizerany/pat/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/cloudfoundry-community/go-uaa/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/cloudfoundry-community/go-uaa/passwordcredentials/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/gogoproto/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/proto/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/protoc-gen-gogo/descriptor/*.go # gosub
@@ -90,12 +90,16 @@ files:
   - code.cloudfoundry.org/vendor/github.com/vito/go-sse/sse/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/ed25519/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/context/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/net/context/ctxhttp/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/http/httpguts/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/http2/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/http2/hpack/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/idna/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/internal/timeseries/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/trace/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/oauth2/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/oauth2/clientcredentials/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/oauth2/internal/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/sys/internal/unsafeheader/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/sys/unix/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/sys/unix/*.s # gosub
