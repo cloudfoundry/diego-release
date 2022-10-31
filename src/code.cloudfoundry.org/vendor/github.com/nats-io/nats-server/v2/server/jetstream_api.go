@@ -151,7 +151,8 @@ const (
 	JSApiConsumersT = "$JS.API.CONSUMER.NAMES.%s"
 
 	// JSApiConsumerList is the endpoint that will return all detailed consumer information
-	JSApiConsumerList = "$JS.API.CONSUMER.LIST.*"
+	JSApiConsumerList  = "$JS.API.CONSUMER.LIST.*"
+	JSApiConsumerListT = "$JS.API.CONSUMER.LIST.%s"
 
 	// JSApiConsumerInfo is for obtaining general information about a consumer.
 	// Will return JSON response.
@@ -581,6 +582,9 @@ const JSApiLeaderStepDownResponseType = "io.nats.jetstream.api.v1.meta_leader_st
 type JSApiMetaServerRemoveRequest struct {
 	// Server name of the peer to be removed.
 	Server string `json:"peer"`
+	// Peer ID of the peer to be removed. If specified this is used
+	// instead of the server name.
+	Peer string `json:"peer_id,omitempty"`
 }
 
 // JSApiMetaServerRemoveResponse is the response to a peer removal request in the meta group.
@@ -756,7 +760,11 @@ func (js *jetStream) apiDispatch(sub *subscription, c *client, acc *Account, sub
 
 	// If this is directly from a client connection ok to do in place.
 	if c.kind != ROUTER && c.kind != GATEWAY {
+		start := time.Now()
 		jsub.icb(sub, c, acc, subject, reply, rmsg)
+		if dur := time.Since(start); dur >= readLoopReportThreshold {
+			s.Warnf("Internal subscription on %q took too long: %v", subject, dur)
+		}
 		return
 	}
 
@@ -784,7 +792,11 @@ func (s *Server) processJSAPIRoutedRequests() {
 			for _, req := range reqs {
 				r := req.(*jsAPIRoutedReq)
 				client.pa = r.pa
+				start := time.Now()
 				r.jsub.icb(r.sub, client, r.acc, r.subject, r.reply, r.msg)
+				if dur := time.Since(start); dur >= readLoopReportThreshold {
+					s.Warnf("Internal subscription on %q took too long: %v", r.subject, dur)
+				}
 			}
 			queue.recycle(&reqs)
 		case <-s.quitCh:
@@ -2146,7 +2158,7 @@ func (s *Server) jsStreamRemovePeerRequest(sub *subscription, c *client, _ *Acco
 
 	// Check to see if we are a member of the group and if the group has no leader.
 	// Peers here is a server name, convert to node name.
-	nodeName := string(getHash(req.Peer))
+	nodeName := getHash(req.Peer)
 
 	js.mu.RLock()
 	rg := sa.Group
@@ -2215,6 +2227,14 @@ func (s *Server) jsLeaderServerRemoveRequest(sub *subscription, c *client, _ *Ac
 	var found string
 	js.mu.RLock()
 	for _, p := range cc.meta.Peers() {
+		// If Peer is specified, it takes precedence
+		if req.Peer != _EMPTY_ {
+			if p.ID == req.Peer {
+				found = req.Peer
+				break
+			}
+			continue
+		}
 		si, ok := s.nodeToInfo.Load(p.ID)
 		if ok && si.(nodeInfo).name == req.Server {
 			found = p.ID
@@ -3923,7 +3943,10 @@ func (s *Server) jsConsumerNamesRequest(sub *subscription, c *client, _ *Account
 		numConsumers = len(resp.Consumers)
 		if offset > numConsumers {
 			offset = numConsumers
-			resp.Consumers = resp.Consumers[:offset]
+		}
+		resp.Consumers = resp.Consumers[offset:]
+		if len(resp.Consumers) > JSApiNamesLimit {
+			resp.Consumers = resp.Consumers[:JSApiNamesLimit]
 		}
 		js.mu.RUnlock()
 

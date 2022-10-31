@@ -65,6 +65,9 @@ type StreamConfig struct {
 	// Allow higher performance and unified direct access for mirrors as well.
 	MirrorDirect bool `json:"mirror_direct"`
 
+	// Allow KV like semantics to also discard new on a per subject basis
+	DiscardNewPer bool `json:"discard_new_per_subject,omitempty"`
+
 	// Optional qualifiers. These can not be modified after set to true.
 
 	// Sealed will seal a stream so no messages can get out or in.
@@ -143,9 +146,9 @@ type PeerInfo struct {
 	Offline bool          `json:"offline,omitempty"`
 	Active  time.Duration `json:"active"`
 	Lag     uint64        `json:"lag,omitempty"`
+	Peer    string        `json:"peer"`
 	// For migrations.
 	cluster string
-	peer    string
 }
 
 // StreamSourceInfo shows information about an upstream stream source.
@@ -555,7 +558,7 @@ func (a *Account) addStreamWithAssignment(config *StreamConfig, fsConfig *FileSt
 // use additional information in case the stream names are the same.
 func (ssi *StreamSource) setIndexName() {
 	if ssi.External != nil {
-		ssi.iname = ssi.Name + ":" + string(getHash(ssi.External.ApiPrefix))
+		ssi.iname = ssi.Name + ":" + getHash(ssi.External.ApiPrefix)
 	} else {
 		ssi.iname = ssi.Name
 	}
@@ -944,6 +947,9 @@ func (s *Server) checkStreamCfg(config *StreamConfig, acc *Account) (StreamConfi
 	if cfg.Replicas > StreamMaxReplicas {
 		return cfg, NewJSStreamInvalidConfigError(fmt.Errorf("maximum replicas is %d", StreamMaxReplicas))
 	}
+	if cfg.Replicas < 0 {
+		return cfg, NewJSReplicasCountCannotBeNegativeError()
+	}
 	if cfg.MaxMsgs == 0 {
 		cfg.MaxMsgs = -1
 	}
@@ -992,6 +998,16 @@ func (s *Server) checkStreamCfg(config *StreamConfig, acc *Account) (StreamConfi
 		return StreamConfig{}, NewJSStreamInvalidConfigError(fmt.Errorf("roll-ups require the purge permission"))
 	}
 
+	// Check for new discard new per subject, we require the discard policy to also be new.
+	if cfg.DiscardNewPer {
+		if cfg.Discard != DiscardNew {
+			return StreamConfig{}, NewJSStreamInvalidConfigError(fmt.Errorf("discard new per subject requires discard new policy to be set"))
+		}
+		if cfg.MaxMsgsPer <= 0 {
+			return StreamConfig{}, NewJSStreamInvalidConfigError(fmt.Errorf("discard new per subject requires max msgs per subject > 0"))
+		}
+	}
+
 	getStream := func(streamName string) (bool, StreamConfig) {
 		var exists bool
 		var cfg StreamConfig
@@ -1031,6 +1047,12 @@ func (s *Server) checkStreamCfg(config *StreamConfig, acc *Account) (StreamConfi
 	var deliveryPrefixes []string
 	var apiPrefixes []string
 
+	// Some errors we want to suppress on recovery.
+	var isRecovering bool
+	if js := s.getJetStream(); js != nil {
+		isRecovering = js.isMetaRecovering()
+	}
+
 	// Do some pre-checking for mirror config to avoid cycles in clustered mode.
 	if cfg.Mirror != nil {
 		if len(cfg.Subjects) > 0 {
@@ -1049,7 +1071,7 @@ func (s *Server) checkStreamCfg(config *StreamConfig, acc *Account) (StreamConfi
 			if cfg.MaxMsgSize > 0 && maxMsgSize > 0 && cfg.MaxMsgSize < maxMsgSize {
 				return StreamConfig{}, NewJSMirrorMaxMessageSizeTooBigError()
 			}
-			if !hasFilterSubjectOverlap(cfg.Mirror.FilterSubject, subs) {
+			if !isRecovering && !hasFilterSubjectOverlap(cfg.Mirror.FilterSubject, subs) {
 				return StreamConfig{}, NewJSStreamInvalidConfigError(
 					fmt.Errorf("mirror '%s' filter subject '%s' does not overlap with any origin stream subject",
 						cfg.Mirror.Name, cfg.Mirror.FilterSubject))
@@ -1089,7 +1111,7 @@ func (s *Server) checkStreamCfg(config *StreamConfig, acc *Account) (StreamConfi
 				if cfg.MaxMsgSize > 0 && maxMsgSize > 0 && cfg.MaxMsgSize < maxMsgSize {
 					return StreamConfig{}, NewJSSourceMaxMessageSizeTooBigError()
 				}
-				if !hasFilterSubjectOverlap(src.FilterSubject, streamSubs) {
+				if !isRecovering && !hasFilterSubjectOverlap(src.FilterSubject, streamSubs) {
 					return StreamConfig{}, NewJSStreamInvalidConfigError(
 						fmt.Errorf("source '%s' filter subject '%s' does not overlap with any origin stream subject",
 							src.Name, src.FilterSubject))
@@ -1315,6 +1337,16 @@ func (jsa *jsAccount) configUpdateCheck(old, new *StreamConfig, s *Server) (*Str
 	// Can't change RePublish
 	if !reflect.DeepEqual(cfg.RePublish, old.RePublish) {
 		return nil, NewJSStreamInvalidConfigError(fmt.Errorf("stream configuration update can not change RePublish"))
+	}
+
+	// Check on new discard new per subject.
+	if cfg.DiscardNewPer {
+		if cfg.Discard != DiscardNew {
+			return nil, NewJSStreamInvalidConfigError(fmt.Errorf("discard new per subject requires discard new policy to be set"))
+		}
+		if cfg.MaxMsgsPer <= 0 {
+			return nil, NewJSStreamInvalidConfigError(fmt.Errorf("discard new per subject requires max msgs per subject > 0"))
+		}
 	}
 
 	// Do some adjustments for being sealed.
@@ -2481,12 +2513,20 @@ func (mset *stream) setSourceConsumer(iname string, seq uint64, startTime time.T
 		return
 	}
 
-	b, _ := json.Marshal(req)
-	subject := fmt.Sprintf(JSApiConsumerCreateT, si.name)
+	var subject string
+	if req.Config.FilterSubject != _EMPTY_ {
+		req.Config.Name = fmt.Sprintf("src-%s", createConsumerName())
+		subject = fmt.Sprintf(JSApiConsumerCreateExT, si.name, req.Config.Name, req.Config.FilterSubject)
+	} else {
+		subject = fmt.Sprintf(JSApiConsumerCreateT, si.name)
+	}
 	if ext != nil {
 		subject = strings.Replace(subject, JSApiPrefix, ext.ApiPrefix, 1)
 		subject = strings.ReplaceAll(subject, "..", ".")
 	}
+
+	// Marshal request.
+	b, _ := json.Marshal(req)
 
 	// We need to create the subscription that will receive the messages prior
 	// to sending the consumer create request, because in some complex topologies
@@ -4550,9 +4590,30 @@ func (mset *stream) partitionUnique(partition string) bool {
 }
 
 // Lock should be held.
+func (mset *stream) potentialFilteredConsumers() bool {
+	numSubjects := len(mset.cfg.Subjects)
+	if len(mset.consumers) == 0 || numSubjects == 0 {
+		return false
+	}
+	if numSubjects > 1 || subjectHasWildcard(mset.cfg.Subjects[0]) {
+		return true
+	}
+	return false
+}
+
 func (mset *stream) checkInterest(seq uint64, obs *consumer) bool {
+	var subj string
+	if mset.potentialFilteredConsumers() {
+		pmsg := getJSPubMsgFromPool()
+		defer pmsg.returnToPool()
+		sm, err := mset.store.LoadMsg(seq, &pmsg.StoreMsg)
+		if err != nil {
+			return false
+		}
+		subj = sm.subj
+	}
 	for _, o := range mset.consumers {
-		if o != obs && o.needAck(seq) {
+		if o != obs && o.needAck(seq, subj) {
 			return true
 		}
 	}
@@ -4561,11 +4622,19 @@ func (mset *stream) checkInterest(seq uint64, obs *consumer) bool {
 
 // ackMsg is called into from a consumer when we have a WorkQueue or Interest Retention Policy.
 func (mset *stream) ackMsg(o *consumer, seq uint64) {
-	var shouldRemove bool
-
-	switch mset.cfg.Retention {
-	case LimitsPolicy:
+	if mset.cfg.Retention == LimitsPolicy {
 		return
+	}
+
+	// Make sure this sequence is not below our first sequence.
+	var state StreamState
+	mset.store.FastState(&state)
+	if seq < state.FirstSeq {
+		return
+	}
+
+	var shouldRemove bool
+	switch mset.cfg.Retention {
 	case WorkQueuePolicy:
 		// Normally we just remove a message when its ack'd here but if we have direct consumers
 		// from sources and/or mirrors we need to make sure they have delivered the msg.
