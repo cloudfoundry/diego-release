@@ -4,25 +4,11 @@ specified_package="${1}"
 
 set -e -u
 
-go version # so we see the version tested in CI
-
-SCRIPT_PATH="$(cd "$(dirname "${0}")" && pwd)"
-. "${SCRIPT_PATH}/get_paths.sh"
-
-cd "${SCRIPT_PATH}/.."
-
 declare -a serial_packages=()
 
 declare -a ignored_packages=(
   "src/code.cloudfoundry.org/auction/simulation"
 )
-
-install_ginkgo() {
-  if ! [ $(type -P "ginkgo") ]; then
-    go install -mod=mod github.com/onsi/ginkgo/ginkgo@v1
-    mv /root/go/bin/ginkgo /usr/local/bin/ginkgo
-  fi
-}
 
 containsElement() {
   local e match="$1"
@@ -45,8 +31,6 @@ test_package() {
   popd &>/dev/null
   return "${rc}"
 }
-
-install_ginkgo
 
 if [ "${DB}" = "mysql" ]  || [ "${DB}" = "mysql-5.6" ] || [ "${DB}" = "mysql8" ]; then
   export MYSQL_USER="root"

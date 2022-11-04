@@ -29,4 +29,4 @@ docker run \
    --cap-add ALL \
    -w /diego-release \
    $docker_image \
-   /diego-release/scripts/start-db-in-docker.sh "$@"
+   /diego-release/scripts/docker-test-setup.sh "$@"
