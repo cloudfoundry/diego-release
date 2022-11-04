@@ -7,17 +7,9 @@ set -e -u
 go version # so we see the version tested in CI
 
 SCRIPT_PATH="$(cd "$(dirname "${0}")" && pwd)"
-. "${SCRIPT_PATH}/start-db-helper"
 . "${SCRIPT_PATH}/get_paths.sh"
 
 cd "${SCRIPT_PATH}/.."
-
-DB="${DB:-"notset"}"
-
-serial_nodes=1
-if [[ "${DB}" == "postgres" ]]; then
-  serial_nodes=4
-fi
 
 declare -a serial_packages=()
 
@@ -55,9 +47,8 @@ test_package() {
 }
 
 install_ginkgo
-bootDB "${DB}"
 
-if [ "${db}" = "mysql" ]  || [ "${db}" = "mysql-5.6" ] || [ "${db}" = "mysql8" ]; then
+if [ "${DB}" = "mysql" ]  || [ "${DB}" = "mysql-5.6" ] || [ "${DB}" = "mysql8" ]; then
   export MYSQL_USER="root"
   export MYSQL_PASSWORD="password"
 fi
