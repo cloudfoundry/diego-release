@@ -72,6 +72,18 @@ func (ms *memStore) UpdateConfig(cfg *StreamConfig) error {
 		ms.ageChk.Stop()
 		ms.ageChk = nil
 	}
+	// Make sure to update MaxMsgsPer
+	maxp := ms.maxp
+	ms.maxp = cfg.MaxMsgsPer
+	// If the value is smaller we need to enforce that.
+	if ms.maxp != 0 && ms.maxp < maxp {
+		lm := uint64(ms.maxp)
+		for _, ss := range ms.fss {
+			if ss.Msgs > lm {
+				ms.enforcePerSubjectLimit(ss)
+			}
+		}
+	}
 	ms.mu.Unlock()
 
 	if cfg.MaxAge != 0 {
@@ -98,6 +110,9 @@ func (ms *memStore) storeRawMsg(subj string, hdr, msg []byte, seq uint64, ts int
 
 	// Check if we are discarding new messages when we reach the limit.
 	if ms.cfg.Discard == DiscardNew {
+		if asl && ms.cfg.DiscardNewPer {
+			return ErrMaxMsgsPerSubject
+		}
 		if ms.cfg.MaxMsgs > 0 && ms.state.Msgs >= uint64(ms.cfg.MaxMsgs) {
 			// If we are tracking max messages per subject and are at the limit we will replace, so this is ok.
 			if !asl {

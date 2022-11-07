@@ -32,6 +32,12 @@ import (
 	"golang.org/x/time/rate"
 )
 
+// Headers sent with Request Timeout
+const (
+	JSPullRequestPendingMsgs  = "Nats-Pending-Messages"
+	JSPullRequestPendingBytes = "Nats-Pending-Bytes"
+)
+
 type ConsumerInfo struct {
 	Stream         string          `json:"stream_name"`
 	Name           string          `json:"name"`
@@ -369,6 +375,10 @@ func checkConsumerCfg(
 	if config.Replicas > 0 && config.Replicas > cfg.Replicas {
 		return NewJSConsumerReplicasExceedsStreamError()
 	}
+	// Check that it is not negative
+	if config.Replicas < 0 {
+		return NewJSReplicasCountCannotBeNegativeError()
+	}
 
 	// Check if we have a BackOff defined that MaxDeliver is within range etc.
 	if lbo := len(config.BackOff); lbo > 0 && config.MaxDeliver <= lbo {
@@ -525,6 +535,12 @@ func checkConsumerCfg(
 		return NewJSConsumerWithFlowControlNeedsHeartbeatsError()
 	}
 
+	if config.Durable != _EMPTY_ && config.Name != _EMPTY_ {
+		if config.Name != config.Durable {
+			return NewJSConsumerCreateDurableAndNameMismatchError()
+		}
+	}
+
 	return nil
 }
 
@@ -585,7 +601,7 @@ func (mset *stream) addConsumerWithAssignment(config *ConsumerConfig, oname stri
 
 	// Hold mset lock here.
 	mset.mu.Lock()
-	if mset.client == nil || mset.store == nil {
+	if mset.client == nil || mset.store == nil || mset.consumers == nil {
 		mset.mu.Unlock()
 		return nil, errors.New("invalid stream")
 	}
@@ -775,16 +791,8 @@ func (mset *stream) addConsumerWithAssignment(config *ConsumerConfig, oname stri
 	o.ackSubj = fmt.Sprintf("%s.*.*.*.*.*", pre)
 	o.nextMsgSubj = fmt.Sprintf(JSApiRequestNextT, mn, o.name)
 
-	// If the user has set the inactive threshold, set that up here.
-	if o.cfg.InactiveThreshold > 0 {
-		o.dthresh = o.cfg.InactiveThreshold
-	} else if !o.isDurable() {
-		// Ephemerals will always have inactive thresholds.
-		// Add in 1 sec of jitter above and beyond the default of 5s.
-		o.dthresh = JsDeleteWaitTimeDefault + time.Duration(rand.Int63n(1000))*time.Millisecond
-		// Only stamp config with default sans jitter.
-		o.cfg.InactiveThreshold = JsDeleteWaitTimeDefault
-	}
+	// Check/update the inactive threshold
+	o.updateInactiveThreshold(&o.cfg)
 
 	if o.isPushMode() {
 		if !o.isDurable() {
@@ -833,6 +841,23 @@ func (mset *stream) addConsumerWithAssignment(config *ConsumerConfig, oname stri
 	}
 
 	return o, nil
+}
+
+// Updates the consumer `dthresh` delete timer duration and set
+// cfg.InactiveThreshold to JsDeleteWaitTimeDefault for ephemerals
+// if not explicitly already specified by the user.
+// Lock should be held.
+func (o *consumer) updateInactiveThreshold(cfg *ConsumerConfig) {
+	// Ephemerals will always have inactive thresholds.
+	if !o.isDurable() && cfg.InactiveThreshold <= 0 {
+		// Add in 1 sec of jitter above and beyond the default of 5s.
+		o.dthresh = JsDeleteWaitTimeDefault + time.Duration(rand.Int63n(1000))*time.Millisecond
+		// Only stamp config with default sans jitter.
+		cfg.InactiveThreshold = JsDeleteWaitTimeDefault
+	} else if cfg.InactiveThreshold >= 0 {
+		// We accept InactiveThreshold be set to 0 (for durables)
+		o.dthresh = cfg.InactiveThreshold
+	}
 }
 
 func (o *consumer) consumerAssignment() *consumerAssignment {
@@ -1227,7 +1252,9 @@ func (o *consumer) updateDeliveryInterest(localInterest bool) bool {
 	}
 
 	// If the delete timer has already been set do not clear here and return.
-	if o.dtmr != nil && !o.isDurable() && !interest {
+	// Note that durable can now have an inactive threshold, so don't check
+	// for durable status, instead check for dthresh > 0.
+	if o.dtmr != nil && o.dthresh > 0 && !interest {
 		return true
 	}
 
@@ -1511,6 +1538,18 @@ func (o *consumer) updateConfig(cfg *ConsumerConfig) error {
 	// Set MaxDeliver if changed
 	if cfg.MaxDeliver != o.cfg.MaxDeliver {
 		o.maxdc = uint64(cfg.MaxDeliver)
+	}
+	// Set InactiveThreshold if changed.
+	if val := cfg.InactiveThreshold; val != o.cfg.InactiveThreshold {
+		o.updateInactiveThreshold(cfg)
+		// Clear and restart timer only if we are the leader.
+		if o.isLeader() {
+			stopAndClearTimer(&o.dtmr)
+			// Restart only if new value is > 0
+			if o.dthresh > 0 {
+				o.dtmr = time.AfterFunc(o.dthresh, func() { o.deleteNotActive() })
+			}
+		}
 	}
 
 	// Record new config for others that do not need special handling.
@@ -1841,6 +1880,25 @@ func (o *consumer) checkPendingRequests() {
 		o.outq.send(newJSPubMsg(reply, _EMPTY_, _EMPTY_, hdr, nil, nil, 0))
 	}
 	o.prm = nil
+}
+
+// This will release any pending pull requests if applicable.
+// Should be called only by the leader being deleted or stopped.
+// Lock should be held.
+func (o *consumer) releaseAnyPendingRequests() {
+	if o.mset == nil || o.outq == nil || o.waiting.len() == 0 {
+		return
+	}
+	hdr := []byte("NATS/1.0 409 Consumer Deleted\r\n\r\n")
+	wq := o.waiting
+	o.waiting = nil
+	for i, rp := 0, wq.rp; i < wq.n; i++ {
+		if wr := wq.reqs[rp]; wr != nil {
+			o.outq.send(newJSPubMsg(wr.reply, _EMPTY_, _EMPTY_, hdr, nil, nil, 0))
+			wr.recycle()
+		}
+		rp = (rp + 1) % cap(wq.reqs)
+	}
 }
 
 // Process a NAK.
@@ -2322,17 +2380,23 @@ func (o *consumer) isFiltered() bool {
 
 // Check if we need an ack for this store seq.
 // This is called for interest based retention streams to remove messages.
-func (o *consumer) needAck(sseq uint64) bool {
+func (o *consumer) needAck(sseq uint64, subj string) bool {
 	var needAck bool
 	var asflr, osseq uint64
 	var pending map[uint64]*Pending
 	o.mu.RLock()
 
-	// Check first if we are filtered, and if so check if this is even applicable to us.
+	// Check if we are filtered, and if so check if this is even applicable to us.
 	if o.isFiltered() && o.mset != nil {
-		var svp StoreMsg
-		sm, err := o.mset.store.LoadMsg(sseq, &svp)
-		if err != nil || !o.isFilteredMatch(sm.subj) {
+		if subj == _EMPTY_ {
+			var svp StoreMsg
+			if _, err := o.mset.store.LoadMsg(sseq, &svp); err != nil {
+				o.mu.RUnlock()
+				return false
+			}
+			subj = svp.subj
+		}
+		if !o.isFilteredMatch(subj) {
 			o.mu.RUnlock()
 			return false
 		}
@@ -2372,6 +2436,7 @@ func (o *consumer) needAck(sseq uint64) bool {
 			}
 		}
 	}
+
 	o.mu.RUnlock()
 	return needAck
 }
@@ -2565,26 +2630,20 @@ func (wq *waitQueue) compact() {
 	wq.rp, wq.wp, wq.n, wq.reqs = 0, i, i, nreqs
 }
 
-// Return the replies for our pending requests.
+// Return the map of pending requests keyed by the reply subject.
 // No-op if push consumer or invalid etc.
-func (o *consumer) pendingRequestReplies() []string {
-	o.mu.RLock()
-	defer o.mu.RUnlock()
+func (o *consumer) pendingRequests() map[string]*waitingRequest {
 	if o.waiting == nil {
 		return nil
 	}
-	wq, m := o.waiting, make(map[string]struct{})
-	for i, rp := 0, o.waiting.rp; i < wq.n; i++ {
+	wq, m := o.waiting, make(map[string]*waitingRequest)
+	for i, rp := 0, wq.rp; i < wq.n; i++ {
 		if wr := wq.reqs[rp]; wr != nil {
-			m[wr.reply] = struct{}{}
+			m[wr.reply] = wr
 		}
 		rp = (rp + 1) % cap(wq.reqs)
 	}
-	var replies []string
-	for reply := range m {
-		replies = append(replies, reply)
-	}
-	return replies
+	return m
 }
 
 // Return next waiting request. This will check for expirations but not noWait or interest.
@@ -2607,11 +2666,11 @@ func (o *consumer) nextWaiting(sz int) *waitingRequest {
 					wr.n = 1
 				}
 			} else {
-				// If we have not delivered anything to the requestor let them know.
-				if wr.d == 0 {
-					hdr := []byte("NATS/1.0 409 Message Size Exceeds MaxBytes\r\n\r\n")
-					o.outq.send(newJSPubMsg(wr.reply, _EMPTY_, _EMPTY_, hdr, nil, nil, 0))
-				}
+				// Since we can't send that message to the requestor, we need to
+				// notify that we are closing the request.
+				const maxBytesT = "NATS/1.0 409 Message Size Exceeds MaxBytes\r\n%s: %d\r\n%s: %d\r\n\r\n"
+				hdr := []byte(fmt.Sprintf(maxBytesT, JSPullRequestPendingMsgs, wr.n, JSPullRequestPendingBytes, wr.b))
+				o.outq.send(newJSPubMsg(wr.reply, _EMPTY_, _EMPTY_, hdr, nil, nil, 0))
 				// Remove the current one, no longer valid due to max bytes limit.
 				o.waiting.removeCurrent()
 				if o.node != nil {
@@ -2633,7 +2692,8 @@ func (o *consumer) nextWaiting(sz int) *waitingRequest {
 			}
 		}
 		if wr.interest != wr.reply {
-			hdr := []byte("NATS/1.0 408 Interest Expired\r\n\r\n")
+			const intExpT = "NATS/1.0 408 Interest Expired\r\n%s: %d\r\n%s: %d\r\n\r\n"
+			hdr := []byte(fmt.Sprintf(intExpT, JSPullRequestPendingMsgs, wr.n, JSPullRequestPendingBytes, wr.b))
 			o.outq.send(newJSPubMsg(wr.reply, _EMPTY_, _EMPTY_, hdr, nil, nil, 0))
 		}
 		// Remove the current one, no longer valid.
@@ -2842,16 +2902,8 @@ func (o *consumer) getNextMsg() (*jsPubMsg, uint64, error) {
 		return nil, 0, errBadConsumer
 	}
 	seq, dc := o.sseq, uint64(1)
-	if o.hasSkipListPending() {
-		seq = o.lss.seqs[0]
-		if len(o.lss.seqs) == 1 {
-			o.sseq = o.lss.resume
-			o.lss = nil
-			o.updateSkipped()
-		} else {
-			o.lss.seqs = o.lss.seqs[1:]
-		}
-	} else if o.hasRedeliveries() {
+	// Process redelivered messages before looking at possibly "skip list" (deliver last per subject)
+	if o.hasRedeliveries() {
 		for seq = o.getNextToRedeliver(); seq > 0; seq = o.getNextToRedeliver() {
 			dc = o.incDeliveryCount(seq)
 			if o.maxdc > 0 && dc > o.maxdc {
@@ -2875,6 +2927,18 @@ func (o *consumer) getNextMsg() (*jsPubMsg, uint64, error) {
 		}
 		// Fallback if all redeliveries are gone.
 		seq, dc = o.sseq, 1
+	}
+	// Don't make it a "else" because it is possible that there were redeliveries
+	// but we exhausted the redelivery count and are back to try deliver the next message.
+	if o.hasSkipListPending() {
+		seq = o.lss.seqs[0]
+		if len(o.lss.seqs) == 1 {
+			o.sseq = o.lss.resume
+			o.lss = nil
+			o.updateSkipped()
+		} else {
+			o.lss.seqs = o.lss.seqs[1:]
+		}
 	}
 
 	// Check if we have max pending.
@@ -2935,7 +2999,7 @@ func (o *consumer) processWaiting(eos bool) (int, int, int, time.Time) {
 		wr := wq.reqs[rp]
 		// Check expiration.
 		if (eos && wr.noWait && wr.d > 0) || (!wr.expires.IsZero() && now.After(wr.expires)) {
-			hdr := []byte("NATS/1.0 408 Request Timeout\r\n\r\n")
+			hdr := []byte(fmt.Sprintf("NATS/1.0 408 Request Timeout\r\n%s: %d\r\n%s: %d\r\n\r\n", JSPullRequestPendingMsgs, wr.n, JSPullRequestPendingBytes, wr.b))
 			o.outq.send(newJSPubMsg(wr.reply, _EMPTY_, _EMPTY_, hdr, nil, nil, 0))
 			remove(wr, rp)
 			i++
@@ -3846,7 +3910,7 @@ func (o *consumer) String() string {
 }
 
 func createConsumerName() string {
-	return string(getHash(nuid.Next()))
+	return getHash(nuid.Next())
 }
 
 // deleteConsumer will delete the consumer from this stream.
@@ -3970,6 +4034,10 @@ func (o *consumer) stopWithFlags(dflag, sdflag, doSignal, advisory bool) error {
 		}
 		if advisory {
 			o.sendDeleteAdvisoryLocked()
+		}
+		if o.isPullMode() {
+			// Release any pending.
+			o.releaseAnyPendingRequests()
 		}
 	}
 
@@ -4137,14 +4205,7 @@ func (o *consumer) switchToEphemeral() {
 	store, ok := o.store.(*consumerFileStore)
 	rr := o.acc.sl.Match(o.cfg.DeliverSubject)
 	// Setup dthresh.
-	if o.dthresh == 0 {
-		if o.cfg.InactiveThreshold != 0 {
-			o.dthresh = o.cfg.InactiveThreshold
-		} else {
-			// Add in 1 sec of jitter above and beyond the default of 5s.
-			o.dthresh = JsDeleteWaitTimeDefault + time.Duration(rand.Int63n(1000))*time.Millisecond
-		}
-	}
+	o.updateInactiveThreshold(&o.cfg)
 	o.mu.Unlock()
 
 	// Update interest
