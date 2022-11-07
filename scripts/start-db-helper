@@ -4,8 +4,8 @@ function bootDB {
   db="$1"
 
   if [ "${db}" = "postgres" ]; then
-    launchDB="(docker-entrypoint.sh postgres &> /var/log/postgres-boot.log) &"
-    testConnection="psql -h localhost -U postgres -c '\conninfo'"
+    launchDB="(POSTGRES_PASSWORD=password docker-entrypoint.sh postgres -c max_connections=300 &> /var/log/postgres-boot.log) &"
+    testConnection="PGPASSWORD=password psql -h localhost -U postgres -c '\conninfo'"
   elif [ "${db}" = "mysql" ]  || [ "${db}" = "mysql-5.6" ] || [ "${db}" = "mysql8" ]; then
     launchDB="(MYSQL_ROOT_PASSWORD=password /entrypoint.sh mysqld &> /var/log/mysql-boot.log) &"
     testConnection="mysql -h localhost -u root -D mysql -e '\s;' --password='password'"

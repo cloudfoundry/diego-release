@@ -11,8 +11,15 @@ else
   target="-t runtime-diego"
 fi
 
+build_config=""
+if [ "${SQL_FLAVOR}" = "postgres" ]; then
+  build_config="${DIEGO_RELEASE_DIR}/scripts/ci/run_unit_postgres.build.yml"
+else
+  build_config="${DIEGO_RELEASE_DIR}/scripts/ci/run_unit_mysql.build.yml"
+fi
+
 fly ${target} execute \
   --privileged \
-  --config "${DIEGO_RELEASE_DIR}/scripts/ci/run_unit.build.yml" \
+  --config "${build_config}" \
   --input="diego-release=$DIEGO_RELEASE_DIR" \
   -- "$@"
