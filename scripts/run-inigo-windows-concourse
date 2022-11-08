@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+scripts_path=./$(dirname $0)
+eval $($scripts_path/get_paths.sh)
+
+workspace=${WORKSPACE:-"$HOME/workspace"}
+
+
+DIEGO_CI_TARGET="${DIEGO_CI_TARGET:-runtime-diego}"
+
+fly --target "${DIEGO_CI_TARGET}" execute \
+    --privileged \
+    -c "${DIEGO_RELEASE_DIR}/scripts/ci/run_inigo_windows.build.yml" \
+    -i diego-release="${DIEGO_RELEASE_DIR}" \
+    -j diego-release/inigo \
+    --tag diego-inigo-windows \
+    -- "$@"
+
+    # -i garden-runc-release="${workspace}/garden-runc-release" \
+    # -i routing-release="${workspace}/routing-release" \
+    # -i winc-release="${workspace}/winc-release" \
+    # -i envoy-nginx-release="${workspace}/envoy-nginx-release" \
