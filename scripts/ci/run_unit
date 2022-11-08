@@ -14,4 +14,4 @@ cd diego-release/
 
 SCRIPT=${SCRIPT:-run-unit-tests}
 
-"scripts/${SCRIPT}" "$@"
+"scripts/ci/${SCRIPT}" "$@"

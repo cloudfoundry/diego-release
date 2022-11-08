@@ -21,13 +21,13 @@ echo "PATH = ${PATH}"
 
 ERROR_CODE=0
 
-SQL_FLAVOR=mysql ${SCRIPTS_DIR}/run-unit-tests-with-backing-store
+SQL_FLAVOR=mysql ${SCRIPTS_DIR}/ci/run-unit-tests-with-backing-store
 ERROR_CODE=$?
 
-SQL_FLAVOR=postgres ${SCRIPTS_DIR}/run-unit-tests-with-backing-store
+SQL_FLAVOR=postgres ${SCRIPTS_DIR}/ci/run-unit-tests-with-backing-store
 let ERROR_CODE+=$?
 
-${SCRIPTS_DIR}/run-unit-tests-no-backing-store
+${SCRIPTS_DIR}/ci/run-unit-tests-no-backing-store
 let ERROR_CODE+=$?
 
 if [ ${ERROR_CODE} -eq 0 ]; then
