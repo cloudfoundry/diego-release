@@ -2,6 +2,7 @@
 trap { $host.SetShouldExit(1) }
 
 $env:DIEGO_RELEASE_DIR = Resolve-Path -Path $pwd/diego-release/ | select -ExpandProperty Path
+$env:GOFLAGS="-buildvcs=false"
 cd diego-release/
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
