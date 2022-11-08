@@ -1,6 +1,7 @@
 #!/bin/bash
 
 SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+SCRIPTS_DIR="$(realpath ${SCRIPTS_DIR}/..)"
 . "${SCRIPTS_DIR}/get_paths.sh"
 
 BIN_DIR="${DIEGO_RELEASE_DIR}/bin"
