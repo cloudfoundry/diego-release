@@ -204,6 +204,9 @@ properties:
   diego.executor.max_log_lines_per_second:
     description: "EXPERIMENTAL: Maximum log lines allowed per second per app instance. Default value of 0 will disable rate limiting. Minimum recommended value is 100."
     default: 0
+  diego.executor.expose_c2c_tls_port_on_host:
+    description: "It exposes C2C TLS port 61443 on the host. Default value of true will expose the port. false value will not expose it."
+    default: true
 
   diego.rep.bbs.api_location:
     description: "Address of the BBS server"
