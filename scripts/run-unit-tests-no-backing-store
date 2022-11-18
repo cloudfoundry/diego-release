@@ -65,12 +65,12 @@ fi
 
 if [ -n "$PACKAGE" ]; then
   pushd "${DIEGO_RELEASE_DIR}/src/code.cloudfoundry.org/" > /dev/null
-    go run github.com/onsi/ginkgo/ginkgo -r -nodes 8 "$@" "$PACKAGE"
+    go run github.com/onsi/ginkgo/ginkgo -r -nodes 8 -flakeAttempts="${FLAKE_ATTEMPTS:-1}" "$@" "$PACKAGE"
   popd > /dev/null
   exit $?
 else
   pushd "${DIEGO_RELEASE_DIR}/src/code.cloudfoundry.org/" > /dev/null
-    go run github.com/onsi/ginkgo/ginkgo -r -keepGoing -nodes 8 -trace -randomizeAllSpecs -progress -race \
+    go run github.com/onsi/ginkgo/ginkgo -r -keepGoing -nodes 8 -trace -randomizeAllSpecs -progress -race -flakeAttempts="${FLAKE_ATTEMPTS:-1}" \
       -skipPackage="$SKIP_PACKAGES" "$@"
     (( ERROR_CODE+=$? ))
   popd > /dev/null
