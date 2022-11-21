@@ -47,7 +47,7 @@ require (
 	github.com/aws/aws-sdk-go v1.43.11
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20210324191134-efd1603705e9
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
-	github.com/cloudfoundry-community/go-uaa v0.3.1
+	github.com/cloudfoundry-community/go-uaa v0.3.2-0.20221011190625-aaeaae3ce7c2
 	github.com/cloudfoundry/dropsonde v1.0.0
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/containers/image v3.0.2+incompatible

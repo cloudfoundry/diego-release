@@ -48,7 +48,6 @@ SKIP_PACKAGES="$SKIP_PACKAGES,./rep/generator/internal"
 SKIP_PACKAGES="$SKIP_PACKAGES,./route-emitter/cmd/route-emitter"
 SKIP_PACKAGES="$SKIP_PACKAGES,./routing-api"
 SKIP_PACKAGES="$SKIP_PACKAGES,./trace-logger"
-SKIP_PACKAGES="$SKIP_PACKAGES,./uaa-go-client"
 SKIP_PACKAGES="$SKIP_PACKAGES,./veritas"
 SKIP_PACKAGES="$SKIP_PACKAGES,./vizzini"
 SKIP_PACKAGES="$SKIP_PACKAGES,./systemcerts"
@@ -66,12 +65,12 @@ fi
 
 if [ -n "$PACKAGE" ]; then
   pushd "${DIEGO_RELEASE_DIR}/src/code.cloudfoundry.org/" > /dev/null
-    go run github.com/onsi/ginkgo/ginkgo -r -nodes 8 "$@" "$PACKAGE"
+    go run github.com/onsi/ginkgo/ginkgo -r -nodes 8 -flakeAttempts="${FLAKE_ATTEMPTS:-1}" "$@" "$PACKAGE"
   popd > /dev/null
   exit $?
 else
   pushd "${DIEGO_RELEASE_DIR}/src/code.cloudfoundry.org/" > /dev/null
-    go run github.com/onsi/ginkgo/ginkgo -r -v -keepGoing -nodes 8 -trace -randomizeAllSpecs -progress -race \
+    go run github.com/onsi/ginkgo/ginkgo -r -keepGoing -nodes 8 -trace -randomizeAllSpecs -progress -race -flakeAttempts="${FLAKE_ATTEMPTS:-1}" \
       -skipPackage="$SKIP_PACKAGES" "$@"
     (( ERROR_CODE+=$? ))
   popd > /dev/null
