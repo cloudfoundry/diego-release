@@ -1,4 +1,4 @@
-// Copyright 2012-2019 The NATS Authors
+// Copyright 2012-2022 The NATS Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -608,6 +608,11 @@ func (s *Server) processClientOrLeafAuthentication(c *client, opts *Options) boo
 
 	if !ao {
 		noAuthUser = opts.NoAuthUser
+		// If a leaf connects using websocket, and websocket{} block has a no_auth_user
+		// use that one instead.
+		if c.kind == LEAF && c.isWebsocket() && opts.Websocket.NoAuthUser != _EMPTY_ {
+			noAuthUser = opts.Websocket.NoAuthUser
+		}
 		username = opts.Username
 		password = opts.Password
 		token = opts.Authorization

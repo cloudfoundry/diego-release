@@ -554,6 +554,9 @@ func (a *Account) RoutedSubs() int {
 func (a *Account) TotalSubs() int {
 	a.mu.RLock()
 	defer a.mu.RUnlock()
+	if a.sl == nil {
+		return 0
+	}
 	return int(a.sl.Count())
 }
 
@@ -704,8 +707,8 @@ func (a *Account) AddWeightedMappings(src string, dests ...*MapDest) error {
 	}
 
 	// Replace an old one if it exists.
-	for i, m := range a.mappings {
-		if m.src == src {
+	for i, em := range a.mappings {
+		if em.src == src {
 			a.mappings[i] = m
 			return nil
 		}
@@ -3810,9 +3813,16 @@ func removeCb(s *Server, pubKey string) {
 	a.mconns = 0
 	a.mleafs = 0
 	a.updated = time.Now().UTC()
+	jsa := a.js
 	a.mu.Unlock()
 	// set the account to be expired and disconnect clients
 	a.expiredTimeout()
+	// For JS, we need also to disable JS
+	if js := s.getJetStream(); js != nil && jsa != nil {
+		js.disableJetStream(jsa)
+	}
+	// We also need to remove all ServerImport subscriptions
+	a.removeAllServiceImportSubs()
 	a.mu.Lock()
 	a.clearExpirationTimer()
 	a.mu.Unlock()
@@ -4581,7 +4591,7 @@ func (tr *transform) transform(tokens []string) (string, error) {
 					if split != _EMPTY_ {
 						b.WriteString(split)
 					}
-					if j < len(splits)-1 && splits[j+1] != _EMPTY_ && j != 0 {
+					if j < len(splits)-1 && splits[j+1] != _EMPTY_ && !(j == 0 && split == _EMPTY_) {
 						b.WriteString(tsep)
 					}
 				}

@@ -152,6 +152,7 @@ type Server struct {
 	routeInfoJSON       []byte
 	routeResolver       netResolver
 	routesToSelf        map[string]struct{}
+	routeTLSName        string
 	leafNodeListener    net.Listener
 	leafNodeListenerErr error
 	leafNodeInfo        Info
@@ -426,7 +427,7 @@ func NewServer(opts *Options) (*Server, error) {
 
 	// Place ourselves in the JetStream nodeInfo if needed.
 	if opts.JetStream {
-		ourNode := string(getHash(serverName))
+		ourNode := getHash(serverName)
 		s.nodeToInfo.Store(ourNode, nodeInfo{
 			serverName,
 			VERSION,
@@ -1886,12 +1887,12 @@ func (s *Server) Shutdown() {
 	if s == nil {
 		return
 	}
+	// This is for JetStream R1 Pull Consumers to allow signaling
+	// that pending pull requests are invalid.
+	s.signalPullConsumers()
+
 	// Transfer off any raft nodes that we are a leader by stepping them down.
 	s.stepdownRaftNodes()
-
-	// This is for clustered JetStream and ephemeral consumers.
-	// No-op if not clustered or not running JetStream.
-	s.migrateEphemerals()
 
 	// Shutdown the eventing system as needed.
 	// This is done first to send out any messages for
@@ -2523,6 +2524,12 @@ func (s *Server) createClient(conn net.Conn) *client {
 	c.nonce = []byte(info.Nonce)
 	authRequired = info.AuthRequired
 
+	// Check to see if we have auth_required set but we also have a no_auth_user.
+	// If so set back to false.
+	if info.AuthRequired && opts.NoAuthUser != _EMPTY_ {
+		info.AuthRequired = false
+	}
+
 	s.totalClients++
 	s.mu.Unlock()
 
@@ -2911,9 +2918,7 @@ func (s *Server) numSubscriptions() uint32 {
 	var subs int
 	s.accounts.Range(func(k, v interface{}) bool {
 		acc := v.(*Account)
-		if acc.sl != nil {
-			subs += acc.TotalSubs()
-		}
+		subs += acc.TotalSubs()
 		return true
 	})
 	return uint32(subs)
@@ -3057,7 +3062,7 @@ func (s *Server) ID() string {
 
 // NodeName returns the node name for this server.
 func (s *Server) NodeName() string {
-	return string(getHash(s.info.Name))
+	return getHash(s.info.Name)
 }
 
 // Name returns the server's name. This will be the same as the ID if it was not set.
