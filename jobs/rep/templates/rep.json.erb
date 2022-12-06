@@ -81,7 +81,7 @@
     garden_network: p("diego.executor.garden.network"),
     graceful_shutdown_interval: "#{p("containers.graceful_shutdown_interval_in_seconds")}s",
     extended_graceful_shutdown_interval: "#{p("containers.extended_graceful_shutdown_interval_in_seconds")}s",
-    extended_graceful_shutdown_orgs: = p("containers.extended_graceful_shutdown_org_guids")
+    extended_graceful_shutdown_orgs: p("containers.extended_graceful_shutdown_org_guids"),
     healthcheck_work_pool_size: p("diego.executor.healthcheck_work_pool_size"),
     healthy_monitoring_interval: "#{p("diego.executor.healthy_monitoring_interval_in_seconds")}s",
     listen_addr: p("diego.rep.listen_addr_admin"),
