@@ -1,0 +1,32 @@
+#!/bin/bash
+set -e -u
+
+ROOT_DIR_PATH="$(cd $(dirname $0)/.. && pwd)"
+cd "${ROOT_DIR_PATH}"
+
+db=${DB:-"mysql"} # if not set, default to mysql
+SQL_FLAVOR=$db
+
+if [ "$db" = "mysql" ]; then
+  docker_image=cfdiegodocker/diego-units-mysql
+elif [ "$db" = "mysql8" ]; then
+  docker_image=c2cnetworking/dev-mysql8
+elif [ "$db" = "postgres" ]; then
+  docker_image=cfdiegodocker/diego-units-postgres
+else
+  echo "Database \"${db}\" not supported"
+  exit 1
+fi
+
+
+docker run \
+   --rm \
+   -it \
+   --privileged \
+   -v "${PWD}:/diego-release" \
+   -e "DB=$db" \
+   -e "SQL_FLAVOR=${SQL_FLAVOR}" \
+   --cap-add ALL \
+   -w /diego-release \
+   $docker_image \
+   /diego-release/scripts/docker-test-setup.sh "$@"

@@ -56,7 +56,6 @@
     debug_address: p("diego.rep.debug_addr"),
     delete_work_pool_size: p("diego.executor.delete_work_pool_size"),
     disk_mb: p("diego.executor.disk_capacity_mb").to_s,
-    enable_consul_service_registration: p("enable_consul_service_registration"),
     enable_declarative_healthcheck: p("enable_declarative_healthcheck"),
     declarative_healthcheck_path: p("declarative_healthcheck_path"),
     enable_container_proxy: p("containers.proxy.enabled"),
@@ -116,15 +115,6 @@
 
   if_p("diego.executor.volman.driver_paths") do |value|
     config[:volman_driver_paths] = value
-  end
-
-  if p("diego.rep.consul.require_tls")
-    config[:consul_cluster] = "https://127.0.0.1:8500"
-    config[:consul_ca_cert] = "#{conf_dir}/certs/consul/ca.crt"
-    config[:consul_client_cert] = "#{conf_dir}/certs/consul/client.crt"
-    config[:consul_client_key] = "#{conf_dir}/certs/consul/client.key"
-  else
-    config[:consul_cluster] = "http://127.0.0.1:8500"
   end
 
   if_p("diego.rep.bbs.client_session_cache_size") do |value|

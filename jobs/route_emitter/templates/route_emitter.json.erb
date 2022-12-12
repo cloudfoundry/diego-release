@@ -76,10 +76,6 @@
     nats_ca_cert_file: "#{conf_dir}/certs/nats/ca.crt",
     nats_client_cert_file: "#{conf_dir}/certs/nats/client.crt",
     nats_client_key_file: "#{conf_dir}/certs/nats/client.key",
-    consul_cluster: "http://127.0.0.1:8500",
-    consul_enabled: p("locks.consul.enabled"),
-    consul_down_mode_notification_interval: "1m",
-    consul_session_name: "route-emitter",
     communication_timeout: "30s",
     sync_interval: "#{p("diego.route_emitter.sync_interval_in_seconds")}s",
     debug_address: p("diego.route_emitter.debug_addr"),
@@ -103,6 +99,7 @@
 
   if p("locks.locket.enabled")
     config[:locket_enabled] = true
+    config[:locket_session_name] = "route-emitter"
     config[:locket_address] = "#{p("locks.locket.hostname")}:#{p("locks.locket.port")}"
     config[:uuid] = spec.id
     config[:locket_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"

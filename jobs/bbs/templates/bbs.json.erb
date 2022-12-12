@@ -32,8 +32,6 @@
     task_callback_workers: 1000,
     listen_address: p("diego.bbs.listen_addr"),
     health_address: p("diego.bbs.health_addr"),
-    consul_cluster: "http://127.0.0.1:8500",
-    enable_consul_service_registration: p("enable_consul_service_registration"),
     rep_client_session_cache_size: p("diego.bbs.rep.client_session_cache_size"),
     rep_require_tls: p("diego.bbs.rep.require_tls"),
     log_level: p("diego.bbs.log_level"),
@@ -41,7 +39,6 @@
     debug_address: p("diego.bbs.debug_addr"),
     locks_locket_enabled: p("locks.locket.enabled"),
     cell_registrations_locket_enabled: p("cell_registrations.locket.enabled"),
-    detect_consul_cell_registrations: p("diego.bbs.detect_consul_cell_registrations"),
     max_task_retries: p("tasks.max_retries"),
     max_data_string_length: p("logging.max_data_string_length"),
   }
@@ -169,18 +166,6 @@
     config[:locket_ca_cert_file] = "#{conf_dir}/certs/ca.crt"
     config[:locket_client_cert_file] = "#{conf_dir}/certs/server.crt"
     config[:locket_client_key_file] = "#{conf_dir}/certs/server.key"
-  end
-
-  if_p("diego.bbs.skip_consul_lock") do |skip_consul_lock|
-    config[:skip_consul_lock] = skip_consul_lock
-  end
-
-  if p("locks.locket.enabled") == false && p("diego.bbs.skip_consul_lock") == true
-    raise "'locks.locket.enabled' can not be false if 'diego.bbs.skip_consul_lock' is true."
-  end
-
-  if p("cell_registrations.locket.enabled") == false && p("diego.bbs.detect_consul_cell_registrations") == false
-    raise "'cell_registrations.locket.enabled' and 'diego.bbs.detect_consul_cell_registrations' can not both be false."
   end
 
   config[:loggregator]={}

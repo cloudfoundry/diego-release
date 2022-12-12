@@ -21,9 +21,7 @@
     report_interval: "1m",
     lock_retry_interval: "5s",
     lock_ttl: "15s",
-    consul_cluster: "http://127.0.0.1:8500",
     debug_address: p("diego.auctioneer.debug_addr"),
-    enable_consul_service_registration: p("enable_consul_service_registration"),
     listen_address: p("diego.auctioneer.listen_addr"),
     locks_locket_enabled: p("locks.locket.enabled"),
     log_level: p("diego.auctioneer.log_level"),
@@ -73,14 +71,6 @@
     config[:locket_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
     config[:locket_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"
     config[:locket_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
-  end
-
-  if_p("diego.auctioneer.skip_consul_lock") do |skip_consul_lock|
-    config[:skip_consul_lock] = skip_consul_lock
-  end
-
-  if p("locks.locket.enabled") == false && p("diego.auctioneer.skip_consul_lock") == true
-    raise "'locks.locket.enabled' can not be false if 'diego.auctioneer.skip_consul_lock' is true."
   end
 
   config[:loggregator]={}

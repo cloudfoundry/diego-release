@@ -54,7 +54,7 @@ metrics_in_code() {
     fi
 
     IFS=$'\n'
-    result=$(grep -n --exclude={*_test.go,*fake*.go} --exclude-dir={gorouter,volman,guardian,grootfs,idmapper,vendor} -I -E -e "($search_term)\(" -r src/code.cloudfoundry.org)
+    result=$(grep -n --exclude={*_test.go,*fake*.go} --exclude-dir={gorouter,volman,guardian,grootfs,idmapper,vendor} -I -E -e "($search_term)\(" -r $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org)
     for line in $result; do
         file_location=$(echo -e "$line" | cut -d: -f1)
         client_call=$(echo -e "$line" | cut -d: -f3-)

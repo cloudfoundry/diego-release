@@ -13,12 +13,12 @@ inputs:
 params:
   PACKAGE:
   SCRIPT:
-  SQL_FLAVOR:
+  SQL_FLAVOR: mysql
   ECR_TEST_REPO_URI:
   ECR_TEST_AWS_ACCESS_KEY_ID:
   ECR_TEST_AWS_SECRET_ACCESS_KEY:
-  MYSQL_USER: ~
-  MYSQL_PASSWORD: ~
+  MYSQL_USER: root
+  MYSQL_PASSWORD: password
 
 run:
   path: diego-release/scripts/ci/run_unit

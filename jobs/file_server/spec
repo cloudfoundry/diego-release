@@ -59,10 +59,6 @@ properties:
   tls.key:
     description: "PEM-encoded tls key"
 
-  enable_consul_service_registration:
-    description: "Enable the file-server to register itself as a service with Consul, for client discovery via Consul DNS. Do not disable without arranging alternate service discovery."
-    default: true
-
   logging.format.timestamp:
     description: "Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."
     default: "unix-epoch"
