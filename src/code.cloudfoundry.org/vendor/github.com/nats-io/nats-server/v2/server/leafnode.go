@@ -816,6 +816,7 @@ func (s *Server) removeLeafNodeURL(urlStr string) bool {
 
 // Server lock is held on entry
 func (s *Server) generateLeafNodeInfoJSON() {
+	s.leafNodeInfo.Cluster = s.cachedClusterName()
 	s.leafNodeInfo.LeafNodeURLs = s.leafURLsMap.getAsStringSlice()
 	s.leafNodeInfo.WSConnectURLs = s.websocket.connectURLsMap.getAsStringSlice()
 	b, _ := json.Marshal(s.leafNodeInfo)
@@ -1670,7 +1671,8 @@ func (s *Server) initLeafNodeSmapAndSendSubs(c *client) {
 	c.leaf.smap = make(map[string]int32)
 	for _, sub := range subs {
 		subj := string(sub.subject)
-		if c.isSpokeLeafNode() && !c.canSubscribe(subj) {
+		// Check perms regardless of role.
+		if !c.canSubscribe(subj) {
 			c.Debugf("Not permitted to subscribe to %q on behalf of %s%s", subj, accName, accNTag)
 			continue
 		}
@@ -1766,6 +1768,11 @@ func (s *Server) updateLeafNodes(acc *Account, sub *subscription, delta int32) {
 		// Check to make sure this sub does not have an origin cluster than matches the leafnode.
 		ln.mu.Lock()
 		skip := (sub.origin != nil && string(sub.origin) == ln.remoteCluster()) || !ln.canSubscribe(string(sub.subject))
+		// If skipped, make sure that we still let go the "$LDS." subscription that allows
+		// the detection of a loop.
+		if skip && bytes.HasPrefix(sub.subject, []byte(leafNodeLoopDetectionSubjectPrefix)) {
+			skip = false
+		}
 		ln.mu.Unlock()
 		if skip {
 			continue
@@ -1970,6 +1977,7 @@ func (c *client) processLeafSub(argo []byte) (err error) {
 	if checkPerms && subjectIsLiteral(string(sub.subject)) && !c.pubAllowedFullCheck(string(sub.subject), true, true) {
 		c.mu.Unlock()
 		c.leafSubPermViolation(sub.subject)
+		c.Debugf(fmt.Sprintf("Permissions Violation for Subscription to %q", sub.subject))
 		return nil
 	}
 

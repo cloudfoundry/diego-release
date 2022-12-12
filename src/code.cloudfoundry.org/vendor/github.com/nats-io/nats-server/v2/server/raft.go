@@ -951,6 +951,15 @@ func (n *raft) InstallSnapshot(data []byte) error {
 		return errCatchupsRunning
 	}
 
+	// We don't store snapshots for memory based WALs.
+	// This matches loadSnapshot logic now.
+	// But we should compact.
+	if _, ok := n.wal.(*memStore); ok {
+		n.wal.Compact(n.applied)
+		n.Unlock()
+		return nil
+	}
+
 	var state StreamState
 	n.wal.FastState(&state)
 
@@ -1081,8 +1090,10 @@ func (n *raft) setupLastSnapshot() {
 	n.snapfile = latest
 	snap, err := n.loadLastSnapshot()
 	if err != nil {
-		os.Remove(n.snapfile)
-		n.snapfile = _EMPTY_
+		if n.snapfile != _EMPTY_ {
+			os.Remove(n.snapfile)
+			n.snapfile = _EMPTY_
+		}
 	} else {
 		n.pindex = snap.lastIndex
 		n.pterm = snap.lastTerm
@@ -2940,7 +2951,7 @@ func (n *raft) processAppendEntry(ae *appendEntry, sub *subscription) {
 			}
 			// Save in memory for faster processing during applyCommit.
 			n.pae[n.pindex] = ae
-			if l := len(n.pae); l > paeWarnThreshold && l%1000 == 0 {
+			if l := len(n.pae); l > paeWarnThreshold && l%paeWarnModulo == 0 {
 				n.warn("%d append entries pending", len(n.pae))
 			}
 
@@ -3092,7 +3103,8 @@ func (n *raft) storeToWAL(ae *appendEntry) error {
 	return nil
 }
 
-const paeWarnThreshold = 32 * 1024
+const paeWarnThreshold = 20_000
+const paeWarnModulo = 5_000
 
 func (n *raft) sendAppendEntry(entries []*Entry) {
 	n.Lock()
@@ -3117,7 +3129,7 @@ func (n *raft) sendAppendEntry(entries []*Entry) {
 
 		// Save in memory for faster processing during applyCommit.
 		n.pae[n.pindex] = ae
-		if l := len(n.pae); l > paeWarnThreshold && l%1000 == 0 {
+		if l := len(n.pae); l > paeWarnThreshold && l%paeWarnModulo == 0 {
 			n.warn("%d append entries pending", len(n.pae))
 		}
 	}

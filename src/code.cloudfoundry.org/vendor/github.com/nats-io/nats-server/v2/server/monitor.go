@@ -1403,7 +1403,7 @@ func (s *Server) updateJszVarz(js *jetStream, v *JetStreamVarz, doConfig bool) {
 	v.Stats = js.usageStats()
 	if mg := js.getMetaGroup(); mg != nil {
 		if ci := s.raftNodeToClusterInfo(mg); ci != nil {
-			v.Meta = &MetaClusterInfo{Name: ci.Name, Leader: ci.Leader, Size: mg.ClusterSize()}
+			v.Meta = &MetaClusterInfo{Name: ci.Name, Leader: ci.Leader, Peer: getHash(ci.Leader), Size: mg.ClusterSize()}
 			if ci.Leader == s.info.Name {
 				v.Meta.Replicas = ci.Replicas
 			}
@@ -2637,6 +2637,7 @@ type HealthzOptions struct {
 
 type StreamDetail struct {
 	Name     string              `json:"name"`
+	Created  time.Time           `json:"created"`
 	Cluster  *ClusterInfo        `json:"cluster,omitempty"`
 	Config   *StreamConfig       `json:"config,omitempty"`
 	State    StreamState         `json:"state,omitempty"`
@@ -2656,6 +2657,7 @@ type AccountDetail struct {
 type MetaClusterInfo struct {
 	Name     string      `json:"name,omitempty"`
 	Leader   string      `json:"leader,omitempty"`
+	Peer     string      `json:"peer,omitempty"`
 	Replicas []*PeerInfo `json:"replicas,omitempty"`
 	Size     int         `json:"cluster_size"`
 }
@@ -2724,6 +2726,7 @@ func (s *Server) accountDetail(jsa *jsAccount, optStreams, optConsumers, optCfg 
 			}
 			sdet := StreamDetail{
 				Name:    stream.name(),
+				Created: stream.createdTime(),
 				State:   stream.state(),
 				Cluster: ci,
 				Config:  cfg,
@@ -2835,7 +2838,7 @@ func (s *Server) Jsz(opts *JSzOptions) (*JSInfo, error) {
 
 	if mg := js.getMetaGroup(); mg != nil {
 		if ci := s.raftNodeToClusterInfo(mg); ci != nil {
-			jsi.Meta = &MetaClusterInfo{Name: ci.Name, Leader: ci.Leader, Size: mg.ClusterSize()}
+			jsi.Meta = &MetaClusterInfo{Name: ci.Name, Leader: ci.Leader, Peer: getHash(ci.Leader), Size: mg.ClusterSize()}
 			if isLeader {
 				jsi.Meta.Replicas = ci.Replicas
 			}

@@ -151,7 +151,8 @@ const (
 	JSApiConsumersT = "$JS.API.CONSUMER.NAMES.%s"
 
 	// JSApiConsumerList is the endpoint that will return all detailed consumer information
-	JSApiConsumerList = "$JS.API.CONSUMER.LIST.*"
+	JSApiConsumerList  = "$JS.API.CONSUMER.LIST.*"
+	JSApiConsumerListT = "$JS.API.CONSUMER.LIST.%s"
 
 	// JSApiConsumerInfo is for obtaining general information about a consumer.
 	// Will return JSON response.
@@ -581,6 +582,9 @@ const JSApiLeaderStepDownResponseType = "io.nats.jetstream.api.v1.meta_leader_st
 type JSApiMetaServerRemoveRequest struct {
 	// Server name of the peer to be removed.
 	Server string `json:"peer"`
+	// Peer ID of the peer to be removed. If specified this is used
+	// instead of the server name.
+	Peer string `json:"peer_id,omitempty"`
 }
 
 // JSApiMetaServerRemoveResponse is the response to a peer removal request in the meta group.
@@ -755,12 +759,16 @@ func (js *jetStream) apiDispatch(sub *subscription, c *client, acc *Account, sub
 	jsub := rr.psubs[0]
 
 	// If this is directly from a client connection ok to do in place.
-	if c.kind != ROUTER && c.kind != GATEWAY {
+	if c.kind != ROUTER && c.kind != GATEWAY && c.kind != LEAF {
+		start := time.Now()
 		jsub.icb(sub, c, acc, subject, reply, rmsg)
+		if dur := time.Since(start); dur >= readLoopReportThreshold {
+			s.Warnf("Internal subscription on %q took too long: %v", subject, dur)
+		}
 		return
 	}
 
-	// If we are here we have received this request over a non client connection.
+	// If we are here we have received this request over a non-client connection.
 	// We need to make sure not to block. We will send the request to a long-lived
 	// go routine.
 
@@ -784,7 +792,11 @@ func (s *Server) processJSAPIRoutedRequests() {
 			for _, req := range reqs {
 				r := req.(*jsAPIRoutedReq)
 				client.pa = r.pa
+				start := time.Now()
 				r.jsub.icb(r.sub, client, r.acc, r.subject, r.reply, r.msg)
+				if dur := time.Since(start); dur >= readLoopReportThreshold {
+					s.Warnf("Internal subscription on %q took too long: %v", r.subject, dur)
+				}
 			}
 			queue.recycle(&reqs)
 		case <-s.quitCh:
@@ -1768,7 +1780,10 @@ func (s *Server) jsStreamInfoRequest(sub *subscription, c *client, a *Account, s
 			if cc.meta != nil {
 				ourID = cc.meta.ID()
 			}
-			bail := !rg.isMember(ourID)
+			// We have seen cases where rg or rg.node is nil at this point,
+			// so check explicitly on those conditions and bail if that is
+			// the case.
+			bail := rg == nil || rg.node == nil || !rg.isMember(ourID)
 			if !bail {
 				// We know we are a member here, if this group is new and we are preferred allow us to answer.
 				bail = rg.Preferred != ourID || time.Since(rg.node.Created()) > lostQuorumIntervalDefault
@@ -2146,7 +2161,7 @@ func (s *Server) jsStreamRemovePeerRequest(sub *subscription, c *client, _ *Acco
 
 	// Check to see if we are a member of the group and if the group has no leader.
 	// Peers here is a server name, convert to node name.
-	nodeName := string(getHash(req.Peer))
+	nodeName := getHash(req.Peer)
 
 	js.mu.RLock()
 	rg := sa.Group
@@ -2215,6 +2230,14 @@ func (s *Server) jsLeaderServerRemoveRequest(sub *subscription, c *client, _ *Ac
 	var found string
 	js.mu.RLock()
 	for _, p := range cc.meta.Peers() {
+		// If Peer is specified, it takes precedence
+		if req.Peer != _EMPTY_ {
+			if p.ID == req.Peer {
+				found = req.Peer
+				break
+			}
+			continue
+		}
 		si, ok := s.nodeToInfo.Load(p.ID)
 		if ok && si.(nodeInfo).name == req.Server {
 			found = p.ID
@@ -2383,7 +2406,7 @@ func (s *Server) jsLeaderServerStreamMoveRequest(sub *subscription, c *client, _
 		cfg.Placement.Tags = append(cfg.Placement.Tags, req.Tags...)
 	}
 
-	peers, e := cc.selectPeerGroup(cfg.Replicas+1, currCluster, &cfg, currPeers, 1)
+	peers, e := cc.selectPeerGroup(cfg.Replicas+1, currCluster, &cfg, currPeers, 1, nil)
 	if len(peers) <= cfg.Replicas {
 		// since expanding in the same cluster did not yield a result, try in different cluster
 		peers = nil
@@ -2398,7 +2421,7 @@ func (s *Server) jsLeaderServerStreamMoveRequest(sub *subscription, c *client, _
 		errs := &selectPeerError{}
 		errs.accumulate(e)
 		for cluster := range clusters {
-			newPeers, e := cc.selectPeerGroup(cfg.Replicas, cluster, &cfg, nil, 0)
+			newPeers, e := cc.selectPeerGroup(cfg.Replicas, cluster, &cfg, nil, 0, nil)
 			if len(newPeers) >= cfg.Replicas {
 				peers = append([]string{}, currPeers...)
 				peers = append(peers, newPeers[:cfg.Replicas]...)
@@ -3923,7 +3946,10 @@ func (s *Server) jsConsumerNamesRequest(sub *subscription, c *client, _ *Account
 		numConsumers = len(resp.Consumers)
 		if offset > numConsumers {
 			offset = numConsumers
-			resp.Consumers = resp.Consumers[:offset]
+		}
+		resp.Consumers = resp.Consumers[offset:]
+		if len(resp.Consumers) > JSApiNamesLimit {
+			resp.Consumers = resp.Consumers[:JSApiNamesLimit]
 		}
 		js.mu.RUnlock()
 
