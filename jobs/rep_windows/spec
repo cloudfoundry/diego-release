@@ -232,7 +232,7 @@ properties:
     default: 10
   diego.rep.locket.client_keepalive_timeout: 
     description: "Timeout in seconds to receive a response to the keepalive ping. If a response is not received within this time, the locket client will reconnect to another server."
-    default: 10
+    default: 20
     
   enable_declarative_healthcheck:
     description: "When set, enables the rep to prefer the LRP CheckDefinition to healthcheck instances over the Monitor action."
