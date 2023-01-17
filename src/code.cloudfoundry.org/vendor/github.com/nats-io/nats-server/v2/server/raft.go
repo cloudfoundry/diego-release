@@ -51,6 +51,8 @@ type RaftNode interface {
 	GroupLeader() string
 	HadPreviousLeader() bool
 	StepDown(preferred ...string) error
+	SetObserver(isObserver bool)
+	IsObserver() bool
 	Campaign() error
 	ID() string
 	Group() string
@@ -1081,8 +1083,10 @@ func (n *raft) setupLastSnapshot() {
 	n.snapfile = latest
 	snap, err := n.loadLastSnapshot()
 	if err != nil {
-		os.Remove(n.snapfile)
-		n.snapfile = _EMPTY_
+		if n.snapfile != _EMPTY_ {
+			os.Remove(n.snapfile)
+			n.snapfile = _EMPTY_
+		}
 	} else {
 		n.pindex = snap.lastIndex
 		n.pterm = snap.lastTerm
@@ -1661,10 +1665,15 @@ func (n *raft) electTimer() *time.Timer {
 	return n.elect
 }
 
-func (n *raft) isObserver() bool {
+func (n *raft) IsObserver() bool {
 	n.RLock()
 	defer n.RUnlock()
 	return n.observer
+}
+
+// Sets the state to observer only.
+func (n *raft) SetObserver(isObserver bool) {
+	n.setObserver(isObserver, extUndetermined)
 }
 
 func (n *raft) setObserver(isObserver bool, extSt extensionState) {
@@ -1715,7 +1724,7 @@ func (n *raft) runAsFollower() {
 			if n.outOfResources() {
 				n.resetElectionTimeoutWithLock()
 				n.debug("Not switching to candidate, no resources")
-			} else if n.isObserver() {
+			} else if n.IsObserver() {
 				n.resetElectWithLock(48 * time.Hour)
 				n.debug("Not switching to candidate, observer only")
 			} else if n.isCatchingUp() {
@@ -2940,7 +2949,7 @@ func (n *raft) processAppendEntry(ae *appendEntry, sub *subscription) {
 			}
 			// Save in memory for faster processing during applyCommit.
 			n.pae[n.pindex] = ae
-			if l := len(n.pae); l > paeWarnThreshold && l%1000 == 0 {
+			if l := len(n.pae); l > paeWarnThreshold && l%paeWarnModulo == 0 {
 				n.warn("%d append entries pending", len(n.pae))
 			}
 
@@ -3092,7 +3101,8 @@ func (n *raft) storeToWAL(ae *appendEntry) error {
 	return nil
 }
 
-const paeWarnThreshold = 32 * 1024
+const paeWarnThreshold = 20_000
+const paeWarnModulo = 5_000
 
 func (n *raft) sendAppendEntry(entries []*Entry) {
 	n.Lock()
@@ -3117,7 +3127,7 @@ func (n *raft) sendAppendEntry(entries []*Entry) {
 
 		// Save in memory for faster processing during applyCommit.
 		n.pae[n.pindex] = ae
-		if l := len(n.pae); l > paeWarnThreshold && l%1000 == 0 {
+		if l := len(n.pae); l > paeWarnThreshold && l%paeWarnModulo == 0 {
 			n.warn("%d append entries pending", len(n.pae))
 		}
 	}
