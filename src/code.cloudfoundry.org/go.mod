@@ -58,7 +58,7 @@ require (
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/go-test/deep v1.0.8
 	github.com/gogo/protobuf v1.3.2
-	github.com/golang-jwt/jwt/v4 v4.2.0
+	github.com/golang-jwt/jwt/v4 v4.4.3
 	github.com/golang/protobuf v1.5.2
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510
 	github.com/hashicorp/errwrap v1.1.0
