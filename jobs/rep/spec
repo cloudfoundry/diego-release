@@ -182,7 +182,7 @@ properties:
     description: "Environment variables to use when running the garden health check"
     default: ""
   diego.executor.post_setup_hook:
-    description: "Experimental: arbitrary command to run after setup action"
+    description: "Experimental: arbitrary command to run after setup action. WARNING: this applies to both buildpack + docker app lifecycles. Any commands specified here *MUST* exist in any docker image being run, or the app will fail to start"
   diego.executor.post_setup_user:
     description: "Experimental: user to run post setup hook command"
   diego.executor.volman.driver_paths:
