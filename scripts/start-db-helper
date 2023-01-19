@@ -7,8 +7,9 @@ function bootDB {
     launchDB="(POSTGRES_PASSWORD=password docker-entrypoint.sh postgres -c max_connections=300 &> /var/log/postgres-boot.log) &"
     testConnection="PGPASSWORD=password psql -h localhost -U postgres -c '\conninfo'"
   elif [ "${db}" = "mysql" ]  || [ "${db}" = "mysql-5.6" ] || [ "${db}" = "mysql8" ]; then
-    launchDB="(MYSQL_ROOT_PASSWORD=password /entrypoint.sh mysqld &> /var/log/mysql-boot.log) &"
-    testConnection="mysql -h localhost -u root -D mysql -e '\s;' --password='password'"
+    # max_allowed_packet default for PXC Release is 256M
+    launchDB="(MYSQL_ROOT_PASSWORD=password /entrypoint.sh mysqld --max_allowed_packet=256M &> /var/log/mysql-boot.log) &"
+    testConnection="mysql -h localhost -u root -D mysql -e '\s;' --password='password' --max_allowed_packet=256M"
   else
     echo "skipping database"
     return 0
