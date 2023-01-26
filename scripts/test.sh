@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 specified_package="${1}"
 shift
 
@@ -56,7 +54,20 @@ elif [ "${DB}" = "postgres" ]; then
 fi
 
 declare -a packages
-pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org &>/dev/null
+
+if [[ -v specified_package ]]; then
+  pushd "$DIEGO_RELEASE_DIR/src/code.cloudfoundry.org/${specified_package}"
+    mapfile -t packages < <(find . -type f -name '*_test.go' -print0 | xargs -0 -L1 -I{} dirname {} | sort -u)
+
+    ginkgo --race -randomizeAllSpecs -randomizeSuites -failFast -p \
+      -ldflags="extldflags=-WL,--allow-multiple-definition" \
+      "${packages[@]}" "${@}"
+  popd
+
+  exit
+fi
+
+pushd "$DIEGO_RELEASE_DIR/src/code.cloudfoundry.org" &>/dev/null
   mapfile -t packages < <(find . -type f -name '*_test.go' -print0 | xargs -0 -L1 -I{} dirname {} | sort -u)
 popd &>/dev/null
 
@@ -71,7 +82,7 @@ for i in "${ignored_packages[@]}"; do
   serial_packages=("${serial_packages[@]//*$i*}")
 done
 
-pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org
+pushd "$DIEGO_RELEASE_DIR/src/code.cloudfoundry.org"
   ginkgo --race -randomizeAllSpecs -randomizeSuites -failFast -p \
     -ldflags="extldflags=-WL,--allow-multiple-definition" \
     "${packages[@]}" "${@}"
