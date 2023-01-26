@@ -55,7 +55,8 @@ go run github.com/onsi/ginkgo/ginkgo -r -keepGoing -trace -randomizeAllSpecs -pr
   operationq `
   rep `
   routing-info `
-  workpool
+  workpool `
+  buildpackapplifecycle
 
 if ($LastExitCode -ne 0) {
   Write-Host "Diego unit tests failed"
