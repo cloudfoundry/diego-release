@@ -49,7 +49,7 @@ require (
 	github.com/cloudfoundry-community/go-uaa v0.3.2-0.20221011190625-aaeaae3ce7c2
 	github.com/cloudfoundry/dropsonde v1.0.0
 	github.com/containers/image v3.0.2+incompatible
-	github.com/docker/docker v20.10.17+incompatible
+	github.com/docker/docker v23.0.0+incompatible
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/envoyproxy/go-control-plane v0.9.4
 	github.com/fortytw2/leaktest v1.3.0
@@ -75,7 +75,7 @@ require (
 	github.com/onsi/gomega v1.24.1
 	github.com/onsi/say v1.0.0
 	github.com/opencontainers/go-digest v1.0.0
-	github.com/opencontainers/image-spec v1.0.3-0.20220114050600-8b9d41f48198
+	github.com/opencontainers/image-spec v1.1.0-rc2
 	github.com/pborman/getopt v1.1.0
 	github.com/pkg/errors v0.9.1
 	github.com/pkg/sftp v1.13.0
@@ -86,9 +86,9 @@ require (
 	github.com/vito/go-sse v1.0.0
 	github.com/zorkian/go-datadog-api v2.30.0+incompatible
 	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90
-	golang.org/x/net v0.2.0
+	golang.org/x/net v0.5.0
 	golang.org/x/oauth2 v0.0.0-20220622183110-fd043fe589d2
-	golang.org/x/sys v0.3.0
+	golang.org/x/sys v0.4.0
 	golang.org/x/time v0.0.0-20220722155302-e5dcc9cfc0b9
 	google.golang.org/grpc v1.48.0
 	gopkg.in/ldap.v2 v2.5.1
@@ -130,7 +130,7 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
-	github.com/klauspost/compress v1.15.14 // indirect
+	github.com/klauspost/compress v1.15.15 // indirect
 	github.com/kr/fs v0.1.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
@@ -153,7 +153,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/testify v1.8.1 // indirect
 	go.uber.org/automaxprocs v1.5.1 // indirect
-	golang.org/x/text v0.4.0 // indirect
+	golang.org/x/text v0.6.0 // indirect
 	golang.org/x/tools v0.1.12 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20220819153447-c7cd466b0e09 // indirect
