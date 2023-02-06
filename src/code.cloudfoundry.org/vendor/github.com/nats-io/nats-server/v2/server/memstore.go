@@ -72,6 +72,18 @@ func (ms *memStore) UpdateConfig(cfg *StreamConfig) error {
 		ms.ageChk.Stop()
 		ms.ageChk = nil
 	}
+	// Make sure to update MaxMsgsPer
+	maxp := ms.maxp
+	ms.maxp = cfg.MaxMsgsPer
+	// If the value is smaller we need to enforce that.
+	if ms.maxp != 0 && ms.maxp < maxp {
+		lm := uint64(ms.maxp)
+		for _, ss := range ms.fss {
+			if ss.Msgs > lm {
+				ms.enforcePerSubjectLimit(ss)
+			}
+		}
+	}
 	ms.mu.Unlock()
 
 	if cfg.MaxAge != 0 {
@@ -98,6 +110,9 @@ func (ms *memStore) storeRawMsg(subj string, hdr, msg []byte, seq uint64, ts int
 
 	// Check if we are discarding new messages when we reach the limit.
 	if ms.cfg.Discard == DiscardNew {
+		if asl && ms.cfg.DiscardNewPer {
+			return ErrMaxMsgsPerSubject
+		}
 		if ms.cfg.MaxMsgs > 0 && ms.state.Msgs >= uint64(ms.cfg.MaxMsgs) {
 			// If we are tracking max messages per subject and are at the limit we will replace, so this is ok.
 			if !asl {
@@ -858,8 +873,7 @@ func (ms *memStore) State() StreamState {
 
 	// Calculate interior delete details.
 	if state.LastSeq > state.FirstSeq {
-		state.NumDeleted = int((state.LastSeq - state.FirstSeq) - state.Msgs + 1)
-		if state.NumDeleted > 0 {
+		if state.NumDeleted = int((state.LastSeq - state.FirstSeq) - state.Msgs + 1); state.NumDeleted > 0 {
 			state.Deleted = make([]uint64, 0, state.NumDeleted)
 			// TODO(dlc) - Too Simplistic, once state is updated to allow runs etc redo.
 			for seq := state.FirstSeq + 1; seq < ms.state.LastSeq; seq++ {
@@ -1156,6 +1170,16 @@ func (o *consumerMemStore) StreamDelete() error {
 }
 
 func (o *consumerMemStore) State() (*ConsumerState, error) {
+	return o.stateWithCopy(true)
+}
+
+// This will not copy pending or redelivered, so should only be done under the
+// consumer owner's lock.
+func (o *consumerMemStore) BorrowState() (*ConsumerState, error) {
+	return o.stateWithCopy(false)
+}
+
+func (o *consumerMemStore) stateWithCopy(doCopy bool) (*ConsumerState, error) {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 
@@ -1168,10 +1192,18 @@ func (o *consumerMemStore) State() (*ConsumerState, error) {
 	state.Delivered = o.state.Delivered
 	state.AckFloor = o.state.AckFloor
 	if len(o.state.Pending) > 0 {
-		state.Pending = o.copyPending()
+		if doCopy {
+			state.Pending = o.copyPending()
+		} else {
+			state.Pending = o.state.Pending
+		}
 	}
 	if len(o.state.Redelivered) > 0 {
-		state.Redelivered = o.copyRedelivered()
+		if doCopy {
+			state.Redelivered = o.copyRedelivered()
+		} else {
+			state.Redelivered = o.state.Redelivered
+		}
 	}
 	return state, nil
 }

@@ -439,6 +439,9 @@ type MQTTOpts struct {
 	// replicas count (lower than StreamReplicas if specified, but also lower
 	// than the automatic value determined by cluster size).
 	// Note that existing consumers are not modified.
+	//
+	// UPDATE: This is no longer used while messages stream has interest policy retention
+	// which requires consumer replica count to match the parent stream.
 	ConsumerReplicas int
 
 	// Indicate if the consumers should be created with memory storage.
@@ -4223,7 +4226,14 @@ func parseMQTT(v interface{}, o *Options, errors *[]error, warnings *[]error) er
 		case "stream_replicas":
 			o.MQTT.StreamReplicas = int(mv.(int64))
 		case "consumer_replicas":
-			o.MQTT.ConsumerReplicas = int(mv.(int64))
+			err := &configWarningErr{
+				field: mk,
+				configErr: configErr{
+					token:  tk,
+					reason: `consumer replicas setting ignored in this server version`,
+				},
+			}
+			*warnings = append(*warnings, err)
 		case "consumer_memory_storage":
 			o.MQTT.ConsumerMemoryStorage = mv.(bool)
 		case "consumer_inactive_threshold", "consumer_auto_cleanup":
@@ -4669,8 +4679,8 @@ func ConfigureOptions(fs *flag.FlagSet, args []string, printVersion, printHelp, 
 	fs.StringVar(&configFile, "c", "", "Configuration file.")
 	fs.StringVar(&configFile, "config", "", "Configuration file.")
 	fs.BoolVar(&opts.CheckConfig, "t", false, "Check configuration and exit.")
-	fs.StringVar(&signal, "sl", "", "Send signal to nats-server process (stop, quit, reopen, reload).")
-	fs.StringVar(&signal, "signal", "", "Send signal to nats-server process (stop, quit, reopen, reload).")
+	fs.StringVar(&signal, "sl", "", "Send signal to nats-server process (ldm, stop, quit, term, reopen, reload).")
+	fs.StringVar(&signal, "signal", "", "Send signal to nats-server process (ldm, stop, quit, term, reopen, reload).")
 	fs.StringVar(&opts.PidFile, "P", "", "File to store process pid.")
 	fs.StringVar(&opts.PidFile, "pid", "", "File to store process pid.")
 	fs.StringVar(&opts.PortsFileDir, "ports_file_dir", "", "Creates a ports file in the specified directory (<executable_name>_<pid>.ports).")

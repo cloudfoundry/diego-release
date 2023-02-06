@@ -23,6 +23,8 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+	"os"
+	"path/filepath"
 	"runtime"
 	"sort"
 	"strconv"
@@ -38,9 +40,13 @@ import (
 var numCores int
 var maxProcs int
 
-func init() {
+func SnapshotMonitorInfo() {
 	numCores = runtime.NumCPU()
 	maxProcs = runtime.GOMAXPROCS(0)
+}
+
+func init() {
+	SnapshotMonitorInfo()
 }
 
 // Connz represents detailed information on current client connections.
@@ -1403,7 +1409,7 @@ func (s *Server) updateJszVarz(js *jetStream, v *JetStreamVarz, doConfig bool) {
 	v.Stats = js.usageStats()
 	if mg := js.getMetaGroup(); mg != nil {
 		if ci := s.raftNodeToClusterInfo(mg); ci != nil {
-			v.Meta = &MetaClusterInfo{Name: ci.Name, Leader: ci.Leader, Size: mg.ClusterSize()}
+			v.Meta = &MetaClusterInfo{Name: ci.Name, Leader: ci.Leader, Peer: getHash(ci.Leader), Size: mg.ClusterSize()}
 			if ci.Leader == s.info.Name {
 				v.Meta.Replicas = ci.Replicas
 			}
@@ -2631,12 +2637,15 @@ type JSzOptions struct {
 
 // HealthzOptions are options passed to Healthz
 type HealthzOptions struct {
-	JSEnabled    bool `json:"js-enabled,omitempty"`
-	JSServerOnly bool `json:"js-server-only,omitempty"`
+	// Deprecated: Use JSEnabledOnly instead
+	JSEnabled     bool `json:"js-enabled,omitempty"`
+	JSEnabledOnly bool `json:"js-enabled-only,omitempty"`
+	JSServerOnly  bool `json:"js-server-only,omitempty"`
 }
 
 type StreamDetail struct {
 	Name     string              `json:"name"`
+	Created  time.Time           `json:"created"`
 	Cluster  *ClusterInfo        `json:"cluster,omitempty"`
 	Config   *StreamConfig       `json:"config,omitempty"`
 	State    StreamState         `json:"state,omitempty"`
@@ -2656,6 +2665,7 @@ type AccountDetail struct {
 type MetaClusterInfo struct {
 	Name     string      `json:"name,omitempty"`
 	Leader   string      `json:"leader,omitempty"`
+	Peer     string      `json:"peer,omitempty"`
 	Replicas []*PeerInfo `json:"replicas,omitempty"`
 	Size     int         `json:"cluster_size"`
 }
@@ -2724,6 +2734,7 @@ func (s *Server) accountDetail(jsa *jsAccount, optStreams, optConsumers, optCfg 
 			}
 			sdet := StreamDetail{
 				Name:    stream.name(),
+				Created: stream.createdTime(),
 				State:   stream.state(),
 				Cluster: ci,
 				Config:  cfg,
@@ -2835,7 +2846,7 @@ func (s *Server) Jsz(opts *JSzOptions) (*JSInfo, error) {
 
 	if mg := js.getMetaGroup(); mg != nil {
 		if ci := s.raftNodeToClusterInfo(mg); ci != nil {
-			jsi.Meta = &MetaClusterInfo{Name: ci.Name, Leader: ci.Leader, Size: mg.ClusterSize()}
+			jsi.Meta = &MetaClusterInfo{Name: ci.Name, Leader: ci.Leader, Peer: getHash(ci.Leader), Size: mg.ClusterSize()}
 			if isLeader {
 				jsi.Meta.Replicas = ci.Replicas
 			}
@@ -2969,14 +2980,22 @@ func (s *Server) HandleHealthz(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
+	if jsEnabled {
+		s.Warnf("Healthcheck: js-enabled deprecated, use js-enabled-only instead")
+	}
+	jsEnabledOnly, err := decodeBool(w, r, "js-enabled-only")
+	if err != nil {
+		return
+	}
 	jsServerOnly, err := decodeBool(w, r, "js-server-only")
 	if err != nil {
 		return
 	}
 
 	hs := s.healthz(&HealthzOptions{
-		JSEnabled:    jsEnabled,
-		JSServerOnly: jsServerOnly,
+		JSEnabled:     jsEnabled,
+		JSEnabledOnly: jsEnabledOnly,
+		JSServerOnly:  jsServerOnly,
 	})
 	if hs.Error != _EMPTY_ {
 		s.Warnf("Healthcheck failed: %q", hs.Error)
@@ -3005,15 +3024,23 @@ func (s *Server) healthz(opts *HealthzOptions) *HealthStatus {
 		return health
 	}
 
-	// Check JetStream
+	sopts := s.getOpts()
+
+	// If JS is not enabled in the config, we stop.
+	if !sopts.JetStream {
+		return health
+	}
+
+	// Access the Jetstream state to perform additional checks.
 	js := s.getJetStream()
-	if js == nil {
-		// If JetStream should be enabled then return error status.
-		if opts.JSEnabled {
-			health.Status = "unavailable"
-			health.Error = NewJSNotEnabledError().Error()
-			return health
-		}
+
+	if !js.isEnabled() {
+		health.Status = "unavailable"
+		health.Error = NewJSNotEnabledError().Error()
+		return health
+	}
+	// Only check if JS is enabled, skip meta and asset check.
+	if opts.JSEnabledOnly || opts.JSEnabled {
 		return health
 	}
 
@@ -3023,8 +3050,30 @@ func (s *Server) healthz(opts *HealthzOptions) *HealthStatus {
 
 	cc := js.cluster
 
-	// Currently single server mode this is a no-op.
+	const na = "unavailable"
+
+	// Currently single server we make sure the streams were recovered.
 	if cc == nil || cc.meta == nil {
+		sdir := js.config.StoreDir
+		// Whip through account folders and pull each stream name.
+		fis, _ := os.ReadDir(sdir)
+		for _, fi := range fis {
+			acc, err := s.LookupAccount(fi.Name())
+			if err != nil {
+				health.Status = na
+				health.Error = fmt.Sprintf("JetStream account '%s' could not be resolved", fi.Name())
+				return health
+			}
+			sfis, _ := os.ReadDir(filepath.Join(sdir, fi.Name(), "streams"))
+			for _, sfi := range sfis {
+				stream := sfi.Name()
+				if _, err := acc.lookupStream(stream); err != nil {
+					health.Status = na
+					health.Error = fmt.Sprintf("JetStream stream '%s > %s' could not be recovered", acc, stream)
+					return health
+				}
+			}
+		}
 		return health
 	}
 
@@ -3034,13 +3083,13 @@ func (s *Server) healthz(opts *HealthzOptions) *HealthStatus {
 
 	// If no meta leader.
 	if meta.GroupLeader() == _EMPTY_ {
-		health.Status = "unavailable"
+		health.Status = na
 		health.Error = "JetStream has not established contact with a meta leader"
 		return health
 	}
 	// If we are not current with the meta leader.
 	if !meta.Current() {
-		health.Status = "unavailable"
+		health.Status = na
 		health.Error = "JetStream is not current with the meta leader"
 		return health
 	}
@@ -3056,8 +3105,8 @@ func (s *Server) healthz(opts *HealthzOptions) *HealthStatus {
 		for stream, sa := range asa {
 			if sa.Group.isMember(ourID) {
 				// Make sure we can look up
-				if !cc.isStreamCurrent(acc, stream) {
-					health.Status = "unavailable"
+				if !cc.isStreamHealthy(acc, stream) {
+					health.Status = na
 					health.Error = fmt.Sprintf("JetStream stream '%s > %s' is not current", acc, stream)
 					return health
 				}
@@ -3065,7 +3114,7 @@ func (s *Server) healthz(opts *HealthzOptions) *HealthStatus {
 				for consumer, ca := range sa.consumers {
 					if ca.Group.isMember(ourID) {
 						if !cc.isConsumerCurrent(acc, stream, consumer) {
-							health.Status = "unavailable"
+							health.Status = na
 							health.Error = fmt.Sprintf("JetStream consumer '%s > %s > %s' is not current", acc, stream, consumer)
 							return health
 						}
