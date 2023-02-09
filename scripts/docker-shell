@@ -10,7 +10,7 @@ SQL_FLAVOR=$db
 if [ "$db" = "mysql" ]; then
   docker_image=cfdiegodocker/diego-units-mysql
 elif [ "$db" = "mysql8" ]; then
-  docker_image=c2cnetworking/dev-mysql8
+  docker_image=cloudfoundry/cf-networking-mysql8
 elif [ "$db" = "postgres" ]; then
   docker_image=cfdiegodocker/diego-units-postgres
 else
