@@ -38,13 +38,13 @@ then
 
     SQL_FLAVOR=${SQL_FLAVOR:-postgres}
 
-    docker pull cloudfoundry/inigo-ci
+    docker pull cloudfoundry/diego-inigo-ci
     docker run --rm -e SQL_FLAVOR="$SQL_FLAVOR" -e LOCAL_DEVELOPMENT=true -e DEFAULT_EVENTUALLY_TIMEOUT=60s --detach-keys "ctrl-z" --privileged \
       -v $scripts_dir/..:/diego-release \
       -v ~/workspace/diego-release-v0:/diego-release-v0 \
       -v ~/workspace/routing-release:/routing-release \
       -v ~/workspace/garden-runc-release:/garden-runc-release \
-      -it cloudfoundry/inigo-ci bash -l
+      -it cloudfoundry/diego-inigo-ci bash -l
 fi
 
 
