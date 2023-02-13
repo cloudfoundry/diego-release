@@ -260,6 +260,6 @@ if ! grep -qs '/sys' /proc/mounts; then
 fi
 
 # shellcheck source=/dev/null
-source "${GARDEN_RUNC_PATH}/ci/helpers/device-control"
+source "${GARDEN_RUNC_PATH}/ci/helpers/device-control.bash"
 permit_device_control
 create_loop_devices 256
