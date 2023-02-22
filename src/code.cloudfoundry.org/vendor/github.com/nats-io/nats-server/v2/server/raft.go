@@ -40,17 +40,19 @@ type RaftNode interface {
 	SendSnapshot(snap []byte) error
 	NeedSnapshot() bool
 	Applied(index uint64) (entries uint64, bytes uint64)
-	Compact(index uint64) error
 	State() RaftState
 	Size() (entries, bytes uint64)
 	Progress() (index, commit, applied uint64)
 	Leader() bool
 	Quorum() bool
 	Current() bool
+	Healthy() bool
 	Term() uint64
 	GroupLeader() string
 	HadPreviousLeader() bool
 	StepDown(preferred ...string) error
+	SetObserver(isObserver bool)
+	IsObserver() bool
 	Campaign() error
 	ID() string
 	Group() string
@@ -846,23 +848,6 @@ func (n *raft) ResumeApply() {
 	n.resetElectionTimeout()
 }
 
-// Compact will compact our WAL.
-// This is for when we know we have our state on stable storage.
-// E.g. snapshots.
-func (n *raft) Compact(index uint64) error {
-	n.Lock()
-	defer n.Unlock()
-	// Error if we had a previous write error.
-	if n.werr != nil {
-		return n.werr
-	}
-	_, err := n.wal.Compact(index)
-	if err != nil {
-		n.setWriteErrLocked(err)
-	}
-	return err
-}
-
 // Applied is to be called when the FSM has applied the committed entries.
 // Applied will return the number of entries and an estimation of the
 // byte size that could be removed with a snapshot/compact.
@@ -954,7 +939,7 @@ func (n *raft) InstallSnapshot(data []byte) error {
 	var state StreamState
 	n.wal.FastState(&state)
 
-	if n.snapfile != _EMPTY_ && state.FirstSeq >= n.applied {
+	if state.FirstSeq >= n.applied {
 		n.Unlock()
 		return nil
 	}
@@ -992,8 +977,8 @@ func (n *raft) InstallSnapshot(data []byte) error {
 	n.snapfile = sfile
 
 	if _, err := n.wal.Compact(snap.lastIndex); err != nil {
+		n.setWriteErrLocked(err)
 		n.Unlock()
-		n.setWriteErr(err)
 		return err
 	}
 	n.Unlock()
@@ -1013,7 +998,7 @@ func (n *raft) InstallSnapshot(data []byte) error {
 func (n *raft) NeedSnapshot() bool {
 	n.RLock()
 	defer n.RUnlock()
-	return n.snapfile == _EMPTY_ && n.applied > 0
+	return n.snapfile == _EMPTY_ && n.applied > 1
 }
 
 const (
@@ -1081,15 +1066,18 @@ func (n *raft) setupLastSnapshot() {
 	n.snapfile = latest
 	snap, err := n.loadLastSnapshot()
 	if err != nil {
-		os.Remove(n.snapfile)
-		n.snapfile = _EMPTY_
+		if n.snapfile != _EMPTY_ {
+			os.Remove(n.snapfile)
+			n.snapfile = _EMPTY_
+		}
 	} else {
 		n.pindex = snap.lastIndex
 		n.pterm = snap.lastTerm
 		n.commit = snap.lastIndex
 		n.applied = snap.lastIndex
+
 		n.apply.push(&CommittedEntry{n.commit, []*Entry{{EntrySnapshot, snap.data}}})
-		if _, err := n.wal.Compact(snap.lastIndex + 1); err != nil {
+		if _, err := n.wal.Compact(snap.lastIndex); err != nil {
 			n.setWriteErrLocked(err)
 		}
 	}
@@ -1136,6 +1124,15 @@ func (n *raft) loadLastSnapshot() (*snapshot, error) {
 		data:      buf[20+lps : hoff],
 	}
 
+	// We had a bug in 2.9.12 that would allow snapshots on last index of 0.
+	// Detect that here and return err.
+	if snap.lastIndex == 0 {
+		n.warn("Snapshot with last index 0 is invalid, cleaning up")
+		os.Remove(n.snapfile)
+		n.snapfile = _EMPTY_
+		return nil, errSnapshotCorrupt
+	}
+
 	return snap, nil
 }
 
@@ -1156,13 +1153,15 @@ func (n *raft) isCatchingUp() bool {
 	return n.catchup != nil
 }
 
-// Lock should be held.
-func (n *raft) isCurrent() bool {
-	// First check if have had activity and we match commit and applied.
-	if n.commit == 0 || n.commit != n.applied {
-		n.debug("Not current, commit %d != applied %d", n.commit, n.applied)
+// Lock should be held. This function may block for up to ~5ms to check
+// forward progress in some cases.
+func (n *raft) isCurrent(includeForwardProgress bool) bool {
+	// Check whether we've made progress on any state, 0 is invalid so not healthy.
+	if n.commit == 0 {
+		n.debug("Not current, no commits")
 		return false
 	}
+
 	// Make sure we are the leader or we know we have heard from the leader recently.
 	if n.state == Leader {
 		return true
@@ -1177,14 +1176,40 @@ func (n *raft) isCurrent() bool {
 	if n.leader != noLeader && n.leader != n.id && n.catchup == nil {
 		okInterval := int64(hbInterval) * 2
 		ts := time.Now().UnixNano()
-		if ps := n.peers[n.leader]; ps != nil && ps.ts > 0 && (ts-ps.ts) <= okInterval {
-			return true
+		if ps := n.peers[n.leader]; ps == nil || ps.ts == 0 && (ts-ps.ts) > okInterval {
+			n.debug("Not current, no recent leader contact")
+			return false
 		}
-		n.debug("Not current, no recent leader contact")
 	}
 	if cs := n.catchup; cs != nil {
 		n.debug("Not current, still catching up pindex=%d, cindex=%d", n.pindex, cs.cindex)
 	}
+
+	if n.commit == n.applied {
+		// At this point if we are current, we can return saying so.
+		return true
+	} else if !includeForwardProgress {
+		// Otherwise, if we aren't allowed to include forward progress
+		// (i.e. we are checking "current" instead of "healthy") then
+		// give up now.
+		return false
+	}
+
+	// Otherwise, wait for a short period of time and see if we are making any
+	// forward progress.
+	if startDelta := n.commit - n.applied; startDelta > 0 {
+		for i := 0; i < 10; i++ { // 5ms, in 0.5ms increments
+			n.RUnlock()
+			time.Sleep(time.Millisecond / 2)
+			n.RLock()
+			if n.commit-n.applied < startDelta {
+				// The gap is getting smaller, so we're making forward progress.
+				return true
+			}
+		}
+	}
+
+	n.warn("Falling behind in health check, commit %d != applied %d", n.commit, n.applied)
 	return false
 }
 
@@ -1195,7 +1220,17 @@ func (n *raft) Current() bool {
 	}
 	n.RLock()
 	defer n.RUnlock()
-	return n.isCurrent()
+	return n.isCurrent(false)
+}
+
+// Healthy returns if we are the leader for our group and nearly up-to-date.
+func (n *raft) Healthy() bool {
+	if n == nil {
+		return false
+	}
+	n.RLock()
+	defer n.RUnlock()
+	return n.isCurrent(true)
 }
 
 // HadPreviousLeader indicates if this group ever had a leader.
@@ -1216,6 +1251,7 @@ func (n *raft) GroupLeader() string {
 }
 
 // Guess the best next leader. Stepdown will check more thoroughly.
+// Lock should be held.
 func (n *raft) selectNextLeader() string {
 	nextLeader, hli := noLeader, uint64(0)
 	for peer, ps := range n.peers {
@@ -1661,10 +1697,15 @@ func (n *raft) electTimer() *time.Timer {
 	return n.elect
 }
 
-func (n *raft) isObserver() bool {
+func (n *raft) IsObserver() bool {
 	n.RLock()
 	defer n.RUnlock()
 	return n.observer
+}
+
+// Sets the state to observer only.
+func (n *raft) SetObserver(isObserver bool) {
+	n.setObserver(isObserver, extUndetermined)
 }
 
 func (n *raft) setObserver(isObserver bool, extSt extensionState) {
@@ -1715,7 +1756,7 @@ func (n *raft) runAsFollower() {
 			if n.outOfResources() {
 				n.resetElectionTimeoutWithLock()
 				n.debug("Not switching to candidate, no resources")
-			} else if n.isObserver() {
+			} else if n.IsObserver() {
 				n.resetElectWithLock(48 * time.Hour)
 				n.debug("Not switching to candidate, observer only")
 			} else if n.isCatchingUp() {
@@ -2249,9 +2290,11 @@ func (n *raft) sendSnapshotToFollower(subject string) (uint64, error) {
 	ae.pterm, ae.pindex = snap.lastTerm, snap.lastIndex
 	var state StreamState
 	n.wal.FastState(&state)
-	if snap.lastIndex < state.FirstSeq && state.FirstSeq != 0 {
-		snap.lastIndex = state.FirstSeq - 1
-		ae.pindex = snap.lastIndex
+
+	fpIndex := state.FirstSeq - 1
+	if snap.lastIndex < fpIndex && state.FirstSeq != 0 {
+		snap.lastIndex = fpIndex
+		ae.pindex = fpIndex
 	}
 
 	encoding, err := ae.encode(nil)
@@ -2278,7 +2321,6 @@ func (n *raft) catchupFollower(ar *appendEntryResponse) {
 	var state StreamState
 	n.wal.FastState(&state)
 
-	var didSnap bool
 	if start < state.FirstSeq || (state.Msgs == 0 && start <= state.LastSeq) {
 		n.debug("Need to send snapshot to follower")
 		if lastIndex, err := n.sendSnapshotToFollower(ar.reply); err != nil {
@@ -2286,20 +2328,20 @@ func (n *raft) catchupFollower(ar *appendEntryResponse) {
 			n.Unlock()
 			return
 		} else {
+			start = lastIndex + 1
 			// If no other entries, we can just return here.
-			if state.Msgs == 0 {
+			if state.Msgs == 0 || start > state.LastSeq {
 				n.debug("Finished catching up")
 				n.Unlock()
 				return
 			}
 			n.debug("Snapshot sent, reset first entry to %d", lastIndex)
-			start, didSnap = lastIndex, true
 		}
 	}
 
 	ae, err := n.loadEntry(start)
 	if err != nil {
-		n.warn("Request from follower for index [%d] possibly beyond our last index [%d] - %v", start, state.LastSeq, err)
+		n.warn("Request from follower for entry at index [%d] errored for state %+v - %v", start, state, err)
 		ae, err = n.loadFirstEntry()
 	}
 	if err != nil || ae == nil {
@@ -2312,12 +2354,7 @@ func (n *raft) catchupFollower(ar *appendEntryResponse) {
 	}
 	// Create a queue for delivering updates from responses.
 	indexUpdates := n.s.newIPQueue(fmt.Sprintf("[ACC:%s] RAFT '%s' indexUpdates", n.accName, n.group)) // of uint64
-	// If we did send a snapshot above, that means we skipped ahead so bump entry pindex by 1 to start for catchup stream.
-	if didSnap {
-		indexUpdates.push(ae.pindex + 1)
-	} else {
-		indexUpdates.push(ae.pindex)
-	}
+	indexUpdates.push(ae.pindex)
 	n.progress[ar.peer] = indexUpdates
 	n.Unlock()
 
@@ -2694,7 +2731,7 @@ func (n *raft) truncateWAL(term, index uint64) {
 
 	// Check to see if we invalidated any snapshots that might have held state
 	// from the entries we are truncating.
-	if snap, _ := n.loadLastSnapshot(); snap != nil && snap.lastIndex > index {
+	if snap, _ := n.loadLastSnapshot(); snap != nil && snap.lastIndex >= index {
 		os.Remove(n.snapfile)
 		n.snapfile = _EMPTY_
 	}
@@ -2900,8 +2937,8 @@ func (n *raft) processAppendEntry(ae *appendEntry, sub *subscription) {
 			n.pindex = ae.pindex
 			n.pterm = ae.pterm
 			n.commit = ae.pindex
-			_, err := n.wal.Compact(n.pindex + 1)
-			if err != nil {
+
+			if _, err := n.wal.Compact(n.pindex); err != nil {
 				n.setWriteErrLocked(err)
 				n.Unlock()
 				return
@@ -2939,11 +2976,15 @@ func (n *raft) processAppendEntry(ae *appendEntry, sub *subscription) {
 				return
 			}
 			// Save in memory for faster processing during applyCommit.
-			n.pae[n.pindex] = ae
-			if l := len(n.pae); l > paeWarnThreshold && l%1000 == 0 {
-				n.warn("%d append entries pending", len(n.pae))
+			// Only save so many however to avoid memory bloat.
+			if l := len(n.pae); l <= paeDropThreshold {
+				n.pae[n.pindex], l = ae, l+1
+				if l > paeWarnThreshold && l%paeWarnModulo == 0 {
+					n.warn("%d append entries pending", len(n.pae))
+				}
+			} else {
+				n.debug("Not saving to append entries pending")
 			}
-
 		} else {
 			// This is a replay on startup so just take the appendEntry version.
 			n.pterm = ae.term
@@ -3092,7 +3133,11 @@ func (n *raft) storeToWAL(ae *appendEntry) error {
 	return nil
 }
 
-const paeWarnThreshold = 32 * 1024
+const (
+	paeDropThreshold = 20_000
+	paeWarnThreshold = 10_000
+	paeWarnModulo    = 5_000
+)
 
 func (n *raft) sendAppendEntry(entries []*Entry) {
 	n.Lock()
@@ -3117,7 +3162,7 @@ func (n *raft) sendAppendEntry(entries []*Entry) {
 
 		// Save in memory for faster processing during applyCommit.
 		n.pae[n.pindex] = ae
-		if l := len(n.pae); l > paeWarnThreshold && l%1000 == 0 {
+		if l := len(n.pae); l > paeWarnThreshold && l%paeWarnModulo == 0 {
 			n.warn("%d append entries pending", len(n.pae))
 		}
 	}

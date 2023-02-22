@@ -554,6 +554,9 @@ func (a *Account) RoutedSubs() int {
 func (a *Account) TotalSubs() int {
 	a.mu.RLock()
 	defer a.mu.RUnlock()
+	if a.sl == nil {
+		return 0
+	}
 	return int(a.sl.Count())
 }
 
@@ -704,8 +707,8 @@ func (a *Account) AddWeightedMappings(src string, dests ...*MapDest) error {
 	}
 
 	// Replace an old one if it exists.
-	for i, m := range a.mappings {
-		if m.src == src {
+	for i, em := range a.mappings {
+		if em.src == src {
 			a.mappings[i] = m
 			return nil
 		}
@@ -1131,7 +1134,7 @@ func (a *Account) UnTrackServiceExport(service string) {
 	}
 
 	a.mu.Lock()
-	if a == nil || a.exports.services == nil {
+	if a.exports.services == nil {
 		a.mu.Unlock()
 		return
 	}
@@ -2183,12 +2186,12 @@ func (a *Account) newServiceReply(tracking bool) []byte {
 		a.createRespWildcard()
 		createdSiReply = true
 	}
-	replyPre, isBoundToLeafnode := a.siReply, a.lds != _EMPTY_
+	replyPre := a.siReply
 	a.mu.Unlock()
 
 	// If we created the siReply and we are not bound to a leafnode
 	// we need to do the wildcard subscription.
-	if createdSiReply && !isBoundToLeafnode {
+	if createdSiReply {
 		a.subscribeServiceImportResponse(string(append(replyPre, '>')))
 	}
 
@@ -2348,18 +2351,7 @@ func (a *Account) addRespServiceImport(dest *Account, to string, osi *serviceImp
 		si.tracking = true
 		si.trackingHdr = header
 	}
-	isBoundToLeafnode := a.lds != _EMPTY_
 	a.mu.Unlock()
-
-	// We might not do individual subscriptions here like we do on configured imports.
-	// If we are bound to a leafnode we do explicit subscriptions for these.
-	// We have an internal callback for all responses inbound to this account and
-	// will process appropriately there. This does not pollute the sublist and the caches.
-
-	if isBoundToLeafnode {
-		sub, _ := a.subscribeServiceImportResponse(nrr)
-		si.sid = sub.sid
-	}
 
 	// We do add in the reverse map such that we can detect loss of interest and do proper
 	// cleanup of this si as interest goes away.
@@ -3810,9 +3802,20 @@ func removeCb(s *Server, pubKey string) {
 	a.mconns = 0
 	a.mleafs = 0
 	a.updated = time.Now().UTC()
+	jsa := a.js
 	a.mu.Unlock()
 	// set the account to be expired and disconnect clients
 	a.expiredTimeout()
+	// For JS, we need also to disable it.
+	if js := s.getJetStream(); js != nil && jsa != nil {
+		js.disableJetStream(jsa)
+		// Remove JetStream state in memory, this will be reset
+		// on the changed callback from the account in case it is
+		// enabled again.
+		a.js = nil
+	}
+	// We also need to remove all ServerImport subscriptions
+	a.removeAllServiceImportSubs()
 	a.mu.Lock()
 	a.clearExpirationTimer()
 	a.mu.Unlock()
@@ -3828,11 +3831,23 @@ func (dr *DirAccResolver) Start(s *Server) error {
 	dr.Server = s
 	dr.operator = opKeys
 	dr.DirJWTStore.changed = func(pubKey string) {
-		if v, ok := s.accounts.Load(pubKey); !ok {
-		} else if theJwt, err := dr.LoadAcc(pubKey); err != nil {
-			s.Errorf("update got error on load: %v", err)
-		} else if err := s.updateAccountWithClaimJWT(v.(*Account), theJwt); err != nil {
-			s.Errorf("update resulted in error %v", err)
+		if v, ok := s.accounts.Load(pubKey); ok {
+			if theJwt, err := dr.LoadAcc(pubKey); err != nil {
+				s.Errorf("update got error on load: %v", err)
+			} else {
+				acc := v.(*Account)
+				if err = s.updateAccountWithClaimJWT(acc, theJwt); err != nil {
+					s.Errorf("update resulted in error %v", err)
+				} else {
+					if _, jsa, err := acc.checkForJetStream(); err != nil {
+						s.Warnf("error checking for JetStream enabled error %v", err)
+					} else if jsa == nil {
+						if err = s.configJetStream(acc); err != nil {
+							s.Errorf("updated resulted in error when configuring JetStream %v", err)
+						}
+					}
+				}
+			}
 		}
 	}
 	dr.DirJWTStore.deleted = func(pubKey string) {
@@ -3842,7 +3857,7 @@ func (dr *DirAccResolver) Start(s *Server) error {
 	for _, reqSub := range []string{accUpdateEventSubjOld, accUpdateEventSubjNew} {
 		// subscribe to account jwt update requests
 		if _, err := s.sysSubscribe(fmt.Sprintf(reqSub, "*"), func(_ *subscription, _ *client, _ *Account, subj, resp string, msg []byte) {
-			pubKey := _EMPTY_
+			var pubKey string
 			tk := strings.Split(subj, tsep)
 			if len(tk) == accUpdateTokensNew {
 				pubKey = tk[accReqAccIndex]
@@ -4128,7 +4143,7 @@ func (dr *CacheDirAccResolver) Start(s *Server) error {
 	for _, reqSub := range []string{accUpdateEventSubjOld, accUpdateEventSubjNew} {
 		// subscribe to account jwt update requests
 		if _, err := s.sysSubscribe(fmt.Sprintf(reqSub, "*"), func(_ *subscription, _ *client, _ *Account, subj, resp string, msg []byte) {
-			pubKey := _EMPTY_
+			var pubKey string
 			tk := strings.Split(subj, tsep)
 			if len(tk) == accUpdateTokensNew {
 				pubKey = tk[accReqAccIndex]
@@ -4581,7 +4596,7 @@ func (tr *transform) transform(tokens []string) (string, error) {
 					if split != _EMPTY_ {
 						b.WriteString(split)
 					}
-					if j < len(splits)-1 && splits[j+1] != _EMPTY_ && j != 0 {
+					if j < len(splits)-1 && splits[j+1] != _EMPTY_ && !(j == 0 && split == _EMPTY_) {
 						b.WriteString(tsep)
 					}
 				}

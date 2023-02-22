@@ -320,21 +320,10 @@ func validateGatewayOptions(o *Options) error {
 	return nil
 }
 
-// Computes a hash for the given `name`. The result will be `size` characters long.
-func getHashSize(name string, size int) []byte {
-	sha := sha256.New()
-	sha.Write([]byte(name))
-	b := sha.Sum(nil)
-	for i := 0; i < size; i++ {
-		b[i] = digits[int(b[i]%base)]
-	}
-	return b[:size]
-}
-
 // Computes a hash of 6 characters for the name.
 // This will be used for routing of replies.
 func getGWHash(name string) []byte {
-	return getHashSize(name, gwHashLen)
+	return []byte(getHashSize(name, gwHashLen))
 }
 
 func getOldHash(name string) []byte {
@@ -1331,7 +1320,7 @@ func (s *Server) processGatewayInfoFromRoute(info *Info, routeSrvID string, rout
 
 // Sends INFO protocols to the given route connection for each known Gateway.
 // These will be processed by the route and delegated to the gateway code to
-// imvoke processImplicitGateway.
+// invoke processImplicitGateway.
 func (s *Server) sendGatewayConfigsToRoute(route *client) {
 	gw := s.gateway
 	gw.RLock()
@@ -2455,7 +2444,8 @@ func (c *client) sendMsgToGateways(acc *Account, msg, subject, reply []byte, qgr
 	// This is in fast path, so avoid calling functions when possible.
 	// Get the outbound connections in place instead of calling
 	// getOutboundGatewayConnections().
-	gw := c.srv.gateway
+	srv := c.srv
+	gw := srv.gateway
 	gw.RLock()
 	for i := 0; i < len(gw.outo); i++ {
 		gws = append(gws, gw.outo[i])
@@ -2476,6 +2466,8 @@ func (c *client) sendMsgToGateways(acc *Account, msg, subject, reply []byte, qgr
 		dstHash    []byte
 		checkReply = len(reply) > 0
 		didDeliver bool
+		prodIsMQTT = c.isMqtt()
+		dlvMsgs    int64
 	)
 
 	// Get a subscription from the pool
@@ -2604,7 +2596,26 @@ func (c *client) sendMsgToGateways(acc *Account, msg, subject, reply []byte, qgr
 		sub.nm, sub.max = 0, 0
 		sub.client = gwc
 		sub.subject = subject
-		didDeliver = c.deliverMsg(sub, acc, subject, mreply, mh, msg, false) || didDeliver
+		if c.deliverMsg(prodIsMQTT, sub, acc, subject, mreply, mh, msg, false) {
+			// We don't count internal deliveries so count only if sub.icb is nil
+			if sub.icb == nil {
+				dlvMsgs++
+			}
+			didDeliver = true
+		}
+	}
+	if dlvMsgs > 0 {
+		totalBytes := dlvMsgs * int64(len(msg))
+		// For non MQTT producers, remove the CR_LF * number of messages
+		if !prodIsMQTT {
+			totalBytes -= dlvMsgs * int64(LEN_CR_LF)
+		}
+		if acc != nil {
+			atomic.AddInt64(&acc.outMsgs, dlvMsgs)
+			atomic.AddInt64(&acc.outBytes, totalBytes)
+		}
+		atomic.AddInt64(&srv.outMsgs, dlvMsgs)
+		atomic.AddInt64(&srv.outBytes, totalBytes)
 	}
 	// Done with subscription, put back to pool. We don't need
 	// to reset content since we explicitly set when using it.
