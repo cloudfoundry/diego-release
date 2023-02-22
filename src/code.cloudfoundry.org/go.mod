@@ -43,7 +43,7 @@ require (
 	code.cloudfoundry.org/tlsconfig v0.0.0-20220621140725-0e6fbd869921
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20210406150507-75cfd577ce75
-	github.com/aws/aws-sdk-go v1.44.44
+	github.com/aws/aws-sdk-go v1.44.206
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20210324191134-efd1603705e9
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cloudfoundry-community/go-uaa v0.3.2-0.20221011190625-aaeaae3ce7c2
