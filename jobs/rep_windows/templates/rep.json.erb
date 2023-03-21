@@ -157,6 +157,18 @@
     config[:locket_address] = value
   end
 
+  if_p("diego.rep.locket.client_keepalive_time") do |value|
+    config[:locket_client_keepalive_time] = value
+  end
+
+  if_p("diego.rep.locket.client_keepalive_timeout") do |value|
+    config[:locket_client_keepalive_timeout] = value
+  end
+
+  if config[:locket_client_keepalive_time] > config[:locket_client_keepalive_timeout] 
+    raise "The locket client keepalive time property should not be larger than the timeout"
+  end
+
   config[:locket_ca_cert_file]     = "#{conf_dir}/certs/tls_ca.crt"
   config[:locket_client_cert_file] = "#{conf_dir}/certs/tls.crt"
   config[:locket_client_key_file]  = "#{conf_dir}/certs/tls.key"
