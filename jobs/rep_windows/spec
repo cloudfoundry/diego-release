@@ -227,7 +227,13 @@ properties:
   diego.rep.locket.api_location:
     description: "Hostname and port of the locket server"
     default: locket.service.cf.internal:8891
-
+  diego.rep.locket.client_keepalive_time: 
+    description: "Period in seconds after which the locket gRPC client sends keepalive ping requests to the locket server it is connected to."
+    default: 10
+  diego.rep.locket.client_keepalive_timeout: 
+    description: "Timeout in seconds to receive a response to the keepalive ping. If a response is not received within this time, the locket client will reconnect to another server."
+    default: 22
+  
   enable_declarative_healthcheck:
     description: "When set, enables the rep to prefer the LRP CheckDefinition to healthcheck instances over the Monitor action."
     default: false
