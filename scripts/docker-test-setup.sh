@@ -15,7 +15,6 @@ if ! [ $(type -P "ginkgo") ]; then
   mv /root/go/bin/ginkgo /usr/local/bin/ginkgo
 fi
 
-
 if ! [ $(type -P "nats-server") ]; then
   BIN_DIR="${DIEGO_RELEASE_DIR}/bin"
   mkdir -p "${BIN_DIR}"
