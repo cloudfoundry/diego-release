@@ -6,7 +6,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/cloudfoundry/sonde-go/events"
-	"github.com/gogo/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 )
 
 const (

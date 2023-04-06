@@ -6,7 +6,7 @@ package tools
 import (
 	_ "github.com/gogo/protobuf/protoc-gen-gogoslick"
 	_ "github.com/nats-io/nats-server/v2"
-	_ "github.com/onsi/ginkgo/ginkgo"
+	_ "github.com/onsi/ginkgo/v2/ginkgo"
 )
 
 // This file imports packages that are used when running go generate, or used

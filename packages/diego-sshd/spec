@@ -37,9 +37,9 @@ files:
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/v8/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/v8/rfc5424/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/v8/rpc/loggregator_v2/*.go # gosub
-  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/*.go # gosub
-  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/internal/truncate/*.go # gosub
-  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/lagerflags/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/v3/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/v3/internal/truncate/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/v3/lagerflags/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/tlsconfig/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/bmizerany/pat/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/creack/pty/*.go # gosub
@@ -61,6 +61,8 @@ files:
   - code.cloudfoundry.org/vendor/github.com/kr/fs/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/kr/pty/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/moby/term/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/openzipkin/zipkin-go/idgenerator/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/openzipkin/zipkin-go/model/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/pborman/getopt/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/pkg/errors/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/pkg/sftp/*.go # gosub

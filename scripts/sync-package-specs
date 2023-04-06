@@ -65,11 +65,11 @@ sync_package windows_app_lifecycle -app  code.cloudfoundry.org/buildpackapplifec
   -app code.cloudfoundry.org/buildpackapplifecycle/getenv &
 
 sync_package vizzini \
-  -app  github.com/onsi/ginkgo/ginkgo \
+  -app  github.com/onsi/ginkgo/v2/ginkgo \
   -test code.cloudfoundry.org/vizzini/... &
 
 sync_package benchmark-bbs \
-  -app  github.com/onsi/ginkgo/ginkgo \
+  -app  github.com/onsi/ginkgo/v2/ginkgo \
   -test code.cloudfoundry.org/benchmarkbbs/... &
 
 wait

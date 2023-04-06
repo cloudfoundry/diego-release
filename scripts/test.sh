@@ -39,7 +39,7 @@ test_package() {
   fi
   shift
   pushd "${package}" &>/dev/null
-  ginkgo --race -randomizeAllSpecs -randomizeSuites -failFast \
+  ginkgo --race -randomize-all -randomize-suites -fail-fast \
       -ldflags="extldflags=-WL,--allow-multiple-definition" \
        "${@}";
   rc=$?
@@ -72,7 +72,7 @@ for i in "${ignored_packages[@]}"; do
 done
 
 pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org
-  ginkgo --race -randomizeAllSpecs -randomizeSuites -failFast -p \
+  ginkgo --race -randomize-all -randomize-suites -fail-fast -p \
     -ldflags="extldflags=-WL,--allow-multiple-definition" \
     "${packages[@]}" "${@}"
 popd

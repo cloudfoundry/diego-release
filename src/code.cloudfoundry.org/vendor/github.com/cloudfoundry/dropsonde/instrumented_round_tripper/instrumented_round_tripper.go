@@ -7,8 +7,8 @@ import (
 
 	"github.com/cloudfoundry/dropsonde/factories"
 	"github.com/cloudfoundry/sonde-go/events"
-	"github.com/gogo/protobuf/proto"
 	uuid "github.com/nu7hatch/gouuid"
+	"google.golang.org/protobuf/proto"
 )
 
 type EventEmitter interface {
@@ -72,7 +72,7 @@ func (irt *instrumentedRoundTripper) RoundTrip(req *http.Request) (*http.Respons
 		return nil, err
 	}
 
-	httpStartStop := factories.NewHttpStartStop(req, statusCode, contentLength, events.PeerType_Client, id)
+	httpStartStop := factories.NewHttpStartStop(req, int32(statusCode), contentLength, events.PeerType_Client, id)
 	httpStartStop.StartTimestamp = proto.Int64(startTime.UnixNano())
 
 	err = irt.emitter.Emit(httpStartStop)
