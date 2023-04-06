@@ -9,8 +9,8 @@ import (
 
 	"github.com/cloudfoundry/dropsonde/factories"
 	"github.com/cloudfoundry/sonde-go/events"
-	"github.com/gogo/protobuf/proto"
 	uuid "github.com/nu7hatch/gouuid"
+	"google.golang.org/protobuf/proto"
 )
 
 type EventEmitter interface {
@@ -47,7 +47,7 @@ func (ih *instrumentedHandler) ServeHTTP(rw http.ResponseWriter, req *http.Reque
 	instrumentedWriter := &instrumentedResponseWriter{writer: rw, statusCode: 200}
 	ih.handler.ServeHTTP(instrumentedWriter, req)
 
-	startStopEvent := factories.NewHttpStartStop(req, instrumentedWriter.statusCode, instrumentedWriter.contentLength, events.PeerType_Server, requestId)
+	startStopEvent := factories.NewHttpStartStop(req, int32(instrumentedWriter.statusCode), instrumentedWriter.contentLength, events.PeerType_Server, requestId)
 	startStopEvent.StartTimestamp = proto.Int64(startTime.UnixNano())
 
 	err = ih.emitter.Emit(startStopEvent)

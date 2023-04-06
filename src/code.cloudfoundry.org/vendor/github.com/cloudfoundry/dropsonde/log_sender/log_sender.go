@@ -11,9 +11,8 @@ import (
 	"syscall"
 
 	"github.com/cloudfoundry/dropsonde/metrics"
-	"github.com/cloudfoundry/gosteno"
 	"github.com/cloudfoundry/sonde-go/events"
-	"github.com/gogo/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 )
 
 const (
@@ -39,14 +38,12 @@ type LogChainer interface {
 // A LogSender emits log events.
 type LogSender struct {
 	eventEmitter EventEmitter
-	logger       *gosteno.Logger
 }
 
 // NewLogSender instantiates a LogSender with the given EventEmitter.
-func NewLogSender(eventEmitter EventEmitter, logger *gosteno.Logger) *LogSender {
+func NewLogSender(eventEmitter EventEmitter) *LogSender {
 	return &LogSender{
 		eventEmitter: eventEmitter,
-		logger:       logger,
 	}
 }
 
@@ -100,11 +97,7 @@ func (l *LogSender) scanLogStream(appID, sourceType, sourceInstance string, send
 		if l.isMessageTooLong(err, appID, sourceType, sourceInstance) {
 			continue
 		}
-		if err == nil {
-			l.logger.Debugf("EOF on log stream for app %s/%s", appID, sourceInstance)
-		} else {
-			l.logger.Infof("ScanLogStream: Error while reading STDOUT/STDERR for app %s/%s: %s", appID, sourceInstance, err.Error())
-		}
+
 		return
 	}
 }

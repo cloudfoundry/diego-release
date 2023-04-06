@@ -151,7 +151,7 @@ function Setup-Gopath() {
       go build -o "$env:GOBIN/nats-server.exe" github.com/nats-io/nats-server/v2
       $env:NATS_DOCKERIZED = "1"
       echo "Installing ginkgo ..."
-      go build -o "$env:GOBIN/ginkgo.exe" github.com/onsi/ginkgo/ginkgo
+      go build -o "$env:GOBIN/ginkgo.exe" github.com/onsi/ginkgo/v2/ginkgo
     Pop-Location
   Pop-Location
 }

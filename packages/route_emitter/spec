@@ -23,9 +23,9 @@ files:
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/v8/rfc5424/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/v8/rpc/loggregator_v2/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/v8/runtimeemitter/*.go # gosub
-  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/*.go # gosub
-  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/internal/truncate/*.go # gosub
-  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/lagerflags/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/v3/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/v3/internal/truncate/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/v3/lagerflags/*.go # gosub
   - code.cloudfoundry.org/locket/*.go # gosub
   - code.cloudfoundry.org/locket/jointlock/*.go # gosub
   - code.cloudfoundry.org/locket/lock/*.go # gosub
@@ -42,12 +42,12 @@ files:
   - code.cloudfoundry.org/route-emitter/watcher/*.go # gosub
   - code.cloudfoundry.org/routing-api/*.go # gosub
   - code.cloudfoundry.org/routing-api/models/*.go # gosub
+  - code.cloudfoundry.org/routing-api/trace/*.go # gosub
   - code.cloudfoundry.org/routing-api/uaaclient/*.go # gosub
   - code.cloudfoundry.org/routing-info/cfroutes/*.go # gosub
   - code.cloudfoundry.org/routing-info/internalroutes/*.go # gosub
   - code.cloudfoundry.org/routing-info/tcp_routes/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/tlsconfig/*.go # gosub
-  - code.cloudfoundry.org/trace-logger/*.go # gosub
   - code.cloudfoundry.org/workpool/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/bmizerany/pat/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/cloudfoundry-community/go-uaa/*.go # gosub
@@ -71,6 +71,8 @@ files:
   - code.cloudfoundry.org/vendor/github.com/nats-io/nkeys/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/nats-io/nuid/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/nu7hatch/gouuid/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/openzipkin/zipkin-go/idgenerator/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/openzipkin/zipkin-go/model/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/pkg/errors/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/tedsuo/ifrit/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/tedsuo/ifrit/grouper/*.go # gosub
