@@ -11,7 +11,6 @@ declare -a serial_packages=()
 
 declare -a ignored_packages=(
   "auction/simulation"
-  "benchmarkbbs"
   "credhub-cli"
   "routing-api"
   "inigo"
