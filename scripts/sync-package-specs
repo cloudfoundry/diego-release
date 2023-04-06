@@ -68,10 +68,6 @@ sync_package vizzini \
   -app  github.com/onsi/ginkgo/v2/ginkgo \
   -test code.cloudfoundry.org/vizzini/... &
 
-sync_package benchmark-bbs \
-  -app  github.com/onsi/ginkgo/v2/ginkgo \
-  -test code.cloudfoundry.org/benchmarkbbs/... &
-
 wait
 
 git diff --name-only packages/*/spec | tee # pipe through tee to avoid issues with non-interactive shells
