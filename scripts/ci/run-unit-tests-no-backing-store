@@ -56,7 +56,6 @@ SKIP_PACKAGES="$SKIP_PACKAGES,./cfdot/integration"
 SKIP_PACKAGES="$SKIP_PACKAGES,./rfc5424"
 SKIP_PACKAGES="$SKIP_PACKAGES,./grootfs"
 SKIP_PACKAGES="$SKIP_PACKAGES,./idmapper"
-SKIP_PACKAGES="$SKIP_PACKAGES,./dockerapplifecycle/launcher"
 ERROR_CODE=0
 
 if [ -z "${RUN_SQL_TESTS}" ]; then
