@@ -8,7 +8,7 @@ import (
 
 	"code.cloudfoundry.org/commandrunner"
 	"code.cloudfoundry.org/garden"
-	"code.cloudfoundry.org/lager"
+	"code.cloudfoundry.org/lager/v3"
 	specs "github.com/opencontainers/runtime-spec/specs-go"
 )
 
