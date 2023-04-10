@@ -27,7 +27,7 @@ require (
 	code.cloudfoundry.org/bytefmt v0.0.0-20230406175530-3579ae0680eb
 	code.cloudfoundry.org/certsplitter v0.0.0-20230406165926-271f22a66575
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20200827173955-6ac4653025b4
-	code.cloudfoundry.org/cf-tcp-router v0.0.0-20210401153245-254a1ad317ab
+	code.cloudfoundry.org/cf-tcp-router v0.0.0-20230405170811-6b149c7f7ef9
 	code.cloudfoundry.org/cfhttp v1.0.1-0.20210513172332-4c5ee488a657
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1-0.20210513172332-4c5ee488a657
 	code.cloudfoundry.org/clock v1.1.0
@@ -45,7 +45,7 @@ require (
 	code.cloudfoundry.org/tlsconfig v0.0.0-20230320190829-8f91c367795b
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20210406150507-75cfd577ce75
-	github.com/aws/aws-sdk-go v1.44.44
+	github.com/aws/aws-sdk-go v1.44.235
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20210324191134-efd1603705e9
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cloudfoundry-community/go-uaa v0.3.2-0.20221011190625-aaeaae3ce7c2
@@ -67,7 +67,7 @@ require (
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jinzhu/gorm v1.9.16
 	github.com/kr/pty v1.1.8
-	github.com/lib/pq v1.10.3
+	github.com/lib/pq v1.10.7
 	github.com/mitchellh/hashstructure v1.1.0
 	github.com/nats-io/nats-server/v2 v2.9.0
 	github.com/nats-io/nats.go v1.16.1-0.20220906180156-a1017eec10b0
@@ -85,10 +85,10 @@ require (
 	github.com/tedsuo/ifrit v0.0.0-20230330192023-5cba443a66c4
 	github.com/tedsuo/rata v1.0.0
 	github.com/vito/go-sse v1.0.0
-	golang.org/x/crypto v0.1.0
-	golang.org/x/net v0.8.0
-	golang.org/x/oauth2 v0.4.0
-	golang.org/x/sys v0.6.0
+	golang.org/x/crypto v0.8.0
+	golang.org/x/net v0.9.0
+	golang.org/x/oauth2 v0.7.0
+	golang.org/x/sys v0.7.0
 	golang.org/x/time v0.0.0-20220722155302-e5dcc9cfc0b9
 	google.golang.org/grpc v1.54.0
 	gopkg.in/yaml.v2 v2.4.0
@@ -96,9 +96,8 @@ require (
 
 require (
 	code.cloudfoundry.org/commandrunner v0.0.0-20230406174834-03aed0535eb9 // indirect
-	code.cloudfoundry.org/go-diodes v0.0.0-20230222233121-2712486f12be // indirect
-	code.cloudfoundry.org/lager v1.1.1-0.20230321195817-3d52f427a2d2 // indirect
-	filippo.io/edwards25519 v1.0.0-rc.1 // indirect
+	code.cloudfoundry.org/go-diodes v0.0.0-20230406180255-f141159491b0 // indirect
+	filippo.io/edwards25519 v1.0.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1 // indirect
 	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/Microsoft/go-winio v0.6.0 // indirect
@@ -108,7 +107,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cloudfoundry/go-socks5 v0.0.0-20180221174514-54f73bdb8a8e // indirect
 	github.com/cloudfoundry/socks5-proxy v0.2.44 // indirect
-	github.com/cloudfoundry/sonde-go v0.0.0-20220627221915-ff36de9c3435 // indirect
+	github.com/cloudfoundry/sonde-go v0.0.0-20230323202738-86a2a74b11b0 // indirect
 	github.com/cncf/udpa/go v0.0.0-20200313221541-5f7e5dd04533 // indirect
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/containers/storage v1.45.1 // indirect
@@ -153,14 +152,13 @@ require (
 	github.com/prometheus/procfs v0.8.0 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.8.1 // indirect
-	go.step.sm/crypto v0.16.2 // indirect
+	go.step.sm/crypto v0.29.0 // indirect
 	go.uber.org/automaxprocs v1.5.1 // indirect
-	golang.org/x/mod v0.9.0 // indirect
-	golang.org/x/text v0.8.0 // indirect
-	golang.org/x/tools v0.7.0 // indirect
+	golang.org/x/mod v0.10.0 // indirect
+	golang.org/x/text v0.9.0 // indirect
+	golang.org/x/tools v0.8.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20230306155012-7f2fa6fef1f4 // indirect
+	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

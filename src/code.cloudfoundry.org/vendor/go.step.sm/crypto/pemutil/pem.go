@@ -77,13 +77,14 @@ func (c *context) apply(opts []Options) error {
 
 // promptPassword returns the password or prompts for one.
 func (c *context) promptPassword() ([]byte, error) {
-	if len(c.password) > 0 {
+	switch {
+	case len(c.password) > 0:
 		return c.password, nil
-	} else if c.passwordPrompter != nil {
+	case c.passwordPrompter != nil:
 		return c.passwordPrompter(c.passwordPrompt)
-	} else if PromptPassword != nil {
+	case PromptPassword != nil:
 		return PromptPassword(fmt.Sprintf("Please enter the password to decrypt %s", c.filename))
-	} else {
+	default:
 		return nil, errors.Errorf("error decoding %s: key is password protected", c.filename)
 	}
 }
@@ -93,11 +94,12 @@ func (c *context) promptPassword() ([]byte, error) {
 // method is used to encrypt keys, and it will only use the options passed, it
 // will not use the global PromptPassword.
 func (c *context) promptEncryptPassword() ([]byte, error) {
-	if len(c.password) > 0 {
+	switch {
+	case len(c.password) > 0:
 		return c.password, nil
-	} else if c.passwordPrompter != nil {
+	case c.passwordPrompter != nil:
 		return c.passwordPrompter(c.passwordPrompt)
-	} else {
+	default:
 		return nil, nil
 	}
 }
@@ -380,7 +382,7 @@ func Parse(b []byte, opts ...Options) (interface{}, error) {
 	switch {
 	case block == nil:
 		return nil, errors.Errorf("error decoding %s: not a valid PEM encoded block", ctx.filename)
-	case len(rest) > 0 && !ctx.firstBlock:
+	case len(bytes.TrimSpace(rest)) > 0 && !ctx.firstBlock:
 		return nil, errors.Errorf("error decoding %s: contains more than one PEM encoded block", ctx.filename)
 	}
 
