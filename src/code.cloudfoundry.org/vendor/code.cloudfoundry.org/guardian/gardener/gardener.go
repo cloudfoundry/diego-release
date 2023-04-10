@@ -12,7 +12,7 @@ import (
 
 	"code.cloudfoundry.org/garden"
 	spec "code.cloudfoundry.org/guardian/gardener/container-spec"
-	"code.cloudfoundry.org/lager"
+	"code.cloudfoundry.org/lager/v3"
 	multierror "github.com/hashicorp/go-multierror"
 )
 

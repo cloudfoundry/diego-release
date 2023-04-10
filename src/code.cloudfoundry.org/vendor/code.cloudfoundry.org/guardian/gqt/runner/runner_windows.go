@@ -4,7 +4,7 @@ import (
 	"os"
 	"os/exec"
 
-	"code.cloudfoundry.org/lager"
+	"code.cloudfoundry.org/lager/v3"
 )
 
 type UserCredential interface{}

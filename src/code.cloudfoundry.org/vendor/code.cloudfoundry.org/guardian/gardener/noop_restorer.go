@@ -1,6 +1,6 @@
 package gardener
 
-import "code.cloudfoundry.org/lager"
+import "code.cloudfoundry.org/lager/v3"
 
 type NoopRestorer struct{}
 
