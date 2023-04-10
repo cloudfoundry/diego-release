@@ -1298,5 +1298,35 @@
     "help": "",
     "url": "",
     "deprecates": ""
+  },
+  {
+    "constant": "JSConsumerCreateDurableAndNameMismatch",
+    "code": 400,
+    "error_code": 10132,
+    "description": "Consumer Durable and Name have to be equal if both are provided",
+    "comment": "",
+    "help": "",
+    "url": "",
+    "deprecates": ""
+  },
+  {
+    "constant": "JSReplicasCountCannotBeNegative",
+    "code": 400,
+    "error_code": 10133,
+    "description": "replicas count cannot be negative",
+    "comment": "",
+    "help": "",
+    "url": "",
+    "deprecates": ""
+  },
+  {
+    "constant": "JSConsumerReplicasShouldMatchStream",
+    "code": 400,
+    "error_code": 10134,
+    "description": "consumer config replicas must match interest retention stream's replicas",
+    "comment": "",
+    "help": "",
+    "url": "",
+    "deprecates": ""
   }
 ]

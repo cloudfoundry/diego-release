@@ -142,7 +142,7 @@ type jsAccount struct {
 	store     TemplateStore
 
 	// From server
-	sendq *ipQueue // of *pubMsg
+	sendq *ipQueue[*pubMsg]
 
 	// Usage/limits related fields that will be protected by usageMu
 	usageMu    sync.RWMutex
@@ -784,9 +784,9 @@ func (js *jetStream) setJetStreamStandAlone(isStandAlone bool) {
 // JetStreamEnabled reports if jetstream is enabled for this server.
 func (s *Server) JetStreamEnabled() bool {
 	var js *jetStream
-	s.mu.Lock()
+	s.mu.RLock()
 	js = s.js
-	s.mu.Unlock()
+	s.mu.RUnlock()
 	return js.isEnabled()
 }
 
@@ -811,88 +811,51 @@ func (s *Server) JetStreamEnabledForDomain() bool {
 	return jsFound
 }
 
-// Will migrate off ephemerals if possible.
-// This means parent stream needs to be replicated.
-func (s *Server) migrateEphemerals() {
-	js, cc := s.getJetStreamCluster()
-	// Make sure JetStream is enabled and we are clustered.
-	if js == nil || cc == nil {
+// Will signal that all pull requests for consumers on this server are now invalid.
+func (s *Server) signalPullConsumers() {
+	js := s.getJetStream()
+	if js == nil {
 		return
 	}
 
-	var consumers []*consumerAssignment
-
-	js.mu.Lock()
-	if cc.meta == nil {
-		js.mu.Unlock()
-		return
-	}
-	ourID := cc.meta.ID()
-	for _, asa := range cc.streams {
-		for _, sa := range asa {
-			if rg := sa.Group; rg != nil && len(rg.Peers) > 1 && rg.isMember(ourID) && len(sa.consumers) > 0 {
-				for _, ca := range sa.consumers {
-					// Make sure this is not a durable that has an override of the replicas count.
-					if ca.Config.Durable == _EMPTY_ && ca.Group != nil && len(ca.Group.Peers) == 1 && ca.Group.isMember(ourID) {
-						// Need to select possible new peer from parent stream.
-						for _, p := range rg.Peers {
-							if p != ourID {
-								ca.Group.Peers = []string{p}
-								ca.Group.Preferred = p
-								consumers = append(consumers, ca)
-								break
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	js.mu.Unlock()
+	js.mu.RLock()
+	defer js.mu.RUnlock()
 
 	// In case we have stale pending requests.
-	hdr := []byte("NATS/1.0 409 Consumer Migration\r\n\r\n")
+	const hdr = "NATS/1.0 409 Server Shutdown\r\n" + JSPullRequestPendingMsgs + ": %d\r\n" + JSPullRequestPendingBytes + ": %d\r\n\r\n"
+	var didSend bool
 
-	// Process the consumers.
-	for _, ca := range consumers {
-		// Locate the consumer itself.
-		if acc, err := s.LookupAccount(ca.Client.Account); err == nil && acc != nil {
-			if mset, err := acc.lookupStream(ca.Stream); err == nil && mset != nil {
-				if o := mset.lookupConsumer(ca.Name); o != nil {
-					if pr := o.pendingRequestReplies(); len(pr) > 0 {
-						o.mu.Lock()
-						for _, reply := range pr {
-							o.outq.send(newJSPubMsg(reply, _EMPTY_, _EMPTY_, hdr, nil, nil, 0))
-						}
-						o.mu.Unlock()
+	for _, jsa := range js.accounts {
+		jsa.mu.RLock()
+		for _, stream := range jsa.streams {
+			stream.mu.RLock()
+			for _, o := range stream.consumers {
+				o.mu.RLock()
+				// Only signal on R1.
+				if o.cfg.Replicas <= 1 {
+					for reply, wr := range o.pendingRequests() {
+						shdr := fmt.Sprintf(hdr, wr.n, wr.b)
+						o.outq.send(newJSPubMsg(reply, _EMPTY_, _EMPTY_, []byte(shdr), nil, nil, 0))
+						didSend = true
 					}
-					state, _ := o.store.State()
-					o.deleteWithoutAdvisory()
-					js.mu.Lock()
-					// Delete old one.
-					cc.meta.ForwardProposal(encodeDeleteConsumerAssignment(ca))
-					// Encode state and new name.
-					ca.State = state
-					ca.Name = createConsumerName()
-					addEntry := encodeAddConsumerAssignmentCompressed(ca)
-					cc.meta.ForwardProposal(addEntry)
-					js.mu.Unlock()
 				}
+				o.mu.RUnlock()
 			}
+			stream.mu.RUnlock()
 		}
+		jsa.mu.RUnlock()
 	}
-
 	// Give time for migration information to make it out of our server.
-	if len(consumers) > 0 {
+	if didSend {
 		time.Sleep(50 * time.Millisecond)
 	}
 }
 
 // Shutdown jetstream for this server.
 func (s *Server) shutdownJetStream() {
-	s.mu.Lock()
+	s.mu.RLock()
 	js := s.js
-	s.mu.Unlock()
+	s.mu.RUnlock()
 
 	if js == nil {
 		return
@@ -937,7 +900,13 @@ func (s *Server) shutdownJetStream() {
 	js.mu.Lock()
 	js.accounts = nil
 
+	var qch chan struct{}
+
 	if cc := js.cluster; cc != nil {
+		if cc.qch != nil {
+			qch = cc.qch
+			cc.qch = nil
+		}
 		js.stopUpdatesSub()
 		if cc.c != nil {
 			cc.c.closeConnection(ClientClosed)
@@ -946,6 +915,21 @@ func (s *Server) shutdownJetStream() {
 		cc.meta = nil
 	}
 	js.mu.Unlock()
+
+	// If we were clustered signal the monitor cluster go routine.
+	// We will wait for a bit for it to close.
+	// Do this without the lock.
+	if qch != nil {
+		select {
+		case qch <- struct{}{}:
+			select {
+			case <-qch:
+			case <-time.After(2 * time.Second):
+				s.Warnf("Did not receive signal for successful shutdown of cluster routine")
+			}
+		default:
+		}
+	}
 }
 
 // JetStreamConfig will return the current config. Useful if the system
@@ -1158,6 +1142,10 @@ func (a *Account) EnableJetStream(limits map[string]JetStreamAccountLimits) erro
 	}
 	var consumers []*ce
 
+	// Collect any interest policy streams to check for
+	// https://github.com/nats-io/nats-server/issues/3612
+	var ipstreams []*stream
+
 	// Remember if we should be encrypted and what cipher we think we should use.
 	encrypted := s.getOpts().JetStreamKey != _EMPTY_
 	plaintext := true
@@ -1300,6 +1288,12 @@ func (a *Account) EnableJetStream(limits map[string]JetStreamAccountLimits) erro
 		state := mset.state()
 		s.Noticef("  Restored %s messages for stream '%s > %s'", comma(int64(state.Msgs)), mset.accName(), mset.name())
 
+		// Collect to check for dangling messages.
+		// TODO(dlc) - Can be removed eventually.
+		if cfg.StreamConfig.Retention == InterestPolicy {
+			ipstreams = append(ipstreams, mset)
+		}
+
 		// Now do the consumers.
 		odir := filepath.Join(sdir, fi.Name(), consumerDir)
 		consumers = append(consumers, &ce{mset, odir})
@@ -1383,6 +1377,12 @@ func (a *Account) EnableJetStream(limits map[string]JetStreamAccountLimits) erro
 
 	// Make sure to cleanup any old remaining snapshots.
 	os.RemoveAll(filepath.Join(jsa.storeDir, snapsDir))
+
+	// Check interest policy streams for auto cleanup.
+	for _, mset := range ipstreams {
+		mset.checkForOrphanMsgs()
+		mset.checkConsumerReplication()
+	}
 
 	s.Debugf("JetStream state for account %q recovered", a.Name)
 

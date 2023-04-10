@@ -152,6 +152,7 @@ type Server struct {
 	routeInfoJSON       []byte
 	routeResolver       netResolver
 	routesToSelf        map[string]struct{}
+	routeTLSName        string
 	leafNodeListener    net.Listener
 	leafNodeListenerErr error
 	leafNodeInfo        Info
@@ -289,7 +290,7 @@ type Server struct {
 	syncOutSem chan struct{}
 
 	// Queue to process JS API requests that come from routes (or gateways)
-	jsAPIRoutedReqs *ipQueue
+	jsAPIRoutedReqs *ipQueue[*jsAPIRoutedReq]
 }
 
 // For tracking JS nodes.
@@ -426,7 +427,7 @@ func NewServer(opts *Options) (*Server, error) {
 
 	// Place ourselves in the JetStream nodeInfo if needed.
 	if opts.JetStream {
-		ourNode := string(getHash(serverName))
+		ourNode := getHash(serverName)
 		s.nodeToInfo.Store(ourNode, nodeInfo{
 			serverName,
 			VERSION,
@@ -454,7 +455,7 @@ func NewServer(opts *Options) (*Server, error) {
 	s.setLeafNodeNonExportedOptions()
 
 	// Setup OCSP Stapling. This will abort server from starting if there
-	// are no valid staples and OCSP policy is to Always or MustStaple.
+	// are no valid staples and OCSP policy is set to Always or MustStaple.
 	if err := s.enableOCSP(); err != nil {
 		return nil, err
 	}
@@ -516,7 +517,7 @@ func NewServer(opts *Options) (*Server, error) {
 	// If there is an URL account resolver, do basic test to see if anyone is home.
 	if ar := opts.AccountResolver; ar != nil {
 		if ur, ok := ar.(*URLAccResolver); ok {
-			if _, err := ur.Fetch(""); err != nil {
+			if _, err := ur.Fetch(_EMPTY_); err != nil {
 				return nil, err
 			}
 		}
@@ -851,7 +852,8 @@ func (s *Server) configureAccounts() error {
 		// If we have defined a system account here check to see if its just us and the $G account.
 		// We would do this to add user/pass to the system account. If this is the case add in
 		// no-auth-user for $G.
-		if numAccounts == 2 && s.opts.NoAuthUser == _EMPTY_ {
+		// Only do this if non-operator mode.
+		if len(opts.TrustedOperators) == 0 && numAccounts == 2 && s.opts.NoAuthUser == _EMPTY_ {
 			// If we come here from config reload, let's not recreate the fake user name otherwise
 			// it will cause currently clients to be disconnected.
 			uname := s.sysAccOnlyNoAuthUser
@@ -1000,7 +1002,7 @@ func (s *Server) isTrustedIssuer(issuer string) bool {
 // options-based trusted nkeys. Returns success.
 func (s *Server) processTrustedKeys() bool {
 	s.strictSigningKeyUsage = map[string]struct{}{}
-	if trustedKeys != "" && !s.initStampedTrustedKeys() {
+	if trustedKeys != _EMPTY_ && !s.initStampedTrustedKeys() {
 		return false
 	} else if s.opts.TrustedKeys != nil {
 		for _, key := range s.opts.TrustedKeys {
@@ -1257,7 +1259,7 @@ func (s *Server) setSystemAccount(acc *Account) error {
 		sid:     1,
 		servers: make(map[string]*serverUpdate),
 		replies: make(map[string]msgHandler),
-		sendq:   s.newIPQueue("System sendQ"), // of *pubMsg
+		sendq:   newIPQueue[*pubMsg](s, "System sendQ"),
 		resetCh: make(chan struct{}),
 		sq:      s.newSendQ(),
 		statsz:  eventsHBInterval,
@@ -1886,12 +1888,12 @@ func (s *Server) Shutdown() {
 	if s == nil {
 		return
 	}
+	// This is for JetStream R1 Pull Consumers to allow signaling
+	// that pending pull requests are invalid.
+	s.signalPullConsumers()
+
 	// Transfer off any raft nodes that we are a leader by stepping them down.
 	s.stepdownRaftNodes()
-
-	// This is for clustered JetStream and ephemeral consumers.
-	// No-op if not clustered or not running JetStream.
-	s.migrateEphemerals()
 
 	// Shutdown the eventing system as needed.
 	// This is done first to send out any messages for
@@ -2523,6 +2525,12 @@ func (s *Server) createClient(conn net.Conn) *client {
 	c.nonce = []byte(info.Nonce)
 	authRequired = info.AuthRequired
 
+	// Check to see if we have auth_required set but we also have a no_auth_user.
+	// If so set back to false.
+	if info.AuthRequired && opts.NoAuthUser != _EMPTY_ && opts.NoAuthUser != s.sysAccOnlyNoAuthUser {
+		info.AuthRequired = false
+	}
+
 	s.totalClients++
 	s.mu.Unlock()
 
@@ -2911,9 +2919,7 @@ func (s *Server) numSubscriptions() uint32 {
 	var subs int
 	s.accounts.Range(func(k, v interface{}) bool {
 		acc := v.(*Account)
-		if acc.sl != nil {
-			subs += acc.TotalSubs()
-		}
+		subs += acc.TotalSubs()
 		return true
 	})
 	return uint32(subs)
@@ -3057,7 +3063,7 @@ func (s *Server) ID() string {
 
 // NodeName returns the node name for this server.
 func (s *Server) NodeName() string {
-	return string(getHash(s.info.Name))
+	return getHash(s.info.Name)
 }
 
 // Name returns the server's name. This will be the same as the ID if it was not set.
@@ -3591,7 +3597,7 @@ func (s *Server) acceptError(acceptName string, err error, tmpDelay time.Duratio
 		return -1
 	}
 	//lint:ignore SA1019 We want to retry on a bunch of errors here.
-	if ne, ok := err.(net.Error); ok && ne.Temporary() {
+	if ne, ok := err.(net.Error); ok && ne.Temporary() { // nolint:staticcheck
 		s.Errorf("Temporary %s Accept Error(%v), sleeping %dms", acceptName, ne, tmpDelay/time.Millisecond)
 		select {
 		case <-time.After(tmpDelay):

@@ -554,6 +554,9 @@ func (a *Account) RoutedSubs() int {
 func (a *Account) TotalSubs() int {
 	a.mu.RLock()
 	defer a.mu.RUnlock()
+	if a.sl == nil {
+		return 0
+	}
 	return int(a.sl.Count())
 }
 
@@ -704,8 +707,8 @@ func (a *Account) AddWeightedMappings(src string, dests ...*MapDest) error {
 	}
 
 	// Replace an old one if it exists.
-	for i, m := range a.mappings {
-		if m.src == src {
+	for i, em := range a.mappings {
+		if em.src == src {
 			a.mappings[i] = m
 			return nil
 		}
@@ -1131,7 +1134,7 @@ func (a *Account) UnTrackServiceExport(service string) {
 	}
 
 	a.mu.Lock()
-	if a == nil || a.exports.services == nil {
+	if a.exports.services == nil {
 		a.mu.Unlock()
 		return
 	}
@@ -1698,7 +1701,7 @@ func (a *Account) addReverseRespMapEntry(acc *Account, reply, from string) {
 // checkForReverseEntries is for when we are trying to match reverse entries to a wildcard.
 // This will be called from checkForReverseEntry when the reply arg is a wildcard subject.
 // This will usually be called in a go routine since we need to walk all the entries.
-func (a *Account) checkForReverseEntries(reply string, checkInterest bool) {
+func (a *Account) checkForReverseEntries(reply string, checkInterest, recursed bool) {
 	a.mu.RLock()
 	if len(a.imports.rrMap) == 0 {
 		a.mu.RUnlock()
@@ -1707,7 +1710,7 @@ func (a *Account) checkForReverseEntries(reply string, checkInterest bool) {
 
 	if subjectIsLiteral(reply) {
 		a.mu.RUnlock()
-		a.checkForReverseEntry(reply, nil, checkInterest)
+		a._checkForReverseEntry(reply, nil, checkInterest, recursed)
 		return
 	}
 
@@ -1720,14 +1723,20 @@ func (a *Account) checkForReverseEntries(reply string, checkInterest bool) {
 	}
 	a.mu.RUnlock()
 
-	for _, reply := range rs {
-		a.checkForReverseEntry(reply, nil, checkInterest)
+	for _, r := range rs {
+		a._checkForReverseEntry(r, nil, checkInterest, recursed)
 	}
 }
 
 // This checks for any response map entries. If you specify an si we will only match and
 // clean up for that one, otherwise we remove them all.
 func (a *Account) checkForReverseEntry(reply string, si *serviceImport, checkInterest bool) {
+	a._checkForReverseEntry(reply, si, checkInterest, false)
+}
+
+// Callers should use checkForReverseEntry instead. This function exists to help prevent
+// infinite recursion.
+func (a *Account) _checkForReverseEntry(reply string, si *serviceImport, checkInterest, recursed bool) {
 	a.mu.RLock()
 	if len(a.imports.rrMap) == 0 {
 		a.mu.RUnlock()
@@ -1735,13 +1744,23 @@ func (a *Account) checkForReverseEntry(reply string, si *serviceImport, checkInt
 	}
 
 	if subjectHasWildcard(reply) {
+		if recursed {
+			// If we have reached this condition then it is because the reverse entries also
+			// contain wildcards (that shouldn't happen but a client *could* provide an inbox
+			// prefix that is illegal because it ends in a wildcard character), at which point
+			// we will end up with infinite recursion between this func and checkForReverseEntries.
+			// To avoid a stack overflow panic, we'll give up instead.
+			a.mu.RUnlock()
+			return
+		}
+
 		doInline := len(a.imports.rrMap) <= 64
 		a.mu.RUnlock()
 
 		if doInline {
-			a.checkForReverseEntries(reply, checkInterest)
+			a.checkForReverseEntries(reply, checkInterest, true)
 		} else {
-			go a.checkForReverseEntries(reply, checkInterest)
+			go a.checkForReverseEntries(reply, checkInterest, true)
 		}
 		return
 	}
@@ -2183,12 +2202,12 @@ func (a *Account) newServiceReply(tracking bool) []byte {
 		a.createRespWildcard()
 		createdSiReply = true
 	}
-	replyPre, isBoundToLeafnode := a.siReply, a.lds != _EMPTY_
+	replyPre := a.siReply
 	a.mu.Unlock()
 
 	// If we created the siReply and we are not bound to a leafnode
 	// we need to do the wildcard subscription.
-	if createdSiReply && !isBoundToLeafnode {
+	if createdSiReply {
 		a.subscribeServiceImportResponse(string(append(replyPre, '>')))
 	}
 
@@ -2341,25 +2360,16 @@ func (a *Account) addRespServiceImport(dest *Account, to string, osi *serviceImp
 
 	// Always grab time and make sure response threshold timer is running.
 	si.ts = time.Now().UnixNano()
-	osi.se.setResponseThresholdTimer()
+	if osi.se != nil {
+		osi.se.setResponseThresholdTimer()
+	}
 
 	if rt == Singleton && tracking {
 		si.latency = osi.latency
 		si.tracking = true
 		si.trackingHdr = header
 	}
-	isBoundToLeafnode := a.lds != _EMPTY_
 	a.mu.Unlock()
-
-	// We might not do individual subscriptions here like we do on configured imports.
-	// If we are bound to a leafnode we do explicit subscriptions for these.
-	// We have an internal callback for all responses inbound to this account and
-	// will process appropriately there. This does not pollute the sublist and the caches.
-
-	if isBoundToLeafnode {
-		sub, _ := a.subscribeServiceImportResponse(nrr)
-		si.sid = sub.sid
-	}
 
 	// We do add in the reverse map such that we can detect loss of interest and do proper
 	// cleanup of this si as interest goes away.
@@ -3810,9 +3820,20 @@ func removeCb(s *Server, pubKey string) {
 	a.mconns = 0
 	a.mleafs = 0
 	a.updated = time.Now().UTC()
+	jsa := a.js
 	a.mu.Unlock()
 	// set the account to be expired and disconnect clients
 	a.expiredTimeout()
+	// For JS, we need also to disable it.
+	if js := s.getJetStream(); js != nil && jsa != nil {
+		js.disableJetStream(jsa)
+		// Remove JetStream state in memory, this will be reset
+		// on the changed callback from the account in case it is
+		// enabled again.
+		a.js = nil
+	}
+	// We also need to remove all ServerImport subscriptions
+	a.removeAllServiceImportSubs()
 	a.mu.Lock()
 	a.clearExpirationTimer()
 	a.mu.Unlock()
@@ -3828,11 +3849,23 @@ func (dr *DirAccResolver) Start(s *Server) error {
 	dr.Server = s
 	dr.operator = opKeys
 	dr.DirJWTStore.changed = func(pubKey string) {
-		if v, ok := s.accounts.Load(pubKey); !ok {
-		} else if theJwt, err := dr.LoadAcc(pubKey); err != nil {
-			s.Errorf("update got error on load: %v", err)
-		} else if err := s.updateAccountWithClaimJWT(v.(*Account), theJwt); err != nil {
-			s.Errorf("update resulted in error %v", err)
+		if v, ok := s.accounts.Load(pubKey); ok {
+			if theJwt, err := dr.LoadAcc(pubKey); err != nil {
+				s.Errorf("update got error on load: %v", err)
+			} else {
+				acc := v.(*Account)
+				if err = s.updateAccountWithClaimJWT(acc, theJwt); err != nil {
+					s.Errorf("update resulted in error %v", err)
+				} else {
+					if _, jsa, err := acc.checkForJetStream(); err != nil {
+						s.Warnf("error checking for JetStream enabled error %v", err)
+					} else if jsa == nil {
+						if err = s.configJetStream(acc); err != nil {
+							s.Errorf("updated resulted in error when configuring JetStream %v", err)
+						}
+					}
+				}
+			}
 		}
 	}
 	dr.DirJWTStore.deleted = func(pubKey string) {
@@ -3842,7 +3875,7 @@ func (dr *DirAccResolver) Start(s *Server) error {
 	for _, reqSub := range []string{accUpdateEventSubjOld, accUpdateEventSubjNew} {
 		// subscribe to account jwt update requests
 		if _, err := s.sysSubscribe(fmt.Sprintf(reqSub, "*"), func(_ *subscription, _ *client, _ *Account, subj, resp string, msg []byte) {
-			pubKey := _EMPTY_
+			var pubKey string
 			tk := strings.Split(subj, tsep)
 			if len(tk) == accUpdateTokensNew {
 				pubKey = tk[accReqAccIndex]
@@ -3871,7 +3904,10 @@ func (dr *DirAccResolver) Start(s *Server) error {
 			return fmt.Errorf("error setting up update handling: %v", err)
 		}
 	}
-	if _, err := s.sysSubscribe(accClaimsReqSubj, func(_ *subscription, _ *client, _ *Account, subj, resp string, msg []byte) {
+	if _, err := s.sysSubscribe(accClaimsReqSubj, func(_ *subscription, c *client, _ *Account, _, resp string, msg []byte) {
+		// As this is a raw message, we need to extract payload and only decode claims from it,
+		// in case request is sent with headers.
+		_, msg = c.msgParts(msg)
 		if claim, err := jwt.DecodeAccountClaims(string(msg)); err != nil {
 			respondToUpdate(s, resp, "n/a", "jwt update resulted in error", err)
 		} else if claim.Issuer == op && strict {
@@ -4128,7 +4164,7 @@ func (dr *CacheDirAccResolver) Start(s *Server) error {
 	for _, reqSub := range []string{accUpdateEventSubjOld, accUpdateEventSubjNew} {
 		// subscribe to account jwt update requests
 		if _, err := s.sysSubscribe(fmt.Sprintf(reqSub, "*"), func(_ *subscription, _ *client, _ *Account, subj, resp string, msg []byte) {
-			pubKey := _EMPTY_
+			var pubKey string
 			tk := strings.Split(subj, tsep)
 			if len(tk) == accUpdateTokensNew {
 				pubKey = tk[accReqAccIndex]
@@ -4159,7 +4195,10 @@ func (dr *CacheDirAccResolver) Start(s *Server) error {
 			return fmt.Errorf("error setting up update handling: %v", err)
 		}
 	}
-	if _, err := s.sysSubscribe(accClaimsReqSubj, func(_ *subscription, _ *client, _ *Account, subj, resp string, msg []byte) {
+	if _, err := s.sysSubscribe(accClaimsReqSubj, func(_ *subscription, c *client, _ *Account, _, resp string, msg []byte) {
+		// As this is a raw message, we need to extract payload and only decode claims from it,
+		// in case request is sent with headers.
+		_, msg = c.msgParts(msg)
 		if claim, err := jwt.DecodeAccountClaims(string(msg)); err != nil {
 			respondToUpdate(s, resp, "n/a", "jwt update cache resulted in error", err)
 		} else if claim.Issuer == op && strict {
@@ -4400,7 +4439,9 @@ func newTransform(src, dest string) (*transform, error) {
 				dtokMappingFunctionIntArgs = append(dtokMappingFunctionIntArgs, -1)
 				dtokMappingFunctionStringArgs = append(dtokMappingFunctionStringArgs, _EMPTY_)
 			} else {
-				nphs++
+				// We might combine multiple tokens into one, for example with a partition
+				nphs += len(transformArgWildcardIndexes)
+
 				// Now build up our runtime mapping from dest to source tokens.
 				var stis []int
 				for _, wildcardIndex := range transformArgWildcardIndexes {
@@ -4581,7 +4622,7 @@ func (tr *transform) transform(tokens []string) (string, error) {
 					if split != _EMPTY_ {
 						b.WriteString(split)
 					}
-					if j < len(splits)-1 && splits[j+1] != _EMPTY_ && j != 0 {
+					if j < len(splits)-1 && splits[j+1] != _EMPTY_ && !(j == 0 && split == _EMPTY_) {
 						b.WriteString(tsep)
 					}
 				}

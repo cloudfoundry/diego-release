@@ -1,4 +1,6 @@
-## <img src="logos/nats-server.png" width="300">
+<p align="center">
+  <img src="logos/nats-horizontal-color.png" width="300" alt="NATS Logo">
+</p>
 
 [NATS](https://nats.io) is a simple, secure and performant communications system for digital systems, services and devices. NATS is part of the Cloud Native Computing Foundation ([CNCF](https://cncf.io)). NATS has over [40 client language implementations](https://nats.io/download/), and its server can run on-premise, in the cloud, at the edge, and even on a Raspberry Pi. NATS can secure and simplify design and operation of modern distributed systems.
 
@@ -6,9 +8,11 @@
 
 ## Documentation
 
-* [Official documentation](https://docs.nats.io)
+* [Official Website](https://nats.io)
+* [Official Documentation](https://docs.nats.io)
 * [FAQ](https://docs.nats.io/reference/faq)
-* Watch [a video overview of NATS](https://www.youtube.com/watch?v=sm63oAVPqAM) to learn more about its origin story and design philosophy.
+* Watch [a video overview](https://rethink.synadia.com/episodes/1/) of NATS.
+* Watch [this video from SCALE 13x](https://www.youtube.com/watch?v=sm63oAVPqAM) to learn more about its origin story and design philosophy.
 
 ## Contact
 
@@ -33,8 +37,8 @@ If you are interested in contributing to NATS, read about our...
 [Fossa-Image]: https://app.fossa.io/api/projects/git%2Bgithub.com%2Fnats-io%2Fnats-server.svg?type=shield
 [Build-Status-Url]: https://travis-ci.com/github/nats-io/nats-server
 [Build-Status-Image]: https://travis-ci.com/nats-io/nats-server.svg?branch=main
-[Release-Url]: https://github.com/nats-io/nats-server/releases/tag/v2.9.0
-[Release-image]: https://img.shields.io/badge/release-v2.9.0-1eb0fc.svg
+[Release-Url]: https://github.com/nats-io/nats-server/releases/tag/v2.9.15
+[Release-image]: https://img.shields.io/badge/release-v2.9.15-1eb0fc.svg
 [Coverage-Url]: https://coveralls.io/r/nats-io/nats-server?branch=main
 [Coverage-image]: https://coveralls.io/repos/github/nats-io/nats-server/badge.svg?branch=main
 [ReportCard-Url]: https://goreportcard.com/report/nats-io/nats-server
