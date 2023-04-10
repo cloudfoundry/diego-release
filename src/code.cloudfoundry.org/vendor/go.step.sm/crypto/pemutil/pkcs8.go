@@ -3,8 +3,8 @@ package pemutil
 import (
 	"crypto/aes"
 	"crypto/cipher"
-	"crypto/des"
-	"crypto/sha1"
+	"crypto/des"  //nolint:gosec // support for legacy keys
+	"crypto/sha1" //nolint:gosec // support for legacy keys
 	"crypto/sha256"
 	"crypto/x509"
 	"crypto/x509/pkix"
@@ -87,7 +87,7 @@ var (
 
 	// encryption
 	oidAES128CBC = asn1.ObjectIdentifier{2, 16, 840, 1, 101, 3, 4, 1, 2}
-	oidAES196CBC = asn1.ObjectIdentifier{2, 16, 840, 1, 101, 3, 4, 1, 22}
+	oidAES192CBC = asn1.ObjectIdentifier{2, 16, 840, 1, 101, 3, 4, 1, 22}
 	oidAES256CBC = asn1.ObjectIdentifier{2, 16, 840, 1, 101, 3, 4, 1, 42}
 	oidDESCBC    = asn1.ObjectIdentifier{1, 3, 14, 3, 2, 7}
 	oidD3DESCBC  = asn1.ObjectIdentifier{1, 2, 840, 113549, 3, 7}
@@ -132,7 +132,7 @@ var rfc1423Algos = []rfc1423Algo{{
 	cipherFunc: aes.NewCipher,
 	keySize:    24,
 	blockSize:  aes.BlockSize,
-	identifier: oidAES196CBC,
+	identifier: oidAES192CBC,
 }, {
 	cipher:     x509.PEMCipherAES256,
 	name:       "AES-256-CBC",
@@ -225,7 +225,7 @@ func DecryptPKCS8PrivateKey(data, password []byte) ([]byte, error) {
 	case encParam.EncryAlgo.Equal(oidAES128CBC):
 		symkey = pbkdf2.Key(password, salt, iter, 16, keyHash)
 		block, err = aes.NewCipher(symkey)
-	case encParam.EncryAlgo.Equal(oidAES196CBC):
+	case encParam.EncryAlgo.Equal(oidAES192CBC):
 		symkey = pbkdf2.Key(password, salt, iter, 24, keyHash)
 		block, err = aes.NewCipher(symkey)
 	case encParam.EncryAlgo.Equal(oidAES256CBC):
@@ -234,10 +234,10 @@ func DecryptPKCS8PrivateKey(data, password []byte) ([]byte, error) {
 	// DES, TripleDES
 	case encParam.EncryAlgo.Equal(oidDESCBC):
 		symkey = pbkdf2.Key(password, salt, iter, 8, keyHash)
-		block, err = des.NewCipher(symkey)
+		block, err = des.NewCipher(symkey) //nolint:gosec // support for legacy keys
 	case encParam.EncryAlgo.Equal(oidD3DESCBC):
 		symkey = pbkdf2.Key(password, salt, iter, 24, keyHash)
-		block, err = des.NewTripleDESCipher(symkey)
+		block, err = des.NewTripleDESCipher(symkey) //nolint:gosec // support for legacy keys
 	default:
 		return nil, errors.Errorf("unsupported encrypted PEM: unknown algorithm %v", encParam.EncryAlgo)
 	}
