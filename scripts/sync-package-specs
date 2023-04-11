@@ -2,8 +2,12 @@
 
 set -e
 
-# ensure gosub is installed (this will recompile it only if necessary)
-GO111MODULE=on go install github.com/vito/gosub@latest
+export PATH="$PWD/bin:$PATH"
+
+(
+  cd "src/gosub"
+  go build -o "../../bin/gosub" .
+)
 
 function sync_package() {
   bosh_pkg=${1}
