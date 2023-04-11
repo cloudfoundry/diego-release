@@ -1,8 +1,14 @@
 #!/bin/bash
 set -exuo pipefail
 
-# ensure gosub is installed (this will recompile it only if necessary)
-go install github.com/vito/gosub@latest
+export PATH="$PWD/bin:$PATH"
+
+(
+  mkdir -p bin
+  cd "src/gosub"
+  go build -o "../../bin/gosub" .
+)
+
 FORCE_SUBMODULE_HTTPS="${FORCE_SUBMODULE_HTTPS:-false}"
 
 rm -rf /tmp/packages
@@ -17,15 +23,11 @@ code.cloudfoundry.org/credhub-cli
 code.cloudfoundry.org/diego-ssh
 code.cloudfoundry.org/dockerapplifecycle
 code.cloudfoundry.org/dockerdriver
+code.cloudfoundry.org/goshims
 code.cloudfoundry.org/ecrhelper
 code.cloudfoundry.org/executor
 code.cloudfoundry.org/fileserver
-garden
-code.cloudfoundry.org/goshims
-grootfs
-guardian
 code.cloudfoundry.org/healthcheck
-idmapper
 code.cloudfoundry.org/inigo
 code.cloudfoundry.org/localdriver
 code.cloudfoundry.org/locket
@@ -39,6 +41,12 @@ code.cloudfoundry.org/vendor
 code.cloudfoundry.org/vizzini
 code.cloudfoundry.org/volman
 code.cloudfoundry.org/workpool
+garden
+gosub
+grootfs
+guardian
+idmapper
 EOF
+
 
 cat /tmp/packages | xargs -s 1048576 gosub sync --force-https=$FORCE_SUBMODULE_HTTPS

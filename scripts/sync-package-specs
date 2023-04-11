@@ -5,6 +5,7 @@ set -e
 export PATH="$PWD/bin:$PATH"
 
 (
+  mkdir -p bin
   cd "src/gosub"
   go build -o "../../bin/gosub" .
 )
