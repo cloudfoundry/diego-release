@@ -15,8 +15,8 @@ code.cloudfoundry.org/cf-routing-test-helpers/tls
 # code.cloudfoundry.org/cf-tcp-router v0.0.0-20230405170811-6b149c7f7ef9
 ## explicit
 code.cloudfoundry.org/cf-tcp-router/utils
-# code.cloudfoundry.org/cfhttp v1.0.1-0.20210513172332-4c5ee488a657
-## explicit; go 1.16
+# code.cloudfoundry.org/cfhttp v2.0.0+incompatible
+## explicit
 code.cloudfoundry.org/cfhttp
 code.cloudfoundry.org/cfhttp/handlers
 code.cloudfoundry.org/cfhttp/unix_transport
@@ -48,6 +48,12 @@ code.cloudfoundry.org/debugserver
 ## explicit; go 1.20
 code.cloudfoundry.org/diego-logging-client
 code.cloudfoundry.org/diego-logging-client/testhelpers
+# code.cloudfoundry.org/dockerdriver v0.0.0-20230418180008-a5b25178092b
+## explicit; go 1.19
+code.cloudfoundry.org/dockerdriver
+code.cloudfoundry.org/dockerdriver/dockerdriverfakes
+code.cloudfoundry.org/dockerdriver/driverhttp
+code.cloudfoundry.org/dockerdriver/utils
 # code.cloudfoundry.org/durationjson v0.0.0-20230406152829-ab56af44497d
 ## explicit; go 1.19
 code.cloudfoundry.org/durationjson
@@ -76,11 +82,10 @@ code.cloudfoundry.org/go-loggregator/v8
 code.cloudfoundry.org/go-loggregator/v8/rfc5424
 code.cloudfoundry.org/go-loggregator/v8/rpc/loggregator_v2
 code.cloudfoundry.org/go-loggregator/v8/runtimeemitter
-# code.cloudfoundry.org/goshims v0.13.0
+# code.cloudfoundry.org/goshims v0.14.0
 ## explicit; go 1.13
 code.cloudfoundry.org/goshims/filepathshim
 code.cloudfoundry.org/goshims/http_wrap
-code.cloudfoundry.org/goshims/http_wrap/http_fake
 code.cloudfoundry.org/goshims/osshim
 code.cloudfoundry.org/goshims/osshim/os_fake
 # code.cloudfoundry.org/guardian v0.0.0-00010101000000-000000000000 => ../guardian

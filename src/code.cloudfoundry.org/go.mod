@@ -28,17 +28,18 @@ require (
 	code.cloudfoundry.org/certsplitter v0.0.0-20230406165926-271f22a66575
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20200827173955-6ac4653025b4
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20230405170811-6b149c7f7ef9
-	code.cloudfoundry.org/cfhttp v1.0.1-0.20210513172332-4c5ee488a657
+	code.cloudfoundry.org/cfhttp v2.0.0+incompatible
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1-0.20210513172332-4c5ee488a657
 	code.cloudfoundry.org/clock v1.1.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20220228140414-459eb2d27a1c
 	code.cloudfoundry.org/debugserver v0.0.0-20230329140605-8c21649a9a42
 	code.cloudfoundry.org/diego-logging-client v0.0.0-20230406170846-5a035e7a0fe0
+	code.cloudfoundry.org/dockerdriver v0.0.0-20230418180008-a5b25178092b
 	code.cloudfoundry.org/durationjson v0.0.0-20230406152829-ab56af44497d
 	code.cloudfoundry.org/eventhub v0.0.0-20230406153306-c90e7c7a29a1
 	code.cloudfoundry.org/garden v0.0.0-20230109170928-83a99bb745e3
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
-	code.cloudfoundry.org/goshims v0.13.0
+	code.cloudfoundry.org/goshims v0.14.0
 	code.cloudfoundry.org/guardian v0.0.0-00010101000000-000000000000
 	code.cloudfoundry.org/lager/v3 v3.0.1
 	code.cloudfoundry.org/localip v0.0.0-20230406154046-f137f65d303d
