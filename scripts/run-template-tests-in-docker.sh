@@ -13,7 +13,7 @@ docker run \
    -v "${PWD}:/diego-release" \
    --cap-add ALL \
    -w /diego-release \
-   "ruby:3.0" \
+   "cloudfoundry/tas-runtime-build" \
    /diego-release/scripts/template-tests "$@"
 
 echo "Done executing template tests"
