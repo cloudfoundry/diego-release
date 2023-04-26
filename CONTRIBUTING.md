@@ -164,7 +164,7 @@ As of Diego 1.0, SQL unit tests are the default unit tests for Diego. To run the
 
 To run all the SQL-backed tests, run the following command from the root of diego-release:
 
-        ./scripts/run-unit-tests
+        SQL_FLAVOR={mysql|postgres|choose one} ./scripts/run-unit-tests
 
 This command will run all regular unit tests, as well as BBS and component integration tests where a backing store is required in MySQL-backed and Postgres-backed modes.
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 # vim: set ft=sh
 
-set -e
+set -ex
 source diego-release/scripts/ci/initialize_mysql.sh
 
 if [ "${SQL_FLAVOR}" = "mysql" ]; then
@@ -12,6 +12,6 @@ fi
 
 cd diego-release/
 
-SCRIPT=${SCRIPT:-run-unit-tests}
+SCRIPT=${SCRIPT:-ci/run-unit-tests}
 
 "scripts/${SCRIPT}" "$@"
