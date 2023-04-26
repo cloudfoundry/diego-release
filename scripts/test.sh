@@ -9,7 +9,6 @@ declare -a serial_packages=()
 
 declare -a ignored_packages=(
   "auction/simulation"
-  "benchmarkbbs"
   "credhub-cli"
   "routing-api"
   "inigo"
@@ -37,7 +36,7 @@ test_package() {
   fi
   shift
   pushd "${package}" &>/dev/null
-  ginkgo --race -randomizeAllSpecs -randomizeSuites -failFast \
+  ginkgo --race -randomize-all -randomize-suites -fail-fast \
       -ldflags="extldflags=-WL,--allow-multiple-definition" \
        "${@}";
   rc=$?
@@ -82,8 +81,8 @@ for i in "${ignored_packages[@]}"; do
   serial_packages=("${serial_packages[@]//*$i*}")
 done
 
-pushd "$DIEGO_RELEASE_DIR/src/code.cloudfoundry.org"
-  ginkgo --race -randomizeAllSpecs -randomizeSuites -failFast -p \
+pushd $DIEGO_RELEASE_DIR/src/code.cloudfoundry.org
+  ginkgo --race -randomize-all -randomize-suites -fail-fast -p \
     -ldflags="extldflags=-WL,--allow-multiple-definition" \
     "${packages[@]}" "${@}"
 popd

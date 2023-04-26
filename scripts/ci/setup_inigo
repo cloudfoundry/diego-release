@@ -41,7 +41,7 @@ build_gardenrunc () {
     popd
 
     export GOPATH="$PWD/src/gopath"
-    pushd src/gopath/src/github.com/opencontainers/runc
+    pushd src/guardian/vendor/github.com/opencontainers/runc
       PKG_CONFIG_PATH=/usr/local/lib/pkgconfig GOPATH=${PWD}/Godeps/_workspace:${GOPATH} BUILDTAGS="seccomp" make static
       mv runc ${GARDEN_BINPATH}
     popd
@@ -147,7 +147,7 @@ setup_gopath() {
 install_go_dependencies() {
   pushd "$1"
     go build -o "$GOBIN/nats-server" github.com/nats-io/nats-server/v2
-    go build -o "$GOBIN/ginkgo" github.com/onsi/ginkgo/ginkgo
+    go build -o "$GOBIN/ginkgo" github.com/onsi/ginkgo/v2/ginkgo
   popd
 }
 
@@ -260,6 +260,6 @@ if ! grep -qs '/sys' /proc/mounts; then
 fi
 
 # shellcheck source=/dev/null
-source "${GARDEN_RUNC_PATH}/ci/helpers/device-control"
+source "${GARDEN_RUNC_PATH}/ci/helpers/device-control.bash"
 permit_device_control
 create_loop_devices 256

@@ -30,6 +30,7 @@ files:
   - code.cloudfoundry.org/vendor/github.com/BurntSushi/toml/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/BurntSushi/toml/internal/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/Microsoft/go-winio/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/Microsoft/go-winio/internal/socket/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/Microsoft/go-winio/pkg/guid/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/awserr/*.go # gosub
@@ -146,8 +147,6 @@ files:
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/chacha20/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/chacha20/*.s # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/curve25519/*.go # gosub
-  - code.cloudfoundry.org/vendor/golang.org/x/crypto/curve25519/internal/field/*.go # gosub
-  - code.cloudfoundry.org/vendor/golang.org/x/crypto/curve25519/internal/field/*.s # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/ed25519/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/internal/alias/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/internal/poly1305/*.go # gosub

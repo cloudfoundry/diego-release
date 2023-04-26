@@ -28,7 +28,6 @@ import (
 	"github.com/cloudfoundry/dropsonde/metricbatcher"
 	"github.com/cloudfoundry/dropsonde/metrics"
 	"github.com/cloudfoundry/dropsonde/runtime_stats"
-	"github.com/cloudfoundry/gosteno"
 	"github.com/cloudfoundry/sonde-go/events"
 )
 
@@ -99,7 +98,7 @@ func initialize() {
 	sender := metric_sender.NewMetricSender(emitter)
 	batcher := metricbatcher.New(sender, defaultBatchInterval)
 	metrics.Initialize(sender, batcher)
-	logs.Initialize(log_sender.NewLogSender(AutowiredEmitter(), gosteno.NewLogger("dropsonde/logs")))
+	logs.Initialize(log_sender.NewLogSender(AutowiredEmitter()))
 	envelopes.Initialize(envelope_sender.NewEnvelopeSender(emitter))
 	go runtime_stats.NewRuntimeStats(DefaultEmitter, statsInterval).Run(nil)
 	http.DefaultTransport = InstrumentedRoundTripper(http.DefaultTransport)

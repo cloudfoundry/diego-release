@@ -27,7 +27,7 @@ files:
   - code.cloudfoundry.org/buildpackapplifecycle/shell/*.go # gosub
   - code.cloudfoundry.org/buildpackapplifecycle/shell/exec/*.go # gosub
   - code.cloudfoundry.org/buildpackapplifecycle/shell/shell/*.go # gosub
-  - code.cloudfoundry.org/bytefmt/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/bytefmt/*.go # gosub
   - code.cloudfoundry.org/cacheddownloader/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/credhub-cli/credhub/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/credhub-cli/credhub/auth/*.go # gosub
@@ -38,19 +38,19 @@ files:
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/credhub-cli/credhub/permissions/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/credhub-cli/credhub/server/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/credhub-cli/errors/*.go # gosub
-  - code.cloudfoundry.org/goshims/osshim/*.go # gosub
-  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/*.go # gosub
-  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/internal/truncate/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/goshims/osshim/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/v3/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/v3/internal/truncate/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/cloudfoundry/go-socks5/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/cloudfoundry/socks5-proxy/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/cyphar/filepath-securejoin/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/hashicorp/go-version/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/openzipkin/zipkin-go/idgenerator/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/openzipkin/zipkin-go/model/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/blowfish/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/chacha20/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/chacha20/*.s # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/curve25519/*.go # gosub
-  - code.cloudfoundry.org/vendor/golang.org/x/crypto/curve25519/internal/field/*.go # gosub
-  - code.cloudfoundry.org/vendor/golang.org/x/crypto/curve25519/internal/field/*.s # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/ed25519/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/internal/alias/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/internal/poly1305/*.go # gosub

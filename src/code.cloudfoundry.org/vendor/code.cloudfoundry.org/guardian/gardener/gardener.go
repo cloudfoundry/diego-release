@@ -12,7 +12,7 @@ import (
 
 	"code.cloudfoundry.org/garden"
 	spec "code.cloudfoundry.org/guardian/gardener/container-spec"
-	"code.cloudfoundry.org/lager"
+	"code.cloudfoundry.org/lager/v3"
 	multierror "github.com/hashicorp/go-multierror"
 )
 
@@ -263,6 +263,17 @@ func (g *Gardener) Create(containerSpec garden.ContainerSpec) (ctr garden.Contai
 		log.Error("graph-cleanup-failed", err)
 	}
 
+	container, err := g.Lookup(containerSpec.Handle)
+	if err != nil {
+		return nil, err
+	}
+
+	for name, value := range containerSpec.Properties {
+		if err := container.SetProperty(name, value); err != nil {
+			return nil, err
+		}
+	}
+
 	runtimeSpec, err := g.Volumizer.Create(log, containerSpec)
 	if err != nil {
 		return nil, err
@@ -302,19 +313,8 @@ func (g *Gardener) Create(containerSpec garden.ContainerSpec) (ctr garden.Contai
 		return nil, err
 	}
 
-	container, err := g.Lookup(containerSpec.Handle)
-	if err != nil {
-		return nil, err
-	}
-
 	if containerSpec.GraceTime != 0 {
 		if err := container.SetGraceTime(containerSpec.GraceTime); err != nil {
-			return nil, err
-		}
-	}
-
-	for name, value := range containerSpec.Properties {
-		if err := container.SetProperty(name, value); err != nil {
 			return nil, err
 		}
 	}
@@ -454,7 +454,11 @@ func (g *Gardener) Containers(props garden.Properties) ([]garden.Container, erro
 	if props == nil {
 		props = garden.Properties{}
 	}
-	props["garden.state"] = "created"
+	if _, ok := props["garden.state"]; !ok {
+		props["garden.state"] = "created"
+	} else if props["garden.state"] == "all" {
+		delete(props, "garden.state")
+	}
 
 	var containers []garden.Container
 	for _, handle := range handles {

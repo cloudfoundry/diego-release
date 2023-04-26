@@ -39,7 +39,7 @@ $env:SQL_FLAVOR="mysql"
 
 cd src/code.cloudfoundry.org/
 
-go run github.com/onsi/ginkgo/ginkgo -r -keepGoing -trace -randomizeAllSpecs -progress -race `
+go run github.com/onsi/ginkgo/v2/ginkgo -r -keep-going -trace -randomize-all -progress -race `
   route-emitter `
   cfhttp `
   cacheddownloader `
@@ -55,7 +55,8 @@ go run github.com/onsi/ginkgo/ginkgo -r -keepGoing -trace -randomizeAllSpecs -pr
   operationq `
   rep `
   routing-info `
-  workpool
+  workpool `
+  buildpackapplifecycle
 
 if ($LastExitCode -ne 0) {
   Write-Host "Diego unit tests failed"

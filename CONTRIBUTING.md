@@ -82,7 +82,7 @@ To be able to run unit tests, you'll also need to install the following binaries
     cd src/code.cloudfoundry.org
 
     # Install ginkgo
-    go build -o ../../bin/ginkgo github.com/onsi/ginkgo/ginkgo
+    go build -o ../../bin/ginkgo github.com/onsi/ginkgo/v2/ginkgo
 
     # Install nats-server
     go build -o ../../bin/nats-server github.com/nats-io/nats-server/v2
@@ -221,7 +221,7 @@ or the
 
 When working on individual components of Diego, work out of the submodules under `src/`.
 
-Run the individual component unit tests as you work on them using [ginkgo](https://github.com/onsi/ginkgo). To see if *everything* still works, run `./scripts/run-unit-tests` in the root of the release.
+Run the individual component unit tests as you work on them using [ginkgo v2](https://github.com/onsi/ginkgo). To see if *everything* still works, run `./scripts/run-unit-tests` in the root of the release.
 
 When you're ready to commit, run:
 

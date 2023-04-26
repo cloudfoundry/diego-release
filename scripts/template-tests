@@ -1,0 +1,9 @@
+#!/bin/bash -exu
+
+ROOT_DIR_PATH="$(cd $(dirname $0)/.. && pwd)"
+
+pushd "${ROOT_DIR_PATH}" > /dev/null
+  bundle install
+  bundle exec rspec spec
+  rubocop spec
+popd > /dev/null

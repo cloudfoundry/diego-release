@@ -8,16 +8,15 @@ db=${DB:-"mysql"} # if not set, default to mysql
 SQL_FLAVOR=$db
 
 if [ "$db" = "mysql" ]; then
-  docker_image=cfdiegodocker/diego-units-mysql
+  docker_image=cloudfoundry/diego-units-mysql
 elif [ "$db" = "mysql8" ]; then
-  docker_image=c2cnetworking/dev-mysql8
+  docker_image=cloudfoundry/cf-networking-mysql8
 elif [ "$db" = "postgres" ]; then
-  docker_image=cfdiegodocker/diego-units-postgres
+  docker_image=cloudfoundry/diego-units-postgres
 else
   echo "Database \"${db}\" not supported"
   exit 1
 fi
-
 
 docker run \
    --rm \

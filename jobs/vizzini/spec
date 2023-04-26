@@ -47,9 +47,6 @@ properties:
   vizzini.verbose:
     description: Run tests in verbose mode
     default: false
-  vizzini.stream:
-    description: Stream output from parallel test nodes. This option will lead to less coherent output but is useful when debugging
-    default: false
 
   enable_declarative_healthcheck:
     description: "When set, enables the declarative check tests in vizzini"
@@ -80,11 +77,11 @@ properties:
 
   grace_tarball_url:
     description: "URL for the grace test asset"
-    default: "https://storage.googleapis.com/diego-assets-bucket/grace.tar.gz"
+    default: "https://storage.googleapis.com/diego-assets/grace.tar.gz"
 
   grace_tarball_checksum:
     description: "grace test asset sha1 checksum"
 
   grace_busybox_image_url:
     description: "grace test asset busybox container image"
-    default: "docker:///cfdiegodocker/grace"
+    default: "docker:///cloudfoundry/grace"

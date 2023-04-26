@@ -1,33 +1,6 @@
 #! /bin/bash
 
-go fmt "code.cloudfoundry.org/auction/..."
-go fmt "code.cloudfoundry.org/auctioneer/..."
-go fmt "code.cloudfoundry.org/bbs/..."
-go fmt "code.cloudfoundry.org/benchmarkbbs/..."
-go fmt "code.cloudfoundry.org/bytefmt/..."
-go fmt "code.cloudfoundry.org/cacheddownloader/..."
-go fmt "code.cloudfoundry.org/certsplitter/..."
-go fmt "code.cloudfoundry.org/cfdot/..."
-go fmt "code.cloudfoundry.org/cfhttp/..."
-go fmt "code.cloudfoundry.org/clock/..."
-go fmt "code.cloudfoundry.org/debugserver/..."
-go fmt "code.cloudfoundry.org/diego-logging-client/..."
-go fmt "code.cloudfoundry.org/diego-ssh/..."
-go fmt "code.cloudfoundry.org/diego-upgrade-stability-tests/..."
-go fmt "code.cloudfoundry.org/dockerapplifecycle/..."
-go fmt "code.cloudfoundry.org/dockerdriver/..."
-go fmt "code.cloudfoundry.org/ecrhelper/..."
-go fmt "code.cloudfoundry.org/executor/..."
-go fmt "code.cloudfoundry.org/fileserver/..."
-go fmt "code.cloudfoundry.org/healthcheck/..."
-go fmt "code.cloudfoundry.org/inigo/..."
-go fmt "code.cloudfoundry.org/lager/..."
-go fmt "code.cloudfoundry.org/locket/..."
-go fmt "code.cloudfoundry.org/localdriver/..."
-go fmt "code.cloudfoundry.org/rep/..."
-go fmt "code.cloudfoundry.org/route-emitter/..."
-go fmt "code.cloudfoundry.org/systemcerts/..."
-go fmt "code.cloudfoundry.org/tlsconfig/..."
-go fmt "code.cloudfoundry.org/vizzini/..."
-go fmt "code.cloudfoundry.org/volman/..."
-go fmt "code.cloudfoundry.org/workpool/..."
+(
+cd src/code.cloudfoundry.org
+go fmt ./...
+)

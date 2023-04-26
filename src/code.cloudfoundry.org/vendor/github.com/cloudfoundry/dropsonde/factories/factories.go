@@ -9,15 +9,15 @@ import (
 	"time"
 
 	"github.com/cloudfoundry/sonde-go/events"
-	"github.com/gogo/protobuf/proto"
 	uuid "github.com/nu7hatch/gouuid"
+	"google.golang.org/protobuf/proto"
 )
 
 func NewUUID(id *uuid.UUID) *events.UUID {
 	return &events.UUID{Low: proto.Uint64(binary.LittleEndian.Uint64(id[:8])), High: proto.Uint64(binary.LittleEndian.Uint64(id[8:]))}
 }
 
-func NewHttpStartStop(req *http.Request, statusCode int, contentLength int64, peerType events.PeerType, requestId *uuid.UUID) *events.HttpStartStop {
+func NewHttpStartStop(req *http.Request, statusCode int32, contentLength int64, peerType events.PeerType, requestId *uuid.UUID) *events.HttpStartStop {
 	now := proto.Int64(time.Now().UnixNano())
 	httpStartStop := &events.HttpStartStop{
 		StartTimestamp: now,
@@ -28,7 +28,7 @@ func NewHttpStartStop(req *http.Request, statusCode int, contentLength int64, pe
 		Uri:            proto.String(fmt.Sprintf("%s://%s%s", scheme(req), req.Host, req.URL.Path)),
 		RemoteAddress:  proto.String(req.RemoteAddr),
 		UserAgent:      proto.String(req.UserAgent()),
-		StatusCode:     proto.Int(statusCode),
+		StatusCode:     proto.Int32(statusCode),
 		ContentLength:  proto.Int64(contentLength),
 	}
 
@@ -36,8 +36,8 @@ func NewHttpStartStop(req *http.Request, statusCode int, contentLength int64, pe
 		httpStartStop.ApplicationId = NewUUID(applicationId)
 	}
 
-	if instanceIndex, err := strconv.Atoi(req.Header.Get("X-CF-InstanceIndex")); err == nil {
-		httpStartStop.InstanceIndex = proto.Int(instanceIndex)
+	if instanceIndex, err := strconv.ParseInt(req.Header.Get("X-CF-InstanceIndex"), 10, 32); err == nil {
+		httpStartStop.InstanceIndex = proto.Int32(int32(instanceIndex))
 	}
 
 	if instanceId := req.Header.Get("X-CF-InstanceID"); instanceId != "" {

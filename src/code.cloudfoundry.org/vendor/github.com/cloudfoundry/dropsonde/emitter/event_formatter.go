@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/cloudfoundry/sonde-go/events"
-	"github.com/gogo/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 )
 
 var ErrorMissingOrigin = errors.New("Event not emitted due to missing origin information")

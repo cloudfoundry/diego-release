@@ -1,8 +1,14 @@
 #!/bin/bash
 set -exuo pipefail
 
-# ensure gosub is installed (this will recompile it only if necessary)
-go install github.com/vito/gosub@latest
+export PATH="$PWD/bin:$PATH"
+
+(
+  mkdir -p bin
+  cd "src/gosub"
+  go build -o "../../bin/gosub" .
+)
+
 FORCE_SUBMODULE_HTTPS="${FORCE_SUBMODULE_HTTPS:-false}"
 
 rm -rf /tmp/packages
@@ -10,24 +16,17 @@ cat >> /tmp/packages <<EOF
 code.cloudfoundry.org/auction
 code.cloudfoundry.org/auctioneer
 code.cloudfoundry.org/bbs
-code.cloudfoundry.org/benchmarkbbs
 code.cloudfoundry.org/buildpackapplifecycle
-code.cloudfoundry.org/bytefmt
 code.cloudfoundry.org/cacheddownloader
 code.cloudfoundry.org/cfdot
 code.cloudfoundry.org/credhub-cli
 code.cloudfoundry.org/diego-ssh
 code.cloudfoundry.org/dockerapplifecycle
-code.cloudfoundry.org/dockerdriver
+code.cloudfoundry.org/goshims
 code.cloudfoundry.org/ecrhelper
 code.cloudfoundry.org/executor
 code.cloudfoundry.org/fileserver
-garden
-code.cloudfoundry.org/goshims
-grootfs
-guardian
 code.cloudfoundry.org/healthcheck
-idmapper
 code.cloudfoundry.org/inigo
 code.cloudfoundry.org/localdriver
 code.cloudfoundry.org/locket
@@ -37,11 +36,16 @@ code.cloudfoundry.org/route-emitter
 code.cloudfoundry.org/routing-api
 code.cloudfoundry.org/routing-info
 code.cloudfoundry.org/systemcerts
-code.cloudfoundry.org/trace-logger
 code.cloudfoundry.org/vendor
 code.cloudfoundry.org/vizzini
 code.cloudfoundry.org/volman
 code.cloudfoundry.org/workpool
+garden
+gosub
+grootfs
+guardian
+idmapper
 EOF
+
 
 cat /tmp/packages | xargs -s 1048576 gosub sync --force-https=$FORCE_SUBMODULE_HTTPS

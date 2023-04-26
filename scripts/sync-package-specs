@@ -2,8 +2,13 @@
 
 set -e
 
-# ensure gosub is installed (this will recompile it only if necessary)
-GO111MODULE=on go install github.com/vito/gosub@latest
+export PATH="$PWD/bin:$PATH"
+
+(
+  mkdir -p bin
+  cd "src/gosub"
+  go build -o "../../bin/gosub" .
+)
 
 function sync_package() {
   bosh_pkg=${1}
@@ -65,12 +70,8 @@ sync_package windows_app_lifecycle -app  code.cloudfoundry.org/buildpackapplifec
   -app code.cloudfoundry.org/buildpackapplifecycle/getenv &
 
 sync_package vizzini \
-  -app  github.com/onsi/ginkgo/ginkgo \
+  -app  github.com/onsi/ginkgo/v2/ginkgo \
   -test code.cloudfoundry.org/vizzini/... &
-
-sync_package benchmark-bbs \
-  -app  github.com/onsi/ginkgo/ginkgo \
-  -test code.cloudfoundry.org/benchmarkbbs/... &
 
 wait
 

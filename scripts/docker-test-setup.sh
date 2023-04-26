@@ -11,10 +11,9 @@ SCRIPT_PATH="$(cd "$(dirname "${0}")" && pwd)"
 cd /diego-release
 
 if ! [ $(type -P "ginkgo") ]; then
-  go install -mod=mod github.com/onsi/ginkgo/ginkgo@v1
+  go install -mod=mod github.com/onsi/ginkgo/v2/ginkgo
   mv /root/go/bin/ginkgo /usr/local/bin/ginkgo
 fi
-
 
 if ! [ $(type -P "nats-server") ]; then
   BIN_DIR="${DIEGO_RELEASE_DIR}/bin"
