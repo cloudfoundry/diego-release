@@ -8,11 +8,11 @@ db=${DB:-"mysql"} # if not set, default to mysql
 SQL_FLAVOR=$db
 
 if [ "$db" = "mysql" ]; then
-  docker_image=cloudfoundry/diego-units-mysql
+  docker_image=cloudfoundry/tas-runtime-mysql-5.7
 elif [ "$db" = "mysql8" ]; then
-  docker_image=cloudfoundry/cf-networking-mysql8
+  docker_image=cloudfoundry/tas-runtime-mysql-8.0
 elif [ "$db" = "postgres" ]; then
-  docker_image=cloudfoundry/diego-units-postgres
+  docker_image=cloudfoundry/tas-runtime-postgres
 else
   echo "Database \"${db}\" not supported"
   exit 1
