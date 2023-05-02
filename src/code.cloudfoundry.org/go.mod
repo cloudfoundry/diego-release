@@ -7,11 +7,12 @@ replace (
 	code.cloudfoundry.org/grootfs => ../grootfs
 	code.cloudfoundry.org/guardian => ../guardian
 	code.cloudfoundry.org/idmapper => ../idmapper
+
+	github.com/cncf/upda/go => github.com/cncf/udpa/go v0.0.0-20200313221541-5f7e5dd04533 //neded for go-control-plane
 	github.com/docker/docker => github.com/docker/docker v20.10.13+incompatible
 	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.9.5
 	github.com/gogo/protobuf => github.com/gogo/protobuf v1.3.2
 	github.com/golang/protobuf => github.com/golang/protobuf v1.3.2
-	github.com/hashicorp/consul => github.com/hashicorp/consul v0.7.0
 	github.com/nats-io/nats.go => github.com/nats-io/nats.go v1.16.1-0.20220906180156-a1017eec10b0
 	github.com/onsi/gomega => github.com/onsi/gomega v1.27.1
 	github.com/prometheus/client_golang => github.com/prometheus/client_golang v1.11.1
@@ -39,7 +40,7 @@ require (
 	code.cloudfoundry.org/eventhub v0.0.0-20230406153306-c90e7c7a29a1
 	code.cloudfoundry.org/garden v0.0.0-20230109170928-83a99bb745e3
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
-	code.cloudfoundry.org/goshims v0.14.0
+	code.cloudfoundry.org/goshims v0.16.0
 	code.cloudfoundry.org/guardian v0.0.0-00010101000000-000000000000
 	code.cloudfoundry.org/lager/v3 v3.0.1
 	code.cloudfoundry.org/localip v0.0.0-20230406154046-f137f65d303d
@@ -57,7 +58,7 @@ require (
 	github.com/envoyproxy/go-control-plane v0.11.0
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/ghodss/yaml v1.0.0
-	github.com/go-sql-driver/mysql v1.7.0
+	github.com/go-sql-driver/mysql v1.7.1
 	github.com/go-test/deep v1.1.0
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang-jwt/jwt/v4 v4.5.0
