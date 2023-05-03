@@ -80,7 +80,17 @@ files:
   - code.cloudfoundry.org/vendor/github.com/tedsuo/ifrit/sigmon/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/tedsuo/rata/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/vito/go-sse/sse/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/crypto/blake2b/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/crypto/blake2b/*.s # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/crypto/curve25519/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/ed25519/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/crypto/internal/alias/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/crypto/internal/poly1305/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/crypto/internal/poly1305/*.s # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/crypto/nacl/box/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/crypto/nacl/secretbox/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/crypto/salsa20/salsa/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/crypto/salsa20/salsa/*.s # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/context/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/http/httpguts/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/http2/*.go # gosub
@@ -91,6 +101,8 @@ files:
   - code.cloudfoundry.org/vendor/golang.org/x/oauth2/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/oauth2/clientcredentials/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/oauth2/internal/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/sys/cpu/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/sys/cpu/*.s # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/sys/unix/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/sys/unix/*.s # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/text/secure/bidirule/*.go # gosub
