@@ -85,7 +85,7 @@ require (
 	golang.org/x/net v0.9.0
 	golang.org/x/oauth2 v0.7.0
 	golang.org/x/sys v0.7.0
-	golang.org/x/time v0.0.0-20220722155302-e5dcc9cfc0b9
+	golang.org/x/time v0.3.0
 	google.golang.org/grpc v1.54.0
 	gopkg.in/yaml.v2 v2.4.0
 )
