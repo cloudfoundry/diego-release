@@ -8,19 +8,13 @@ replace (
 	code.cloudfoundry.org/guardian => ../guardian
 	code.cloudfoundry.org/idmapper => ../idmapper
 
-	github.com/cncf/upda/go => github.com/cncf/udpa/go v0.0.0-20200313221541-5f7e5dd04533 //neded for go-control-plane
 	github.com/docker/docker => github.com/docker/docker v20.10.13+incompatible
-	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.9.5
-	github.com/gogo/protobuf => github.com/gogo/protobuf v1.3.2
-	github.com/golang/protobuf => github.com/golang/protobuf v1.3.2
 	github.com/nats-io/nats.go => github.com/nats-io/nats.go v1.16.1-0.20220906180156-a1017eec10b0
 	github.com/onsi/gomega => github.com/onsi/gomega v1.27.1
 	github.com/prometheus/client_golang => github.com/prometheus/client_golang v1.11.1
 	github.com/prometheus/common => github.com/prometheus/common v0.30.0
 	github.com/spf13/cobra => github.com/spf13/cobra v0.0.0-20160722081547-f62e98d28ab7
 	github.com/zorkian/go-datadog-api => github.com/zorkian/go-datadog-api v0.0.0-20150915071709-8f1192dcd661
-	google.golang.org/genproto => google.golang.org/genproto v0.0.0-20180817151627-c66870c02cf8
-	google.golang.org/grpc => google.golang.org/grpc v1.29.0-dev.0.20200306163155-d179e8f5cd96
 )
 
 require (
@@ -110,7 +104,7 @@ require (
 	github.com/cloudfoundry/go-socks5 v0.0.0-20180221174514-54f73bdb8a8e // indirect
 	github.com/cloudfoundry/socks5-proxy v0.2.44 // indirect
 	github.com/cloudfoundry/sonde-go v0.0.0-20230323202738-86a2a74b11b0 // indirect
-	github.com/cncf/udpa/go v0.0.0-20200313221541-5f7e5dd04533 // indirect
+	github.com/cncf/xds/go v0.0.0-20230105202645-06c439db220b // indirect
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/containers/storage v1.45.1 // indirect
 	github.com/coreos/go-systemd/v22 v22.5.0 // indirect
