@@ -4,10 +4,12 @@ set -e -u
 ROOT_DIR_PATH="$(cd $(dirname $0)/.. && pwd)"
 cd "${ROOT_DIR_PATH}"
 
-db=${DB:-"mysql"} # if not set, default to mysql
+db=${DB:-"mysql"} # if not set, default to mysql for easy ability to run all tests in linux
 SQL_FLAVOR=$db
 
-if [ "$db" = "mysql" ]; then
+if [ "$db" = "notset" ]; then
+  docker_image=cloudfoundry/tas-runtime-build
+elif [ "$db" = "mysql" ]; then
   docker_image=cloudfoundry/tas-runtime-mysql-5.7
 elif [ "$db" = "mysql8" ]; then
   docker_image=cloudfoundry/tas-runtime-mysql-8.0
