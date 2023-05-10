@@ -1,0 +1,75 @@
+# Config file for golangci-lint
+run:
+  concurrency: 4
+  deadline: 1m
+  issues-exit-code: 1
+  tests: true
+  skip-dirs:
+    - .github
+    - doc
+    - docker
+    - logos
+    - scripts
+    - util
+  modules-download-mode: readonly
+
+output:
+  format: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true
+
+linters:
+  disable-all: true
+  enable:
+    # - errcheck
+    - forbidigo
+    - gofmt
+    # - goimports
+    - gosimple
+    - govet
+    - ineffassign
+    # - maligned
+    - megacheck
+    - misspell
+    # - prealloc
+    - staticcheck
+    # - unparam
+    - unused
+
+linters-settings:
+  errcheck:
+    check-type-assertions: false
+    check-blank: false
+  forbidigo:
+    forbid:
+      - ^fmt\.Print(f|ln)?$
+  govet:
+    check-shadowing: false
+    settings:
+      printf:
+        funcs:
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Infof
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Warnf
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Errorf
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Fatalf
+  gofmt:
+    simple: true
+  misspell:
+    locale: US
+  unparam:
+    check-exported: false
+  prealloc:
+    simple: true
+    range-loops: true
+    for-loops: true
+
+issues:
+  exclude-rules:
+    - path: "main.go" # Excludes main usage
+      linters: [forbidigo]
+    - source: "nats-server: v%s" # Excludes PrintServerAndExit
+      linters: [forbidigo]
+    - path: "server/opts.go" # Excludes TLS usage options
+      linters: [forbidigo]
+    - path: "_test.go" # Excludes unit tests
+      linters: [forbidigo]

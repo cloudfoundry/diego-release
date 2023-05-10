@@ -1,4 +1,4 @@
-// Copyright 2017-2022 The NATS Authors
+// Copyright 2017-2023 The NATS Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -148,7 +148,7 @@ type debugOption struct {
 // However we will kick the raft nodes if they exist to reload.
 func (d *debugOption) Apply(server *Server) {
 	server.Noticef("Reloaded: debug = %v", d.newValue)
-	server.reloadDebugRaftNodes()
+	server.reloadDebugRaftNodes(d.newValue)
 }
 
 // logtimeOption implements the option interface for the `logtime` setting.
@@ -206,7 +206,7 @@ type tlsOption struct {
 func (t *tlsOption) Apply(server *Server) {
 	server.mu.Lock()
 	tlsRequired := t.newValue != nil
-	server.info.TLSRequired = tlsRequired
+	server.info.TLSRequired = tlsRequired && !server.getOpts().AllowNonTLS
 	message := "disabled"
 	if tlsRequired {
 		server.info.TLSVerify = (t.newValue.ClientAuth == tls.RequireAndVerifyClientCert)
@@ -413,7 +413,9 @@ func (r *routesOption) Apply(server *Server) {
 	}
 
 	// Add routes.
+	server.mu.Lock()
 	server.solicitRoutes(r.add)
+	server.mu.Unlock()
 
 	server.Noticef("Reloaded: cluster routes")
 }
