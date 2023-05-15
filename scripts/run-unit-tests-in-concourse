@@ -1,0 +1,47 @@
+#!/bin/bash
+
+set -e
+
+SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+. "${SCRIPTS_DIR}/get_paths.sh"
+
+TAS_RUNTIME_DIR="${TAS_RUNTIME_DIR:-${HOME}/workspace/tas-runtime}"
+if [ ! -d "${TAS_RUNTIME_DIR}" ]; then
+  printf "Dir: %s does not exist. Clone the tas-runtime repo (private) to ~/workspace/tas-runtime/ or supply the path with the TAS_RUNTIME_DIR environment variable.\n" "${TAS_RUNTIME_DIR}"
+  printf "\t TAS_RUNTIME_DIR=/path/to/tas-runtime ./scripts/run-unit-tests-in-concourse\n"
+  printf "You must have access to both the tas-runtime repo and the runtime CI to execute tests against the CI.\n"
+  exit 1
+fi
+
+function print_usage_dialogue {
+  printf "To run a different set of tests, supply the DB env variable. For example:\n"
+  for flavor in postgres mysql common windows; do
+    printf "\t DB=%s ./scripts/run-unit-tests-in-concourse\n" "${flavor}"
+  done
+}
+
+db=${DB:-"mysql"} # if not set, assume we want to run all the linux tests, so use mysql
+if [ "${db}" = "notset" ] || [ "${db}" = "common" ]; then
+  task_config_path="${TAS_RUNTIME_DIR}/ci/tasks/diego/units/common.yml"
+elif [ "${db}" = "mysql" ]; then
+  task_config_path="${TAS_RUNTIME_DIR}/ci/tasks/diego/units/mysql.yml"
+elif [ "${db}" = "postgres" ]; then
+  task_config_path="${TAS_RUNTIME_DIR}/ci/tasks/diego/units/postgres.yml"
+elif [ "${db}" = "windows" ]; then
+  task_config_path="${TAS_RUNTIME_DIR}/ci/tasks/diego/units/windows.yml"
+else
+  printf "Database/flavor \"%s\" not supported.\n" "${db}"
+  print_usage_dialogue
+  exit 1
+fi
+
+printf "Running the \"%s\" flavor of tests.\n" "${db}"
+print_usage_dialogue
+
+DIEGO_CI_TARGET="${DIEGO_CI_TARGET:-runtime-diego}"
+fly --target "${DIEGO_CI_TARGET}" execute \
+  --privileged \
+  --config "${task_config_path}" \
+  --input="tas-runtime=${TAS_RUNTIME_DIR}" \
+  --input="diego-release=${DIEGO_RELEASE_DIR}" \
+  -- "$@"
