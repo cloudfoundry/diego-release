@@ -396,6 +396,8 @@ func (m *TcpProxy) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for FlushAccessLogOnConnected
+
 	oneofClusterSpecifierPresent := false
 	switch v := m.ClusterSpecifier.(type) {
 	case *TcpProxy_Cluster:
@@ -774,6 +776,8 @@ func (m *TcpProxy_TunnelingConfig) validate(all bool) error {
 	// no validation rules for PropagateResponseHeaders
 
 	// no validation rules for PostPath
+
+	// no validation rules for PropagateResponseTrailers
 
 	if len(errors) > 0 {
 		return TcpProxy_TunnelingConfigMultiError(errors)

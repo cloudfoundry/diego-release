@@ -1,11 +1,11 @@
 package http_server
 
 import (
+	"context"
 	"crypto/tls"
 	"net"
 	"net/http"
 	"os"
-	"sync"
 	"time"
 
 	"github.com/tedsuo/ifrit"
@@ -20,11 +20,6 @@ type httpServer struct {
 	protocol string
 	address  string
 	handler  http.Handler
-
-	connectionWaitGroup   *sync.WaitGroup
-	inactiveConnections   map[net.Conn]struct{}
-	inactiveConnectionsMu *sync.Mutex
-	stoppingChan          chan struct{}
 
 	tlsConfig *tls.Config
 }
@@ -55,33 +50,9 @@ func NewTLSServer(address string, handler http.Handler, tlsConfig *tls.Config) i
 }
 
 func (s *httpServer) Run(signals <-chan os.Signal, ready chan<- struct{}) error {
-	s.connectionWaitGroup = new(sync.WaitGroup)
-	s.inactiveConnectionsMu = new(sync.Mutex)
-	s.inactiveConnections = make(map[net.Conn]struct{})
-	s.stoppingChan = make(chan struct{})
-
-	connCountCh := make(chan int)
-
 	server := http.Server{
 		Handler:   s.handler,
 		TLSConfig: s.tlsConfig,
-		ConnState: func(conn net.Conn, state http.ConnState) {
-			switch state {
-			case http.StateNew:
-				connCountCh <- 1
-				s.addInactiveConnection(conn)
-
-			case http.StateIdle:
-				s.addInactiveConnection(conn)
-
-			case http.StateActive:
-				s.removeInactiveConnection(conn)
-
-			case http.StateHijacked, http.StateClosed:
-				s.removeInactiveConnection(conn)
-				connCountCh <- -1
-			}
-		},
 	}
 
 	listener, err := s.getListener(server.TLSConfig)
@@ -96,30 +67,16 @@ func (s *httpServer) Run(signals <-chan os.Signal, ready chan<- struct{}) error 
 
 	close(ready)
 
-	connCount := 0
 	for {
 		select {
 		case err = <-serverErrChan:
 			return err
 
-		case delta := <-connCountCh:
-			connCount += delta
-
 		case <-signals:
-			close(s.stoppingChan)
-
 			listener.Close()
 
-			s.inactiveConnectionsMu.Lock()
-			for c := range s.inactiveConnections {
-				c.Close()
-			}
-			s.inactiveConnectionsMu.Unlock()
-
-			for connCount != 0 {
-				delta := <-connCountCh
-				connCount += delta
-			}
+			ctx, _ := context.WithTimeout(context.Background(), 1*time.Minute)
+			server.Shutdown(ctx)
 
 			return nil
 		}
@@ -142,23 +99,6 @@ func (s *httpServer) getListener(tlsConfig *tls.Config) (net.Listener, error) {
 	}
 
 	return listener, nil
-}
-
-func (s *httpServer) addInactiveConnection(conn net.Conn) {
-	select {
-	case <-s.stoppingChan:
-		conn.Close()
-	default:
-		s.inactiveConnectionsMu.Lock()
-		s.inactiveConnections[conn] = struct{}{}
-		s.inactiveConnectionsMu.Unlock()
-	}
-}
-
-func (s *httpServer) removeInactiveConnection(conn net.Conn) {
-	s.inactiveConnectionsMu.Lock()
-	delete(s.inactiveConnections, conn)
-	s.inactiveConnectionsMu.Unlock()
 }
 
 type tcpKeepAliveListener struct {
