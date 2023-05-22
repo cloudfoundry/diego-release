@@ -45,7 +45,7 @@ require (
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20230510185313-f5e39e5f34c7
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cloudfoundry-community/go-uaa v0.3.2-0.20221011190625-aaeaae3ce7c2
-	github.com/cloudfoundry/dropsonde v1.0.1-0.20220627224009-409b7756c19d
+	github.com/cloudfoundry/dropsonde v1.1.0
 	github.com/containers/image v3.0.2+incompatible
 	github.com/docker/docker v24.0.0+incompatible
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
