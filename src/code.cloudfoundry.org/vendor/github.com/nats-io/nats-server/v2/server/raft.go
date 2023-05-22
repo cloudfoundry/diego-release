@@ -855,7 +855,13 @@ func (n *raft) ResumeApply() {
 		}
 	}
 	n.hcommit = 0
-	n.resetElectionTimeout()
+
+	// If we had been selected to be the next leader campaign here now that we have resumed.
+	if n.lxfer {
+		n.xferCampaign()
+	} else {
+		n.resetElectionTimeout()
+	}
 }
 
 // Applied is to be called when the FSM has applied the committed entries.
@@ -1166,9 +1172,16 @@ func (n *raft) isCatchingUp() bool {
 	return n.catchup != nil
 }
 
-// Lock should be held. This function may block for up to ~5ms to check
+// This function may block for up to ~10ms to check
 // forward progress in some cases.
+// Lock should be held.
 func (n *raft) isCurrent(includeForwardProgress bool) bool {
+	// Check if we are closed.
+	if n.state == Closed {
+		n.debug("Not current, node is closed")
+		return false
+	}
+
 	// Check whether we've made progress on any state, 0 is invalid so not healthy.
 	if n.commit == 0 {
 		n.debug("Not current, no commits")
@@ -1213,7 +1226,7 @@ func (n *raft) isCurrent(includeForwardProgress bool) bool {
 	if startDelta := n.commit - n.applied; startDelta > 0 {
 		for i := 0; i < 10; i++ { // 5ms, in 0.5ms increments
 			n.Unlock()
-			time.Sleep(time.Millisecond / 2)
+			time.Sleep(time.Millisecond)
 			n.Lock()
 			if n.commit-n.applied < startDelta {
 				// The gap is getting smaller, so we're making forward progress.
@@ -1339,6 +1352,10 @@ func (n *raft) StepDown(preferred ...string) error {
 		}
 	}
 
+	// Clear our vote state.
+	n.vote = noVote
+	n.writeTermVote()
+
 	stepdown := n.stepdown
 	prop := n.prop
 	n.Unlock()
@@ -1351,7 +1368,6 @@ func (n *raft) StepDown(preferred ...string) error {
 	if maybeLeader != noLeader {
 		n.debug("Selected %q for new leader", maybeLeader)
 		prop.push(newEntry(EntryLeaderTransfer, []byte(maybeLeader)))
-		time.AfterFunc(250*time.Millisecond, func() { stepdown.push(noLeader) })
 	} else {
 		// Force us to stepdown here.
 		n.debug("Stepping down")
@@ -1389,6 +1405,7 @@ func (n *raft) campaign() error {
 func (n *raft) xferCampaign() error {
 	n.debug("Starting transfer campaign")
 	if n.state == Leader {
+		n.lxfer = false
 		return errAlreadyLeader
 	}
 	n.resetElect(10 * time.Millisecond)
@@ -1757,12 +1774,18 @@ func (n *raft) setObserver(isObserver bool, extSt extensionState) {
 
 // Invoked when being notified that there is something in the entryc's queue
 func (n *raft) processAppendEntries() {
-	ok := !n.outOfResources()
-	if !ok {
-		n.debug("AppendEntry not processing inbound, no resources")
+	canProcess := true
+	if n.isClosed() {
+		n.debug("AppendEntry not processing inbound, closed")
+		canProcess = false
 	}
+	if n.outOfResources() {
+		n.debug("AppendEntry not processing inbound, no resources")
+		canProcess = false
+	}
+	// Always pop the entries, but check if we can process them.
 	aes := n.entry.pop()
-	if ok {
+	if canProcess {
 		for _, ae := range aes {
 			n.processAppendEntry(ae, ae.sub)
 		}
@@ -2202,11 +2225,20 @@ func (n *raft) runAsLeader() {
 					continue
 				}
 				n.sendAppendEntry(entries)
+
+				// If this is us sending out a leadership transfer stepdown inline here.
+				if b.Type == EntryLeaderTransfer {
+					n.prop.recycle(&es)
+					n.debug("Stepping down due to leadership transfer")
+					n.switchToFollower(noLeader)
+					return
+				}
 				// We need to re-create `entries` because there is a reference
 				// to it in the node's pae map.
 				entries = nil
 			}
 			n.prop.recycle(&es)
+
 		case <-hb.C:
 			if n.notActive() {
 				n.sendHeartbeat()
@@ -2469,6 +2501,13 @@ func (n *raft) catchupFollower(ar *appendEntryResponse) {
 	ae, err := n.loadEntry(start)
 	if err != nil {
 		n.warn("Request from follower for entry at index [%d] errored for state %+v - %v", start, state, err)
+		if err == ErrStoreEOF {
+			// If we are here we are seeing a request for an item beyond our state, meaning we should stepdown.
+			n.stepdown.push(noLeader)
+			n.Unlock()
+			arPool.Put(ar)
+			return
+		}
 		ae, err = n.loadFirstEntry()
 	}
 	if err != nil || ae == nil {
@@ -3158,9 +3197,20 @@ func (n *raft) processAppendEntry(ae *appendEntry, sub *subscription) {
 			// Only process these if they are new, so no replays or catchups.
 			if isNew {
 				maybeLeader := string(e.Data)
-				if maybeLeader == n.id && !n.observer && !n.paused {
-					n.lxfer = true
-					n.xferCampaign()
+				// This is us. We need to check if we can become the leader.
+				if maybeLeader == n.id {
+					// If not an observer and not paused we are good to go.
+					if !n.observer && !n.paused {
+						n.lxfer = true
+						n.xferCampaign()
+					} else if n.paused && !n.pobserver {
+						// Here we can become a leader but need to wait for resume of the apply channel.
+						n.lxfer = true
+					}
+				} else {
+					// Since we are here we are not the chosen one but we should clear any vote preference.
+					n.vote = noVote
+					n.writeTermVote()
 				}
 			}
 		case EntryAddPeer:
@@ -3545,6 +3595,13 @@ func (n *raft) setWriteErrLocked(err error) {
 	}
 }
 
+// Helper to check if we are closed when we do not hold a lock already.
+func (n *raft) isClosed() bool {
+	n.RLock()
+	defer n.RUnlock()
+	return n.state == Closed
+}
+
 // Capture our write error if any and hold.
 func (n *raft) setWriteErr(err error) {
 	n.Lock()
@@ -3561,12 +3618,6 @@ func (n *raft) fileWriter() {
 	psf := filepath.Join(n.sd, peerStateFile)
 	n.RUnlock()
 
-	isClosed := func() bool {
-		n.RLock()
-		defer n.RUnlock()
-		return n.state == Closed
-	}
-
 	for s.isRunning() {
 		select {
 		case <-n.quit:
@@ -3579,7 +3630,7 @@ func (n *raft) fileWriter() {
 			<-dios
 			err := os.WriteFile(tvf, buf[:], 0640)
 			dios <- struct{}{}
-			if err != nil && !isClosed() {
+			if err != nil && !n.isClosed() {
 				n.setWriteErr(err)
 				n.warn("Error writing term and vote file for %q: %v", n.group, err)
 			}
@@ -3590,7 +3641,7 @@ func (n *raft) fileWriter() {
 			<-dios
 			err := os.WriteFile(psf, buf, 0640)
 			dios <- struct{}{}
-			if err != nil && !isClosed() {
+			if err != nil && !n.isClosed() {
 				n.setWriteErr(err)
 				n.warn("Error writing peer state file for %q: %v", n.group, err)
 			}
@@ -3695,7 +3746,8 @@ func (n *raft) processVoteRequest(vr *voteRequest) error {
 	// If this is a higher term go ahead and stepdown.
 	if vr.term > n.term {
 		if n.state != Follower {
-			n.debug("Stepping down from %s, detected higher term: %d vs %d", vr.term, n.term, strings.ToLower(n.state.String()))
+			n.debug("Stepping down from %s, detected higher term: %d vs %d",
+				strings.ToLower(n.state.String()), vr.term, n.term)
 			n.stepdown.push(noLeader)
 			n.term = vr.term
 		}
