@@ -601,6 +601,20 @@ func (mset *stream) streamAssignment() *streamAssignment {
 }
 
 func (mset *stream) setStreamAssignment(sa *streamAssignment) {
+	var node RaftNode
+
+	mset.mu.RLock()
+	js := mset.js
+	mset.mu.RUnlock()
+
+	if js != nil {
+		js.mu.RLock()
+		if sa.Group != nil {
+			node = sa.Group.node
+		}
+		js.mu.RUnlock()
+	}
+
 	mset.mu.Lock()
 	defer mset.mu.Unlock()
 
@@ -610,7 +624,7 @@ func (mset *stream) setStreamAssignment(sa *streamAssignment) {
 	}
 
 	// Set our node.
-	mset.node = sa.Group.node
+	mset.node = node
 	if mset.node != nil {
 		mset.node.UpdateKnownPeers(sa.Group.Peers)
 	}
@@ -1601,14 +1615,14 @@ func (mset *stream) updateWithAdvisory(config *StreamConfig, sendAdvisory bool) 
 
 	if targetTier := tierName(cfg); mset.tier != targetTier {
 		// In cases such as R1->R3, only one update is needed
-		mset.jsa.usageMu.RLock()
-		_, ok := mset.jsa.limits[targetTier]
-		mset.jsa.usageMu.RUnlock()
+		jsa.usageMu.RLock()
+		_, ok := jsa.limits[targetTier]
+		jsa.usageMu.RUnlock()
 		if ok {
 			// error never set
 			_, reported, _ := mset.store.Utilization()
-			mset.jsa.updateUsage(mset.tier, mset.stype, -int64(reported))
-			mset.jsa.updateUsage(targetTier, mset.stype, int64(reported))
+			jsa.updateUsage(mset.tier, mset.stype, -int64(reported))
+			jsa.updateUsage(targetTier, mset.stype, int64(reported))
 			mset.tier = targetTier
 		}
 		// else in case the new tier does not exist (say on move), keep the old tier around
@@ -4460,7 +4474,7 @@ func (mset *stream) internalLoop() {
 	}
 }
 
-// Used to break consumers out of their
+// Used to break consumers out of their monitorConsumer go routines.
 func (mset *stream) resetAndWaitOnConsumers() {
 	mset.mu.RLock()
 	consumers := make([]*consumer, 0, len(mset.consumers))
@@ -4534,20 +4548,27 @@ func (mset *stream) stop(deleteFlag, advisory bool) error {
 		if deleteFlag {
 			n.Delete()
 			sa = mset.sa
-		} else if n.NeedSnapshot() {
-			// Attempt snapshot on clean exit.
-			n.InstallSnapshot(mset.stateSnapshotLocked())
+		} else {
+			if n.NeedSnapshot() {
+				// Attempt snapshot on clean exit.
+				n.InstallSnapshot(mset.stateSnapshotLocked())
+			}
 			n.Stop()
 		}
 	}
 	mset.mu.Unlock()
 
+	isShuttingDown := js.isShuttingDown()
 	for _, o := range obs {
-		// Third flag says do not broadcast a signal.
-		// TODO(dlc) - If we have an err here we don't want to stop
-		// but should we log?
-		o.stopWithFlags(deleteFlag, deleteFlag, false, advisory)
-		o.monitorWg.Wait()
+		if !o.isClosed() {
+			// Third flag says do not broadcast a signal.
+			// TODO(dlc) - If we have an err here we don't want to stop
+			// but should we log?
+			o.stopWithFlags(deleteFlag, deleteFlag, false, advisory)
+			if !isShuttingDown {
+				o.monitorWg.Wait()
+			}
+		}
 	}
 
 	mset.mu.Lock()
@@ -4623,23 +4644,21 @@ func (mset *stream) stop(deleteFlag, advisory bool) error {
 		sysc.closeConnection(ClientClosed)
 	}
 
-	if store == nil {
-		return nil
-	}
-
 	if deleteFlag {
-		if err := store.Delete(); err != nil {
-			return err
+		if store != nil {
+			// Ignore errors.
+			store.Delete()
 		}
+		// Release any resources.
 		js.releaseStreamResources(&mset.cfg)
-
 		// cleanup directories after the stream
 		accDir := filepath.Join(js.config.StoreDir, accName)
 		// no op if not empty
 		os.Remove(filepath.Join(accDir, streamsDir))
 		os.Remove(accDir)
-	} else if err := store.Stop(); err != nil {
-		return err
+	} else if store != nil {
+		// Ignore errors.
+		store.Stop()
 	}
 
 	return nil

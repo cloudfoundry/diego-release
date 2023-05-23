@@ -137,6 +137,9 @@ type ConnInfo struct {
 	NameTag        string         `json:"name_tag,omitempty"`
 	Tags           jwt.TagList    `json:"tags,omitempty"`
 	MQTTClient     string         `json:"mqtt_client,omitempty"` // This is the MQTT client id
+
+	// Internal
+	rtt int64 // For fast sorting
 }
 
 // TLSPeerCert contains basic information about a TLS peer certificate
@@ -190,9 +193,7 @@ func (s *Server) Connz(opts *ConnzOptions) (*Connz, error) {
 
 	if opts != nil {
 		// If no sort option given or sort is by uptime, then sort by cid
-		if opts.Sort == _EMPTY_ {
-			sortOpt = ByCid
-		} else {
+		if opts.Sort != _EMPTY_ {
 			sortOpt = opts.Sort
 			if !sortOpt.IsValid() {
 				return nil, fmt.Errorf("invalid sorting option: %s", sortOpt)
@@ -201,9 +202,6 @@ func (s *Server) Connz(opts *ConnzOptions) (*Connz, error) {
 
 		// Auth specifics.
 		auth = opts.Username
-		if !auth && (user != _EMPTY_ || acc != _EMPTY_) {
-			return nil, fmt.Errorf("filter by user or account only allowed with auth option")
-		}
 		user = opts.User
 		acc = opts.Account
 		mqttCID = opts.MQTTClient
@@ -273,7 +271,7 @@ func (s *Server) Connz(opts *ConnzOptions) (*Connz, error) {
 	}
 
 	// Walk the open client list with server lock held.
-	s.mu.Lock()
+	s.mu.RLock()
 	// Default to all client unless filled in above.
 	if clist == nil {
 		clist = s.clients
@@ -300,9 +298,10 @@ func (s *Server) Connz(opts *ConnzOptions) (*Connz, error) {
 	if acc != _EMPTY_ && len(closedClients) > 0 {
 		var ccc []*closedClient
 		for _, cc := range closedClients {
-			if cc.acc == acc {
-				ccc = append(ccc, cc)
+			if cc.acc != acc {
+				continue
 			}
+			ccc = append(ccc, cc)
 		}
 		c.Total -= (len(closedClients) - len(ccc))
 		closedClients = ccc
@@ -357,7 +356,7 @@ func (s *Server) Connz(opts *ConnzOptions) (*Connz, error) {
 					continue
 				}
 				// Do user filtering second
-				if user != _EMPTY_ && client.opts.Username != user {
+				if user != _EMPTY_ && client.getRawAuthUserLock() != user {
 					continue
 				}
 				// Do mqtt client ID filtering next
@@ -368,7 +367,7 @@ func (s *Server) Connz(opts *ConnzOptions) (*Connz, error) {
 			}
 		}
 	}
-	s.mu.Unlock()
+	s.mu.RUnlock()
 
 	// Filter by subject now if needed. We do this outside of server lock.
 	if filter != _EMPTY_ {
@@ -500,6 +499,8 @@ func (s *Server) Connz(opts *ConnzOptions) (*Connz, error) {
 		sort.Sort(sort.Reverse(byStop{pconns}))
 	case ByReason:
 		sort.Sort(byReason{pconns})
+	case ByRTT:
+		sort.Sort(sort.Reverse(byRTT{pconns}))
 	}
 
 	minoff := c.Offset
@@ -529,6 +530,10 @@ func (s *Server) Connz(opts *ConnzOptions) (*Connz, error) {
 // Fills in the ConnInfo from the client.
 // client should be locked.
 func (ci *ConnInfo) fill(client *client, nc net.Conn, now time.Time, auth bool) {
+	// For fast sort if required.
+	rtt := client.getRTT()
+	ci.rtt = int64(rtt)
+
 	ci.Cid = client.cid
 	ci.MQTTClient = client.getMQTTClientID()
 	ci.Kind = client.kindString()
@@ -537,7 +542,7 @@ func (ci *ConnInfo) fill(client *client, nc net.Conn, now time.Time, auth bool) 
 	ci.LastActivity = client.last
 	ci.Uptime = myUptime(now.Sub(client.start))
 	ci.Idle = myUptime(now.Sub(client.last))
-	ci.RTT = client.getRTT().String()
+	ci.RTT = rtt.String()
 	ci.OutMsgs = client.outMsgs
 	ci.OutBytes = client.outBytes
 	ci.NumSubs = uint32(len(client.subs))
@@ -586,7 +591,7 @@ func (c *client) getRTT() time.Duration {
 	if c.rtt == 0 {
 		// If a real client, go ahead and send ping now to get a value
 		// for RTT. For tests and telnet, or if client is closing, etc skip.
-		if c.opts.Lang != "" {
+		if c.opts.Lang != _EMPTY_ {
 			c.sendRTTPingLocked()
 		}
 		return 0
@@ -1517,7 +1522,7 @@ func (s *Server) createVarz(pcpu float64, rss int64) *Varz {
 			Compression:      ws.Compression,
 			HandshakeTimeout: ws.HandshakeTimeout,
 		},
-		Start:                 s.start,
+		Start:                 s.start.UTC(),
 		MaxSubs:               opts.MaxSubs,
 		Cores:                 runtime.NumCPU(),
 		MaxProcs:              runtime.GOMAXPROCS(0),
@@ -1595,7 +1600,7 @@ func (s *Server) updateVarzConfigReloadableFields(v *Varz) {
 	v.MaxPending = opts.MaxPending
 	v.TLSTimeout = opts.TLSTimeout
 	v.WriteDeadline = opts.WriteDeadline
-	v.ConfigLoadTime = s.configTime
+	v.ConfigLoadTime = s.configTime.UTC()
 	// Update route URLs if applicable
 	if s.varzUpdateRouteURLs {
 		v.Cluster.URLs = urlsToStrings(opts.Routes)
@@ -2441,19 +2446,20 @@ func (s *Server) Accountz(optz *AccountzOptions) (*Accountz, error) {
 	if sacc := s.SystemAccount(); sacc != nil {
 		a.SystemAccount = sacc.GetName()
 	}
-	if optz.Account == "" {
+	if optz == nil || optz.Account == _EMPTY_ {
 		a.Accounts = []string{}
 		s.accounts.Range(func(key, value interface{}) bool {
 			a.Accounts = append(a.Accounts, key.(string))
 			return true
 		})
 		return a, nil
-	} else if aInfo, err := s.accountInfo(optz.Account); err != nil {
-		return nil, err
-	} else {
-		a.Account = aInfo
-		return a, nil
 	}
+	aInfo, err := s.accountInfo(optz.Account)
+	if err != nil {
+		return nil, err
+	}
+	a.Account = aInfo
+	return a, nil
 }
 
 func newExtImport(v *serviceImport) ExtImport {
@@ -2466,10 +2472,12 @@ func newExtImport(v *serviceImport) ExtImport {
 		imp.Tracking = v.tracking
 		imp.Invalid = v.invalid
 		imp.Import = jwt.Import{
-			Subject: jwt.Subject(v.from),
+			Subject: jwt.Subject(v.to),
 			Account: v.acc.Name,
 			Type:    jwt.Service,
-			To:      jwt.Subject(v.to),
+			// Deprecated so we duplicate. Use LocalSubject.
+			To:           jwt.Subject(v.from),
+			LocalSubject: jwt.RenamingSubject(v.from),
 		}
 		imp.TrackingHdr = v.trackingHdr
 		imp.Latency = newExtServiceLatency(v.latency)
@@ -2598,7 +2606,7 @@ func (s *Server) accountInfo(accName string) (*AccountInfo, error) {
 	}
 	return &AccountInfo{
 		accName,
-		a.updated,
+		a.updated.UTC(),
 		isSys,
 		a.expired,
 		!a.incomplete,
@@ -3083,6 +3091,9 @@ func (s *Server) healthz(opts *HealthzOptions) *HealthStatus {
 		// Whip through account folders and pull each stream name.
 		fis, _ := os.ReadDir(sdir)
 		for _, fi := range fis {
+			if fi.Name() == snapStagingDir {
+				continue
+			}
 			acc, err := s.LookupAccount(fi.Name())
 			if err != nil {
 				health.Status = na
@@ -3141,7 +3152,8 @@ func (s *Server) healthz(opts *HealthzOptions) *HealthStatus {
 				csa.consumers = make(map[string]*consumerAssignment)
 				for consumer, ca := range sa.consumers {
 					if ca.Group.isMember(ourID) {
-						csa.consumers[consumer] = ca.copyGroup()
+						// Use original here. Not a copy.
+						csa.consumers[consumer] = ca
 					}
 				}
 				nasa[stream] = csa
@@ -3170,7 +3182,7 @@ func (s *Server) healthz(opts *HealthzOptions) *HealthStatus {
 			mset, _ := acc.lookupStream(stream)
 			// Now check consumers.
 			for consumer, ca := range sa.consumers {
-				if !js.isConsumerCurrent(mset, consumer, ca) {
+				if !js.isConsumerHealthy(mset, consumer, ca) {
 					health.Status = na
 					health.Error = fmt.Sprintf("JetStream consumer '%s > %s > %s' is not current", acc, stream, consumer)
 					return health

@@ -434,49 +434,178 @@ func (cc *jetStreamCluster) isStreamCurrent(account, stream string) bool {
 	return false
 }
 
+// Restart the stream in question.
+// Should only be called when the stream is know in a bad state.
+func (js *jetStream) restartStream(acc *Account, csa *streamAssignment) {
+	js.mu.Lock()
+	cc := js.cluster
+	if cc == nil {
+		js.mu.Unlock()
+		return
+	}
+	// Need to lookup the one directly from the meta layer, what we get handed is a copy if coming from isStreamHealthy.
+	asa := cc.streams[acc.Name]
+	if asa == nil {
+		js.mu.Unlock()
+		return
+	}
+	sa := asa[csa.Config.Name]
+	if sa == nil {
+		js.mu.Unlock()
+		return
+	}
+	// Make sure to clear out the raft node if still present in the meta layer.
+	if rg := sa.Group; rg != nil && rg.node != nil {
+		if rg.node.State() != Closed {
+			rg.node.Stop()
+		}
+		rg.node = nil
+	}
+	js.mu.Unlock()
+
+	// Process stream assignment to recreate.
+	js.processStreamAssignment(sa)
+
+	// If we had consumers assigned to this server they will be present in the copy, csa.
+	// They also need to be processed. The csa consumers is a copy of only our consumers,
+	// those assigned to us, but the consumer assignment's there are direct from the meta
+	// layer to make this part much easier and avoid excessive lookups.
+	for _, cca := range csa.consumers {
+		if cca.deleted {
+			continue
+		}
+		// Need to look up original as well here to make sure node is nil.
+		js.mu.Lock()
+		ca := sa.consumers[cca.Name]
+		if ca != nil && ca.Group != nil {
+			// Make sure the node is stopped if still running.
+			if node := ca.Group.node; node != nil && node.State() != Closed {
+				node.Stop()
+			}
+			// Make sure node is wiped.
+			ca.Group.node = nil
+		}
+		js.mu.Unlock()
+		if ca != nil {
+			js.processConsumerAssignment(ca)
+		}
+	}
+}
+
 // isStreamHealthy will determine if the stream is up to date or very close.
 // For R1 it will make sure the stream is present on this server.
 func (js *jetStream) isStreamHealthy(acc *Account, sa *streamAssignment) bool {
-	js.mu.RLock()
-	defer js.mu.RUnlock()
-
-	cc := js.cluster
+	js.mu.Lock()
+	s, cc := js.srv, js.cluster
 	if cc == nil {
 		// Non-clustered mode
+		js.mu.Unlock()
 		return true
 	}
+
+	// Pull the group out.
 	rg := sa.Group
 	if rg == nil {
+		js.mu.Unlock()
 		return false
 	}
-	if rg := sa.Group; rg != nil && (rg.node == nil || rg.node.Healthy()) {
+
+	streamName := sa.Config.Name
+	node := rg.node
+	js.mu.Unlock()
+
+	// First lookup stream and make sure its there.
+	mset, err := acc.lookupStream(streamName)
+	if err != nil {
+		js.restartStream(acc, sa)
+		return false
+	}
+
+	if node == nil || node.Healthy() {
 		// Check if we are processing a snapshot and are catching up.
-		if mset, err := acc.lookupStream(sa.Config.Name); err == nil && !mset.isCatchingUp() {
+		if !mset.isCatchingUp() {
 			return true
 		}
+	} else if node != nil {
+		if node != mset.raftNode() {
+			s.Warnf("Detected stream cluster node skew '%s > %s'", acc.GetName(), streamName)
+			node.Delete()
+			mset.resetClusteredState(nil)
+		} else if node.State() == Closed {
+			js.restartStream(acc, sa)
+		}
 	}
+
 	return false
 }
 
 // isConsumerCurrent will determine if the consumer is up to date.
 // For R1 it will make sure the consunmer is present on this server.
-func (js *jetStream) isConsumerCurrent(mset *stream, consumer string, ca *consumerAssignment) bool {
-	js.mu.RLock()
-	defer js.mu.RUnlock()
+func (js *jetStream) isConsumerHealthy(mset *stream, consumer string, ca *consumerAssignment) bool {
+	if mset == nil {
+		return false
+	}
 
+	js.mu.RLock()
 	cc := js.cluster
 	if cc == nil {
 		// Non-clustered mode
+		js.mu.RUnlock()
 		return true
 	}
+	// These are required.
+	if ca == nil || ca.Group == nil {
+		js.mu.RUnlock()
+		return false
+	}
+	s := js.srv
+	js.mu.RUnlock()
+
+	// Capture RAFT node from assignment.
+	node := ca.Group.node
+
+	// When we try to restart we nil out the node if applicable
+	// and reprocess the consumer assignment.
+	restartConsumer := func() {
+		js.mu.Lock()
+		// Make sure the node is stopped if still running.
+		if node != nil && node.State() != Closed {
+			node.Stop()
+		}
+		ca.Group.node = nil
+		deleted := ca.deleted
+		js.mu.Unlock()
+		if !deleted {
+			js.processConsumerAssignment(ca)
+		}
+	}
+
+	// Check if not running at all.
 	o := mset.lookupConsumer(consumer)
 	if o == nil {
+		restartConsumer()
 		return false
 	}
-	if n := o.raftNode(); n != nil && !n.Current() {
-		return false
+
+	// Check RAFT node state.
+	if node == nil || node.Healthy() {
+		return true
+	} else if node != nil {
+		if node != o.raftNode() {
+			mset.mu.RLock()
+			accName, streamName := mset.acc.GetName(), mset.cfg.Name
+			mset.mu.RUnlock()
+			s.Warnf("Detected consumer cluster node skew '%s > %s'", accName, streamName, consumer)
+			node.Delete()
+			o.deleteWithoutAdvisory()
+			restartConsumer()
+		} else if node.State() == Closed {
+			// We have a consumer, and it should have a running node but it is closed.
+			o.stop()
+			restartConsumer()
+		}
 	}
-	return true
+	return false
 }
 
 // subjectsOverlap checks all existing stream assignments for the account cross-cluster for subject overlap
@@ -637,7 +766,7 @@ func (js *jetStream) setupMetaGroup() error {
 
 	// If we are soliciting leafnode connections and we are sharing a system account and do not disable it with a hint,
 	// we want to move to observer mode so that we extend the solicited cluster or supercluster but do not form our own.
-	cfg.Observer = s.canExtendOtherDomain() && s.opts.JetStreamExtHint != jsNoExtend
+	cfg.Observer = s.canExtendOtherDomain() && s.getOpts().JetStreamExtHint != jsNoExtend
 
 	var bootstrap bool
 	if ps, err := readPeerState(storeDir); err != nil {
@@ -1050,6 +1179,17 @@ func (js *jetStream) monitorCluster() {
 	lt := time.NewTicker(leaderCheckInterval)
 	defer lt.Stop()
 
+	const healthCheckInterval = 2 * time.Minute
+	ht := time.NewTicker(healthCheckInterval)
+	defer ht.Stop()
+
+	// Utility to check health.
+	checkHealth := func() {
+		if hs := s.healthz(nil); hs.Error != _EMPTY_ {
+			s.Warnf("%v", hs.Error)
+		}
+	}
+
 	var (
 		isLeader       bool
 		lastSnapTime   time.Time
@@ -1124,6 +1264,8 @@ func (js *jetStream) monitorCluster() {
 					ru = nil
 					s.Debugf("Recovered JetStream cluster metadata")
 					js.checkForOrphans()
+					// Do a health check here as well.
+					go checkHealth()
 					continue
 				}
 				// FIXME(dlc) - Deal with errors.
@@ -1140,6 +1282,7 @@ func (js *jetStream) monitorCluster() {
 				}
 			}
 			aq.recycle(&ces)
+
 		case isLeader = <-lch:
 			// For meta layer synchronize everyone to our state on becoming leader.
 			if isLeader {
@@ -1160,6 +1303,10 @@ func (js *jetStream) monitorCluster() {
 			if n.Leader() {
 				js.checkClusterSize()
 			}
+		case <-ht.C:
+			// Do this in a separate go routine.
+			go checkHealth()
+
 		case <-lt.C:
 			s.Debugf("Checking JetStream cluster state")
 			// If we have a current leader or had one in the past we can cancel this here since the metaleader
@@ -1728,7 +1875,7 @@ func (js *jetStream) applyMetaEntries(entries []*Entry, ru *recoveryUpdates) (bo
 					js.processUpdateStreamAssignment(sa)
 				}
 			default:
-				panic("JetStream Cluster Unknown meta entry op type")
+				panic(fmt.Sprintf("JetStream Cluster Unknown meta entry op type: %v", entryOp(buf[0])))
 			}
 		}
 	}
@@ -1968,13 +2115,13 @@ func (js *jetStream) monitorStream(mset *stream, sa *streamAssignment, sendSnaps
 	}
 	accName := acc.GetName()
 
-	// Hash of the last snapshot (fixed size in memory).
-	var lastSnap []byte
+	// Used to represent how we can detect a changed state quickly and without representing
+	// a complete and detailed state which could be costly in terms of memory, cpu and GC.
+	// This only entails how many messages, and the first and last sequence of the stream.
+	// This is all that is needed to detect a change, and we can get this from FilteredState()
+	// with and empty filter.
+	var lastState SimpleState
 	var lastSnapTime time.Time
-
-	// Highwayhash key for generating hashes.
-	key := make([]byte, 32)
-	rand.Read(key)
 
 	// Should only to be called from leader.
 	doSnapshot := func() {
@@ -1982,19 +2129,23 @@ func (js *jetStream) monitorStream(mset *stream, sa *streamAssignment, sendSnaps
 			return
 		}
 
-		snap := mset.stateSnapshot()
-		ne, nb := n.Size()
-		hash := highwayhash.Sum(snap, key)
+		// Before we actually calculate the detailed state and encode it, let's check the
+		// simple state to detect any changes.
+		curState := mset.store.FilteredState(0, _EMPTY_)
+
 		// If the state hasn't changed but the log has gone way over
 		// the compaction size then we will want to compact anyway.
 		// This shouldn't happen for streams like it can for pull
 		// consumers on idle streams but better to be safe than sorry!
-		if !bytes.Equal(hash[:], lastSnap) || ne >= compactNumMin || nb >= compactSizeMin {
-			if err := n.InstallSnapshot(snap); err == nil {
-				lastSnap, lastSnapTime = hash[:], time.Now()
-			} else if err != errNoSnapAvailable && err != errNodeClosed {
-				s.Warnf("Failed to install snapshot for '%s > %s' [%s]: %v", mset.acc.Name, mset.name(), n.Group(), err)
-			}
+		ne, nb := n.Size()
+		if curState == lastState && ne < compactNumMin && nb < compactSizeMin {
+			return
+		}
+
+		if err := n.InstallSnapshot(mset.stateSnapshot()); err == nil {
+			lastState, lastSnapTime = curState, time.Now()
+		} else if err != errNoSnapAvailable && err != errNodeClosed {
+			s.Warnf("Failed to install snapshot for '%s > %s' [%s]: %v", mset.acc.Name, mset.name(), n.Group(), err)
 		}
 	}
 
@@ -2009,8 +2160,18 @@ func (js *jetStream) monitorStream(mset *stream, sa *streamAssignment, sendSnaps
 
 	startMigrationMonitoring := func() {
 		if mmt == nil {
-			mmt = time.NewTicker(500 * time.Millisecond)
+			mmt = time.NewTicker(10 * time.Millisecond)
 			mmtc = mmt.C
+		}
+	}
+
+	adjustMigrationMonitoring := func() {
+		const delay = 500 * time.Millisecond
+		if mmt == nil {
+			mmt = time.NewTicker(delay)
+			mmtc = mmt.C
+		} else {
+			mmt.Reset(delay)
 		}
 	}
 
@@ -2164,27 +2325,19 @@ func (js *jetStream) monitorStream(mset *stream, sa *streamAssignment, sendSnaps
 			// Here we are checking if we are not the leader but we have been asked to allow
 			// direct access. We now allow non-leaders to participate in the queue group.
 			if !isLeader && mset != nil {
-				mset.mu.Lock()
-				// Check direct gets first.
-				if mset.cfg.AllowDirect {
-					if mset.directSub == nil && mset.isCurrent() {
-						mset.subscribeToDirect()
-					} else {
-						startDirectAccessMonitoring()
-					}
-				}
-				// Now check for mirror directs as well.
-				if mset.cfg.MirrorDirect {
-					if mset.mirror != nil && mset.mirror.dsub == nil && mset.isCurrent() {
-						mset.subscribeToMirrorDirect()
-					} else {
-						startDirectAccessMonitoring()
-					}
-				}
-				mset.mu.Unlock()
+				startDirectAccessMonitoring()
 			}
 
 		case <-datc:
+			if mset == nil || isRecovering {
+				return
+			}
+			// If we are leader we can stop, we know this is setup now.
+			if isLeader {
+				stopDirectMonitoring()
+				return
+			}
+
 			mset.mu.Lock()
 			ad, md, current := mset.cfg.AllowDirect, mset.cfg.MirrorDirect, mset.isCurrent()
 			if !current {
@@ -2208,7 +2361,7 @@ func (js *jetStream) monitorStream(mset *stream, sa *streamAssignment, sendSnaps
 				mset.subscribeToMirrorDirect()
 			}
 			mset.mu.Unlock()
-			// Stop monitoring.
+			// Stop direct monitoring.
 			stopDirectMonitoring()
 
 		case <-t.C:
@@ -2238,8 +2391,6 @@ func (js *jetStream) monitorStream(mset *stream, sa *streamAssignment, sendSnaps
 
 			// Check to see where we are..
 			rg := mset.raftGroup()
-			ci := js.clusterInfo(rg)
-			mset.checkClusterInfo(ci)
 
 			// Track the new peers and check the ones that are current.
 			mset.mu.RLock()
@@ -2250,6 +2401,13 @@ func (js *jetStream) monitorStream(mset *stream, sa *streamAssignment, sendSnaps
 				stopMigrationMonitoring()
 				continue
 			}
+
+			// Adjust to our normal time delay.
+			adjustMigrationMonitoring()
+
+			// Make sure we have correct cluster information on the other peers.
+			ci := js.clusterInfo(rg)
+			mset.checkClusterInfo(ci)
 
 			newPeers, oldPeers, newPeerSet, oldPeerSet := genPeerInfo(rg.Peers, len(rg.Peers)-replicas)
 
@@ -2288,12 +2446,12 @@ func (js *jetStream) monitorStream(mset *stream, sa *streamAssignment, sendSnaps
 				csa.Group.Cluster = s.cachedClusterName()
 				cc.meta.ForwardProposal(encodeUpdateStreamAssignment(csa))
 				s.Noticef("Scaling down '%s > %s' to %+v", accName, sa.Config.Name, s.peerSetToNames(newPeers))
-
 			} else {
 				// We are the old leader here, from the original peer set.
 				// We are simply waiting on the new peerset to be caught up so we can transfer leadership.
 				var newLeaderPeer, newLeader string
 				neededCurrent, current := replicas/2+1, 0
+
 				for _, r := range ci.Replicas {
 					if r.Current && newPeerSet[r.Peer] {
 						current++
@@ -2305,6 +2463,7 @@ func (js *jetStream) monitorStream(mset *stream, sa *streamAssignment, sendSnaps
 				// Check if we have a quorom.
 				if current >= neededCurrent {
 					s.Noticef("Transfer of stream leader for '%s > %s' to '%s'", accName, sa.Config.Name, newLeader)
+					n.UpdateKnownPeers(newPeers)
 					n.StepDown(newLeaderPeer)
 				}
 			}
@@ -2445,6 +2604,12 @@ func (mset *stream) resetClusteredState(err error) bool {
 	// Stepdown regardless if we are the leader here.
 	if isLeader && node != nil {
 		node.StepDown()
+	}
+
+	// If we detect we are shutting down just return.
+	if js != nil && js.isShuttingDown() {
+		s.Debugf("Will not reset stream, jetstream shutting down")
+		return false
 	}
 
 	// Server
@@ -2673,7 +2838,7 @@ func (js *jetStream) applyStreamEntries(mset *stream, ce *CommittedEntry, isReco
 					}
 				}
 			default:
-				panic("JetStream Cluster Unknown group entry op type!")
+				panic(fmt.Sprintf("JetStream Cluster Unknown group entry op type: %v", op))
 			}
 		} else if e.Type == EntrySnapshot {
 			if !isRecovering && mset != nil {
@@ -3083,19 +3248,23 @@ func (s *Server) removeStream(ourID string, mset *stream, nsa *streamAssignment)
 			node.StepDown(nsa.Group.Preferred)
 		}
 		node.ProposeRemovePeer(ourID)
-		// shut down monitor by shutting down raft
+		// shutdown monitor by shutting down raft.
 		node.Delete()
 	}
 
+	var isShuttingDown bool
 	// Make sure this node is no longer attached to our stream assignment.
 	if js, _ := s.getJetStreamCluster(); js != nil {
 		js.mu.Lock()
 		nsa.Group.node = nil
+		isShuttingDown = js.shuttingDown
 		js.mu.Unlock()
 	}
 
-	// wait for monitor to be shut down
-	mset.monitorWg.Wait()
+	if !isShuttingDown {
+		// wait for monitor to be shutdown.
+		mset.monitorWg.Wait()
+	}
 	mset.stop(true, false)
 }
 
@@ -3899,6 +4068,13 @@ func (js *jetStream) processClusterCreateConsumer(ca *consumerAssignment, state 
 
 		if rg.node != nil {
 			rg.node.Delete()
+			// Clear the node here.
+			rg.node = nil
+		}
+
+		// If we did seem to create a consumer make sure to stop it.
+		if o != nil {
+			o.stop()
 		}
 
 		var result *consumerAssignmentResult
@@ -4503,7 +4679,7 @@ func (js *jetStream) applyConsumerEntries(o *consumer, ce *CommittedEntry, isLea
 				}
 				o.mu.Unlock()
 			default:
-				panic(fmt.Sprintf("JetStream Cluster Unknown group entry op type! %v", entryOp(buf[0])))
+				panic(fmt.Sprintf("JetStream Cluster Unknown group entry op type: %v", entryOp(buf[0])))
 			}
 		}
 	}
@@ -4599,18 +4775,21 @@ func (js *jetStream) processConsumerLeaderChange(o *consumer, isLeader bool) err
 		return errors.New("failed to update consumer leader status")
 	}
 
+	if o == nil || o.isClosed() {
+		return stepDownIfLeader()
+	}
+
 	ca := o.consumerAssignment()
 	if ca == nil {
 		return stepDownIfLeader()
 	}
 	js.mu.Lock()
 	s, account, err := js.srv, ca.Client.serviceAccount(), ca.err
-	client, subject, reply := ca.Client, ca.Subject, ca.Reply
+	client, subject, reply, streamName, consumerName := ca.Client, ca.Subject, ca.Reply, ca.Stream, ca.Name
 	hasResponded := ca.responded
 	ca.responded = true
 	js.mu.Unlock()
 
-	streamName, consumerName := o.streamName(), o.String()
 	acc, _ := s.LookupAccount(account)
 	if acc == nil {
 		return stepDownIfLeader()
@@ -5725,6 +5904,18 @@ func (s *Server) jsClusteredStreamUpdateRequest(ci *ClientInfo, acc *Account, su
 	if isReplicaChange {
 		// We are adding new peers here.
 		if newCfg.Replicas > len(rg.Peers) {
+			// Check if we do not have a cluster assigned, and if we do not make sure we
+			// try to pick one. This could happen with older streams that were assigned by
+			// previous servers.
+			if rg.Cluster == _EMPTY_ {
+				// Prefer placement directrives if we have them.
+				if newCfg.Placement != nil && newCfg.Placement.Cluster != _EMPTY_ {
+					rg.Cluster = newCfg.Placement.Cluster
+				} else {
+					// Fall back to the cluster assignment from the client.
+					rg.Cluster = ci.Cluster
+				}
+			}
 			peers, err := cc.selectPeerGroup(newCfg.Replicas, rg.Cluster, newCfg, rg.Peers, 0, nil)
 			if err != nil {
 				resp.Error = NewJSClusterNoPeersError(err)
@@ -6873,7 +7064,7 @@ func encodeStreamMsg(subject, reply string, hdr, msg []byte, lseq uint64, ts int
 
 // Threshold for compression.
 // TODO(dlc) - Eventually make configurable.
-const compressThreshold = 4 * 1024
+const compressThreshold = 256
 
 // If allowed and contents over the threshold we will compress.
 func encodeStreamMsgAllowCompress(subject, reply string, hdr, msg []byte, lseq uint64, ts int64, compressOK bool) []byte {
@@ -7435,6 +7626,10 @@ func (mset *stream) processSnapshot(snap *streamSnapshot) (e error) {
 		}
 	}
 
+	// Do not let this go on forever.
+	const maxRetries = 3
+	var numRetries int
+
 RETRY:
 	// On retry, we need to release the semaphore we got. Call will be no-op
 	// if releaseSem boolean has not been set to true on successfully getting
@@ -7451,12 +7646,19 @@ RETRY:
 		sub = nil
 	}
 
-	// Block here if we have too many requests in flight.
-	<-s.syncOutSem
-	releaseSem = true
 	if !s.isRunning() {
 		return ErrServerNotRunning
 	}
+
+	numRetries++
+	if numRetries >= maxRetries {
+		// Force a hard reset here.
+		return errFirstSequenceMismatch
+	}
+
+	// Block here if we have too many requests in flight.
+	<-s.syncOutSem
+	releaseSem = true
 
 	// We may have been blocked for a bit, so the reset need to ensure that we
 	// consume the already fired timer.

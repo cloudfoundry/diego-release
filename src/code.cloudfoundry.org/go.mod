@@ -18,36 +18,36 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20230508125710-c36d29225b58
+	code.cloudfoundry.org/archiver v0.0.0-20230522131245-a23cadd462ce
 	code.cloudfoundry.org/bytefmt v0.0.0-20230406175530-3579ae0680eb
-	code.cloudfoundry.org/certsplitter v0.0.0-20230515165652-906ffdf32df6
+	code.cloudfoundry.org/certsplitter v0.0.0-20230522165705-a2c6caf14c29
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20200827173955-6ac4653025b4
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20230504222139-ecebe81f2c0c
 	code.cloudfoundry.org/cfhttp v2.0.0+incompatible
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1-0.20210513172332-4c5ee488a657
 	code.cloudfoundry.org/clock v1.1.0
-	code.cloudfoundry.org/credhub-cli v0.0.0-20230515130523-4bcb92fdb03a
-	code.cloudfoundry.org/debugserver v0.0.0-20230508035730-c4fc5f67e21e
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20230515195705-efc368ee68d3
+	code.cloudfoundry.org/credhub-cli v0.0.0-20230522130856-439bdb21cbd1
+	code.cloudfoundry.org/debugserver v0.0.0-20230522035716-70a733dc508f
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20230522195718-40495b68ac2e
 	code.cloudfoundry.org/dockerdriver v0.0.0-20230418180008-a5b25178092b
-	code.cloudfoundry.org/durationjson v0.0.0-20230515215713-3427f375fdf6
-	code.cloudfoundry.org/eventhub v0.0.0-20230508055757-dccaf66cf23e
-	code.cloudfoundry.org/garden v0.0.0-20230516175132-234178722499
+	code.cloudfoundry.org/durationjson v0.0.0-20230522215716-7a601daf48ee
+	code.cloudfoundry.org/eventhub v0.0.0-20230522060755-8efdeac72e14
+	code.cloudfoundry.org/garden v0.0.0-20230522165130-8444ff5a31d7
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.17.0
-	code.cloudfoundry.org/guardian v0.0.0-20230516175911-f34a4cc2c63e
+	code.cloudfoundry.org/guardian v0.0.0-20230522233452-3f995a45f9c0
 	code.cloudfoundry.org/lager/v3 v3.0.1
-	code.cloudfoundry.org/localip v0.0.0-20230515195708-6e10f6f76fc4
+	code.cloudfoundry.org/localip v0.0.0-20230522195710-2ea90d997658
 	code.cloudfoundry.org/tlsconfig v0.0.0-20230320190829-8f91c367795b
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.44.264
-	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20230510185313-f5e39e5f34c7
+	github.com/aws/aws-sdk-go v1.44.267
+	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20230519004202-7f2db5bd753e
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cloudfoundry-community/go-uaa v0.3.2-0.20221011190625-aaeaae3ce7c2
-	github.com/cloudfoundry/dropsonde v1.0.1-0.20220627224009-409b7756c19d
+	github.com/cloudfoundry/dropsonde v1.1.0
 	github.com/containers/image v3.0.2+incompatible
-	github.com/docker/docker v24.0.0+incompatible
+	github.com/docker/docker v24.0.1+incompatible
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/envoyproxy/go-control-plane v0.11.1-0.20230406144219-ba92d50b6596
 	github.com/fsnotify/fsnotify v1.6.0
@@ -65,11 +65,11 @@ require (
 	github.com/kr/pty v1.1.8
 	github.com/lib/pq v1.10.9
 	github.com/mitchellh/hashstructure v1.1.0
-	github.com/nats-io/nats-server/v2 v2.9.16
+	github.com/nats-io/nats-server/v2 v2.9.17
 	github.com/nats-io/nats.go v1.25.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/onsi/ginkgo/v2 v2.9.5
-	github.com/onsi/gomega v1.27.6
+	github.com/onsi/gomega v1.27.7
 	github.com/onsi/say v1.0.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/opencontainers/image-spec v1.1.0-rc3
@@ -92,7 +92,7 @@ require (
 
 require (
 	code.cloudfoundry.org/commandrunner v0.0.0-20230427153105-c662e812fa6f // indirect
-	code.cloudfoundry.org/go-diodes v0.0.0-20230508203442-8ce2048f62dc // indirect
+	code.cloudfoundry.org/go-diodes v0.0.0-20230522165527-d4e956b4bd30 // indirect
 	filippo.io/edwards25519 v1.0.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/BurntSushi/toml v1.2.1 // indirect
@@ -156,8 +156,8 @@ require (
 	github.com/openzipkin/zipkin-go v0.4.1 // indirect
 	github.com/prometheus/client_golang v1.15.1 // indirect
 	github.com/prometheus/client_model v0.4.0 // indirect
-	github.com/prometheus/common v0.43.0 // indirect
-	github.com/prometheus/procfs v0.9.0 // indirect
+	github.com/prometheus/common v0.44.0 // indirect
+	github.com/prometheus/procfs v0.10.0 // indirect
 	github.com/sirupsen/logrus v1.9.2 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	go.step.sm/crypto v0.30.0 // indirect

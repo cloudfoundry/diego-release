@@ -621,7 +621,7 @@ func (mset *stream) addConsumerWithAssignment(config *ConsumerConfig, oname stri
 	mset.mu.Lock()
 	if mset.client == nil || mset.store == nil || mset.consumers == nil {
 		mset.mu.Unlock()
-		return nil, errors.New("invalid stream")
+		return nil, NewJSStreamInvalidError()
 	}
 
 	// If this one is durable and already exists, we let that be ok as long as only updating what should be allowed.
@@ -1043,10 +1043,12 @@ func (o *consumer) setLeader(isLeader bool) {
 		}
 
 		var err error
-		if o.ackSub, err = o.subscribeInternal(o.ackSubj, o.pushAck); err != nil {
-			o.mu.Unlock()
-			o.deleteWithoutAdvisory()
-			return
+		if o.cfg.AckPolicy != AckNone {
+			if o.ackSub, err = o.subscribeInternal(o.ackSubj, o.pushAck); err != nil {
+				o.mu.Unlock()
+				o.deleteWithoutAdvisory()
+				return
+			}
 		}
 
 		// Setup the internal sub for next message requests regardless.
@@ -2314,6 +2316,16 @@ func (o *consumer) infoWithSnapAndReply(snap bool, reply string) *ConsumerInfo {
 		NumPending:     o.checkNumPending(),
 		PushBound:      o.isPushMode() && o.active,
 	}
+
+	// If we are replicated and we are not the leader we need to pull certain data from our store.
+	if rg != nil && rg.node != nil && !o.isLeader() && o.store != nil {
+		state, _ := o.store.BorrowState()
+		info.Delivered.Consumer, info.Delivered.Stream = state.Delivered.Consumer, state.Delivered.Stream
+		info.AckFloor.Consumer, info.AckFloor.Stream = state.AckFloor.Consumer, state.AckFloor.Stream
+		info.NumAckPending = len(state.Pending)
+		info.NumRedelivered = len(state.Redelivered)
+	}
+
 	// Adjust active based on non-zero etc. Also make UTC here.
 	if !o.ldt.IsZero() {
 		ldt := o.ldt.UTC() // This copies as well.
@@ -3237,12 +3249,81 @@ func (o *consumer) hbTimer() (time.Duration, *time.Timer) {
 	return o.cfg.Heartbeat, time.NewTimer(o.cfg.Heartbeat)
 }
 
+// Check here for conditions when our ack floor may have drifted below the streams first sequence.
+// In general this is accounted for in normal operations, but if the consumer misses the signal from
+// the stream it will not clear the message and move the ack state.
+// Should only be called from consumer leader.
+func (o *consumer) checkAckFloor() {
+	o.mu.RLock()
+	mset, closed, asflr := o.mset, o.closed, o.asflr
+	o.mu.RUnlock()
+
+	if closed || mset == nil {
+		return
+	}
+
+	var ss StreamState
+	mset.store.FastState(&ss)
+
+	// If our floor is equal or greater that is normal and nothing for us to do.
+	if ss.FirstSeq == 0 || asflr >= ss.FirstSeq-1 {
+		return
+	}
+
+	// Process all messages that no longer exist.
+	for seq := asflr + 1; seq < ss.FirstSeq; seq++ {
+		// Check if this message was pending.
+		o.mu.RLock()
+		p, isPending := o.pending[seq]
+		var rdc uint64 = 1
+		if o.rdc != nil {
+			rdc = o.rdc[seq]
+		}
+		o.mu.RUnlock()
+		// If it was pending for us, get rid of it.
+		if isPending {
+			o.processTerm(seq, p.Sequence, rdc)
+		}
+	}
+
+	// Do one final check here.
+	o.mu.Lock()
+	defer o.mu.Unlock()
+
+	// If we are here, and this should be rare, we still are off with our ack floor.
+	// We will set it explicitly to 1 behind our current lowest in pending, or if
+	// pending is empty, to our current delivered -1.
+	if o.asflr < ss.FirstSeq-1 {
+		var psseq, pdseq uint64
+		for seq, p := range o.pending {
+			if psseq == 0 || seq < psseq {
+				psseq, pdseq = seq, p.Sequence
+			}
+		}
+		// If we still have none, set to current delivered -1.
+		if psseq == 0 {
+			psseq, pdseq = o.sseq-1, o.dseq-1
+			// If still not adjusted.
+			if psseq < ss.FirstSeq-1 {
+				psseq, pdseq = ss.FirstSeq-1, ss.FirstSeq-1
+			}
+		}
+		o.asflr, o.adflr = psseq, pdseq
+	}
+}
+
 func (o *consumer) processInboundAcks(qch chan struct{}) {
 	// Grab the server lock to watch for server quit.
 	o.mu.RLock()
 	s := o.srv
 	hasInactiveThresh := o.cfg.InactiveThreshold > 0
 	o.mu.RUnlock()
+
+	// We will check this on entry and periodically.
+	o.checkAckFloor()
+
+	// How often we will check for ack floor drift.
+	var ackFloorCheck = 30 * time.Second
 
 	for {
 		select {
@@ -3257,6 +3338,8 @@ func (o *consumer) processInboundAcks(qch chan struct{}) {
 			if hasInactiveThresh {
 				o.suppressDeletion()
 			}
+		case <-time.After(ackFloorCheck):
+			o.checkAckFloor()
 		case <-qch:
 			return
 		case <-s.quitCh:
@@ -4312,6 +4395,13 @@ func (o *consumer) deleteWithoutAdvisory() error {
 // Delete will delete the consumer for the associated stream and send advisories.
 func (o *consumer) delete() error {
 	return o.stopWithFlags(true, false, true, true)
+}
+
+// To test for closed state.
+func (o *consumer) isClosed() bool {
+	o.mu.RLock()
+	defer o.mu.RUnlock()
+	return o.closed
 }
 
 func (o *consumer) stopWithFlags(dflag, sdflag, doSignal, advisory bool) error {
