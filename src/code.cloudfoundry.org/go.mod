@@ -8,7 +8,7 @@ replace (
 	code.cloudfoundry.org/guardian => ../guardian
 	code.cloudfoundry.org/idmapper => ../idmapper
 
-	github.com/docker/docker => github.com/docker/docker v20.10.13+incompatible
+	github.com/docker/docker => github.com/docker/docker v20.10.25+incompatible
 	github.com/nats-io/nats.go => github.com/nats-io/nats.go v1.16.1-0.20220906180156-a1017eec10b0
 	github.com/onsi/gomega => github.com/onsi/gomega v1.27.1
 	github.com/prometheus/client_golang => github.com/prometheus/client_golang v1.11.1
