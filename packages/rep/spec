@@ -138,6 +138,7 @@ files:
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/sts/internal/endpoints/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/sts/types/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/auth/bearer/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/awserr/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/awsutil/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/client/*.go # gosub
@@ -175,6 +176,7 @@ files:
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/service/ecr/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/service/sso/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/service/sso/ssoiface/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/service/ssooidc/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/service/sts/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/service/sts/stsiface/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/*.go # gosub
