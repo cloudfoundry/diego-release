@@ -30,7 +30,7 @@ code.cloudfoundry.org/clock/fakeclock
 # code.cloudfoundry.org/commandrunner v0.0.0-20230612151827-2b11a2b4e9b8
 ## explicit; go 1.20
 code.cloudfoundry.org/commandrunner
-# code.cloudfoundry.org/credhub-cli v0.0.0-20230710130528-3355d59eadab
+# code.cloudfoundry.org/credhub-cli v0.0.0-20230717130308-c75b7a7d0bf9
 ## explicit; go 1.19
 code.cloudfoundry.org/credhub-cli/credhub
 code.cloudfoundry.org/credhub-cli/credhub/auth
@@ -139,7 +139,7 @@ github.com/Microsoft/go-winio/pkg/guid
 # github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 ## explicit; go 1.15
 github.com/ajstarks/svgo
-# github.com/aws/aws-sdk-go v1.44.299
+# github.com/aws/aws-sdk-go v1.44.300
 ## explicit; go 1.11
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/auth/bearer
@@ -184,7 +184,7 @@ github.com/aws/aws-sdk-go/service/sso/ssoiface
 github.com/aws/aws-sdk-go/service/ssooidc
 github.com/aws/aws-sdk-go/service/sts
 github.com/aws/aws-sdk-go/service/sts/stsiface
-# github.com/aws/aws-sdk-go-v2 v1.18.1
+# github.com/aws/aws-sdk-go-v2 v1.19.0
 ## explicit; go 1.15
 github.com/aws/aws-sdk-go-v2
 github.com/aws/aws-sdk-go-v2/aws
@@ -205,10 +205,10 @@ github.com/aws/aws-sdk-go-v2/internal/shareddefaults
 github.com/aws/aws-sdk-go-v2/internal/strings
 github.com/aws/aws-sdk-go-v2/internal/sync/singleflight
 github.com/aws/aws-sdk-go-v2/internal/timeconv
-# github.com/aws/aws-sdk-go-v2/config v1.18.27
+# github.com/aws/aws-sdk-go-v2/config v1.18.28
 ## explicit; go 1.15
 github.com/aws/aws-sdk-go-v2/config
-# github.com/aws/aws-sdk-go-v2/credentials v1.13.26
+# github.com/aws/aws-sdk-go-v2/credentials v1.13.27
 ## explicit; go 1.15
 github.com/aws/aws-sdk-go-v2/credentials
 github.com/aws/aws-sdk-go-v2/credentials/ec2rolecreds
@@ -217,43 +217,43 @@ github.com/aws/aws-sdk-go-v2/credentials/endpointcreds/internal/client
 github.com/aws/aws-sdk-go-v2/credentials/processcreds
 github.com/aws/aws-sdk-go-v2/credentials/ssocreds
 github.com/aws/aws-sdk-go-v2/credentials/stscreds
-# github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.4
+# github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.5
 ## explicit; go 1.15
 github.com/aws/aws-sdk-go-v2/feature/ec2/imds
 github.com/aws/aws-sdk-go-v2/feature/ec2/imds/internal/config
-# github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.34
+# github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.35
 ## explicit; go 1.15
 github.com/aws/aws-sdk-go-v2/internal/configsources
-# github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.28
+# github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.29
 ## explicit; go 1.15
 github.com/aws/aws-sdk-go-v2/internal/endpoints/v2
-# github.com/aws/aws-sdk-go-v2/internal/ini v1.3.35
+# github.com/aws/aws-sdk-go-v2/internal/ini v1.3.36
 ## explicit; go 1.15
 github.com/aws/aws-sdk-go-v2/internal/ini
-# github.com/aws/aws-sdk-go-v2/service/ecr v1.18.13
+# github.com/aws/aws-sdk-go-v2/service/ecr v1.18.14
 ## explicit; go 1.15
 github.com/aws/aws-sdk-go-v2/service/ecr
 github.com/aws/aws-sdk-go-v2/service/ecr/internal/endpoints
 github.com/aws/aws-sdk-go-v2/service/ecr/types
-# github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.16.4
+# github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.16.5
 ## explicit; go 1.15
 github.com/aws/aws-sdk-go-v2/service/ecrpublic
 github.com/aws/aws-sdk-go-v2/service/ecrpublic/internal/endpoints
 github.com/aws/aws-sdk-go-v2/service/ecrpublic/types
-# github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.28
+# github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.29
 ## explicit; go 1.15
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url
-# github.com/aws/aws-sdk-go-v2/service/sso v1.12.12
+# github.com/aws/aws-sdk-go-v2/service/sso v1.12.13
 ## explicit; go 1.15
 github.com/aws/aws-sdk-go-v2/service/sso
 github.com/aws/aws-sdk-go-v2/service/sso/internal/endpoints
 github.com/aws/aws-sdk-go-v2/service/sso/types
-# github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.12
+# github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.13
 ## explicit; go 1.15
 github.com/aws/aws-sdk-go-v2/service/ssooidc
 github.com/aws/aws-sdk-go-v2/service/ssooidc/internal/endpoints
 github.com/aws/aws-sdk-go-v2/service/ssooidc/types
-# github.com/aws/aws-sdk-go-v2/service/sts v1.19.2
+# github.com/aws/aws-sdk-go-v2/service/sts v1.19.3
 ## explicit; go 1.15
 github.com/aws/aws-sdk-go-v2/service/sts
 github.com/aws/aws-sdk-go-v2/service/sts/internal/endpoints
@@ -322,7 +322,7 @@ github.com/cloudfoundry/dropsonde/runtime_stats
 # github.com/cloudfoundry/go-socks5 v0.0.0-20180221174514-54f73bdb8a8e
 ## explicit
 github.com/cloudfoundry/go-socks5
-# github.com/cloudfoundry/socks5-proxy v0.2.93
+# github.com/cloudfoundry/socks5-proxy v0.2.94
 ## explicit; go 1.20
 github.com/cloudfoundry/socks5-proxy
 # github.com/cloudfoundry/sonde-go v0.0.0-20230710164515-a0a43d1dbbf8
@@ -381,8 +381,8 @@ github.com/docker/distribution/registry/storage/cache/memory
 github.com/docker/docker/api/types/versions
 github.com/docker/docker/pkg/homedir
 github.com/docker/docker/pkg/term
-# github.com/docker/docker-credential-helpers v0.7.0
-## explicit; go 1.18
+# github.com/docker/docker-credential-helpers v0.8.0
+## explicit; go 1.19
 github.com/docker/docker-credential-helpers/client
 github.com/docker/docker-credential-helpers/credentials
 # github.com/docker/go-connections v0.4.0
@@ -573,13 +573,14 @@ github.com/moby/term/windows
 # github.com/nats-io/jwt/v2 v2.4.1
 ## explicit; go 1.18
 github.com/nats-io/jwt/v2
-# github.com/nats-io/nats-server/v2 v2.9.19
+# github.com/nats-io/nats-server/v2 v2.9.20
 ## explicit; go 1.19
 github.com/nats-io/nats-server/v2
 github.com/nats-io/nats-server/v2/conf
 github.com/nats-io/nats-server/v2/internal/ldap
 github.com/nats-io/nats-server/v2/logger
 github.com/nats-io/nats-server/v2/server
+github.com/nats-io/nats-server/v2/server/certstore
 github.com/nats-io/nats-server/v2/server/pse
 github.com/nats-io/nats-server/v2/server/sysmem
 # github.com/nats-io/nats.go v1.27.1 => github.com/nats-io/nats.go v1.16.1-0.20220906180156-a1017eec10b0
