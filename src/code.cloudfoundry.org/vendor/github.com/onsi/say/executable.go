@@ -29,10 +29,15 @@ type CommandGroup struct {
 
 func ExitIfError(context string, err error) {
 	if err != nil {
-		Fprintln(os.Stderr, 0, Red(context))
-		Fprintln(os.Stderr, 0, Red(err.Error()))
+		Fpln(os.Stderr, "{{red}}%s{{/}}", context)
+		Fplni(os.Stderr, 1, "{{red}}%s{{/}}", err.Error())
 		os.Exit(1)
 	}
+}
+
+func ExitWith(format string, args ...any) {
+	Fpln(os.Stderr, "{{red}}"+format+"{{/}}", args...)
+	os.Exit(1)
 }
 
 func Invoke(executable Executable) {
@@ -56,7 +61,7 @@ func Invoke(executable Executable) {
 		}
 	}
 
-	Println(0, Red("Unkown command: %s", os.Args[1]))
+	Fpln(os.Stderr, "{{red}}Unknown command:%s{{/}}", os.Args[1])
 	usage(executable)
 }
 
@@ -76,40 +81,40 @@ func usage(executable Executable) {
 				}
 			}
 		}
-		Fprintln(os.Stderr, 0, Red("Unkown command: %s", os.Args[2]))
+		Fpln(os.Stderr, "{{red}}Unknown command: %s{{/}}", os.Args[2])
 	}
 
-	Fprintln(os.Stderr, 0, Green(executable.Name))
-	Fprintln(os.Stderr, 0, executable.Description)
+	Fpln(os.Stderr, "{{green}}%s{{/}}", executable.Name)
+	Fpln(os.Stderr, executable.Description)
 
-	Fprintln(os.Stderr, 0, "%s", Cyan("Help and Autocompletion"))
-	Fprintln(os.Stderr, 0, strings.Repeat("-", len("Help and Autocompletion")))
-	Fprintln(os.Stderr, 1, "%s %s", Green("help"), LightGray("[command] - Show this help, or detailed help for the passed in command"))
-	Fprintln(os.Stderr, 1, "%s %s", Green("completions"), LightGray("Generate BASH Completions for %s", executable.Name))
-	Fprintln(os.Stderr, 0, "")
+	Fpln(os.Stderr, "{{cyan}}Help and Autocomplete{{/}}")
+	Fpln(os.Stderr, strings.Repeat("-", len("Help and Autocomplete")))
+	Fplni(os.Stderr, 1, "{{green}}help {{light-gray}}[command] - Show this help, or detailed help for the passed in command{{/}}")
+	Fplni(os.Stderr, 1, "{{green}}completions {{light-gray}} - Generate BASH Completions for %s{{/}}", executable.Name)
+	Fpln(os.Stderr, "")
 
 	for _, commandGroup := range executable.CommandGroups {
 		usageForCommandGroup(commandGroup, false)
-		Println(0, "")
+		Fpln(os.Stderr, "")
 	}
 
 }
 
 func usageForCommandGroup(commandGroup CommandGroup, includeFlags bool) {
-	Fprintln(os.Stderr, 0, "%s - %s", Cyan(commandGroup.Name), LightGray(commandGroup.Description))
-	Fprintln(os.Stderr, 0, strings.Repeat("-", len(commandGroup.Name)+3+len(commandGroup.Description)))
+	Fpln(os.Stderr, "{{cyan}}%s{{/}} - {{light-gray}}%s{{/}}", commandGroup.Name, commandGroup.Description)
+	Fpln(os.Stderr, strings.Repeat("-", len(commandGroup.Name)+3+len(commandGroup.Description)))
 	for _, command := range commandGroup.Commands {
 		usageForCommand(1, command, includeFlags)
 	}
 }
 
-func usageForCommand(indentation int, command Command, includeFlags bool) {
-	Fprintln(os.Stderr, indentation, "%s %s", Green(command.Name), LightGray(command.Description))
+func usageForCommand(indentation uint, command Command, includeFlags bool) {
+	Fplni(os.Stderr, indentation, "{{green}}%s {{light-gray}}%s{{/}}", command.Name, command.Description)
 	if includeFlags {
 		buffer := &bytes.Buffer{}
 		command.FlagSet.SetOutput(buffer)
 		command.FlagSet.PrintDefaults()
-		Fprintln(os.Stderr, indentation, buffer.String())
+		Fplni(os.Stderr, indentation, buffer.String())
 	}
 }
 
@@ -143,5 +148,5 @@ function _%s() {
 complete -F _%s %s
 `, executable.Name, strings.Join(availableCommands, " "), executable.Name, executable.Name)
 
-	Println(0, out)
+	Pln(out)
 }

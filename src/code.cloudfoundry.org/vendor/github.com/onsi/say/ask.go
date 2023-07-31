@@ -16,25 +16,25 @@ func readLine() string {
 	return strings.Replace(line, "\n", "", 1)
 }
 
-func Ask(text string) string {
-	Print(0, text+":\n> ")
+func Ask(f string, args ...any) string {
+	Plni(0, f, args...)
 	response := readLine()
 	return response
 }
 
 func AskWithValidation(text string, validation func(string) error) string {
-	Print(0, text+":\n> ")
+	Pln(text + ":")
 	response := readLine()
 	err := validation(response)
 	if err != nil {
-		Println(0, Red(err.Error()))
+		Plni(0, "{{red}}%s{{/}}", err.Error())
 		return AskWithValidation(text, validation)
 	}
 	return response
 }
 
 func AskWithDefault(text string, defaultResponse string) string {
-	Print(0, "%s [%s]:\n> ", text, Green(defaultResponse))
+	P("%s [{{green}}%s{{}}]:\n> ", text, defaultResponse)
 	response := readLine()
 	if response == "" {
 		return defaultResponse
@@ -43,14 +43,14 @@ func AskWithDefault(text string, defaultResponse string) string {
 }
 
 func AskForIntegerWithDefault(text string, defaultResponse int) int {
-	Print(0, "%s [%s]:\n> ", text, Green("%d", defaultResponse))
+	P("%s [{{green}}%d{{/}}]:\n> ", text, defaultResponse)
 	response := readLine()
 	if response == "" {
 		return defaultResponse
 	}
 	asInteger, err := strconv.Atoi(response)
 	if err != nil {
-		Println(0, Red("That was an invalid response..."))
+		Pln("{{red}}That was an invalid response...{{/}}")
 		return AskForIntegerWithDefault(text, defaultResponse)
 	}
 
@@ -58,7 +58,7 @@ func AskForIntegerWithDefault(text string, defaultResponse int) int {
 }
 
 func AskForBoolWithDefault(text string, defaultResponse bool) bool {
-	Print(0, "%s [%s]:\n> ", text, Green("%t", defaultResponse))
+	P("%s [{{green}}%t{{/}}]:\n> ", text, defaultResponse)
 	response := readLine()
 	if response == "true" {
 		return true
@@ -69,20 +69,20 @@ func AskForBoolWithDefault(text string, defaultResponse bool) bool {
 	if response == "" {
 		return defaultResponse
 	}
-	Println(0, Red("That was an invalid response... try 'true' or 'false'"))
+	Pln("{{red}}That was an invalid response... try 'true' or 'false'{{/}}")
 	return AskForBoolWithDefault(text, defaultResponse)
 }
 
 func Pick(text string, options []string) string {
-	Println(0, "%s:", text)
+	Pln("%s:", text)
 	for i, option := range options {
-		Println(1, "[%s] %s", Green("%d", i), option)
+		Plni(1, "[{{green}}%d{{/}}] %s", i, option)
 	}
-	Print(0, "> ")
+	P("> ")
 	response := readLine()
 	index, err := strconv.Atoi(response)
 	if err != nil {
-		Println(0, Red("That was an invalid selection..."))
+		Pln("{{red}}That was an invalid selection...{{/}}")
 		return Pick(text, options)
 	}
 	return options[index]
