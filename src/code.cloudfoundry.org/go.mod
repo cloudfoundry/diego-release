@@ -76,7 +76,7 @@ require (
 	github.com/openzipkin/zipkin-go v0.4.1
 	github.com/pborman/getopt v1.1.0
 	github.com/pkg/errors v0.9.1
-	github.com/pkg/sftp v1.13.5
+	github.com/pkg/sftp v1.13.6
 	github.com/spf13/cobra v1.7.0
 	github.com/square/certstrap v1.3.0
 	github.com/tedsuo/ifrit v0.0.0-20230516164442-7862c310ad26
