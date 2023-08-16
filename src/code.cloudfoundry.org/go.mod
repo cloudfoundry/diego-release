@@ -32,17 +32,17 @@ require (
 	code.cloudfoundry.org/dockerdriver v0.0.0-20230612152316-63929c441d20
 	code.cloudfoundry.org/durationjson v0.0.0-20230612152544-cdd056aaf83d
 	code.cloudfoundry.org/eventhub v0.0.0-20230612151808-5a2f17c5e7b7
-	code.cloudfoundry.org/garden v0.0.0-20230810185310-50dbb20744dc
+	code.cloudfoundry.org/garden v0.0.0-20230815180424-064b8daa7e12
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.21.0
-	code.cloudfoundry.org/guardian v0.0.0-20230810185839-612bee071318
+	code.cloudfoundry.org/guardian v0.0.0-20230815181117-ac203b96608a
 	code.cloudfoundry.org/lager/v3 v3.0.2
 	code.cloudfoundry.org/localip v0.0.0-20230612151424-f52ecafaffc4
 	code.cloudfoundry.org/tlsconfig v0.0.0-20230612153104-23c0622de227
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.44.323
-	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20230810190713-7f8e9de63180
+	github.com/aws/aws-sdk-go v1.44.325
+	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20230815210656-c8857611a995
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cloudfoundry-community/go-uaa v0.3.2-0.20221011190625-aaeaae3ce7c2
 	github.com/cloudfoundry/dropsonde v1.1.0
@@ -135,7 +135,7 @@ require (
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
-	github.com/google/pprof v0.0.0-20230811205829-9131a7e9cc17 // indirect
+	github.com/google/pprof v0.0.0-20230816055901-76846d4d6a3b // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/hashicorp/go-version v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
@@ -166,8 +166,8 @@ require (
 	golang.org/x/text v0.12.0 // indirect
 	golang.org/x/tools v0.12.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20230814215434-ca7cfce7776a // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20230814215434-ca7cfce7776a // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20230815205213-6bfd019c3878 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20230815205213-6bfd019c3878 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
