@@ -20,7 +20,7 @@ replace (
 require (
 	code.cloudfoundry.org/archiver v0.0.0-20230725151503-0d924a8ae786
 	code.cloudfoundry.org/bytefmt v0.0.0-20230612151507-41ef4d1f67a4
-	code.cloudfoundry.org/certsplitter v0.0.0-20230810143351-fbb1b8cb6efa
+	code.cloudfoundry.org/certsplitter v0.0.0-20230817144051-ee1db1ff5235
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20230612154734-4f65ecb98d93
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20230612154728-004af19bc755
 	code.cloudfoundry.org/cfhttp v2.0.0+incompatible
@@ -35,7 +35,7 @@ require (
 	code.cloudfoundry.org/garden v0.0.0-20230815180424-064b8daa7e12
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.21.0
-	code.cloudfoundry.org/guardian v0.0.0-20230815181117-ac203b96608a
+	code.cloudfoundry.org/guardian v0.0.0-20230817162430-9984cf369779
 	code.cloudfoundry.org/lager/v3 v3.0.2
 	code.cloudfoundry.org/localip v0.0.0-20230612151424-f52ecafaffc4
 	code.cloudfoundry.org/tlsconfig v0.0.0-20230612153104-23c0622de227
@@ -135,7 +135,7 @@ require (
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
-	github.com/google/pprof v0.0.0-20230816055901-76846d4d6a3b // indirect
+	github.com/google/pprof v0.0.0-20230816232805-2861d24d8f05 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/hashicorp/go-version v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
