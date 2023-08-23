@@ -13,11 +13,12 @@ import (
 type container struct {
 	logger lager.Logger
 
-	handle          string
-	containerizer   Containerizer
-	volumizer       Volumizer
-	networker       Networker
-	propertyManager PropertyManager
+	handle                 string
+	containerizer          Containerizer
+	volumizer              Volumizer
+	networker              Networker
+	propertyManager        PropertyManager
+	networkMetricsProvider ContainerNetworkMetricsProvider
 }
 
 func (c *container) Handle() string {
@@ -145,6 +146,11 @@ func (c *container) Metrics() (garden.Metrics, error) {
 		}
 	}
 
+	networkStat, err := c.networkMetricsProvider.Get(c.logger, c.handle)
+	if err != nil {
+		return garden.Metrics{}, fmt.Errorf("could not read container network statistics, %w", err)
+	}
+
 	return garden.Metrics{
 		CPUStat:        actualContainerMetrics.CPU,
 		MemoryStat:     actualContainerMetrics.Memory,
@@ -152,6 +158,7 @@ func (c *container) Metrics() (garden.Metrics, error) {
 		PidStat:        actualContainerMetrics.Pid,
 		Age:            actualContainerMetrics.Age,
 		CPUEntitlement: actualContainerMetrics.CPUEntitlement,
+		NetworkStat:    networkStat,
 	}, nil
 }
 

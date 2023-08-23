@@ -8,12 +8,12 @@ import (
 	"time"
 
 	"github.com/cloudfoundry/dropsonde/metrics"
-	specs "github.com/opencontainers/runtime-spec/specs-go"
+	"github.com/opencontainers/runtime-spec/specs-go"
 
 	"code.cloudfoundry.org/garden"
 	spec "code.cloudfoundry.org/guardian/gardener/container-spec"
 	"code.cloudfoundry.org/lager/v3"
-	multierror "github.com/hashicorp/go-multierror"
+	"github.com/hashicorp/go-multierror"
 )
 
 //go:generate counterfeiter . SysInfoProvider
@@ -29,6 +29,7 @@ import (
 //go:generate counterfeiter . PeaCleaner
 //go:generate counterfeiter . Sleeper
 
+const ContainerInterfaceKey = "garden.network.interface"
 const ContainerIPKey = "garden.network.container-ip"
 const BridgeIPKey = "garden.network.host-ip"
 const ExternalIPKey = "garden.network.external-ip"
@@ -173,6 +174,8 @@ type Gardener struct {
 	PeaCleaner PeaCleaner
 
 	AllowPrivilgedContainers bool
+
+	ContainerNetworkMetricsProvider ContainerNetworkMetricsProvider
 }
 
 func New(
@@ -188,21 +191,23 @@ func New(
 	logger lager.Logger,
 	maxContainers uint64,
 	allowPrivilegedContainers bool,
+	containerNetworkMetricsProvider ContainerNetworkMetricsProvider,
 ) *Gardener {
 
 	gdnr := Gardener{
-		UidGenerator:             uidGenerator,
-		BulkStarter:              bulkStarter,
-		SysInfoProvider:          sysInfoProvider,
-		Networker:                networker,
-		Volumizer:                volumizer,
-		Containerizer:            containerizer,
-		PropertyManager:          propertyManager,
-		MaxContainers:            maxContainers,
-		Restorer:                 restorer,
-		PeaCleaner:               peaCleaner,
-		AllowPrivilgedContainers: allowPrivilegedContainers,
-		Logger:                   logger,
+		UidGenerator:                    uidGenerator,
+		BulkStarter:                     bulkStarter,
+		SysInfoProvider:                 sysInfoProvider,
+		Networker:                       networker,
+		Volumizer:                       volumizer,
+		Containerizer:                   containerizer,
+		PropertyManager:                 propertyManager,
+		MaxContainers:                   maxContainers,
+		Restorer:                        restorer,
+		PeaCleaner:                      peaCleaner,
+		AllowPrivilgedContainers:        allowPrivilegedContainers,
+		Logger:                          logger,
+		ContainerNetworkMetricsProvider: containerNetworkMetricsProvider,
 
 		Sleep: time.Sleep,
 	}
@@ -332,12 +337,13 @@ func (g *Gardener) Lookup(handle string) (garden.Container, error) {
 
 func (g *Gardener) lookup(handle string) garden.Container {
 	return &container{
-		logger:          g.Logger,
-		handle:          handle,
-		containerizer:   g.Containerizer,
-		volumizer:       g.Volumizer,
-		networker:       g.Networker,
-		propertyManager: g.PropertyManager,
+		logger:                 g.Logger,
+		handle:                 handle,
+		containerizer:          g.Containerizer,
+		volumizer:              g.Volumizer,
+		networker:              g.Networker,
+		propertyManager:        g.PropertyManager,
+		networkMetricsProvider: g.ContainerNetworkMetricsProvider,
 	}
 }
 
