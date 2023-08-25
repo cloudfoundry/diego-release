@@ -3,7 +3,7 @@
 A list of container metrics emitted by Diego. Each metric is a separate value in an envelope. Some metrics are separated into different envelopes to ensure Loggregator v1 subscribers can still receive these metrics.
 
 | Metric                 | Description                                                                                                                                                | Type    | Unit                 |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |---------| -------------------- |
+| ---------------------- |------------------------------------------------------------------------------------------------------------------------------------------------------------|---------| -------------------- |
 | `absolute_entitlement` | Length of time the container is entitled to spend using CPU.                                                                                               | Gauge   | nanoseconds          |
 | `absolute_usage`       | Total length of time container has spent using CPU.                                                                                                        | Gauge   | nanoseconds          |
 | `container_age`        | Length of time container has existed for.                                                                                                                  | Gauge   | nanoseconds          |
@@ -14,5 +14,5 @@ A list of container metrics emitted by Diego. Each metric is a separate value in
 | `memory_quota`         | User requested memory quota set on the DesiredLRP for this container.                                                                                      | Gauge   | bytes                |
 | `spike_start`          | Time at which a spike over a containers CPU entitlement started.                                                                                           | Gauge   | unix epoch timestamp |
 | `spike_end`            | Time at which a spike over a container's CPU entitlement ended.                                                                                            | Gauge   | unix epoch timestamp |
-| `rx_bytes`             | Bytes received by the container.                                                                                                                           | Counter | bytes                |
-| `tx_bytes`             | Bytes transmitted by the container.                                                                                                                        | Counter | bytes                |
+| `rx_bytes`             | Received network traffic.                                                                                                                                  | Counter | bytes                |
+| `tx_bytes`             | Transmitted network traffic.                                                                                                                               | Counter | bytes                |
