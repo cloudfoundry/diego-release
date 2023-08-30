@@ -39,6 +39,7 @@ type Client struct {
 	RequiredUserGroups   []string    `json:"required_user_groups,omitempty"`
 	ClientSecret         string      `json:"client_secret,omitempty"`
 	LastModified         int64       `json:"lastModified,omitempty"`
+	AllowPublic          bool        `json:"allowpublic,omitempty"`
 }
 
 // Identifier returns the field used to uniquely identify a Client.

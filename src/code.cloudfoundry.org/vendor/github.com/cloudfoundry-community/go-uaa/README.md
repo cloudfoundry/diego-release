@@ -53,7 +53,10 @@ import (
 
 func main() {
 	// construct the API
-	api, err := uaa.New("https://uaa.example.net", "", uaa.WithClientCredentials("client-id", "client-secret", uaa.JSONWebToken)
+	api, err := uaa.New(
+		"https://uaa.example.net",
+		uaa.WithClientCredentials("client-id", "client-secret", uaa.JSONWebToken),
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
