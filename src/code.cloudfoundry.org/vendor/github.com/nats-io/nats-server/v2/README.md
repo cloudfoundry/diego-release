@@ -32,13 +32,13 @@ If you are interested in contributing to NATS, read about our...
 [Docker-Image]: https://img.shields.io/docker/pulls/_/nats.svg
 [Docker-Url]: https://hub.docker.com/_/nats
 [Slack-Image]: https://img.shields.io/badge/chat-on%20slack-green
-[Slack-Url]: https://join.slack.com/t/natsio/shared_invite/zt-41e6tnmb-qCt63606MKR1YxIHZf4ICA
+[Slack-Url]: https://slack.nats.io
 [Fossa-Url]: https://app.fossa.io/projects/git%2Bgithub.com%2Fnats-io%2Fnats-server?ref=badge_shield
 [Fossa-Image]: https://app.fossa.io/api/projects/git%2Bgithub.com%2Fnats-io%2Fnats-server.svg?type=shield
 [Build-Status-Url]: https://travis-ci.com/github/nats-io/nats-server
 [Build-Status-Image]: https://travis-ci.com/nats-io/nats-server.svg?branch=main
-[Release-Url]: https://github.com/nats-io/nats-server/releases/tag/v2.9.21
-[Release-image]: https://img.shields.io/badge/release-v2.9.20-1eb0fc.svg
+[Release-Url]: https://github.com/nats-io/nats-server/releases/tag/v2.9.22
+[Release-image]: https://img.shields.io/badge/release-v2.9.22-1eb0fc.svg
 [Coverage-Url]: https://coveralls.io/r/nats-io/nats-server?branch=main
 [Coverage-image]: https://coveralls.io/repos/github/nats-io/nats-server/badge.svg?branch=main
 [ReportCard-Url]: https://goreportcard.com/report/nats-io/nats-server
