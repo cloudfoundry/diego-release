@@ -4,6 +4,7 @@ import (
 	"archive/tar"
 	"archive/zip"
 	"compress/gzip"
+	"fmt"
 	"io"
 	"os"
 
@@ -11,11 +12,12 @@ import (
 )
 
 type ArchiveFile struct {
-	Name string
-	Body string
-	Mode int64
-	Dir  bool
-	Link string
+	Name   string
+	Body   string
+	Mode   int64
+	Dir    bool
+	Link   string
+	Xattrs map[string]string
 }
 
 func CreateZipArchive(filename string, files []ArchiveFile) {
@@ -113,6 +115,14 @@ func WriteTar(destination io.Writer, files []ArchiveFile) {
 				Mode: mode,
 				Size: int64(len(file.Body)),
 			}
+		}
+
+		if header.PAXRecords == nil {
+			header.PAXRecords = map[string]string{}
+		}
+		for key, value := range file.Xattrs {
+			xattrName := fmt.Sprintf("SCHILY.xattr.%s", key)
+			header.PAXRecords[xattrName] = value
 		}
 
 		err := w.WriteHeader(header)
