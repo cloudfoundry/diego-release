@@ -67,8 +67,8 @@ require (
 	github.com/kr/pty v1.1.8
 	github.com/lib/pq v1.10.9
 	github.com/mitchellh/hashstructure v1.1.0
-	github.com/nats-io/nats-server/v2 v2.10.0
-	github.com/nats-io/nats.go v1.29.0
+	github.com/nats-io/nats-server/v2 v2.10.1
+	github.com/nats-io/nats.go v1.30.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/onsi/ginkgo/v2 v2.12.1
 	github.com/onsi/gomega v1.27.10
@@ -168,8 +168,8 @@ require (
 	golang.org/x/text v0.13.0 // indirect
 	golang.org/x/tools v0.13.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20230913181813-007df8e322eb // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20230913181813-007df8e322eb // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20230920183334-c177e329c48b // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20230920183334-c177e329c48b // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
