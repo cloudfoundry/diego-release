@@ -12,7 +12,7 @@ if mount | grep -q $old_instance_identity_dir; then
 fi
 
 old_shared_data_dir=${old_data_dir}/shared_data
-mount | grep $old_shared_data_dir | cut -d' ' -f3 | awk -F"/" '{print NF " " $0}' | sort -n -r | cut -d ' ' -f 2 | xargs -n1 -I {} umount -f {}
+mount | grep $old_shared_data_dir | cut -d' ' -f3 | awk -F"/" '{print NF " " $0}' | sort -n -r | cut -d ' ' -f 2 | xargs -I {} umount -f {}
 
 rm -rf "${old_instance_identity_dir}"
 rm -rf "${old_data_dir}/trusted_certs"
