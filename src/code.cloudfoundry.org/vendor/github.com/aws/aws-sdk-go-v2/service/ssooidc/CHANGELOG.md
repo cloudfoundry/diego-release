@@ -1,3 +1,11 @@
+# v1.17.1 (2023-09-22)
+
+* No change notes available for this release.
+
+# v1.17.0 (2023-09-20)
+
+* **Feature**: Update FIPS endpoints in aws-us-gov.
+
 # v1.16.0 (2023-09-18)
 
 * **Announcement**: [BREAKFIX] Change in MaxResults datatype from value to pointer type in cognito-sync service.
