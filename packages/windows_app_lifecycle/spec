@@ -4,7 +4,7 @@ name: windows_app_lifecycle
 dependencies:
   - diego-sshd
   - healthcheck
-  - golang-1-linux
+  - golang-1.21-linux
 
 files:
   - code.cloudfoundry.org/go.mod
