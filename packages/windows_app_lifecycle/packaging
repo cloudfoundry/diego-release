@@ -8,7 +8,7 @@ mv ${BOSH_INSTALL_TARGET}/src .
 DEST="$PWD/bin"
 mkdir -p ${DEST}
 
-source /var/vcap/packages/golang-1-linux/bosh/compile.env
+source /var/vcap/packages/golang-*-linux/bosh/compile.env
 
 pushd src/code.cloudfoundry.org
 GOOS=windows CGO_ENABLED=0 go build -o ${DEST}/builder.exe -tags=windows2012R2 -a -installsuffix static code.cloudfoundry.org/buildpackapplifecycle/builder
