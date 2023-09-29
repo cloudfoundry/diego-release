@@ -4,7 +4,7 @@ mkdir -p ${BOSH_INSTALL_TARGET}/src
 cp -a . ${BOSH_INSTALL_TARGET}/src
 
 pushd "${BOSH_INSTALL_TARGET}"
-  source /var/vcap/packages/golang-1-linux/bosh/compile.env
+  source /var/vcap/packages/golang-*-linux/bosh/compile.env
 
   pushd src/code.cloudfoundry.org
       go install github.com/onsi/ginkgo/v2/ginkgo
