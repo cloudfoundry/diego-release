@@ -13,7 +13,7 @@ if ($LASTEXITCODE -ge 8) {
     Write-Error "robocopy.exe /E ${PWD} src /xd src"
 }
 
-. C:\var\vcap\packages\golang-1-windows\bosh\compile.ps1
+. C:\var\vcap\packages\golang-*-windows\bosh\compile.ps1
 
 $pkg_name="route-emitter"
 $pkg_path="code.cloudfoundry.org/route-emitter/cmd/route-emitter"
