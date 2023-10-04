@@ -34,17 +34,17 @@ require (
 	code.cloudfoundry.org/dockerdriver v0.0.0-20230929203524-81d58da7707c
 	code.cloudfoundry.org/durationjson v0.0.0-20230929204104-1b58a12de975
 	code.cloudfoundry.org/eventhub v0.0.0-20230612151808-5a2f17c5e7b7
-	code.cloudfoundry.org/garden v0.0.0-20230926181103-e7edbb59045e
+	code.cloudfoundry.org/garden v0.0.0-20231003181205-2b0c633b6c60
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.24.0
-	code.cloudfoundry.org/guardian v0.0.0-20230926181618-ab4058a6455e
+	code.cloudfoundry.org/guardian v0.0.0-20231003182229-63a6f1275122
 	code.cloudfoundry.org/lager/v3 v3.0.2
 	code.cloudfoundry.org/localip v0.0.0-20230612151424-f52ecafaffc4
 	code.cloudfoundry.org/tlsconfig v0.0.0-20230929201433-6cd2b78aba25
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.45.20
-	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20231003164434-ad0f9a5a91f2
+	github.com/aws/aws-sdk-go v1.45.22
+	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20231003182221-725682229e60
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cloudfoundry-community/go-uaa v0.3.2
 	github.com/cloudfoundry/dropsonde v1.1.0
@@ -158,7 +158,7 @@ require (
 	github.com/opencontainers/runc v1.1.9 // indirect
 	github.com/opencontainers/runtime-spec v1.1.0 // indirect
 	github.com/prometheus/client_golang v1.17.0 // indirect
-	github.com/prometheus/client_model v0.4.0 // indirect
+	github.com/prometheus/client_model v0.5.0 // indirect
 	github.com/prometheus/common v0.44.0 // indirect
 	github.com/prometheus/procfs v0.12.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
