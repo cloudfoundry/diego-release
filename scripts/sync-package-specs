@@ -5,9 +5,9 @@ set -e
 export PATH="$PWD/bin:$PATH"
 
 (
-  mkdir -p bin
-  cd "src/gosub"
-  go build -o "../../bin/gosub" .
+mkdir -p bin
+cd "src/gosub"
+go build -o "../../bin/gosub" .
 )
 
 function sync_package() {
@@ -16,32 +16,32 @@ function sync_package() {
   shift
 
   (
-    set -e
+  set -e
 
-    cd src/code.cloudfoundry.org
+  cd src/code.cloudfoundry.org
 
-    spec=../../packages/${bosh_pkg}/spec
+  spec=../../packages/${bosh_pkg}/spec
 
-    {
-      cat $spec | grep -v '# gosub'
+  {
+    cat $spec | grep -v '# gosub'
 
-      for package in $(gosub list "$@"); do
-        repo=$(echo ${2} | cut -f1-3 -d/)
-        if [ -d "../../src/code.cloudfoundry.org/vendor/${package}" ]; then
-          package="code.cloudfoundry.org/vendor/${package}"
-        fi
-        echo ${package} | sed -e 's/\(.*\)/  - \1\/*.go # gosub/g'
-        if ls ../../src/${package}/*.s >/dev/null 2>&1; then
-          echo ${package} | sed -e 's/\(.*\)/  - \1\/*.s # gosub/g'
-        fi
-        if ls ../../src/${package}/*.h >/dev/null 2>&1; then
-          echo ${package} | sed -e 's/\(.*\)/  - \1\/*.h # gosub/g'
-        fi
-      done
-    } > $spec.new
+    for package in $(gosub list "$@"); do
+      repo=$(echo ${2} | cut -f1-3 -d/)
+      if [ -d "../../src/code.cloudfoundry.org/vendor/${package}" ]; then
+        package="code.cloudfoundry.org/vendor/${package}"
+      fi
+      echo ${package} | sed -e 's/\(.*\)/  - \1\/*.go # gosub/g'
+      if ls ../../src/${package}/*.s >/dev/null 2>&1; then
+        echo ${package} | sed -e 's/\(.*\)/  - \1\/*.s # gosub/g'
+      fi
+      if ls ../../src/${package}/*.h >/dev/null 2>&1; then
+        echo ${package} | sed -e 's/\(.*\)/  - \1\/*.h # gosub/g'
+      fi
+    done
+  } > $spec.new
 
-    mv $spec.new $spec
-  )
+  mv $spec.new $spec
+)
 }
 
 sync_package auctioneer              -app  code.cloudfoundry.org/auctioneer/cmd/auctioneer &
