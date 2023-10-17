@@ -486,7 +486,7 @@ func newFileStoreWithCreated(fcfg FileStoreConfig, cfg StreamConfig, created tim
 
 	// If we have max msgs per subject make sure the is also enforced.
 	if fs.cfg.MaxMsgsPer > 0 {
-		fs.enforceMsgPerSubjectLimit()
+		fs.enforceMsgPerSubjectLimit(false)
 	}
 
 	// Grab first sequence for check below while we have lock.
@@ -589,7 +589,7 @@ func (fs *fileStore) UpdateConfig(cfg *StreamConfig) error {
 	}
 
 	if fs.cfg.MaxMsgsPer > 0 && fs.cfg.MaxMsgsPer < old_cfg.MaxMsgsPer {
-		fs.enforceMsgPerSubjectLimit()
+		fs.enforceMsgPerSubjectLimit(true)
 	}
 	fs.mu.Unlock()
 
@@ -1907,13 +1907,10 @@ func (fs *fileStore) expireMsgsOnRecover() {
 		}
 		// Make sure we do subject cleanup as well.
 		mb.ensurePerSubjectInfoLoaded()
-		for subj := range mb.fss {
-			fs.removePerSubject(subj)
-		}
-		// Make sure we do subject cleanup as well.
-		mb.ensurePerSubjectInfoLoaded()
-		for subj := range mb.fss {
-			fs.removePerSubject(subj)
+		for subj, ss := range mb.fss {
+			for i := uint64(0); i < ss.Msgs; i++ {
+				fs.removePerSubject(subj)
+			}
 		}
 		mb.dirtyCloseWithRemove(true)
 		deleted++
@@ -3190,14 +3187,16 @@ func (fs *fileStore) enforceBytesLimit() {
 // We will make sure to go through all msg blocks etc. but in practice this
 // will most likely only be the last one, so can take a more conservative approach.
 // Lock should be held.
-func (fs *fileStore) enforceMsgPerSubjectLimit() {
+func (fs *fileStore) enforceMsgPerSubjectLimit(fireCallback bool) {
 	maxMsgsPer := uint64(fs.cfg.MaxMsgsPer)
 
-	// We want to suppress callbacks from remove during this process
+	// We may want to suppress callbacks from remove during this process
 	// since these should have already been deleted and accounted for.
-	cb := fs.scb
-	fs.scb = nil
-	defer func() { fs.scb = cb }()
+	if !fireCallback {
+		cb := fs.scb
+		fs.scb = nil
+		defer func() { fs.scb = cb }()
+	}
 
 	var numMsgs uint64
 
@@ -3251,6 +3250,9 @@ func (fs *fileStore) enforceMsgPerSubjectLimit() {
 			}
 			// Grab the ss entry for this subject in case sparse.
 			mb.mu.Lock()
+			if mb.cacheNotLoaded() {
+				mb.loadMsgsWithLock()
+			}
 			mb.ensurePerSubjectInfoLoaded()
 			ss := mb.fss[subj]
 			if ss != nil && ss.firstNeedsUpdate {
@@ -3491,14 +3493,13 @@ func (fs *fileStore) removeMsg(seq uint64, secure, viaLimits, needFSLock bool) (
 	} else if !isEmpty {
 		// Out of order delete.
 		mb.dmap.Insert(seq)
-		// Check if <25% utilization and minimum size met.
-		if mb.rbytes > compactMinimum && !isLastBlock {
-			// Remove the interior delete records
-			rbytes := mb.rbytes - uint64(mb.dmap.Size()*emptyRecordLen)
-			if rbytes>>2 > mb.bytes {
-				mb.compact()
-				fs.kickFlushStateLoop()
-			}
+		// Make simple check here similar to Compact(). If we can save 50% and over a certain threshold do inline.
+		// All other more thorough cleanup will happen in syncBlocks logic.
+		// Note that we do not have to store empty records for the deleted, so don't use to calculate.
+		// TODO(dlc) - This should not be inline, should kick the sync routine.
+		if mb.rbytes > compactMinimum && mb.bytes*2 < mb.rbytes && !isLastBlock {
+			mb.compact()
+			fs.kickFlushStateLoop()
 		}
 	}
 
@@ -3572,7 +3573,9 @@ func (mb *msgBlock) compact() {
 	}
 
 	buf := mb.cache.buf
-	nbuf := make([]byte, 0, len(buf))
+	nbuf := getMsgBlockBuf(len(buf))
+	// Recycle our nbuf when we are done.
+	defer recycleMsgBlockBuf(nbuf)
 
 	var le = binary.LittleEndian
 	var firstSet bool
@@ -3622,9 +3625,16 @@ func (mb *msgBlock) compact() {
 	}
 
 	// Handle compression
-	var err error
-	if nbuf, err = mb.cmp.Compress(nbuf); err != nil {
-		return
+	if mb.cmp != NoCompression {
+		cbuf, err := mb.cmp.Compress(nbuf)
+		if err != nil {
+			return
+		}
+		meta := &CompressionInfo{
+			Algorithm:    mb.cmp,
+			OriginalSize: uint64(len(nbuf)),
+		}
+		nbuf = append(meta.MarshalMetadata(), cbuf...)
 	}
 
 	// Check for encryption.
@@ -4701,6 +4711,24 @@ func (mb *msgBlock) decompressIfNeeded(buf []byte) ([]byte, error) {
 	}
 }
 
+// Lock should be held.
+func (mb *msgBlock) ensureRawBytesLoaded() error {
+	if mb.rbytes > 0 {
+		return nil
+	}
+	f, err := os.Open(mb.mfn)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	if fi, err := f.Stat(); fi != nil && err == nil {
+		mb.rbytes = uint64(fi.Size())
+	} else {
+		return err
+	}
+	return nil
+}
+
 // Sync msg and index files as needed. This is called from a timer.
 func (fs *fileStore) syncBlocks() {
 	fs.mu.RLock()
@@ -4709,8 +4737,10 @@ func (fs *fileStore) syncBlocks() {
 		return
 	}
 	blks := append([]*msgBlock(nil), fs.blks...)
+	lmb := fs.lmb
 	fs.mu.RUnlock()
 
+	var markDirty bool
 	for _, mb := range blks {
 		// Do actual sync. Hold lock for consistency.
 		mb.mu.Lock()
@@ -4722,24 +4752,33 @@ func (fs *fileStore) syncBlocks() {
 		if mb.mfd != nil && mb.sinceLastWriteActivity() > closeFDsIdle {
 			mb.dirtyCloseWithRemove(false)
 		}
+		// Check if we should compact here as well.
+		// Do not compact last mb.
+		if mb != lmb && mb.ensureRawBytesLoaded() == nil && mb.rbytes > mb.bytes {
+			mb.compact()
+			markDirty = true
+		}
+
 		// Check if we need to sync. We will not hold lock during actual sync.
-		var fn string
-		if mb.needSync {
+		needSync, fn := mb.needSync, mb.mfn
+		if needSync {
 			// Flush anything that may be pending.
-			if mb.pendingWriteSizeLocked() > 0 {
-				mb.flushPendingMsgsLocked()
-			}
-			fn = mb.mfn
-			mb.needSync = false
+			mb.flushPendingMsgsLocked()
 		}
 		mb.mu.Unlock()
 
 		// Check if we need to sync.
 		// This is done not holding any locks.
-		if fn != _EMPTY_ {
+		if needSync {
 			if fd, _ := os.OpenFile(fn, os.O_RDWR, defaultFilePerms); fd != nil {
-				fd.Sync()
+				canClear := fd.Sync() == nil
 				fd.Close()
+				// Only clear sync flag on success.
+				if canClear {
+					mb.mu.Lock()
+					mb.needSync = false
+					mb.mu.Unlock()
+				}
 			}
 		}
 	}
@@ -4748,8 +4787,12 @@ func (fs *fileStore) syncBlocks() {
 	fs.syncTmr = time.AfterFunc(fs.fcfg.SyncInterval, fs.syncBlocks)
 	fn := filepath.Join(fs.fcfg.StoreDir, msgDir, streamStreamStateFile)
 	syncAlways := fs.fcfg.SyncAlways
+	if markDirty {
+		fs.dirty++
+	}
 	fs.mu.Unlock()
 
+	// Sync state file if we are not running with sync always.
 	if !syncAlways {
 		if fd, _ := os.OpenFile(fn, os.O_RDWR, defaultFilePerms); fd != nil {
 			fd.Sync()
@@ -6185,8 +6228,10 @@ func (fs *fileStore) Compact(seq uint64) (uint64, error) {
 		bytes += mb.bytes
 		// Make sure we do subject cleanup as well.
 		mb.ensurePerSubjectInfoLoaded()
-		for subj := range mb.fss {
-			fs.removePerSubject(subj)
+		for subj, ss := range mb.fss {
+			for i := uint64(0); i < ss.Msgs; i++ {
+				fs.removePerSubject(subj)
+			}
 		}
 		// Now close.
 		mb.dirtyCloseWithRemove(true)
@@ -6629,7 +6674,12 @@ func (mb *msgBlock) recalculateFirstForSubj(subj string, startSeq uint64, ss *Si
 
 	var le = binary.LittleEndian
 	for slot := startSlot; slot < len(mb.cache.idx); slot++ {
-		li := int(mb.cache.idx[slot]&^hbit) - mb.cache.off
+		bi := mb.cache.idx[slot] &^ hbit
+		if bi == dbit {
+			// delete marker so skip.
+			continue
+		}
+		li := int(bi) - mb.cache.off
 		if li >= len(mb.cache.buf) {
 			ss.First = ss.Last
 			return
@@ -6639,10 +6689,7 @@ func (mb *msgBlock) recalculateFirstForSubj(subj string, startSeq uint64, ss *Si
 		slen := int(le.Uint16(hdr[20:]))
 		if subj == string(buf[msgHdrSize:msgHdrSize+slen]) {
 			seq := le.Uint64(hdr[4:])
-			if seq < mb.first.seq || seq&ebit != 0 {
-				continue
-			}
-			if mb.dmap.Exists(seq) {
+			if seq < mb.first.seq || seq&ebit != 0 || mb.dmap.Exists(seq) {
 				continue
 			}
 			ss.First = seq
