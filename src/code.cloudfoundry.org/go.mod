@@ -52,7 +52,7 @@ require (
 	github.com/docker/docker v24.0.6+incompatible
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/envoyproxy/go-control-plane v0.11.1
-	github.com/fsnotify/fsnotify v1.6.0
+	github.com/fsnotify/fsnotify v1.7.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/go-test/deep v1.1.0
