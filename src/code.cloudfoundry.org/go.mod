@@ -22,13 +22,13 @@ replace (
 require (
 	code.cloudfoundry.org/archiver v0.0.0-20231025144553-f19bf6305121
 	code.cloudfoundry.org/bytefmt v0.0.0-20231017140541-3b893ed0421b
-	code.cloudfoundry.org/certsplitter v0.0.0-20231011172219-616132db0203
+	code.cloudfoundry.org/certsplitter v0.0.0-20231030182437-e70b934b241d
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20230612154734-4f65ecb98d93
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20230911184912-89625e5d5967
 	code.cloudfoundry.org/cfhttp v2.0.0+incompatible
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1-0.20210513172332-4c5ee488a657
 	code.cloudfoundry.org/clock v1.1.0
-	code.cloudfoundry.org/credhub-cli v0.0.0-20231023130441-09cc92dff9cb
+	code.cloudfoundry.org/credhub-cli v0.0.0-20231030130452-94343e94cef6
 	code.cloudfoundry.org/debugserver v0.0.0-20231025144512-5380d389e103
 	code.cloudfoundry.org/diego-logging-client v0.0.0-20231025145016-71347dcb070a
 	code.cloudfoundry.org/dockerdriver v0.0.0-20231025145110-1eefbc443913
@@ -43,13 +43,13 @@ require (
 	code.cloudfoundry.org/tlsconfig v0.0.0-20231017135636-f0e44068c22f
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.46.3
+	github.com/aws/aws-sdk-go v1.46.7
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20231024185945-8841054dbdb8
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cloudfoundry-community/go-uaa v0.3.2
 	github.com/cloudfoundry/dropsonde v1.1.0
 	github.com/containers/image v3.0.2+incompatible
-	github.com/docker/docker v24.0.6+incompatible
+	github.com/docker/docker v24.0.7+incompatible
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/envoyproxy/go-control-plane v0.11.1
 	github.com/fsnotify/fsnotify v1.7.0
@@ -67,7 +67,7 @@ require (
 	github.com/kr/pty v1.1.8
 	github.com/lib/pq v1.10.9
 	github.com/mitchellh/hashstructure v1.1.0
-	github.com/nats-io/nats-server/v2 v2.10.3
+	github.com/nats-io/nats-server/v2 v2.10.4
 	github.com/nats-io/nats.go v1.31.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/onsi/ginkgo/v2 v2.13.0
@@ -119,13 +119,13 @@ require (
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cloudfoundry/go-socks5 v0.0.0-20180221174514-54f73bdb8a8e // indirect
-	github.com/cloudfoundry/socks5-proxy v0.2.101 // indirect
+	github.com/cloudfoundry/socks5-proxy v0.2.102 // indirect
 	github.com/cloudfoundry/sonde-go v0.0.0-20230911203642-fa89d986ae20 // indirect
 	github.com/cncf/xds/go v0.0.0-20231016030527-8bd2eac9fb4a // indirect
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/containers/storage v1.45.1 // indirect
 	github.com/coreos/go-systemd/v22 v22.5.0 // indirect
-	github.com/creack/pty v1.1.18 // indirect
+	github.com/creack/pty v1.1.20 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/distribution/reference v0.5.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
@@ -133,7 +133,7 @@ require (
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-metrics v0.0.1 // indirect
 	github.com/envoyproxy/protoc-gen-validate v1.0.2 // indirect
-	github.com/go-logr/logr v1.2.4 // indirect
+	github.com/go-logr/logr v1.3.0 // indirect
 	github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible // indirect
@@ -169,8 +169,8 @@ require (
 	golang.org/x/text v0.13.0 // indirect
 	golang.org/x/tools v0.14.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20231016165738-49dd2c1f3d0b // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20231016165738-49dd2c1f3d0b // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20231030173426-d783a09b4405 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20231030173426-d783a09b4405 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

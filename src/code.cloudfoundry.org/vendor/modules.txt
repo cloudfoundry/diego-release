@@ -6,7 +6,7 @@ code.cloudfoundry.org/archiver/extractor/test_helper
 # code.cloudfoundry.org/bytefmt v0.0.0-20231017140541-3b893ed0421b
 ## explicit; go 1.20
 code.cloudfoundry.org/bytefmt
-# code.cloudfoundry.org/certsplitter v0.0.0-20231011172219-616132db0203
+# code.cloudfoundry.org/certsplitter v0.0.0-20231030182437-e70b934b241d
 ## explicit; go 1.20
 code.cloudfoundry.org/certsplitter/cmd/certsplitter
 # code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20230612154734-4f65ecb98d93
@@ -30,7 +30,7 @@ code.cloudfoundry.org/clock/fakeclock
 # code.cloudfoundry.org/commandrunner v0.0.0-20230612151827-2b11a2b4e9b8
 ## explicit; go 1.20
 code.cloudfoundry.org/commandrunner
-# code.cloudfoundry.org/credhub-cli v0.0.0-20231023130441-09cc92dff9cb
+# code.cloudfoundry.org/credhub-cli v0.0.0-20231030130452-94343e94cef6
 ## explicit; go 1.21
 code.cloudfoundry.org/credhub-cli/credhub
 code.cloudfoundry.org/credhub-cli/credhub/auth
@@ -139,7 +139,7 @@ github.com/Microsoft/go-winio/pkg/guid
 # github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 ## explicit; go 1.15
 github.com/ajstarks/svgo
-# github.com/aws/aws-sdk-go v1.46.3
+# github.com/aws/aws-sdk-go v1.46.7
 ## explicit; go 1.11
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/auth/bearer
@@ -325,7 +325,7 @@ github.com/cloudfoundry/dropsonde/runtime_stats
 # github.com/cloudfoundry/go-socks5 v0.0.0-20180221174514-54f73bdb8a8e
 ## explicit
 github.com/cloudfoundry/go-socks5
-# github.com/cloudfoundry/socks5-proxy v0.2.101
+# github.com/cloudfoundry/socks5-proxy v0.2.102
 ## explicit; go 1.21
 github.com/cloudfoundry/socks5-proxy
 # github.com/cloudfoundry/sonde-go v0.0.0-20230911203642-fa89d986ae20
@@ -360,7 +360,7 @@ github.com/containers/image/types
 # github.com/coreos/go-systemd/v22 v22.5.0
 ## explicit; go 1.12
 github.com/coreos/go-systemd/v22/dbus
-# github.com/creack/pty v1.1.18
+# github.com/creack/pty v1.1.20
 ## explicit; go 1.13
 github.com/creack/pty
 # github.com/cyphar/filepath-securejoin v0.2.4
@@ -380,7 +380,7 @@ github.com/docker/distribution/registry/client/auth/challenge
 github.com/docker/distribution/registry/client/transport
 github.com/docker/distribution/registry/storage/cache
 github.com/docker/distribution/registry/storage/cache/memory
-# github.com/docker/docker v24.0.6+incompatible => github.com/docker/docker v20.10.25+incompatible
+# github.com/docker/docker v24.0.7+incompatible => github.com/docker/docker v20.10.25+incompatible
 ## explicit
 github.com/docker/docker/api/types/versions
 github.com/docker/docker/pkg/homedir
@@ -429,8 +429,8 @@ github.com/fsnotify/fsnotify
 # github.com/ghodss/yaml v1.0.0
 ## explicit
 github.com/ghodss/yaml
-# github.com/go-logr/logr v1.2.4
-## explicit; go 1.16
+# github.com/go-logr/logr v1.3.0
+## explicit; go 1.18
 github.com/go-logr/logr
 github.com/go-logr/logr/funcr
 # github.com/go-sql-driver/mysql v1.7.1
@@ -577,7 +577,7 @@ github.com/moby/term/windows
 # github.com/nats-io/jwt/v2 v2.5.2
 ## explicit; go 1.18
 github.com/nats-io/jwt/v2
-# github.com/nats-io/nats-server/v2 v2.10.3
+# github.com/nats-io/nats-server/v2 v2.10.4
 ## explicit; go 1.20
 github.com/nats-io/nats-server/v2
 github.com/nats-io/nats-server/v2/conf
@@ -853,10 +853,10 @@ google.golang.org/appengine/internal/log
 google.golang.org/appengine/internal/remote_api
 google.golang.org/appengine/internal/urlfetch
 google.golang.org/appengine/urlfetch
-# google.golang.org/genproto/googleapis/api v0.0.0-20231016165738-49dd2c1f3d0b
+# google.golang.org/genproto/googleapis/api v0.0.0-20231030173426-d783a09b4405
 ## explicit; go 1.19
 google.golang.org/genproto/googleapis/api/expr/v1alpha1
-# google.golang.org/genproto/googleapis/rpc v0.0.0-20231016165738-49dd2c1f3d0b
+# google.golang.org/genproto/googleapis/rpc v0.0.0-20231030173426-d783a09b4405
 ## explicit; go 1.19
 google.golang.org/genproto/googleapis/rpc/status
 # google.golang.org/grpc v1.59.0
