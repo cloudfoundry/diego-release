@@ -11,15 +11,4 @@ function check-metrics-documentation() {
   fi
 }
 
-function reformat() {
-  modified_src=$(${SCRIPTS_DIR}/reformat)
-  if [ -n "$modified_src" ]; then
-    echo $'\e[31mthe following src files are reformatted and not staged:\e[0m'
-    echo
-    echo "$modified_src"
-    exit 1
-  fi
-}
-
 check-metrics-documentation
-
