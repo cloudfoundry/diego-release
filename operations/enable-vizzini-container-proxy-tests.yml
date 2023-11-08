@@ -1,7 +1,0 @@
----
-- type: replace
-  path: /instance_groups/name=vizzini/jobs/name=vizzini/properties/enable_container_proxy_tests?
-  value: true
-- type: replace
-  path: /instance_groups/name=vizzini/jobs/name=vizzini/properties/vizzini?/container_proxy?/ca?
-  value: ((application_ca.certificate))
