@@ -36,7 +36,7 @@ require (
 	code.cloudfoundry.org/eventhub v0.0.0-20231101144817-e1b5e1cd15a3
 	code.cloudfoundry.org/garden v0.0.0-20231107181549-21c262319eb4
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
-	code.cloudfoundry.org/goshims v0.26.0
+	code.cloudfoundry.org/goshims v0.27.0
 	code.cloudfoundry.org/guardian v0.0.0-20231107182602-cbdd7088b881
 	code.cloudfoundry.org/lager/v3 v3.0.2
 	code.cloudfoundry.org/localip v0.0.0-20231101144618-f2950077affe
@@ -84,8 +84,8 @@ require (
 	github.com/tedsuo/ifrit v0.0.0-20230516164442-7862c310ad26
 	github.com/tedsuo/rata v1.0.0
 	github.com/vito/go-sse v1.0.0
-	golang.org/x/crypto v0.14.0
-	golang.org/x/net v0.17.0
+	golang.org/x/crypto v0.15.0
+	golang.org/x/net v0.18.0
 	golang.org/x/oauth2 v0.13.0
 	golang.org/x/sys v0.14.0
 	golang.org/x/time v0.4.0
