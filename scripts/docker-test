@@ -1,5 +1,0 @@
-#!/bin/bash
-set -e -u
-
-cd $(dirname $0)
-./docker-shell ./scripts/test.sh "$@"
