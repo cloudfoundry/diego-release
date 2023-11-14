@@ -1,3 +1,15 @@
+# v1.7.0 (2023-11-13)
+
+* **Feature**: Replace the legacy config parser with a modern, less-strict implementation. Parsing failures within a section will now simply ignore the invalid line rather than silently drop the entire section.
+
+# v1.6.0 (2023-11-09.2)
+
+* **Feature**: BREAKFIX: In order to support subproperty parsing, invalid property definitions must not be ignored
+
+# v1.5.2 (2023-11-09)
+
+* **Dependency Update**: Updated to the latest SDK module versions
+
 # v1.5.1 (2023-11-07)
 
 * **Bug Fix**: Fix subproperty performance regression

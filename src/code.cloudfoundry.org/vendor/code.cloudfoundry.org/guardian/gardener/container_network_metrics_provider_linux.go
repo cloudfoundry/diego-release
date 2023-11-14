@@ -2,72 +2,61 @@ package gardener
 
 import (
 	"bytes"
+	"flag"
 	"fmt"
-	"path/filepath"
+	"os"
 	"strconv"
 	"strings"
 
 	"code.cloudfoundry.org/garden"
+	"code.cloudfoundry.org/guardian/kawasaki/netns"
 	"code.cloudfoundry.org/lager/v3"
+	"github.com/docker/docker/pkg/reexec"
+	"github.com/vishvananda/netlink"
 )
 
-type SysFSContainerNetworkMetricsProvider struct {
-	containerizer   Containerizer
-	propertyManager PropertyManager
-}
+func init() {
+	reexec.Register("fetch-container-network-metrics", func() {
+		var netNsPath, ifName string
 
-func NewSysFSContainerNetworkMetricsProvider(
-	containerizer Containerizer,
-	propertyManager PropertyManager,
-) *SysFSContainerNetworkMetricsProvider {
-	return &SysFSContainerNetworkMetricsProvider{
-		containerizer:   containerizer,
-		propertyManager: propertyManager,
-	}
-}
+		flag.StringVar(&netNsPath, "netNsPath", "", "netNsPath")
+		flag.StringVar(&ifName, "ifName", "", "ifName")
+		flag.Parse()
 
-func (l *SysFSContainerNetworkMetricsProvider) Get(logger lager.Logger, handle string) (*garden.ContainerNetworkStat, error) {
-	log := logger.Session("container-network-metrics")
+		fd, err := os.Open(netNsPath)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "opening netns '%s': %s", netNsPath, err)
+			os.Exit(1)
+		}
+		defer fd.Close()
 
-	ifName, found := l.propertyManager.Get(handle, ContainerInterfaceKey)
-	if !found || ifName == "" {
-		return nil, nil
-	}
-
-	stdout := new(bytes.Buffer)
-	stderr := new(bytes.Buffer)
-
-	process, err := l.containerizer.Run(log, handle, garden.ProcessSpec{
-		Path: "cat",
-		Args: []string{
-			networkStatPath(ifName, "rx_bytes"),
-			networkStatPath(ifName, "tx_bytes"),
-		},
-	}, garden.ProcessIO{
-		Stdout: stdout,
-		Stderr: stderr,
+		if err = (&netns.Execer{}).Exec(fd, func() error {
+			link, err := netlink.LinkByName(ifName)
+			if err != nil {
+				return fmt.Errorf("could not get link '%s', %w", ifName, err)
+			}
+			fmt.Print((&ContainerNetworkStatMarshaller{}).MarshalLink(link))
+			return nil
+		}); err != nil {
+			fmt.Fprintf(os.Stderr, err.Error())
+			os.Exit(1)
+		}
 	})
+}
 
-	if err != nil {
-		return nil, fmt.Errorf("running process failed, %w", err)
-	}
+type Opener func(path string) (*os.File, error)
 
-	exitStatus, err := process.Wait()
-	if err != nil {
-		return nil, err
-	}
+func (o Opener) Open(path string) (*os.File, error) {
+	return o(path)
+}
 
-	if exitStatus != 0 {
-		return nil, fmt.Errorf("running process failed with exit status %d, error %q", exitStatus, stderr.String())
-	}
+type ContainerNetworkStatMarshaller struct {
+}
 
-	stats := strings.Split(strings.TrimSpace(stdout.String()), "\n")
+func (c *ContainerNetworkStatMarshaller) Unmarshal(s string) (*garden.ContainerNetworkStat, error) {
+	stats := strings.Split(s, ",")
 	if len(stats) != 2 {
-		return nil, fmt.Errorf("expected two values but got %q", stdout.String())
-	}
-
-	for idx, s := range stats {
-		stats[idx] = strings.TrimSpace(s)
+		return nil, fmt.Errorf("expected two values but got %q", s)
 	}
 
 	rxBytes, err := strconv.ParseUint(stats[0], 10, 64)
@@ -86,6 +75,63 @@ func (l *SysFSContainerNetworkMetricsProvider) Get(logger lager.Logger, handle s
 	}, nil
 }
 
-func networkStatPath(ifName, stat string) string {
-	return filepath.Join("/sys/class/net", ifName, "statistics", stat)
+func (c *ContainerNetworkStatMarshaller) MarshalLink(link netlink.Link) string {
+	statistics := link.Attrs().Statistics
+	return fmt.Sprintf("%d,%d", statistics.RxBytes, statistics.TxBytes)
+}
+
+type LinuxContainerNetworkMetricsProvider struct {
+	containerizer                  Containerizer
+	propertyManager                PropertyManager
+	fileOpener                     Opener
+	containerNetworkStatMarshaller *ContainerNetworkStatMarshaller
+}
+
+func NewLinuxContainerNetworkMetricsProvider(
+	containerizer Containerizer,
+	propertyManager PropertyManager,
+	fileOpener Opener,
+) *LinuxContainerNetworkMetricsProvider {
+	return &LinuxContainerNetworkMetricsProvider{
+		containerizer:                  containerizer,
+		propertyManager:                propertyManager,
+		fileOpener:                     fileOpener,
+		containerNetworkStatMarshaller: &ContainerNetworkStatMarshaller{},
+	}
+}
+
+func (l *LinuxContainerNetworkMetricsProvider) Get(log lager.Logger, handle string) (*garden.ContainerNetworkStat, error) {
+	log = log.Session("container-network-metrics")
+
+	ifName, found := l.propertyManager.Get(handle, ContainerInterfaceKey)
+	if !found || ifName == "" {
+		return nil, nil
+	}
+
+	info, err := l.containerizer.Info(log, handle)
+	if err != nil {
+		return nil, err
+	}
+
+	containerNetNs, err := l.fileOpener.Open(fmt.Sprintf("/proc/%d/ns/net", info.Pid))
+	if err != nil {
+		return nil, err
+	}
+	defer containerNetNs.Close()
+
+	stdout := new(bytes.Buffer)
+	stderr := new(bytes.Buffer)
+
+	cmd := reexec.Command("fetch-container-network-metrics",
+		"-ifName", ifName,
+		"-netNsPath", containerNetNs.Name(),
+	)
+	cmd.Stderr = stderr
+	cmd.Stdout = stdout
+
+	if err := cmd.Run(); err != nil {
+		return nil, fmt.Errorf("could not fetch container network metrics, %q, %w", stderr.String(), err)
+	}
+
+	return l.containerNetworkStatMarshaller.Unmarshal(stdout.String())
 }
