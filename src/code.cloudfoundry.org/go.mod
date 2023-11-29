@@ -43,7 +43,7 @@ require (
 	code.cloudfoundry.org/tlsconfig v0.0.0-20231017135636-f0e44068c22f
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.48.7
+	github.com/aws/aws-sdk-go v1.48.8
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20231121224113-b6714ac5eb13
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cloudfoundry-community/go-uaa v0.3.2
@@ -100,21 +100,21 @@ require (
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
-	github.com/aws/aws-sdk-go-v2 v1.23.2 // indirect
-	github.com/aws/aws-sdk-go-v2/config v1.25.8 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.16.6 // indirect
-	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.14.6 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.2.5 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.5.5 // indirect
+	github.com/aws/aws-sdk-go-v2 v1.23.3 // indirect
+	github.com/aws/aws-sdk-go-v2/config v1.25.9 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.16.7 // indirect
+	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.14.7 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.2.6 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.5.6 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.7.1 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ecr v1.23.3 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.20.5 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.10.1 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.10.5 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.17.5 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.20.3 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sts v1.25.6 // indirect
-	github.com/aws/smithy-go v1.17.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ecr v1.24.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.21.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.10.2 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.10.6 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.18.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.21.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sts v1.26.0 // indirect
+	github.com/aws/smithy-go v1.18.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bmizerany/pat v0.0.0-20210406213842-e4b6760bdd6f // indirect
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
