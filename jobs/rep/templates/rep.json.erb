@@ -157,6 +157,18 @@
     config[:locket_address] = value
   end
 
+  if_p("containers.min_instance_memory_mb") do |value|
+    config[:min_instance_memory_mb] = value
+  end
+  
+  if config[:min_instance_memory_mb] < 0 
+    raise "Min_instance_memory_mb has to be larger than 0"
+  end
+  
+  if_p("containers.max_instance_memory_mb") do |value|
+    config[:max_instance_memory_mb] = value
+  end
+
   if_p("diego.rep.locket.client_keepalive_time") do |value|
     config[:locket_client_keepalive_time] = value
   end

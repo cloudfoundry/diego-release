@@ -304,6 +304,14 @@ properties:
     description: "EXPERIMENTAL: Set CPU weight on each Garden container to be proportional to its memory limit."
     default: false
 
+  containers.min_instance_memory_mb: 
+    description: "Upper boundary to the memory per app instance im MB"
+    default: 128
+
+  containers.max_instance_memory_mb: 
+    description: "Upper boundary to the memory per app instance im MB"
+    default: 8192
+
   containers.proxy.ads_addresses:
     description: "EXPERIMENTAL:  When set, the envoy proxy consumes dynamic config from the specified Aggregated Discovery Service servers (specified as a list of host:port).  This config is in addition to the static configuration that supports TLS termination / route-integrity."
     default: []

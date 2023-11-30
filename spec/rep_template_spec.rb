@@ -33,6 +33,8 @@ describe 'rep' do
           }
         },
         'containers' => {
+          'min_instance_memory_mb' => 128,
+          'max_instance_memory_mb' => 8192,
           'proxy' => {
             'enabled' => 'true',
             'require_and_verify_client_certificates' => 'true',
@@ -76,6 +78,15 @@ describe 'rep' do
         expect do
           rendered_template
         end.to raise_error(/The locket client keepalive time property should not be larger than the timeout/)
+      end
+    end
+
+    context 'check the value of min_instance_memory_mb' do
+      it 'fails if min_instance_memory_mb is less than 0' do
+        deployment_manifest_fragment['containers']['min_instance_memory_mb'] = -100
+        expect do
+          rendered_template
+        end.to raise_error(/Min_instance_memory_mb has to be larger than 0/)
       end
     end
   end
