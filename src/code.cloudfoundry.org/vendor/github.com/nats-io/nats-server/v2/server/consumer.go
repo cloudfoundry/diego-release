@@ -812,8 +812,8 @@ func (mset *stream) addConsumerWithAssignment(config *ConsumerConfig, oname stri
 			return nil, NewJSConsumerWQRequiresExplicitAckError()
 		}
 
-		subjects := gatherSubjectFilters(config.FilterSubject, config.FilterSubjects)
 		if len(mset.consumers) > 0 {
+			subjects := gatherSubjectFilters(config.FilterSubject, config.FilterSubjects)
 			if len(subjects) == 0 {
 				mset.mu.Unlock()
 				return nil, NewJSConsumerWQMultipleUnfilteredError()
@@ -1789,6 +1789,10 @@ func (acc *Account) checkNewConsumerConfig(cfg, ncfg *ConsumerConfig) error {
 func (o *consumer) updateConfig(cfg *ConsumerConfig) error {
 	o.mu.Lock()
 	defer o.mu.Unlock()
+
+	if o.closed || o.mset == nil {
+		return NewJSConsumerDoesNotExistError()
+	}
 
 	if err := o.acc.checkNewConsumerConfig(&o.cfg, cfg); err != nil {
 		return err
@@ -5253,23 +5257,30 @@ func gatherSubjectFilters(filter string, filters []string) []string {
 	return filters
 }
 
-// Will check if we are running in the monitor already and if not set the appropriate flag.
-func (o *consumer) checkInMonitor() bool {
+// shouldStartMonitor will return true if we should start a monitor
+// goroutine or will return false if one is already running.
+func (o *consumer) shouldStartMonitor() bool {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 
 	if o.inMonitor {
-		return true
+		return false
 	}
+	o.monitorWg.Add(1)
 	o.inMonitor = true
-	return false
+	return true
 }
 
-// Clear us being in the monitor routine.
+// Clear the monitor running state. The monitor goroutine should
+// call this in a defer to clean up on exit.
 func (o *consumer) clearMonitorRunning() {
 	o.mu.Lock()
 	defer o.mu.Unlock()
-	o.inMonitor = false
+
+	if o.inMonitor {
+		o.monitorWg.Done()
+		o.inMonitor = false
+	}
 }
 
 // Test whether we are in the monitor routine.
