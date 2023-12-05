@@ -309,7 +309,7 @@ properties:
     default: 128
 
   containers.max_instance_memory_mb: 
-    description: "Upper boundary to the memory per app instance im MB"
+    description: "Lower boundary to the memory per app instance im MB"
     default: 8192
 
   containers.proxy.ads_addresses:
