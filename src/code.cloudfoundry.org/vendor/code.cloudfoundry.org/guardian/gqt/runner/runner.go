@@ -219,7 +219,7 @@ func DefaultGdnRunnerConfig(binaries Binaries) GdnRunnerConfig {
 	config.Tag = fmt.Sprintf("%d", GinkgoParallelProcess())
 
 	var err error
-	config.TmpDir, err = ioutil.TempDir("", fmt.Sprintf("test-garden-%s-", config.Tag))
+	config.TmpDir, err = os.MkdirTemp("", fmt.Sprintf("test-garden-%s-", config.Tag))
 	Expect(err).NotTo(HaveOccurred())
 	Expect(os.Chmod(config.TmpDir, 0777)).To(Succeed())
 
