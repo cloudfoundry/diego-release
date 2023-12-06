@@ -20,7 +20,7 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20231114143709-75c3c24574bd
+	code.cloudfoundry.org/archiver v0.0.0-20231206170638-1923b319e771
 	code.cloudfoundry.org/bytefmt v0.0.0-20231017140541-3b893ed0421b
 	code.cloudfoundry.org/certsplitter v0.0.0-20231130144636-166c6c33a8c2
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20230612154734-4f65ecb98d93
@@ -29,21 +29,21 @@ require (
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1-0.20210513172332-4c5ee488a657
 	code.cloudfoundry.org/clock v1.1.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20231204140658-79b9df0d93d4
-	code.cloudfoundry.org/debugserver v0.0.0-20231114142234-a442cc402287
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20231114145421-43971a663fb5
-	code.cloudfoundry.org/dockerdriver v0.0.0-20231114145754-913f87a8f68c
-	code.cloudfoundry.org/durationjson v0.0.0-20231114145350-b88ca248aa53
-	code.cloudfoundry.org/eventhub v0.0.0-20231114142847-bd6625d1028d
+	code.cloudfoundry.org/debugserver v0.0.0-20231206170715-fd2d2aa39d90
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20231206170752-1baebe76b38e
+	code.cloudfoundry.org/dockerdriver v0.0.0-20231206170741-c31c04937430
+	code.cloudfoundry.org/durationjson v0.0.0-20231206170547-9040c1b5941e
+	code.cloudfoundry.org/eventhub v0.0.0-20231206170708-7e26ec40032d
 	code.cloudfoundry.org/garden v0.0.0-20231205182107-29f436b24ad5
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.28.0
 	code.cloudfoundry.org/guardian v0.0.0-20231205235234-defbfc0b7a85
 	code.cloudfoundry.org/lager/v3 v3.0.2
-	code.cloudfoundry.org/localip v0.0.0-20231114145404-41b8c8e318cb
+	code.cloudfoundry.org/localip v0.0.0-20231206170541-8d74d8ef21ec
 	code.cloudfoundry.org/tlsconfig v0.0.0-20231017135636-f0e44068c22f
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.48.13
+	github.com/aws/aws-sdk-go v1.48.14
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20231121224113-b6714ac5eb13
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cloudfoundry-community/go-uaa v0.3.2
@@ -101,19 +101,19 @@ require (
 	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.23.5 // indirect
-	github.com/aws/aws-sdk-go-v2/config v1.25.11 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.16.9 // indirect
+	github.com/aws/aws-sdk-go-v2/config v1.25.12 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.16.10 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.14.9 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.2.8 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.5.8 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.7.1 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ecr v1.24.2 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.21.2 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ecr v1.24.3 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.21.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.10.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.10.8 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.18.2 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.21.2 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sts v1.26.2 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.18.3 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.21.3 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sts v1.26.3 // indirect
 	github.com/aws/smithy-go v1.18.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bmizerany/pat v0.0.0-20210406213842-e4b6760bdd6f // indirect
@@ -166,7 +166,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/vishvananda/netlink v1.2.1-beta.2 // indirect
 	github.com/vishvananda/netns v0.0.4 // indirect
-	go.step.sm/crypto v0.38.0 // indirect
+	go.step.sm/crypto v0.39.0 // indirect
 	go.uber.org/automaxprocs v1.5.3 // indirect
 	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
