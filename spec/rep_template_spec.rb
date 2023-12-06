@@ -79,4 +79,28 @@ describe 'rep' do
       end
     end
   end
+
+  describe 'setup_mounted_data_dirs.erb' do
+    let(:template) { job.template('bin/setup_mounted_data_dirs') }
+    let(:properties) {{}}
+  
+    context('checks if the proper value from the bosh link is set') do
+      let(:max_containers_link) do
+        Bosh::Template::Test::Link.new(
+          name: 'max_containers',
+          instances: [Bosh::Template::Test::LinkInstance.new()],
+          properties: {
+            'garden' => {
+              "max_containers"=> 300
+            }
+          }
+        )
+      end
+
+      let(:rendered_template) { template.render(properties, consumes: [max_containers_link]) }
+      it('confirms that max_containers is set correctly') do
+        expect(rendered_template).to include("max_containers=300")
+      end
+    end
+  end  
 end
