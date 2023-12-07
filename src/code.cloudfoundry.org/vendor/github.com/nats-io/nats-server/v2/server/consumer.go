@@ -700,9 +700,14 @@ func (mset *stream) addConsumer(config *ConsumerConfig) (*consumer, error) {
 
 func (mset *stream) addConsumerWithAssignment(config *ConsumerConfig, oname string, ca *consumerAssignment, isRecovering bool, action ConsumerAction) (*consumer, error) {
 	mset.mu.RLock()
-	s, jsa, tierName, cfg, acc := mset.srv, mset.jsa, mset.tier, mset.cfg, mset.acc
+	s, jsa, tierName, cfg, acc, closed := mset.srv, mset.jsa, mset.tier, mset.cfg, mset.acc, mset.closed
 	retention := cfg.Retention
 	mset.mu.RUnlock()
+
+	// Check if this stream has closed.
+	if closed {
+		return nil, NewJSStreamInvalidError()
+	}
 
 	// If we do not have the consumer currently assigned to us in cluster mode we will proceed but warn.
 	// This can happen on startup with restored state where on meta replay we still do not have
@@ -2455,8 +2460,11 @@ func (o *consumer) setStoreState(state *ConsumerState) error {
 	if state == nil || o.store == nil {
 		return nil
 	}
-	o.applyState(state)
-	return o.store.Update(state)
+	err := o.store.Update(state)
+	if err == nil {
+		o.applyState(state)
+	}
+	return err
 }
 
 // Update our state to the store.
@@ -4489,7 +4497,7 @@ func (o *consumer) checkPending() {
 	}
 
 	// Since we can update timestamps, we have to review all pending.
-	// We will now bail if we see an ack pending in bound to us via o.awl.
+	// We will now bail if we see an ack pending inbound to us via o.awl.
 	var expired []uint64
 	check := len(o.pending) > 1024
 	for seq, p := range o.pending {
@@ -5307,11 +5315,16 @@ func (o *consumer) checkStateForInterestStream() {
 		return
 	}
 
+	asflr := state.AckFloor.Stream
+	// Protect ourselves against rolling backwards.
+	if asflr&(1<<63) != 0 {
+		return
+	}
+
 	// We should make sure to update the acks.
 	var ss StreamState
 	mset.store.FastState(&ss)
 
-	asflr := state.AckFloor.Stream
 	for seq := ss.FirstSeq; seq <= asflr; seq++ {
 		mset.ackMsg(o, seq)
 	}

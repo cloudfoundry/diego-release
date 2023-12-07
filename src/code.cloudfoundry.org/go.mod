@@ -22,7 +22,7 @@ replace (
 require (
 	code.cloudfoundry.org/archiver v0.0.0-20231206170638-1923b319e771
 	code.cloudfoundry.org/bytefmt v0.0.0-20231017140541-3b893ed0421b
-	code.cloudfoundry.org/certsplitter v0.0.0-20231130144636-166c6c33a8c2
+	code.cloudfoundry.org/certsplitter v0.0.0-20231207145111-6934eed0cea0
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20230612154734-4f65ecb98d93
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20230911184912-89625e5d5967
 	code.cloudfoundry.org/cfhttp v2.0.0+incompatible
@@ -38,7 +38,7 @@ require (
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.28.0
 	code.cloudfoundry.org/guardian v0.0.0-20231205235234-defbfc0b7a85
-	code.cloudfoundry.org/lager/v3 v3.0.2
+	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20231206170541-8d74d8ef21ec
 	code.cloudfoundry.org/tlsconfig v0.0.0-20231017135636-f0e44068c22f
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
@@ -67,7 +67,7 @@ require (
 	github.com/kr/pty v1.1.8
 	github.com/lib/pq v1.10.9
 	github.com/mitchellh/hashstructure v1.1.0
-	github.com/nats-io/nats-server/v2 v2.10.6
+	github.com/nats-io/nats-server/v2 v2.10.7
 	github.com/nats-io/nats.go v1.31.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/onsi/ginkgo/v2 v2.13.2

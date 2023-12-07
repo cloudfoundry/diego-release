@@ -5093,9 +5093,7 @@ func (mb *msgBlock) indexCacheBuf(buf []byte) error {
 					ss.Msgs++
 					ss.Last = seq
 				} else {
-					// Note the fss cache and the underlying buffer cache are considered
-					// linked and exists and are removed at the same time.
-					mb.fss[bytesToString(bsubj)] = &SimpleState{
+					mb.fss[string(bsubj)] = &SimpleState{
 						Msgs:  1,
 						First: seq,
 						Last:  seq,
@@ -7022,7 +7020,7 @@ const (
 // This is also called during Stop().
 func (fs *fileStore) flushStreamStateLoop(fch, qch, done chan struct{}) {
 	// Make sure we do not try to write these out too fast.
-	const writeThreshold = time.Second * 10
+	const writeThreshold = time.Minute
 	lastWrite := time.Time{}
 
 	// We will use these to complete the full state write while not doing them too fast.
@@ -8512,6 +8510,12 @@ func decodeConsumerState(buf []byte) (*ConsumerState, error) {
 		if state.AckFloor.Stream > 1 {
 			state.Delivered.Stream += state.AckFloor.Stream - 1
 		}
+	}
+
+	// Protect ourselves against rolling backwards.
+	const hbit = 1 << 63
+	if state.AckFloor.Stream&hbit != 0 || state.Delivered.Stream&hbit != 0 {
+		return nil, errCorruptState
 	}
 
 	// We have additional stuff.
