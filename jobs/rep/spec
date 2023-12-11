@@ -30,11 +30,6 @@ packages:
   - proxy
   - certsplitter
 
-consumes:
-- name: max_containers
-  type: max_containers
-  optional: true
-
 properties:
   bpm.enabled:
     description: "use the BOSH Process Manager to manage the cell rep process."
