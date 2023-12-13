@@ -197,6 +197,7 @@ files:
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/io/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/logging/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/middleware/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/private/requestcompression/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/ptr/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/rand/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/time/*.go # gosub
@@ -318,6 +319,7 @@ files:
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/pretty/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/resolver/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/resolver/dns/*.go # gosub
+  - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/resolver/dns/internal/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/resolver/passthrough/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/resolver/unix/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/serviceconfig/*.go # gosub
@@ -329,6 +331,7 @@ files:
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/metadata/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/peer/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/resolver/*.go # gosub
+  - code.cloudfoundry.org/vendor/google.golang.org/grpc/resolver/dns/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/serviceconfig/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/stats/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/status/*.go # gosub
