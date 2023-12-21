@@ -24,7 +24,17 @@ rm -rf "${old_shared_data_dir}"
 # add another 4096 to account for the temp files used to do atomic replacement #141163257
 instance_cert_and_key_size=10240
 instance_ca_size=$(wc -c ${conf_dir}/certs/rep/instance_identity.crt | cut -d' ' -f1)
-max_containers=250
+<%
+  _max_containers = 250
+  if_p("diego.rep.max_containers") do |value|
+    _max_containers = value
+  end
+  if _max_containers <= 0
+    raise "The max_containers prop should be a positive integer"
+  end
+%>
+max_containers=<%= _max_containers %>
+
 instance_tmpfs_size=$((($instance_ca_size + $instance_cert_and_key_size) * $max_containers))
 
 instance_identity_dir=${garden_shared_dir}/instance_identity

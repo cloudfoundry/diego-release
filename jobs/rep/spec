@@ -224,6 +224,10 @@ properties:
     description: "Timeout in seconds to receive a response to the keepalive ping. If a response is not received within this time, the locket client will reconnect to another server."
     default: 22
 
+  diego.rep.max_containers: 
+    description: "Maximum container capacity per rep"
+    default: 250
+
   enable_declarative_healthcheck:
     description: "When set, enables the rep to prefer the LRP CheckDefinition to healthcheck instances over the Monitor action. Requires Garden-Runc v1.10.0+"
     default: false
