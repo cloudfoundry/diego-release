@@ -3,7 +3,7 @@
 log_dir=/var/vcap/sys/log/bbs
 
 health_address=<%= p("diego.bbs.health_addr") %>
-listen_address=<%= p("diego.bbs.health_addr") %>
+listen_address=<%= p("diego.bbs.listen_addr") %>
 bbs_port=$(echo ${listen_address} | cut -d":" -f2)
 start=`date +%s`
 i=0
