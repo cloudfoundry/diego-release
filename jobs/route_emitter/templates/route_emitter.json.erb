@@ -90,6 +90,13 @@
     unregistration_send_count: 20,
   }
 
+  if_p("diego.route_emitter.jitter_factor") do |value|
+    if !value.instance_of?(Float) or value < 0.0 or value > 1.0
+      raise "diego.route_emitter.jitter_factor must be a float between 0.0 and 1.0"
+    end
+    config[:jitter_factor] = value
+  end
+
   if_p("logging.format.timestamp") do |format|
     if format != "unix-epoch" and format != "rfc3339"
       raise "logging.format.timestamp should be one of: 'unix-epoch' or 'rfc3339'"

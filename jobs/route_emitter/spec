@@ -93,6 +93,10 @@ properties:
   diego.route_emitter.bbs.max_idle_conns_per_host:
     description: "maximum number of idle http connections"
 
+  diego.route_emitter.jitter_factor:
+    description: "The jitter factor is the percentage of register interval used in determining the jitter interval (the time for which the emitter sleeps)"
+    default: 0.2
+
   diego.route_emitter.job_name:
     description: "The name of the Diego job referenced by this spec (DO NOT override)"
     default: "route_emitter"
