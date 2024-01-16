@@ -1,6 +1,6 @@
 module code.cloudfoundry.org
 
-go 1.21
+go 1.21.6
 
 replace (
 	code.cloudfoundry.org/garden => ../garden
@@ -39,7 +39,7 @@ require (
 	code.cloudfoundry.org/guardian v0.0.0-20240109162708-27756c2c6e21
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20231206170541-8d74d8ef21ec
-	code.cloudfoundry.org/tlsconfig v0.0.0-20231017135636-f0e44068c22f
+	code.cloudfoundry.org/tlsconfig v0.0.0-20240116140718-a2c58c2ff70c
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/aws/aws-sdk-go v1.49.21
