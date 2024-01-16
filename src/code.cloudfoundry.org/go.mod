@@ -1,6 +1,6 @@
 module code.cloudfoundry.org
 
-go 1.21.6
+go 1.21
 
 replace (
 	code.cloudfoundry.org/garden => ../garden
