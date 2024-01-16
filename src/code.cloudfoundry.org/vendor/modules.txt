@@ -10,7 +10,7 @@ code.cloudfoundry.org/bytefmt
 ## explicit; go 1.21
 code.cloudfoundry.org/cacheddownloader
 code.cloudfoundry.org/cacheddownloader/cacheddownloaderfakes
-# code.cloudfoundry.org/certsplitter v0.0.0-20240104145730-b3e1f2be6da7
+# code.cloudfoundry.org/certsplitter v0.0.0-20240110203530-c3a621ef17ee
 ## explicit; go 1.20
 code.cloudfoundry.org/certsplitter/cmd/certsplitter
 # code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20230612154734-4f65ecb98d93
@@ -34,8 +34,8 @@ code.cloudfoundry.org/clock/fakeclock
 # code.cloudfoundry.org/commandrunner v0.0.0-20230612151827-2b11a2b4e9b8
 ## explicit; go 1.20
 code.cloudfoundry.org/commandrunner
-# code.cloudfoundry.org/credhub-cli v0.0.0-20240108140754-d707dba8358d
-## explicit; go 1.21.5
+# code.cloudfoundry.org/credhub-cli v0.0.0-20240115140241-36c6332535b4
+## explicit; go 1.21.6
 code.cloudfoundry.org/credhub-cli/credhub
 code.cloudfoundry.org/credhub-cli/credhub/auth
 code.cloudfoundry.org/credhub-cli/credhub/auth/uaa
@@ -86,7 +86,7 @@ code.cloudfoundry.org/go-loggregator/v8
 code.cloudfoundry.org/go-loggregator/v8/rfc5424
 code.cloudfoundry.org/go-loggregator/v8/rpc/loggregator_v2
 code.cloudfoundry.org/go-loggregator/v8/runtimeemitter
-# code.cloudfoundry.org/goshims v0.28.0
+# code.cloudfoundry.org/goshims v0.29.0
 ## explicit; go 1.20
 code.cloudfoundry.org/goshims/filepathshim
 code.cloudfoundry.org/goshims/http_wrap
@@ -144,7 +144,7 @@ github.com/Microsoft/go-winio/pkg/guid
 # github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 ## explicit; go 1.15
 github.com/ajstarks/svgo
-# github.com/aws/aws-sdk-go v1.49.18
+# github.com/aws/aws-sdk-go v1.49.21
 ## explicit; go 1.19
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/auth/bearer
@@ -337,7 +337,7 @@ github.com/cloudfoundry/dropsonde/runtime_stats
 # github.com/cloudfoundry/go-socks5 v0.0.0-20180221174514-54f73bdb8a8e
 ## explicit
 github.com/cloudfoundry/go-socks5
-# github.com/cloudfoundry/socks5-proxy v0.2.107
+# github.com/cloudfoundry/socks5-proxy v0.2.108
 ## explicit; go 1.21
 github.com/cloudfoundry/socks5-proxy
 # github.com/cloudfoundry/sonde-go v0.0.0-20231227232801-b682ba3cb37d
@@ -398,7 +398,7 @@ github.com/docker/docker/api/types/versions
 github.com/docker/docker/pkg/homedir
 github.com/docker/docker/pkg/reexec
 github.com/docker/docker/pkg/term
-# github.com/docker/docker-credential-helpers v0.8.0
+# github.com/docker/docker-credential-helpers v0.8.1
 ## explicit; go 1.19
 github.com/docker/docker-credential-helpers/client
 github.com/docker/docker-credential-helpers/credentials
@@ -433,8 +433,8 @@ github.com/envoyproxy/go-control-plane/envoy/type/matcher/v3
 github.com/envoyproxy/go-control-plane/envoy/type/metadata/v3
 github.com/envoyproxy/go-control-plane/envoy/type/tracing/v3
 github.com/envoyproxy/go-control-plane/envoy/type/v3
-# github.com/envoyproxy/protoc-gen-validate v1.0.2
-## explicit; go 1.19
+# github.com/envoyproxy/protoc-gen-validate v1.0.3
+## explicit; go 1.21.1
 github.com/envoyproxy/protoc-gen-validate/validate
 # github.com/fsnotify/fsnotify v1.7.0
 ## explicit; go 1.17
@@ -590,10 +590,11 @@ github.com/moby/term/windows
 # github.com/nats-io/jwt/v2 v2.5.3
 ## explicit; go 1.18
 github.com/nats-io/jwt/v2
-# github.com/nats-io/nats-server/v2 v2.10.7
+# github.com/nats-io/nats-server/v2 v2.10.9
 ## explicit; go 1.20
 github.com/nats-io/nats-server/v2
 github.com/nats-io/nats-server/v2/conf
+github.com/nats-io/nats-server/v2/internal/fastrand
 github.com/nats-io/nats-server/v2/internal/ldap
 github.com/nats-io/nats-server/v2/logger
 github.com/nats-io/nats-server/v2/server
@@ -602,7 +603,7 @@ github.com/nats-io/nats-server/v2/server/certidp
 github.com/nats-io/nats-server/v2/server/certstore
 github.com/nats-io/nats-server/v2/server/pse
 github.com/nats-io/nats-server/v2/server/sysmem
-# github.com/nats-io/nats.go v1.31.0 => github.com/nats-io/nats.go v1.16.1-0.20220906180156-a1017eec10b0
+# github.com/nats-io/nats.go v1.32.0 => github.com/nats-io/nats.go v1.16.1-0.20220906180156-a1017eec10b0
 ## explicit; go 1.16
 github.com/nats-io/nats.go
 github.com/nats-io/nats.go/encoders/builtin
@@ -616,7 +617,7 @@ github.com/nats-io/nuid
 # github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 ## explicit
 github.com/nu7hatch/gouuid
-# github.com/onsi/ginkgo/v2 v2.13.2
+# github.com/onsi/ginkgo/v2 v2.14.0
 ## explicit; go 1.18
 github.com/onsi/ginkgo/v2
 github.com/onsi/ginkgo/v2/config
@@ -703,7 +704,7 @@ github.com/prometheus/client_golang/prometheus/promhttp
 # github.com/prometheus/client_model v0.5.0
 ## explicit; go 1.19
 github.com/prometheus/client_model/go
-# github.com/prometheus/common v0.45.0 => github.com/prometheus/common v0.30.0
+# github.com/prometheus/common v0.46.0 => github.com/prometheus/common v0.30.0
 ## explicit; go 1.13
 github.com/prometheus/common/expfmt
 github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg
@@ -746,7 +747,7 @@ github.com/vishvananda/netns
 # github.com/vito/go-sse v1.0.0
 ## explicit; go 1.12
 github.com/vito/go-sse/sse
-# go.step.sm/crypto v0.40.0
+# go.step.sm/crypto v0.41.0
 ## explicit; go 1.20
 go.step.sm/crypto/fingerprint
 go.step.sm/crypto/internal/bcrypt_pbkdf
@@ -843,7 +844,7 @@ golang.org/x/text/width
 # golang.org/x/time v0.5.0
 ## explicit; go 1.18
 golang.org/x/time/rate
-# golang.org/x/tools v0.16.1
+# golang.org/x/tools v0.17.0
 ## explicit; go 1.18
 golang.org/x/tools/cmd/stringer
 golang.org/x/tools/go/ast/inspector
