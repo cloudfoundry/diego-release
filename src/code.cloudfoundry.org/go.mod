@@ -33,7 +33,7 @@ require (
 	code.cloudfoundry.org/dockerdriver v0.0.0-20231207154247-6876f2a6d306
 	code.cloudfoundry.org/durationjson v0.0.0-20231206170547-9040c1b5941e
 	code.cloudfoundry.org/eventhub v0.0.0-20231206170708-7e26ec40032d
-	code.cloudfoundry.org/garden v0.0.0-20240117130100-ee732fa59395
+	code.cloudfoundry.org/garden v0.0.0-20240124130052-f08d3288e394
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.29.0
 	code.cloudfoundry.org/guardian v0.0.0-20240117130637-83d311e607c4
@@ -42,14 +42,14 @@ require (
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240116140718-a2c58c2ff70c
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.50.1
+	github.com/aws/aws-sdk-go v1.50.3
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240116161626-88cfadc80e8f
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.2.0
 	github.com/cloudfoundry-community/go-uaa v0.3.2
 	github.com/cloudfoundry/dropsonde v1.1.0
 	github.com/containers/image v3.0.2+incompatible
-	github.com/docker/docker v25.0.0+incompatible
+	github.com/docker/docker v25.0.1+incompatible
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/envoyproxy/go-control-plane v0.12.0
 	github.com/fsnotify/fsnotify v1.7.0
@@ -89,13 +89,13 @@ require (
 	golang.org/x/oauth2 v0.16.0
 	golang.org/x/sys v0.16.0
 	golang.org/x/time v0.5.0
-	google.golang.org/grpc v1.60.1
+	google.golang.org/grpc v1.61.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
 	code.cloudfoundry.org/commandrunner v0.0.0-20230612151827-2b11a2b4e9b8 // indirect
-	code.cloudfoundry.org/go-diodes v0.0.0-20240116173152-f35e14ad152d // indirect
+	code.cloudfoundry.org/go-diodes v0.0.0-20240124183017-31ac915ce912 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/BurntSushi/toml v1.3.2 // indirect
