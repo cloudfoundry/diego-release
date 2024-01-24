@@ -85,3 +85,7 @@ properties:
   grace_busybox_image_url:
     description: "grace test asset busybox container image"
     default: "docker:///cloudfoundry/grace"
+
+  diego_docker_oci_image_url:
+    description: "diego docker app in OCI image format"
+    default: "docker:///cloudfoundry/diego-docker-app:oci"
