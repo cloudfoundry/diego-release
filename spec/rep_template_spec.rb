@@ -83,8 +83,8 @@ describe 'rep' do
     context 'when specific app metrics are configured to be excluded' do
       it 'configures the rep to exclude them' do
         deployment_manifest_fragment['loggregator']['use_v2_api'] = true
-        deployment_manifest_fragment['loggregator']['app_metric_exclusion_filter'] = %w(absolute_entitlement absolute_usage)
-        expect(JSON.parse(rendered_template)['loggregator']['loggregator_app_metric_exclusion_filter']).to eq(%w(absolute_entitlement absolute_usage))
+        deployment_manifest_fragment['loggregator']['app_metric_exclusion_filter']= %w[absolute_entitlement absolute_usage]
+        expect(JSON.parse(rendered_template)['loggregator']['loggregator_app_metric_exclusion_filter']).to eq(%w[absolute_entitlement absolute_usage])
       end
     end
   end
