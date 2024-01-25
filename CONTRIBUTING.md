@@ -96,7 +96,7 @@ When inside docker container:
 - `/repo/scripts/docker/test.bash executor`: This will only run `executor` tests
 - `/repo/scripts/docker/test.bash executor initializer`: This will only run `initializer` sub-package tests for `executor` package
 - `/repo/scripts/docker/tests-templates.bash`: This will run all of tests for bosh tempalates
-- `/repo/scripts/docker/lint.bash`: This will run all of linting defined for this repo.
+- `/repo/scripts/docker/lint.bash`: This will run all of linting defined for this repo (such as sync-package-specs).
 
 ## Logging in Diego
 
