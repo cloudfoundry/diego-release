@@ -228,7 +228,7 @@
 
   config[:loggregator]={}
   config[:loggregator][:loggregator_use_v2_api] = p("loggregator.use_v2_api")
-  if p("loggregator.use_v2_api") == true
+  if p("loggregator.use_v2_api")
     config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
     config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"
     config[:loggregator][:loggregator_cert_path] = "#{conf_dir}/certs/loggregator/client.crt"
@@ -240,6 +240,7 @@
     config[:loggregator][:loggregator_job_origin] = "rep"
     config[:loggregator][:loggregator_source_id] = "rep"
     config[:loggregator][:loggregator_instance_id] = spec.id
+    config[:loggregator][:loggregator_app_metric_exclusion_filter] = p("loggregator.app_metric_exclusion_filter")
   end
 
   config.to_json
