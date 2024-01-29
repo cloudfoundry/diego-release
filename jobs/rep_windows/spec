@@ -75,6 +75,10 @@ properties:
     description: "Cert used to communicate with local metron agent over gRPC"
   loggregator.key:
     description: "Key used to communicate with local metron agent over gRPC"
+  loggregator.app_metric_exclusion_filter:
+    description: "Array of application metrics to not emit"
+    default:
+    - cpu_entitlement
 
   diego.rep.advertise_domain:
     description: "base domain at which the rep should advertise its secure API"
