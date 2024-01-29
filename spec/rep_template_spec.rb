@@ -80,6 +80,12 @@ describe 'rep' do
         end.to raise_error(/The locket client keepalive time property should not be larger than the timeout/)
       end
     end
+
+    it 'excludes the newer cpu_entitlement metric by default for backwards compatibility' do
+      deployment_manifest_fragment['loggregator']['use_v2_api'] = true
+      expect(JSON.parse(rendered_template)['loggregator']['loggregator_app_metric_exclusion_filter']).to eq(%w[cpu_entitlement])
+    end
+
     context 'when specific app metrics are configured to be excluded' do
       it 'configures the rep to exclude them' do
         deployment_manifest_fragment['loggregator']['use_v2_api'] = true
