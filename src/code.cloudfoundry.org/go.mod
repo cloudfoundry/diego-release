@@ -27,22 +27,22 @@ require (
 	code.cloudfoundry.org/cfhttp v2.0.0+incompatible
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1-0.20210513172332-4c5ee488a657
 	code.cloudfoundry.org/clock v1.1.0
-	code.cloudfoundry.org/credhub-cli v0.0.0-20240122140356-433e4b9fc358
+	code.cloudfoundry.org/credhub-cli v0.0.0-20240129140404-5d5c1a8dbf29
 	code.cloudfoundry.org/debugserver v0.0.0-20231206170715-fd2d2aa39d90
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20231206170752-1baebe76b38e
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240129164815-4a8e1f658c90
 	code.cloudfoundry.org/dockerdriver v0.0.0-20231207154247-6876f2a6d306
 	code.cloudfoundry.org/durationjson v0.0.0-20231206170547-9040c1b5941e
 	code.cloudfoundry.org/eventhub v0.0.0-20231206170708-7e26ec40032d
-	code.cloudfoundry.org/garden v0.0.0-20240124130052-f08d3288e394
+	code.cloudfoundry.org/garden v0.0.0-20240129155822-be259116cd61
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.29.0
-	code.cloudfoundry.org/guardian v0.0.0-20240117130637-83d311e607c4
+	code.cloudfoundry.org/guardian v0.0.0-20240129161705-58fcae3237cb
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20231206170541-8d74d8ef21ec
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240116140718-a2c58c2ff70c
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.50.5
+	github.com/aws/aws-sdk-go v1.50.6
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240116161626-88cfadc80e8f
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.2.0
@@ -138,7 +138,7 @@ require (
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/pprof v0.0.0-20240125082051-42cd04596328 // indirect
+	github.com/google/pprof v0.0.0-20240130094029-7cd122eec098 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/hashicorp/go-version v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect

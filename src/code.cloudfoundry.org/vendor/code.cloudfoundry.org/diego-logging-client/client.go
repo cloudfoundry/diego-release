@@ -25,23 +25,26 @@ type Config struct {
 
 	BatchMaxSize       uint `json:"loggregator_batch_max_size"`
 	BatchFlushInterval time.Duration
+
+	AppMetricExclusionFilter []string `json:"loggregator_app_metric_exclusion_filter"`
 }
 
 // A ContainerMetric records resource usage of an app in a container.
 type ContainerMetric struct {
-	ApplicationId          string //deprecated
-	InstanceIndex          int32  //deprecated
-	CpuPercentage          float64
-	MemoryBytes            uint64
-	DiskBytes              uint64
-	MemoryBytesQuota       uint64
-	DiskBytesQuota         uint64
-	AbsoluteCPUUsage       uint64
-	AbsoluteCPUEntitlement uint64
-	ContainerAge           uint64
-	RxBytes                *uint64
-	TxBytes                *uint64
-	Tags                   map[string]string
+	ApplicationId            string //deprecated
+	InstanceIndex            int32  //deprecated
+	CpuPercentage            float64
+	CpuEntitlementPercentage float64
+	MemoryBytes              uint64
+	DiskBytes                uint64
+	MemoryBytesQuota         uint64
+	DiskBytesQuota           uint64
+	AbsoluteCPUUsage         uint64
+	AbsoluteCPUEntitlement   uint64
+	ContainerAge             uint64
+	RxBytes                  *uint64
+	TxBytes                  *uint64
+	Tags                     map[string]string
 }
 
 type SpikeMetric struct {
@@ -114,11 +117,11 @@ func newV2IngressClient(config Config) (IngressClient, error) {
 		return nil, err
 	}
 
-	return WrapClient(c, config.SourceID, config.InstanceID), nil
+	return WrapClient(c, config.SourceID, config.InstanceID, config.AppMetricExclusionFilter), nil
 }
 
-func WrapClient(c logClient, s, i string) IngressClient {
-	return client{client: c, sourceID: s, instanceID: i}
+func WrapClient(c logClient, s, i string, f []string) IngressClient {
+	return client{client: c, sourceID: s, instanceID: i, appMetricExclusionFilter: f}
 }
 
 type logClient interface {
@@ -129,9 +132,10 @@ type logClient interface {
 }
 
 type client struct {
-	client     logClient
-	sourceID   string
-	instanceID string
+	client                   logClient
+	sourceID                 string
+	instanceID               string
+	appMetricExclusionFilter []string
 }
 
 func (c client) SendDuration(name string, value time.Duration, opts ...loggregator.EmitGaugeOption) error {
@@ -217,6 +221,22 @@ func (c client) SendAppErrorLog(message, sourceType string, tags map[string]stri
 	return nil
 }
 
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
+func (c client) appendUnlessFiltered(opts []loggregator.EmitGaugeOption, gaugeName string, gaugeOption loggregator.EmitGaugeOption) []loggregator.EmitGaugeOption {
+	if !contains(c.appMetricExclusionFilter, gaugeName) {
+		opts = append(opts, gaugeOption)
+	}
+	return opts
+}
+
 func (c client) SendAppMetrics(m ContainerMetric) error {
 	c.client.EmitGauge(
 		loggregator.WithGaugeSourceInfo(m.Tags["source_id"], m.Tags["instance_id"]),
@@ -235,19 +255,26 @@ func (c client) SendAppMetrics(m ContainerMetric) error {
 	// subscribers (cf nozzle) to be able to see those fields.  Note,
 	// Loggregator will emit each value in a separate envelope for v1
 	// subscribers.
-	c.client.EmitGauge(
-		loggregator.WithGaugeSourceInfo(m.Tags["source_id"], m.Tags["instance_id"]),
-		loggregator.WithGaugeValue("absolute_usage", float64(m.AbsoluteCPUUsage), "nanoseconds"),
-		loggregator.WithGaugeValue("absolute_entitlement", float64(m.AbsoluteCPUEntitlement), "nanoseconds"),
-		loggregator.WithGaugeValue("container_age", float64(m.ContainerAge), "nanoseconds"),
-		loggregator.WithEnvelopeTags(m.Tags),
-	)
+	//
+	// Above metrics are not filterable, as that would break this magic downstream.
 
-	if m.RxBytes != nil {
+	opts := []loggregator.EmitGaugeOption{
+		loggregator.WithGaugeSourceInfo(m.Tags["source_id"], m.Tags["instance_id"]),
+		loggregator.WithEnvelopeTags(m.Tags),
+	}
+
+	opts = c.appendUnlessFiltered(opts, "container_age", loggregator.WithGaugeValue("container_age", float64(m.ContainerAge), "nanoseconds"))
+	opts = c.appendUnlessFiltered(opts, "cpu_entitlement", loggregator.WithGaugeValue("cpu_entitlement", float64(m.CpuEntitlementPercentage), "percentage"))
+	opts = c.appendUnlessFiltered(opts, "absolute_usage", loggregator.WithGaugeValue("absolute_usage", float64(m.AbsoluteCPUUsage), "nanoseconds"))
+	opts = c.appendUnlessFiltered(opts, "absolute_entitlement", loggregator.WithGaugeValue("absolute_entitlement", float64(m.AbsoluteCPUEntitlement), "nanoseconds"))
+
+	c.client.EmitGauge(opts...)
+
+	if m.RxBytes != nil && !contains(c.appMetricExclusionFilter, "rx_bytes") {
 		c.client.EmitCounter("rx_bytes", loggregator.WithCounterSourceInfo(m.Tags["source_id"], m.Tags["instance_id"]), loggregator.WithTotal(*m.RxBytes))
 	}
 
-	if m.TxBytes != nil {
+	if m.TxBytes != nil && !contains(c.appMetricExclusionFilter, "tx_bytes") {
 		c.client.EmitCounter("tx_bytes", loggregator.WithCounterSourceInfo(m.Tags["source_id"], m.Tags["instance_id"]), loggregator.WithTotal(*m.TxBytes))
 	}
 
