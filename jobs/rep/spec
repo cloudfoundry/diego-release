@@ -81,7 +81,8 @@ properties:
     description: "Key used to communicate with local metron agent over gRPC"
   loggregator.app_metric_exclusion_filter:
     description: "Array of application metrics to not emit"
-    default: []
+    default:
+    - cpu_entitlement
 
   diego.rep.listen_addr_admin:
     description: "serve (insecure) ping and evacuate requests on this address and port"
