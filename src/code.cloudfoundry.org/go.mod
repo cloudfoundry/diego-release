@@ -48,7 +48,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.2.0
 	github.com/cloudfoundry-community/go-uaa v0.3.2
 	github.com/cloudfoundry/dropsonde v1.1.0
-	github.com/containers/image/v5 v5.29.1
+	github.com/containers/image/v5 v5.29.2
 	github.com/docker/docker v25.0.1+incompatible
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/envoyproxy/go-control-plane v0.12.0
