@@ -120,7 +120,7 @@ properties:
     description: "the max concurrent download steps that can be active"
     default: 5
   diego.executor.container_max_cpu_shares:
-    description: "the maximum number of cpu shares for a container."
+    description: "number of CPU shares per 100 CPU weight"
     default: 1024
   diego.executor.container_inode_limit:
     description: "the inode limit enforced on each garden container."
