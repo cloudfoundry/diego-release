@@ -17,6 +17,7 @@ package jwt
 
 import (
 	"errors"
+	"fmt"
 	"sort"
 	"time"
 
@@ -229,8 +230,14 @@ type Account struct {
 	DefaultPermissions Permissions           `json:"default_permissions,omitempty"`
 	Mappings           Mapping               `json:"mappings,omitempty"`
 	Authorization      ExternalAuthorization `json:"authorization,omitempty"`
+	Trace              *MsgTrace             `json:"trace,omitempty"`
 	Info
 	GenericFields
+}
+
+// MsgTrace holds distributed message tracing configuration
+type MsgTrace struct {
+	Destination Subject `json:"dest,omitempty"`
 }
 
 // Validate checks if the account is valid, based on the wrapper
@@ -241,6 +248,16 @@ func (a *Account) Validate(acct *AccountClaims, vr *ValidationResults) {
 	a.DefaultPermissions.Validate(vr)
 	a.Mappings.Validate(vr)
 	a.Authorization.Validate(vr)
+	if a.Trace != nil {
+		tvr := CreateValidationResults()
+		a.Trace.Destination.Validate(tvr)
+		if !tvr.IsEmpty() {
+			vr.AddError(fmt.Sprintf("the account Trace.Destination %s", tvr.Issues[0].Description))
+		}
+		if a.Trace.Destination.HasWildCards() {
+			vr.AddError("the account Trace.Destination subject %q is not a valid publish subject", a.Trace.Destination)
+		}
+	}
 
 	if !a.Limits.IsEmpty() && a.Limits.Imports >= 0 && int64(len(a.Imports)) > a.Limits.Imports {
 		vr.AddError("the account contains more imports than allowed by the operator")

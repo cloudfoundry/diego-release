@@ -1,4 +1,4 @@
-# code.cloudfoundry.org/archiver v0.0.0-20240209143848-e43eec6a484c
+# code.cloudfoundry.org/archiver v0.0.0-20240216143500-7a92f5fdc163
 ## explicit; go 1.20
 code.cloudfoundry.org/archiver/compressor
 code.cloudfoundry.org/archiver/extractor
@@ -31,10 +31,10 @@ code.cloudfoundry.org/cfhttp/v2
 ## explicit; go 1.20
 code.cloudfoundry.org/clock
 code.cloudfoundry.org/clock/fakeclock
-# code.cloudfoundry.org/commandrunner v0.0.0-20240209144511-0a92359ce87e
+# code.cloudfoundry.org/commandrunner v0.0.0-20240216144522-c81cab399db2
 ## explicit; go 1.20
 code.cloudfoundry.org/commandrunner
-# code.cloudfoundry.org/credhub-cli v0.0.0-20240212140505-22409e0225ea
+# code.cloudfoundry.org/credhub-cli v0.0.0-20240219140155-ce3a46ae0b03
 ## explicit; go 1.21.6
 code.cloudfoundry.org/credhub-cli/credhub
 code.cloudfoundry.org/credhub-cli/credhub/auth
@@ -45,10 +45,10 @@ code.cloudfoundry.org/credhub-cli/credhub/credentials/values
 code.cloudfoundry.org/credhub-cli/credhub/permissions
 code.cloudfoundry.org/credhub-cli/credhub/server
 code.cloudfoundry.org/credhub-cli/errors
-# code.cloudfoundry.org/debugserver v0.0.0-20240209143423-2b9fa99122f1
+# code.cloudfoundry.org/debugserver v0.0.0-20240216143506-a6177cebb9a9
 ## explicit; go 1.19
 code.cloudfoundry.org/debugserver
-# code.cloudfoundry.org/diego-logging-client v0.0.0-20240209143437-cd540f1e347d
+# code.cloudfoundry.org/diego-logging-client v0.0.0-20240216151549-a628049ecc7f
 ## explicit; go 1.21
 code.cloudfoundry.org/diego-logging-client
 code.cloudfoundry.org/diego-logging-client/testhelpers
@@ -58,10 +58,10 @@ code.cloudfoundry.org/dockerdriver
 code.cloudfoundry.org/dockerdriver/dockerdriverfakes
 code.cloudfoundry.org/dockerdriver/driverhttp
 code.cloudfoundry.org/dockerdriver/utils
-# code.cloudfoundry.org/durationjson v0.0.0-20240209143810-ae7b879fd1d4
+# code.cloudfoundry.org/durationjson v0.0.0-20240216143501-1b50cf8f87bc
 ## explicit; go 1.19
 code.cloudfoundry.org/durationjson
-# code.cloudfoundry.org/eventhub v0.0.0-20240209143421-ae9e9886a7f5
+# code.cloudfoundry.org/eventhub v0.0.0-20240216143504-715392208175
 ## explicit; go 1.19
 code.cloudfoundry.org/eventhub
 # code.cloudfoundry.org/garden v0.0.0-20240214130550-8a0cb81e0f4f => ../garden
@@ -112,10 +112,10 @@ code.cloudfoundry.org/lager/v3/internal/truncate
 code.cloudfoundry.org/lager/v3/lagerctx
 code.cloudfoundry.org/lager/v3/lagerflags
 code.cloudfoundry.org/lager/v3/lagertest
-# code.cloudfoundry.org/localip v0.0.0-20240209144003-33100c303cbc
+# code.cloudfoundry.org/localip v0.0.0-20240216143504-65247cb8fdb0
 ## explicit; go 1.20
 code.cloudfoundry.org/localip
-# code.cloudfoundry.org/tlsconfig v0.0.0-20240213144909-765c8d6ec2ff
+# code.cloudfoundry.org/tlsconfig v0.0.0-20240216143505-4f8d9b753d56
 ## explicit; go 1.19
 code.cloudfoundry.org/tlsconfig
 code.cloudfoundry.org/tlsconfig/certtest
@@ -137,7 +137,7 @@ github.com/GaryBoone/GoStats/stats
 # github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 ## explicit; go 1.15
 github.com/ajstarks/svgo
-# github.com/aws/aws-sdk-go v1.50.18
+# github.com/aws/aws-sdk-go v1.50.21
 ## explicit; go 1.19
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/auth/bearer
@@ -232,12 +232,12 @@ github.com/aws/aws-sdk-go-v2/internal/endpoints/v2
 # github.com/aws/aws-sdk-go-v2/internal/ini v1.8.0
 ## explicit; go 1.20
 github.com/aws/aws-sdk-go-v2/internal/ini
-# github.com/aws/aws-sdk-go-v2/service/ecr v1.25.0
+# github.com/aws/aws-sdk-go-v2/service/ecr v1.26.0
 ## explicit; go 1.20
 github.com/aws/aws-sdk-go-v2/service/ecr
 github.com/aws/aws-sdk-go-v2/service/ecr/internal/endpoints
 github.com/aws/aws-sdk-go-v2/service/ecr/types
-# github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.22.0
+# github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.22.1
 ## explicit; go 1.20
 github.com/aws/aws-sdk-go-v2/service/ecrpublic
 github.com/aws/aws-sdk-go-v2/service/ecrpublic/internal/endpoints
@@ -327,8 +327,8 @@ github.com/cloudfoundry/dropsonde/runtime_stats
 # github.com/cloudfoundry/go-socks5 v0.0.0-20180221174514-54f73bdb8a8e
 ## explicit
 github.com/cloudfoundry/go-socks5
-# github.com/cloudfoundry/socks5-proxy v0.2.112
-## explicit; go 1.21
+# github.com/cloudfoundry/socks5-proxy v0.2.113
+## explicit; go 1.21.0
 github.com/cloudfoundry/socks5-proxy
 # github.com/cloudfoundry/sonde-go v0.0.0-20231227232801-b682ba3cb37d
 ## explicit; go 1.17
@@ -627,10 +627,10 @@ github.com/modern-go/concurrent
 # github.com/modern-go/reflect2 v1.0.2
 ## explicit; go 1.12
 github.com/modern-go/reflect2
-# github.com/nats-io/jwt/v2 v2.5.3
+# github.com/nats-io/jwt/v2 v2.5.4
 ## explicit; go 1.18
 github.com/nats-io/jwt/v2
-# github.com/nats-io/nats-server/v2 v2.10.10
+# github.com/nats-io/nats-server/v2 v2.10.11
 ## explicit; go 1.20
 github.com/nats-io/nats-server/v2
 github.com/nats-io/nats-server/v2/conf
@@ -644,7 +644,7 @@ github.com/nats-io/nats-server/v2/server/certstore
 github.com/nats-io/nats-server/v2/server/pse
 github.com/nats-io/nats-server/v2/server/stree
 github.com/nats-io/nats-server/v2/server/sysmem
-# github.com/nats-io/nats.go v1.33.0 => github.com/nats-io/nats.go v1.16.1-0.20220906180156-a1017eec10b0
+# github.com/nats-io/nats.go v1.33.1 => github.com/nats-io/nats.go v1.16.1-0.20220906180156-a1017eec10b0
 ## explicit; go 1.16
 github.com/nats-io/nats.go
 github.com/nats-io/nats.go/encoders/builtin
@@ -705,7 +705,7 @@ github.com/onsi/say
 # github.com/opencontainers/go-digest v1.0.0
 ## explicit; go 1.13
 github.com/opencontainers/go-digest
-# github.com/opencontainers/image-spec v1.1.0-rc6
+# github.com/opencontainers/image-spec v1.1.0
 ## explicit; go 1.18
 github.com/opencontainers/image-spec/specs-go
 github.com/opencontainers/image-spec/specs-go/v1
@@ -790,7 +790,7 @@ github.com/vishvananda/netns
 # github.com/vito/go-sse v1.0.0
 ## explicit; go 1.12
 github.com/vito/go-sse/sse
-# go.step.sm/crypto v0.43.0
+# go.step.sm/crypto v0.43.1
 ## explicit; go 1.20
 go.step.sm/crypto/fingerprint
 go.step.sm/crypto/internal/bcrypt_pbkdf
