@@ -18,22 +18,23 @@ import (
 	"github.com/cloudfoundry/dropsonde/metrics"
 )
 
-//go:generate counterfeiter . Depot
-//go:generate counterfeiter . OCIRuntime
-//go:generate counterfeiter . NstarRunner
-//go:generate counterfeiter . EventStore
-//go:generate counterfeiter . ProcessesStopper
-//go:generate counterfeiter . StateStore
-//go:generate counterfeiter . PeaCreator
-//go:generate counterfeiter . PeaUsernameResolver
-//go:generate counterfeiter . RuntimeStopper
-//go:generate counterfeiter . CPUCgrouper
+//go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
+//counterfeiter:generate . Depot
+//counterfeiter:generate . OCIRuntime
+//counterfeiter:generate . NstarRunner
+//counterfeiter:generate . EventStore
+//counterfeiter:generate . ProcessesStopper
+//counterfeiter:generate . StateStore
+//counterfeiter:generate . PeaCreator
+//counterfeiter:generate . PeaUsernameResolver
+//counterfeiter:generate . RuntimeStopper
+//counterfeiter:generate . CPUCgrouper
 
 type Depot interface {
 	Destroy(log lager.Logger, handle string) error
 }
 
-//go:generate counterfeiter . BundleGenerator
+//counterfeiter:generate . BundleGenerator
 type BundleGenerator interface {
 	Generate(desiredContainerSpec spec.DesiredContainerSpec) (goci.Bndl, error)
 }

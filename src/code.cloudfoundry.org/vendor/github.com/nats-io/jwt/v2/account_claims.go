@@ -175,7 +175,7 @@ func (a *Account) AddMapping(sub Subject, to ...WeightedMapping) {
 // holder of the private key can decrypt. The auth service can also optionally encrypt the response back to the server using it's
 // publick xkey which will be in the authorization request.
 type ExternalAuthorization struct {
-	AuthUsers       StringList `json:"auth_users"`
+	AuthUsers       StringList `json:"auth_users,omitempty"`
 	AllowedAccounts StringList `json:"allowed_accounts,omitempty"`
 	XKey            string     `json:"xkey,omitempty"`
 }
@@ -237,7 +237,16 @@ type Account struct {
 
 // MsgTrace holds distributed message tracing configuration
 type MsgTrace struct {
+	// Destination is the subject the server will send message traces to
+	// if the inbound message contains the "traceparent" header and has
+	// its sampled field indicating that the trace should be triggered.
 	Destination Subject `json:"dest,omitempty"`
+	// Sampling is used to set the probability sampling, that is, the
+	// server will get a random number between 1 and 100 and trigger
+	// the trace if the number is lower than this Sampling value.
+	// The valid range is [1..100]. If the value is not set Validate()
+	// will set the value to 100.
+	Sampling int `json:"sampling,omitempty"`
 }
 
 // Validate checks if the account is valid, based on the wrapper
@@ -256,6 +265,11 @@ func (a *Account) Validate(acct *AccountClaims, vr *ValidationResults) {
 		}
 		if a.Trace.Destination.HasWildCards() {
 			vr.AddError("the account Trace.Destination subject %q is not a valid publish subject", a.Trace.Destination)
+		}
+		if a.Trace.Sampling < 0 || a.Trace.Sampling > 100 {
+			vr.AddError("the account Trace.Sampling value '%d' is not valid, should be in the range [1..100]", a.Trace.Sampling)
+		} else if a.Trace.Sampling == 0 {
+			a.Trace.Sampling = 100
 		}
 	}
 

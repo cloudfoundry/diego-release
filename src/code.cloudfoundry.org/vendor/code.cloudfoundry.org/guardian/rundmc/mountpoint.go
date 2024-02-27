@@ -1,7 +1,7 @@
 package rundmc
 
-//go:generate counterfeiter . MountPointChecker
+//counterfeiter:generate . MountPointChecker
 type MountPointChecker func(path string) (bool, error)
 
-//go:generate counterfeiter . MountOptionsGetter
+//counterfeiter:generate . MountOptionsGetter
 type MountOptionsGetter func(path string) ([]string, error)

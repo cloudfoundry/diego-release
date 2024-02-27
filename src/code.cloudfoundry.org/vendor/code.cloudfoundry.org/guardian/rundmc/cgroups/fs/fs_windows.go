@@ -6,7 +6,7 @@ import (
 	"errors"
 )
 
-//go:generate counterfeiter . FS
+//counterfeiter:generate . FS
 type FS interface {
 	Chown(string, int, int) error
 	Mount(string, string, string, uintptr, string) error

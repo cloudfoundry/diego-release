@@ -5,7 +5,7 @@ import (
 	"sync"
 )
 
-//go:generate counterfeiter . Properties
+//counterfeiter:generate . Properties
 
 type Properties interface {
 	Set(handle string, key string, value string)

@@ -5,7 +5,7 @@ import (
 	"code.cloudfoundry.org/guardian/rundmc/goci"
 )
 
-//go:generate counterfeiter . BundlerRule
+//counterfeiter:generate . BundlerRule
 type BundlerRule interface {
 	Apply(bndle goci.Bndl, desiredContainerSpec spec.DesiredContainerSpec) (goci.Bndl, error)
 }

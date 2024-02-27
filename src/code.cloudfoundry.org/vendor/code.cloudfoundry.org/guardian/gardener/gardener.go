@@ -16,18 +16,19 @@ import (
 	"github.com/hashicorp/go-multierror"
 )
 
-//go:generate counterfeiter . SysInfoProvider
-//go:generate counterfeiter . Containerizer
-//go:generate counterfeiter . Networker
-//go:generate counterfeiter . Volumizer
-//go:generate counterfeiter . VolumeCreator
-//go:generate counterfeiter . UidGenerator
-//go:generate counterfeiter . PropertyManager
-//go:generate counterfeiter . Restorer
-//go:generate counterfeiter . Starter
-//go:generate counterfeiter . BulkStarter
-//go:generate counterfeiter . PeaCleaner
-//go:generate counterfeiter . Sleeper
+//go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
+//counterfeiter:generate . SysInfoProvider
+//counterfeiter:generate . Containerizer
+//counterfeiter:generate . Networker
+//counterfeiter:generate . Volumizer
+//counterfeiter:generate . VolumeCreator
+//counterfeiter:generate . UidGenerator
+//counterfeiter:generate . PropertyManager
+//counterfeiter:generate . Restorer
+//counterfeiter:generate . Starter
+//counterfeiter:generate . BulkStarter
+//counterfeiter:generate . PeaCleaner
+//counterfeiter:generate . Sleeper
 
 const ContainerInterfaceKey = "garden.network.interface"
 const ContainerIPKey = "garden.network.container-ip"

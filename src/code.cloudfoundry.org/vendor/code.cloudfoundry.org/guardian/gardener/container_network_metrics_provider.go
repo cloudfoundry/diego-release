@@ -5,7 +5,7 @@ import (
 	"code.cloudfoundry.org/lager/v3"
 )
 
-//go:generate counterfeiter . ContainerNetworkMetricsProvider
+//counterfeiter:generate . ContainerNetworkMetricsProvider
 
 type ContainerNetworkMetricsProvider interface {
 	Get(logger lager.Logger, handle string) (*garden.ContainerNetworkStat, error)
