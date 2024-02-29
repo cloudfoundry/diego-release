@@ -1,3 +1,4 @@
+//go:build modules
 // +build modules
 
 package modules
