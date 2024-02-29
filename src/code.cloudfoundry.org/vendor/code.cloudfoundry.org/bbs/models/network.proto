@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option (gogoproto.goproto_enum_prefix_all) = true;
+
+message Network {
+  map<string, string> properties = 1 [(gogoproto.jsontag) = "properties,omitempty"];
+}

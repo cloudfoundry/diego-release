@@ -9,26 +9,24 @@ files:
   - code.cloudfoundry.org/go.sum
   - code.cloudfoundry.org/vendor/modules.txt
   - code.cloudfoundry.org/vizzini/scripts/**/*
-  - code.cloudfoundry.org/bbs/*.go # gosub
-  - code.cloudfoundry.org/bbs/encryption/*.go # gosub
-  - code.cloudfoundry.org/bbs/events/*.go # gosub
-  - code.cloudfoundry.org/bbs/format/*.go # gosub
-  - code.cloudfoundry.org/bbs/models/*.go # gosub
-  - code.cloudfoundry.org/bbs/trace/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/bbs/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/bbs/encryption/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/bbs/events/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/bbs/format/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/bbs/models/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/bbs/trace/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/cfhttp/v2/*.go # gosub
-  - code.cloudfoundry.org/diego-ssh/routes/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/diego-ssh/routes/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/v3/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/v3/internal/truncate/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/v3/lagerctx/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/lager/v3/lagertest/*.go # gosub
-  - code.cloudfoundry.org/routing-info/cfroutes/*.go # gosub
+  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/routing-info/cfroutes/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/tlsconfig/*.go # gosub
   - code.cloudfoundry.org/vizzini/*.go # gosub
   - code.cloudfoundry.org/vizzini/config/*.go # gosub
   - code.cloudfoundry.org/vizzini/matchers/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/bmizerany/pat/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/creack/pty/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/creack/pty/*.s # gosub
   - code.cloudfoundry.org/vendor/github.com/go-logr/logr/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/go-logr/logr/funcr/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/go-task/slim-sprig/*.go # gosub

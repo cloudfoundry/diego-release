@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package models;
+
+message LogRateLimit {
+  int64 bytes_per_second = 1;
+}

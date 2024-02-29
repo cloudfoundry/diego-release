@@ -1,0 +1,102 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "environment_variables.proto";
+
+message Action {
+  // Note: we only expect one of the following set of fields to be
+  // set. Previously we used `option (gogoproto.onlyone) = true' but since this
+  // is now deprecated and oneof introduces a lot of structural changes, we
+  // deferred on switching to oneof for now until there is a good reason for it.
+  // disadvantages of using multiple optionals as opposed to oneof are:
+  //   - less memory usage
+  // disadvantages of using multiple optionals without onlyone:
+  //   - writing our own GetAction/SetAction methods
+  // action oneof {
+    DownloadAction download_action = 1 [(gogoproto.jsontag) = "download,omitempty"];
+    UploadAction upload_action = 2 [(gogoproto.jsontag) = "upload,omitempty"];
+    RunAction run_action = 3 [(gogoproto.jsontag) = "run,omitempty"];
+    TimeoutAction timeout_action = 4 [(gogoproto.jsontag) = "timeout,omitempty"];
+    EmitProgressAction emit_progress_action = 5 [(gogoproto.jsontag) = "emit_progress,omitempty"];
+    TryAction try_action = 6 [(gogoproto.jsontag) = "try,omitempty"];
+    ParallelAction parallel_action = 7 [(gogoproto.jsontag) = "parallel,omitempty"];
+    SerialAction serial_action = 8 [(gogoproto.jsontag) = "serial,omitempty"];
+    CodependentAction codependent_action = 9 [(gogoproto.jsontag) = "codependent,omitempty"];
+  // }
+}
+
+message DownloadAction {
+  string artifact = 1;
+  string from = 2 [(gogoproto.jsontag) = "from"];
+  string to = 3 [(gogoproto.jsontag) = "to"];
+  string cache_key = 4 [(gogoproto.jsontag) = "cache_key"];
+  string log_source = 5;
+  string user = 6 [(gogoproto.jsontag) = "user"] ;
+  string checksum_algorithm = 7;
+  string checksum_value = 8;
+}
+
+message UploadAction {
+  string artifact = 1;
+  string from = 2 [(gogoproto.jsontag) = "from"];
+  string to = 3 [(gogoproto.jsontag) = "to"];
+  string log_source = 4;
+  string user = 5 [(gogoproto.jsontag) = "user"];
+}
+
+message RunAction {
+  string path = 1 [(gogoproto.jsontag) = "path"];
+  repeated string args = 2;
+  string dir = 3;
+  repeated EnvironmentVariable env = 4;
+  ResourceLimits resource_limits = 5;
+  string user = 6 [(gogoproto.jsontag) = "user"];
+  string log_source = 7;
+  bool suppress_log_output = 8 [(gogoproto.jsontag) = "suppress_log_output"];
+}
+
+message TimeoutAction {
+  Action action = 1;
+  int64 deprecated_timeout_ns = 2 [(gogoproto.jsontag) = "timeout,omitempty", deprecated=true];
+  string log_source = 3;
+  int64 timeout_ms = 4 [(gogoproto.jsontag) = "timeout_ms"];
+}
+
+message EmitProgressAction {
+  Action action = 1;
+  string start_message = 2 [(gogoproto.jsontag) = "start_message"];
+  string success_message = 3 [(gogoproto.jsontag) = "success_message"];
+  string failure_message_prefix = 4 [(gogoproto.jsontag) = "failure_message_prefix"];
+  string log_source = 5;
+}
+
+message TryAction {
+  Action action = 1;
+  string log_source = 2;
+}
+
+message ParallelAction {
+  repeated Action actions = 1;
+  string log_source = 2;
+}
+
+message SerialAction {
+  repeated Action actions = 1;
+  string log_source = 2;
+}
+
+message CodependentAction {
+  repeated Action actions = 1;
+  string log_source = 2;
+}
+
+message ResourceLimits {
+  oneof optional_nofile {
+    uint64 nofile = 1;
+  }
+  oneof optional_nproc {
+    uint64 nproc = 2 [deprecated=true];
+  }
+}

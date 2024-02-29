@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+message MetricTagValue {
+  enum DynamicValue {
+    DynamicValueInvalid = 0;
+    INDEX               = 1 [(gogoproto.enumvalue_customname) = "MetricTagDynamicValueIndex"];
+    INSTANCE_GUID        = 2 [(gogoproto.enumvalue_customname) = "MetricTagDynamicValueInstanceGuid"];
+  }
+
+  // Note: we only expect one of the following set of fields to be
+  // set.
+  string static        = 1;
+  DynamicValue dynamic = 2;
+}

@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option (gogoproto.equal_all) = false;
+option (gogoproto.goproto_enum_prefix_all) = true;
+
+message Error {
+  enum Type {
+    reserved 1, 2, 10, 20, 22, 23, 25; // previously used and removed values
+
+    UnknownError = 0;
+
+    InvalidRecord          = 3;
+    InvalidRequest         = 4;
+    InvalidResponse        = 5;
+    InvalidProtobufMessage = 6;
+    InvalidJSON            = 7;
+    FailedToOpenEnvelope   = 8;
+    InvalidStateTransition = 9;
+
+    ResourceConflict = 11;
+    ResourceExists   = 12;
+    ResourceNotFound = 13;
+    RouterError      = 14;
+
+    ActualLRPCannotBeClaimed   = 15;
+    ActualLRPCannotBeStarted   = 16;
+    ActualLRPCannotBeCrashed   = 17;
+    ActualLRPCannotBeFailed    = 18;
+    ActualLRPCannotBeRemoved   = 19;
+    ActualLRPCannotBeUnclaimed = 21;
+
+    RunningOnDifferentCell = 24;
+
+    GUIDGeneration = 26;
+
+    Deserialize = 27;
+
+    Deadlock = 28;
+    Unrecoverable = 29;
+
+    LockCollision = 30;
+
+    Timeout = 31;
+  }
+
+  Type type = 1 [(gogoproto.jsontag) = "type"];
+  string message = 2 [(gogoproto.jsontag) = "message"];
+}

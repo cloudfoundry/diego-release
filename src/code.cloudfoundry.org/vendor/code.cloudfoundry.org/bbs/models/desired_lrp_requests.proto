@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "desired_lrp.proto";
+import "error.proto";
+
+message DesiredLRPLifecycleResponse {
+  Error error = 1;
+}
+
+message DesiredLRPsResponse {
+  Error error = 1;
+  repeated DesiredLRP desired_lrps = 2;
+}
+
+message DesiredLRPsRequest {
+  string domain = 1 [(gogoproto.jsontag) = "domain"];
+  repeated string process_guids = 2;
+}
+
+message DesiredLRPResponse {
+  Error error = 1;
+  DesiredLRP desired_lrp = 2;
+}
+
+message DesiredLRPSchedulingInfosResponse {
+  Error error = 1;
+  repeated DesiredLRPSchedulingInfo desired_lrp_scheduling_infos = 2;
+}
+
+message DesiredLRPByProcessGuidRequest {
+  string process_guid = 1 [(gogoproto.jsontag) = "process_guid"];
+}
+
+message DesireLRPRequest {
+  DesiredLRP desired_lrp = 1;
+}
+
+message UpdateDesiredLRPRequest {
+  string process_guid = 1 [(gogoproto.jsontag) = "process_guid"];
+  DesiredLRPUpdate update = 2;
+}
+
+message RemoveDesiredLRPRequest {
+  string process_guid = 1 [(gogoproto.jsontag) = "process_guid"];
+}

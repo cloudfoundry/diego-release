@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "actual_lrp.proto";
+import "error.proto";
+
+message ActualLRPLifecycleResponse {
+  Error error = 1;
+}
+
+message ActualLRPGroupsResponse {
+  option deprecated = true;
+  Error error = 1;
+  repeated ActualLRPGroup actual_lrp_groups = 2;
+}
+
+message ActualLRPGroupResponse {
+  option deprecated = true;
+  Error error = 1;
+  ActualLRPGroup actual_lrp_group = 2;
+}
+
+message ActualLRPGroupsRequest {
+  option deprecated = true;
+  string domain = 1 [(gogoproto.jsontag) = "domain"];
+  string cell_id = 2 [(gogoproto.jsontag) = "cell_id"];
+}
+
+message ActualLRPGroupsByProcessGuidRequest {
+  option deprecated = true;
+  string process_guid = 1 [(gogoproto.jsontag) = "process_guid"];
+}
+
+message ActualLRPGroupByProcessGuidAndIndexRequest {
+  option deprecated = true;
+  string process_guid = 1 [(gogoproto.jsontag) = "process_guid"];
+  int32 index = 2 [(gogoproto.jsontag) = "index"];
+}
+
+message ClaimActualLRPRequest {
+  string process_guid = 1 [(gogoproto.jsontag) = "process_guid"];
+  int32 index = 2 [(gogoproto.jsontag) = "index"];
+  ActualLRPInstanceKey actual_lrp_instance_key = 3;
+}
+
+message StartActualLRPRequest {
+  ActualLRPKey actual_lrp_key = 1;
+  ActualLRPInstanceKey actual_lrp_instance_key = 2;
+  ActualLRPNetInfo actual_lrp_net_info = 3;
+  repeated ActualLRPInternalRoute actual_lrp_internal_routes = 4;
+  map<string, string> metric_tags = 5;
+  oneof optional_routable {
+    bool Routable = 6;
+  }
+  string availability_zone = 7 [(gogoproto.jsontag)= "availability_zone"];
+}
+
+message CrashActualLRPRequest {
+  ActualLRPKey actual_lrp_key = 1;
+  ActualLRPInstanceKey actual_lrp_instance_key = 2;
+  string error_message = 3 [(gogoproto.jsontag) = "error_message"];
+}
+
+message FailActualLRPRequest {
+  ActualLRPKey actual_lrp_key = 1;
+  string error_message = 2 [(gogoproto.jsontag) = "error_message"];
+}
+
+message RetireActualLRPRequest {
+  ActualLRPKey actual_lrp_key = 1;
+}
+
+message RemoveActualLRPRequest {
+  string process_guid = 1 [(gogoproto.jsontag) = "process_guid"];
+  int32 index = 2 [(gogoproto.jsontag) = "index"];
+  ActualLRPInstanceKey actual_lrp_instance_key = 3;
+}
+
+message ActualLRPsResponse {
+  Error error = 1;
+  repeated ActualLRP actual_lrps = 2;
+}
+
+message ActualLRPsRequest {
+  string domain = 1 [(gogoproto.jsontag) = "domain"];
+  string cell_id = 2 [(gogoproto.jsontag) = "cell_id"];
+  string process_guid = 3 [(gogoproto.jsontag) = "process_guid"];
+  oneof optional_index {
+    int32 index = 4 [(gogoproto.jsontag) = "index"];
+  }
+}
+

@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "modification_tag.proto";
+
+option (gogoproto.goproto_enum_prefix_all) = true;
+
+message ActualLRPGroup {
+  option deprecated = true;
+  ActualLRP instance = 1;
+  ActualLRP evacuating = 2;
+}
+
+message PortMapping {
+  uint32 container_port = 1 [(gogoproto.jsontag) = "container_port"];
+  uint32 host_port = 2 [(gogoproto.jsontag) = "host_port"];
+  uint32 container_tls_proxy_port = 3 [(gogoproto.jsontag) = "container_tls_proxy_port"];
+  uint32 host_tls_proxy_port = 4 [(gogoproto.jsontag) = "host_tls_proxy_port"];
+}
+
+message ActualLRPKey {
+  string process_guid = 1 [(gogoproto.jsontag) = "process_guid"];
+  int32 index = 2 [(gogoproto.jsontag) = "index"];
+  string domain = 3 [(gogoproto.jsontag) = "domain"];
+}
+
+message ActualLRPInstanceKey {
+  string instance_guid = 1 [(gogoproto.jsontag) = "instance_guid"];
+  string cell_id = 2 [(gogoproto.jsontag) = "cell_id"];
+}
+
+message ActualLRPNetInfo {
+  string address = 1 [(gogoproto.jsontag) = "address"];
+  repeated PortMapping ports = 2 [(gogoproto.jsontag) = "ports"];
+  string instance_address = 3;
+
+  enum PreferredAddress {
+    UNKNOWN = 0 [(gogoproto.enumvalue_customname) = "PreferredAddressUnknown"];
+    INSTANCE = 1 [(gogoproto.enumvalue_customname) = "PreferredAddressInstance"];
+    HOST = 2 [(gogoproto.enumvalue_customname) = "PreferredAddressHost"];
+  }
+
+  PreferredAddress preferred_address = 4 [(gogoproto.jsontag) = "preferred_address"];
+}
+
+message ActualLRPInternalRoute {
+  string hostname = 1 [(gogoproto.jsontag) = "hostname"];
+}
+
+message ActualLRP {
+  enum Presence {
+    ORDINARY   = 0 [(gogoproto.enumvalue_customname) = "Ordinary"];
+    EVACUATING = 1 [(gogoproto.enumvalue_customname) = "Evacuating"];
+    SUSPECT    = 2 [(gogoproto.enumvalue_customname) = "Suspect"];
+  }
+
+  ActualLRPKey actual_lrp_key = 1 [(gogoproto.nullable) = false, (gogoproto.jsontag) = "", (gogoproto.embed) = true];
+  ActualLRPInstanceKey actual_lrp_instance_key = 2 [(gogoproto.nullable) = false, (gogoproto.jsontag) = "", (gogoproto.embed) = true];
+  ActualLRPNetInfo actual_lrp_net_info = 3 [(gogoproto.nullable) = false, (gogoproto.jsontag) = "", (gogoproto.embed) = true];
+  int32 crash_count = 4 [(gogoproto.jsontag) = "crash_count"];
+  string crash_reason = 5;
+  string state = 6 [(gogoproto.jsontag) = "state"];
+  string placement_error = 7;
+  int64 since = 8 [(gogoproto.jsontag) = "since"];
+  ModificationTag modification_tag = 9 [(gogoproto.nullable) = false,(gogoproto.jsontag) = "modification_tag"];
+  Presence presence = 10 [(gogoproto.jsontag) = "presence"];
+  repeated ActualLRPInternalRoute actual_lrp_internal_routes = 11;
+  map<string, string> metric_tags = 12;
+  oneof optional_routable {
+    bool routable = 13 [(gogoproto.jsontag) = "routable"];
+  }
+  string availability_zone = 14 [(gogoproto.jsontag) = "availability_zone"];
+}

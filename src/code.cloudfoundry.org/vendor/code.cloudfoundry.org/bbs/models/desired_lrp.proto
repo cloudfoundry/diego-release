@@ -1,0 +1,150 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "actions.proto";
+import "cached_dependency.proto";
+import "certificate_properties.proto";
+import "environment_variables.proto";
+import "modification_tag.proto";
+import "network.proto";
+import "security_group.proto";
+import "volume_mount.proto";
+import "check_definition.proto";
+import "image_layer.proto";
+import "metric_tags.proto";
+import "sidecar.proto";
+import "log_rate_limit.proto";
+
+message DesiredLRPSchedulingInfo {
+  DesiredLRPKey desired_lrp_key = 1 [(gogoproto.nullable) = false, (gogoproto.jsontag) = "", (gogoproto.embed) = true];
+
+  string annotation = 2 [(gogoproto.jsontag) = "annotation"];
+  int32 instances = 3 [(gogoproto.jsontag) = "instances"];
+
+  DesiredLRPResource desired_lrp_resource = 4 [(gogoproto.nullable) = false, (gogoproto.jsontag) = "", (gogoproto.embed) = true];
+
+  ProtoRoutes routes = 5 [(gogoproto.nullable) = false, (gogoproto.customtype) = "Routes"];
+  ModificationTag modification_tag = 6 [(gogoproto.nullable) = false, (gogoproto.jsontag) = "", (gogoproto.embed) = true];
+  VolumePlacement volume_placement = 7;
+  repeated string PlacementTags = 8 [(gogoproto.jsontag) ="placement_tags,omitempty"];
+}
+
+message DesiredLRPRunInfo {
+  DesiredLRPKey desired_lrp_key = 1 [(gogoproto.nullable) = false, (gogoproto.jsontag) = "", (gogoproto.embed) = true];
+
+  repeated EnvironmentVariable environment_variables = 2 [(gogoproto.jsontag) = "env", (gogoproto.nullable) = false];
+  Action setup = 3;
+  Action action = 4;
+  Action monitor = 5;
+
+  uint32 deprecated_start_timeout_s = 6 [(gogoproto.jsontag) = "start_timeout,omitempty", deprecated=true];
+
+  bool privileged = 7 [(gogoproto.jsontag) = "privileged"];
+
+  uint32 cpu_weight = 8 [(gogoproto.jsontag) = "cpu_weight"];
+  repeated uint32 ports = 9 [packed = false];
+  repeated SecurityGroupRule egress_rules = 10 [(gogoproto.nullable) = false];
+  string log_source = 11 [(gogoproto.jsontag) = "log_source"];
+  string metrics_guid = 12 [deprecated=true, (gogoproto.jsontag) = "metrics_guid"];
+  int64 created_at = 13 [(gogoproto.jsontag) = "created_at"];
+  repeated CachedDependency cached_dependencies = 14;
+  string legacy_download_user = 15 [deprecated=true];
+  string trusted_system_certificates_path = 16;
+  repeated VolumeMount volume_mounts = 17;
+  Network network = 18;
+
+  int64 start_timeout_ms = 19 [(gogoproto.jsontag) = "start_timeout_ms"];
+
+  CertificateProperties certificate_properties = 20 [(gogoproto.nullable) = true];
+
+  string image_username = 21;
+  string image_password = 22;
+
+  CheckDefinition check_definition = 23;
+
+  repeated ImageLayer image_layers = 24;
+
+  map<string, MetricTagValue> metric_tags = 25;
+
+  repeated Sidecar sidecars = 26;
+  LogRateLimit log_rate_limit = 27;
+}
+
+// helper message for marshalling routes
+message ProtoRoutes {
+  map<string, bytes> routes = 1;
+}
+
+message DesiredLRPUpdate {
+  oneof optional_instances {
+    int32 instances = 1;
+  }
+  ProtoRoutes routes = 2 [(gogoproto.nullable) = true, (gogoproto.customtype) = "Routes"];
+  oneof optional_annotation {
+    string annotation = 3;
+  }
+  map<string, MetricTagValue> metric_tags = 4;
+}
+
+message DesiredLRPKey {
+  string process_guid = 1 [(gogoproto.jsontag) = "process_guid"];
+  string domain = 2 [(gogoproto.jsontag) = "domain"];
+  string log_guid = 3 [(gogoproto.jsontag) = "log_guid"];
+}
+
+message DesiredLRPResource {
+  int32 memory_mb = 1 [(gogoproto.jsontag) = "memory_mb"];
+  int32 disk_mb = 2 [(gogoproto.jsontag) = "disk_mb"];
+  string root_fs = 3 [(gogoproto.jsontag) = "rootfs"];
+  int32 max_pids = 4 [(gogoproto.jsontag) = "max_pids"];
+}
+
+message DesiredLRP {
+  string process_guid = 1 [(gogoproto.jsontag) = "process_guid"];
+  string domain = 2 [(gogoproto.jsontag) = "domain"];
+  string root_fs = 3 [(gogoproto.jsontag) = "rootfs"];
+  int32 instances = 4 [(gogoproto.jsontag) = "instances"];
+  repeated EnvironmentVariable environment_variables = 5 [(gogoproto.jsontag) = "env"];
+  Action setup = 6;
+  Action action = 7;
+
+  int64 start_timeout_ms = 27 [(gogoproto.jsontag) = "start_timeout_ms"];
+  uint32 deprecated_start_timeout_s = 8 [(gogoproto.jsontag) = "deprecated_timeout_ns,omitempty", deprecated=true];
+
+  Action monitor = 9;
+  int32 disk_mb = 10 [(gogoproto.jsontag) = "disk_mb"];
+  int32 memory_mb = 11 [(gogoproto.jsontag) = "memory_mb"];
+  uint32 cpu_weight = 12 [(gogoproto.jsontag) = "cpu_weight"];
+  bool privileged = 13 [(gogoproto.jsontag) = "privileged"];
+  repeated uint32 ports = 14 [packed = false];
+  ProtoRoutes routes = 15 [(gogoproto.nullable) = true, (gogoproto.customtype) = "Routes"];
+  string log_source = 16 [(gogoproto.jsontag) = "log_source"];
+  string log_guid = 17 [(gogoproto.jsontag) = "log_guid"];
+  string metrics_guid = 18 [deprecated=true, (gogoproto.jsontag) = "metrics_guid"];
+  string annotation = 19 [(gogoproto.jsontag) = "annotation"];
+  repeated SecurityGroupRule egress_rules = 20;
+  ModificationTag modification_tag = 21;
+  repeated CachedDependency cached_dependencies = 22;
+  string legacy_download_user = 23 [deprecated=true];
+  string trusted_system_certificates_path = 24;
+  repeated VolumeMount volume_mounts = 25;
+  Network network = 26;
+  repeated string PlacementTags = 28 [(gogoproto.jsontag) ="placement_tags,omitempty"];
+  int32 max_pids = 29 [(gogoproto.jsontag) = "max_pids"];
+
+  CertificateProperties certificate_properties = 30 [(gogoproto.nullable) = true];
+
+  string image_username = 31;
+  string image_password = 32;
+
+  CheckDefinition check_definition = 33;
+
+  repeated ImageLayer image_layers = 34;
+
+  map<string, MetricTagValue> metric_tags = 35;
+
+  repeated Sidecar sidecars = 36;
+  LogRateLimit log_rate_limit = 37;
+}

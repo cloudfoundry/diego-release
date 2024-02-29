@@ -2,6 +2,7 @@
 
 set -eu
 set -o pipefail
+set -x
 
 . "/ci/shared/helpers/git-helpers.bash"
 

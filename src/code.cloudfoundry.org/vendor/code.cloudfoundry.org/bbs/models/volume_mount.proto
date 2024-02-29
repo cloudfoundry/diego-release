@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option (gogoproto.goproto_enum_prefix_all) = true;
+
+message SharedDevice {
+  string volume_id = 1 [(gogoproto.jsontag) = "volume_id"];
+  string mount_config = 2 [(gogoproto.jsontag) = "mount_config"];
+}
+
+message VolumeMount {
+  reserved 2, 4, 5;
+
+  string driver = 1 [(gogoproto.jsontag) = "driver"];
+  string container_dir = 3 [(gogoproto.jsontag) = "container_dir"];
+  string mode = 6 [(gogoproto.jsontag) = "mode"];
+
+  // oneof device {
+    SharedDevice shared = 7 [(gogoproto.jsontag) = "shared"];
+  // }
+}
+
+message VolumePlacement {
+  repeated string driver_names = 1 [(gogoproto.jsontag) = "driver_names"];
+}

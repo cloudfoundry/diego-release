@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu
+set -eux
 
 THIS_FILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 CI="${THIS_FILE_DIR}/../../wg-app-platform-runtime-ci"
