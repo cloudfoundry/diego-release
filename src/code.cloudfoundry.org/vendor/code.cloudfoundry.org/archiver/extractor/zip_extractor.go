@@ -4,7 +4,6 @@ import (
 	"archive/zip"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -65,6 +64,9 @@ func extractZip(src, dest string) error {
 
 func extractZipArchiveFile(file *zip.File, dest string, input io.Reader) error {
 	filePath, err := securejoin.SecureJoin(dest, file.Name)
+	if err != nil {
+		return err
+	}
 	fileInfo := file.FileInfo()
 
 	if fileInfo.IsDir() {
@@ -79,7 +81,7 @@ func extractZipArchiveFile(file *zip.File, dest string, input io.Reader) error {
 		}
 
 		if fileInfo.Mode()&os.ModeSymlink != 0 {
-			linkName, err := ioutil.ReadAll(input)
+			linkName, err := io.ReadAll(input)
 			if err != nil {
 				return err
 			}

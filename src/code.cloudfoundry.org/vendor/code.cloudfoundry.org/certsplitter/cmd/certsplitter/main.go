@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path"
@@ -37,7 +36,7 @@ func splitCerts(certs string) []string {
 			continue
 		}
 
-		cert := chunk[start:len(chunk)] + "\n"
+		cert := chunk[start:] + "\n"
 		result = append(result, cert)
 	}
 	return result
@@ -78,7 +77,7 @@ func parseFlags() error {
 
 func writeCerts() error {
 	trustedCertsPath := flag.Args()[0]
-	data, err := ioutil.ReadFile(trustedCertsPath)
+	data, err := os.ReadFile(trustedCertsPath)
 	if err != nil {
 		return err
 	}
@@ -98,7 +97,7 @@ func writeCerts() error {
 	outputDir := flag.Args()[1]
 	for i, c := range certs.TrustedCACertificates {
 		filename := path.Join(outputDir, fmt.Sprintf(certFileFmt, i+1))
-		err = ioutil.WriteFile(filename, []byte(c), 0600)
+		err = os.WriteFile(filename, []byte(c), 0600)
 		if err != nil {
 			return err
 		}
