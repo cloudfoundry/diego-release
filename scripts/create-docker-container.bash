@@ -15,6 +15,7 @@ if [[ ${DB:-empty} == "empty" ]]; then
   DB=mysql
 fi
 
+
 CONTAINER_NAME="$REPO_NAME-$DB-docker-container"
 if [[ "${DB}" == "mysql" ]] || [[ "${DB}" == "mysql-8.0" ]]; then
   IMAGE="cloudfoundry/tas-runtime-mysql-8.0"
@@ -25,6 +26,9 @@ else
   echo "Unsupported DB flavor"
   exit 1
 fi
+
+  DB_USER="root"
+  DB_PASSWORD="password"
 
 if [[ -z "${*}" ]]; then
   ARGS="-it"
@@ -40,6 +44,8 @@ docker pull "${IMAGE}"
 docker rm -f $CONTAINER_NAME
 docker run -it \
   --env "DB=${DB}" \
+  --env "DB_USER=${DB_USER}" \
+  --env "DB_PASSWORD=${DB_PASSWORD}" \
   --env "REPO_NAME=$REPO_NAME" \
   --env "REPO_PATH=/repo" \
   --rm \
