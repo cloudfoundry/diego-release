@@ -15,7 +15,6 @@ if [[ ${DB:-empty} == "empty" ]]; then
   DB=mysql
 fi
 
-
 CONTAINER_NAME="$REPO_NAME-$DB-docker-container"
 if [[ "${DB}" == "mysql" ]] || [[ "${DB}" == "mysql-8.0" ]]; then
   IMAGE="cloudfoundry/tas-runtime-mysql-8.0"
