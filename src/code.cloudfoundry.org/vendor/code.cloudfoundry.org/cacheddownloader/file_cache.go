@@ -3,6 +3,7 @@ package cacheddownloader
 import (
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"sync"
@@ -159,7 +160,7 @@ func (e *FileCacheEntry) readCloser() (*CachedFile, error) {
 
 	e.incrementFileInUseCount()
 
-	if _, err := f.Seek(0, os.SEEK_SET); err != nil {
+	if _, err := f.Seek(0, io.SeekStart); err != nil {
 		return nil, err
 	}
 
@@ -396,8 +397,6 @@ func (c *FileCache) makeRoom(logger lager.Logger, size int64, excludedCacheKey s
 		usedSpace -= oldestEntry.Size
 		c.remove(logger, oldestCacheKey)
 	}
-
-	return
 }
 
 func (c *FileCache) usedSpace(logger lager.Logger) int64 {

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -126,7 +125,7 @@ func (c *cachedDownloader) SaveState(logger lager.Logger) error {
 		return err
 	}
 
-	return ioutil.WriteFile(c.cacheLocation, json, 0600)
+	return os.WriteFile(c.cacheLocation, json, 0600)
 }
 
 func (c *cachedDownloader) RecoverState(logger lager.Logger) error {
@@ -139,7 +138,8 @@ func (c *cachedDownloader) RecoverState(logger lager.Logger) error {
 
 	if err == nil {
 		// parse the file only if it exists
-		err = json.NewDecoder(file).Decode(c.cache)
+		//we explicitly don't want json decoding errors to propagate here
+		json.NewDecoder(file).Decode(c.cache)
 		file.Close()
 	}
 
@@ -159,7 +159,7 @@ func (c *cachedDownloader) RecoverState(logger lager.Logger) error {
 		trackedFiles[entry.ExpandedDirectoryPath] = struct{}{}
 	}
 
-	files, err := ioutil.ReadDir(c.cache.CachedPath)
+	files, err := os.ReadDir(c.cache.CachedPath)
 	if err != nil && !os.IsNotExist(err) {
 		return err
 	}
@@ -309,7 +309,7 @@ func (c *cachedDownloader) acquireLimiter(logger lager.Logger, cacheKey string, 
 	logger = logger.Session("acquire-rate-limiter", lager.Data{"cache-key": cacheKey})
 	logger.Info("starting")
 	defer func() {
-		logger.Info("completed", lager.Data{"duration-ns": time.Now().Sub(startTime)})
+		logger.Info("completed", lager.Data{"duration-ns": time.Since(startTime)})
 	}()
 
 	for {
@@ -326,7 +326,7 @@ func (c *cachedDownloader) acquireLimiter(logger lager.Logger, cacheKey string, 
 		select {
 		case <-rateLimiter:
 		case <-cancelChan:
-			return nil, NewDownloadCancelledError("acquire-limiter", time.Now().Sub(startTime), NoBytesReceived, nil)
+			return nil, NewDownloadCancelledError("acquire-limiter", time.Since(startTime), NoBytesReceived, nil)
 		}
 	}
 }
@@ -368,7 +368,7 @@ func (c *cachedDownloader) populateCache(
 	cancelChan <-chan struct{},
 ) (download, bool, int64, error) {
 	filename, cachingInfo, err := c.downloader.Download(logger, url, func() (*os.File, error) {
-		return ioutil.TempFile(c.uncachedPath, name+"-")
+		return os.CreateTemp(c.uncachedPath, name+"-")
 	}, cachingInfo, checksum, cancelChan)
 	if err != nil {
 		return download{}, false, 0, err
@@ -384,7 +384,7 @@ func (c *cachedDownloader) populateCache(
 	}
 	defer os.Remove(filename)
 
-	cachedFile, err := ioutil.TempFile(c.uncachedPath, "transformed")
+	cachedFile, err := os.CreateTemp(c.uncachedPath, "transformed")
 	if err != nil {
 		return download{}, false, 0, err
 	}

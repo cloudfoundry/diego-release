@@ -6,7 +6,6 @@ import (
 	"compress/gzip"
 	"errors"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"os/exec"
@@ -228,7 +227,7 @@ func writeSymlinkZipEntryToTar(tarWriter *tar.Writer, zipEntry *zip.File, zipInf
 	}
 
 	defer zipReader.Close()
-	payload, err := ioutil.ReadAll(zipReader)
+	payload, err := io.ReadAll(zipReader)
 	if err != nil {
 		return err
 	}

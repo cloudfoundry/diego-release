@@ -25,10 +25,6 @@ const (
 	NoBytesReceived       = -1
 )
 
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
-
 func backoff(minRetry, maxRetry, maxJitter time.Duration, attemptNum int) time.Duration {
 	mult := math.Pow(2, float64(attemptNum)) * float64(minRetry)
 	sleep := time.Duration(mult)
@@ -137,7 +133,7 @@ func (downloader *Downloader) Download(
 	startTime := time.Now()
 	logger = logger.Session("download", lager.Data{"host": url.Host})
 	logger.Info("starting")
-	defer logger.Info("completed", lager.Data{"duration-ns": time.Since(startTime)})
+	defer func() { logger.Info("completed", lager.Data{"duration-ns": time.Since(startTime)}) }()
 
 	select {
 	case downloader.concurrentDownloadBarrier <- struct{}{}:
