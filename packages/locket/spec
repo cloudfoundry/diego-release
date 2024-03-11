@@ -34,6 +34,9 @@ files:
   - code.cloudfoundry.org/locket/metrics/helpers/*.go # gosub
   - code.cloudfoundry.org/locket/models/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/tlsconfig/*.go # gosub
+  - code.cloudfoundry.org/vendor/filippo.io/edwards25519/*.go # gosub
+  - code.cloudfoundry.org/vendor/filippo.io/edwards25519/field/*.go # gosub
+  - code.cloudfoundry.org/vendor/filippo.io/edwards25519/field/*.s # gosub
   - code.cloudfoundry.org/vendor/github.com/go-sql-driver/mysql/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/proto/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/golang/protobuf/jsonpb/*.go # gosub
