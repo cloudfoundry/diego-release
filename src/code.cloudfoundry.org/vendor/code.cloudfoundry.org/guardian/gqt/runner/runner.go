@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"math"
 	"net"
 	"net/http"
@@ -374,7 +373,7 @@ func (r *RunningGarden) GetContainerPid(handle string) (string, error) {
 		return r.getContainerdContainerPid(handle), nil
 	}
 
-	pidBytes, err := ioutil.ReadFile(filepath.Join(r.DepotDir, handle, "pidfile"))
+	pidBytes, err := os.ReadFile(filepath.Join(r.DepotDir, handle, "pidfile"))
 	if err != nil {
 		return "", err
 	}
@@ -527,7 +526,7 @@ func (r *RunningGarden) StackDump() (string, error) {
 	}
 	defer res.Body.Close()
 
-	stack, err := ioutil.ReadAll(res.Body)
+	stack, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", err
 	}
@@ -595,5 +594,5 @@ func (r *RunningGarden) runCtr(args []string) string {
 	err := cmd.Run()
 	Expect(err).NotTo(HaveOccurred())
 
-	return string(stdout.Bytes())
+	return stdout.String()
 }

@@ -214,15 +214,6 @@ func (b Bndl) GIDMappings() []specs.LinuxIDMapping {
 	return b.Spec.Linux.GIDMappings
 }
 
-func (b Bndl) WithPrestartHooks(hook ...specs.Hook) Bndl {
-	b.Spec.Hooks = &specs.Hooks{Prestart: hook}
-	return b
-}
-
-func (b Bndl) PrestartHooks() []specs.Hook {
-	return b.Spec.Hooks.Prestart
-}
-
 func (b Bndl) WithPoststopHooks(hook ...specs.Hook) Bndl {
 	b.Spec.Hooks = &specs.Hooks{Poststop: hook}
 	return b

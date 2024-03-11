@@ -2,7 +2,6 @@ package cgrouper
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -10,7 +9,7 @@ import (
 )
 
 func CleanGardenCgroups(cgroupsRootPath, tag string) error {
-	subsystems, err := ioutil.ReadDir(cgroupsRootPath)
+	subsystems, err := os.ReadDir(cgroupsRootPath)
 	if os.IsNotExist(err) || err == unix.EINVAL {
 		return nil
 	}

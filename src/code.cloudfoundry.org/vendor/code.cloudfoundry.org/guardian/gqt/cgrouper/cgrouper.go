@@ -3,7 +3,7 @@ package cgrouper
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -35,7 +35,7 @@ func GetCGroupPath(cgroupsRootPath, subsystem, tag string, privileged, throttlin
 }
 
 func getCGroup(subsystemToFind string) (string, error) {
-	cgroupContent, err := ioutil.ReadFile(fmt.Sprintf("/proc/self/cgroup"))
+	cgroupContent, err := os.ReadFile("/proc/self/cgroup")
 	if err != nil {
 		return "", err
 	}

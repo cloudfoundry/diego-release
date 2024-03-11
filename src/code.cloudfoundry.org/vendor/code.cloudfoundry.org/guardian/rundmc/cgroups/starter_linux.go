@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -249,7 +248,7 @@ func (s *CgroupStarter) modifyAllowedDevices(dir string, devices []specs.LinuxDe
 		return nil
 	}
 
-	if err := ioutil.WriteFile(filepath.Join(dir, "devices.deny"), []byte("a"), 0770); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, "devices.deny"), []byte("a"), 0770); err != nil {
 		return err
 	}
 
@@ -264,12 +263,12 @@ func (s *CgroupStarter) modifyAllowedDevices(dir string, devices []specs.LinuxDe
 }
 
 func hasSubdirectories(dir string) (bool, error) {
-	dirs, err := ioutil.ReadDir(dir)
+	dirs, err := os.ReadDir(dir)
 	if err != nil {
 		return false, err
 	}
 	for _, fileInfo := range dirs {
-		if fileInfo.Mode().IsDir() {
+		if fileInfo.Type().IsDir() {
 			return true, nil
 		}
 	}
@@ -277,7 +276,7 @@ func hasSubdirectories(dir string) (bool, error) {
 }
 
 func (d *CgroupStarter) setDeviceCgroup(dir, file, data string) error {
-	if err := ioutil.WriteFile(filepath.Join(dir, file), []byte(data), 0); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, file), []byte(data), 0); err != nil {
 		return fmt.Errorf("failed to write %s to %s: %v", data, file, err)
 	}
 
