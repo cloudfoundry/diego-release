@@ -189,13 +189,19 @@ files:
   - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/sortkeys/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/golang/protobuf/jsonpb/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/golang/protobuf/proto/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/chunkreader/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/internal/sanitize/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/pgio/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/pgproto3/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/pgtype/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/stdlib/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/pgpassfile/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/pgservicefile/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/internal/anynil/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/internal/iobufpool/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/internal/pgio/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/internal/sanitize/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/internal/stmtcache/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/pgconn/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/pgconn/internal/bgreader/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/pgconn/internal/ctxwatch/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/pgproto3/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/pgtype/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jmespath/go-jmespath/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/mitchellh/go-homedir/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/nu7hatch/gouuid/*.go # gosub
