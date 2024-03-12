@@ -62,6 +62,7 @@ require (
 	github.com/hashicorp/errwrap v1.1.0
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/jackc/pgx v3.6.2+incompatible
+	github.com/jackc/pgx/v5 v5.5.5
 	github.com/jinzhu/gorm v1.9.16
 	github.com/kr/pty v1.1.8
 	github.com/lib/pq v1.10.9
@@ -144,6 +145,9 @@ require (
 	github.com/hashicorp/go-version v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jackc/fake v0.0.0-20150926172116-812a484cc733 // indirect
+	github.com/jackc/pgpassfile v1.0.0 // indirect
+	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
+	github.com/jackc/puddle/v2 v2.2.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
@@ -175,6 +179,7 @@ require (
 	go.step.sm/crypto v0.43.1 // indirect
 	go.uber.org/automaxprocs v1.5.3 // indirect
 	golang.org/x/exp v0.0.0-20240222234643-814bf88cf225 // indirect
+	golang.org/x/sync v0.6.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.19.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
