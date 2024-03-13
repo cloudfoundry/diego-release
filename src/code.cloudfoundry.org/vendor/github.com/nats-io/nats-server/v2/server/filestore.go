@@ -4509,7 +4509,11 @@ func (fs *fileStore) resetAgeChk(delta int64) {
 
 	fireIn := fs.cfg.MaxAge
 	if delta > 0 && time.Duration(delta) < fireIn {
-		fireIn = time.Duration(delta)
+		if fireIn = time.Duration(delta); fireIn < 250*time.Millisecond {
+			// Only fire at most once every 250ms.
+			// Excessive firing can effect ingest performance.
+			fireIn = time.Second
+		}
 	}
 	if fs.ageChk != nil {
 		fs.ageChk.Reset(fireIn)
@@ -5375,7 +5379,10 @@ func (mb *msgBlock) writeAt(buf []byte, woff int64) (int, error) {
 		mb.mockWriteErr = false
 		return 0, errors.New("mock write error")
 	}
-	return mb.mfd.WriteAt(buf, woff)
+	<-dios
+	n, err := mb.mfd.WriteAt(buf, woff)
+	dios <- struct{}{}
+	return n, err
 }
 
 // flushPendingMsgsLocked writes out any messages for this message block.
