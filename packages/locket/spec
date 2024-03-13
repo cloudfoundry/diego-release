@@ -54,6 +54,10 @@ files:
   - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/pgconn/internal/ctxwatch/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/pgproto3/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/pgtype/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/pgxpool/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/stdlib/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/puddle/v2/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/puddle/v2/internal/genstack/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/nu7hatch/gouuid/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/openzipkin/zipkin-go/idgenerator/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/openzipkin/zipkin-go/model/*.go # gosub
@@ -69,6 +73,7 @@ files:
   - code.cloudfoundry.org/vendor/golang.org/x/net/idna/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/internal/timeseries/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/trace/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/sync/semaphore/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/sys/unix/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/sys/unix/*.s # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/sys/windows/*.go # gosub
