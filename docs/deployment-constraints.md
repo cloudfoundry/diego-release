@@ -2,10 +2,7 @@
 
 ## <a name="required-dependencies"></a>Required Dependencies
 
-Before deploying the Diego cluster, ensure that the consul server cluster it will connect to is already deployed. In most deployment scenarios, these consul servers come from a CF deployment.
-
-Additionally, if configuring the BBS to use a relational data store such as a CF-MySQL database, that data store must be deployed or otherwise provisioned before deploying the Diego cluster.
-
+Before deploying the Diego cluster, ensure that the sql database it will connect to is already deployed and provisioned.
 
 ## <a name="diego-manifest-jobs"></a>Diego Manifest Jobs
 
