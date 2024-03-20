@@ -18,10 +18,10 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20240308143919-052b78e49a62
+	code.cloudfoundry.org/archiver v0.0.0-20240320161425-44d089c09e86
 	code.cloudfoundry.org/bytefmt v0.0.0-20240318154019-470077afc6dc
-	code.cloudfoundry.org/cacheddownloader v0.0.0-20240306155052-5972e10b56fd
-	code.cloudfoundry.org/certsplitter v0.0.0-20240306173033-1c5d4addd7d2
+	code.cloudfoundry.org/cacheddownloader v0.0.0-20240320161405-5dac67c88827
+	code.cloudfoundry.org/certsplitter v0.0.0-20240320173152-f79f59c8d9cc
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240304203115-f6fd66907284
 	code.cloudfoundry.org/cfhttp v2.0.0+incompatible
@@ -33,10 +33,10 @@ require (
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240213153304-5bf6621f54e1
 	code.cloudfoundry.org/durationjson v0.0.0-20240308143919-e0b22a5159a4
 	code.cloudfoundry.org/eventhub v0.0.0-20240308143923-c079bb9f6083
-	code.cloudfoundry.org/garden v0.0.0-20240311180031-f6ad2f4e4f5a
+	code.cloudfoundry.org/garden v0.0.0-20240320160746-4707b8eb1b3b
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.32.0
-	code.cloudfoundry.org/guardian v0.0.0-20240312161823-7cc295b5e284
+	code.cloudfoundry.org/guardian v0.0.0-20240320160920-ecc454615113
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240318195634-528fdfd46485
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240308143921-4b874b341ed6
@@ -129,7 +129,7 @@ require (
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/distribution/reference v0.5.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
-	github.com/docker/docker v25.0.4+incompatible // indirect
+	github.com/docker/docker v25.0.5+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.8.1 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
@@ -138,7 +138,7 @@ require (
 	github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/pprof v0.0.0-20240319011627-a57c5dfe54fd // indirect
+	github.com/google/pprof v0.0.0-20240320155624-b11c3daa6f07 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/hashicorp/go-version v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
