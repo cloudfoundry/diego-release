@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -59,7 +59,7 @@ func (ch *CredHub) request(client requester, method string, pathStr string, quer
 	resp, err := client.Do(req)
 	if err != nil {
 		if os.Getenv("CREDHUB_DEBUG") == "true" {
-			fmt.Println(fmt.Sprintf("[DEBUG] %s: %v", "An error occurred during the data request.", err))
+			fmt.Printf("[DEBUG] %s: %v", "An error occurred during the data request.\n", err)
 		}
 		return resp, err
 	}
@@ -80,7 +80,7 @@ func (ch *CredHub) request(client requester, method string, pathStr string, quer
 func (ch *CredHub) checkForServerError(resp *http.Response) error {
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		defer resp.Body.Close()
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return errors.New("The response body could not be read: " + err.Error())
 		}

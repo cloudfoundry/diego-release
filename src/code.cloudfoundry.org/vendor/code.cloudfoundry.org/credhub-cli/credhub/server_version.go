@@ -3,7 +3,6 @@ package credhub
 import (
 	"encoding/json"
 	"io"
-	"io/ioutil"
 
 	"code.cloudfoundry.org/credhub-cli/credhub/server"
 	"github.com/hashicorp/go-version"
@@ -36,7 +35,7 @@ func (ch *CredHub) getVersion() (string, error) {
 	}
 
 	defer response.Body.Close()
-	defer io.Copy(ioutil.Discard, response.Body)
+	defer io.Copy(io.Discard, response.Body)
 
 	versionData := &server.VersionData{}
 	decoder := json.NewDecoder(response.Body)

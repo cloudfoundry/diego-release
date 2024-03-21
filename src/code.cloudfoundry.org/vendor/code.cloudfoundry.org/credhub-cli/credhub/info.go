@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
-	"io/ioutil"
 
 	"code.cloudfoundry.org/credhub-cli/credhub/server"
 )
@@ -18,7 +17,7 @@ func (ch *CredHub) Info() (*server.Info, error) {
 	}
 
 	defer response.Body.Close()
-	defer io.Copy(ioutil.Discard, response.Body)
+	defer io.Copy(io.Discard, response.Body)
 
 	info := &server.Info{}
 	decoder := json.NewDecoder(response.Body)

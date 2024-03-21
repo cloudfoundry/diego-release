@@ -3,7 +3,6 @@ package credhub
 import (
 	"errors"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 
@@ -27,7 +26,7 @@ func (ch *CredHub) GetPermissions(name string) ([]permissions.V1_Permission, err
 	}
 
 	defer resp.Body.Close()
-	defer io.Copy(ioutil.Discard, resp.Body)
+	defer io.Copy(io.Discard, resp.Body)
 	var response permissionsResponse
 
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
@@ -47,7 +46,7 @@ func (ch *CredHub) GetPermissionByUUID(uuid string) (*permissions.Permission, er
 	}
 
 	defer resp.Body.Close()
-	defer io.Copy(ioutil.Discard, resp.Body)
+	defer io.Copy(io.Discard, resp.Body)
 	var response permissions.Permission
 
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
@@ -68,7 +67,7 @@ func (ch *CredHub) GetPermissionByPathActor(path string, actor string) (*permiss
 	}
 
 	defer resp.Body.Close()
-	defer io.Copy(ioutil.Discard, resp.Body)
+	defer io.Copy(io.Discard, resp.Body)
 	var response permissions.Permission
 
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
@@ -128,7 +127,7 @@ func (ch *CredHub) AddPermission(path string, actor string, ops []string) (*perm
 	}
 
 	defer resp.Body.Close()
-	defer io.Copy(ioutil.Discard, resp.Body)
+	defer io.Copy(io.Discard, resp.Body)
 	var response permissions.Permission
 
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
@@ -161,7 +160,7 @@ func (ch *CredHub) UpdatePermission(uuid string, path string, actor string, ops 
 	}
 
 	defer resp.Body.Close()
-	defer io.Copy(ioutil.Discard, resp.Body)
+	defer io.Copy(io.Discard, resp.Body)
 
 	var response permissions.Permission
 
@@ -190,7 +189,7 @@ func (ch *CredHub) DeletePermission(uuid string) (*permissions.Permission, error
 	}
 
 	defer resp.Body.Close()
-	defer io.Copy(ioutil.Discard, resp.Body)
+	defer io.Copy(io.Discard, resp.Body)
 
 	var response permissions.Permission
 

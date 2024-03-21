@@ -89,7 +89,7 @@ func ClientCert(certificate, key string) Option {
 	}
 }
 
-//SetHttpTimeout will set the timeout for the CredHub client
+// SetHttpTimeout will set the timeout for the CredHub client
 func SetHttpTimeout(timeout *time.Duration) Option {
 	return func(c *CredHub) error {
 		c.httpTimeout = timeout

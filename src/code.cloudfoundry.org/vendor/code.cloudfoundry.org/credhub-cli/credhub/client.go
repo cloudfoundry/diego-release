@@ -38,8 +38,6 @@ func httpClient(timeout *time.Duration) *http.Client {
 	}
 }
 
-var defaultDialer net.Dialer
-
 func httpsClient(insecureSkipVerify bool, rootCAs *x509.CertPool, cert *tls.Certificate, timeout *time.Duration) *http.Client {
 	client := httpClient(timeout)
 	var certs []tls.Certificate

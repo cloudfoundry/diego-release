@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 	"sync"
@@ -190,13 +190,13 @@ func tokenExpired(resp *http.Response) (bool, error) {
 	}
 
 	var errResp map[string]string
-	buf, err := ioutil.ReadAll(resp.Body)
+	buf, err := io.ReadAll(resp.Body)
 
 	if err != nil {
 		return false, err
 	}
 
-	resp.Body = ioutil.NopCloser(bytes.NewBuffer(buf))
+	resp.Body = io.NopCloser(bytes.NewBuffer(buf))
 
 	decoder := json.NewDecoder(bytes.NewBuffer(buf))
 	err = decoder.Decode(&errResp)
@@ -219,14 +219,14 @@ func cloneRequest(r *http.Request) (*http.Request, error) {
 	*r2 = *r
 
 	// deep copy the body
-	buf, err := ioutil.ReadAll(r.Body)
+	buf, err := io.ReadAll(r.Body)
 
 	if err != nil {
 		return nil, err
 	}
 
-	r.Body = ioutil.NopCloser(bytes.NewBuffer(buf))
-	r2.Body = ioutil.NopCloser(bytes.NewBuffer(buf))
+	r.Body = io.NopCloser(bytes.NewBuffer(buf))
+	r2.Body = io.NopCloser(bytes.NewBuffer(buf))
 
 	return r2, nil
 }

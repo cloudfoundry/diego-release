@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 
 	"code.cloudfoundry.org/credhub-cli/credhub/credentials/values"
-	"code.cloudfoundry.org/credhub-cli/errors"
 )
 
 // Base fields of a credential
@@ -65,16 +64,7 @@ func (c Credential) convertToOutput() (interface{}, error) {
 		result.DurationOverriddenTo = c.DurationUsed
 	}
 
-	_, ok := c.Value.(string)
-	if ok {
-		result.Value = c.Value
-	} else {
-		value, ok := c.Value.(interface{})
-		if !ok {
-			return nil, errors.NewCatchAllError()
-		}
-		result.Value = value
-	}
+	result.Value = c.Value
 	return result, nil
 }
 

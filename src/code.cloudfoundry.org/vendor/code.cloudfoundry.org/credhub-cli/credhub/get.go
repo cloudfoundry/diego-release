@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 
@@ -116,7 +115,7 @@ func (ch *CredHub) makeCredentialGetRequest(query url.Values, cred interface{}) 
 	}
 
 	defer resp.Body.Close()
-	defer io.Copy(ioutil.Discard, resp.Body)
+	defer io.Copy(io.Discard, resp.Body)
 	dec := json.NewDecoder(resp.Body)
 
 	response := make(map[string][]json.RawMessage)
@@ -145,7 +144,7 @@ func (ch *CredHub) makeCredentialGetByIdRequest(id string, cred *credentials.Cre
 	}
 
 	defer resp.Body.Close()
-	defer io.Copy(ioutil.Discard, resp.Body)
+	defer io.Copy(io.Discard, resp.Body)
 	dec := json.NewDecoder(resp.Body)
 
 	if err := dec.Decode(cred); err != nil {
@@ -171,7 +170,7 @@ func (ch *CredHub) makeMultiCredentialGetRequest(query url.Values) ([]credential
 	}
 
 	defer resp.Body.Close()
-	defer io.Copy(ioutil.Discard, resp.Body)
+	defer io.Copy(io.Discard, resp.Body)
 	dec := json.NewDecoder(resp.Body)
 
 	response := make(map[string][]credentials.Credential)

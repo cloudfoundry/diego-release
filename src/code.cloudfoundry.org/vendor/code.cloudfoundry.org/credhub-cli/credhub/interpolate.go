@@ -2,12 +2,12 @@ package credhub
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 )
 
-//InterpolateString translates credhub refs in a VCAP_SERVICES object into actual credentials
+// InterpolateString translates credhub refs in a VCAP_SERVICES object into actual credentials
 func (ch *CredHub) InterpolateString(vcapServicesBody string) (string, error) {
 	if !strings.Contains(vcapServicesBody, `"credhub-ref"`) {
 		return vcapServicesBody, nil
@@ -29,7 +29,7 @@ func (ch *CredHub) InterpolateString(vcapServicesBody string) (string, error) {
 		return "", err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}

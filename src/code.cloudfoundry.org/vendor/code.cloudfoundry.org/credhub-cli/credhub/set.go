@@ -3,7 +3,6 @@ package credhub
 import (
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/hashicorp/go-version"
@@ -123,7 +122,7 @@ func (ch *CredHub) setCredential(name, credType string, value, cred interface{},
 	}
 
 	defer resp.Body.Close()
-	defer io.Copy(ioutil.Discard, resp.Body)
+	defer io.Copy(io.Discard, resp.Body)
 
 	return json.NewDecoder(resp.Body).Decode(cred)
 }
