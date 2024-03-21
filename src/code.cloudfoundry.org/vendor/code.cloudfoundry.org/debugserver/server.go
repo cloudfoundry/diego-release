@@ -2,7 +2,7 @@ package debugserver
 
 import (
 	"flag"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/pprof"
 	"runtime"
@@ -60,7 +60,7 @@ func Handler(sink *lager.ReconfigurableSink) http.Handler {
 	mux.Handle("/debug/pprof/profile", http.HandlerFunc(pprof.Profile))
 	mux.Handle("/debug/pprof/symbol", http.HandlerFunc(pprof.Symbol))
 	mux.Handle("/log-level", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		level, err := ioutil.ReadAll(r.Body)
+		level, err := io.ReadAll(r.Body)
 		if err != nil {
 			return
 		}
@@ -77,7 +77,7 @@ func Handler(sink *lager.ReconfigurableSink) http.Handler {
 		}
 	}))
 	mux.Handle("/block-profile-rate", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		_rate, err := ioutil.ReadAll(r.Body)
+		_rate, err := io.ReadAll(r.Body)
 		if err != nil {
 			return
 		}
