@@ -1,9 +1,9 @@
-# code.cloudfoundry.org/archiver v0.0.0-20240320161425-44d089c09e86
+# code.cloudfoundry.org/archiver v0.0.0-20240322144154-3303335ae367
 ## explicit; go 1.20
 code.cloudfoundry.org/archiver/compressor
 code.cloudfoundry.org/archiver/extractor
 code.cloudfoundry.org/archiver/extractor/test_helper
-# code.cloudfoundry.org/bytefmt v0.0.0-20240321152954-e0e709dd7095
+# code.cloudfoundry.org/bytefmt v0.0.0-20240322144145-4816192cb114
 ## explicit; go 1.20
 code.cloudfoundry.org/bytefmt
 # code.cloudfoundry.org/cacheddownloader v0.0.0-20240320161405-5dac67c88827
@@ -31,7 +31,7 @@ code.cloudfoundry.org/cfhttp/v2
 ## explicit; go 1.20
 code.cloudfoundry.org/clock
 code.cloudfoundry.org/clock/fakeclock
-# code.cloudfoundry.org/commandrunner v0.0.0-20240321142806-aff69e64e03a
+# code.cloudfoundry.org/commandrunner v0.0.0-20240322145143-2ffb109990a1
 ## explicit; go 1.20
 code.cloudfoundry.org/commandrunner
 # code.cloudfoundry.org/credhub-cli v0.0.0-20240321182504-6b3dc17b18a7
@@ -44,10 +44,10 @@ code.cloudfoundry.org/credhub-cli/credhub/credentials/generate
 code.cloudfoundry.org/credhub-cli/credhub/credentials/values
 code.cloudfoundry.org/credhub-cli/credhub/permissions
 code.cloudfoundry.org/credhub-cli/credhub/server
-# code.cloudfoundry.org/debugserver v0.0.0-20240321144511-2400671a70ab
+# code.cloudfoundry.org/debugserver v0.0.0-20240322144150-c027090c075f
 ## explicit; go 1.19
 code.cloudfoundry.org/debugserver
-# code.cloudfoundry.org/diego-logging-client v0.0.0-20240321151737-943cf4a98d7b
+# code.cloudfoundry.org/diego-logging-client v0.0.0-20240322144202-c852eb7760f8
 ## explicit; go 1.21
 code.cloudfoundry.org/diego-logging-client
 code.cloudfoundry.org/diego-logging-client/testhelpers
@@ -57,10 +57,10 @@ code.cloudfoundry.org/dockerdriver
 code.cloudfoundry.org/dockerdriver/dockerdriverfakes
 code.cloudfoundry.org/dockerdriver/driverhttp
 code.cloudfoundry.org/dockerdriver/utils
-# code.cloudfoundry.org/durationjson v0.0.0-20240308143919-e0b22a5159a4
+# code.cloudfoundry.org/durationjson v0.0.0-20240322144147-73fb05dcdf54
 ## explicit; go 1.19
 code.cloudfoundry.org/durationjson
-# code.cloudfoundry.org/eventhub v0.0.0-20240308143923-c079bb9f6083
+# code.cloudfoundry.org/eventhub v0.0.0-20240322144148-dfccbdf42757
 ## explicit; go 1.19
 code.cloudfoundry.org/eventhub
 # code.cloudfoundry.org/garden v0.0.0-20240321140256-3cb1fc657e4d => ../garden
@@ -91,7 +91,7 @@ code.cloudfoundry.org/goshims/filepathshim
 code.cloudfoundry.org/goshims/http_wrap
 code.cloudfoundry.org/goshims/osshim
 code.cloudfoundry.org/goshims/osshim/os_fake
-# code.cloudfoundry.org/guardian v0.0.0-20240321174827-a6325e203f29 => ../guardian
+# code.cloudfoundry.org/guardian v0.0.0-20240322205516-8e76bbfb1cab => ../guardian
 ## explicit; go 1.21
 code.cloudfoundry.org/guardian/gardener
 code.cloudfoundry.org/guardian/gardener/container-spec
@@ -111,10 +111,10 @@ code.cloudfoundry.org/lager/v3/internal/truncate
 code.cloudfoundry.org/lager/v3/lagerctx
 code.cloudfoundry.org/lager/v3/lagerflags
 code.cloudfoundry.org/lager/v3/lagertest
-# code.cloudfoundry.org/localip v0.0.0-20240318195634-528fdfd46485
+# code.cloudfoundry.org/localip v0.0.0-20240322144153-764393a091c4
 ## explicit; go 1.20
 code.cloudfoundry.org/localip
-# code.cloudfoundry.org/tlsconfig v0.0.0-20240321144330-39931767e394
+# code.cloudfoundry.org/tlsconfig v0.0.0-20240322144156-e73504174425
 ## explicit; go 1.19
 code.cloudfoundry.org/tlsconfig
 code.cloudfoundry.org/tlsconfig/certtest
@@ -136,7 +136,7 @@ github.com/GaryBoone/GoStats/stats
 # github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 ## explicit; go 1.15
 github.com/ajstarks/svgo
-# github.com/aws/aws-sdk-go v1.51.5
+# github.com/aws/aws-sdk-go v1.51.6
 ## explicit; go 1.19
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/auth/bearer
@@ -285,7 +285,7 @@ github.com/aws/smithy-go/time
 github.com/aws/smithy-go/transport/http
 github.com/aws/smithy-go/transport/http/internal/io
 github.com/aws/smithy-go/waiter
-# github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240321160531-bcf3c55aabf5
+# github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240321230332-fe892dad1b49
 ## explicit; go 1.19
 github.com/awslabs/amazon-ecr-credential-helper/ecr-login/api
 github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cache
@@ -332,7 +332,7 @@ github.com/cloudfoundry/socks5-proxy
 # github.com/cloudfoundry/sonde-go v0.0.0-20240311165458-423aa0d4dfc8
 ## explicit; go 1.17
 github.com/cloudfoundry/sonde-go/events
-# github.com/cncf/xds/go v0.0.0-20240318125728-8a4994d93e50
+# github.com/cncf/xds/go v0.0.0-20240322125752-6b7cb9e61ad7
 ## explicit; go 1.19
 github.com/cncf/xds/go/udpa/annotations
 github.com/cncf/xds/go/xds/annotations/v3
