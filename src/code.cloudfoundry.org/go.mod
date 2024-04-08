@@ -19,7 +19,7 @@ replace (
 require (
 	code.cloudfoundry.org/archiver v0.0.0-20240405144445-0965ea5797be
 	code.cloudfoundry.org/bytefmt v0.0.0-20240405144452-ebb2996022ca
-	code.cloudfoundry.org/cacheddownloader v0.0.0-20240327135801-eb47a078e865
+	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
 	code.cloudfoundry.org/certsplitter v0.0.0-20240405144452-432e9ce8ab60
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240405184418-c764716384e7
