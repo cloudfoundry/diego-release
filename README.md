@@ -83,7 +83,4 @@ Diego is typically deployed as part of a Cloud Foundry Application Runtime deplo
 
 ## <a name="diego-contributor-resources"></a>Diego Contributor Resources
 
-- The [Contribution Guidelines](CONTRIBUTING.md) describes the developer workflow for making changes to Diego.
-- The [CF Runtime Diego Pivotal Tracker project](https://www.pivotaltracker.com/n/projects/1003146) shows active areas of work for the Diego team in the backlog section.
-- The [Diego Dev Notes](https://github.com/cloudfoundry/diego-dev-notes) provide a detailed explanation of how the Diego components and internal state machine interact, as well as information on development workstation setup.
-- The [BBS Benchmarks](docs/bbs-benchmarks.md) provides information about results from the BBS benchmark tests that run in the Diego team's continuous integration testing pipeline.
+See the [Contributing.md](./.github/CONTRIBUTING.md) for more information on how to contribute.
