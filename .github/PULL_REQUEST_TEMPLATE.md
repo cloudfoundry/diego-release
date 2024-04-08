@@ -1,13 +1,21 @@
-Thank you for submitting a pull request to the diego-release repository. We appreciate the contribution. To help us with getting better context for the pull request please follow these guidelines:
+- [ ] Read the [Contributing document](../blob/-/.github/CONTRIBUTING.md).
 
-## Please make sure to complete the following steps
+Summary
+---------------
+<!---
+- Briefly explain why this PR is necessary
+- Provide details of where this request is coming from including links, GitHub Issues, etc..
+- Provide details of prior work (if applicable) including links to commits, github issues, etc...
+--->
 
-* [ ] Before PR Submission, Submit an issue for either an [Enhancement](https://github.com/cloudfoundry/diego-release/issues/new?assignees=&labels=&template=enhancement_request.md&title=) or [Bug](https://github.com/cloudfoundry/diego-release/issues/new?assignees=&labels=&template=bug_report.md&title=)
-* [ ] Check the [Contributing document](https://github.com/cloudfoundry/diego-release/blob/develop/CONTRIBUTING.md) on how to sign the CLA and run tests in diego-release.
-* [ ] Make sure a pull request is done against the `develop` branch.
 
-## Issue Link
+Backward Compatibility
+---------------
+Breaking Change? **Yes/No**
+<!---
+If this is a breaking change, or modifies currently expected behaviors of core functionality
 
-> Please link the issue you created above for a bug or enhancement.
-
-Thank you!
+- Has the change been mitigated to be backwards compatible?
+- Should this feature be considered experimental for a period of time, and allow operators to opt-in?
+- Should this apply immediately to all deployments?
+-->
