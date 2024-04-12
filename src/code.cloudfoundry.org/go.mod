@@ -28,20 +28,20 @@ require (
 	code.cloudfoundry.org/clock v1.1.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240408130546-41a93a2e6319
 	code.cloudfoundry.org/debugserver v0.0.0-20240409162631-369419c6e60d
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240409162632-9001435eca9c
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240411162706-f5d202be5c6e
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240402154034-dc0b4d33dcc7
 	code.cloudfoundry.org/durationjson v0.0.0-20240409162628-8fbe9649fa0f
 	code.cloudfoundry.org/eventhub v0.0.0-20240409162701-3a3bd6f06390
 	code.cloudfoundry.org/garden v0.0.0-20240409184058-44b21cda626c
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.34.0
-	code.cloudfoundry.org/guardian v0.0.0-20240410184651-068f6b63681a
+	code.cloudfoundry.org/guardian v0.0.0-20240411184642-d7b6ed8ee541
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240409162628-e6b88b496fac
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240410162701-78a97c114f7f
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.51.19
+	github.com/aws/aws-sdk-go v1.51.20
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240409155312-26d1ea377073
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
@@ -66,7 +66,7 @@ require (
 	github.com/lib/pq v1.10.9
 	github.com/mitchellh/hashstructure v1.1.0
 	github.com/moby/term v0.5.0
-	github.com/nats-io/nats-server/v2 v2.10.12
+	github.com/nats-io/nats-server/v2 v2.10.14
 	github.com/nats-io/nats.go v1.34.1
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/onsi/ginkgo/v2 v2.17.1
@@ -129,7 +129,7 @@ require (
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
-	github.com/docker/docker v26.0.0+incompatible // indirect
+	github.com/docker/docker v26.0.1+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.8.1 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
