@@ -95,6 +95,25 @@ func Handler(sink *lager.ReconfigurableSink) http.Handler {
 			runtime.SetBlockProfileRate(rate)
 		}
 	}))
+	mux.Handle("/mutex-profile-fraction", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_rate, err := io.ReadAll(r.Body)
+		if err != nil {
+			return
+		}
+
+		rate, err := strconv.Atoi(string(_rate))
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte(err.Error()))
+			return
+		}
+
+		if rate <= 0 {
+			runtime.SetMutexProfileFraction(0)
+		} else {
+			runtime.SetMutexProfileFraction(rate)
+		}
+	}))
 
 	return mux
 }
