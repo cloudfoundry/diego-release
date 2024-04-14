@@ -28,14 +28,14 @@ require (
 	code.cloudfoundry.org/clock v1.1.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240408130546-41a93a2e6319
 	code.cloudfoundry.org/debugserver v0.0.0-20240412143000-e1e6490a72a0
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240411162706-f5d202be5c6e
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240413162951-28a656464511
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240402154034-dc0b4d33dcc7
 	code.cloudfoundry.org/durationjson v0.0.0-20240409162628-8fbe9649fa0f
 	code.cloudfoundry.org/eventhub v0.0.0-20240409162701-3a3bd6f06390
 	code.cloudfoundry.org/garden v0.0.0-20240409184058-44b21cda626c
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.34.0
-	code.cloudfoundry.org/guardian v0.0.0-20240412184651-22a69abe4197
+	code.cloudfoundry.org/guardian v0.0.0-20240413184725-c576fd457705
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240409162628-e6b88b496fac
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240410162701-78a97c114f7f
