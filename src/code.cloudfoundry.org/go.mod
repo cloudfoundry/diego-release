@@ -26,7 +26,7 @@ require (
 	code.cloudfoundry.org/cfhttp v2.0.0+incompatible
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1-0.20210513172332-4c5ee488a657
 	code.cloudfoundry.org/clock v1.1.0
-	code.cloudfoundry.org/credhub-cli v0.0.0-20240408130546-41a93a2e6319
+	code.cloudfoundry.org/credhub-cli v0.0.0-20240415130328-ccf34f5b6270
 	code.cloudfoundry.org/debugserver v0.0.0-20240412143000-e1e6490a72a0
 	code.cloudfoundry.org/diego-logging-client v0.0.0-20240413162951-28a656464511
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240402154034-dc0b4d33dcc7
@@ -178,7 +178,7 @@ require (
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.20.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240412170617-26222e5d3d56 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240412170617-26222e5d3d56 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240415141817-7cd4c1c1f9ec // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240415141817-7cd4c1c1f9ec // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
