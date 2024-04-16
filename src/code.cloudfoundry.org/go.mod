@@ -17,7 +17,7 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20240415163122-70ebdf625015
+	code.cloudfoundry.org/archiver v0.0.0-20240416163156-1ff6cb24bed7
 	code.cloudfoundry.org/bytefmt v0.0.0-20240415163130-4becc446f272
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
 	code.cloudfoundry.org/certsplitter v0.0.0-20240415163122-14dae1827b5c
@@ -37,7 +37,7 @@ require (
 	code.cloudfoundry.org/goshims v0.34.0
 	code.cloudfoundry.org/guardian v0.0.0-20240415151704-a3dd70e7ec9b
 	code.cloudfoundry.org/lager/v3 v3.0.3
-	code.cloudfoundry.org/localip v0.0.0-20240415163129-d07e61fbafff
+	code.cloudfoundry.org/localip v0.0.0-20240416163151-0c7ee3b63ec1
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240410162701-78a97c114f7f
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
@@ -138,7 +138,7 @@ require (
 	github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/pprof v0.0.0-20240415144954-be81aee2d733 // indirect
+	github.com/google/pprof v0.0.0-20240416155748-26353dc0451f // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/hashicorp/go-version v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
@@ -174,7 +174,7 @@ require (
 	github.com/vishvananda/netns v0.0.4 // indirect
 	go.step.sm/crypto v0.44.5 // indirect
 	go.uber.org/automaxprocs v1.5.3 // indirect
-	golang.org/x/exp v0.0.0-20240409090435-93d18d7e34b8 // indirect
+	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f // indirect
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.20.0 // indirect
