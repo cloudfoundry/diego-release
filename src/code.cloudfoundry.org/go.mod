@@ -35,7 +35,7 @@ require (
 	code.cloudfoundry.org/garden v0.0.0-20240416184759-ae39d12cc541
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.34.0
-	code.cloudfoundry.org/guardian v0.0.0-20240416203956-4d62bea3cc24
+	code.cloudfoundry.org/guardian v0.0.0-20240417125107-f7d8c9e6451e
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240416163151-0c7ee3b63ec1
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240416163159-16b37d67cb91
@@ -95,7 +95,7 @@ require (
 
 require (
 	cel.dev/expr v0.15.0 // indirect
-	code.cloudfoundry.org/commandrunner v0.0.0-20240416143633-49576fb31bef // indirect
+	code.cloudfoundry.org/commandrunner v0.0.0-20240417143643-6a39decd883a // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240325171903-fa19631aa7ba // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
@@ -172,7 +172,7 @@ require (
 	github.com/vbatts/tar-split v0.11.5 // indirect
 	github.com/vishvananda/netlink v1.2.1-beta.2 // indirect
 	github.com/vishvananda/netns v0.0.4 // indirect
-	go.step.sm/crypto v0.44.5 // indirect
+	go.step.sm/crypto v0.44.6 // indirect
 	go.uber.org/automaxprocs v1.5.3 // indirect
 	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f // indirect
 	golang.org/x/sync v0.7.0 // indirect
