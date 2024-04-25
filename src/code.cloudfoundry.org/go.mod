@@ -28,21 +28,21 @@ require (
 	code.cloudfoundry.org/clock v1.1.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240422130708-a7f1bfa10430
 	code.cloudfoundry.org/debugserver v0.0.0-20240423163805-e19b7d90601d
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240423163817-ee733556eb4c
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240424163855-a3b9ef721a02
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240415151549-8a2e51b861b3
 	code.cloudfoundry.org/durationjson v0.0.0-20240423163753-75eb5a251016
 	code.cloudfoundry.org/eventhub v0.0.0-20240423163758-217f8c030f43
 	code.cloudfoundry.org/garden v0.0.0-20240422185338-b6a7119e7b1e
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.34.0
-	code.cloudfoundry.org/guardian v0.0.0-20240423190002-1bbd611796e2
+	code.cloudfoundry.org/guardian v0.0.0-20240424190133-b9ea02f280c1
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240423163814-d79f0848b81a
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240423163804-1b0dcf57fddb
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.51.27
-	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240423222621-8fda21025646
+	github.com/aws/aws-sdk-go v1.51.28
+	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240424172504-2b9fe9c03898
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
 	github.com/cloudfoundry-community/go-uaa v0.3.2
@@ -138,7 +138,7 @@ require (
 	github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/pprof v0.0.0-20240422182052-72c8669ad3e7 // indirect
+	github.com/google/pprof v0.0.0-20240424215950-a892ee059fd6 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/hashicorp/go-version v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
