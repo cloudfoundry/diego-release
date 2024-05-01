@@ -3,11 +3,6 @@ module code.cloudfoundry.org
 go 1.21.6
 
 replace (
-	code.cloudfoundry.org/garden => ../garden
-	code.cloudfoundry.org/grootfs => ../grootfs
-	code.cloudfoundry.org/guardian => ../guardian
-	code.cloudfoundry.org/idmapper => ../idmapper
-
 	github.com/nats-io/nats.go => github.com/nats-io/nats.go v1.16.1-0.20220906180156-a1017eec10b0
 	github.com/onsi/gomega => github.com/onsi/gomega v1.27.1
 	github.com/prometheus/client_golang => github.com/prometheus/client_golang v1.11.1
@@ -21,6 +16,7 @@ require (
 	code.cloudfoundry.org/bytefmt v0.0.0-20240428164225-8dbfccd1fe46
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
 	code.cloudfoundry.org/certsplitter v0.0.0-20240428164228-ec59ee143106
+	code.cloudfoundry.org/cf-networking-helpers v0.0.0-20240430164921-8d7f994026af
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240405184418-c764716384e7
 	code.cloudfoundry.org/cfhttp v2.0.0+incompatible
@@ -35,7 +31,6 @@ require (
 	code.cloudfoundry.org/garden v0.0.0-20240429190132-fe98174c77e9
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.34.0
-	code.cloudfoundry.org/guardian v0.0.0-20240429190606-2e11ed99d2e5
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240428164227-14cae1a74938
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240427164042-d6180ef19863
@@ -95,7 +90,6 @@ require (
 
 require (
 	cel.dev/expr v0.15.0 // indirect
-	code.cloudfoundry.org/commandrunner v0.0.0-20240428144643-688921cfed79 // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240419195010-376885f5f3d4 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
@@ -124,7 +118,6 @@ require (
 	github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 // indirect
 	github.com/containers/ocicrypt v1.1.10 // indirect
 	github.com/containers/storage v1.53.0 // indirect
-	github.com/coreos/go-systemd/v22 v22.5.0 // indirect
 	github.com/creack/pty v1.1.21 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
@@ -136,7 +129,6 @@ require (
 	github.com/envoyproxy/protoc-gen-validate v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
-	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/pprof v0.0.0-20240430035430-e4905b036c4e // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
@@ -160,7 +152,6 @@ require (
 	github.com/nats-io/jwt/v2 v2.5.6 // indirect
 	github.com/nats-io/nkeys v0.4.7 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
-	github.com/opencontainers/runc v1.1.12 // indirect
 	github.com/opencontainers/runtime-spec v1.2.0 // indirect
 	github.com/prometheus/client_golang v1.18.0 // indirect
 	github.com/prometheus/common v0.46.0 // indirect
@@ -170,8 +161,6 @@ require (
 	github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635 // indirect
 	github.com/ulikunitz/xz v0.5.12 // indirect
 	github.com/vbatts/tar-split v0.11.5 // indirect
-	github.com/vishvananda/netlink v1.2.1-beta.2 // indirect
-	github.com/vishvananda/netns v0.0.4 // indirect
 	go.step.sm/crypto v0.44.8 // indirect
 	go.uber.org/automaxprocs v1.5.3 // indirect
 	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f // indirect
