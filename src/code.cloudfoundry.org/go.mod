@@ -17,7 +17,7 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20240430164516-f7c0d9876a1c
+	code.cloudfoundry.org/archiver v0.0.0-20240503164829-54569192ba7c
 	code.cloudfoundry.org/bytefmt v0.0.0-20240430164501-194a05e76243
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
 	code.cloudfoundry.org/certsplitter v0.0.0-20240430164515-7873e0759302
@@ -35,14 +35,14 @@ require (
 	code.cloudfoundry.org/garden v0.0.0-20240430190253-f25dfe4c5dd0
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.34.0
-	code.cloudfoundry.org/guardian v0.0.0-20240501190810-d5272b51dd2d
+	code.cloudfoundry.org/guardian v0.0.0-20240503191003-ce641ed2f1f8
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240430164506-a3c239b1c98e
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240427164042-d6180ef19863
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.52.1
-	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240502172319-cce9343176b5
+	github.com/aws/aws-sdk-go v1.52.2
+	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240503211702-30a8c617b9db
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
 	github.com/cloudfoundry-community/go-uaa v0.3.2
