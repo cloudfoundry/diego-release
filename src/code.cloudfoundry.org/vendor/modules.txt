@@ -1,19 +1,19 @@
 # cel.dev/expr v0.15.0
 ## explicit; go 1.18
 cel.dev/expr
-# code.cloudfoundry.org/archiver v0.0.0-20240503164829-54569192ba7c
+# code.cloudfoundry.org/archiver v0.0.0-20240504164959-606c5c897933
 ## explicit; go 1.20
 code.cloudfoundry.org/archiver/compressor
 code.cloudfoundry.org/archiver/extractor
 code.cloudfoundry.org/archiver/extractor/test_helper
-# code.cloudfoundry.org/bytefmt v0.0.0-20240430164501-194a05e76243
+# code.cloudfoundry.org/bytefmt v0.0.0-20240504164948-cff0ac9a7bf9
 ## explicit; go 1.20
 code.cloudfoundry.org/bytefmt
 # code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
 ## explicit; go 1.21
 code.cloudfoundry.org/cacheddownloader
 code.cloudfoundry.org/cacheddownloader/cacheddownloaderfakes
-# code.cloudfoundry.org/certsplitter v0.0.0-20240430164515-7873e0759302
+# code.cloudfoundry.org/certsplitter v0.0.0-20240504164959-8b9677ba2f70
 ## explicit; go 1.20
 code.cloudfoundry.org/certsplitter/cmd/certsplitter
 # code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
@@ -47,10 +47,10 @@ code.cloudfoundry.org/credhub-cli/credhub/credentials/generate
 code.cloudfoundry.org/credhub-cli/credhub/credentials/values
 code.cloudfoundry.org/credhub-cli/credhub/permissions
 code.cloudfoundry.org/credhub-cli/credhub/server
-# code.cloudfoundry.org/debugserver v0.0.0-20240430164510-a9b5a70328ed
+# code.cloudfoundry.org/debugserver v0.0.0-20240504164949-ec4d5482b504
 ## explicit; go 1.19
 code.cloudfoundry.org/debugserver
-# code.cloudfoundry.org/diego-logging-client v0.0.0-20240430164518-69b431e88ab8
+# code.cloudfoundry.org/diego-logging-client v0.0.0-20240504164954-2462f05c16f5
 ## explicit; go 1.21
 code.cloudfoundry.org/diego-logging-client
 code.cloudfoundry.org/diego-logging-client/testhelpers
@@ -60,13 +60,13 @@ code.cloudfoundry.org/dockerdriver
 code.cloudfoundry.org/dockerdriver/dockerdriverfakes
 code.cloudfoundry.org/dockerdriver/driverhttp
 code.cloudfoundry.org/dockerdriver/utils
-# code.cloudfoundry.org/durationjson v0.0.0-20240430164508-8229f7f9cb18
+# code.cloudfoundry.org/durationjson v0.0.0-20240504164954-71e1b8bcaf2f
 ## explicit; go 1.19
 code.cloudfoundry.org/durationjson
-# code.cloudfoundry.org/eventhub v0.0.0-20240430164513-d7fae0515498
+# code.cloudfoundry.org/eventhub v0.0.0-20240504164947-41e122959b3c
 ## explicit; go 1.19
 code.cloudfoundry.org/eventhub
-# code.cloudfoundry.org/garden v0.0.0-20240430190253-f25dfe4c5dd0 => ../garden
+# code.cloudfoundry.org/garden v0.0.0-20240504190741-97e713d6ac8f => ../garden
 ## explicit; go 1.20
 code.cloudfoundry.org/garden
 code.cloudfoundry.org/garden/client
@@ -94,7 +94,7 @@ code.cloudfoundry.org/goshims/filepathshim
 code.cloudfoundry.org/goshims/http_wrap
 code.cloudfoundry.org/goshims/osshim
 code.cloudfoundry.org/goshims/osshim/os_fake
-# code.cloudfoundry.org/guardian v0.0.0-20240503191003-ce641ed2f1f8 => ../guardian
+# code.cloudfoundry.org/guardian v0.0.0-20240504191216-0e263888ecc9 => ../guardian
 ## explicit; go 1.21
 code.cloudfoundry.org/guardian/gardener
 code.cloudfoundry.org/guardian/gardener/container-spec
@@ -114,10 +114,10 @@ code.cloudfoundry.org/lager/v3/internal/truncate
 code.cloudfoundry.org/lager/v3/lagerctx
 code.cloudfoundry.org/lager/v3/lagerflags
 code.cloudfoundry.org/lager/v3/lagertest
-# code.cloudfoundry.org/localip v0.0.0-20240430164506-a3c239b1c98e
+# code.cloudfoundry.org/localip v0.0.0-20240504164949-b01cb2f14f10
 ## explicit; go 1.20
 code.cloudfoundry.org/localip
-# code.cloudfoundry.org/tlsconfig v0.0.0-20240427164042-d6180ef19863
+# code.cloudfoundry.org/tlsconfig v0.0.0-20240504164951-c74da1f146df
 ## explicit; go 1.19
 code.cloudfoundry.org/tlsconfig
 code.cloudfoundry.org/tlsconfig/certtest
@@ -860,7 +860,7 @@ golang.org/x/net/internal/socks
 golang.org/x/net/internal/timeseries
 golang.org/x/net/proxy
 golang.org/x/net/trace
-# golang.org/x/oauth2 v0.19.0
+# golang.org/x/oauth2 v0.20.0
 ## explicit; go 1.18
 golang.org/x/oauth2
 golang.org/x/oauth2/clientcredentials
@@ -868,7 +868,7 @@ golang.org/x/oauth2/internal
 # golang.org/x/sync v0.7.0
 ## explicit; go 1.18
 golang.org/x/sync/semaphore
-# golang.org/x/sys v0.19.0
+# golang.org/x/sys v0.20.0
 ## explicit; go 1.18
 golang.org/x/sys/cpu
 golang.org/x/sys/unix
@@ -877,7 +877,7 @@ golang.org/x/sys/windows/registry
 golang.org/x/sys/windows/svc
 golang.org/x/sys/windows/svc/eventlog
 golang.org/x/sys/windows/svc/mgr
-# golang.org/x/text v0.14.0
+# golang.org/x/text v0.15.0
 ## explicit; go 1.18
 golang.org/x/text/cases
 golang.org/x/text/encoding

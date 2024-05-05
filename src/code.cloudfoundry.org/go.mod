@@ -17,28 +17,28 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20240503164829-54569192ba7c
-	code.cloudfoundry.org/bytefmt v0.0.0-20240430164501-194a05e76243
+	code.cloudfoundry.org/archiver v0.0.0-20240504164959-606c5c897933
+	code.cloudfoundry.org/bytefmt v0.0.0-20240504164948-cff0ac9a7bf9
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.0.0-20240430164515-7873e0759302
+	code.cloudfoundry.org/certsplitter v0.0.0-20240504164959-8b9677ba2f70
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240405184418-c764716384e7
 	code.cloudfoundry.org/cfhttp v2.0.0+incompatible
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1
 	code.cloudfoundry.org/clock v1.1.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240429130629-19663e8d3d05
-	code.cloudfoundry.org/debugserver v0.0.0-20240430164510-a9b5a70328ed
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240430164518-69b431e88ab8
+	code.cloudfoundry.org/debugserver v0.0.0-20240504164949-ec4d5482b504
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240504164954-2462f05c16f5
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240425154110-a68c794c8bb0
-	code.cloudfoundry.org/durationjson v0.0.0-20240430164508-8229f7f9cb18
-	code.cloudfoundry.org/eventhub v0.0.0-20240430164513-d7fae0515498
-	code.cloudfoundry.org/garden v0.0.0-20240430190253-f25dfe4c5dd0
+	code.cloudfoundry.org/durationjson v0.0.0-20240504164954-71e1b8bcaf2f
+	code.cloudfoundry.org/eventhub v0.0.0-20240504164947-41e122959b3c
+	code.cloudfoundry.org/garden v0.0.0-20240504190741-97e713d6ac8f
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.34.0
-	code.cloudfoundry.org/guardian v0.0.0-20240503191003-ce641ed2f1f8
+	code.cloudfoundry.org/guardian v0.0.0-20240504191216-0e263888ecc9
 	code.cloudfoundry.org/lager/v3 v3.0.3
-	code.cloudfoundry.org/localip v0.0.0-20240430164506-a3c239b1c98e
-	code.cloudfoundry.org/tlsconfig v0.0.0-20240427164042-d6180ef19863
+	code.cloudfoundry.org/localip v0.0.0-20240504164949-b01cb2f14f10
+	code.cloudfoundry.org/tlsconfig v0.0.0-20240504164951-c74da1f146df
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/aws/aws-sdk-go v1.52.2
@@ -85,8 +85,8 @@ require (
 	github.com/vito/go-sse v1.0.0
 	golang.org/x/crypto v0.22.0
 	golang.org/x/net v0.24.0
-	golang.org/x/oauth2 v0.19.0
-	golang.org/x/sys v0.19.0
+	golang.org/x/oauth2 v0.20.0
+	golang.org/x/sys v0.20.0
 	golang.org/x/time v0.5.0
 	google.golang.org/grpc v1.63.2
 	google.golang.org/protobuf v1.34.0
@@ -176,7 +176,7 @@ require (
 	go.uber.org/automaxprocs v1.5.3 // indirect
 	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f // indirect
 	golang.org/x/sync v0.7.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/text v0.15.0 // indirect
 	golang.org/x/tools v0.20.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240429193739-8cf5692501f6 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240429193739-8cf5692501f6 // indirect
