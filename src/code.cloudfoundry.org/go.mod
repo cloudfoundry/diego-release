@@ -26,16 +26,16 @@ require (
 	code.cloudfoundry.org/cfhttp v2.0.0+incompatible
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1
 	code.cloudfoundry.org/clock v1.1.0
-	code.cloudfoundry.org/credhub-cli v0.0.0-20240429130629-19663e8d3d05
+	code.cloudfoundry.org/credhub-cli v0.0.0-20240506130305-ab16e480dbd6
 	code.cloudfoundry.org/debugserver v0.0.0-20240504164949-ec4d5482b504
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240504164954-2462f05c16f5
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240505165047-d51b9c8b5f6e
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240425154110-a68c794c8bb0
 	code.cloudfoundry.org/durationjson v0.0.0-20240504164954-71e1b8bcaf2f
 	code.cloudfoundry.org/eventhub v0.0.0-20240504164947-41e122959b3c
 	code.cloudfoundry.org/garden v0.0.0-20240504190741-97e713d6ac8f
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.34.0
-	code.cloudfoundry.org/guardian v0.0.0-20240504191216-0e263888ecc9
+	code.cloudfoundry.org/guardian v0.0.0-20240505191237-50be6eaafd30
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240504164949-b01cb2f14f10
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240504164951-c74da1f146df
@@ -83,19 +83,19 @@ require (
 	github.com/tedsuo/ifrit v0.0.0-20230516164442-7862c310ad26
 	github.com/tedsuo/rata v1.0.0
 	github.com/vito/go-sse v1.0.0
-	golang.org/x/crypto v0.22.0
+	golang.org/x/crypto v0.23.0
 	golang.org/x/net v0.24.0
 	golang.org/x/oauth2 v0.20.0
 	golang.org/x/sys v0.20.0
 	golang.org/x/time v0.5.0
 	google.golang.org/grpc v1.63.2
-	google.golang.org/protobuf v1.34.0
+	google.golang.org/protobuf v1.34.1
 	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
 	cel.dev/expr v0.15.0 // indirect
-	code.cloudfoundry.org/commandrunner v0.0.0-20240430144735-3759ba9b3646 // indirect
+	code.cloudfoundry.org/commandrunner v0.0.0-20240505145242-ca6ad0450b0e // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240419195010-376885f5f3d4 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
