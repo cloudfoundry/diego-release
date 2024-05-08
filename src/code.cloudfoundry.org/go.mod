@@ -17,32 +17,32 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20240506165048-6450b1a26a45
-	code.cloudfoundry.org/bytefmt v0.0.0-20240506165048-60382360e736
+	code.cloudfoundry.org/archiver v0.0.0-20240507165058-85c50db0e87c
+	code.cloudfoundry.org/bytefmt v0.0.0-20240507165102-251b29179075
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.0.0-20240506183608-fead33f001f5
+	code.cloudfoundry.org/certsplitter v0.0.0-20240507183619-df9ae09c7be9
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240405184418-c764716384e7
 	code.cloudfoundry.org/cfhttp v2.0.0+incompatible
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1
 	code.cloudfoundry.org/clock v1.1.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240506130305-ab16e480dbd6
-	code.cloudfoundry.org/debugserver v0.0.0-20240506165051-f868bd580e8d
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240506165100-9c1d40465aaf
+	code.cloudfoundry.org/debugserver v0.0.0-20240507165104-fb56dd559b10
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240507165108-8f850b7f6df6
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240425154110-a68c794c8bb0
-	code.cloudfoundry.org/durationjson v0.0.0-20240506165051-9f6d677e8186
-	code.cloudfoundry.org/eventhub v0.0.0-20240506165044-3ea889f3158b
-	code.cloudfoundry.org/garden v0.0.0-20240506190947-afe0bd776501
+	code.cloudfoundry.org/durationjson v0.0.0-20240507165104-e62bd37f78c9
+	code.cloudfoundry.org/eventhub v0.0.0-20240507165102-a178dab94cd6
+	code.cloudfoundry.org/garden v0.0.0-20240507191029-a5d2960a4fb1
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.34.0
-	code.cloudfoundry.org/guardian v0.0.0-20240506191450-fcb5f0974cb5
+	code.cloudfoundry.org/guardian v0.0.0-20240507191539-bb7e41f7c6ef
 	code.cloudfoundry.org/lager/v3 v3.0.3
-	code.cloudfoundry.org/localip v0.0.0-20240506165051-e4042fdda905
+	code.cloudfoundry.org/localip v0.0.0-20240507165104-ac05c3f7a742
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240506165053-ee50c1ee9388
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.52.3
-	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240503211702-30a8c617b9db
+	github.com/aws/aws-sdk-go v1.52.4
+	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240507150535-b99368f3064d
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
 	github.com/cloudfoundry-community/go-uaa v0.3.2
@@ -96,7 +96,7 @@ require (
 require (
 	cel.dev/expr v0.15.0 // indirect
 	code.cloudfoundry.org/commandrunner v0.0.0-20240507145457-da0af65d1e8b // indirect
-	code.cloudfoundry.org/go-diodes v0.0.0-20240419195010-376885f5f3d4 // indirect
+	code.cloudfoundry.org/go-diodes v0.0.0-20240507202434-96dd3c119b5c // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/BurntSushi/toml v1.3.2 // indirect
@@ -119,7 +119,7 @@ require (
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
 	github.com/cloudfoundry/go-socks5 v0.0.0-20180221174514-54f73bdb8a8e // indirect
 	github.com/cloudfoundry/socks5-proxy v0.2.116 // indirect
-	github.com/cloudfoundry/sonde-go v0.0.0-20240311165458-423aa0d4dfc8 // indirect
+	github.com/cloudfoundry/sonde-go v0.0.0-20240507181428-8b8ae008ea35 // indirect
 	github.com/cncf/xds/go v0.0.0-20240423153145-555b57ec207b // indirect
 	github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 // indirect
 	github.com/containers/ocicrypt v1.1.10 // indirect
@@ -138,7 +138,7 @@ require (
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/pprof v0.0.0-20240430035430-e4905b036c4e // indirect
+	github.com/google/pprof v0.0.0-20240507183855-6f11f98ebb1c // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/hashicorp/go-version v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
