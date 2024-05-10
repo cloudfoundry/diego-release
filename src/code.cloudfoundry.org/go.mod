@@ -17,37 +17,37 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20240508165157-a062c38fba66
-	code.cloudfoundry.org/bytefmt v0.0.0-20240508165154-767138797fdf
+	code.cloudfoundry.org/archiver v0.0.0-20240509165302-47ab3c8fd0e8
+	code.cloudfoundry.org/bytefmt v0.0.0-20240509165307-2f6667c85be0
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.0.0-20240508165152-0b99a9853855
+	code.cloudfoundry.org/certsplitter v0.0.0-20240509165307-a15195199b2d
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240405184418-c764716384e7
 	code.cloudfoundry.org/cfhttp v2.0.0+incompatible
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1
 	code.cloudfoundry.org/clock v1.1.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240506130305-ab16e480dbd6
-	code.cloudfoundry.org/debugserver v0.0.0-20240508165206-bfca98dd3bfa
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240508165207-efae71bac995
+	code.cloudfoundry.org/debugserver v0.0.0-20240509165312-93e40ee13b6f
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240509165314-c5e78b386579
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240425154110-a68c794c8bb0
-	code.cloudfoundry.org/durationjson v0.0.0-20240508165200-4b234932019f
-	code.cloudfoundry.org/eventhub v0.0.0-20240508165157-a5c754b286f9
-	code.cloudfoundry.org/garden v0.0.0-20240508191051-20c24f475fba
+	code.cloudfoundry.org/durationjson v0.0.0-20240509165306-6fb24ae87327
+	code.cloudfoundry.org/eventhub v0.0.0-20240509165302-985b9adf9d7f
+	code.cloudfoundry.org/garden v0.0.0-20240509191138-2c301b84985a
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.34.0
-	code.cloudfoundry.org/guardian v0.0.0-20240508191527-f3a8bffb764d
+	code.cloudfoundry.org/guardian v0.0.0-20240509191638-0b1d4027c5e0
 	code.cloudfoundry.org/lager/v3 v3.0.3
-	code.cloudfoundry.org/localip v0.0.0-20240508165154-c1cfc30b69ca
+	code.cloudfoundry.org/localip v0.0.0-20240509165301-8bc1ed51129f
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240506165053-ee50c1ee9388
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.52.5
+	github.com/aws/aws-sdk-go v1.52.6
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240507150535-b99368f3064d
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
 	github.com/cloudfoundry-community/go-uaa v0.3.2
 	github.com/cloudfoundry/dropsonde v1.1.0
-	github.com/containers/image/v5 v5.30.0
+	github.com/containers/image/v5 v5.30.1
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/envoyproxy/go-control-plane v0.12.0
 	github.com/fsnotify/fsnotify v1.7.0
@@ -95,7 +95,7 @@ require (
 
 require (
 	cel.dev/expr v0.15.0 // indirect
-	code.cloudfoundry.org/commandrunner v0.0.0-20240508145505-e4592b642fca // indirect
+	code.cloudfoundry.org/commandrunner v0.0.0-20240509145649-f385c7d9a37b // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240507202434-96dd3c119b5c // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
@@ -157,7 +157,7 @@ require (
 	github.com/moby/sys/user v0.1.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
-	github.com/nats-io/jwt/v2 v2.5.6 // indirect
+	github.com/nats-io/jwt/v2 v2.5.7 // indirect
 	github.com/nats-io/nkeys v0.4.7 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/opencontainers/runc v1.1.12 // indirect
@@ -178,7 +178,7 @@ require (
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/text v0.15.0 // indirect
 	golang.org/x/tools v0.21.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240506185236-b8a5c65736ae // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240506185236-b8a5c65736ae // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240509183442-62759503f434 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240509183442-62759503f434 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
