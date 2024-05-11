@@ -17,31 +17,31 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20240509165302-47ab3c8fd0e8
-	code.cloudfoundry.org/bytefmt v0.0.0-20240509165307-2f6667c85be0
+	code.cloudfoundry.org/archiver v0.0.0-20240510172921-e1824a4905ba
+	code.cloudfoundry.org/bytefmt v0.0.0-20240510175427-fd0528cc37f1
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.0.0-20240509165307-a15195199b2d
+	code.cloudfoundry.org/certsplitter v0.0.0-20240510172921-b5e8e63bad56
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240405184418-c764716384e7
 	code.cloudfoundry.org/cfhttp v2.0.0+incompatible
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1
 	code.cloudfoundry.org/clock v1.1.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240506130305-ab16e480dbd6
-	code.cloudfoundry.org/debugserver v0.0.0-20240509165312-93e40ee13b6f
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240509165314-c5e78b386579
+	code.cloudfoundry.org/debugserver v0.0.0-20240510172920-2e46c6dc69d9
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240510172922-70b881a6e30c
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240425154110-a68c794c8bb0
-	code.cloudfoundry.org/durationjson v0.0.0-20240509165306-6fb24ae87327
-	code.cloudfoundry.org/eventhub v0.0.0-20240509165302-985b9adf9d7f
+	code.cloudfoundry.org/durationjson v0.0.0-20240510172921-4f2634116b9e
+	code.cloudfoundry.org/eventhub v0.0.0-20240510172922-57a202b02d86
 	code.cloudfoundry.org/garden v0.0.0-20240509191138-2c301b84985a
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.34.0
-	code.cloudfoundry.org/guardian v0.0.0-20240509191638-0b1d4027c5e0
+	code.cloudfoundry.org/guardian v0.0.0-20240510191646-c74951b16bdb
 	code.cloudfoundry.org/lager/v3 v3.0.3
-	code.cloudfoundry.org/localip v0.0.0-20240509165301-8bc1ed51129f
-	code.cloudfoundry.org/tlsconfig v0.0.0-20240506165053-ee50c1ee9388
+	code.cloudfoundry.org/localip v0.0.0-20240510172921-bb8a25c4a355
+	code.cloudfoundry.org/tlsconfig v0.0.0-20240510172918-c1e19801fe80
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.52.6
+	github.com/aws/aws-sdk-go v1.53.0
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240507150535-b99368f3064d
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
@@ -101,8 +101,8 @@ require (
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.26.1 // indirect
-	github.com/aws/aws-sdk-go-v2/config v1.27.12 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.17.12 // indirect
+	github.com/aws/aws-sdk-go-v2/config v1.27.13 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.17.13 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.1 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.5 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.5 // indirect
@@ -112,13 +112,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.11.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.20.6 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.23.5 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.24.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.28.7 // indirect
 	github.com/aws/smithy-go v1.20.2 // indirect
 	github.com/bmizerany/pat v0.0.0-20210406213842-e4b6760bdd6f // indirect
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
 	github.com/cloudfoundry/go-socks5 v0.0.0-20180221174514-54f73bdb8a8e // indirect
-	github.com/cloudfoundry/socks5-proxy v0.2.116 // indirect
+	github.com/cloudfoundry/socks5-proxy v0.2.117 // indirect
 	github.com/cloudfoundry/sonde-go v0.0.0-20240507181428-8b8ae008ea35 // indirect
 	github.com/cncf/xds/go v0.0.0-20240423153145-555b57ec207b // indirect
 	github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 // indirect
