@@ -34,7 +34,7 @@ require (
 	code.cloudfoundry.org/eventhub v0.0.0-20240510172922-57a202b02d86
 	code.cloudfoundry.org/garden v0.0.0-20240509191138-2c301b84985a
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
-	code.cloudfoundry.org/goshims v0.34.0
+	code.cloudfoundry.org/goshims v0.35.0
 	code.cloudfoundry.org/guardian v0.0.0-20240511191813-2120ed3c9df9
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240510172921-bb8a25c4a355
