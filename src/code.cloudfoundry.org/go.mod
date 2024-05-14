@@ -26,9 +26,9 @@ require (
 	code.cloudfoundry.org/cfhttp v2.0.0+incompatible
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1
 	code.cloudfoundry.org/clock v1.1.0
-	code.cloudfoundry.org/credhub-cli v0.0.0-20240506130305-ab16e480dbd6
+	code.cloudfoundry.org/credhub-cli v0.0.0-20240513215556-291b587eb9ac
 	code.cloudfoundry.org/debugserver v0.0.0-20240510172920-2e46c6dc69d9
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240511165422-be87f574ada6
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240513165807-cf64912690b6
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240425154110-a68c794c8bb0
 	code.cloudfoundry.org/durationjson v0.0.0-20240510172921-4f2634116b9e
 	code.cloudfoundry.org/eventhub v0.0.0-20240510172922-57a202b02d86
@@ -41,7 +41,7 @@ require (
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240510172918-c1e19801fe80
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.53.0
+	github.com/aws/aws-sdk-go v1.53.1
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240507150535-b99368f3064d
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
@@ -178,7 +178,7 @@ require (
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/text v0.15.0 // indirect
 	golang.org/x/tools v0.21.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240509183442-62759503f434 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240509183442-62759503f434 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240513163218-0867130af1f8 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240513163218-0867130af1f8 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
