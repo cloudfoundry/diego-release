@@ -22,12 +22,12 @@ require (
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
 	code.cloudfoundry.org/certsplitter v0.0.0-20240510172921-b5e8e63bad56
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
-	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240405184418-c764716384e7
+	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240517182301-ad527758638d
 	code.cloudfoundry.org/cfhttp/v2 v2.0.1
 	code.cloudfoundry.org/clock v1.1.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240513215556-291b587eb9ac
 	code.cloudfoundry.org/debugserver v0.0.0-20240510172920-2e46c6dc69d9
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240516170206-bd2d4505c48e
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240517170314-c798dbdab9ae
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240516202613-2ae4ec0e13ed
 	code.cloudfoundry.org/durationjson v0.0.0-20240510172921-4f2634116b9e
 	code.cloudfoundry.org/eventhub v0.0.0-20240510172922-57a202b02d86
@@ -40,7 +40,7 @@ require (
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240516170203-d50b3d56ba06
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.53.4
+	github.com/aws/aws-sdk-go v1.53.5
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240516200936-2be577353e69
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
