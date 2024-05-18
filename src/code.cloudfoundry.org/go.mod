@@ -23,7 +23,7 @@ require (
 	code.cloudfoundry.org/certsplitter v0.0.0-20240510172921-b5e8e63bad56
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240517182301-ad527758638d
-	code.cloudfoundry.org/cfhttp/v2 v2.0.1
+	code.cloudfoundry.org/cfhttp/v2 v2.0.2
 	code.cloudfoundry.org/clock v1.1.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240513215556-291b587eb9ac
 	code.cloudfoundry.org/debugserver v0.0.0-20240510172920-2e46c6dc69d9
@@ -34,7 +34,7 @@ require (
 	code.cloudfoundry.org/garden v0.0.0-20240509191138-2c301b84985a
 	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
 	code.cloudfoundry.org/goshims v0.35.0
-	code.cloudfoundry.org/guardian v0.0.0-20240516192241-69eb6bbb05cb
+	code.cloudfoundry.org/guardian v0.0.0-20240517192442-9bd627cb43ec
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240510172921-bb8a25c4a355
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240516170203-d50b3d56ba06
