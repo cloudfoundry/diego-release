@@ -3,12 +3,12 @@ package loggregator
 import (
 	"context"
 	"crypto/tls"
-	"io/ioutil"
+	"io"
 	"log"
 	"time"
 
 	gendiodes "code.cloudfoundry.org/go-diodes"
-	"code.cloudfoundry.org/go-loggregator/v8/rpc/loggregator_v2"
+	"code.cloudfoundry.org/go-loggregator/v9/rpc/loggregator_v2"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )
@@ -41,7 +41,7 @@ func NewEnvelopeStreamConnector(
 		addr:    addr,
 		tlsConf: t,
 
-		log: log.New(ioutil.Discard, "", 0),
+		log: log.New(io.Discard, "", 0),
 	}
 
 	for _, o := range opts {

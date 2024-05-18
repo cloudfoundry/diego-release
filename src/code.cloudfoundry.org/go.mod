@@ -27,12 +27,12 @@ require (
 	code.cloudfoundry.org/clock v1.1.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240513215556-291b587eb9ac
 	code.cloudfoundry.org/debugserver v0.0.0-20240510172920-2e46c6dc69d9
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240517170314-c798dbdab9ae
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240521203831-441b09bb0703
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240516202613-2ae4ec0e13ed
 	code.cloudfoundry.org/durationjson v0.0.0-20240510172921-4f2634116b9e
 	code.cloudfoundry.org/eventhub v0.0.0-20240510172922-57a202b02d86
 	code.cloudfoundry.org/garden v0.0.0-20240509191138-2c301b84985a
-	code.cloudfoundry.org/go-loggregator/v8 v8.0.5
+	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.35.0
 	code.cloudfoundry.org/guardian v0.0.0-20240516192241-69eb6bbb05cb
 	code.cloudfoundry.org/lager/v3 v3.0.3
@@ -179,6 +179,6 @@ require (
 	golang.org/x/text v0.15.0 // indirect
 	golang.org/x/tools v0.21.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240515191416-fc5f0ca64291 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240515191416-fc5f0ca64291 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240520151616-dc85e6b867a5 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

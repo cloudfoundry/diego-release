@@ -3,7 +3,7 @@ package diego_logging_client
 import (
 	"time"
 
-	loggregator "code.cloudfoundry.org/go-loggregator/v8"
+	loggregator "code.cloudfoundry.org/go-loggregator/v9"
 )
 
 type noopIngressClient struct{}

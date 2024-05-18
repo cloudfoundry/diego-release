@@ -1,7 +1,9 @@
 # go-loggregator
-[![GoDoc][go-doc-badge]][go-doc] [![travis][travis-badge]][travis] [![slack.cloudfoundry.org][slack-badge]][loggregator-slack]
+[![GoDoc][go-doc-badge]][go-doc]
 
 This is a golang client library for [Loggregator][loggregator].
+
+If you have any questions, or want to get attention for a PR or issue please reach out on the [#logging-and-metrics channel in the cloudfoundry slack](https://cloudfoundry.slack.com/archives/CUW93AF3M)
 
 ## Versions
 
@@ -15,7 +17,7 @@ the Loggregator API.
 
 This repository should be imported as:
 
-`import loggregator "code.cloudfoundry.org/go-loggregator/v8"`
+`import loggregator "code.cloudfoundry.org/go-loggregator/v9"`
 
 ## Examples
 
@@ -57,10 +59,6 @@ Required Environment Variables:
 * `LOGS_API_ADDR`
 * `SHARD_ID`
 
-[slack-badge]:              https://slack.cloudfoundry.org/badge.svg
-[loggregator-slack]:        https://cloudfoundry.slack.com/archives/loggregator
-[loggregator]:              https://github.com/cloudfoundry/loggregator
+[loggregator]:              https://github.com/cloudfoundry/loggregator-release
 [go-doc-badge]:             https://godoc.org/code.cloudfoundry.org/go-loggregator?status.svg
 [go-doc]:                   https://godoc.org/code.cloudfoundry.org/go-loggregator
-[travis-badge]:             https://travis-ci.org/cloudfoundry/go-loggregator.svg?branch=master
-[travis]:                   https://travis-ci.org/cloudfoundry/go-loggregator?branch=master
