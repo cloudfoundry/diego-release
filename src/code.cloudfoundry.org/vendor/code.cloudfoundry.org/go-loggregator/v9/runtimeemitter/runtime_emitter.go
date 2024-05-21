@@ -4,7 +4,7 @@ import (
 	"runtime"
 	"time"
 
-	"code.cloudfoundry.org/go-loggregator/v8"
+	"code.cloudfoundry.org/go-loggregator/v9"
 )
 
 // Emitter will emit a gauge with runtime stats via the sender on the given
@@ -105,8 +105,8 @@ type v1Sender struct {
 }
 
 func (s v1Sender) send(heap, stack, gc, goroutines float64) {
-	s.sender.SendComponentMetric("memoryStats.numBytesAllocatedHeap", heap, "Bytes")
-	s.sender.SendComponentMetric("memoryStats.numBytesAllocatedStack", stack, "Bytes")
-	s.sender.SendComponentMetric("memoryStats.lastGCPauseTimeNS", gc, "ns")
-	s.sender.SendComponentMetric("numGoRoutines", goroutines, "Count")
+	_ = s.sender.SendComponentMetric("memoryStats.numBytesAllocatedHeap", heap, "Bytes")
+	_ = s.sender.SendComponentMetric("memoryStats.numBytesAllocatedStack", stack, "Bytes")
+	_ = s.sender.SendComponentMetric("memoryStats.lastGCPauseTimeNS", gc, "ns")
+	_ = s.sender.SendComponentMetric("numGoRoutines", goroutines, "Count")
 }

@@ -3,17 +3,18 @@ package loggregator
 import (
 	"crypto/tls"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"strconv"
 	"time"
 
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
+
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	"code.cloudfoundry.org/go-loggregator/v8/rpc/loggregator_v2"
+	"code.cloudfoundry.org/go-loggregator/v9/rpc/loggregator_v2"
 )
 
 // IngressOption is the type of a configurable client option.
@@ -120,7 +121,7 @@ func NewIngressClient(tlsConfig *tls.Config, opts ...IngressOption) (*IngressCli
 		batchMaxSize:       100,
 		batchFlushInterval: 100 * time.Millisecond,
 		addr:               "localhost:3458",
-		logger:             log.New(ioutil.Discard, "", 0),
+		logger:             log.New(io.Discard, "", 0),
 		closeErrors:        make(chan error),
 		ctx:                context.Background(),
 	}
@@ -527,7 +528,7 @@ func (c *IngressClient) closeAndRecv() {
 	if c.sender == nil {
 		return
 	}
-	c.sender.CloseAndRecv()
+	_, _ = c.sender.CloseAndRecv()
 }
 
 func (c *IngressClient) flush(batch []*loggregator_v2.Envelope) error {

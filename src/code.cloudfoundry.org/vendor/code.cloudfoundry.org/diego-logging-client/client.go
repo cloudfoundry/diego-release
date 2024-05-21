@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	loggregator "code.cloudfoundry.org/go-loggregator/v8"
+	loggregator "code.cloudfoundry.org/go-loggregator/v9"
 	"google.golang.org/grpc"
 )
 
