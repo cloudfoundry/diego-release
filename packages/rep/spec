@@ -55,7 +55,6 @@ files:
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/garden/transport/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-diodes/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/v9/*.go # gosub
-  - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/v9/rfc5424/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/v9/rpc/loggregator_v2/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/go-loggregator/v9/runtimeemitter/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/goshims/http_wrap/*.go # gosub
@@ -242,8 +241,6 @@ files:
   - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/proto/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/protoc-gen-gogo/descriptor/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/sortkeys/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/golang/protobuf/jsonpb/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/golang/protobuf/proto/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/golang/protobuf/ptypes/any/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/golang/protobuf/ptypes/duration/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/golang/protobuf/ptypes/struct/*.go # gosub
@@ -341,7 +338,6 @@ files:
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/internal/detrand/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/internal/editiondefaults/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/internal/editiondefaults/*.binpb # gosub
-  - code.cloudfoundry.org/vendor/google.golang.org/protobuf/internal/editionssupport/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/internal/encoding/defval/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/internal/encoding/json/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/internal/encoding/messageset/*.go # gosub
@@ -360,13 +356,11 @@ files:
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/internal/version/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/proto/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/protoadapt/*.go # gosub
-  - code.cloudfoundry.org/vendor/google.golang.org/protobuf/reflect/protodesc/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/reflect/protoreflect/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/reflect/protoregistry/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/runtime/protoiface/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/runtime/protoimpl/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/types/descriptorpb/*.go # gosub
-  - code.cloudfoundry.org/vendor/google.golang.org/protobuf/types/gofeaturespb/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/types/known/anypb/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/types/known/durationpb/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/types/known/emptypb/*.go # gosub
