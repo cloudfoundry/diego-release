@@ -17,36 +17,36 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20240510172921-e1824a4905ba
-	code.cloudfoundry.org/bytefmt v0.0.0-20240510175427-fd0528cc37f1
+	code.cloudfoundry.org/archiver v0.0.0-20240521170704-3ae5ca8bfd17
+	code.cloudfoundry.org/bytefmt v0.0.0-20240521170705-f529d96d6541
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.0.0-20240510172921-b5e8e63bad56
+	code.cloudfoundry.org/certsplitter v0.0.0-20240521185208-c004b0cd069e
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240517182301-ad527758638d
 	code.cloudfoundry.org/cfhttp/v2 v2.0.2
 	code.cloudfoundry.org/clock v1.1.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240520130535-8a23f47574e8
-	code.cloudfoundry.org/debugserver v0.0.0-20240510172920-2e46c6dc69d9
+	code.cloudfoundry.org/debugserver v0.0.0-20240521170706-19b15e4a38db
 	code.cloudfoundry.org/diego-logging-client v0.0.0-20240521203831-441b09bb0703
-	code.cloudfoundry.org/dockerdriver v0.0.0-20240516202613-2ae4ec0e13ed
-	code.cloudfoundry.org/durationjson v0.0.0-20240510172921-4f2634116b9e
-	code.cloudfoundry.org/eventhub v0.0.0-20240510172922-57a202b02d86
-	code.cloudfoundry.org/garden v0.0.0-20240509191138-2c301b84985a
+	code.cloudfoundry.org/dockerdriver v0.0.0-20240521135308-9fa280d26502
+	code.cloudfoundry.org/durationjson v0.0.0-20240521170711-c4478e386717
+	code.cloudfoundry.org/eventhub v0.0.0-20240521170703-1a5ae347cd54
+	code.cloudfoundry.org/garden v0.0.0-20240521192510-e538d3d654a1
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.35.0
-	code.cloudfoundry.org/guardian v0.0.0-20240519192653-d9c13d13a36b
+	code.cloudfoundry.org/guardian v0.0.0-20240521193052-006e78b54749
 	code.cloudfoundry.org/lager/v3 v3.0.3
-	code.cloudfoundry.org/localip v0.0.0-20240510172921-bb8a25c4a355
+	code.cloudfoundry.org/localip v0.0.0-20240521170707-7a9b929a6df5
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240516170203-d50b3d56ba06
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.53.5
-	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240520123742-5841cb46be50
+	github.com/aws/aws-sdk-go v1.53.7
+	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240520182509-6bae25fb558e
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
 	github.com/cloudfoundry-community/go-uaa v0.3.2
 	github.com/cloudfoundry/dropsonde v1.1.0
-	github.com/containers/image/v5 v5.30.1
+	github.com/containers/image/v5 v5.31.0
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/envoyproxy/go-control-plane v0.12.0
 	github.com/fsnotify/fsnotify v1.7.0
@@ -65,10 +65,10 @@ require (
 	github.com/lib/pq v1.10.9
 	github.com/mitchellh/hashstructure v1.1.0
 	github.com/moby/term v0.5.0
-	github.com/nats-io/nats-server/v2 v2.10.15
+	github.com/nats-io/nats-server/v2 v2.10.16
 	github.com/nats-io/nats.go v1.35.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
-	github.com/onsi/ginkgo/v2 v2.17.3
+	github.com/onsi/ginkgo/v2 v2.18.0
 	github.com/onsi/gomega v1.33.1
 	github.com/onsi/say v1.1.0
 	github.com/opencontainers/go-digest v1.0.0
@@ -95,7 +95,7 @@ require (
 require (
 	cel.dev/expr v0.15.0 // indirect
 	code.cloudfoundry.org/cfhttp v2.0.0+incompatible // indirect
-	code.cloudfoundry.org/commandrunner v0.0.0-20240515185236-07f33b5fb036 // indirect
+	code.cloudfoundry.org/commandrunner v0.0.0-20240521151053-ad3fed403f21 // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240515174142-71582f284718 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
@@ -134,11 +134,11 @@ require (
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/envoyproxy/protoc-gen-validate v1.0.4 // indirect
-	github.com/go-logr/logr v1.4.1 // indirect
+	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/pprof v0.0.0-20240509144519-723abb6459b7 // indirect
+	github.com/google/pprof v0.0.0-20240521024322-9665fa269a30 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/hashicorp/go-version v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
@@ -147,38 +147,29 @@ require (
 	github.com/jackc/puddle/v2 v2.2.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
-	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.17.8 // indirect
-	github.com/klauspost/pgzip v1.2.6 // indirect
 	github.com/kr/fs v0.1.0 // indirect
 	github.com/minio/highwayhash v1.0.2 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/moby/sys/mountinfo v0.7.1 // indirect
 	github.com/moby/sys/user v0.1.0 // indirect
-	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
-	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/nats-io/jwt/v2 v2.5.7 // indirect
 	github.com/nats-io/nkeys v0.4.7 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/opencontainers/runc v1.1.12 // indirect
 	github.com/opencontainers/runtime-spec v1.2.0 // indirect
-	github.com/prometheus/client_golang v1.18.0 // indirect
-	github.com/prometheus/common v0.46.0 // indirect
-	github.com/prometheus/procfs v0.12.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635 // indirect
-	github.com/ulikunitz/xz v0.5.12 // indirect
-	github.com/vbatts/tar-split v0.11.5 // indirect
 	github.com/vishvananda/netlink v1.2.1-beta.2 // indirect
 	github.com/vishvananda/netns v0.0.4 // indirect
-	go.step.sm/crypto v0.45.0 // indirect
+	go.step.sm/crypto v0.45.1 // indirect
 	go.uber.org/automaxprocs v1.5.3 // indirect
 	golang.org/x/exp v0.0.0-20240506185415-9bf2ced13842 // indirect
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/text v0.15.0 // indirect
 	golang.org/x/tools v0.21.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240515191416-fc5f0ca64291 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240520151616-dc85e6b867a5 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240521202816-d264139d666e // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240521202816-d264139d666e // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
