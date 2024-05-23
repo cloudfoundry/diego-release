@@ -3,6 +3,7 @@
 // The command to generate this file is: `counterfeiter -o testhelpers/ vendor/code.cloudfoundry.org/go-loggregator/v9/rpc/loggregator_v2/ingress_grpc.pb.go IngressServer`
 // After generating the file, loggregator_v2.UnimplementedIngressServer will need to be embedded in the FakeIngressServer struct.
 // If this file needs to be generated again, the above changes will need to be reapplied.
+// In order to pass the linter checks the function `(fake *FakeIngressServer) mustEmbedUnimplementedIngressServer()` should be removed.
 package testhelpers
 
 import (
@@ -243,18 +244,6 @@ func (fake *FakeIngressServer) SenderReturnsOnCall(i int, result1 error) {
 	fake.senderReturnsOnCall[i] = struct {
 		result1 error
 	}{result1}
-}
-
-func (fake *FakeIngressServer) mustEmbedUnimplementedIngressServer() {
-	fake.mustEmbedUnimplementedIngressServerMutex.Lock()
-	fake.mustEmbedUnimplementedIngressServerArgsForCall = append(fake.mustEmbedUnimplementedIngressServerArgsForCall, struct {
-	}{})
-	stub := fake.mustEmbedUnimplementedIngressServerStub
-	fake.recordInvocation("mustEmbedUnimplementedIngressServer", []interface{}{})
-	fake.mustEmbedUnimplementedIngressServerMutex.Unlock()
-	if stub != nil {
-		fake.mustEmbedUnimplementedIngressServerStub()
-	}
 }
 
 func (fake *FakeIngressServer) MustEmbedUnimplementedIngressServerCallCount() int {
