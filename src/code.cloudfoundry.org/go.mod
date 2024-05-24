@@ -28,7 +28,7 @@ require (
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240520130535-8a23f47574e8
 	code.cloudfoundry.org/debugserver v0.0.0-20240524171011-a228404938b4
 	code.cloudfoundry.org/diego-logging-client v0.0.0-20240524171022-6c2f75ff4f5a
-	code.cloudfoundry.org/dockerdriver v0.0.0-20240522142456-ed52a7648bed
+	code.cloudfoundry.org/dockerdriver v0.0.0-20240524195252-a62c739d15b4
 	code.cloudfoundry.org/durationjson v0.0.0-20240524171011-4948f0cba575
 	code.cloudfoundry.org/eventhub v0.0.0-20240524171012-9e04ff18d734
 	code.cloudfoundry.org/garden v0.0.0-20240524192812-a517c05e8706
@@ -94,7 +94,6 @@ require (
 
 require (
 	cel.dev/expr v0.15.0 // indirect
-	code.cloudfoundry.org/cfhttp v2.0.0+incompatible // indirect
 	code.cloudfoundry.org/commandrunner v0.0.0-20240524151434-2fc4ecf84fa2 // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240515174142-71582f284718 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect

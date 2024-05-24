@@ -22,12 +22,10 @@ code.cloudfoundry.org/cf-routing-test-helpers/tls
 # code.cloudfoundry.org/cf-tcp-router v0.0.0-20240524130622-05c9e4b882c4
 ## explicit
 code.cloudfoundry.org/cf-tcp-router/utils
-# code.cloudfoundry.org/cfhttp v2.0.0+incompatible
-## explicit
-code.cloudfoundry.org/cfhttp/handlers
 # code.cloudfoundry.org/cfhttp/v2 v2.1.0
 ## explicit; go 1.19
 code.cloudfoundry.org/cfhttp/v2
+code.cloudfoundry.org/cfhttp/v2/handlers
 # code.cloudfoundry.org/clock v1.1.0
 ## explicit; go 1.20
 code.cloudfoundry.org/clock
@@ -52,7 +50,7 @@ code.cloudfoundry.org/debugserver
 ## explicit; go 1.21
 code.cloudfoundry.org/diego-logging-client
 code.cloudfoundry.org/diego-logging-client/testhelpers
-# code.cloudfoundry.org/dockerdriver v0.0.0-20240522142456-ed52a7648bed
+# code.cloudfoundry.org/dockerdriver v0.0.0-20240524195252-a62c739d15b4
 ## explicit; go 1.19
 code.cloudfoundry.org/dockerdriver
 code.cloudfoundry.org/dockerdriver/dockerdriverfakes

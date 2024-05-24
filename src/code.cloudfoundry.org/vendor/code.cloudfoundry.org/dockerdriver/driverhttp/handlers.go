@@ -8,7 +8,7 @@ import (
 	"io"
 	"net/http"
 
-	cf_http_handlers "code.cloudfoundry.org/cfhttp/handlers"
+	cf_http_handlers "code.cloudfoundry.org/cfhttp/v2/handlers"
 	"code.cloudfoundry.org/dockerdriver"
 	"code.cloudfoundry.org/lager/v3"
 	"github.com/tedsuo/rata"
