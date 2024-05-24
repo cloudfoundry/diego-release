@@ -22,25 +22,25 @@ require (
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
 	code.cloudfoundry.org/certsplitter v0.0.0-20240521185208-c004b0cd069e
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
-	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240517182301-ad527758638d
+	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240524130622-05c9e4b882c4
 	code.cloudfoundry.org/cfhttp/v2 v2.0.2
 	code.cloudfoundry.org/clock v1.1.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240520130535-8a23f47574e8
 	code.cloudfoundry.org/debugserver v0.0.0-20240522170726-5166a3ff2759
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240522204038-615a6113989c
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240523171002-24c331f0e3c4
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240522142456-ed52a7648bed
 	code.cloudfoundry.org/durationjson v0.0.0-20240522170728-eb9d30509ee0
 	code.cloudfoundry.org/eventhub v0.0.0-20240522170710-dbd345eb9248
 	code.cloudfoundry.org/garden v0.0.0-20240521192510-e538d3d654a1
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.35.0
-	code.cloudfoundry.org/guardian v0.0.0-20240522193040-16c91e3bc705
+	code.cloudfoundry.org/guardian v0.0.0-20240523193218-d24001a44281
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240522170718-27ba331e6ea9
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240522170710-79df114af82a
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.53.8
+	github.com/aws/aws-sdk-go v1.53.9
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240520182509-6bae25fb558e
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
@@ -68,7 +68,7 @@ require (
 	github.com/nats-io/nats-server/v2 v2.10.16
 	github.com/nats-io/nats.go v1.35.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
-	github.com/onsi/ginkgo/v2 v2.18.0
+	github.com/onsi/ginkgo/v2 v2.19.0
 	github.com/onsi/gomega v1.33.1
 	github.com/onsi/say v1.1.0
 	github.com/opencontainers/go-digest v1.0.0
@@ -101,19 +101,19 @@ require (
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/BurntSushi/toml v1.4.0 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.27.0 // indirect
-	github.com/aws/aws-sdk-go-v2/config v1.27.15 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.17.15 // indirect
+	github.com/aws/aws-sdk-go-v2/config v1.27.16 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.17.16 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.3 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.7 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.7 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ecr v1.28.2 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.23.7 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ecr v1.28.3 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.23.8 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.11.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.9 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.20.8 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.24.2 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sts v1.28.9 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.20.9 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.24.3 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sts v1.28.10 // indirect
 	github.com/aws/smithy-go v1.20.2 // indirect
 	github.com/bmizerany/pat v0.0.0-20210406213842-e4b6760bdd6f // indirect
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
@@ -130,7 +130,7 @@ require (
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
 	github.com/docker/docker v26.1.3+incompatible // indirect
-	github.com/docker/docker-credential-helpers v0.8.1 // indirect
+	github.com/docker/docker-credential-helpers v0.8.2 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/envoyproxy/protoc-gen-validate v1.0.4 // indirect
@@ -140,7 +140,7 @@ require (
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/pprof v0.0.0-20240521024322-9665fa269a30 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
-	github.com/hashicorp/go-version v1.6.0 // indirect
+	github.com/hashicorp/go-version v1.7.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20231201235250-de7065d80cb9 // indirect
