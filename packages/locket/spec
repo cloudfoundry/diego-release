@@ -41,14 +41,13 @@ files:
   - code.cloudfoundry.org/vendor/github.com/jackc/pgpassfile/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/pgservicefile/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/internal/anynil/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/internal/iobufpool/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/internal/pgio/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/internal/sanitize/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/internal/stmtcache/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/pgconn/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/pgconn/ctxwatch/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/pgconn/internal/bgreader/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/pgconn/internal/ctxwatch/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/pgproto3/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/pgtype/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/pgxpool/*.go # gosub
