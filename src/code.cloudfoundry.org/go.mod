@@ -20,7 +20,7 @@ require (
 	code.cloudfoundry.org/archiver v0.0.0-20240524171016-08c37000af53
 	code.cloudfoundry.org/bytefmt v0.0.0-20240524171005-f1d9d5c55b92
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.0.0-20240524171011-8c1de4430ed8
+	code.cloudfoundry.org/certsplitter v0.0.0-20240525185513-e5e55677791f
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240524130622-05c9e4b882c4
 	code.cloudfoundry.org/cfhttp/v2 v2.1.0
@@ -31,10 +31,10 @@ require (
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240524195252-a62c739d15b4
 	code.cloudfoundry.org/durationjson v0.0.0-20240524171011-4948f0cba575
 	code.cloudfoundry.org/eventhub v0.0.0-20240524171012-9e04ff18d734
-	code.cloudfoundry.org/garden v0.0.0-20240524192812-a517c05e8706
+	code.cloudfoundry.org/garden v0.0.0-20240525192816-95cc6e9bd84a
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.35.0
-	code.cloudfoundry.org/guardian v0.0.0-20240524193302-0073577ab0c7
+	code.cloudfoundry.org/guardian v0.0.0-20240525193324-8fe32df3f783
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240524171018-3d7459c0c458
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240522170710-79df114af82a
@@ -59,7 +59,7 @@ require (
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510
 	github.com/hashicorp/errwrap v1.1.0
 	github.com/hashicorp/go-multierror v1.1.1
-	github.com/jackc/pgx/v5 v5.5.5
+	github.com/jackc/pgx/v5 v5.6.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/kr/pty v1.1.8
 	github.com/lib/pq v1.10.9
@@ -137,7 +137,7 @@ require (
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/pprof v0.0.0-20240521024322-9665fa269a30 // indirect
+	github.com/google/pprof v0.0.0-20240525223248-4bfdf5a9a2af // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/hashicorp/go-version v1.7.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
