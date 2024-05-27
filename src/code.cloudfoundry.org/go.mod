@@ -17,26 +17,26 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20240524171016-08c37000af53
-	code.cloudfoundry.org/bytefmt v0.0.0-20240524171005-f1d9d5c55b92
+	code.cloudfoundry.org/archiver v0.0.0-20240526171202-95e616edf270
+	code.cloudfoundry.org/bytefmt v0.0.0-20240526171149-658a10a2f1fb
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.0.0-20240525185513-e5e55677791f
+	code.cloudfoundry.org/certsplitter v0.0.0-20240526171203-dd9e48ceb23d
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240524130622-05c9e4b882c4
 	code.cloudfoundry.org/cfhttp/v2 v2.1.0
 	code.cloudfoundry.org/clock v1.1.0
-	code.cloudfoundry.org/credhub-cli v0.0.0-20240520130535-8a23f47574e8
-	code.cloudfoundry.org/debugserver v0.0.0-20240524171011-a228404938b4
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240524171022-6c2f75ff4f5a
+	code.cloudfoundry.org/credhub-cli v0.0.0-20240527130318-e567403de1b6
+	code.cloudfoundry.org/debugserver v0.0.0-20240526171159-961b724bcdaa
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240526171204-4928a34fc1a0
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240524195252-a62c739d15b4
-	code.cloudfoundry.org/durationjson v0.0.0-20240524171011-4948f0cba575
-	code.cloudfoundry.org/eventhub v0.0.0-20240524171012-9e04ff18d734
-	code.cloudfoundry.org/garden v0.0.0-20240525192816-95cc6e9bd84a
+	code.cloudfoundry.org/durationjson v0.0.0-20240526171154-48413eb7953b
+	code.cloudfoundry.org/eventhub v0.0.0-20240526171147-b764e7693d8f
+	code.cloudfoundry.org/garden v0.0.0-20240526192913-7f9f6ab34afd
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.35.0
-	code.cloudfoundry.org/guardian v0.0.0-20240525193324-8fe32df3f783
+	code.cloudfoundry.org/guardian v0.0.0-20240526193407-9c1e6bf1ccd9
 	code.cloudfoundry.org/lager/v3 v3.0.3
-	code.cloudfoundry.org/localip v0.0.0-20240524171018-3d7459c0c458
+	code.cloudfoundry.org/localip v0.0.0-20240526171154-d23a092201bd
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240522170710-79df114af82a
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
@@ -94,7 +94,7 @@ require (
 
 require (
 	cel.dev/expr v0.15.0 // indirect
-	code.cloudfoundry.org/commandrunner v0.0.0-20240524151434-2fc4ecf84fa2 // indirect
+	code.cloudfoundry.org/commandrunner v0.0.0-20240526151630-2c8a424c98c5 // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240515174142-71582f284718 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
