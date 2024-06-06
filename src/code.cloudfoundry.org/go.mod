@@ -17,8 +17,8 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20240604172007-61cc878c421b
-	code.cloudfoundry.org/bytefmt v0.0.0-20240604172014-5a751eb643b0
+	code.cloudfoundry.org/archiver v0.0.0-20240605172148-a469d42dc1f4
+	code.cloudfoundry.org/bytefmt v0.0.0-20240605172156-426a20f739e3
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
 	code.cloudfoundry.org/certsplitter v0.0.0-20240604190637-6e0da443e542
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
@@ -26,21 +26,21 @@ require (
 	code.cloudfoundry.org/cfhttp/v2 v2.1.0
 	code.cloudfoundry.org/clock v1.1.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240603131113-3e07e7a4fb8e
-	code.cloudfoundry.org/debugserver v0.0.0-20240604172006-4dee5ddcdb7c
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240604172016-489f4029d3f1
+	code.cloudfoundry.org/debugserver v0.0.0-20240605172147-3433a40ea1bc
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240605172200-e2549c297631
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240524195252-a62c739d15b4
-	code.cloudfoundry.org/durationjson v0.0.0-20240604172003-0d793792bfe4
-	code.cloudfoundry.org/eventhub v0.0.0-20240604172006-e8f3e3d06960
+	code.cloudfoundry.org/durationjson v0.0.0-20240605172149-1c08fce07291
+	code.cloudfoundry.org/eventhub v0.0.0-20240605172144-c5372e294841
 	code.cloudfoundry.org/garden v0.0.0-20240604193611-1a2f0f635229
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.35.0
-	code.cloudfoundry.org/guardian v0.0.0-20240604194031-230960a27602
+	code.cloudfoundry.org/guardian v0.0.0-20240605194212-0aabbb788d42
 	code.cloudfoundry.org/lager/v3 v3.0.3
-	code.cloudfoundry.org/localip v0.0.0-20240604172015-484561499a86
+	code.cloudfoundry.org/localip v0.0.0-20240605172145-e093a99dad61
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240604172015-5be76e21ea65
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.53.16
+	github.com/aws/aws-sdk-go v1.53.17
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240605144053-e9736b52ea9c
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
@@ -94,7 +94,7 @@ require (
 
 require (
 	cel.dev/expr v0.15.0 // indirect
-	code.cloudfoundry.org/commandrunner v0.0.0-20240604152705-b8a2ca11d46c // indirect
+	code.cloudfoundry.org/commandrunner v0.0.0-20240605152816-dde9de7e7f5d // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240604201846-c756bfed2ed3 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
@@ -128,7 +128,7 @@ require (
 	github.com/cyphar/filepath-securejoin v0.2.5 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
-	github.com/docker/docker v26.1.3+incompatible // indirect
+	github.com/docker/docker v26.1.4+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.8.2 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
@@ -142,7 +142,7 @@ require (
 	github.com/hashicorp/go-version v1.7.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
-	github.com/jackc/pgservicefile v0.0.0-20231201235250-de7065d80cb9 // indirect
+	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/puddle/v2 v2.2.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
@@ -162,7 +162,7 @@ require (
 	github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635 // indirect
 	github.com/vishvananda/netlink v1.2.1-beta.2 // indirect
 	github.com/vishvananda/netns v0.0.4 // indirect
-	go.step.sm/crypto v0.46.0 // indirect
+	go.step.sm/crypto v0.47.0 // indirect
 	go.uber.org/automaxprocs v1.5.3 // indirect
 	golang.org/x/exp v0.0.0-20240604190554-fc45aab8b7f8 // indirect
 	golang.org/x/sync v0.7.0 // indirect
