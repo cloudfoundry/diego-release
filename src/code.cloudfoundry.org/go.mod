@@ -34,7 +34,7 @@ require (
 	code.cloudfoundry.org/garden v0.0.0-20240604193611-1a2f0f635229
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.35.0
-	code.cloudfoundry.org/guardian v0.0.0-20240607194421-f9b3664b7936
+	code.cloudfoundry.org/guardian v0.0.0-20240608194540-dde64cadcc0a
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240605172145-e093a99dad61
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240606172222-82aa02bc07ea
