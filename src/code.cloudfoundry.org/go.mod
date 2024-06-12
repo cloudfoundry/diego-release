@@ -22,25 +22,25 @@ require (
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
 	code.cloudfoundry.org/certsplitter v0.0.0-20240604190637-6e0da443e542
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
-	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240606190331-7f2af1fe4411
+	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240611155319-8cae5c93a2bd
 	code.cloudfoundry.org/cfhttp/v2 v2.1.0
 	code.cloudfoundry.org/clock v1.1.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240610130326-eaa57ce4b8a1
 	code.cloudfoundry.org/debugserver v0.0.0-20240605172147-3433a40ea1bc
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240610172700-1709b2f54f2e
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240611172713-2a88719c2fed
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240524195252-a62c739d15b4
 	code.cloudfoundry.org/durationjson v0.0.0-20240605172149-1c08fce07291
 	code.cloudfoundry.org/eventhub v0.0.0-20240605172144-c5372e294841
-	code.cloudfoundry.org/garden v0.0.0-20240604193611-1a2f0f635229
+	code.cloudfoundry.org/garden v0.0.0-20240611194356-c66dc427ceca
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
-	code.cloudfoundry.org/goshims v0.35.0
-	code.cloudfoundry.org/guardian v0.0.0-20240610194527-90708584e472
+	code.cloudfoundry.org/goshims v0.37.0
+	code.cloudfoundry.org/guardian v0.0.0-20240611194827-d1ef24edb705
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240605172145-e093a99dad61
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240606172222-82aa02bc07ea
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.53.20
+	github.com/aws/aws-sdk-go v1.53.21
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240605144053-e9736b52ea9c
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
@@ -146,7 +146,7 @@ require (
 	github.com/jackc/puddle/v2 v2.2.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
-	github.com/klauspost/compress v1.17.8 // indirect
+	github.com/klauspost/compress v1.17.9 // indirect
 	github.com/kr/fs v0.1.0 // indirect
 	github.com/minio/highwayhash v1.0.2 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
