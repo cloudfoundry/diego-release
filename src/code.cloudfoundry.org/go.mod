@@ -34,13 +34,13 @@ require (
 	code.cloudfoundry.org/garden v0.0.0-20240611194356-c66dc427ceca
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.37.0
-	code.cloudfoundry.org/guardian v0.0.0-20240615195319-737404f66b17
+	code.cloudfoundry.org/guardian v0.0.0-20240617195542-f35fecab25df
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240605172145-e093a99dad61
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240613173017-075d5b187a0d
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.54.2
+	github.com/aws/aws-sdk-go v1.54.3
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240613164637-021de410d8a7
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
@@ -99,20 +99,20 @@ require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/BurntSushi/toml v1.4.0 // indirect
-	github.com/aws/aws-sdk-go-v2 v1.27.2 // indirect
-	github.com/aws/aws-sdk-go-v2/config v1.27.18 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.17.18 // indirect
-	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.5 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.9 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.9 // indirect
+	github.com/aws/aws-sdk-go-v2 v1.28.0 // indirect
+	github.com/aws/aws-sdk-go-v2/config v1.27.19 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.17.19 // indirect
+	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.6 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.10 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.10 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ecr v1.28.5 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.23.10 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ecr v1.28.6 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.23.11 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.11.2 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.11 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.20.11 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.24.5 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sts v1.28.12 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.12 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.20.12 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.24.6 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sts v1.28.13 // indirect
 	github.com/aws/smithy-go v1.20.2 // indirect
 	github.com/bmizerany/pat v0.0.0-20210406213842-e4b6760bdd6f // indirect
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
@@ -168,7 +168,7 @@ require (
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	golang.org/x/tools v0.22.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240610135401-a8a62080eff3 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240610135401-a8a62080eff3 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240617180043-68d350f18fd4 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240617180043-68d350f18fd4 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
