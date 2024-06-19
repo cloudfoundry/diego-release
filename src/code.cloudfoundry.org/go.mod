@@ -31,10 +31,10 @@ require (
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240524195252-a62c739d15b4
 	code.cloudfoundry.org/durationjson v0.0.0-20240618173555-a9e7689cae2f
 	code.cloudfoundry.org/eventhub v0.0.0-20240618173602-ceb2cbaef513
-	code.cloudfoundry.org/garden v0.0.0-20240611194356-c66dc427ceca
+	code.cloudfoundry.org/garden v0.0.0-20240618195149-8ca9acd40cec
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.37.0
-	code.cloudfoundry.org/guardian v0.0.0-20240617195542-f35fecab25df
+	code.cloudfoundry.org/guardian v0.0.0-20240618200004-ce3d57acd874
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240618173604-a750d6c15505
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240613173017-075d5b187a0d
