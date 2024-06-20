@@ -10,6 +10,6 @@ source /var/vcap/packages/golang-*-linux/bosh/compile.env
 mkdir ${BOSH_INSTALL_TARGET}/bin
 export GOBIN=${BOSH_INSTALL_TARGET}/bin
 
-pushd src/code.cloudfoundry.org
-go install code.cloudfoundry.org/bbs/cmd/bbs
+pushd src/github.com/dimitardimitrov13
+go github.com/dimitardimitrov13/bbs/cmd/bbs
 popd
