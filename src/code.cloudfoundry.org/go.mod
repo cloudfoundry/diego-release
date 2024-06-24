@@ -25,7 +25,7 @@ require (
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240611155319-8cae5c93a2bd
 	code.cloudfoundry.org/cfhttp/v2 v2.1.0
 	code.cloudfoundry.org/clock v1.1.0
-	code.cloudfoundry.org/credhub-cli v0.0.0-20240617130427-da5c8e6f4033
+	code.cloudfoundry.org/credhub-cli v0.0.0-20240624130342-778af11070f9
 	code.cloudfoundry.org/debugserver v0.0.0-20240622173946-6ebc359d7f4f
 	code.cloudfoundry.org/diego-logging-client v0.0.0-20240622173949-f2ec4270dfa9
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
@@ -34,7 +34,7 @@ require (
 	code.cloudfoundry.org/garden v0.0.0-20240622195556-3d9d714dfef8
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.37.0
-	code.cloudfoundry.org/guardian v0.0.0-20240622200258-18bb003ac253
+	code.cloudfoundry.org/guardian v0.0.0-20240623200142-f31f71e5ddca
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240622173945-c9d07224d751
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240613173017-075d5b187a0d
@@ -52,7 +52,7 @@ require (
 	github.com/fsnotify/fsnotify v1.7.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-sql-driver/mysql v1.8.1
-	github.com/go-test/deep v1.1.0
+	github.com/go-test/deep v1.1.1
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/golang/protobuf v1.5.4
@@ -168,7 +168,7 @@ require (
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	golang.org/x/tools v0.22.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240617180043-68d350f18fd4 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240617180043-68d350f18fd4 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240624140628-dc46fd24d27d // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240624140628-dc46fd24d27d // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
