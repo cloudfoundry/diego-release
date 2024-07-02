@@ -82,7 +82,7 @@ rm -rf "$proxy_config_dir"
 ####################################
 
 # Define the service binding root directory
-service_binding_root="$HOME/var/vcap/jobs/rep/service_binding_root"
+service_binding_root="/var/vcap/jobs/rep/service_binding_root"
 
 # Calculate the size for the tmpfs (1MB per container)
 root_tmpfs_size=$((max_containers * 1))M
