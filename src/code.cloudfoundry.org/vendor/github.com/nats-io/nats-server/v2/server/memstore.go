@@ -261,7 +261,7 @@ func (ms *memStore) SkipMsg() uint64 {
 	ms.state.LastSeq = seq
 	ms.state.LastTime = now
 	if ms.state.Msgs == 0 {
-		ms.state.FirstSeq = seq
+		ms.state.FirstSeq = seq + 1
 		ms.state.FirstTime = now
 	} else {
 		ms.dmap.Insert(seq)
@@ -389,9 +389,9 @@ func (ms *memStore) filteredStateLocked(sseq uint64, filter string, lastPerSubje
 		}
 	}
 
-	tsa := [32]string{}
-	fsa := [32]string{}
-	fts := tokenizeSubjectIntoSlice(fsa[:0], filter)
+	_tsa, _fsa := [32]string{}, [32]string{}
+	tsa, fsa := _tsa[:0], _fsa[:0]
+	fsa = tokenizeSubjectIntoSlice(fsa[:0], filter)
 	wc := subjectHasWildcard(filter)
 
 	// 1. See if we match any subs from fss.
@@ -405,8 +405,8 @@ func (ms *memStore) filteredStateLocked(sseq uint64, filter string, lastPerSubje
 		if !wc {
 			return subj == filter
 		}
-		tts := tokenizeSubjectIntoSlice(tsa[:0], subj)
-		return isSubsetMatchTokenized(tts, fts)
+		tsa = tokenizeSubjectIntoSlice(tsa[:0], subj)
+		return isSubsetMatchTokenized(tsa, fsa)
 	}
 
 	update := func(fss *SimpleState) {
@@ -465,14 +465,28 @@ func (ms *memStore) filteredStateLocked(sseq uint64, filter string, lastPerSubje
 	}
 	if toScan < toExclude {
 		ss.Msgs, ss.First = 0, 0
-		for seq := first; seq <= last; seq++ {
-			if sm, ok := ms.msgs[seq]; ok && !seen[sm.subj] && isMatch(sm.subj) {
-				ss.Msgs++
-				if ss.First == 0 {
-					ss.First = seq
+
+		update := func(sm *StoreMsg) {
+			ss.Msgs++
+			if ss.First == 0 {
+				ss.First = sm.seq
+			}
+			if seen != nil {
+				seen[sm.subj] = true
+			}
+		}
+		// Check if easier to just scan msgs vs the sequence range.
+		// This can happen with lots of interior deletes.
+		if last-first > uint64(len(ms.msgs)) {
+			for _, sm := range ms.msgs {
+				if sm.seq >= first && sm.seq <= last && !seen[sm.subj] && isMatch(sm.subj) {
+					update(sm)
 				}
-				if seen != nil {
-					seen[sm.subj] = true
+			}
+		} else {
+			for seq := first; seq <= last; seq++ {
+				if sm, ok := ms.msgs[seq]; ok && !seen[sm.subj] && isMatch(sm.subj) {
+					update(sm)
 				}
 			}
 		}
@@ -482,17 +496,29 @@ func (ms *memStore) filteredStateLocked(sseq uint64, filter string, lastPerSubje
 		var adjust uint64
 		var tss *SimpleState
 
-		for seq := ms.state.FirstSeq; seq < first; seq++ {
-			if sm, ok := ms.msgs[seq]; ok && !seen[sm.subj] && isMatch(sm.subj) {
-				if lastPerSubject {
-					tss, _ = ms.fss.Find(stringToBytes(sm.subj))
+		update := func(sm *StoreMsg) {
+			if lastPerSubject {
+				tss, _ = ms.fss.Find(stringToBytes(sm.subj))
+			}
+			// If we are last per subject, make sure to only adjust if all messages are before our first.
+			if tss == nil || tss.Last < first {
+				adjust++
+			}
+			if seen != nil {
+				seen[sm.subj] = true
+			}
+		}
+		// Check if easier to just scan msgs vs the sequence range.
+		if first-ms.state.FirstSeq > uint64(len(ms.msgs)) {
+			for _, sm := range ms.msgs {
+				if sm.seq < first && !seen[sm.subj] && isMatch(sm.subj) {
+					update(sm)
 				}
-				// If we are last per subject, make sure to only adjust if all messages are before our first.
-				if tss == nil || tss.Last < first {
-					adjust++
-				}
-				if seen != nil {
-					seen[sm.subj] = true
+			}
+		} else {
+			for seq := ms.state.FirstSeq; seq < first; seq++ {
+				if sm, ok := ms.msgs[seq]; ok && !seen[sm.subj] && isMatch(sm.subj) {
+					update(sm)
 				}
 			}
 		}
@@ -507,10 +533,27 @@ func (ms *memStore) filteredStateLocked(sseq uint64, filter string, lastPerSubje
 		}
 		ss.Msgs -= adjust
 		if needScanFirst {
-			for seq := first; seq < last; seq++ {
-				if sm, ok := ms.msgs[seq]; ok && isMatch(sm.subj) {
-					ss.First = seq
-					break
+			// Check if easier to just scan msgs vs the sequence range.
+			// Since we will need to scan all of the msgs vs below where we break on the first match,
+			// we will only do so if a few orders of magnitude lower.
+			if last-first > 100*uint64(len(ms.msgs)) {
+				low := ms.state.LastSeq
+				for _, sm := range ms.msgs {
+					if sm.seq >= first && sm.seq < last && isMatch(sm.subj) {
+						if sm.seq < low {
+							low = sm.seq
+						}
+					}
+				}
+				if low < ms.state.LastSeq {
+					ss.First = low
+				}
+			} else {
+				for seq := first; seq < last; seq++ {
+					if sm, ok := ms.msgs[seq]; ok && isMatch(sm.subj) {
+						ss.First = seq
+						break
+					}
 				}
 			}
 		}
@@ -559,9 +602,9 @@ func (ms *memStore) SubjectsTotals(filterSubject string) map[string]uint64 {
 		return nil
 	}
 
-	tsa := [32]string{}
-	fsa := [32]string{}
-	fts := tokenizeSubjectIntoSlice(fsa[:0], filterSubject)
+	_tsa, _fsa := [32]string{}, [32]string{}
+	tsa, fsa := _tsa[:0], _fsa[:0]
+	fsa = tokenizeSubjectIntoSlice(fsa[:0], filterSubject)
 	isAll := filterSubject == _EMPTY_ || filterSubject == fwcs
 
 	fst := make(map[string]uint64)
@@ -570,7 +613,7 @@ func (ms *memStore) SubjectsTotals(filterSubject string) map[string]uint64 {
 		if isAll {
 			fst[subjs] = ss.Msgs
 		} else {
-			if tts := tokenizeSubjectIntoSlice(tsa[:0], subjs); isSubsetMatchTokenized(tts, fts) {
+			if tsa = tokenizeSubjectIntoSlice(tsa[:0], subjs); isSubsetMatchTokenized(tsa, fsa) {
 				fst[subjs] = ss.Msgs
 			}
 		}
@@ -1509,7 +1552,8 @@ func (o *consumerMemStore) UpdateDelivered(dseq, sseq, dc uint64, ts int64) erro
 		// Check for an update to a message already delivered.
 		if sseq <= o.state.Delivered.Stream {
 			if p = o.state.Pending[sseq]; p != nil {
-				p.Sequence, p.Timestamp = dseq, ts
+				// Do not update p.Sequence, that should be the original delivery sequence.
+				p.Timestamp = ts
 			}
 		} else {
 			// Add to pending.
@@ -1558,13 +1602,21 @@ func (o *consumerMemStore) UpdateAcks(dseq, sseq uint64) error {
 	if o.cfg.AckPolicy == AckNone {
 		return ErrNoAckPolicy
 	}
-	if len(o.state.Pending) == 0 || o.state.Pending[sseq] == nil {
-		return ErrStoreMsgNotFound
-	}
 
 	// On restarts the old leader may get a replay from the raft logs that are old.
 	if dseq <= o.state.AckFloor.Consumer {
 		return nil
+	}
+
+	// Match leader logic on checking if ack is ahead of delivered.
+	// This could happen on a cooperative takeover with high speed deliveries.
+	if sseq > o.state.Delivered.Stream {
+		o.state.Delivered.Stream = sseq + 1
+	}
+
+	if len(o.state.Pending) == 0 || o.state.Pending[sseq] == nil {
+		delete(o.state.Redelivered, sseq)
+		return ErrStoreMsgNotFound
 	}
 
 	// Check for AckAll here.
@@ -1572,9 +1624,16 @@ func (o *consumerMemStore) UpdateAcks(dseq, sseq uint64) error {
 		sgap := sseq - o.state.AckFloor.Stream
 		o.state.AckFloor.Consumer = dseq
 		o.state.AckFloor.Stream = sseq
-		for seq := sseq; seq > sseq-sgap; seq-- {
-			delete(o.state.Pending, seq)
-			if len(o.state.Redelivered) > 0 {
+		if sgap > uint64(len(o.state.Pending)) {
+			for seq := range o.state.Pending {
+				if seq <= sseq {
+					delete(o.state.Pending, seq)
+					delete(o.state.Redelivered, seq)
+				}
+			}
+		} else {
+			for seq := sseq; seq > sseq-sgap && len(o.state.Pending) > 0; seq-- {
+				delete(o.state.Pending, seq)
 				delete(o.state.Redelivered, seq)
 			}
 		}
@@ -1586,23 +1645,20 @@ func (o *consumerMemStore) UpdateAcks(dseq, sseq uint64) error {
 	// First delete from our pending state.
 	if p, ok := o.state.Pending[sseq]; ok {
 		delete(o.state.Pending, sseq)
-		dseq = p.Sequence // Use the original.
-	}
-	// Now remove from redelivered.
-	if len(o.state.Redelivered) > 0 {
-		delete(o.state.Redelivered, sseq)
+		if dseq > p.Sequence && p.Sequence > 0 {
+			dseq = p.Sequence // Use the original.
+		}
 	}
 
 	if len(o.state.Pending) == 0 {
 		o.state.AckFloor.Consumer = o.state.Delivered.Consumer
 		o.state.AckFloor.Stream = o.state.Delivered.Stream
 	} else if dseq == o.state.AckFloor.Consumer+1 {
-		first := o.state.AckFloor.Consumer == 0
 		o.state.AckFloor.Consumer = dseq
 		o.state.AckFloor.Stream = sseq
 
-		if !first && o.state.Delivered.Consumer > dseq {
-			for ss := sseq + 1; ss < o.state.Delivered.Stream; ss++ {
+		if o.state.Delivered.Consumer > dseq {
+			for ss := sseq + 1; ss <= o.state.Delivered.Stream; ss++ {
 				if p, ok := o.state.Pending[ss]; ok {
 					if p.Sequence > 0 {
 						o.state.AckFloor.Consumer = p.Sequence - 1
@@ -1613,6 +1669,8 @@ func (o *consumerMemStore) UpdateAcks(dseq, sseq uint64) error {
 			}
 		}
 	}
+	// We do these regardless.
+	delete(o.state.Redelivered, sseq)
 
 	return nil
 }
