@@ -17,27 +17,27 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20240625174243-6d58e629a167
-	code.cloudfoundry.org/bytefmt v0.0.0-20240625174231-fca5dc407bce
+	code.cloudfoundry.org/archiver v0.0.0-20240704175131-0862adba0fcb
+	code.cloudfoundry.org/bytefmt v0.0.0-20240704175130-b175bb555329
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.0.0-20240625174231-2e960d3bc1e0
+	code.cloudfoundry.org/certsplitter v0.0.0-20240704175135-4a084bf90988
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240611155319-8cae5c93a2bd
 	code.cloudfoundry.org/cfhttp/v2 v2.1.0
 	code.cloudfoundry.org/clock v1.2.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240701130506-350489345474
-	code.cloudfoundry.org/debugserver v0.0.0-20240625174232-b3229b6daea3
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240703175007-4cd6b2daa77c
+	code.cloudfoundry.org/debugserver v0.0.0-20240704175129-4d9e1bd21cf9
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240704175139-8bfcd6a760fa
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
-	code.cloudfoundry.org/durationjson v0.0.0-20240625174233-9ff5003698bf
-	code.cloudfoundry.org/eventhub v0.0.0-20240625174234-481b921ce364
-	code.cloudfoundry.org/garden v0.0.0-20240625195848-36e99aad95da
+	code.cloudfoundry.org/durationjson v0.0.0-20240704175136-11dced74d892
+	code.cloudfoundry.org/eventhub v0.0.0-20240704175134-4f63c69db3d9
+	code.cloudfoundry.org/garden v0.0.0-20240704200653-6c85f6c7e8c5
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.37.0
 	code.cloudfoundry.org/guardian v0.0.0-20240701200955-01b74f60037d
 	code.cloudfoundry.org/lager/v3 v3.0.3
-	code.cloudfoundry.org/localip v0.0.0-20240625174231-6e14c198f7fa
-	code.cloudfoundry.org/tlsconfig v0.0.0-20240702174858-4c0df2f29c62
+	code.cloudfoundry.org/localip v0.0.0-20240704175128-a4c1662f8fb7
+	code.cloudfoundry.org/tlsconfig v0.0.0-20240704175129-ec907c2cc365
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/aws/aws-sdk-go v1.54.14
@@ -82,8 +82,8 @@ require (
 	github.com/tedsuo/ifrit v0.0.0-20230516164442-7862c310ad26
 	github.com/tedsuo/rata v1.0.0
 	github.com/vito/go-sse v1.0.0
-	golang.org/x/crypto v0.24.0
-	golang.org/x/net v0.26.0
+	golang.org/x/crypto v0.25.0
+	golang.org/x/net v0.27.0
 	golang.org/x/oauth2 v0.21.0
 	golang.org/x/sys v0.22.0
 	golang.org/x/time v0.5.0
@@ -94,7 +94,7 @@ require (
 
 require (
 	cel.dev/expr v0.15.0 // indirect
-	code.cloudfoundry.org/commandrunner v0.0.0-20240625154102-bc865381621f // indirect
+	code.cloudfoundry.org/commandrunner v0.0.0-20240704154909-081b2ac2bbb8 // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240604201846-c756bfed2ed3 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
@@ -148,11 +148,11 @@ require (
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/klauspost/compress v1.17.9 // indirect
 	github.com/kr/fs v0.1.0 // indirect
-	github.com/minio/highwayhash v1.0.2 // indirect
+	github.com/minio/highwayhash v1.0.3 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/moby/sys/mountinfo v0.7.1 // indirect
 	github.com/moby/sys/user v0.1.0 // indirect
-	github.com/nats-io/jwt/v2 v2.5.7 // indirect
+	github.com/nats-io/jwt/v2 v2.5.8 // indirect
 	github.com/nats-io/nkeys v0.4.7 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/opencontainers/runc v1.1.13 // indirect
