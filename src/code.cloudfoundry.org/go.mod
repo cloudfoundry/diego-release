@@ -17,30 +17,30 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20240705175209-d851fc3a04ea
-	code.cloudfoundry.org/bytefmt v0.0.0-20240705175204-221292338951
+	code.cloudfoundry.org/archiver v0.0.0-20240708175627-d945c12efe07
+	code.cloudfoundry.org/bytefmt v0.0.0-20240708175629-0bd12a0c6f6b
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.0.0-20240705175203-764523d29b39
+	code.cloudfoundry.org/certsplitter v0.0.0-20240708175631-a55e42cd26b4
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
-	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240611155319-8cae5c93a2bd
+	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240709141706-f9053498538e
 	code.cloudfoundry.org/cfhttp/v2 v2.1.0
 	code.cloudfoundry.org/clock v1.2.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240708130444-3f2fc7fd8c29
-	code.cloudfoundry.org/debugserver v0.0.0-20240705175209-1b863bb63b67
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240706175343-008f8dd18da2
+	code.cloudfoundry.org/debugserver v0.0.0-20240708175632-eff029929d18
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240708175635-caa5cc0c1692
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
-	code.cloudfoundry.org/durationjson v0.0.0-20240705175208-6880c3129de7
-	code.cloudfoundry.org/eventhub v0.0.0-20240705175213-d572d3ae11a4
-	code.cloudfoundry.org/garden v0.0.0-20240705200726-e508adf1e306
+	code.cloudfoundry.org/durationjson v0.0.0-20240708175642-5f5c6a0497f4
+	code.cloudfoundry.org/eventhub v0.0.0-20240708175634-449ba4954fae
+	code.cloudfoundry.org/garden v0.0.0-20240708201037-a065bfb99bfb
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.37.0
 	code.cloudfoundry.org/guardian v0.0.0-20240701200955-01b74f60037d
 	code.cloudfoundry.org/lager/v3 v3.0.3
-	code.cloudfoundry.org/localip v0.0.0-20240705175206-721695fced14
+	code.cloudfoundry.org/localip v0.0.0-20240708175626-6e4346bd9fee
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240705175211-7a5a6eee6ef2
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/aws/aws-sdk-go v1.54.15
+	github.com/aws/aws-sdk-go v1.54.16
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240708141356-efa334f881fc
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
@@ -94,7 +94,7 @@ require (
 
 require (
 	cel.dev/expr v0.15.0 // indirect
-	code.cloudfoundry.org/commandrunner v0.0.0-20240705155009-6aef00a37535 // indirect
+	code.cloudfoundry.org/commandrunner v0.0.0-20240708155316-7fc2283a2609 // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240604201846-c756bfed2ed3 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
