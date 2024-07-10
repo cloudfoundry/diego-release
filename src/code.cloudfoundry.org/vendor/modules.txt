@@ -19,7 +19,7 @@ code.cloudfoundry.org/certsplitter/cmd/certsplitter
 # code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 ## explicit
 code.cloudfoundry.org/cf-routing-test-helpers/tls
-# code.cloudfoundry.org/cf-tcp-router v0.0.0-20240709141706-f9053498538e
+# code.cloudfoundry.org/cf-tcp-router v0.0.0-20240709202448-db6361ed40ca
 ## explicit
 code.cloudfoundry.org/cf-tcp-router/utils
 # code.cloudfoundry.org/cfhttp/v2 v2.1.0
@@ -46,7 +46,7 @@ code.cloudfoundry.org/credhub-cli/credhub/server
 # code.cloudfoundry.org/debugserver v0.0.0-20240708175632-eff029929d18
 ## explicit; go 1.19
 code.cloudfoundry.org/debugserver
-# code.cloudfoundry.org/diego-logging-client v0.0.0-20240708175635-caa5cc0c1692
+# code.cloudfoundry.org/diego-logging-client v0.0.0-20240709175802-904ac8cf53b0
 ## explicit; go 1.21
 code.cloudfoundry.org/diego-logging-client
 code.cloudfoundry.org/diego-logging-client/testhelpers
@@ -83,7 +83,7 @@ code.cloudfoundry.org/go-diodes
 code.cloudfoundry.org/go-loggregator/v9
 code.cloudfoundry.org/go-loggregator/v9/rpc/loggregator_v2
 code.cloudfoundry.org/go-loggregator/v9/runtimeemitter
-# code.cloudfoundry.org/goshims v0.37.0
+# code.cloudfoundry.org/goshims v0.38.0
 ## explicit; go 1.20
 code.cloudfoundry.org/goshims/filepathshim
 code.cloudfoundry.org/goshims/http_wrap
@@ -134,7 +134,7 @@ github.com/GaryBoone/GoStats/stats
 # github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 ## explicit; go 1.15
 github.com/ajstarks/svgo
-# github.com/aws/aws-sdk-go v1.54.16
+# github.com/aws/aws-sdk-go v1.54.17
 ## explicit; go 1.19
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/auth/bearer
@@ -761,8 +761,8 @@ github.com/vishvananda/netns
 # github.com/vito/go-sse v1.0.0
 ## explicit; go 1.12
 github.com/vito/go-sse/sse
-# go.step.sm/crypto v0.48.1
-## explicit; go 1.20
+# go.step.sm/crypto v0.49.0
+## explicit; go 1.21
 go.step.sm/crypto/fingerprint
 go.step.sm/crypto/internal/bcrypt_pbkdf
 go.step.sm/crypto/internal/emoji
@@ -865,10 +865,10 @@ golang.org/x/time/rate
 ## explicit; go 1.19
 golang.org/x/tools/cover
 golang.org/x/tools/go/ast/inspector
-# google.golang.org/genproto/googleapis/api v0.0.0-20240708141625-4ad9e859172b
+# google.golang.org/genproto/googleapis/api v0.0.0-20240709173604-40e1e62336c5
 ## explicit; go 1.20
 google.golang.org/genproto/googleapis/api/expr/v1alpha1
-# google.golang.org/genproto/googleapis/rpc v0.0.0-20240708141625-4ad9e859172b
+# google.golang.org/genproto/googleapis/rpc v0.0.0-20240709173604-40e1e62336c5
 ## explicit; go 1.20
 google.golang.org/genproto/googleapis/rpc/status
 # google.golang.org/grpc v1.65.0
