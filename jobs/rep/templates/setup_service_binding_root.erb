@@ -1,3 +1,5 @@
+#!/bin/bash -e
+
 <%
   _max_containers = 250
   if_p("diego.rep.max_containers") do |value|
@@ -8,6 +10,8 @@
   end
 %>
 max_containers=<%= _max_containers %>
+
+echo "max_containers=${max_containers}" >> max_containers.log
 
 # Define the service binding root directory
 service_binding_root="/var/vcap/data/rep/shared/garden/service_binding_root"
