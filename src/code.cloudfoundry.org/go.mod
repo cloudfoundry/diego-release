@@ -17,26 +17,26 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20240708175627-d945c12efe07
-	code.cloudfoundry.org/bytefmt v0.0.0-20240708175629-0bd12a0c6f6b
+	code.cloudfoundry.org/archiver v0.0.0-20240711175833-dbc7231e030c
+	code.cloudfoundry.org/bytefmt v0.0.0-20240711175842-1bcb71f1f634
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.0.0-20240708175631-a55e42cd26b4
+	code.cloudfoundry.org/certsplitter v0.0.0-20240711175843-93e340749eba
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
-	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240709202448-db6361ed40ca
+	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240712082121-f15a807edcfc
 	code.cloudfoundry.org/cfhttp/v2 v2.1.0
 	code.cloudfoundry.org/clock v1.2.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240708130444-3f2fc7fd8c29
-	code.cloudfoundry.org/debugserver v0.0.0-20240708175632-eff029929d18
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240709175802-904ac8cf53b0
+	code.cloudfoundry.org/debugserver v0.0.0-20240711175828-bd4bb5559e42
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240711175830-8c315b151f27
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
-	code.cloudfoundry.org/durationjson v0.0.0-20240708175642-5f5c6a0497f4
-	code.cloudfoundry.org/eventhub v0.0.0-20240708175634-449ba4954fae
-	code.cloudfoundry.org/garden v0.0.0-20240708201037-a065bfb99bfb
+	code.cloudfoundry.org/durationjson v0.0.0-20240711175827-ec11f50a5c9e
+	code.cloudfoundry.org/eventhub v0.0.0-20240711175829-9b6874164e5c
+	code.cloudfoundry.org/garden v0.0.0-20240711201323-3e0daa304ebb
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.38.0
 	code.cloudfoundry.org/guardian v0.0.0-20240701200955-01b74f60037d
 	code.cloudfoundry.org/lager/v3 v3.0.3
-	code.cloudfoundry.org/localip v0.0.0-20240708175626-6e4346bd9fee
+	code.cloudfoundry.org/localip v0.0.0-20240711175824-a1a2d50a2164
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240710175717-1267031d8b88
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
@@ -162,7 +162,7 @@ require (
 	github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635 // indirect
 	github.com/vishvananda/netlink v1.2.1-beta.2 // indirect
 	github.com/vishvananda/netns v0.0.4 // indirect
-	go.step.sm/crypto v0.49.0 // indirect
+	go.step.sm/crypto v0.50.0 // indirect
 	go.uber.org/automaxprocs v1.5.3 // indirect
 	golang.org/x/exp v0.0.0-20240707233637-46b078467d37 // indirect
 	golang.org/x/sync v0.7.0 // indirect
