@@ -9,7 +9,6 @@ replace (
 	code.cloudfoundry.org/idmapper => ../idmapper
 
 	github.com/nats-io/nats.go => github.com/nats-io/nats.go v1.16.1-0.20220906180156-a1017eec10b0
-	github.com/onsi/gomega => github.com/onsi/gomega v1.27.1
 	github.com/prometheus/client_golang => github.com/prometheus/client_golang v1.11.1
 	github.com/prometheus/common => github.com/prometheus/common v0.30.0
 	github.com/spf13/cobra => github.com/spf13/cobra v0.0.0-20160722081547-f62e98d28ab7
