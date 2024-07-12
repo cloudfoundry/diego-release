@@ -133,7 +133,6 @@
 
   config[:enable_internal_emitter] = p("internal_routes.enabled")
   config[:enable_tcp_emitter] = p("tcp.enabled")
-  config[:tcp_enable_tls] = p("tcp.enable_tls")
   config[:routing_api] = {}
   if_p("routing_api.url") do |value|
     config[:routing_api][:url] = value
