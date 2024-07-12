@@ -112,9 +112,6 @@ properties:
   tcp.enabled:
     description: "Enable the route-emitter in cell-local mode to emit TCP routes for instances to the Routing API."
     default: false
-  tcp.enable_tls:
-    description: "When enabled route-emitter will include TLS port and instance GUID when emitting TCP routes."
-    default: false
   routing_api.url:
     description: "Routing API uri to be used by the tcp route-emitter"
     default: http://routing-api.service.cf.internal

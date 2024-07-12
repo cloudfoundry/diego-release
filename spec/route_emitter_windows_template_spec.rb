@@ -82,19 +82,5 @@ describe 'route_emitter' do
         end.to raise_error(/diego.route_emitter.jitter_factor must be a float between 0.0 and 1.0/)
       end
     end
-
-    context 'tcp.enable_tls' do
-      it 'is false by default' do
-        json_data = JSON.parse(rendered_template)
-        expect(json_data['tcp_enable_tls']).to eq(false)
-      end
-
-      it 'can be configured to true' do
-        deployment_manifest_fragment['tcp'] = {}
-        deployment_manifest_fragment['tcp']['enable_tls'] = true
-        json_data = JSON.parse(rendered_template)
-        expect(json_data['tcp_enable_tls']).to eq(true)
-      end
-    end
   end
 end
