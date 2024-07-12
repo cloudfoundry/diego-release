@@ -10,7 +10,11 @@ import (
 	smithyhttp "github.com/aws/smithy-go/transport/http"
 )
 
+<<<<<<< HEAD
 // Retrieves the account setting value for the specified setting name.
+=======
+// Retrieves the basic scan type version name.
+>>>>>>> be6fdb996 (Update go.mod dependencies)
 func (c *Client) GetAccountSetting(ctx context.Context, params *GetAccountSettingInput, optFns ...func(*Options)) (*GetAccountSettingOutput, error) {
 	if params == nil {
 		params = &GetAccountSettingInput{}
@@ -28,8 +32,12 @@ func (c *Client) GetAccountSetting(ctx context.Context, params *GetAccountSettin
 
 type GetAccountSettingInput struct {
 
+<<<<<<< HEAD
 	// The name of the account setting, such as BASIC_SCAN_TYPE_VERSION or
 	// REGISTRY_POLICY_SCOPE .
+=======
+	// Basic scan type version name.
+>>>>>>> be6fdb996 (Update go.mod dependencies)
 	//
 	// This member is required.
 	Name *string
@@ -39,12 +47,20 @@ type GetAccountSettingInput struct {
 
 type GetAccountSettingOutput struct {
 
+<<<<<<< HEAD
 	// Retrieves the name of the account setting.
 	Name *string
 
 	// The setting value for the setting name. The following are valid values for the
 	// basic scan type being used: AWS_NATIVE or CLAIR . The following are valid values
 	// for the registry policy scope being used: V1 or V2 .
+=======
+	// Retrieves the basic scan type version name.
+	Name *string
+
+	// Retrieves the value that specifies what basic scan type is being used:
+	// AWS_NATIVE or CLAIR .
+>>>>>>> be6fdb996 (Update go.mod dependencies)
 	Value *string
 
 	// Metadata pertaining to the operation's result.
@@ -96,9 +112,12 @@ func (c *Client) addOperationGetAccountSettingMiddlewares(stack *middleware.Stac
 	if err = addRecordResponseTiming(stack); err != nil {
 		return err
 	}
+<<<<<<< HEAD
 	if err = addSpanRetryLoop(stack, options); err != nil {
 		return err
 	}
+=======
+>>>>>>> be6fdb996 (Update go.mod dependencies)
 	if err = addClientUserAgent(stack, options); err != nil {
 		return err
 	}
@@ -138,6 +157,7 @@ func (c *Client) addOperationGetAccountSettingMiddlewares(stack *middleware.Stac
 	if err = addDisableHTTPSMiddleware(stack, options); err != nil {
 		return err
 	}
+<<<<<<< HEAD
 	if err = addSpanInitializeStart(stack); err != nil {
 		return err
 	}
@@ -150,6 +170,8 @@ func (c *Client) addOperationGetAccountSettingMiddlewares(stack *middleware.Stac
 	if err = addSpanBuildRequestEnd(stack); err != nil {
 		return err
 	}
+=======
+>>>>>>> be6fdb996 (Update go.mod dependencies)
 	return nil
 }
 

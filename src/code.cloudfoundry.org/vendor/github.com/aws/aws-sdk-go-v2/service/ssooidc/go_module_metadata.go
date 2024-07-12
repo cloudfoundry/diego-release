@@ -3,4 +3,20 @@
 package ssooidc
 
 // goModuleVersion is the tagged release for this module
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 const goModuleVersion = "1.28.13"
+=======
+const goModuleVersion = "1.26.5"
+>>>>>>> 8ce727573 (Update go.mod dependencies)
+=======
+const goModuleVersion = "1.26.6"
+>>>>>>> b93b7e30f (Update go.mod dependencies)
+=======
+const goModuleVersion = "1.26.7"
+>>>>>>> 51f3ccb88 (Update go.mod dependencies)
+=======
+const goModuleVersion = "1.26.8"
+>>>>>>> 59f9170a4 (Update go.mod dependencies)

@@ -11,6 +11,10 @@ import (
 	"io"
 	"net/http"
 	"slices"
+<<<<<<< HEAD
+=======
+	"strings"
+>>>>>>> 25a4f88bf (Update go.mod dependencies)
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/internal/semconvutil"
 	"go.opentelemetry.io/otel/attribute"
@@ -86,7 +90,11 @@ const (
 	serverDuration     = "http.server.duration"      // Incoming end to end duration, milliseconds
 )
 
+<<<<<<< HEAD
 func (h OldHTTPServer) createMeasures(meter metric.Meter) (metric.Int64Counter, metric.Int64Counter, metric.Float64Histogram) {
+=======
+func (h oldHTTPServer) createMeasures(meter metric.Meter) (metric.Int64Counter, metric.Int64Counter, metric.Float64Histogram) {
+>>>>>>> 25a4f88bf (Update go.mod dependencies)
 	if meter == nil {
 		return noop.Int64Counter{}, noop.Int64Counter{}, noop.Float64Histogram{}
 	}
@@ -115,17 +123,30 @@ func (h OldHTTPServer) createMeasures(meter metric.Meter) (metric.Int64Counter, 
 	return requestBytesCounter, responseBytesCounter, serverLatencyMeasure
 }
 
+<<<<<<< HEAD
 func (o OldHTTPServer) MetricAttributes(server string, req *http.Request, statusCode int, additionalAttributes []attribute.KeyValue) []attribute.KeyValue {
+=======
+func (o oldHTTPServer) MetricAttributes(server string, req *http.Request, statusCode int, additionalAttributes []attribute.KeyValue) []attribute.KeyValue {
+>>>>>>> 25a4f88bf (Update go.mod dependencies)
 	n := len(additionalAttributes) + 3
 	var host string
 	var p int
 	if server == "" {
+<<<<<<< HEAD
 		host, p = SplitHostPort(req.Host)
 	} else {
 		// Prioritize the primary server name.
 		host, p = SplitHostPort(server)
 		if p < 0 {
 			_, p = SplitHostPort(req.Host)
+=======
+		host, p = splitHostPort(req.Host)
+	} else {
+		// Prioritize the primary server name.
+		host, p = splitHostPort(server)
+		if p < 0 {
+			_, p = splitHostPort(req.Host)
+>>>>>>> 25a4f88bf (Update go.mod dependencies)
 		}
 	}
 	hostPort := requiredHTTPPort(req.TLS != nil, p)
@@ -146,7 +167,11 @@ func (o OldHTTPServer) MetricAttributes(server string, req *http.Request, status
 
 	attributes := slices.Grow(additionalAttributes, n)
 	attributes = append(attributes,
+<<<<<<< HEAD
 		semconv.HTTPMethod(standardizeHTTPMethod(req.Method)),
+=======
+		o.methodMetric(req.Method),
+>>>>>>> 25a4f88bf (Update go.mod dependencies)
 		o.scheme(req.TLS != nil),
 		semconv.NetHostName(host))
 
@@ -166,13 +191,28 @@ func (o OldHTTPServer) MetricAttributes(server string, req *http.Request, status
 	return attributes
 }
 
+<<<<<<< HEAD
 func (o OldHTTPServer) scheme(https bool) attribute.KeyValue { // nolint:revive
+=======
+func (o oldHTTPServer) methodMetric(method string) attribute.KeyValue {
+	method = strings.ToUpper(method)
+	switch method {
+	case http.MethodConnect, http.MethodDelete, http.MethodGet, http.MethodHead, http.MethodOptions, http.MethodPatch, http.MethodPost, http.MethodPut, http.MethodTrace:
+	default:
+		method = "_OTHER"
+	}
+	return semconv.HTTPMethod(method)
+}
+
+func (o oldHTTPServer) scheme(https bool) attribute.KeyValue { // nolint:revive
+>>>>>>> 25a4f88bf (Update go.mod dependencies)
 	if https {
 		return semconv.HTTPSchemeHTTPS
 	}
 	return semconv.HTTPSchemeHTTP
 }
 
+<<<<<<< HEAD
 type OldHTTPClient struct{}
 
 func (o OldHTTPClient) RequestTraceAttrs(req *http.Request) []attribute.KeyValue {
@@ -264,3 +304,14 @@ func (o OldHTTPClient) createMeasures(meter metric.Meter) (metric.Int64Counter, 
 
 	return requestBytesCounter, responseBytesCounter, latencyMeasure
 }
+=======
+type oldHTTPClient struct{}
+
+func (o oldHTTPClient) RequestTraceAttrs(req *http.Request) []attribute.KeyValue {
+	return semconvutil.HTTPClientRequest(req)
+}
+
+func (o oldHTTPClient) ResponseTraceAttrs(resp *http.Response) []attribute.KeyValue {
+	return semconvutil.HTTPClientResponse(resp)
+}
+>>>>>>> 25a4f88bf (Update go.mod dependencies)

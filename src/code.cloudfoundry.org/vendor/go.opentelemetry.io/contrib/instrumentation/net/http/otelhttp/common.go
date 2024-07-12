@@ -18,6 +18,16 @@ const (
 	WriteErrorKey = attribute.Key("http.write_error") // if an error occurred while writing a reply, the string of the error (io.EOF is not recorded)
 )
 
+<<<<<<< HEAD
+=======
+// Client HTTP metrics.
+const (
+	clientRequestSize  = "http.client.request.size"  // Outgoing request bytes total
+	clientResponseSize = "http.client.response.size" // Outgoing response bytes total
+	clientDuration     = "http.client.duration"      // Outgoing end to end duration, milliseconds
+)
+
+>>>>>>> 25a4f88bf (Update go.mod dependencies)
 // Filter is a predicate used to determine whether a given http.request should
 // be traced. A Filter must return true if the request should be traced.
 type Filter func(*http.Request) bool

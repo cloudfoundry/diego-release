@@ -872,10 +872,14 @@ func (s *Server) processClientOrLeafAuthentication(c *client, opts *Options) (au
 			c.Debugf("Account JWT lookup error: %v", err)
 			return false
 		}
+<<<<<<< HEAD
 		acc.mu.RLock()
 		aissuer := acc.Issuer
 		acc.mu.RUnlock()
 		if !s.isTrustedIssuer(aissuer) {
+=======
+		if !s.isTrustedIssuer(acc.Issuer) {
+>>>>>>> d1f566753 (Update go.mod dependencies)
 			c.Debugf("Account JWT not signed by trusted operator")
 			return false
 		}

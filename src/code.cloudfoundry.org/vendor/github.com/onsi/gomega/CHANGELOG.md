@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 ## 1.36.2
 
 ### Maintenance
@@ -26,6 +31,8 @@
 ### Fixes
 - Export EnforceDefaultTimeoutsWhenUsingContexts and DisableDefaultTimeoutsWhenUsingContext [ca36da1]
 
+=======
+>>>>>>> 15f76c672 (go mod tidy && go mod vendor)
 ## 1.35.0
 
 ### Features
@@ -41,6 +48,11 @@
 
 - Bump all dependencies [a05a416]
 
+<<<<<<< HEAD
+=======
+>>>>>>> c45717251 (Update go.mod dependencies)
+=======
+>>>>>>> 15f76c672 (go mod tidy && go mod vendor)
 ## 1.34.2
 
 Require Go 1.22+
@@ -49,11 +61,21 @@ Require Go 1.22+
 - bump ginkgo as well [c59c6dc]
 - bump to go 1.22 - remove x/exp dependency [8158b99]
 
+<<<<<<< HEAD
+=======
+>>>>>>> 499451692 (Update go.mod dependencies)
+=======
+>>>>>>> c45717251 (Update go.mod dependencies)
 ## 1.34.1
 
 ### Maintenance
 - Use slices from exp/slices to keep golang 1.20 compat [5e71dcd]
 
+<<<<<<< HEAD
+=======
+>>>>>>> 0854e8485 (go mod tidy && go mod vendor)
+=======
+>>>>>>> 499451692 (Update go.mod dependencies)
 ## 1.34.0
 
 ### Features
@@ -71,6 +93,11 @@ Require Go 1.22+
 - Bump golang.org/x/net from 0.24.0 to 0.25.0 (#754) [4160c0f]
 - Bump github-pages from 230 to 231 in /docs (#748) [892c303]
 
+<<<<<<< HEAD
+=======
+>>>>>>> 4bbab6a12 (WIP: protobuf updates)
+=======
+>>>>>>> 0854e8485 (go mod tidy && go mod vendor)
 ## 1.33.1
 
 ### Fixes

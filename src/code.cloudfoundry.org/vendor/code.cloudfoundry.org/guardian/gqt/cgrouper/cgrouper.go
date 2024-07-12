@@ -8,6 +8,14 @@ import (
 	"strings"
 
 	gardencgroups "code.cloudfoundry.org/guardian/rundmc/cgroups"
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+	"github.com/opencontainers/runc/libcontainer/cgroups"
+>>>>>>> 2d8490891 (go mod tidy && go mod vendor)
+=======
+>>>>>>> 6b5bfaa10 (go mod tidy && go mod vendor)
 )
 
 func GetCGroupPath(cgroupsRootPath, subsystem, tag string, privileged, throttlingCPU bool) (string, error) {
@@ -26,7 +34,15 @@ func GetCGroupPath(cgroupsRootPath, subsystem, tag string, privileged, throttlin
 		parentCgroup = ""
 	}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 	if gardencgroups.IsCgroup2UnifiedMode() {
+=======
+	if cgroups.IsCgroup2UnifiedMode() {
+>>>>>>> 2d8490891 (go mod tidy && go mod vendor)
+=======
+	if gardencgroups.IsCgroup2UnifiedMode() {
+>>>>>>> 6b5bfaa10 (go mod tidy && go mod vendor)
 		return filepath.Join(cgroupsRootPath, gardencgroups.Unified, parentCgroup), nil
 	}
 

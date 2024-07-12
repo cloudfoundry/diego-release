@@ -622,8 +622,13 @@ func bufferPool(bufferPool mem.BufferPool) ServerOption {
 // workload (assuming a QPS of a few thousand requests/sec).
 const serverWorkerResetThreshold = 1 << 16
 
+<<<<<<< HEAD
 // serverWorker blocks on a *transport.ServerStream channel forever and waits
 // for data to be fed by serveStreams. This allows multiple requests to be
+=======
+// serverWorker blocks on a *transport.Stream channel forever and waits for
+// data to be fed by serveStreams. This allows multiple requests to be
+>>>>>>> c45717251 (Update go.mod dependencies)
 // processed by the same goroutine, removing the need for expensive stack
 // re-allocations (see the runtime.morestack problem [1]).
 //
@@ -1360,16 +1365,35 @@ func (s *Server) processUnaryRPC(ctx context.Context, stream *transport.ServerSt
 		}
 		return err
 	}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c6d5c71f1 (go mod tidy && go mod vendor)
 	freed := false
 	dataFree := func() {
 		if !freed {
 			d.Free()
 			freed = true
 		}
+<<<<<<< HEAD
+=======
+	defer d.Free()
+	if channelz.IsOn() {
+		t.IncrMsgRecv()
+>>>>>>> 58a961646 (Update go.mod dependencies)
+	}
+	defer dataFree()
+	df := func(v any) error {
+<<<<<<< HEAD
+		defer dataFree()
+=======
+>>>>>>> c45717251 (Update go.mod dependencies)
+=======
 	}
 	defer dataFree()
 	df := func(v any) error {
 		defer dataFree()
+>>>>>>> c6d5c71f1 (go mod tidy && go mod vendor)
 		if err := s.getCodec(stream.ContentSubtype()).Unmarshal(d, v); err != nil {
 			return status.Errorf(codes.Internal, "grpc: error unmarshalling request: %v", err)
 		}

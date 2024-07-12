@@ -4418,7 +4418,15 @@ func (mset *stream) processJetStreamMsg(subject, reply string, hdr, msg []byte, 
 			if err == ErrStoreMsgNotFound {
 				if seq == 0 {
 					fseq, err = 0, nil
+<<<<<<< HEAD
+<<<<<<< HEAD
 				} else if mset.isClustered() {
+=======
+				} else {
+>>>>>>> d1f566753 (Update go.mod dependencies)
+=======
+				} else if mset.isClustered() {
+>>>>>>> ae4bc5334 (Update go.mod dependencies)
 					// Do not bump clfs in case message was not found and could have been deleted.
 					var ss StreamState
 					store.FastState(&ss)
@@ -5333,11 +5341,16 @@ func (mset *stream) checkInterestState() {
 		return
 	}
 
+<<<<<<< HEAD
 	var ss StreamState
 	mset.store.FastState(&ss)
 
 	for _, o := range mset.getConsumers() {
 		o.checkStateForInterestStream(&ss)
+=======
+	for _, o := range mset.getConsumers() {
+		o.checkStateForInterestStream()
+>>>>>>> d1f566753 (Update go.mod dependencies)
 	}
 }
 

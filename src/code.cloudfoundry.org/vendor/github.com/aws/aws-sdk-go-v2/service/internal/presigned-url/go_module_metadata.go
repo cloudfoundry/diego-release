@@ -3,4 +3,12 @@
 package presignedurl
 
 // goModuleVersion is the tagged release for this module
+<<<<<<< HEAD
+<<<<<<< HEAD
 const goModuleVersion = "1.12.12"
+=======
+const goModuleVersion = "1.11.18"
+>>>>>>> 8ce727573 (Update go.mod dependencies)
+=======
+const goModuleVersion = "1.11.19"
+>>>>>>> b93b7e30f (Update go.mod dependencies)

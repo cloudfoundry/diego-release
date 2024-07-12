@@ -168,9 +168,19 @@ type EncryptionConfiguration struct {
 	// with Amazon S3-managed encryption keys which encrypts the images in the
 	// repository using an AES256 encryption algorithm.
 	//
+<<<<<<< HEAD
+<<<<<<< HEAD
 	// For more information, see [Amazon ECR encryption at rest] in the Amazon Elastic Container Registry User Guide.
 	//
 	// [Amazon ECR encryption at rest]: https://docs.aws.amazon.com/AmazonECR/latest/userguide/encryption-at-rest.html
+=======
+	// [Protecting data using server-side encryption with Amazon S3-managed encryption keys (SSE-S3)]: https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingServerSideEncryption.html
+>>>>>>> 58a961646 (Update go.mod dependencies)
+=======
+	// For more information, see [Amazon ECR encryption at rest] in the Amazon Elastic Container Registry User Guide.
+	//
+	// [Amazon ECR encryption at rest]: https://docs.aws.amazon.com/AmazonECR/latest/userguide/encryption-at-rest.html
+>>>>>>> 59f9170a4 (Update go.mod dependencies)
 	//
 	// This member is required.
 	EncryptionType EncryptionType

@@ -1097,6 +1097,12 @@ func (a *csAttempt) sendMsg(m any, hdr []byte, payld mem.BufferSlice, dataLength
 		for _, sh := range a.statsHandlers {
 			sh.HandleRPC(a.ctx, outPayload(true, m, dataLength, payloadLength, time.Now()))
 		}
+<<<<<<< HEAD
+=======
+	}
+	if channelz.IsOn() {
+		a.t.IncrMsgSent()
+>>>>>>> c45717251 (Update go.mod dependencies)
 	}
 	return nil
 }
@@ -1425,7 +1431,11 @@ func (as *addrConnStream) SendMsg(m any) (err error) {
 		return status.Errorf(codes.ResourceExhausted, "trying to send message larger than max (%d vs. %d)", payload.Len(), *as.callInfo.maxSendMessageSize)
 	}
 
+<<<<<<< HEAD
 	if err := as.s.Write(hdr, payload, &transport.WriteOptions{Last: !as.desc.ClientStreams}); err != nil {
+=======
+	if err := as.t.Write(as.s, hdr, payload, &transport.Options{Last: !as.desc.ClientStreams}); err != nil {
+>>>>>>> c45717251 (Update go.mod dependencies)
 		if !as.desc.ClientStreams {
 			// For non-client-streaming RPCs, we return nil instead of EOF on error
 			// because the generated code requires it.  finish is not called; RecvMsg()

@@ -2308,7 +2308,11 @@ func (js *jetStream) monitorStream(mset *stream, sa *streamAssignment, sendSnaps
 	// from underneath the one that is running since it will be the same raft node.
 	defer func() {
 		// We might be closing during shutdown, don't pre-emptively stop here since we'll still want to install snapshots.
+<<<<<<< HEAD
 		if mset != nil && !mset.closed.Load() {
+=======
+		if !mset.closed.Load() {
+>>>>>>> d1f566753 (Update go.mod dependencies)
 			n.Stop()
 		}
 	}()
@@ -2528,6 +2532,15 @@ func (js *jetStream) monitorStream(mset *stream, sa *streamAssignment, sendSnaps
 			// Check about snapshotting
 			// If we have at least min entries to compact, go ahead and try to snapshot/compact.
 			if ne >= compactNumMin || nb > compactSizeMin || mset.getCLFS() > pclfs {
+<<<<<<< HEAD
+=======
+				// We want to make sure we do not short circuit if transistioning from no clfs.
+				if pclfs == 0 {
+					// This is always false by default.
+					lastState.firstNeedsUpdate = true
+					lastSnapTime = time.Time{}
+				}
+>>>>>>> d1f566753 (Update go.mod dependencies)
 				doSnapshot()
 			}
 

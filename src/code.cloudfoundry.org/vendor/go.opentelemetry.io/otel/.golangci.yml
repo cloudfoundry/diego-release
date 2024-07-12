@@ -67,7 +67,10 @@ issues:
     - path: _test\.go
       linters:
         - gosec
+<<<<<<< HEAD
         - perfsprint
+=======
+>>>>>>> 1eda7d3ea (Update go.mod dependencies)
     # Ignoring gosec G404: Use of weak random number generator (math/rand instead of crypto/rand)
     # as we commonly use it in tests and examples.
     - text: "G404:"

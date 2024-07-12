@@ -37,8 +37,18 @@ If you are interested in contributing to NATS, read about our...
 [Fossa-Image]: https://app.fossa.io/api/projects/git%2Bgithub.com%2Fnats-io%2Fnats-server.svg?type=shield
 [Build-Status-Url]: https://travis-ci.com/github/nats-io/nats-server
 [Build-Status-Image]: https://travis-ci.com/nats-io/nats-server.svg?branch=main
+<<<<<<< HEAD
+<<<<<<< HEAD
 [Release-Url]: https://github.com/nats-io/nats-server/releases/tag/v2.10.23
 [Release-image]: https://img.shields.io/badge/release-v2.10.23-1eb0fc.svg
+=======
+[Release-Url]: https://github.com/nats-io/nats-server/releases/tag/v2.10.19
+[Release-image]: https://img.shields.io/badge/release-v2.10.19-1eb0fc.svg
+>>>>>>> d1f566753 (Update go.mod dependencies)
+=======
+[Release-Url]: https://github.com/nats-io/nats-server/releases/tag/v2.10.20
+[Release-image]: https://img.shields.io/badge/release-v2.10.20-1eb0fc.svg
+>>>>>>> ae4bc5334 (Update go.mod dependencies)
 [Coverage-Url]: https://coveralls.io/r/nats-io/nats-server?branch=main
 [Coverage-image]: https://coveralls.io/repos/github/nats-io/nats-server/badge.svg?branch=main
 [ReportCard-Url]: https://goreportcard.com/report/nats-io/nats-server

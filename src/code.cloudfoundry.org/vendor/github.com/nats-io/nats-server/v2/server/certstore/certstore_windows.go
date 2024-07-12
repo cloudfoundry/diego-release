@@ -128,7 +128,10 @@ var (
 	winNCrypt  = windows.NewLazySystemDLL("ncrypt.dll")
 
 	winCertFindCertificateInStore        = winCrypt32.NewProc("CertFindCertificateInStore")
+<<<<<<< HEAD
 	winCertVerifyTimeValidity            = winCrypt32.NewProc("CertVerifyTimeValidity")
+=======
+>>>>>>> ae4bc5334 (Update go.mod dependencies)
 	winCryptAcquireCertificatePrivateKey = winCrypt32.NewProc("CryptAcquireCertificatePrivateKey")
 	winNCryptExportKey                   = winNCrypt.NewProc("NCryptExportKey")
 	winNCryptOpenStorageProvider         = winNCrypt.NewProc("NCryptOpenStorageProvider")

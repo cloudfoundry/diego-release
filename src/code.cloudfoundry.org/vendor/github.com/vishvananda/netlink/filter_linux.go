@@ -926,11 +926,17 @@ func parseActions(tables []syscall.NetlinkRouteAttr) ([]Action, error) {
 				actionnStatistic = (*ActionStatistic)(s)
 			}
 		}
+<<<<<<< HEAD
 		if action != nil {
 			action.Attrs().Statistics = actionnStatistic
 			action.Attrs().Timestamp = actionTimestamp
 			actions = append(actions, action)
 		}
+=======
+		action.Attrs().Statistics = actionnStatistic
+		action.Attrs().Timestamp = actionTimestamp
+		actions = append(actions, action)
+>>>>>>> bf1357502 (Update go.mod dependencies)
 	}
 	return actions, nil
 }

@@ -19,4 +19,20 @@
 package grpc
 
 // Version is the current grpc version.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 const Version = "1.70.0"
+=======
+const Version = "1.66.0"
+>>>>>>> c45717251 (Update go.mod dependencies)
+=======
+const Version = "1.66.2"
+>>>>>>> 58a961646 (Update go.mod dependencies)
+=======
+const Version = "1.69.4"
+>>>>>>> 6b5bfaa10 (go mod tidy && go mod vendor)
+=======
+const Version = "1.70.0"
+>>>>>>> c6d5c71f1 (go mod tidy && go mod vendor)

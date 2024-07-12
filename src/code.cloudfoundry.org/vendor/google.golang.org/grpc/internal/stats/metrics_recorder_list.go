@@ -54,8 +54,11 @@ func verifyLabels(desc *estats.MetricDescriptor, labelsRecv ...string) {
 	}
 }
 
+<<<<<<< HEAD
 // RecordInt64Count records the measurement alongside labels on the int
 // count associated with the provided handle.
+=======
+>>>>>>> c45717251 (Update go.mod dependencies)
 func (l *MetricsRecorderList) RecordInt64Count(handle *estats.Int64CountHandle, incr int64, labels ...string) {
 	verifyLabels(handle.Descriptor(), labels...)
 
@@ -64,8 +67,11 @@ func (l *MetricsRecorderList) RecordInt64Count(handle *estats.Int64CountHandle, 
 	}
 }
 
+<<<<<<< HEAD
 // RecordFloat64Count records the measurement alongside labels on the float
 // count associated with the provided handle.
+=======
+>>>>>>> c45717251 (Update go.mod dependencies)
 func (l *MetricsRecorderList) RecordFloat64Count(handle *estats.Float64CountHandle, incr float64, labels ...string) {
 	verifyLabels(handle.Descriptor(), labels...)
 
@@ -74,8 +80,11 @@ func (l *MetricsRecorderList) RecordFloat64Count(handle *estats.Float64CountHand
 	}
 }
 
+<<<<<<< HEAD
 // RecordInt64Histo records the measurement alongside labels on the int
 // histo associated with the provided handle.
+=======
+>>>>>>> c45717251 (Update go.mod dependencies)
 func (l *MetricsRecorderList) RecordInt64Histo(handle *estats.Int64HistoHandle, incr int64, labels ...string) {
 	verifyLabels(handle.Descriptor(), labels...)
 
@@ -84,8 +93,11 @@ func (l *MetricsRecorderList) RecordInt64Histo(handle *estats.Int64HistoHandle, 
 	}
 }
 
+<<<<<<< HEAD
 // RecordFloat64Histo records the measurement alongside labels on the float
 // histo associated with the provided handle.
+=======
+>>>>>>> c45717251 (Update go.mod dependencies)
 func (l *MetricsRecorderList) RecordFloat64Histo(handle *estats.Float64HistoHandle, incr float64, labels ...string) {
 	verifyLabels(handle.Descriptor(), labels...)
 
@@ -94,8 +106,11 @@ func (l *MetricsRecorderList) RecordFloat64Histo(handle *estats.Float64HistoHand
 	}
 }
 
+<<<<<<< HEAD
 // RecordInt64Gauge records the measurement alongside labels on the int
 // gauge associated with the provided handle.
+=======
+>>>>>>> c45717251 (Update go.mod dependencies)
 func (l *MetricsRecorderList) RecordInt64Gauge(handle *estats.Int64GaugeHandle, incr int64, labels ...string) {
 	verifyLabels(handle.Descriptor(), labels...)
 

@@ -52,10 +52,15 @@ func (s *XDPSocket) deserialize(b []byte) error {
 	return nil
 }
 
+<<<<<<< HEAD
 // SocketXDPGetInfo returns the XDP socket identified by its inode number and/or
 // socket cookie. Specify the cookie as SOCK_ANY_COOKIE if
 //
 // If the returned error is [ErrDumpInterrupted], the caller should retry.
+=======
+// XDPSocketGet returns the XDP socket identified by its inode number and/or
+// socket cookie. Specify the cookie as SOCK_ANY_COOKIE if
+>>>>>>> bf1357502 (Update go.mod dependencies)
 func SocketXDPGetInfo(ino uint32, cookie uint64) (*XDPDiagInfoResp, error) {
 	// We have a problem here: dumping AF_XDP sockets currently does not support
 	// filtering. We thus need to dump all XSKs and then only filter afterwards
@@ -87,9 +92,12 @@ func SocketXDPGetInfo(ino uint32, cookie uint64) (*XDPDiagInfoResp, error) {
 }
 
 // SocketDiagXDP requests XDP_DIAG_INFO for XDP family sockets.
+<<<<<<< HEAD
 //
 // If the returned error is [ErrDumpInterrupted], results may be inconsistent
 // or incomplete.
+=======
+>>>>>>> bf1357502 (Update go.mod dependencies)
 func SocketDiagXDP() ([]*XDPDiagInfoResp, error) {
 	var result []*XDPDiagInfoResp
 	err := socketDiagXDPExecutor(func(m syscall.NetlinkMessage) error {
@@ -110,10 +118,17 @@ func SocketDiagXDP() ([]*XDPDiagInfoResp, error) {
 		result = append(result, res)
 		return nil
 	})
+<<<<<<< HEAD
 	if err != nil && !errors.Is(err, ErrDumpInterrupted) {
 		return nil, err
 	}
 	return result, err
+=======
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+>>>>>>> bf1357502 (Update go.mod dependencies)
 }
 
 // socketDiagXDPExecutor requests XDP_DIAG_INFO for XDP family sockets.
@@ -133,7 +148,10 @@ func socketDiagXDPExecutor(receiver func(syscall.NetlinkMessage) error) error {
 		return err
 	}
 
+<<<<<<< HEAD
 	dumpIntr := false
+=======
+>>>>>>> bf1357502 (Update go.mod dependencies)
 loop:
 	for {
 		msgs, from, err := s.Receive()
@@ -148,9 +166,12 @@ loop:
 		}
 
 		for _, m := range msgs {
+<<<<<<< HEAD
 			if m.Header.Flags&unix.NLM_F_DUMP_INTR != 0 {
 				dumpIntr = true
 			}
+=======
+>>>>>>> bf1357502 (Update go.mod dependencies)
 			switch m.Header.Type {
 			case unix.NLMSG_DONE:
 				break loop
@@ -163,9 +184,12 @@ loop:
 			}
 		}
 	}
+<<<<<<< HEAD
 	if dumpIntr {
 		return ErrDumpInterrupted
 	}
+=======
+>>>>>>> bf1357502 (Update go.mod dependencies)
 	return nil
 }
 

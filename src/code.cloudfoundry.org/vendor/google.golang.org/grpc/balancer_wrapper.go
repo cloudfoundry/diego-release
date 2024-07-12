@@ -43,6 +43,11 @@ var (
 		return func() {}
 	}
 )
+<<<<<<< HEAD
+
+var setConnectedAddress = internal.SetConnectedAddress.(func(*balancer.SubConnState, resolver.Address))
+=======
+>>>>>>> c6d5c71f1 (go mod tidy && go mod vendor)
 
 // ccBalancerWrapper sits between the ClientConn and the Balancer.
 //
@@ -315,6 +320,7 @@ func (acbw *acBalancerWrapper) updateState(s connectivity.State, curAddr resolve
 		if s == connectivity.Ready {
 			setConnectedAddress(&scs, curAddr)
 		}
+<<<<<<< HEAD
 		// Invalidate the health listener by updating the healthData.
 		acbw.healthMu.Lock()
 		// A race may occur if a health listener is registered soon after the
@@ -334,6 +340,19 @@ func (acbw *acBalancerWrapper) updateState(s connectivity.State, curAddr resolve
 		acbw.healthMu.Unlock()
 
 		acbw.stateListener(scs)
+=======
+		acbw.stateListener(scs)
+		acbw.ac.mu.Lock()
+		defer acbw.ac.mu.Unlock()
+		if s == connectivity.Ready {
+			// When changing states to READY, reset stateReadyChan.  Wait until
+			// after we notify the LB policy's listener(s) in order to prevent
+			// ac.getTransport() from unblocking before the LB policy starts
+			// tracking the subchannel as READY.
+			close(acbw.ac.stateReadyChan)
+			acbw.ac.stateReadyChan = make(chan struct{})
+		}
+>>>>>>> c45717251 (Update go.mod dependencies)
 	})
 }
 

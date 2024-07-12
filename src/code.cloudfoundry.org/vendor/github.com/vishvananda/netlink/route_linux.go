@@ -1212,22 +1212,32 @@ func (h *Handle) RouteListFiltered(family int, filter *Route, filterMask uint64)
 
 // RouteListFilteredIter passes each route that matches the filter to the given iterator func.  Iteration continues
 // until all routes are loaded or the func returns false.
+<<<<<<< HEAD
 //
 // If the returned error is [ErrDumpInterrupted], results may be inconsistent
 // or incomplete.
+=======
+>>>>>>> bf1357502 (Update go.mod dependencies)
 func RouteListFilteredIter(family int, filter *Route, filterMask uint64, f func(Route) (cont bool)) error {
 	return pkgHandle.RouteListFilteredIter(family, filter, filterMask, f)
 }
 
+<<<<<<< HEAD
 // If the returned error is [ErrDumpInterrupted], results may be inconsistent
 // or incomplete.
+=======
+>>>>>>> bf1357502 (Update go.mod dependencies)
 func (h *Handle) RouteListFilteredIter(family int, filter *Route, filterMask uint64, f func(Route) (cont bool)) error {
 	req := h.newNetlinkRequest(unix.RTM_GETROUTE, unix.NLM_F_DUMP)
 	rtmsg := &nl.RtMsg{}
 	rtmsg.Family = uint8(family)
 
 	var parseErr error
+<<<<<<< HEAD
 	executeErr := h.routeHandleIter(filter, req, rtmsg, func(m []byte) bool {
+=======
+	err := h.routeHandleIter(filter, req, rtmsg, func(m []byte) bool {
+>>>>>>> bf1357502 (Update go.mod dependencies)
 		msg := nl.DeserializeRtMsg(m)
 		if family != FAMILY_ALL && msg.Family != uint8(family) {
 			// Ignore routes not matching requested family
@@ -1285,13 +1295,22 @@ func (h *Handle) RouteListFilteredIter(family int, filter *Route, filterMask uin
 		}
 		return f(route)
 	})
+<<<<<<< HEAD
 	if executeErr != nil && !errors.Is(executeErr, ErrDumpInterrupted) {
 		return executeErr
+=======
+	if err != nil {
+		return err
+>>>>>>> bf1357502 (Update go.mod dependencies)
 	}
 	if parseErr != nil {
 		return parseErr
 	}
+<<<<<<< HEAD
 	return executeErr
+=======
+	return nil
+>>>>>>> bf1357502 (Update go.mod dependencies)
 }
 
 // deserializeRoute decodes a binary netlink message into a Route struct

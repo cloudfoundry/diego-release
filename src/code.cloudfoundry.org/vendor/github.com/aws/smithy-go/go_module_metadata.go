@@ -3,4 +3,8 @@
 package smithy
 
 // goModuleVersion is the tagged release for this module
+<<<<<<< HEAD
 const goModuleVersion = "1.22.2"
+=======
+const goModuleVersion = "1.20.4"
+>>>>>>> 4feb34b65 (Update go.mod dependencies)

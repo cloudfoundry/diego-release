@@ -15,12 +15,23 @@
       "enabled": true
     },
     {
+<<<<<<< HEAD
       "matchPackageNames": ["google.golang.org/genproto/googleapis/**"],
       "groupName": "googleapis"
     },
     {
       "matchPackageNames": ["golang.org/x/**"],
       "groupName": "golang.org/x"
+=======
+      "matchFileNames": ["internal/tools/**"],
+      "matchManagers": ["gomod"],
+      "matchDepTypes": ["indirect"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": ["google.golang.org/genproto/googleapis/**"],
+      "groupName": "googleapis"
+>>>>>>> 1eda7d3ea (Update go.mod dependencies)
     }
   ]
 }

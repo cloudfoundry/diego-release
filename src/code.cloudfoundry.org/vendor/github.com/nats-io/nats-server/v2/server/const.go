@@ -55,7 +55,15 @@ func init() {
 
 const (
 	// VERSION is the current version for the server.
+<<<<<<< HEAD
+<<<<<<< HEAD
 	VERSION = "2.10.25"
+=======
+	VERSION = "2.10.19"
+>>>>>>> d1f566753 (Update go.mod dependencies)
+=======
+	VERSION = "2.10.20"
+>>>>>>> ae4bc5334 (Update go.mod dependencies)
 
 	// PROTO is the currently supported protocol.
 	// 0 was the original

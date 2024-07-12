@@ -3,4 +3,12 @@
 package imds
 
 // goModuleVersion is the tagged release for this module
+<<<<<<< HEAD
+<<<<<<< HEAD
 const goModuleVersion = "1.16.27"
+=======
+const goModuleVersion = "1.16.12"
+>>>>>>> 8ce727573 (Update go.mod dependencies)
+=======
+const goModuleVersion = "1.16.13"
+>>>>>>> b93b7e30f (Update go.mod dependencies)

@@ -20,10 +20,20 @@ package stats
 
 import (
 	"maps"
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/internal"
 	"google.golang.org/grpc/stats"
+=======
+	"testing"
+=======
+>>>>>>> 58a961646 (Update go.mod dependencies)
+
+	"google.golang.org/grpc/grpclog"
+	"google.golang.org/grpc/internal"
+>>>>>>> c45717251 (Update go.mod dependencies)
 )
 
 func init() {
@@ -35,7 +45,11 @@ var logger = grpclog.Component("metrics-registry")
 // DefaultMetrics are the default metrics registered through global metrics
 // registry. This is written to at initialization time only, and is read only
 // after initialization.
+<<<<<<< HEAD
 var DefaultMetrics = stats.NewMetricSet()
+=======
+var DefaultMetrics = NewMetrics()
+>>>>>>> c45717251 (Update go.mod dependencies)
 
 // MetricDescriptor is the data for a registered metric.
 type MetricDescriptor struct {
@@ -43,7 +57,11 @@ type MetricDescriptor struct {
 	// (including any per call metrics). See
 	// https://github.com/grpc/proposal/blob/master/A79-non-per-call-metrics-architecture.md#metric-instrument-naming-conventions
 	// for metric naming conventions.
+<<<<<<< HEAD
 	Name string
+=======
+	Name Metric
+>>>>>>> c45717251 (Update go.mod dependencies)
 	// The description of this metric.
 	Description string
 	// The unit (e.g. entries, seconds) of this metric.
@@ -155,16 +173,25 @@ func (h *Int64GaugeHandle) Record(recorder MetricsRecorder, incr int64, labels .
 }
 
 // registeredMetrics are the registered metric descriptor names.
+<<<<<<< HEAD
 var registeredMetrics = make(map[string]bool)
+=======
+var registeredMetrics = make(map[Metric]bool)
+>>>>>>> c45717251 (Update go.mod dependencies)
 
 // metricsRegistry contains all of the registered metrics.
 //
 // This is written to only at init time, and read only after that.
+<<<<<<< HEAD
 var metricsRegistry = make(map[string]*MetricDescriptor)
+=======
+var metricsRegistry = make(map[Metric]*MetricDescriptor)
+>>>>>>> c45717251 (Update go.mod dependencies)
 
 // DescriptorForMetric returns the MetricDescriptor from the global registry.
 //
 // Returns nil if MetricDescriptor not present.
+<<<<<<< HEAD
 func DescriptorForMetric(metricName string) *MetricDescriptor {
 	return metricsRegistry[metricName]
 }
@@ -176,6 +203,19 @@ func registerMetric(metricName string, def bool) {
 	registeredMetrics[metricName] = true
 	if def {
 		DefaultMetrics = DefaultMetrics.Add(metricName)
+=======
+func DescriptorForMetric(metric Metric) *MetricDescriptor {
+	return metricsRegistry[metric]
+}
+
+func registerMetric(name Metric, def bool) {
+	if registeredMetrics[name] {
+		logger.Fatalf("metric %v already registered", name)
+	}
+	registeredMetrics[name] = true
+	if def {
+		DefaultMetrics = DefaultMetrics.Add(name)
+>>>>>>> c45717251 (Update go.mod dependencies)
 	}
 }
 
@@ -250,13 +290,26 @@ func RegisterInt64Gauge(descriptor MetricDescriptor) *Int64GaugeHandle {
 }
 
 // snapshotMetricsRegistryForTesting snapshots the global data of the metrics
+<<<<<<< HEAD
+<<<<<<< HEAD
 // registry. Returns a cleanup function that sets the metrics registry to its
 // original state.
 func snapshotMetricsRegistryForTesting() func() {
+=======
+// registry. Registers a cleanup function on the provided testing.T that sets
+// the metrics registry to its original state. Only called in testing functions.
+func snapshotMetricsRegistryForTesting(t *testing.T) {
+>>>>>>> c45717251 (Update go.mod dependencies)
+=======
+// registry. Returns a cleanup function that sets the metrics registry to its
+// original state.
+func snapshotMetricsRegistryForTesting() func() {
+>>>>>>> 58a961646 (Update go.mod dependencies)
 	oldDefaultMetrics := DefaultMetrics
 	oldRegisteredMetrics := registeredMetrics
 	oldMetricsRegistry := metricsRegistry
 
+<<<<<<< HEAD
 	registeredMetrics = make(map[string]bool)
 	metricsRegistry = make(map[string]*MetricDescriptor)
 	maps.Copy(registeredMetrics, registeredMetrics)
@@ -267,4 +320,20 @@ func snapshotMetricsRegistryForTesting() func() {
 		registeredMetrics = oldRegisteredMetrics
 		metricsRegistry = oldMetricsRegistry
 	}
+=======
+	registeredMetrics = make(map[Metric]bool)
+	metricsRegistry = make(map[Metric]*MetricDescriptor)
+	maps.Copy(registeredMetrics, registeredMetrics)
+	maps.Copy(metricsRegistry, metricsRegistry)
+
+	return func() {
+		DefaultMetrics = oldDefaultMetrics
+		registeredMetrics = oldRegisteredMetrics
+		metricsRegistry = oldMetricsRegistry
+<<<<<<< HEAD
+	})
+>>>>>>> c45717251 (Update go.mod dependencies)
+=======
+	}
+>>>>>>> 58a961646 (Update go.mod dependencies)
 }

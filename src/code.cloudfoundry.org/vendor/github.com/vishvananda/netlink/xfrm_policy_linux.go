@@ -1,7 +1,10 @@
 package netlink
 
 import (
+<<<<<<< HEAD
 	"errors"
+=======
+>>>>>>> bf1357502 (Update go.mod dependencies)
 	"fmt"
 	"net"
 

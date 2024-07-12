@@ -318,6 +318,7 @@ var defaultPartitions = endpoints.Partitions{
 				},
 			},
 			endpoints.EndpointKey{
+<<<<<<< HEAD
 				Region:  "ap-southeast-4",
 				Variant: endpoints.DualStackVariant,
 			}: {
@@ -327,6 +328,8 @@ var defaultPartitions = endpoints.Partitions{
 				},
 			},
 			endpoints.EndpointKey{
+=======
+>>>>>>> bf1357502 (Update go.mod dependencies)
 				Region: "ap-southeast-5",
 			}: endpoints.Endpoint{
 				Hostname: "api.ecr.ap-southeast-5.amazonaws.com",
@@ -335,6 +338,7 @@ var defaultPartitions = endpoints.Partitions{
 				},
 			},
 			endpoints.EndpointKey{
+<<<<<<< HEAD
 				Region:  "ap-southeast-5",
 				Variant: endpoints.DualStackVariant,
 			}: {
@@ -361,6 +365,8 @@ var defaultPartitions = endpoints.Partitions{
 				},
 			},
 			endpoints.EndpointKey{
+=======
+>>>>>>> bf1357502 (Update go.mod dependencies)
 				Region: "ca-central-1",
 			}: endpoints.Endpoint{
 				Hostname: "api.ecr.ca-central-1.amazonaws.com",

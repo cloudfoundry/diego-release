@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 # v1.16.27 (2025-01-31)
 
 * **Dependency Update**: Updated to the latest SDK module versions
@@ -56,10 +58,17 @@
 
 * **Dependency Update**: Updated to the latest SDK module versions
 
+=======
+>>>>>>> b93b7e30f (Update go.mod dependencies)
 # v1.16.13 (2024-09-03)
 
 * **Dependency Update**: Updated to the latest SDK module versions
 
+<<<<<<< HEAD
+=======
+>>>>>>> 8ce727573 (Update go.mod dependencies)
+=======
+>>>>>>> b93b7e30f (Update go.mod dependencies)
 # v1.16.12 (2024-08-15)
 
 * **Dependency Update**: Bump minimum Go version to 1.21.

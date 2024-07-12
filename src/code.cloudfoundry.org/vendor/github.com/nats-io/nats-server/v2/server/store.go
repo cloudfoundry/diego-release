@@ -781,7 +781,10 @@ func copyString(s string) string {
 	copy(b, s)
 	return bytesToString(b)
 }
+<<<<<<< HEAD
 
 func isPermissionError(err error) bool {
 	return err != nil && os.IsPermission(err)
 }
+=======
+>>>>>>> d1f566753 (Update go.mod dependencies)

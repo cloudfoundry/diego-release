@@ -1,6 +1,15 @@
 package goci
 
 import (
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	"fmt"
+
+	"github.com/opencontainers/runc/libcontainer/cgroups"
+>>>>>>> 2d8490891 (go mod tidy && go mod vendor)
+=======
+>>>>>>> 6b5bfaa10 (go mod tidy && go mod vendor)
 	specs "github.com/opencontainers/runtime-spec/specs-go"
 )
 
@@ -115,7 +124,35 @@ func (b Bndl) WithBlockIO(blockIO specs.LinuxBlockIO) Bndl {
 }
 
 func (b Bndl) WithCPUShares(shares specs.LinuxCPU) Bndl {
+<<<<<<< HEAD
+<<<<<<< HEAD
 	b = b.setCPUShares(shares)
+=======
+	resources := b.Resources()
+	if resources == nil {
+		resources = &specs.LinuxResources{}
+	}
+
+	if cgroups.IsCgroup2UnifiedMode() {
+		if resources.Unified == nil {
+			resources.Unified = make(map[string]string)
+		}
+		if shares.Quota != nil && shares.Period != nil {
+			resources.Unified["cpu.max"] = fmt.Sprintf("%d %d", *shares.Quota, *shares.Period)
+		}
+		if shares.Shares != nil && *shares.Shares > 0 {
+			resources.Unified["cpu.weight"] = fmt.Sprintf("%d", cgroups.ConvertCPUSharesToCgroupV2Value(*shares.Shares))
+		}
+	} else {
+		resources.CPU = &shares
+	}
+
+	b.CloneLinux().Spec.Linux.Resources = resources
+
+>>>>>>> 2d8490891 (go mod tidy && go mod vendor)
+=======
+	b = b.setCPUShares(shares)
+>>>>>>> 6b5bfaa10 (go mod tidy && go mod vendor)
 	return b
 }
 
@@ -132,7 +169,35 @@ func (b Bndl) WithWindowsCPUShares(shares specs.WindowsCPUResources) Bndl {
 }
 
 func (b Bndl) WithMemoryLimit(limit specs.LinuxMemory) Bndl {
+<<<<<<< HEAD
+<<<<<<< HEAD
 	b = b.setMemoryLimit(limit)
+=======
+	resources := b.Resources()
+	if resources == nil {
+		resources = &specs.LinuxResources{}
+	}
+
+	if cgroups.IsCgroup2UnifiedMode() {
+		if resources.Unified == nil {
+			resources.Unified = make(map[string]string)
+		}
+		if limit.Limit != nil && *limit.Limit > 0 {
+			resources.Unified["memory.max"] = fmt.Sprintf("%d", *limit.Limit)
+		}
+		if limit.Swap != nil && *limit.Swap > 0 {
+			resources.Unified["memory.swap.max"] = fmt.Sprintf("%d", *limit.Swap)
+		}
+	} else {
+		resources.Memory = &limit
+	}
+
+	b.CloneLinux().Spec.Linux.Resources = resources
+
+>>>>>>> 2d8490891 (go mod tidy && go mod vendor)
+=======
+	b = b.setMemoryLimit(limit)
+>>>>>>> 6b5bfaa10 (go mod tidy && go mod vendor)
 	return b
 }
 

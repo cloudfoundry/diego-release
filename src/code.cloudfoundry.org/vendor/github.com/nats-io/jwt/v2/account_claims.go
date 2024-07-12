@@ -255,7 +255,15 @@ type Account struct {
 	Mappings           Mapping               `json:"mappings,omitempty"`
 	Authorization      ExternalAuthorization `json:"authorization,omitempty"`
 	Trace              *MsgTrace             `json:"trace,omitempty"`
+<<<<<<< HEAD
+<<<<<<< HEAD
 	ClusterTraffic     ClusterTraffic        `json:"cluster_traffic,omitempty"`
+=======
+	ClusterTraffic     string                `json:"cluster_traffic,omitempty"`
+>>>>>>> 1eda7d3ea (Update go.mod dependencies)
+=======
+	ClusterTraffic     ClusterTraffic        `json:"cluster_traffic,omitempty"`
+>>>>>>> 59f9170a4 (Update go.mod dependencies)
 	Info
 	GenericFields
 }

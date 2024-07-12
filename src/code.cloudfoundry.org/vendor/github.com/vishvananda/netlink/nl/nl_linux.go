@@ -522,18 +522,28 @@ func (req *NetlinkRequest) Execute(sockType int, resType uint16) ([][]byte, erro
 		res = append(res, msg)
 		return true
 	})
+<<<<<<< HEAD
 	if err != nil && !errors.Is(err, ErrDumpInterrupted) {
 		return nil, err
 	}
 	return res, err
+=======
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+>>>>>>> bf1357502 (Update go.mod dependencies)
 }
 
 // ExecuteIter executes the request against the given sockType.
 // Calls the provided callback func once for each netlink message.
 // If the callback returns false, it is not called again, but
 // the remaining messages are consumed/discarded.
+<<<<<<< HEAD
 // If the returned error is [ErrDumpInterrupted], results may be inconsistent
 // or incomplete.
+=======
+>>>>>>> bf1357502 (Update go.mod dependencies)
 //
 // Thread safety: ExecuteIter holds a lock on the socket until
 // it finishes iteration so the callback must not call back into
@@ -585,8 +595,11 @@ func (req *NetlinkRequest) ExecuteIter(sockType int, resType uint16, f func(msg 
 		return err
 	}
 
+<<<<<<< HEAD
 	dumpIntr := false
 
+=======
+>>>>>>> bf1357502 (Update go.mod dependencies)
 done:
 	for {
 		msgs, from, err := s.Receive()
@@ -608,7 +621,11 @@ done:
 			}
 
 			if m.Header.Flags&unix.NLM_F_DUMP_INTR != 0 {
+<<<<<<< HEAD
 				dumpIntr = true
+=======
+				return syscall.Errno(unix.EINTR)
+>>>>>>> bf1357502 (Update go.mod dependencies)
 			}
 
 			if m.Header.Type == unix.NLMSG_DONE || m.Header.Type == unix.NLMSG_ERROR {
@@ -662,9 +679,12 @@ done:
 			}
 		}
 	}
+<<<<<<< HEAD
 	if dumpIntr {
 		return ErrDumpInterrupted
 	}
+=======
+>>>>>>> bf1357502 (Update go.mod dependencies)
 	return nil
 }
 
@@ -687,11 +707,17 @@ func NewNetlinkRequest(proto, flags int) *NetlinkRequest {
 }
 
 type NetlinkSocket struct {
+<<<<<<< HEAD
 	fd             int32
 	file           *os.File
 	lsa            unix.SockaddrNetlink
 	sendTimeout    int64 // Access using atomic.Load/StoreInt64
 	receiveTimeout int64 // Access using atomic.Load/StoreInt64
+=======
+	fd   int32
+	file *os.File
+	lsa  unix.SockaddrNetlink
+>>>>>>> f9a0b31c2 (Update go.mod dependencies)
 	sync.Mutex
 }
 
@@ -833,6 +859,7 @@ func (s *NetlinkSocket) Close() {
 
 func (s *NetlinkSocket) GetFd() int {
 	return int(s.fd)
+<<<<<<< HEAD
 }
 
 func (s *NetlinkSocket) GetTimeouts() (send, receive time.Duration) {
@@ -873,10 +900,36 @@ func (s *NetlinkSocket) Send(request *NetlinkRequest) error {
 		return err
 	}
 	return nil
+=======
+}
+
+func (s *NetlinkSocket) Send(request *NetlinkRequest) error {
+	return unix.Sendto(int(s.fd), request.Serialize(), 0, &s.lsa)
+>>>>>>> f9a0b31c2 (Update go.mod dependencies)
 }
 
 func (s *NetlinkSocket) Receive() ([]syscall.NetlinkMessage, *unix.SockaddrNetlink, error) {
 	rawConn, err := s.file.SyscallConn()
+<<<<<<< HEAD
+=======
+	if err != nil {
+		return nil, nil, err
+	}
+	var (
+		fromAddr *unix.SockaddrNetlink
+		rb       [RECEIVE_BUFFER_SIZE]byte
+		nr       int
+		from     unix.Sockaddr
+		innerErr error
+	)
+	err = rawConn.Read(func(fd uintptr) (done bool) {
+		nr, from, innerErr = unix.Recvfrom(int(fd), rb[:], 0)
+		return innerErr != unix.EWOULDBLOCK
+	})
+	if innerErr != nil {
+		err = innerErr
+	}
+>>>>>>> f9a0b31c2 (Update go.mod dependencies)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -937,6 +990,15 @@ func (s *NetlinkSocket) SetSendTimeout(timeout *unix.Timeval) error {
 func (s *NetlinkSocket) SetReceiveTimeout(timeout *unix.Timeval) error {
 	atomic.StoreInt64(&s.receiveTimeout, timeout.Nano())
 	return nil
+}
+
+// SetReceiveBufferSize allows to set a receive buffer size on the socket
+func (s *NetlinkSocket) SetReceiveBufferSize(size int, force bool) error {
+	opt := unix.SO_RCVBUF
+	if force {
+		opt = unix.SO_RCVBUFFORCE
+	}
+	return unix.SetsockoptInt(int(s.fd), unix.SOL_SOCKET, opt, size)
 }
 
 // SetReceiveBufferSize allows to set a receive buffer size on the socket

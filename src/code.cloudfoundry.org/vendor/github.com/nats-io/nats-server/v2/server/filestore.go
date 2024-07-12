@@ -4337,12 +4337,15 @@ func (mb *msgBlock) shouldCompactSync() bool {
 	return mb.bytes*2 < mb.rbytes && !mb.noCompact
 }
 
+<<<<<<< HEAD
 // This will compact and rewrite this block. This version will not process any tombstone cleanup.
 // Write lock needs to be held.
 func (mb *msgBlock) compact() {
 	mb.compactWithFloor(0)
 }
 
+=======
+>>>>>>> d1f566753 (Update go.mod dependencies)
 // This will compact and rewrite this block. This should only be called when we know we want to rewrite this block.
 // This should not be called on the lmb since we will prune tail deleted messages which could cause issues with
 // writing new messages. We will silently bail on any issues with the underlying block and let someone else detect.
@@ -10116,6 +10119,7 @@ func (alg StoreCompression) Decompress(buf []byte) ([]byte, error) {
 // sets O_SYNC on the open file if SyncAlways is set. The dios semaphore is
 // handled automatically by this function, so don't wrap calls to it in dios.
 func (fs *fileStore) writeFileWithOptionalSync(name string, data []byte, perm fs.FileMode) error {
+<<<<<<< HEAD
 	if fs.fcfg.SyncAlways {
 		return writeFileWithSync(name, data, perm)
 	}
@@ -10132,6 +10136,16 @@ func writeFileWithSync(name string, data []byte, perm fs.FileMode) error {
 		dios <- struct{}{}
 	}()
 	flags := os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_SYNC
+=======
+	<-dios
+	defer func() {
+		dios <- struct{}{}
+	}()
+	flags := os.O_WRONLY | os.O_CREATE | os.O_TRUNC
+	if fs.fcfg.SyncAlways {
+		flags |= os.O_SYNC
+	}
+>>>>>>> d1f566753 (Update go.mod dependencies)
 	f, err := os.OpenFile(name, flags, perm)
 	if err != nil {
 		return err

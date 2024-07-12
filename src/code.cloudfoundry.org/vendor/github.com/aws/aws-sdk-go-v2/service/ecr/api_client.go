@@ -33,6 +33,7 @@ import (
 const ServiceID = "ECR"
 const ServiceAPIVersion = "2015-09-21"
 
+<<<<<<< HEAD
 type operationMetrics struct {
 	Duration                metrics.Float64Histogram
 	SerializeDuration       metrics.Float64Histogram
@@ -160,6 +161,8 @@ func operationTracer(p tracing.TracerProvider) tracing.Tracer {
 	return p.Tracer("github.com/aws/aws-sdk-go-v2/service/ecr")
 }
 
+=======
+>>>>>>> 58a961646 (Update go.mod dependencies)
 // Client provides the API client to make operations call for Amazon Elastic
 // Container Registry.
 type Client struct {

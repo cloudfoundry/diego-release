@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 # v1.29.4 (2025-01-31)
 
 * **Dependency Update**: Updated to the latest SDK module versions
@@ -103,6 +110,8 @@
 
 * **Dependency Update**: Updated to the latest SDK module versions
 
+=======
+>>>>>>> 59f9170a4 (Update go.mod dependencies)
 # v1.27.35 (2024-09-17)
 
 * **Dependency Update**: Updated to the latest SDK module versions
@@ -111,26 +120,56 @@
 
 * **Bug Fix**: Read `AWS_CONTAINER_CREDENTIALS_FULL_URI` env variable if set when reading a profile with `credential_source`. Also ensure `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI` is always read before it
 
+<<<<<<< HEAD
+=======
+>>>>>>> 51f3ccb88 (Update go.mod dependencies)
+=======
+>>>>>>> 59f9170a4 (Update go.mod dependencies)
 # v1.27.33 (2024-09-04)
 
 * **Dependency Update**: Updated to the latest SDK module versions
 
+<<<<<<< HEAD
+=======
+>>>>>>> b93b7e30f (Update go.mod dependencies)
+=======
+>>>>>>> 51f3ccb88 (Update go.mod dependencies)
 # v1.27.32 (2024-09-03)
 
 * **Dependency Update**: Updated to the latest SDK module versions
 
+<<<<<<< HEAD
+=======
+>>>>>>> 15c176a21 (Update go.mod dependencies)
+=======
+>>>>>>> b93b7e30f (Update go.mod dependencies)
 # v1.27.31 (2024-08-26)
 
 * **Dependency Update**: Updated to the latest SDK module versions
 
+<<<<<<< HEAD
+=======
+>>>>>>> f9a0b31c2 (Update go.mod dependencies)
+=======
+>>>>>>> 15c176a21 (Update go.mod dependencies)
 # v1.27.30 (2024-08-23)
 
 * **Bug Fix**: Don't fail credentials unit tests if credentials are found on a file
 
+<<<<<<< HEAD
+=======
+>>>>>>> bf1357502 (Update go.mod dependencies)
+=======
+>>>>>>> f9a0b31c2 (Update go.mod dependencies)
 # v1.27.29 (2024-08-22)
 
 * **Dependency Update**: Updated to the latest SDK module versions
 
+<<<<<<< HEAD
+=======
+>>>>>>> 8ce727573 (Update go.mod dependencies)
+=======
+>>>>>>> bf1357502 (Update go.mod dependencies)
 # v1.27.28 (2024-08-15)
 
 * **Dependency Update**: Bump minimum Go version to 1.21.

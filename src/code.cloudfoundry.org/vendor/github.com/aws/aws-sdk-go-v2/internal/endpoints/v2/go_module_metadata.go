@@ -3,4 +3,12 @@
 package endpoints
 
 // goModuleVersion is the tagged release for this module
+<<<<<<< HEAD
+<<<<<<< HEAD
 const goModuleVersion = "2.6.31"
+=======
+const goModuleVersion = "2.6.16"
+>>>>>>> 8ce727573 (Update go.mod dependencies)
+=======
+const goModuleVersion = "2.6.17"
+>>>>>>> b93b7e30f (Update go.mod dependencies)

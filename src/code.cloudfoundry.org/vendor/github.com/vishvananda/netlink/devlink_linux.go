@@ -748,18 +748,27 @@ func (h *Handle) DevlinkGetDeviceResources(bus string, device string) (*DevlinkR
 
 // DevlinkGetDeviceParams returns parameters for devlink device
 // Equivalent to: `devlink dev param show <bus>/<device>`
+<<<<<<< HEAD
 //
 // If the returned error is [ErrDumpInterrupted], results may be inconsistent
 // or incomplete.
+=======
+>>>>>>> bf1357502 (Update go.mod dependencies)
 func (h *Handle) DevlinkGetDeviceParams(bus string, device string) ([]*DevlinkParam, error) {
 	_, req, err := h.createCmdReq(nl.DEVLINK_CMD_PARAM_GET, bus, device)
 	if err != nil {
 		return nil, err
 	}
 	req.Flags |= unix.NLM_F_DUMP
+<<<<<<< HEAD
 	respmsg, executeErr := req.Execute(unix.NETLINK_GENERIC, 0)
 	if executeErr != nil && !errors.Is(executeErr, ErrDumpInterrupted) {
 		return nil, executeErr
+=======
+	respmsg, err := req.Execute(unix.NETLINK_GENERIC, 0)
+	if err != nil {
+		return nil, err
+>>>>>>> bf1357502 (Update go.mod dependencies)
 	}
 	var params []*DevlinkParam
 	for _, m := range respmsg {
@@ -774,14 +783,21 @@ func (h *Handle) DevlinkGetDeviceParams(bus string, device string) ([]*DevlinkPa
 		params = append(params, p)
 	}
 
+<<<<<<< HEAD
 	return params, executeErr
+=======
+	return params, nil
+>>>>>>> bf1357502 (Update go.mod dependencies)
 }
 
 // DevlinkGetDeviceParams returns parameters for devlink device
 // Equivalent to: `devlink dev param show <bus>/<device>`
+<<<<<<< HEAD
 //
 // If the returned error is [ErrDumpInterrupted], results may be inconsistent
 // or incomplete.
+=======
+>>>>>>> bf1357502 (Update go.mod dependencies)
 func DevlinkGetDeviceParams(bus string, device string) ([]*DevlinkParam, error) {
 	return pkgHandle.DevlinkGetDeviceParams(bus, device)
 }

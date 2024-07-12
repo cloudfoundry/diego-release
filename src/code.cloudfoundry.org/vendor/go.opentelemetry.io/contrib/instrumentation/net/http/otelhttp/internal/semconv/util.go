@@ -99,6 +99,7 @@ func handleErr(err error) {
 		otel.Handle(err)
 	}
 }
+<<<<<<< HEAD
 
 func standardizeHTTPMethod(method string) string {
 	method = strings.ToUpper(method)
@@ -109,3 +110,5 @@ func standardizeHTTPMethod(method string) string {
 	}
 	return method
 }
+=======
+>>>>>>> 25a4f88bf (Update go.mod dependencies)

@@ -109,6 +109,10 @@ func doinit() {
 	ARM64.HasSVE = isSet(hwCap, hwcap_SVE)
 	ARM64.HasASIMDFHM = isSet(hwCap, hwcap_ASIMDFHM)
 	ARM64.HasDIT = isSet(hwCap, hwcap_DIT)
+<<<<<<< HEAD
+=======
+
+>>>>>>> cf305e78a (Update go.mod dependencies)
 
 	// HWCAP2 feature bits
 	ARM64.HasSVE2 = isSet(hwCap2, hwcap2_SVE2)

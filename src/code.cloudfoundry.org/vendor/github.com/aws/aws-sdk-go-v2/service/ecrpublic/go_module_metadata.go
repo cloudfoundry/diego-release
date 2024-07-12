@@ -3,4 +3,20 @@
 package ecrpublic
 
 // goModuleVersion is the tagged release for this module
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 const goModuleVersion = "1.31.1"
+=======
+const goModuleVersion = "1.25.4"
+>>>>>>> 8ce727573 (Update go.mod dependencies)
+=======
+const goModuleVersion = "1.25.5"
+>>>>>>> b93b7e30f (Update go.mod dependencies)
+=======
+const goModuleVersion = "1.25.6"
+>>>>>>> 51f3ccb88 (Update go.mod dependencies)
+=======
+const goModuleVersion = "1.25.7"
+>>>>>>> 59f9170a4 (Update go.mod dependencies)

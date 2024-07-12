@@ -23,8 +23,13 @@ type HaveExactElementsMatcher struct {
 func (matcher *HaveExactElementsMatcher) Match(actual interface{}) (success bool, err error) {
 	matcher.resetState()
 
+<<<<<<< HEAD
 	if isMap(actual) || miter.IsSeq2(actual) {
 		return false, fmt.Errorf("HaveExactElements matcher doesn't work on map or iter.Seq2.  Got:\n%s", format.Object(actual, 1))
+=======
+	if isMap(actual) {
+		return false, fmt.Errorf("error")
+>>>>>>> 4bbab6a12 (WIP: protobuf updates)
 	}
 
 	matchers := matchers(matcher.Elements)
@@ -74,6 +79,7 @@ func (matcher *HaveExactElementsMatcher) Match(actual interface{}) (success bool
 
 	values := valuesOf(actual)
 	lenValues := len(values)
+	success = true
 
 	for i := 0; i < lenMatchers || i < lenValues; i++ {
 		if i >= lenMatchers {
@@ -95,7 +101,14 @@ func (matcher *HaveExactElementsMatcher) Match(actual interface{}) (success bool
 				index:   i,
 				failure: err.Error(),
 			})
+<<<<<<< HEAD
+<<<<<<< HEAD
 			success = false
+=======
+>>>>>>> 4bbab6a12 (WIP: protobuf updates)
+=======
+			success = false
+>>>>>>> 0854e8485 (go mod tidy && go mod vendor)
 		} else if !match {
 			matcher.mismatchFailures = append(matcher.mismatchFailures, mismatchFailure{
 				index:   i,
