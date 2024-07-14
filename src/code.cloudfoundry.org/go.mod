@@ -27,7 +27,7 @@ require (
 	code.cloudfoundry.org/clock v1.2.0
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240708130444-3f2fc7fd8c29
 	code.cloudfoundry.org/debugserver v0.0.0-20240711175828-bd4bb5559e42
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240711175830-8c315b151f27
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240713175943-b577f5aaad4e
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
 	code.cloudfoundry.org/durationjson v0.0.0-20240711175827-ec11f50a5c9e
 	code.cloudfoundry.org/eventhub v0.0.0-20240711175829-9b6874164e5c
