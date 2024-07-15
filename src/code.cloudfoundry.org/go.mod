@@ -25,7 +25,7 @@ require (
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240712082121-f15a807edcfc
 	code.cloudfoundry.org/cfhttp/v2 v2.1.0
 	code.cloudfoundry.org/clock v1.2.0
-	code.cloudfoundry.org/credhub-cli v0.0.0-20240708130444-3f2fc7fd8c29
+	code.cloudfoundry.org/credhub-cli v0.0.0-20240715130405-9c80ae1950dd
 	code.cloudfoundry.org/debugserver v0.0.0-20240711175828-bd4bb5559e42
 	code.cloudfoundry.org/diego-logging-client v0.0.0-20240713175943-b577f5aaad4e
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
