@@ -4154,7 +4154,8 @@ func (o *consumer) checkNumPending() uint64 {
 	if o.mset != nil {
 		var state StreamState
 		o.mset.store.FastState(&state)
-		if o.sseq > state.LastSeq && o.npc != 0 || o.npc > int64(state.Msgs) {
+		npc := o.numPending()
+		if o.sseq > state.LastSeq && npc > 0 || npc > state.Msgs {
 			// Re-calculate.
 			o.streamNumPending()
 		}
@@ -5507,10 +5508,13 @@ func (o *consumer) checkStateForInterestStream() error {
 	o.mu.RUnlock()
 
 	// If we have pending, we will need to walk through to delivered in case we missed any of those acks as well.
-	if state != nil && len(state.Pending) > 0 {
+	if state != nil && len(state.Pending) > 0 && state.AckFloor.Stream > 0 {
 		for seq := state.AckFloor.Stream + 1; seq <= state.Delivered.Stream; seq++ {
 			if _, ok := state.Pending[seq]; !ok {
-				mset.ackMsg(o, seq)
+				// Want to call needAck since it is filter aware.
+				if o.needAck(seq, _EMPTY_) {
+					mset.ackMsg(o, seq)
+				}
 			}
 		}
 	}
