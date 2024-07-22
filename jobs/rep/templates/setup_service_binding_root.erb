@@ -23,7 +23,6 @@ if [ -d "$service_binding_root" ]; then
   if mountpoint -q "$service_binding_root"; then
     fuser -k "$service_binding_root"
     umount -l "$service_binding_root"
-    echo "Force unmounted $service_binding_root"
   fi
 
   sleep 10
@@ -35,9 +34,7 @@ mkdir -p "$service_binding_root"
 
 # Mount the root tmpfs
 if mount -t tmpfs -o size="$root_tmpfs_size" tmpfs "$service_binding_root"; then
-  echo "Root tmpfs successfully mounted to $service_binding_root with size $root_tmpfs_size."
 else
-  echo "Failed to mount root tmpfs to $service_binding_root."
   exit 1
 fi
 
