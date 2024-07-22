@@ -17,26 +17,26 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20240711175833-dbc7231e030c
-	code.cloudfoundry.org/bytefmt v0.0.0-20240711175842-1bcb71f1f634
+	code.cloudfoundry.org/archiver v0.0.0-20240721180611-c2584b8e38c2
+	code.cloudfoundry.org/bytefmt v0.0.0-20240721180527-4329f371d5d3
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.0.0-20240711175843-93e340749eba
+	code.cloudfoundry.org/certsplitter v0.0.0-20240721180600-78814e095b3a
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240712082121-f15a807edcfc
 	code.cloudfoundry.org/cfhttp/v2 v2.1.0
 	code.cloudfoundry.org/clock v1.2.0
-	code.cloudfoundry.org/credhub-cli v0.0.0-20240715130405-9c80ae1950dd
-	code.cloudfoundry.org/debugserver v0.0.0-20240711175828-bd4bb5559e42
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240713175943-b577f5aaad4e
+	code.cloudfoundry.org/credhub-cli v0.0.0-20240722130535-d278c225e4da
+	code.cloudfoundry.org/debugserver v0.0.0-20240721180531-bdf297309cfd
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240721180536-208b953dea93
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
-	code.cloudfoundry.org/durationjson v0.0.0-20240711175827-ec11f50a5c9e
-	code.cloudfoundry.org/eventhub v0.0.0-20240711175829-9b6874164e5c
-	code.cloudfoundry.org/garden v0.0.0-20240711201323-3e0daa304ebb
+	code.cloudfoundry.org/durationjson v0.0.0-20240721180537-2928146efba5
+	code.cloudfoundry.org/eventhub v0.0.0-20240721180530-98aefca47092
+	code.cloudfoundry.org/garden v0.0.0-20240721202328-732916568a92
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.38.0
 	code.cloudfoundry.org/guardian v0.0.0-20240701200955-01b74f60037d
 	code.cloudfoundry.org/lager/v3 v3.0.3
-	code.cloudfoundry.org/localip v0.0.0-20240711175824-a1a2d50a2164
+	code.cloudfoundry.org/localip v0.0.0-20240721180538-4c37751a4ea9
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240712175922-ffce9516cec8
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
@@ -94,7 +94,7 @@ require (
 
 require (
 	cel.dev/expr v0.15.0 // indirect
-	code.cloudfoundry.org/commandrunner v0.0.0-20240711155719-69471af38026 // indirect
+	code.cloudfoundry.org/commandrunner v0.0.0-20240721160731-adebb584c73a // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240604201846-c756bfed2ed3 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
@@ -128,7 +128,7 @@ require (
 	github.com/cyphar/filepath-securejoin v0.3.0 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
-	github.com/docker/docker v27.0.3+incompatible // indirect
+	github.com/docker/docker v27.1.0+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.8.2 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
@@ -137,7 +137,7 @@ require (
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/pprof v0.0.0-20240721033354-7089f98c1d14 // indirect
+	github.com/google/pprof v0.0.0-20240722153945-304e4f0156b8 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/hashicorp/go-version v1.7.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
@@ -168,7 +168,7 @@ require (
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	golang.org/x/tools v0.23.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240711142825-46eb208f015d // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240711142825-46eb208f015d // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240722135656-d784300faade // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240722135656-d784300faade // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
