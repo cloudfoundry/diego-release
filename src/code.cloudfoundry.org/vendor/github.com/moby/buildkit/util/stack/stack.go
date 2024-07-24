@@ -46,23 +46,22 @@ func Helper() {
 func Traces(err error) []*Stack {
 	var st []*Stack
 
-	switch e := err.(type) {
-	case interface{ Unwrap() error }:
-		st = Traces(e.Unwrap())
-	case interface{ Unwrap() []error }:
-		for _, ue := range e.Unwrap() {
-			st = Traces(ue)
-			// Only take first stack
-			if len(st) > 0 {
-				break
-			}
-		}
+	wrapped, ok := err.(interface {
+		Unwrap() error
+	})
+	if ok {
+		st = Traces(wrapped.Unwrap())
 	}
 
-	switch ste := err.(type) {
-	case interface{ StackTrace() errors.StackTrace }:
+	if ste, ok := err.(interface {
+		StackTrace() errors.StackTrace
+	}); ok {
 		st = append(st, convertStack(ste.StackTrace()))
-	case interface{ StackTrace() *Stack }:
+	}
+
+	if ste, ok := err.(interface {
+		StackTrace() *Stack
+	}); ok {
 		st = append(st, ste.StackTrace())
 	}
 
