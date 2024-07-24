@@ -37,12 +37,8 @@ type labelerContextKeyType int
 
 const lablelerContextKey labelerContextKeyType = 0
 
-// ContextWithLabeler returns a new context with the provided Labeler instance.
-// Attributes added to the specified labeler will be injected into metrics
-// emitted by the instrumentation. Only one labeller can be injected into the
-// context. Injecting it multiple times will override the previous calls.
-func ContextWithLabeler(parent context.Context, l *Labeler) context.Context {
-	return context.WithValue(parent, lablelerContextKey, l)
+func injectLabeler(ctx context.Context, l *Labeler) context.Context {
+	return context.WithValue(ctx, lablelerContextKey, l)
 }
 
 // LabelerFromContext retrieves a Labeler instance from the provided context if

@@ -40001,12 +40001,16 @@ var awsusgovPartition = partition{
 			Endpoints: serviceEndpoints{
 				endpointKey{
 					Region: "us-gov-east-1",
-				}: endpoint{},
+				}: endpoint{
+					Hostname:  "autoscaling-plans.us-gov-east-1.amazonaws.com",
+					Protocols: []string{"http", "https"},
+				},
 				endpointKey{
 					Region:  "us-gov-east-1",
 					Variant: fipsVariant,
 				}: endpoint{
-					Hostname: "autoscaling-plans.us-gov-east-1.amazonaws.com",
+					Hostname:  "autoscaling-plans.us-gov-east-1.amazonaws.com",
+					Protocols: []string{"http", "https"},
 				},
 				endpointKey{
 					Region: "us-gov-east-1-fips",
@@ -40018,12 +40022,16 @@ var awsusgovPartition = partition{
 				},
 				endpointKey{
 					Region: "us-gov-west-1",
-				}: endpoint{},
+				}: endpoint{
+					Hostname:  "autoscaling-plans.us-gov-west-1.amazonaws.com",
+					Protocols: []string{"http", "https"},
+				},
 				endpointKey{
 					Region:  "us-gov-west-1",
 					Variant: fipsVariant,
 				}: endpoint{
-					Hostname: "autoscaling-plans.us-gov-west-1.amazonaws.com",
+					Hostname:  "autoscaling-plans.us-gov-west-1.amazonaws.com",
+					Protocols: []string{"http", "https"},
 				},
 				endpointKey{
 					Region: "us-gov-west-1-fips",

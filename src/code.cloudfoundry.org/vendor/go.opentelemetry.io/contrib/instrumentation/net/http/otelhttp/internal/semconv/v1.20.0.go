@@ -4,7 +4,6 @@
 package semconv // import "go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/internal/semconv"
 
 import (
-	"errors"
 	"io"
 	"net/http"
 
@@ -14,6 +13,8 @@ import (
 )
 
 type oldHTTPServer struct{}
+
+var _ HTTPServer = oldHTTPServer{}
 
 // RequestTraceAttrs returns trace attributes for an HTTP request received by a
 // server.
@@ -44,7 +45,7 @@ func (o oldHTTPServer) ResponseTraceAttrs(resp ResponseTelemetry) []attribute.Ke
 	if resp.ReadBytes > 0 {
 		attributes = append(attributes, semconv.HTTPRequestContentLength(int(resp.ReadBytes)))
 	}
-	if resp.ReadError != nil && !errors.Is(resp.ReadError, io.EOF) {
+	if resp.ReadError != nil && resp.ReadError != io.EOF {
 		// This is not in the semantic conventions, but is historically provided
 		attributes = append(attributes, attribute.String("http.read_error", resp.ReadError.Error()))
 	}
@@ -54,7 +55,7 @@ func (o oldHTTPServer) ResponseTraceAttrs(resp ResponseTelemetry) []attribute.Ke
 	if resp.StatusCode > 0 {
 		attributes = append(attributes, semconv.HTTPStatusCode(resp.StatusCode))
 	}
-	if resp.WriteError != nil && !errors.Is(resp.WriteError, io.EOF) {
+	if resp.WriteError != nil && resp.WriteError != io.EOF {
 		// This is not in the semantic conventions, but is historically provided
 		attributes = append(attributes, attribute.String("http.write_error", resp.WriteError.Error()))
 	}
