@@ -8,14 +8,6 @@ import (
 	"time"
 )
 
-type BadResponseError struct {
-	Response *http.Response
-}
-
-func (err BadResponseError) Error() string {
-	return fmt.Sprintf("bad response from event source: %s", err.Response.Status)
-}
-
 // EventSource behaves like the EventSource interface from the Server-Sent
 // Events spec implemented in many browsers.  See
 // http://www.w3.org/TR/eventsource/#the-eventsource-interface for details.
@@ -36,7 +28,7 @@ func (err BadResponseError) Error() string {
 // If an EOF is received, Next() returns io.EOF, and subsequent calls to Next()
 // will return early. To read new events, Connect() must be called.
 type EventSource struct {
-	client        *http.Client
+	client        Doer
 	createRequest func() *http.Request
 
 	currentReadCloser *ReadCloser
@@ -50,13 +42,25 @@ type EventSource struct {
 	maxRetries    uint16
 }
 
+type Doer interface {
+	Do(*http.Request) (*http.Response, error)
+}
+
+type BadResponseError struct {
+	Response *http.Response
+}
+
+func (err BadResponseError) Error() string {
+	return fmt.Sprintf("bad response from event source: %s", err.Response.Status)
+}
+
 type RetryParams struct {
 	RetryInterval time.Duration
 	MaxRetries    uint16
 }
 
 type Config struct {
-	Client         *http.Client
+	Client         Doer
 	RetryParams    RetryParams
 	RequestCreator func() *http.Request
 }
@@ -78,14 +82,14 @@ func (c *Config) Connect() (*EventSource, error) {
 	return source, nil
 }
 
-func NewEventSource(client *http.Client, defaultRetryInterval time.Duration, requestCreator func() *http.Request) *EventSource {
+func NewEventSource(client Doer, defaultRetryInterval time.Duration, requestCreator func() *http.Request) *EventSource {
 	retryParams := RetryParams{
 		RetryInterval: defaultRetryInterval,
 	}
 	return createEventSource(client, retryParams, requestCreator)
 }
 
-func createEventSource(client *http.Client, retryParams RetryParams, requestCreator func() *http.Request) *EventSource {
+func createEventSource(client Doer, retryParams RetryParams, requestCreator func() *http.Request) *EventSource {
 	return &EventSource{
 		client:        client,
 		createRequest: requestCreator,
@@ -97,7 +101,7 @@ func createEventSource(client *http.Client, retryParams RetryParams, requestCrea
 	}
 }
 
-func Connect(client *http.Client, defaultRetryInterval time.Duration, requestCreator func() *http.Request) (*EventSource, error) {
+func Connect(client Doer, defaultRetryInterval time.Duration, requestCreator func() *http.Request) (*EventSource, error) {
 	source := NewEventSource(client, defaultRetryInterval, requestCreator)
 
 	readCloser, err := source.establishConnection()
@@ -203,6 +207,10 @@ func (source *EventSource) establishConnection() (*ReadCloser, error) {
 	var connectionRetries uint16
 	for {
 		req := source.createRequest()
+
+		if req.Header == nil {
+			req.Header = http.Header{}
+		}
 
 		req.Header.Set("Last-Event-ID", source.lastEventID)
 

@@ -287,6 +287,7 @@ files:
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/balancer/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/balancer/base/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/balancer/grpclb/state/*.go # gosub
+  - code.cloudfoundry.org/vendor/google.golang.org/grpc/balancer/pickfirst/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/balancer/roundrobin/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/binarylog/grpc_binarylog_v1/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/channelz/*.go # gosub
@@ -307,7 +308,6 @@ files:
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/credentials/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/envconfig/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/grpclog/*.go # gosub
-  - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/grpcrand/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/grpcsync/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/grpcutil/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/idle/*.go # gosub

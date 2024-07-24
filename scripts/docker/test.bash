@@ -27,7 +27,7 @@ pushd / > /dev/null
 if [[ -n "${1:-}" ]]; then
   test "src/code.cloudfoundry.org/${1}" "${2:-}"
 else
-  internal_repos=$(yq -r '.internal_repos|.[].name' "/ci/$REPO_NAME/index.yml")
+  internal_repos=$(yq -r '.internal_repos[] | select(.acceptance != true) | .name' "/ci/$REPO_NAME/index.yml")
   for component in $internal_repos; do
     test "src/code.cloudfoundry.org/${component}"
   done
