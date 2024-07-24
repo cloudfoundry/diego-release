@@ -33,10 +33,7 @@ fi
 mkdir -p "$service_binding_root"
 
 # Mount the root tmpfs
-if mount -t tmpfs -o size="$root_tmpfs_size" tmpfs "$service_binding_root"; then
-else
-  exit 1
-fi
+mount -t tmpfs -o size="$root_tmpfs_size" tmpfs "$service_binding_root" || exit 1
 
 # Set permissions and ownership for the root directory and all subdirectories
 chmod 0700 "$service_binding_root"
