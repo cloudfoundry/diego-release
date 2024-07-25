@@ -19,27 +19,27 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20240723180828-18c783d72f4c
-	code.cloudfoundry.org/bytefmt v0.0.0-20240722180632-e94c220fe743
+	code.cloudfoundry.org/archiver v0.0.0-20240725181137-36bd0bc55ab4
+	code.cloudfoundry.org/bytefmt v0.0.0-20240725181214-870a2a4a34a6
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.0.0-20240722180631-95e790bc89ed
+	code.cloudfoundry.org/certsplitter v0.0.0-20240725181104-2815a759b551
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240712082121-f15a807edcfc
 	code.cloudfoundry.org/cfhttp/v2 v2.1.0
 	code.cloudfoundry.org/clock v1.2.0
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240722130535-d278c225e4da
-	code.cloudfoundry.org/debugserver v0.0.0-20240722180655-b2525cf2b25a
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240723180750-86431d2f5b00
+	code.cloudfoundry.org/debugserver v0.0.0-20240725181150-25b04d48c6b1
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240725181144-da8b6d91a403
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
-	code.cloudfoundry.org/durationjson v0.0.0-20240722180656-78c14651e997
-	code.cloudfoundry.org/eventhub v0.0.0-20240722180726-ac5932e74e76
+	code.cloudfoundry.org/durationjson v0.0.0-20240725181158-c1cf2082bda4
+	code.cloudfoundry.org/eventhub v0.0.0-20240725181136-eae28fcb43cc
 	code.cloudfoundry.org/garden v0.0.0-20240722202410-dfce198e52ac
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.38.0
 	code.cloudfoundry.org/guardian v0.0.0-20240701200955-01b74f60037d
 	code.cloudfoundry.org/lager/v3 v3.0.3
-	code.cloudfoundry.org/localip v0.0.0-20240722180725-05cb35dd1d96
+	code.cloudfoundry.org/localip v0.0.0-20240725181137-6a3eb03fa8ed
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240712175922-ffce9516cec8
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
@@ -72,7 +72,7 @@ require (
 	github.com/nats-io/nats.go v1.36.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/onsi/ginkgo/v2 v2.19.0
-	github.com/onsi/gomega v1.33.1
+	github.com/onsi/gomega v1.34.0
 	github.com/onsi/say v1.1.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/opencontainers/image-spec v1.1.0
