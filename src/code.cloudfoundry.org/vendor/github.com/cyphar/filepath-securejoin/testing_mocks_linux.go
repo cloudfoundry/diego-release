@@ -42,9 +42,9 @@ func testingForcePrivateProcRootOpenTreeAtRecursive(f *os.File) bool {
 		testingCheckClose(*testingForceGetProcRoot >= forceGetProcRootOpenTreeAtRecursive, f)
 }
 
-func testingForceGetProcRootUnsafe() bool {
+func testingForceGetProcRootUnsafe(f *os.File) bool {
 	return testing.Testing() && testingForceGetProcRoot != nil &&
-		*testingForceGetProcRoot >= forceGetProcRootUnsafe
+		testingCheckClose(*testingForceGetProcRoot >= forceGetProcRootUnsafe, f)
 }
 
 type forceProcThreadSelfLevel int

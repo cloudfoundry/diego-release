@@ -19,14 +19,3 @@ func (r *Run) Contains(providedImage string) bool {
 	}
 	return false
 }
-
-// FindByRef return the RunImageForExport struct which contains the imageRef.
-func (r *Run) FindByRef(imageRef string) RunImageForExport {
-	for _, i := range r.Images {
-		if i.Contains(imageRef) {
-			return i
-		}
-	}
-
-	return RunImageForExport{}
-}
