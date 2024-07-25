@@ -26,20 +26,22 @@ var _ = Describe("actual-lrps", func() {
 		})
 
 		JustBeforeEach(func() {
+			request := &models.ActualLRPsRequest{}
+			response := &models.ActualLRPsResponse{
+				ActualLrps: []*models.ActualLRP{
+					&models.ActualLRP{
+						State: "running",
+					},
+				},
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/actual_lrps/list"),
-					ghttp.VerifyProtoRepresenting(&models.ActualLRPsRequest{}),
+					ghttp.VerifyProtoRepresenting(request.ToProto()),
 					func(w http.ResponseWriter, req *http.Request) {
 						time.Sleep(time.Duration(serverTimeout) * time.Second)
 					},
-					ghttp.RespondWithProto(200, &models.ActualLRPsResponse{
-						ActualLrps: []*models.ActualLRP{
-							&models.ActualLRP{
-								State: "running",
-							},
-						},
-					}),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})
@@ -75,24 +77,26 @@ var _ = Describe("actual-lrps", func() {
 
 	Context("when passing filters", func() {
 		BeforeEach(func() {
-			alr := models.ActualLRPsRequest{
+			request := models.ActualLRPsRequest{
 				Domain:      "cf-apps",
 				CellId:      "cell_z1-0",
 				ProcessGuid: "pg-0",
 			}
-			alr.SetIndex(int32(1))
+			index := int32(1)
+			request.SetIndex(&index)
+			response := &models.ActualLRPsResponse{
+				ActualLrps: []*models.ActualLRP{
+					&models.ActualLRP{
+						State: "running",
+					},
+				},
+			}
 
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/actual_lrps/list"),
-					ghttp.VerifyProtoRepresenting(&alr),
-					ghttp.RespondWithProto(200, &models.ActualLRPsResponse{
-						ActualLrps: []*models.ActualLRP{
-							&models.ActualLRP{
-								State: "running",
-							},
-						},
-					}),
+					ghttp.VerifyProtoRepresenting(request.ToProto()),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})

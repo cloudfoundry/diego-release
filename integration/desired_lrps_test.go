@@ -27,19 +27,20 @@ var _ = Describe("desired-lrps", func() {
 		})
 
 		JustBeforeEach(func() {
+			response := &models.DesiredLRPsResponse{
+				DesiredLrps: []*models.DesiredLRP{
+					{
+						Instances: 1,
+					},
+				},
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/desired_lrps/list.r3"),
 					func(w http.ResponseWriter, req *http.Request) {
 						time.Sleep(time.Duration(serverTimeout) * time.Second)
 					},
-					ghttp.RespondWithProto(200, &models.DesiredLRPsResponse{
-						DesiredLrps: []*models.DesiredLRP{
-							{
-								Instances: 1,
-							},
-						},
-					}),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})
@@ -75,19 +76,21 @@ var _ = Describe("desired-lrps", func() {
 
 	Context("when passing filters", func() {
 		BeforeEach(func() {
+			request := &models.DesiredLRPsRequest{
+				Domain: "cf-apps",
+			}
+			response := &models.DesiredLRPsResponse{
+				DesiredLrps: []*models.DesiredLRP{
+					{
+						Instances: 1,
+					},
+				},
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/desired_lrps/list.r3"),
-					ghttp.VerifyProtoRepresenting(&models.DesiredLRPsRequest{
-						Domain: "cf-apps",
-					}),
-					ghttp.RespondWithProto(200, &models.DesiredLRPsResponse{
-						DesiredLrps: []*models.DesiredLRP{
-							{
-								Instances: 1,
-							},
-						},
-					}),
+					ghttp.VerifyProtoRepresenting(request.ToProto()),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})

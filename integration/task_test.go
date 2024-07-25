@@ -30,14 +30,16 @@ var _ = Describe("task", func() {
 		})
 
 		JustBeforeEach(func() {
+			request := &models.TaskByGuidRequest{TaskGuid: "task-guid"}
+			response := &models.TaskResponse{Task: task}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/tasks/get_by_task_guid.r3"),
 					func(w http.ResponseWriter, req *http.Request) {
 						time.Sleep(time.Duration(serverTimeout) * time.Second)
 					},
-					ghttp.VerifyProtoRepresenting(&models.TaskByGuidRequest{TaskGuid: "task-guid"}),
-					ghttp.RespondWithProto(200, &models.TaskResponse{Task: task}),
+					ghttp.VerifyProtoRepresenting(request.ToProto()),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})
@@ -75,12 +77,13 @@ var _ = Describe("task", func() {
 
 	Context("when the server responds with error", func() {
 		It("exits with status code 4", func() {
+			response := &models.TaskResponse{
+				Error: models.ErrUnknownError,
+			}
 			bbsServer.RouteToHandler(
 				"POST",
 				"/v1/tasks/get_by_task_guid.r3",
-				ghttp.RespondWithProto(200, &models.TaskResponse{
-					Error: models.ErrUnknownError,
-				}),
+				ghttp.RespondWithProto(200, response.ToProto()),
 			)
 
 			sess := RunCFDot("task", "task-guid")

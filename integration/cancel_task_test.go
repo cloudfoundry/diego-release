@@ -25,13 +25,14 @@ var _ = Describe("cancel-task", func() {
 
 		})
 		JustBeforeEach(func() {
+			request := &models.TaskGuidRequest{TaskGuid: "task-guid"}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/tasks/cancel"),
 					func(w http.ResponseWriter, req *http.Request) {
 						time.Sleep(time.Duration(serverTimeout) * time.Second)
 					},
-					ghttp.VerifyProtoRepresenting(&models.TaskGuidRequest{TaskGuid: "task-guid"}),
+					ghttp.VerifyProtoRepresenting(request.ToProto()),
 					ghttp.RespondWith(200, nil),
 				),
 			)
@@ -68,12 +69,13 @@ var _ = Describe("cancel-task", func() {
 
 	Context("when the server responds with error", func() {
 		It("exits with status code 4", func() {
+			response := &models.TaskResponse{
+				Error: models.ErrUnknownError,
+			}
 			bbsServer.RouteToHandler(
 				"POST",
 				"/v1/tasks/cancel",
-				ghttp.RespondWithProto(200, &models.TaskResponse{
-					Error: models.ErrUnknownError,
-				}),
+				ghttp.RespondWithProto(200, response.ToProto()),
 			)
 
 			sess := RunCFDot("cancel-task", "task-guid")

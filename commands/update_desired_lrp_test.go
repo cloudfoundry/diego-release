@@ -41,7 +41,7 @@ var _ = Describe("UpdateDesiredLRP", func() {
 
 		updatedInstanceCount := int32(4)
 		dlu := models.DesiredLRPUpdate{}
-		dlu.SetInstances(updatedInstanceCount)
+		dlu.SetInstances(&updatedInstanceCount)
 		updatedDesiredLRP = &dlu
 
 		spec, err = json.Marshal(updatedDesiredLRP)

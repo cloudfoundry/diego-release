@@ -47,16 +47,18 @@ var _ = Describe("delete-desired-lrp", func() {
 		})
 
 		JustBeforeEach(func() {
+			request := &models.RemoveDesiredLRPRequest{
+				ProcessGuid: processGuid,
+			}
+			response := &models.DesiredLRPLifecycleResponse{}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/desired_lrp/remove"),
 					func(w http.ResponseWriter, req *http.Request) {
 						time.Sleep(time.Duration(serverTimeout) * time.Second)
 					},
-					ghttp.VerifyProtoRepresenting(&models.RemoveDesiredLRPRequest{
-						ProcessGuid: processGuid,
-					}),
-					ghttp.RespondWithProto(200, &models.DesiredLRPLifecycleResponse{}),
+					ghttp.VerifyProtoRepresenting(request.ToProto()),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})
@@ -94,15 +96,16 @@ var _ = Describe("delete-desired-lrp", func() {
 
 	Context("when bbs responds with non-200 status code", func() {
 		BeforeEach(func() {
+			response := &models.DesiredLRPLifecycleResponse{
+				Error: &models.Error{
+					Type:    models.Error_Deadlock,
+					Message: "deadlock detected",
+				},
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/desired_lrp/remove"),
-					ghttp.RespondWithProto(500, &models.DesiredLRPLifecycleResponse{
-						Error: &models.Error{
-							Type:    models.Error_Deadlock,
-							Message: "deadlock detected",
-						},
-					}),
+					ghttp.RespondWithProto(500, response.ToProto()),
 				),
 			)
 		})

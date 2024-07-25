@@ -27,13 +27,14 @@ var _ = Describe("set-domain", func() {
 		})
 
 		JustBeforeEach(func() {
+			response := &models.UpsertDomainResponse{}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/domains/upsert"),
 					func(w http.ResponseWriter, req *http.Request) {
 						time.Sleep(time.Duration(serverTimeout) * time.Second)
 					},
-					ghttp.RespondWithProto(200, &models.UpsertDomainResponse{}),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})

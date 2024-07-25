@@ -35,19 +35,20 @@ var _ = Describe("desired-lrp-scheduling-infos", func() {
 		})
 
 		JustBeforeEach(func() {
+			response := &models.DesiredLRPSchedulingInfosResponse{
+				DesiredLrpSchedulingInfos: []*models.DesiredLRPSchedulingInfo{
+					{
+						Instances: 1,
+					},
+				},
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/desired_lrp_scheduling_infos/list"),
 					func(w http.ResponseWriter, req *http.Request) {
 						time.Sleep(time.Duration(serverTimeout) * time.Second)
 					},
-					ghttp.RespondWithProto(200, &models.DesiredLRPSchedulingInfosResponse{
-						DesiredLrpSchedulingInfos: []*models.DesiredLRPSchedulingInfo{
-							{
-								Instances: 1,
-							},
-						},
-					}),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})
@@ -87,19 +88,21 @@ var _ = Describe("desired-lrp-scheduling-infos", func() {
 
 	Context("when passing filters", func() {
 		BeforeEach(func() {
+			request := &models.DesiredLRPsRequest{
+				Domain: "cf-apps",
+			}
+			response := &models.DesiredLRPSchedulingInfosResponse{
+				DesiredLrpSchedulingInfos: []*models.DesiredLRPSchedulingInfo{
+					{
+						Instances: 1,
+					},
+				},
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/desired_lrp_scheduling_infos/list"),
-					ghttp.VerifyProtoRepresenting(&models.DesiredLRPsRequest{
-						Domain: "cf-apps",
-					}),
-					ghttp.RespondWithProto(200, &models.DesiredLRPSchedulingInfosResponse{
-						DesiredLrpSchedulingInfos: []*models.DesiredLRPSchedulingInfo{
-							{
-								Instances: 1,
-							},
-						},
-					}),
+					ghttp.VerifyProtoRepresenting(request.ToProto()),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})

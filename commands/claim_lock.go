@@ -116,7 +116,7 @@ func ClaimLock(
 			Key:      lockKey,
 			Owner:    lockOwner,
 			Value:    lockValue,
-			TypeCode: models.LOCK,
+			TypeCode: models.TypeCode_LOCK,
 		},
 		TtlInSeconds: ttlInSeconds,
 	}

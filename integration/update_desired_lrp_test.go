@@ -35,24 +35,27 @@ var _ = Describe("update-desired-lrp", func() {
 
 		BeforeEach(func() {
 			lrpUpdate = &models.DesiredLRPUpdate{}
-			lrpUpdate.SetInstances(int32(5))
+			instances := int32(5)
+			lrpUpdate.SetInstances(&instances)
 			serverTimeout = 0
 		})
 
 		JustBeforeEach(func() {
+			request := &models.UpdateDesiredLRPRequest{
+				Update:      lrpUpdate,
+				ProcessGuid: "process-guid",
+			}
+			response := &models.DesiredLRPLifecycleResponse{
+				Error: nil,
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/desired_lrp/update"),
 					func(w http.ResponseWriter, req *http.Request) {
 						time.Sleep(time.Duration(serverTimeout) * time.Second)
 					},
-					ghttp.VerifyProtoRepresenting(&models.UpdateDesiredLRPRequest{
-						Update:      lrpUpdate,
-						ProcessGuid: "process-guid",
-					}),
-					ghttp.RespondWithProto(200, &models.DesiredLRPLifecycleResponse{
-						Error: nil,
-					}),
+					ghttp.VerifyProtoRepresenting(request.ToProto()),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})
@@ -137,15 +140,16 @@ var _ = Describe("update-desired-lrp", func() {
 
 	Context("when bbs responds with non-200 status code", func() {
 		JustBeforeEach(func() {
+			response := &models.DesiredLRPLifecycleResponse{
+				Error: &models.Error{
+					Type:    models.Error_Deadlock,
+					Message: "deadlock detected",
+				},
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/desired_lrp/update"),
-					ghttp.RespondWithProto(500, &models.DesiredLRPLifecycleResponse{
-						Error: &models.Error{
-							Type:    models.Error_Deadlock,
-							Message: "deadlock detected",
-						},
-					}),
+					ghttp.RespondWithProto(500, response.ToProto()),
 				),
 			)
 		})

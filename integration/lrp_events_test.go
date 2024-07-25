@@ -4,8 +4,8 @@ import (
 	"code.cloudfoundry.org/bbs/events"
 	"code.cloudfoundry.org/bbs/models"
 	"code.cloudfoundry.org/bbs/models/test/model_helpers"
+	"google.golang.org/protobuf/proto"
 
-	"github.com/gogo/protobuf/proto"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gbytes"
@@ -21,7 +21,7 @@ var _ = Describe("lrp-events", func() {
 		Context("when the cell id is specified", func() {
 			BeforeEach(func() {
 				expectedRequest := &models.EventsByCellId{CellId: "some-cell-id"}
-				expectedBody, err := proto.Marshal(expectedRequest)
+				expectedBody, err := proto.Marshal(expectedRequest.ToProto())
 				Expect(err).NotTo(HaveOccurred())
 				bbsServer.AppendHandlers(
 					ghttp.CombineHandlers(
@@ -45,7 +45,7 @@ var _ = Describe("lrp-events", func() {
 		Context("when the cell id is not specified", func() {
 			BeforeEach(func() {
 				expectedRequest := &models.EventsByCellId{CellId: ""}
-				expectedBody, err := proto.Marshal(expectedRequest)
+				expectedBody, err := proto.Marshal(expectedRequest.ToProto())
 				Expect(err).NotTo(HaveOccurred())
 				bbsServer.AppendHandlers(
 					ghttp.CombineHandlers(

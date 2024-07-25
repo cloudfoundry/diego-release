@@ -69,12 +69,14 @@ var _ = Describe("cell-state", func() {
 				Tasks:              []rep.Task{},
 			}
 
+			response := &models.CellsResponse{
+				Cells: []*models.CellPresence{presence1, presence2},
+			}
+
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/cells/list.r1"),
-					ghttp.RespondWithProto(200, &models.CellsResponse{
-						Cells: []*models.CellPresence{presence1, presence2},
-					}),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 			rep1Server.RouteToHandler("GET", "/state", func(resp http.ResponseWriter, req *http.Request) {
@@ -113,15 +115,16 @@ var _ = Describe("cell-state", func() {
 			)
 
 			JustBeforeEach(func() {
+				response := &models.CellsResponse{
+					Cells: []*models.CellPresence{presence1, presence2},
+				}
 				bbsServer.SetHandler(0,
 					ghttp.CombineHandlers(
 						ghttp.VerifyRequest("POST", "/v1/cells/list.r1"),
 						func(w http.ResponseWriter, req *http.Request) {
 							time.Sleep(time.Duration(serverTimeout) * time.Second)
 						},
-						ghttp.RespondWithProto(200, &models.CellsResponse{
-							Cells: []*models.CellPresence{presence1, presence2},
-						}),
+						ghttp.RespondWithProto(200, response.ToProto()),
 					),
 				)
 
@@ -189,15 +192,16 @@ var _ = Describe("cell-state", func() {
 				)
 
 				JustBeforeEach(func() {
+					response := &models.CellsResponse{
+						Cells: []*models.CellPresence{presence1, presence2},
+					}
 					bbsServer.SetHandler(0,
 						ghttp.CombineHandlers(
 							ghttp.VerifyRequest("POST", "/v1/cells/list.r1"),
 							func(w http.ResponseWriter, req *http.Request) {
 								time.Sleep(time.Duration(serverTimeout) * time.Second)
 							},
-							ghttp.RespondWithProto(200, &models.CellsResponse{
-								Cells: []*models.CellPresence{presence1, presence2},
-							}),
+							ghttp.RespondWithProto(200, response.ToProto()),
 						),
 					)
 
@@ -246,12 +250,13 @@ var _ = Describe("cell-state", func() {
 
 		Context("when the BBS request fails", func() {
 			BeforeEach(func() {
+				response := &models.CellsResponse{
+					Error: models.ErrUnknownError,
+				}
 				bbsServer.SetHandler(0,
 					ghttp.CombineHandlers(
 						ghttp.VerifyRequest("POST", "/v1/cells/list.r1"),
-						ghttp.RespondWithProto(503, &models.CellsResponse{
-							Error: models.ErrUnknownError,
-						}),
+						ghttp.RespondWithProto(503, response.ToProto()),
 					),
 				)
 			})

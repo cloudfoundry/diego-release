@@ -50,7 +50,7 @@ var _ = Describe("Locks", func() {
 			Expect(fakeLocketClient.FetchAllCallCount()).To(Equal(1))
 
 			_, req, _ := fakeLocketClient.FetchAllArgsForCall(0)
-			Expect(req).To(Equal(&models.FetchAllRequest{TypeCode: models.LOCK}))
+			Expect(req).To(Equal(&models.FetchAllRequest{TypeCode: models.TypeCode_LOCK}))
 
 			d, err := json.Marshal(resources.Resources[0])
 			Expect(err).NotTo(HaveOccurred())

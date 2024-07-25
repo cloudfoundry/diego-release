@@ -42,20 +42,22 @@ var _ = Describe("create-task", func() {
 		})
 
 		JustBeforeEach(func() {
+			request := &models.DesireTaskRequest{
+				TaskGuid:       task.TaskGuid,
+				Domain:         task.Domain,
+				TaskDefinition: task.TaskDefinition,
+			}
+			response := &models.TaskLifecycleResponse{
+				Error: nil,
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/tasks/desire.r2"),
 					func(w http.ResponseWriter, req *http.Request) {
 						time.Sleep(time.Duration(serverTimeout) * time.Second)
 					},
-					ghttp.VerifyProtoRepresenting(&models.DesireTaskRequest{
-						TaskGuid:       task.TaskGuid,
-						Domain:         task.Domain,
-						TaskDefinition: task.TaskDefinition,
-					}),
-					ghttp.RespondWithProto(200, &models.TaskLifecycleResponse{
-						Error: nil,
-					}),
+					ghttp.VerifyProtoRepresenting(request.ToProto()),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})
@@ -144,15 +146,16 @@ var _ = Describe("create-task", func() {
 
 	Context("when bbs responds with non-200 status code", func() {
 		JustBeforeEach(func() {
+			response := &models.TaskLifecycleResponse{
+				Error: &models.Error{
+					Type:    models.Error_Deadlock,
+					Message: "deadlock detected",
+				},
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/tasks/desire.r2"),
-					ghttp.RespondWithProto(500, &models.TaskLifecycleResponse{
-						Error: &models.Error{
-							Type:    models.Error_Deadlock,
-							Message: "deadlock detected",
-						},
-					}),
+					ghttp.RespondWithProto(500, response.ToProto()),
 				),
 			)
 		})

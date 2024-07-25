@@ -26,21 +26,23 @@ var _ = Describe("retire-actual-lrp", func() {
 		})
 
 		JustBeforeEach(func() {
+			desiredLrpResponse := &models.DesiredLRPResponse{
+				DesiredLrp: &models.DesiredLRP{
+					Domain: "test-domain",
+				},
+			}
+			actualLrpResponse := &models.ActualLRPLifecycleResponse{}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/desired_lrps/get_by_process_guid.r3"),
 					func(w http.ResponseWriter, req *http.Request) {
 						time.Sleep(time.Duration(serverTimeout) * time.Second)
 					},
-					ghttp.RespondWithProto(200, &models.DesiredLRPResponse{
-						DesiredLrp: &models.DesiredLRP{
-							Domain: "test-domain",
-						},
-					}),
+					ghttp.RespondWithProto(200, desiredLrpResponse.ToProto()),
 				),
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/actual_lrps/retire"),
-					ghttp.RespondWithProto(200, &models.ActualLRPLifecycleResponse{}),
+					ghttp.RespondWithProto(200, actualLrpResponse.ToProto()),
 				),
 			)
 		})
@@ -74,15 +76,16 @@ var _ = Describe("retire-actual-lrp", func() {
 
 	Context("when the bbs returns an error", func() {
 		BeforeEach(func() {
+			response := &models.DesiredLRPResponse{
+				Error: &models.Error{
+					Type:    models.Error_Deadlock,
+					Message: "the request failed due to deadlock",
+				},
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/desired_lrps/get_by_process_guid.r3"),
-					ghttp.RespondWithProto(200, &models.DesiredLRPResponse{
-						Error: &models.Error{
-							Type:    models.Error_Deadlock,
-							Message: "the request failed due to deadlock",
-						},
-					}),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})

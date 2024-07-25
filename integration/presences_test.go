@@ -55,7 +55,7 @@ var _ = Describe("Presences", func() {
 					Key:      "key",
 					Owner:    "owner",
 					Value:    "value",
-					TypeCode: models.PRESENCE,
+					TypeCode: models.TypeCode_PRESENCE,
 				},
 				TtlInSeconds: 10,
 			}

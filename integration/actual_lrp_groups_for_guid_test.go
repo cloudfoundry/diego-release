@@ -25,27 +25,29 @@ var _ = Describe("actual-lrp-groups-for-guid", func() {
 			})
 
 			JustBeforeEach(func() {
+				//lint:ignore SA1019 - deprecated model used for testing deprecated functionality
+				request := &models.ActualLRPGroupsByProcessGuidRequest{
+					ProcessGuid: "random-guid",
+				}
+				//lint:ignore SA1019 - deprecated model used for testing deprecated functionality
+				response := &models.ActualLRPGroupsResponse{
+					//lint:ignore SA1019 - deprecated model used for testing deprecated functionality
+					ActualLrpGroups: []*models.ActualLRPGroup{
+						{
+							Instance: &models.ActualLRP{
+								State: "running",
+							},
+						},
+					},
+				}
 				bbsServer.AppendHandlers(
 					ghttp.CombineHandlers(
 						ghttp.VerifyRequest("POST", "/v1/actual_lrp_groups/list_by_process_guid"),
 						func(w http.ResponseWriter, req *http.Request) {
 							time.Sleep(time.Duration(serverTimeout) * time.Second)
 						},
-						//lint:ignore SA1019 - deprecated model used for testing deprecated functionality
-						ghttp.VerifyProtoRepresenting(&models.ActualLRPGroupsByProcessGuidRequest{
-							ProcessGuid: "random-guid",
-						}),
-						//lint:ignore SA1019 - deprecated model used for testing deprecated functionality
-						ghttp.RespondWithProto(200, &models.ActualLRPGroupsResponse{
-							//lint:ignore SA1019 - deprecated model used for testing deprecated functionality
-							ActualLrpGroups: []*models.ActualLRPGroup{
-								{
-									Instance: &models.ActualLRP{
-										State: "running",
-									},
-								},
-							},
-						}),
+						ghttp.VerifyProtoRepresenting(request.ToProto()),
+						ghttp.RespondWithProto(200, response.ToProto()),
 					),
 				)
 			})
@@ -81,16 +83,17 @@ var _ = Describe("actual-lrp-groups-for-guid", func() {
 
 		Context("when the server returns an error", func() {
 			BeforeEach(func() {
+				response := &models.DomainsResponse{
+					Error: &models.Error{
+						Type:    models.Error_Deadlock,
+						Message: "the request failed due to deadlock",
+					},
+					Domains: nil,
+				}
 				bbsServer.AppendHandlers(
 					ghttp.CombineHandlers(
 						ghttp.VerifyRequest("POST", "/v1/actual_lrp_groups/list_by_process_guid"),
-						ghttp.RespondWithProto(500, &models.DomainsResponse{
-							Error: &models.Error{
-								Type:    models.Error_Deadlock,
-								Message: "the request failed due to deadlock",
-							},
-							Domains: nil,
-						}),
+						ghttp.RespondWithProto(500, response.ToProto()),
 					),
 				)
 			})
@@ -112,28 +115,30 @@ var _ = Describe("actual-lrp-groups-for-guid", func() {
 
 	Context("when passing index as filter", func() {
 		BeforeEach(func() {
+			//lint:ignore SA1019 - deprecated model used for testing deprecated functionality
+			request := &models.ActualLRPGroupByProcessGuidAndIndexRequest{
+				ProcessGuid: "test-process-guid",
+				Index:       1,
+			}
+			//lint:ignore SA1019 - deprecated model used for testing deprecated functionality
+			response := &models.ActualLRPGroupsResponse{
+				//lint:ignore SA1019 - deprecated model used for testing deprecated functionality
+				ActualLrpGroups: []*models.ActualLRPGroup{
+					{
+						Instance: &models.ActualLRP{
+							ActualLrpKey: models.ActualLRPKey{
+								Index: 1,
+							},
+							State: "running",
+						},
+					},
+				},
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/actual_lrp_groups/get_by_process_guid_and_index"),
-					//lint:ignore SA1019 - deprecated model used for testing deprecated functionality
-					ghttp.VerifyProtoRepresenting(&models.ActualLRPGroupByProcessGuidAndIndexRequest{
-						ProcessGuid: "test-process-guid",
-						Index:       1,
-					}),
-					//lint:ignore SA1019 - deprecated model used for testing deprecated functionality
-					ghttp.RespondWithProto(200, &models.ActualLRPGroupsResponse{
-						//lint:ignore SA1019 - deprecated model used for testing deprecated functionality
-						ActualLrpGroups: []*models.ActualLRPGroup{
-							{
-								Instance: &models.ActualLRP{
-									ActualLRPKey: models.ActualLRPKey{
-										Index: 1,
-									},
-									State: "running",
-								},
-							},
-						},
-					}),
+					ghttp.VerifyProtoRepresenting(request.ToProto()),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})

@@ -27,23 +27,24 @@ var _ = Describe("actual-lrp-groups", func() {
 		})
 
 		JustBeforeEach(func() {
+			//lint:ignore SA1019 - calling deprecated model while unit testing deprecated method
+			response := &models.ActualLRPGroupsResponse{
+				//lint:ignore SA1019 - calling deprecated model while unit testing deprecated method
+				ActualLrpGroups: []*models.ActualLRPGroup{
+					{
+						Instance: &models.ActualLRP{
+							State: "running",
+						},
+					},
+				},
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/actual_lrp_groups/list"),
 					func(w http.ResponseWriter, req *http.Request) {
 						time.Sleep(time.Duration(serverTimeout) * time.Second)
 					},
-					//lint:ignore SA1019 - calling deprecated model while unit testing deprecated method
-					ghttp.RespondWithProto(200, &models.ActualLRPGroupsResponse{
-						//lint:ignore SA1019 - calling deprecated model while unit testing deprecated method
-						ActualLrpGroups: []*models.ActualLRPGroup{
-							{
-								Instance: &models.ActualLRP{
-									State: "running",
-								},
-							},
-						},
-					}),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})
@@ -79,25 +80,27 @@ var _ = Describe("actual-lrp-groups", func() {
 
 	Context("when passing filters", func() {
 		BeforeEach(func() {
+			//lint:ignore SA1019 - calling deprecated model while unit testing deprecated method
+			request := &models.ActualLRPGroupsRequest{
+				Domain: "cf-apps",
+				CellId: "cell_z1-0",
+			}
+			//lint:ignore SA1019 - calling deprecated model while unit testing deprecated method
+			response := &models.ActualLRPGroupsResponse{
+				//lint:ignore SA1019 - calling deprecated model while unit testing deprecated method
+				ActualLrpGroups: []*models.ActualLRPGroup{
+					{
+						Instance: &models.ActualLRP{
+							State: "running",
+						},
+					},
+				},
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/actual_lrp_groups/list"),
-					//lint:ignore SA1019 - calling deprecated model while unit testing deprecated method
-					ghttp.VerifyProtoRepresenting(&models.ActualLRPGroupsRequest{
-						Domain: "cf-apps",
-						CellId: "cell_z1-0",
-					}),
-					//lint:ignore SA1019 - calling deprecated model while unit testing deprecated method
-					ghttp.RespondWithProto(200, &models.ActualLRPGroupsResponse{
-						//lint:ignore SA1019 - calling deprecated model while unit testing deprecated method
-						ActualLrpGroups: []*models.ActualLRPGroup{
-							{
-								Instance: &models.ActualLRP{
-									State: "running",
-								},
-							},
-						},
-					}),
+					ghttp.VerifyProtoRepresenting(request.ToProto()),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})

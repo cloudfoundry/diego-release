@@ -47,23 +47,23 @@ var _ = Describe("delete-task", func() {
 		})
 
 		JustBeforeEach(func() {
+			request := &models.TaskGuidRequest{
+				TaskGuid: taskGuid,
+			}
+			response := &models.TaskLifecycleResponse{}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/tasks/resolving"),
 					func(w http.ResponseWriter, req *http.Request) {
 						time.Sleep(time.Duration(serverTimeout) * time.Second)
 					},
-					ghttp.VerifyProtoRepresenting(&models.TaskGuidRequest{
-						TaskGuid: taskGuid,
-					}),
-					ghttp.RespondWithProto(200, &models.TaskLifecycleResponse{}),
+					ghttp.VerifyProtoRepresenting(request.ToProto()),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/tasks/delete"),
-					ghttp.VerifyProtoRepresenting(&models.TaskGuidRequest{
-						TaskGuid: taskGuid,
-					}),
-					ghttp.RespondWithProto(200, &models.TaskLifecycleResponse{}),
+					ghttp.VerifyProtoRepresenting(request.ToProto()),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})
@@ -101,24 +101,20 @@ var _ = Describe("delete-task", func() {
 
 	Context("when bbs responds with non-200 status code", func() {
 		BeforeEach(func() {
+			response := &models.TaskLifecycleResponse{
+				Error: &models.Error{
+					Type:    models.Error_Deadlock,
+					Message: "deadlock detected",
+				},
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/tasks/resolving"),
-					ghttp.RespondWithProto(500, &models.TaskLifecycleResponse{
-						Error: &models.Error{
-							Type:    models.Error_Deadlock,
-							Message: "deadlock detected",
-						},
-					}),
+					ghttp.RespondWithProto(500, response.ToProto()),
 				),
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/tasks/delete"),
-					ghttp.RespondWithProto(500, &models.TaskLifecycleResponse{
-						Error: &models.Error{
-							Type:    models.Error_Deadlock,
-							Message: "deadlock detected",
-						},
-					}),
+					ghttp.RespondWithProto(500, response.ToProto()),
 				),
 			)
 		})

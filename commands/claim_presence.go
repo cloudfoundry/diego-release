@@ -108,7 +108,7 @@ func ClaimPresence(
 			Key:      lockKey,
 			Owner:    lockOwner,
 			Value:    lockValue,
-			TypeCode: models.PRESENCE,
+			TypeCode: models.TypeCode_PRESENCE,
 		},
 		TtlInSeconds: ttlInSeconds,
 	}

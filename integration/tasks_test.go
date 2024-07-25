@@ -31,13 +31,14 @@ var _ = Describe("tasks", func() {
 		})
 
 		JustBeforeEach(func() {
+			response := &models.TasksResponse{Tasks: []*models.Task{&task}}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/tasks/list.r3"),
 					func(w http.ResponseWriter, req *http.Request) {
 						time.Sleep(time.Duration(serverTimeout) * time.Second)
 					},
-					ghttp.RespondWithProto(200, &models.TasksResponse{Tasks: []*models.Task{&task}}),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})
@@ -86,17 +87,19 @@ var _ = Describe("tasks", func() {
 	Context("when there are filters for tasks", func() {
 		Context("with domain filters", func() {
 			BeforeEach(func() {
+				request := &models.TasksRequest{
+					Domain: "domain",
+				}
+				response := &models.TaskResponse{
+					Task: &models.Task{
+						TaskGuid: "task-guid",
+					},
+				}
 				bbsServer.AppendHandlers(
 					ghttp.CombineHandlers(
 						ghttp.VerifyRequest("POST", "/v1/tasks/list.r3"),
-						ghttp.VerifyProtoRepresenting(&models.TasksRequest{
-							Domain: "domain",
-						}),
-						ghttp.RespondWithProto(200, &models.TaskResponse{
-							Task: &models.Task{
-								TaskGuid: "task-guid",
-							},
-						}),
+						ghttp.VerifyProtoRepresenting(request.ToProto()),
+						ghttp.RespondWithProto(200, response.ToProto()),
 					),
 				)
 			})
@@ -125,17 +128,19 @@ var _ = Describe("tasks", func() {
 
 		Context("with cell filters", func() {
 			BeforeEach(func() {
+				request := &models.TasksRequest{
+					CellId: "cell-id",
+				}
+				response := &models.TaskResponse{
+					Task: &models.Task{
+						TaskGuid: "task-guid",
+					},
+				}
 				bbsServer.AppendHandlers(
 					ghttp.CombineHandlers(
 						ghttp.VerifyRequest("POST", "/v1/tasks/list.r3"),
-						ghttp.VerifyProtoRepresenting(&models.TasksRequest{
-							CellId: "cell-id",
-						}),
-						ghttp.RespondWithProto(200, &models.TaskResponse{
-							Task: &models.Task{
-								TaskGuid: "task-guid",
-							},
-						}),
+						ghttp.VerifyProtoRepresenting(request.ToProto()),
+						ghttp.RespondWithProto(200, response.ToProto()),
 					),
 				)
 			})
@@ -164,18 +169,20 @@ var _ = Describe("tasks", func() {
 
 		Context("with cell and domain filters", func() {
 			BeforeEach(func() {
+				request := &models.TasksRequest{
+					Domain: "domain",
+					CellId: "cell-id",
+				}
+				response := &models.TaskResponse{
+					Task: &models.Task{
+						TaskGuid: "task-guid",
+					},
+				}
 				bbsServer.AppendHandlers(
 					ghttp.CombineHandlers(
 						ghttp.VerifyRequest("POST", "/v1/tasks/list.r3"),
-						ghttp.VerifyProtoRepresenting(&models.TasksRequest{
-							Domain: "domain",
-							CellId: "cell-id",
-						}),
-						ghttp.RespondWithProto(200, &models.TaskResponse{
-							Task: &models.Task{
-								TaskGuid: "task-guid",
-							},
-						}),
+						ghttp.VerifyProtoRepresenting(request.ToProto()),
+						ghttp.RespondWithProto(200, response.ToProto()),
 					),
 				)
 			})
@@ -197,10 +204,11 @@ var _ = Describe("tasks", func() {
 
 	Context("when the bbs returns an error", func() {
 		It("returns an error and exits with status 4", func() {
+			response := &models.TasksResponse{Error: models.ErrUnknownError}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/tasks/list.r3"),
-					ghttp.RespondWithProto(200, &models.TasksResponse{Error: models.ErrUnknownError}),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 

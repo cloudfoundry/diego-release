@@ -61,6 +61,13 @@ var _ = Describe("desired-lrp", func() {
 						ProcessGuid: "test-guid",
 						Instances:   2,
 					}
+					request := &models.DesiredLRPByProcessGuidRequest{
+						ProcessGuid: "test-guid",
+					}
+					response := &models.DesiredLRPResponse{
+						DesiredLrp: desiredLRP,
+						Error:      nil,
+					}
 
 					bbsServer.AppendHandlers(
 						ghttp.CombineHandlers(
@@ -68,13 +75,8 @@ var _ = Describe("desired-lrp", func() {
 							func(w http.ResponseWriter, req *http.Request) {
 								time.Sleep(time.Duration(serverTimeout) * time.Second)
 							},
-							ghttp.VerifyProtoRepresenting(&models.DesiredLRPByProcessGuidRequest{
-								ProcessGuid: "test-guid",
-							}),
-							ghttp.RespondWithProto(200, &models.DesiredLRPResponse{
-								DesiredLrp: desiredLRP,
-								Error:      nil,
-							}),
+							ghttp.VerifyProtoRepresenting(request.ToProto()),
+							ghttp.RespondWithProto(200, response.ToProto()),
 						),
 					)
 
@@ -96,6 +98,13 @@ var _ = Describe("desired-lrp", func() {
 						ProcessGuid: "test-guid",
 						Instances:   2,
 					}
+					request := &models.DesiredLRPByProcessGuidRequest{
+						ProcessGuid: "test-guid",
+					}
+					response := &models.DesiredLRPResponse{
+						DesiredLrp: desiredLRP,
+						Error:      nil,
+					}
 
 					bbsServer.AppendHandlers(
 						ghttp.CombineHandlers(
@@ -103,13 +112,8 @@ var _ = Describe("desired-lrp", func() {
 							func(w http.ResponseWriter, req *http.Request) {
 								time.Sleep(time.Duration(serverTimeout) * time.Second)
 							},
-							ghttp.VerifyProtoRepresenting(&models.DesiredLRPByProcessGuidRequest{
-								ProcessGuid: "test-guid",
-							}),
-							ghttp.RespondWithProto(200, &models.DesiredLRPResponse{
-								DesiredLrp: desiredLRP,
-								Error:      nil,
-							}),
+							ghttp.VerifyProtoRepresenting(request.ToProto()),
+							ghttp.RespondWithProto(200, response.ToProto()),
 						),
 					)
 				})
@@ -140,15 +144,16 @@ var _ = Describe("desired-lrp", func() {
 
 			Context("when bbs responds with non-200 status code", func() {
 				BeforeEach(func() {
+					response := &models.DesiredLRPResponse{
+						Error: &models.Error{
+							Type:    models.Error_Deadlock,
+							Message: "deadlock detected",
+						},
+					}
 					bbsServer.AppendHandlers(
 						ghttp.CombineHandlers(
 							ghttp.VerifyRequest("POST", "/v1/desired_lrps/get_by_process_guid.r3"),
-							ghttp.RespondWithProto(500, &models.DesiredLRPResponse{
-								Error: &models.Error{
-									Type:    models.Error_Deadlock,
-									Message: "deadlock detected",
-								},
-							}),
+							ghttp.RespondWithProto(500, response.ToProto()),
 						),
 					)
 				})

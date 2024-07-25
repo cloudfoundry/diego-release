@@ -59,7 +59,7 @@ func Locks(stdout, stderr io.Writer, locketClient models.LocketClient) error {
 
 	encoder := json.NewEncoder(stdout)
 
-	req := &models.FetchAllRequest{TypeCode: models.LOCK}
+	req := &models.FetchAllRequest{TypeCode: models.TypeCode_LOCK}
 	resp, err := locketClient.FetchAll(context.Background(), req)
 	if err != nil {
 		return err

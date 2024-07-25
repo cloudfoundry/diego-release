@@ -36,7 +36,7 @@ var _ = Describe("Presences", func() {
 						Key:      "key",
 						Owner:    "owner",
 						Value:    "value",
-						TypeCode: models.PRESENCE,
+						TypeCode: models.TypeCode_PRESENCE,
 					},
 				},
 			}
@@ -50,7 +50,7 @@ var _ = Describe("Presences", func() {
 			Expect(fakeLocketClient.FetchAllCallCount()).To(Equal(1))
 
 			_, req, _ := fakeLocketClient.FetchAllArgsForCall(0)
-			Expect(req).To(Equal(&models.FetchAllRequest{TypeCode: models.PRESENCE}))
+			Expect(req).To(Equal(&models.FetchAllRequest{TypeCode: models.TypeCode_PRESENCE}))
 
 			d, err := json.Marshal(resources.Resources[0])
 			Expect(err).NotTo(HaveOccurred())

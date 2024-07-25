@@ -44,7 +44,7 @@ var _ = Describe("ClaimLock", func() {
 					Key:      "key",
 					Owner:    "owner",
 					Value:    "value",
-					TypeCode: models.LOCK,
+					TypeCode: models.TypeCode_LOCK,
 				},
 				TtlInSeconds: 60,
 			}))

@@ -27,16 +27,17 @@ var _ = Describe("domains", func() {
 		})
 
 		JustBeforeEach(func() {
+			response := &models.DomainsResponse{
+				Error:   nil,
+				Domains: []string{"domain-1", "domain-2"},
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/domains/list"),
 					func(w http.ResponseWriter, req *http.Request) {
 						time.Sleep(time.Duration(serverTimeout) * time.Second)
 					},
-					ghttp.RespondWithProto(200, &models.DomainsResponse{
-						Error:   nil,
-						Domains: []string{"domain-1", "domain-2"},
-					}),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})
@@ -85,16 +86,17 @@ var _ = Describe("domains", func() {
 
 	Context("when the server returns an error", func() {
 		BeforeEach(func() {
+			response := &models.DomainsResponse{
+				Error: &models.Error{
+					Type:    models.Error_Deadlock,
+					Message: "the request failed due to deadlock",
+				},
+				Domains: nil,
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/domains/list"),
-					ghttp.RespondWithProto(200, &models.DomainsResponse{
-						Error: &models.Error{
-							Type:    models.Error_Deadlock,
-							Message: "the request failed due to deadlock",
-						},
-						Domains: nil,
-					}),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})
@@ -116,10 +118,11 @@ var _ = Describe("domains", func() {
 	Describe("flag parsing for bbsURL", func() {
 		Context("when running domains", func() {
 			BeforeEach(func() {
+				response := &models.DomainsResponse{}
 				bbsServer.AppendHandlers(
 					ghttp.CombineHandlers(
 						ghttp.VerifyRequest("POST", "/v1/domains/list"),
-						ghttp.RespondWithProto(200, &models.DomainsResponse{}),
+						ghttp.RespondWithProto(200, response.ToProto()),
 					),
 				)
 			})

@@ -25,32 +25,33 @@ var _ = Describe("cells", func() {
 		})
 
 		JustBeforeEach(func() {
+			response := &models.CellsResponse{
+				Cells: []*models.CellPresence{
+					{
+						CellId:     "cell-1",
+						RepAddress: "rep-1",
+						Zone:       "zone1",
+						Capacity: &models.CellCapacity{
+							MemoryMb:   1024,
+							DiskMb:     1024,
+							Containers: 10,
+						},
+						RootfsProviders: []*models.Provider{
+							{
+								Name: "rootfs1",
+							},
+						},
+						RepUrl: "http://rep1.com",
+					},
+				},
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/cells/list.r1"),
 					func(w http.ResponseWriter, req *http.Request) {
 						time.Sleep(time.Duration(serverTimeout) * time.Second)
 					},
-					ghttp.RespondWithProto(200, &models.CellsResponse{
-						Cells: []*models.CellPresence{
-							{
-								CellId:     "cell-1",
-								RepAddress: "rep-1",
-								Zone:       "zone1",
-								Capacity: &models.CellCapacity{
-									MemoryMb:   1024,
-									DiskMb:     1024,
-									Containers: 10,
-								},
-								RootfsProviders: []*models.Provider{
-									{
-										Name: "rootfs1",
-									},
-								},
-								RepUrl: "http://rep1.com",
-							},
-						},
-					}),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})

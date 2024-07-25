@@ -32,15 +32,16 @@ var _ = Describe("cell", func() {
 		})
 
 		JustBeforeEach(func() {
+			response := &models.CellsResponse{
+				Cells: []*models.CellPresence{presence},
+			}
 			bbsServer.AppendHandlers(
 				ghttp.CombineHandlers(
 					ghttp.VerifyRequest("POST", "/v1/cells/list.r1"),
 					func(w http.ResponseWriter, req *http.Request) {
 						time.Sleep(time.Duration(serverTimeout) * time.Second)
 					},
-					ghttp.RespondWithProto(200, &models.CellsResponse{
-						Cells: []*models.CellPresence{presence},
-					}),
+					ghttp.RespondWithProto(200, response.ToProto()),
 				),
 			)
 		})
