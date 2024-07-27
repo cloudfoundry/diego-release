@@ -36,7 +36,7 @@ require (
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
 	code.cloudfoundry.org/durationjson v0.0.0-20240726181222-f51c53bcb3a2
 	code.cloudfoundry.org/eventhub v0.0.0-20240726181227-84e26bd8e099
-	code.cloudfoundry.org/garden v0.0.0-20240725202647-8ec254b21a12
+	code.cloudfoundry.org/garden v0.0.0-20240726202833-9b672179f368
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.38.0
 	code.cloudfoundry.org/guardian v0.0.0-20240701200955-01b74f60037d
@@ -169,7 +169,7 @@ require (
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/go-containerregistry v0.20.1 // indirect
-	github.com/google/pprof v0.0.0-20240722153945-304e4f0156b8 // indirect
+	github.com/google/pprof v0.0.0-20240727154555-813a5fbdbec8 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/hashicorp/go-version v1.7.0 // indirect
