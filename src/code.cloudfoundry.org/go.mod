@@ -21,27 +21,27 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.0.0-20240726181220-782560461ee5
-	code.cloudfoundry.org/bytefmt v0.0.0-20240726181224-f9b67668c814
+	code.cloudfoundry.org/archiver v0.0.0-20240727181315-0f39e9f008f9
+	code.cloudfoundry.org/bytefmt v0.0.0-20240727181252-5b6127bbde80
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.0.0-20240726181229-ed42551386dd
+	code.cloudfoundry.org/certsplitter v0.0.0-20240727181302-d552d1216357
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240725192555-8ee8468dbf28
 	code.cloudfoundry.org/cfhttp/v2 v2.1.0
 	code.cloudfoundry.org/clock v1.2.0
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240722130535-d278c225e4da
-	code.cloudfoundry.org/debugserver v0.0.0-20240726181222-599a5c45bf48
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240726181237-441fce0fff1f
+	code.cloudfoundry.org/debugserver v0.0.0-20240727181254-71b66448559a
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240727181256-715a51a1adfd
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
-	code.cloudfoundry.org/durationjson v0.0.0-20240726181222-f51c53bcb3a2
-	code.cloudfoundry.org/eventhub v0.0.0-20240726181227-84e26bd8e099
-	code.cloudfoundry.org/garden v0.0.0-20240726202833-9b672179f368
+	code.cloudfoundry.org/durationjson v0.0.0-20240727181317-1a0f6d192188
+	code.cloudfoundry.org/eventhub v0.0.0-20240727181258-6b4cea6fe97f
+	code.cloudfoundry.org/garden v0.0.0-20240727203014-655c93589a4e
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.38.0
 	code.cloudfoundry.org/guardian v0.0.0-20240701200955-01b74f60037d
 	code.cloudfoundry.org/lager/v3 v3.0.3
-	code.cloudfoundry.org/localip v0.0.0-20240726181223-1b72a9d14527
+	code.cloudfoundry.org/localip v0.0.0-20240727181250-27d9cffe06db
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240712175922-ffce9516cec8
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
@@ -99,7 +99,7 @@ require (
 
 require (
 	cel.dev/expr v0.15.0 // indirect
-	code.cloudfoundry.org/commandrunner v0.0.0-20240726161613-e476ebd2d9cc // indirect
+	code.cloudfoundry.org/commandrunner v0.0.0-20240727161716-6d7c182c3f61 // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240723012033-bf559dd3d0b1 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/azure-sdk-for-go v68.0.0+incompatible // indirect
