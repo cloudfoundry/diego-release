@@ -30,7 +30,7 @@ require (
 	code.cloudfoundry.org/cfhttp/v2 v2.1.0
 	code.cloudfoundry.org/clock v1.2.0
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
-	code.cloudfoundry.org/credhub-cli v0.0.0-20240722130535-d278c225e4da
+	code.cloudfoundry.org/credhub-cli v0.0.0-20240729134917-c66c4df00ca9
 	code.cloudfoundry.org/debugserver v0.0.0-20240727181254-71b66448559a
 	code.cloudfoundry.org/diego-logging-client v0.0.0-20240727181256-715a51a1adfd
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
