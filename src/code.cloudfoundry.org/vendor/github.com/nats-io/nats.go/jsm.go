@@ -1,4 +1,4 @@
-// Copyright 2021-2022 The NATS Authors
+// Copyright 2021-2023 The NATS Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -41,7 +41,11 @@ type JetStreamManager interface {
 	PurgeStream(name string, opts ...JSOpt) error
 
 	// StreamsInfo can be used to retrieve a list of StreamInfo objects.
+	// DEPRECATED: Use Streams() instead.
 	StreamsInfo(opts ...JSOpt) <-chan *StreamInfo
+
+	// Streams can be used to retrieve a list of StreamInfo objects.
+	Streams(opts ...JSOpt) <-chan *StreamInfo
 
 	// StreamNames is used to retrieve a list of Stream names.
 	StreamNames(opts ...JSOpt) <-chan string
@@ -66,6 +70,10 @@ type JetStreamManager interface {
 	SecureDeleteMsg(name string, seq uint64, opts ...JSOpt) error
 
 	// AddConsumer adds a consumer to a stream.
+	// If the consumer already exists, and the configuration is the same, it
+	// will return the existing consumer.
+	// If the consumer already exists, and the configuration is different, it
+	// will return ErrConsumerNameAlreadyInUse.
 	AddConsumer(stream string, cfg *ConsumerConfig, opts ...JSOpt) (*ConsumerInfo, error)
 
 	// UpdateConsumer updates an existing consumer.
@@ -78,50 +86,169 @@ type JetStreamManager interface {
 	ConsumerInfo(stream, name string, opts ...JSOpt) (*ConsumerInfo, error)
 
 	// ConsumersInfo is used to retrieve a list of ConsumerInfo objects.
+	// DEPRECATED: Use Consumers() instead.
 	ConsumersInfo(stream string, opts ...JSOpt) <-chan *ConsumerInfo
+
+	// Consumers is used to retrieve a list of ConsumerInfo objects.
+	Consumers(stream string, opts ...JSOpt) <-chan *ConsumerInfo
 
 	// ConsumerNames is used to retrieve a list of Consumer names.
 	ConsumerNames(stream string, opts ...JSOpt) <-chan string
 
 	// AccountInfo retrieves info about the JetStream usage from an account.
 	AccountInfo(opts ...JSOpt) (*AccountInfo, error)
+
+	// StreamNameBySubject returns a stream matching given subject.
+	StreamNameBySubject(string, ...JSOpt) (string, error)
 }
 
 // StreamConfig will determine the properties for a stream.
 // There are sensible defaults for most. If no subjects are
 // given the name will be used as the only subject.
 type StreamConfig struct {
-	Name              string          `json:"name"`
-	Description       string          `json:"description,omitempty"`
-	Subjects          []string        `json:"subjects,omitempty"`
-	Retention         RetentionPolicy `json:"retention"`
-	MaxConsumers      int             `json:"max_consumers"`
-	MaxMsgs           int64           `json:"max_msgs"`
-	MaxBytes          int64           `json:"max_bytes"`
-	Discard           DiscardPolicy   `json:"discard"`
-	MaxAge            time.Duration   `json:"max_age"`
-	MaxMsgsPerSubject int64           `json:"max_msgs_per_subject"`
-	MaxMsgSize        int32           `json:"max_msg_size,omitempty"`
-	Storage           StorageType     `json:"storage"`
-	Replicas          int             `json:"num_replicas"`
-	NoAck             bool            `json:"no_ack,omitempty"`
-	Template          string          `json:"template_owner,omitempty"`
-	Duplicates        time.Duration   `json:"duplicate_window,omitempty"`
-	Placement         *Placement      `json:"placement,omitempty"`
-	Mirror            *StreamSource   `json:"mirror,omitempty"`
-	Sources           []*StreamSource `json:"sources,omitempty"`
-	Sealed            bool            `json:"sealed,omitempty"`
-	DenyDelete        bool            `json:"deny_delete,omitempty"`
-	DenyPurge         bool            `json:"deny_purge,omitempty"`
-	AllowRollup       bool            `json:"allow_rollup_hdrs,omitempty"`
+	// Name is the name of the stream. It is required and must be unique
+	// across the JetStream account.
+	//
+	// Name Names cannot contain whitespace, ., *, >, path separators
+	// (forward or backwards slash), and non-printable characters.
+	Name string `json:"name"`
 
-	// Allow republish of the message after being sequenced and stored.
+	// Description is an optional description of the stream.
+	Description string `json:"description,omitempty"`
+
+	// Subjects is a list of subjects that the stream is listening on.
+	// Wildcards are supported. Subjects cannot be set if the stream is
+	// created as a mirror.
+	Subjects []string `json:"subjects,omitempty"`
+
+	// Retention defines the message retention policy for the stream.
+	// Defaults to LimitsPolicy.
+	Retention RetentionPolicy `json:"retention"`
+
+	// MaxConsumers specifies the maximum number of consumers allowed for
+	// the stream.
+	MaxConsumers int `json:"max_consumers"`
+
+	// MaxMsgs is the maximum number of messages the stream will store.
+	// After reaching the limit, stream adheres to the discard policy.
+	// If not set, server default is -1 (unlimited).
+	MaxMsgs int64 `json:"max_msgs"`
+
+	// MaxBytes is the maximum total size of messages the stream will store.
+	// After reaching the limit, stream adheres to the discard policy.
+	// If not set, server default is -1 (unlimited).
+	MaxBytes int64 `json:"max_bytes"`
+
+	// Discard defines the policy for handling messages when the stream
+	// reaches its limits in terms of number of messages or total bytes.
+	Discard DiscardPolicy `json:"discard"`
+
+	// DiscardNewPerSubject is a flag to enable discarding new messages per
+	// subject when limits are reached. Requires DiscardPolicy to be
+	// DiscardNew and the MaxMsgsPerSubject to be set.
+	DiscardNewPerSubject bool `json:"discard_new_per_subject,omitempty"`
+
+	// MaxAge is the maximum age of messages that the stream will retain.
+	MaxAge time.Duration `json:"max_age"`
+
+	// MaxMsgsPerSubject is the maximum number of messages per subject that
+	// the stream will retain.
+	MaxMsgsPerSubject int64 `json:"max_msgs_per_subject"`
+
+	// MaxMsgSize is the maximum size of any single message in the stream.
+	MaxMsgSize int32 `json:"max_msg_size,omitempty"`
+
+	// Storage specifies the type of storage backend used for the stream
+	// (file or memory).
+	Storage StorageType `json:"storage"`
+
+	// Replicas is the number of stream replicas in clustered JetStream.
+	// Defaults to 1, maximum is 5.
+	Replicas int `json:"num_replicas"`
+
+	// NoAck is a flag to disable acknowledging messages received by this
+	// stream.
+	//
+	// If set to true, publish methods from the JetStream client will not
+	// work as expected, since they rely on acknowledgements. Core NATS
+	// publish methods should be used instead. Note that this will make
+	// message delivery less reliable.
+	NoAck bool `json:"no_ack,omitempty"`
+
+	// Duplicates is the window within which to track duplicate messages.
+	// If not set, server default is 2 minutes.
+	Duplicates time.Duration `json:"duplicate_window,omitempty"`
+
+	// Placement is used to declare where the stream should be placed via
+	// tags and/or an explicit cluster name.
+	Placement *Placement `json:"placement,omitempty"`
+
+	// Mirror defines the configuration for mirroring another stream.
+	Mirror *StreamSource `json:"mirror,omitempty"`
+
+	// Sources is a list of other streams this stream sources messages from.
+	Sources []*StreamSource `json:"sources,omitempty"`
+
+	// Sealed streams do not allow messages to be published or deleted via limits or API,
+	// sealed streams can not be unsealed via configuration update. Can only
+	// be set on already created streams via the Update API.
+	Sealed bool `json:"sealed,omitempty"`
+
+	// DenyDelete restricts the ability to delete messages from a stream via
+	// the API. Defaults to false.
+	DenyDelete bool `json:"deny_delete,omitempty"`
+
+	// DenyPurge restricts the ability to purge messages from a stream via
+	// the API. Defaults to false.
+	DenyPurge bool `json:"deny_purge,omitempty"`
+
+	// AllowRollup allows the use of the Nats-Rollup header to replace all
+	// contents of a stream, or subject in a stream, with a single new
+	// message.
+	AllowRollup bool `json:"allow_rollup_hdrs,omitempty"`
+
+	// Compression specifies the message storage compression algorithm.
+	// Defaults to NoCompression.
+	Compression StoreCompression `json:"compression"`
+
+	// FirstSeq is the initial sequence number of the first message in the
+	// stream.
+	FirstSeq uint64 `json:"first_seq,omitempty"`
+
+	// SubjectTransform allows applying a transformation to matching
+	// messages' subjects.
+	SubjectTransform *SubjectTransformConfig `json:"subject_transform,omitempty"`
+
+	// RePublish allows immediate republishing a message to the configured
+	// subject after it's stored.
 	RePublish *RePublish `json:"republish,omitempty"`
 
-	// Allow higher performance, direct access to get individual messages. E.g. KeyValue
+	// AllowDirect enables direct access to individual messages using direct
+	// get API. Defaults to false.
 	AllowDirect bool `json:"allow_direct"`
-	// Allow higher performance and unified direct access for mirrors as well.
+
+	// MirrorDirect enables direct access to individual messages from the
+	// origin stream using direct get API. Defaults to false.
 	MirrorDirect bool `json:"mirror_direct"`
+
+	// ConsumerLimits defines limits of certain values that consumers can
+	// set, defaults for those who don't set these settings
+	ConsumerLimits StreamConsumerLimits `json:"consumer_limits,omitempty"`
+
+	// Metadata is a set of application-defined key-value pairs for
+	// associating metadata on the stream. This feature requires nats-server
+	// v2.10.0 or later.
+	Metadata map[string]string `json:"metadata,omitempty"`
+
+	// Template identifies the template that manages the Stream. DEPRECATED:
+	// This feature is no longer supported.
+	Template string `json:"template_owner,omitempty"`
+}
+
+// SubjectTransformConfig is for applying a subject transform (to matching messages) before doing anything else when a new message is received.
+type SubjectTransformConfig struct {
+	Source      string `json:"src,omitempty"`
+	Destination string `json:"dest"`
 }
 
 // RePublish is for republishing messages once committed to a stream. The original
@@ -140,18 +267,57 @@ type Placement struct {
 
 // StreamSource dictates how streams can source from other streams.
 type StreamSource struct {
-	Name          string          `json:"name"`
-	OptStartSeq   uint64          `json:"opt_start_seq,omitempty"`
-	OptStartTime  *time.Time      `json:"opt_start_time,omitempty"`
-	FilterSubject string          `json:"filter_subject,omitempty"`
-	External      *ExternalStream `json:"external,omitempty"`
+	Name              string                   `json:"name"`
+	OptStartSeq       uint64                   `json:"opt_start_seq,omitempty"`
+	OptStartTime      *time.Time               `json:"opt_start_time,omitempty"`
+	FilterSubject     string                   `json:"filter_subject,omitempty"`
+	SubjectTransforms []SubjectTransformConfig `json:"subject_transforms,omitempty"`
+	External          *ExternalStream          `json:"external,omitempty"`
+	Domain            string                   `json:"-"`
 }
 
 // ExternalStream allows you to qualify access to a stream source in another
 // account.
 type ExternalStream struct {
 	APIPrefix     string `json:"api"`
-	DeliverPrefix string `json:"deliver"`
+	DeliverPrefix string `json:"deliver,omitempty"`
+}
+
+// StreamConsumerLimits are the limits for a consumer on a stream.
+// These can be overridden on a per consumer basis.
+type StreamConsumerLimits struct {
+	InactiveThreshold time.Duration `json:"inactive_threshold,omitempty"`
+	MaxAckPending     int           `json:"max_ack_pending,omitempty"`
+}
+
+// Helper for copying when we do not want to change user's version.
+func (ss *StreamSource) copy() *StreamSource {
+	nss := *ss
+	// Check pointers
+	if ss.OptStartTime != nil {
+		t := *ss.OptStartTime
+		nss.OptStartTime = &t
+	}
+	if ss.External != nil {
+		ext := *ss.External
+		nss.External = &ext
+	}
+	return &nss
+}
+
+// If we have a Domain, convert to the appropriate ext.APIPrefix.
+// This will change the stream source, so should be a copy passed in.
+func (ss *StreamSource) convertDomain() error {
+	if ss.Domain == _EMPTY_ {
+		return nil
+	}
+	if ss.External != nil {
+		// These should be mutually exclusive.
+		// TODO(dlc) - Make generic?
+		return errors.New("nats: domain and external are both set")
+	}
+	ss.External = &ExternalStream{APIPrefix: fmt.Sprintf(jsExtDomainT, ss.Domain)}
+	return nil
 }
 
 // apiResponse is a standard response from the JetStream JSON API
@@ -170,7 +336,7 @@ type apiPaged struct {
 // apiPagedRequest includes parameters allowing specific pages to be requested
 // from APIs responding with apiPaged.
 type apiPagedRequest struct {
-	Offset int `json:"offset"`
+	Offset int `json:"offset,omitempty"`
 }
 
 // AccountInfo contains info about the JetStream usage from the current account.
@@ -178,15 +344,17 @@ type AccountInfo struct {
 	Tier
 	Domain string          `json:"domain"`
 	API    APIStats        `json:"api"`
-	Tiers  map[string]Tier `json:"tier"`
+	Tiers  map[string]Tier `json:"tiers"`
 }
 
 type Tier struct {
-	Memory    uint64        `json:"memory"`
-	Store     uint64        `json:"storage"`
-	Streams   int           `json:"streams"`
-	Consumers int           `json:"consumers"`
-	Limits    AccountLimits `json:"limits"`
+	Memory         uint64        `json:"memory"`
+	Store          uint64        `json:"storage"`
+	ReservedMemory uint64        `json:"reserved_memory"`
+	ReservedStore  uint64        `json:"reserved_storage"`
+	Streams        int           `json:"streams"`
+	Consumers      int           `json:"consumers"`
+	Limits         AccountLimits `json:"limits"`
 }
 
 // APIStats reports on API calls to JetStream for this account.
@@ -212,9 +380,13 @@ type accountInfoResponse struct {
 	AccountInfo
 }
 
-// AccountInfo retrieves info about the JetStream usage from the current account.
-// If JetStream is not enabled, this will return ErrJetStreamNotEnabled
-// Other errors can happen but are generally considered retryable
+// AccountInfo fetches account information from the server, containing details
+// about the account associated with this JetStream connection. If account is
+// not enabled for JetStream, ErrJetStreamNotEnabledForAccount is returned.
+//
+// If the server does not have JetStream enabled, ErrJetStreamNotEnabled is
+// returned (for a single server setup). For clustered topologies, AccountInfo
+// will time out.
 func (js *js) AccountInfo(opts ...JSOpt) (*AccountInfo, error) {
 	o, cancel, err := getJSContextOpts(js.opts, opts...)
 	if err != nil {
@@ -227,7 +399,7 @@ func (js *js) AccountInfo(opts ...JSOpt) (*AccountInfo, error) {
 	resp, err := js.apiRequestWithContext(o.ctx, js.apiSubj(apiAccountInfo), nil)
 	if err != nil {
 		// todo maybe nats server should never have no responder on this subject and always respond if they know there is no js to be had
-		if err == ErrNoResponders {
+		if errors.Is(err, ErrNoResponders) {
 			err = ErrJetStreamNotEnabled
 		}
 		return nil, err
@@ -257,10 +429,21 @@ type consumerResponse struct {
 	*ConsumerInfo
 }
 
-// AddConsumer will add a JetStream consumer.
+// AddConsumer adds a consumer to a stream.
+// If the consumer already exists, and the configuration is the same, it
+// will return the existing consumer.
+// If the consumer already exists, and the configuration is different, it
+// will return ErrConsumerNameAlreadyInUse.
 func (js *js) AddConsumer(stream string, cfg *ConsumerConfig, opts ...JSOpt) (*ConsumerInfo, error) {
-	if cfg != nil && cfg.Durable != _EMPTY_ {
-		consInfo, err := js.ConsumerInfo(stream, cfg.Durable)
+	if cfg == nil {
+		cfg = &ConsumerConfig{}
+	}
+	consumerName := cfg.Name
+	if consumerName == _EMPTY_ {
+		consumerName = cfg.Durable
+	}
+	if consumerName != _EMPTY_ {
+		consInfo, err := js.ConsumerInfo(stream, consumerName, opts...)
 		if err != nil && !errors.Is(err, ErrConsumerNotFound) && !errors.Is(err, ErrStreamNotFound) {
 			return nil, err
 		}
@@ -268,25 +451,31 @@ func (js *js) AddConsumer(stream string, cfg *ConsumerConfig, opts ...JSOpt) (*C
 		if consInfo != nil {
 			sameConfig := checkConfig(&consInfo.Config, cfg)
 			if sameConfig != nil {
-				return nil, fmt.Errorf("%w: creating consumer %q on stream %q", ErrConsumerNameAlreadyInUse, cfg.Durable, stream)
+				return nil, fmt.Errorf("%w: creating consumer %q on stream %q", ErrConsumerNameAlreadyInUse, consumerName, stream)
+			} else {
+				return consInfo, nil
 			}
 		}
 	}
 
-	return js.upsertConsumer(stream, cfg, opts...)
+	return js.upsertConsumer(stream, consumerName, cfg, opts...)
 }
 
 func (js *js) UpdateConsumer(stream string, cfg *ConsumerConfig, opts ...JSOpt) (*ConsumerInfo, error) {
 	if cfg == nil {
 		return nil, ErrConsumerConfigRequired
 	}
-	if cfg.Durable == _EMPTY_ {
+	consumerName := cfg.Name
+	if consumerName == _EMPTY_ {
+		consumerName = cfg.Durable
+	}
+	if consumerName == _EMPTY_ {
 		return nil, ErrConsumerNameRequired
 	}
-	return js.upsertConsumer(stream, cfg, opts...)
+	return js.upsertConsumer(stream, consumerName, cfg, opts...)
 }
 
-func (js *js) upsertConsumer(stream string, cfg *ConsumerConfig, opts ...JSOpt) (*ConsumerInfo, error) {
+func (js *js) upsertConsumer(stream, consumerName string, cfg *ConsumerConfig, opts ...JSOpt) (*ConsumerInfo, error) {
 	if err := checkStreamName(stream); err != nil {
 		return nil, err
 	}
@@ -304,18 +493,39 @@ func (js *js) upsertConsumer(stream string, cfg *ConsumerConfig, opts ...JSOpt) 
 	}
 
 	var ccSubj string
-	if cfg != nil && cfg.Durable != _EMPTY_ {
-		if err := checkConsumerName(cfg.Durable); err != nil {
-			return nil, err
+	if consumerName == _EMPTY_ {
+		// if consumer name is empty (neither Durable nor Name is set), use the legacy ephemeral endpoint
+		ccSubj = fmt.Sprintf(apiLegacyConsumerCreateT, stream)
+	} else if err := checkConsumerName(consumerName); err != nil {
+		return nil, err
+	} else if js.nc.serverMinVersion(2, 9, 0) {
+		if cfg.Durable != "" && js.opts.featureFlags.useDurableConsumerCreate {
+			// if user set the useDurableConsumerCreate flag, use the legacy DURABLE.CREATE endpoint
+			ccSubj = fmt.Sprintf(apiDurableCreateT, stream, consumerName)
+		} else if cfg.FilterSubject == _EMPTY_ || cfg.FilterSubject == ">" {
+			// if filter subject is empty or ">", use the endpoint without filter subject
+			ccSubj = fmt.Sprintf(apiConsumerCreateT, stream, consumerName)
+		} else {
+			// safeguard against passing invalid filter subject in request subject
+			if cfg.FilterSubject[0] == '.' || cfg.FilterSubject[len(cfg.FilterSubject)-1] == '.' {
+				return nil, fmt.Errorf("%w: %q", ErrInvalidFilterSubject, cfg.FilterSubject)
+			}
+			// if filter subject is not empty, use the endpoint with filter subject
+			ccSubj = fmt.Sprintf(apiConsumerCreateWithFilterSubjectT, stream, consumerName, cfg.FilterSubject)
 		}
-		ccSubj = fmt.Sprintf(apiDurableCreateT, stream, cfg.Durable)
 	} else {
-		ccSubj = fmt.Sprintf(apiConsumerCreateT, stream)
+		if cfg.Durable != "" {
+			// if Durable is set, use the DURABLE.CREATE endpoint
+			ccSubj = fmt.Sprintf(apiDurableCreateT, stream, consumerName)
+		} else {
+			// if Durable is not set, use the legacy ephemeral endpoint
+			ccSubj = fmt.Sprintf(apiLegacyConsumerCreateT, stream)
+		}
 	}
 
 	resp, err := js.apiRequestWithContext(o.ctx, js.apiSubj(ccSubj), req)
 	if err != nil {
-		if err == ErrNoResponders {
+		if errors.Is(err, ErrNoResponders) {
 			err = ErrJetStreamNotEnabled
 		}
 		return nil, err
@@ -334,6 +544,11 @@ func (js *js) upsertConsumer(stream string, cfg *ConsumerConfig, opts ...JSOpt) 
 		}
 		return nil, info.Error
 	}
+
+	// check whether multiple filter subjects (if used) are reflected in the returned ConsumerInfo
+	if len(cfg.FilterSubjects) != 0 && len(info.Config.FilterSubjects) == 0 {
+		return nil, ErrConsumerMultipleFilterSubjectsNotSupported
+	}
 	return info.ConsumerInfo, nil
 }
 
@@ -347,19 +562,20 @@ func checkStreamName(stream string) error {
 	if stream == _EMPTY_ {
 		return ErrStreamNameRequired
 	}
-	if strings.Contains(stream, ".") {
+	if strings.ContainsAny(stream, ". ") {
 		return ErrInvalidStreamName
 	}
 	return nil
 }
 
-// Check that the durable name exists and is valid, that is, that it does not contain any "."
+// Check that the consumer name is not empty and is valid (does not contain "." and " ").
+// Additional consumer name validation is done in nats-server.
 // Returns ErrConsumerNameRequired if consumer name is empty, ErrInvalidConsumerName is invalid, otherwise nil
 func checkConsumerName(consumer string) error {
 	if consumer == _EMPTY_ {
 		return ErrConsumerNameRequired
 	}
-	if strings.Contains(consumer, ".") {
+	if strings.ContainsAny(consumer, ". ") {
 		return ErrInvalidConsumerName
 	}
 	return nil
@@ -502,8 +718,8 @@ func (c *consumerLister) Err() error {
 	return c.err
 }
 
-// ConsumersInfo is used to retrieve a list of ConsumerInfo objects.
-func (jsc *js) ConsumersInfo(stream string, opts ...JSOpt) <-chan *ConsumerInfo {
+// Consumers is used to retrieve a list of ConsumerInfo objects.
+func (jsc *js) Consumers(stream string, opts ...JSOpt) <-chan *ConsumerInfo {
 	o, cancel, err := getJSContextOpts(jsc.opts, opts...)
 	if err != nil {
 		return nil
@@ -528,6 +744,12 @@ func (jsc *js) ConsumersInfo(stream string, opts ...JSOpt) <-chan *ConsumerInfo 
 	}()
 
 	return ch
+}
+
+// ConsumersInfo is used to retrieve a list of ConsumerInfo objects.
+// DEPRECATED: Use Consumers() instead.
+func (jsc *js) ConsumersInfo(stream string, opts ...JSOpt) <-chan *ConsumerInfo {
+	return jsc.Consumers(stream, opts...)
 }
 
 type consumerNamesLister struct {
@@ -655,7 +877,31 @@ func (js *js) AddStream(cfg *StreamConfig, opts ...JSOpt) (*StreamInfo, error) {
 		defer cancel()
 	}
 
-	req, err := json.Marshal(cfg)
+	// In case we need to change anything, copy so we do not change the caller's version.
+	ncfg := *cfg
+
+	// If we have a mirror and an external domain, convert to ext.APIPrefix.
+	if cfg.Mirror != nil && cfg.Mirror.Domain != _EMPTY_ {
+		// Copy so we do not change the caller's version.
+		ncfg.Mirror = ncfg.Mirror.copy()
+		if err := ncfg.Mirror.convertDomain(); err != nil {
+			return nil, err
+		}
+	}
+	// Check sources for the same.
+	if len(ncfg.Sources) > 0 {
+		ncfg.Sources = append([]*StreamSource(nil), ncfg.Sources...)
+		for i, ss := range ncfg.Sources {
+			if ss.Domain != _EMPTY_ {
+				ncfg.Sources[i] = ss.copy()
+				if err := ncfg.Sources[i].convertDomain(); err != nil {
+					return nil, err
+				}
+			}
+		}
+	}
+
+	req, err := json.Marshal(&ncfg)
 	if err != nil {
 		return nil, err
 	}
@@ -676,18 +922,38 @@ func (js *js) AddStream(cfg *StreamConfig, opts ...JSOpt) (*StreamInfo, error) {
 		return nil, resp.Error
 	}
 
+	// check that input subject transform (if used) is reflected in the returned ConsumerInfo
+	if cfg.SubjectTransform != nil && resp.StreamInfo.Config.SubjectTransform == nil {
+		return nil, ErrStreamSubjectTransformNotSupported
+	}
+	if len(cfg.Sources) != 0 {
+		if len(cfg.Sources) != len(resp.Config.Sources) {
+			return nil, ErrStreamSourceNotSupported
+		}
+		for i := range cfg.Sources {
+			if len(cfg.Sources[i].SubjectTransforms) != 0 && len(resp.Sources[i].SubjectTransforms) == 0 {
+				return nil, ErrStreamSourceMultipleSubjectTransformsNotSupported
+			}
+		}
+	}
+
 	return resp.StreamInfo, nil
 }
 
 type (
 	// StreamInfoRequest contains additional option to return
 	StreamInfoRequest struct {
+		apiPagedRequest
 		// DeletedDetails when true includes information about deleted messages
 		DeletedDetails bool `json:"deleted_details,omitempty"`
 		// SubjectsFilter when set, returns information on the matched subjects
 		SubjectsFilter string `json:"subjects_filter,omitempty"`
 	}
-	streamInfoResponse = streamCreateResponse
+	streamInfoResponse = struct {
+		apiResponse
+		apiPaged
+		*StreamInfo
+	}
 )
 
 func (js *js) StreamInfo(stream string, opts ...JSOpt) (*StreamInfo, error) {
@@ -701,49 +967,100 @@ func (js *js) StreamInfo(stream string, opts ...JSOpt) (*StreamInfo, error) {
 	if cancel != nil {
 		defer cancel()
 	}
+
+	var i int
+	var subjectMessagesMap map[string]uint64
 	var req []byte
+	var requestPayload bool
+
+	var siOpts StreamInfoRequest
 	if o.streamInfoOpts != nil {
-		if req, err = json.Marshal(o.streamInfoOpts); err != nil {
+		requestPayload = true
+		siOpts = *o.streamInfoOpts
+	}
+
+	for {
+		if requestPayload {
+			siOpts.Offset = i
+			if req, err = json.Marshal(&siOpts); err != nil {
+				return nil, err
+			}
+		}
+
+		siSubj := js.apiSubj(fmt.Sprintf(apiStreamInfoT, stream))
+
+		r, err := js.apiRequestWithContext(o.ctx, siSubj, req)
+		if err != nil {
 			return nil, err
 		}
-	}
-	siSubj := js.apiSubj(fmt.Sprintf(apiStreamInfoT, stream))
 
-	r, err := js.apiRequestWithContext(o.ctx, siSubj, req)
-	if err != nil {
-		return nil, err
-	}
-	var resp streamInfoResponse
-	if err := json.Unmarshal(r.Data, &resp); err != nil {
-		return nil, err
-	}
-	if resp.Error != nil {
-		if errors.Is(resp.Error, ErrStreamNotFound) {
-			return nil, ErrStreamNotFound
+		var resp streamInfoResponse
+		if err := json.Unmarshal(r.Data, &resp); err != nil {
+			return nil, err
 		}
-		return nil, resp.Error
-	}
 
-	return resp.StreamInfo, nil
+		if resp.Error != nil {
+			if errors.Is(resp.Error, ErrStreamNotFound) {
+				return nil, ErrStreamNotFound
+			}
+			return nil, resp.Error
+		}
+
+		var total int
+		// for backwards compatibility
+		if resp.Total != 0 {
+			total = resp.Total
+		} else {
+			total = len(resp.State.Subjects)
+		}
+
+		if requestPayload && len(resp.StreamInfo.State.Subjects) > 0 {
+			if subjectMessagesMap == nil {
+				subjectMessagesMap = make(map[string]uint64, total)
+			}
+
+			for k, j := range resp.State.Subjects {
+				subjectMessagesMap[k] = j
+				i++
+			}
+		}
+
+		if i >= total {
+			if requestPayload {
+				resp.StreamInfo.State.Subjects = subjectMessagesMap
+			}
+			return resp.StreamInfo, nil
+		}
+	}
 }
 
 // StreamInfo shows config and current state for this stream.
 type StreamInfo struct {
-	Config  StreamConfig        `json:"config"`
-	Created time.Time           `json:"created"`
-	State   StreamState         `json:"state"`
-	Cluster *ClusterInfo        `json:"cluster,omitempty"`
-	Mirror  *StreamSourceInfo   `json:"mirror,omitempty"`
-	Sources []*StreamSourceInfo `json:"sources,omitempty"`
+	Config     StreamConfig        `json:"config"`
+	Created    time.Time           `json:"created"`
+	State      StreamState         `json:"state"`
+	Cluster    *ClusterInfo        `json:"cluster,omitempty"`
+	Mirror     *StreamSourceInfo   `json:"mirror,omitempty"`
+	Sources    []*StreamSourceInfo `json:"sources,omitempty"`
+	Alternates []*StreamAlternate  `json:"alternates,omitempty"`
+}
+
+// StreamAlternate is an alternate stream represented by a mirror.
+type StreamAlternate struct {
+	Name    string `json:"name"`
+	Domain  string `json:"domain,omitempty"`
+	Cluster string `json:"cluster"`
 }
 
 // StreamSourceInfo shows information about an upstream stream source.
 type StreamSourceInfo struct {
-	Name     string          `json:"name"`
-	Lag      uint64          `json:"lag"`
-	Active   time.Duration   `json:"active"`
-	External *ExternalStream `json:"external"`
-	Error    *APIError       `json:"error"`
+	Name              string                   `json:"name"`
+	Lag               uint64                   `json:"lag"`
+	Active            time.Duration            `json:"active"`
+	External          *ExternalStream          `json:"external"`
+	Error             *APIError                `json:"error"`
+	FilterSubject     string                   `json:"filter_subject,omitempty"`
+	SubjectTransforms []SubjectTransformConfig `json:"subject_transforms,omitempty"`
 }
 
 // StreamState is information about the given stream.
@@ -815,6 +1132,23 @@ func (js *js) UpdateStream(cfg *StreamConfig, opts ...JSOpt) (*StreamInfo, error
 		}
 		return nil, resp.Error
 	}
+
+	// check that input subject transform (if used) is reflected in the returned StreamInfo
+	if cfg.SubjectTransform != nil && resp.StreamInfo.Config.SubjectTransform == nil {
+		return nil, ErrStreamSubjectTransformNotSupported
+	}
+
+	if len(cfg.Sources) != 0 {
+		if len(cfg.Sources) != len(resp.Config.Sources) {
+			return nil, ErrStreamSourceNotSupported
+		}
+		for i := range cfg.Sources {
+			if len(cfg.Sources[i].SubjectTransforms) != 0 && len(resp.Sources[i].SubjectTransforms) == 0 {
+				return nil, ErrStreamSourceMultipleSubjectTransformsNotSupported
+			}
+		}
+	}
+
 	return resp.StreamInfo, nil
 }
 
@@ -911,17 +1245,13 @@ func (js *js) getMsg(name string, mreq *apiMsgGetRequest, opts ...JSOpt) (*RawSt
 	}
 
 	var apiSubj string
-
-	doDirectGetLastBySubject := o.directGet && mreq.LastFor != _EMPTY_
-
-	if doDirectGetLastBySubject {
+	if o.directGet && mreq.LastFor != _EMPTY_ {
 		apiSubj = apiDirectMsgGetLastBySubjectT
 		dsSubj := js.apiSubj(fmt.Sprintf(apiSubj, name, mreq.LastFor))
 		r, err := js.apiRequestWithContext(o.ctx, dsSubj, nil)
 		if err != nil {
 			return nil, err
 		}
-
 		return convertDirectGetMsgResponseToMsg(name, r)
 	}
 
@@ -965,7 +1295,7 @@ func (js *js) getMsg(name string, mreq *apiMsgGetRequest, opts ...JSOpt) (*RawSt
 
 	var hdr Header
 	if len(msg.Header) > 0 {
-		hdr, err = decodeHeadersMsg(msg.Header)
+		hdr, err = DecodeHeadersMsg(msg.Header)
 		if err != nil {
 			return nil, err
 		}
@@ -1258,8 +1588,8 @@ func (s *streamLister) Err() error {
 	return s.err
 }
 
-// StreamsInfo can be used to retrieve a list of StreamInfo objects.
-func (jsc *js) StreamsInfo(opts ...JSOpt) <-chan *StreamInfo {
+// Streams can be used to retrieve a list of StreamInfo objects.
+func (jsc *js) Streams(opts ...JSOpt) <-chan *StreamInfo {
 	o, cancel, err := getJSContextOpts(jsc.opts, opts...)
 	if err != nil {
 		return nil
@@ -1284,6 +1614,12 @@ func (jsc *js) StreamsInfo(opts ...JSOpt) <-chan *StreamInfo {
 	}()
 
 	return ch
+}
+
+// StreamsInfo can be used to retrieve a list of StreamInfo objects.
+// DEPRECATED: Use Streams() instead.
+func (jsc *js) StreamsInfo(opts ...JSOpt) <-chan *StreamInfo {
+	return jsc.Streams(opts...)
 }
 
 type streamNamesLister struct {
@@ -1376,6 +1712,40 @@ func (jsc *js) StreamNames(opts ...JSOpt) <-chan string {
 	}()
 
 	return ch
+}
+
+// StreamNameBySubject returns a stream name that matches the subject.
+func (jsc *js) StreamNameBySubject(subj string, opts ...JSOpt) (string, error) {
+	o, cancel, err := getJSContextOpts(jsc.opts, opts...)
+	if err != nil {
+		return "", err
+	}
+	if cancel != nil {
+		defer cancel()
+	}
+
+	var slr streamNamesResponse
+	req := &streamRequest{subj}
+	j, err := json.Marshal(req)
+	if err != nil {
+		return _EMPTY_, err
+	}
+
+	resp, err := jsc.apiRequestWithContext(o.ctx, jsc.apiSubj(apiStreams), j)
+	if err != nil {
+		if errors.Is(err, ErrNoResponders) {
+			err = ErrJetStreamNotEnabled
+		}
+		return _EMPTY_, err
+	}
+	if err := json.Unmarshal(resp.Data, &slr); err != nil {
+		return _EMPTY_, err
+	}
+
+	if slr.Error != nil || len(slr.Streams) != 1 {
+		return _EMPTY_, ErrNoMatchingStream
+	}
+	return slr.Streams[0], nil
 }
 
 func getJSContextOpts(defs *jsOpts, opts ...JSOpt) (*jsOpts, context.CancelFunc, error) {
