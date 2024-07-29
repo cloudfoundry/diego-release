@@ -58,9 +58,12 @@ files:
   - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/protoc-gen-gogo/descriptor/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/sortkeys/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/golang-jwt/jwt/v4/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/klauspost/compress/flate/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/klauspost/compress/flate/*.s # gosub
   - code.cloudfoundry.org/vendor/github.com/mitchellh/hashstructure/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/nats-io/nats.go/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/nats-io/nats.go/encoders/builtin/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/nats-io/nats.go/internal/parser/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/nats-io/nats.go/util/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/nats-io/nkeys/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/nats-io/nuid/*.go # gosub
