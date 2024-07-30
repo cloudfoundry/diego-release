@@ -19,6 +19,8 @@ type HaveExactElementsMatcher struct {
 }
 
 func (matcher *HaveExactElementsMatcher) Match(actual interface{}) (success bool, err error) {
+	matcher.resetState()
+
 	if isMap(actual) {
 		return false, fmt.Errorf("error")
 	}
@@ -28,29 +30,39 @@ func (matcher *HaveExactElementsMatcher) Match(actual interface{}) (success bool
 
 	lenMatchers := len(matchers)
 	lenValues := len(values)
+	success = true
 
 	for i := 0; i < lenMatchers || i < lenValues; i++ {
 		if i >= lenMatchers {
 			matcher.extraIndex = i
+			success = false
 			continue
 		}
 
 		if i >= lenValues {
 			matcher.missingIndex = i
+			success = false
 			return
 		}
 
 		elemMatcher := matchers[i].(omegaMatcher)
 		match, err := elemMatcher.Match(values[i])
-		if err != nil || !match {
+		if err != nil {
+			matcher.mismatchFailures = append(matcher.mismatchFailures, mismatchFailure{
+				index:   i,
+				failure: err.Error(),
+			})
+			success = false
+		} else if !match {
 			matcher.mismatchFailures = append(matcher.mismatchFailures, mismatchFailure{
 				index:   i,
 				failure: elemMatcher.FailureMessage(values[i]),
 			})
+			success = false
 		}
 	}
 
-	return matcher.missingIndex+matcher.extraIndex+len(matcher.mismatchFailures) == 0, nil
+	return success, nil
 }
 
 func (matcher *HaveExactElementsMatcher) FailureMessage(actual interface{}) (message string) {
@@ -72,4 +84,10 @@ func (matcher *HaveExactElementsMatcher) FailureMessage(actual interface{}) (mes
 
 func (matcher *HaveExactElementsMatcher) NegatedFailureMessage(actual interface{}) (message string) {
 	return format.Message(actual, "not to contain elements", presentable(matcher.Elements))
+}
+
+func (matcher *HaveExactElementsMatcher) resetState() {
+	matcher.mismatchFailures = nil
+	matcher.missingIndex = 0
+	matcher.extraIndex = 0
 }
