@@ -12,7 +12,6 @@ replace (
 	github.com/buildpacks/lifecycle => github.com/buildpacks/lifecycle v0.19.7
 	github.com/moby/buildkit => github.com/moby/buildkit v0.13.2
 
-	github.com/onsi/gomega => github.com/onsi/gomega v1.27.1
 	github.com/prometheus/client_golang => github.com/prometheus/client_golang v1.11.1
 	github.com/prometheus/common => github.com/prometheus/common v0.30.0
 	github.com/spf13/cobra => github.com/spf13/cobra v0.0.0-20160722081547-f62e98d28ab7
