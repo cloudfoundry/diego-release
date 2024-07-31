@@ -12,7 +12,6 @@ replace (
 	github.com/buildpacks/lifecycle => github.com/buildpacks/lifecycle v0.19.7
 	github.com/moby/buildkit => github.com/moby/buildkit v0.13.2
 
-	github.com/prometheus/client_golang => github.com/prometheus/client_golang v1.11.1
 	github.com/prometheus/common => github.com/prometheus/common v0.30.0
 	github.com/spf13/cobra => github.com/spf13/cobra v0.0.0-20160722081547-f62e98d28ab7
 	github.com/zorkian/go-datadog-api => github.com/zorkian/go-datadog-api v0.0.0-20150915071709-8f1192dcd661
