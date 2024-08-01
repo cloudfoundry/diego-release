@@ -30,7 +30,7 @@ require (
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240729134917-c66c4df00ca9
 	code.cloudfoundry.org/debugserver v0.0.0-20240730181511-beedb56d3ddc
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240730181500-34a8357f60e6
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240731181704-80273e884937
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
 	code.cloudfoundry.org/durationjson v0.0.0-20240730181512-fac1139fa108
 	code.cloudfoundry.org/eventhub v0.0.0-20240730181455-15b78f266f72
