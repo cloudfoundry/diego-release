@@ -13,7 +13,7 @@ type RequestError struct {
 }
 
 func (r RequestError) Error() string {
-	return fmt.Sprintf("An error occurred while calling %s", r.Url)
+	return fmt.Sprintf("An error occurred while calling %s %s", r.Url, string(r.ErrorResponse))
 }
 
 func requestErrorFromOauthError(err error) error {
