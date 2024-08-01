@@ -1,4 +1,4 @@
-// Copyright 2014 The Prometheus Authors
+// Copyright 2023 The Prometheus Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -11,27 +11,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Build only when actually fuzzing
-//go:build gofuzz
-// +build gofuzz
+package model
 
-package expfmt
+// MetricType represents metric type values.
+type MetricType string
 
-import "bytes"
-
-// Fuzz text metric parser with with github.com/dvyukov/go-fuzz:
-//
-//	go-fuzz-build github.com/prometheus/common/expfmt
-//	go-fuzz -bin expfmt-fuzz.zip -workdir fuzz
-//
-// Further input samples should go in the folder fuzz/corpus.
-func Fuzz(in []byte) int {
-	parser := TextParser{}
-	_, err := parser.TextToMetricFamilies(bytes.NewReader(in))
-
-	if err != nil {
-		return 0
-	}
-
-	return 1
-}
+const (
+	MetricTypeCounter        = MetricType("counter")
+	MetricTypeGauge          = MetricType("gauge")
+	MetricTypeHistogram      = MetricType("histogram")
+	MetricTypeGaugeHistogram = MetricType("gaugehistogram")
+	MetricTypeSummary        = MetricType("summary")
+	MetricTypeInfo           = MetricType("info")
+	MetricTypeStateset       = MetricType("stateset")
+	MetricTypeUnknown        = MetricType("unknown")
+)
