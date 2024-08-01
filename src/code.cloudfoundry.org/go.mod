@@ -12,7 +12,6 @@ replace (
 	github.com/buildpacks/lifecycle => github.com/buildpacks/lifecycle v0.19.7
 	github.com/moby/buildkit => github.com/moby/buildkit v0.13.2
 
-	github.com/prometheus/common => github.com/prometheus/common v0.30.0
 	github.com/spf13/cobra => github.com/spf13/cobra v0.0.0-20160722081547-f62e98d28ab7
 	github.com/zorkian/go-datadog-api => github.com/zorkian/go-datadog-api v0.0.0-20150915071709-8f1192dcd661
 )
@@ -182,7 +181,6 @@ require (
 	github.com/kr/fs v0.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/minio/highwayhash v1.0.3 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/ioprogress v0.0.0-20180201004757-6a23b12fa88e // indirect
@@ -191,6 +189,7 @@ require (
 	github.com/moby/sys/mountinfo v0.7.2 // indirect
 	github.com/moby/sys/user v0.2.0 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
+	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/nats-io/jwt/v2 v2.5.8 // indirect
 	github.com/nats-io/nkeys v0.4.7 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
