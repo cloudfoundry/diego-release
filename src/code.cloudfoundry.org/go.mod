@@ -11,8 +11,6 @@ replace (
 	code.cloudfoundry.org/idmapper => ../idmapper
 	github.com/buildpacks/lifecycle => github.com/buildpacks/lifecycle v0.19.7
 	github.com/moby/buildkit => github.com/moby/buildkit v0.13.2
-
-	github.com/zorkian/go-datadog-api => github.com/zorkian/go-datadog-api v0.0.0-20150915071709-8f1192dcd661
 )
 
 require (
