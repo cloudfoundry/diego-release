@@ -19,7 +19,7 @@ code.cloudfoundry.org/certsplitter/cmd/certsplitter
 # code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 ## explicit
 code.cloudfoundry.org/cf-routing-test-helpers/tls
-# code.cloudfoundry.org/cf-tcp-router v0.0.0-20240725192555-8ee8468dbf28
+# code.cloudfoundry.org/cf-tcp-router v0.0.0-20240805193249-25f63ab0b1a5
 ## explicit
 code.cloudfoundry.org/cf-tcp-router/utils
 # code.cloudfoundry.org/cfhttp/v2 v2.1.0
@@ -44,7 +44,7 @@ code.cloudfoundry.org/cnbapplifecycle/pkg/staging
 # code.cloudfoundry.org/commandrunner v0.0.0-20240804162417-e48b6cbaf48b
 ## explicit; go 1.20
 code.cloudfoundry.org/commandrunner
-# code.cloudfoundry.org/credhub-cli v0.0.0-20240729134917-c66c4df00ca9
+# code.cloudfoundry.org/credhub-cli v0.0.0-20240805130437-cb36dbd7bc3d
 ## explicit; go 1.21.6
 code.cloudfoundry.org/credhub-cli/credhub
 code.cloudfoundry.org/credhub-cli/credhub/auth
@@ -57,7 +57,7 @@ code.cloudfoundry.org/credhub-cli/credhub/server
 # code.cloudfoundry.org/debugserver v0.0.0-20240804182117-46735d246c8b
 ## explicit; go 1.19
 code.cloudfoundry.org/debugserver
-# code.cloudfoundry.org/diego-logging-client v0.0.0-20240804182121-825bdc76d6eb
+# code.cloudfoundry.org/diego-logging-client v0.0.0-20240805182117-2432cc7ef558
 ## explicit; go 1.22
 code.cloudfoundry.org/diego-logging-client
 code.cloudfoundry.org/diego-logging-client/testhelpers
@@ -285,7 +285,7 @@ github.com/aws/aws-sdk-go-v2/internal/endpoints/v2
 # github.com/aws/aws-sdk-go-v2/internal/ini v1.8.0
 ## explicit; go 1.20
 github.com/aws/aws-sdk-go-v2/internal/ini
-# github.com/aws/aws-sdk-go-v2/service/ecr v1.31.0
+# github.com/aws/aws-sdk-go-v2/service/ecr v1.32.0
 ## explicit; go 1.20
 github.com/aws/aws-sdk-go-v2/service/ecr
 github.com/aws/aws-sdk-go-v2/service/ecr/internal/endpoints
@@ -385,7 +385,7 @@ github.com/buildpacks/lifecycle/phase
 github.com/buildpacks/lifecycle/platform
 github.com/buildpacks/lifecycle/platform/files
 github.com/buildpacks/lifecycle/platform/launch
-# github.com/buildpacks/pack v0.35.0
+# github.com/buildpacks/pack v0.35.1
 ## explicit; go 1.22
 github.com/buildpacks/pack/internal/layer
 github.com/buildpacks/pack/internal/name
@@ -616,7 +616,7 @@ github.com/envoyproxy/go-control-plane/envoy/type/matcher/v3
 github.com/envoyproxy/go-control-plane/envoy/type/metadata/v3
 github.com/envoyproxy/go-control-plane/envoy/type/tracing/v3
 github.com/envoyproxy/go-control-plane/envoy/type/v3
-# github.com/envoyproxy/protoc-gen-validate v1.0.4
+# github.com/envoyproxy/protoc-gen-validate v1.1.0
 ## explicit; go 1.19
 github.com/envoyproxy/protoc-gen-validate/validate
 # github.com/felixge/httpsnoop v1.0.4
@@ -1163,10 +1163,10 @@ golang.org/x/time/rate
 ## explicit; go 1.19
 golang.org/x/tools/cover
 golang.org/x/tools/go/ast/inspector
-# google.golang.org/genproto/googleapis/api v0.0.0-20240730163845-b1a4ccb954bf
+# google.golang.org/genproto/googleapis/api v0.0.0-20240805194559-2c9e96a0b5d4
 ## explicit; go 1.20
 google.golang.org/genproto/googleapis/api/expr/v1alpha1
-# google.golang.org/genproto/googleapis/rpc v0.0.0-20240730163845-b1a4ccb954bf
+# google.golang.org/genproto/googleapis/rpc v0.0.0-20240805194559-2c9e96a0b5d4
 ## explicit; go 1.20
 google.golang.org/genproto/googleapis/rpc/status
 # google.golang.org/grpc v1.65.0
