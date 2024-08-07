@@ -39,7 +39,7 @@ require (
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/aws/aws-sdk-go v1.55.5
-	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240730143543-a8d7d3c42ca1
+	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240807144652-27a1eeba0782
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
 	github.com/cloudfoundry-community/go-uaa v0.3.3
