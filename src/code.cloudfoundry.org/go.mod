@@ -31,26 +31,26 @@ require (
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240805130437-cb36dbd7bc3d
 	code.cloudfoundry.org/debugserver v0.0.0-20240808182508-aa80400f8069
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240808182500-69e238999430
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240809182614-9f67e858b86a
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
 	code.cloudfoundry.org/durationjson v0.0.0-20240808182444-caf3082751ed
 	code.cloudfoundry.org/eventhub v0.0.0-20240808182443-e0d0d76994a7
 	code.cloudfoundry.org/garden v0.0.0-20240808204039-c9d130adaa53
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.38.0
-	code.cloudfoundry.org/guardian v0.0.0-20240806122135-8acc9b830ff1
+	code.cloudfoundry.org/guardian v0.0.0-20240809160425-dc7e47937fab
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	code.cloudfoundry.org/localip v0.0.0-20240808182500-901907e2b652
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240808182450-b1b581e211a2
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/aws/aws-sdk-go v1.55.5
-	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240808162302-0ed0161ffc3a
+	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240809155957-ac94a3401898
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
 	github.com/cloudfoundry-community/go-uaa v0.3.3
 	github.com/cloudfoundry/dropsonde v1.1.0
-	github.com/containers/image/v5 v5.32.0
+	github.com/containers/image/v5 v5.32.1
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/envoyproxy/go-control-plane v0.12.0
 	github.com/fsnotify/fsnotify v1.7.0
@@ -99,7 +99,7 @@ require (
 
 require (
 	cel.dev/expr v0.15.0 // indirect
-	code.cloudfoundry.org/commandrunner v0.0.0-20240808162750-d70e1b3eb38a // indirect
+	code.cloudfoundry.org/commandrunner v0.0.0-20240809162919-eea6c4f85f53 // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240807231455-f9cf434a8c3e // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/azure-sdk-for-go v68.0.0+incompatible // indirect
