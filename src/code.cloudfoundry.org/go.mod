@@ -25,7 +25,7 @@ require (
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240805130437-cb36dbd7bc3d
 	code.cloudfoundry.org/debugserver v0.0.0-20240808182508-aa80400f8069
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240808182500-69e238999430
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240809182614-9f67e858b86a
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
 	code.cloudfoundry.org/durationjson v0.0.0-20240808182444-caf3082751ed
 	code.cloudfoundry.org/eventhub v0.0.0-20240808182443-e0d0d76994a7
@@ -44,7 +44,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0
 	github.com/cloudfoundry-community/go-uaa v0.3.3
 	github.com/cloudfoundry/dropsonde v1.1.0
-	github.com/containers/image/v5 v5.32.0
+	github.com/containers/image/v5 v5.32.1
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/envoyproxy/go-control-plane v0.12.0
 	github.com/fsnotify/fsnotify v1.7.0
@@ -93,7 +93,7 @@ require (
 
 require (
 	cel.dev/expr v0.15.0 // indirect
-	code.cloudfoundry.org/commandrunner v0.0.0-20240808162750-d70e1b3eb38a // indirect
+	code.cloudfoundry.org/commandrunner v0.0.0-20240809162919-eea6c4f85f53 // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240807231455-f9cf434a8c3e // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/azure-sdk-for-go v68.0.0+incompatible // indirect
@@ -133,7 +133,7 @@ require (
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
 	github.com/chrismellard/docker-credential-acr-env v0.0.0-20230304212654-82a0ddb27589 // indirect
 	github.com/cloudfoundry/go-socks5 v0.0.0-20180221174514-54f73bdb8a8e // indirect
-	github.com/cloudfoundry/socks5-proxy v0.2.120 // indirect
+	github.com/cloudfoundry/socks5-proxy v0.2.121 // indirect
 	github.com/cloudfoundry/sonde-go v0.0.0-20240807231527-361c7ad33dc7 // indirect
 	github.com/cncf/xds/go v0.0.0-20240723142845-024c85f92f20 // indirect
 	github.com/containerd/log v0.1.0 // indirect
