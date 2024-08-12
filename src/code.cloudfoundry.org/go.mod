@@ -9,8 +9,6 @@ replace (
 	code.cloudfoundry.org/grootfs => ../grootfs
 	code.cloudfoundry.org/guardian => ../guardian
 	code.cloudfoundry.org/idmapper => ../idmapper
-	github.com/buildpacks/lifecycle => github.com/buildpacks/lifecycle v0.19.7
-	github.com/moby/buildkit => github.com/moby/buildkit v0.13.2
 )
 
 require (
@@ -199,6 +197,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635 // indirect
+	github.com/tonistiigi/go-csvvalue v0.0.0-20240710180619-ddb21b71c0b4 // indirect
 	github.com/vbatts/tar-split v0.11.5 // indirect
 	github.com/vishvananda/netlink v1.2.1-beta.2 // indirect
 	github.com/vishvananda/netns v0.0.4 // indirect
