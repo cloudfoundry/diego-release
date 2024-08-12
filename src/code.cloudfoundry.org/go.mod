@@ -29,9 +29,9 @@ require (
 	code.cloudfoundry.org/cfhttp/v2 v2.1.0
 	code.cloudfoundry.org/clock v1.2.0
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
-	code.cloudfoundry.org/credhub-cli v0.0.0-20240805130437-cb36dbd7bc3d
+	code.cloudfoundry.org/credhub-cli v0.0.0-20240812130505-c0c303594018
 	code.cloudfoundry.org/debugserver v0.0.0-20240808182508-aa80400f8069
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240809182614-9f67e858b86a
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240812182854-b799b0fa092b
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
 	code.cloudfoundry.org/durationjson v0.0.0-20240808182444-caf3082751ed
 	code.cloudfoundry.org/eventhub v0.0.0-20240808182443-e0d0d76994a7
@@ -219,6 +219,6 @@ require (
 	golang.org/x/term v0.23.0 // indirect
 	golang.org/x/text v0.17.0 // indirect
 	golang.org/x/tools v0.24.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240808171019-573a1156607a // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240808171019-573a1156607a // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240812133136-8ffd90a71988 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240812133136-8ffd90a71988 // indirect
 )
