@@ -15,15 +15,15 @@ require (
 	code.cloudfoundry.org/archiver v0.0.0-20240808182454-16f3064ad053
 	code.cloudfoundry.org/bytefmt v0.0.0-20240808182453-a379845013d9
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.0.0-20240808182449-045b56601dc8
+	code.cloudfoundry.org/certsplitter v0.1.0
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240807180050-2c75de67e7c4
-	code.cloudfoundry.org/cfhttp/v2 v2.1.0
-	code.cloudfoundry.org/clock v1.2.0
+	code.cloudfoundry.org/cfhttp/v2 v2.2.0
+	code.cloudfoundry.org/clock v1.3.0
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240812130505-c0c303594018
-	code.cloudfoundry.org/debugserver v0.0.0-20240808182508-aa80400f8069
-	code.cloudfoundry.org/diego-logging-client v0.0.0-20240809182614-9f67e858b86a
+	code.cloudfoundry.org/debugserver v0.1.0
+	code.cloudfoundry.org/diego-logging-client v0.0.0-20240812182854-b799b0fa092b
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
 	code.cloudfoundry.org/durationjson v0.0.0-20240808182444-caf3082751ed
 	code.cloudfoundry.org/eventhub v0.0.0-20240808182443-e0d0d76994a7
@@ -31,8 +31,8 @@ require (
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.38.0
 	code.cloudfoundry.org/guardian v0.0.0-20240809160425-dc7e47937fab
-	code.cloudfoundry.org/lager/v3 v3.0.3
-	code.cloudfoundry.org/localip v0.0.0-20240808182500-901907e2b652
+	code.cloudfoundry.org/lager/v3 v3.1.0
+	code.cloudfoundry.org/localip v0.1.0
 	code.cloudfoundry.org/tlsconfig v0.0.0-20240808182450-b1b581e211a2
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
@@ -62,7 +62,7 @@ require (
 	github.com/mitchellh/hashstructure v1.1.0
 	github.com/moby/term v0.5.0
 	github.com/nats-io/nats-server/v2 v2.10.18
-	github.com/nats-io/nats.go v1.36.0
+	github.com/nats-io/nats.go v1.37.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/onsi/ginkgo/v2 v2.20.0
 	github.com/onsi/gomega v1.34.1
@@ -145,9 +145,9 @@ require (
 	github.com/cyphar/filepath-securejoin v0.3.1 // indirect
 	github.com/dimchansky/utfbom v1.1.1 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
-	github.com/docker/cli v27.1.1+incompatible // indirect
+	github.com/docker/cli v27.1.2+incompatible // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
-	github.com/docker/docker v27.1.1+incompatible // indirect
+	github.com/docker/docker v27.1.2+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.8.2 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-metrics v0.0.1 // indirect
@@ -183,6 +183,7 @@ require (
 	github.com/moby/docker-image-spec v1.3.1 // indirect
 	github.com/moby/sys/mountinfo v0.7.2 // indirect
 	github.com/moby/sys/user v0.3.0 // indirect
+	github.com/moby/sys/userns v0.1.0 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/nats-io/jwt/v2 v2.5.8 // indirect

@@ -13,7 +13,7 @@ code.cloudfoundry.org/bytefmt
 ## explicit; go 1.21
 code.cloudfoundry.org/cacheddownloader
 code.cloudfoundry.org/cacheddownloader/cacheddownloaderfakes
-# code.cloudfoundry.org/certsplitter v0.0.0-20240808182449-045b56601dc8
+# code.cloudfoundry.org/certsplitter v0.1.0
 ## explicit; go 1.20
 code.cloudfoundry.org/certsplitter/cmd/certsplitter
 # code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
@@ -22,11 +22,11 @@ code.cloudfoundry.org/cf-routing-test-helpers/tls
 # code.cloudfoundry.org/cf-tcp-router v0.0.0-20240807180050-2c75de67e7c4
 ## explicit
 code.cloudfoundry.org/cf-tcp-router/utils
-# code.cloudfoundry.org/cfhttp/v2 v2.1.0
+# code.cloudfoundry.org/cfhttp/v2 v2.2.0
 ## explicit; go 1.19
 code.cloudfoundry.org/cfhttp/v2
 code.cloudfoundry.org/cfhttp/v2/handlers
-# code.cloudfoundry.org/clock v1.2.0
+# code.cloudfoundry.org/clock v1.3.0
 ## explicit; go 1.20
 code.cloudfoundry.org/clock
 code.cloudfoundry.org/clock/fakeclock
@@ -54,10 +54,10 @@ code.cloudfoundry.org/credhub-cli/credhub/credentials/generate
 code.cloudfoundry.org/credhub-cli/credhub/credentials/values
 code.cloudfoundry.org/credhub-cli/credhub/permissions
 code.cloudfoundry.org/credhub-cli/credhub/server
-# code.cloudfoundry.org/debugserver v0.0.0-20240808182508-aa80400f8069
+# code.cloudfoundry.org/debugserver v0.1.0
 ## explicit; go 1.19
 code.cloudfoundry.org/debugserver
-# code.cloudfoundry.org/diego-logging-client v0.0.0-20240809182614-9f67e858b86a
+# code.cloudfoundry.org/diego-logging-client v0.0.0-20240812182854-b799b0fa092b
 ## explicit; go 1.22
 code.cloudfoundry.org/diego-logging-client
 code.cloudfoundry.org/diego-logging-client/testhelpers
@@ -113,14 +113,14 @@ code.cloudfoundry.org/guardian/rundmc/cgroups
 code.cloudfoundry.org/guardian/rundmc/cgroups/fs
 code.cloudfoundry.org/guardian/rundmc/event
 code.cloudfoundry.org/guardian/rundmc/goci
-# code.cloudfoundry.org/lager/v3 v3.0.3
-## explicit; go 1.19
+# code.cloudfoundry.org/lager/v3 v3.1.0
+## explicit; go 1.20
 code.cloudfoundry.org/lager/v3
 code.cloudfoundry.org/lager/v3/internal/truncate
 code.cloudfoundry.org/lager/v3/lagerctx
 code.cloudfoundry.org/lager/v3/lagerflags
 code.cloudfoundry.org/lager/v3/lagertest
-# code.cloudfoundry.org/localip v0.0.0-20240808182500-901907e2b652
+# code.cloudfoundry.org/localip v0.1.0
 ## explicit; go 1.20
 code.cloudfoundry.org/localip
 # code.cloudfoundry.org/tlsconfig v0.0.0-20240808182450-b1b581e211a2
@@ -532,7 +532,7 @@ github.com/dimchansky/utfbom
 # github.com/distribution/reference v0.6.0
 ## explicit; go 1.20
 github.com/distribution/reference
-# github.com/docker/cli v27.1.1+incompatible
+# github.com/docker/cli v27.1.2+incompatible
 ## explicit
 github.com/docker/cli/cli/config
 github.com/docker/cli/cli/config/configfile
@@ -550,7 +550,7 @@ github.com/docker/distribution/registry/client/auth/challenge
 github.com/docker/distribution/registry/client/transport
 github.com/docker/distribution/registry/storage/cache
 github.com/docker/distribution/registry/storage/cache/memory
-# github.com/docker/docker v27.1.1+incompatible
+# github.com/docker/docker v27.1.2+incompatible
 ## explicit
 github.com/docker/docker/api
 github.com/docker/docker/api/types
@@ -846,6 +846,8 @@ github.com/moby/sys/mountinfo
 # github.com/moby/sys/user v0.3.0
 ## explicit; go 1.17
 github.com/moby/sys/user
+# github.com/moby/sys/userns v0.1.0
+## explicit; go 1.21
 # github.com/moby/term v0.5.0
 ## explicit; go 1.18
 github.com/moby/term
@@ -873,7 +875,7 @@ github.com/nats-io/nats-server/v2/server/certstore
 github.com/nats-io/nats-server/v2/server/pse
 github.com/nats-io/nats-server/v2/server/stree
 github.com/nats-io/nats-server/v2/server/sysmem
-# github.com/nats-io/nats.go v1.36.0
+# github.com/nats-io/nats.go v1.37.0
 ## explicit; go 1.20
 github.com/nats-io/nats.go
 github.com/nats-io/nats.go/encoders/builtin
