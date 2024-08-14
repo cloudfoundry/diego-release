@@ -57,7 +57,7 @@ code.cloudfoundry.org/credhub-cli/credhub/server
 # code.cloudfoundry.org/debugserver v0.2.0
 ## explicit; go 1.19
 code.cloudfoundry.org/debugserver
-# code.cloudfoundry.org/diego-logging-client v0.2.0
+# code.cloudfoundry.org/diego-logging-client v0.3.0
 ## explicit; go 1.22
 code.cloudfoundry.org/diego-logging-client
 code.cloudfoundry.org/diego-logging-client/testhelpers
@@ -94,14 +94,14 @@ code.cloudfoundry.org/go-diodes
 code.cloudfoundry.org/go-loggregator/v9
 code.cloudfoundry.org/go-loggregator/v9/rpc/loggregator_v2
 code.cloudfoundry.org/go-loggregator/v9/runtimeemitter
-# code.cloudfoundry.org/goshims v0.38.0
+# code.cloudfoundry.org/goshims v0.39.0
 ## explicit; go 1.20
 code.cloudfoundry.org/goshims/filepathshim
 code.cloudfoundry.org/goshims/http_wrap
 code.cloudfoundry.org/goshims/osshim
 code.cloudfoundry.org/goshims/osshim/os_fake
-# code.cloudfoundry.org/guardian v0.0.0-20240809160425-dc7e47937fab => ../guardian
-## explicit; go 1.21.0
+# code.cloudfoundry.org/guardian v0.0.0-20240814195134-e40f72265652 => ../guardian
+## explicit; go 1.21
 code.cloudfoundry.org/guardian/gardener
 code.cloudfoundry.org/guardian/gardener/container-spec
 code.cloudfoundry.org/guardian/gqt/cgrouper
@@ -316,8 +316,8 @@ github.com/aws/aws-sdk-go-v2/service/ssooidc/types
 github.com/aws/aws-sdk-go-v2/service/sts
 github.com/aws/aws-sdk-go-v2/service/sts/internal/endpoints
 github.com/aws/aws-sdk-go-v2/service/sts/types
-# github.com/aws/smithy-go v1.20.3
-## explicit; go 1.20
+# github.com/aws/smithy-go v1.20.4
+## explicit; go 1.21
 github.com/aws/smithy-go
 github.com/aws/smithy-go/auth
 github.com/aws/smithy-go/auth/bearer
@@ -339,7 +339,7 @@ github.com/aws/smithy-go/time
 github.com/aws/smithy-go/transport/http
 github.com/aws/smithy-go/transport/http/internal/io
 github.com/aws/smithy-go/waiter
-# github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240809155957-ac94a3401898
+# github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240814030307-d4ae6cf26e8b
 ## explicit; go 1.21
 github.com/awslabs/amazon-ecr-credential-helper/ecr-login
 github.com/awslabs/amazon-ecr-credential-helper/ecr-login/api
@@ -969,7 +969,7 @@ github.com/pkg/errors
 ## explicit; go 1.15
 github.com/pkg/sftp
 github.com/pkg/sftp/internal/encoding/ssh/filexfer
-# github.com/prometheus/client_golang v1.19.1 => github.com/prometheus/client_golang v1.11.1
+# github.com/prometheus/client_golang v1.20.0 => github.com/prometheus/client_golang v1.11.1
 ## explicit; go 1.13
 github.com/prometheus/client_golang/prometheus
 github.com/prometheus/client_golang/prometheus/internal

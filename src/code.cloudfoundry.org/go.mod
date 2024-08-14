@@ -31,21 +31,21 @@ require (
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240812130505-c0c303594018
 	code.cloudfoundry.org/debugserver v0.2.0
-	code.cloudfoundry.org/diego-logging-client v0.2.0
+	code.cloudfoundry.org/diego-logging-client v0.3.0
 	code.cloudfoundry.org/dockerdriver v0.0.0-20240620154825-441e44b5dbb3
 	code.cloudfoundry.org/durationjson v0.1.0
 	code.cloudfoundry.org/eventhub v0.1.0
 	code.cloudfoundry.org/garden v0.0.0-20240813204544-f3b1f29b4fca
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
-	code.cloudfoundry.org/goshims v0.38.0
-	code.cloudfoundry.org/guardian v0.0.0-20240809160425-dc7e47937fab
+	code.cloudfoundry.org/goshims v0.39.0
+	code.cloudfoundry.org/guardian v0.0.0-20240814195134-e40f72265652
 	code.cloudfoundry.org/lager/v3 v3.1.0
 	code.cloudfoundry.org/localip v0.1.0
 	code.cloudfoundry.org/tlsconfig v0.1.0
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/aws/aws-sdk-go v1.55.5
-	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240809155957-ac94a3401898
+	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240814030307-d4ae6cf26e8b
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
 	github.com/cloudfoundry-community/go-uaa v0.3.3
@@ -130,7 +130,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sso v1.22.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.26.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.30.3 // indirect
-	github.com/aws/smithy-go v1.20.3 // indirect
+	github.com/aws/smithy-go v1.20.4 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bmizerany/pat v0.0.0-20210406213842-e4b6760bdd6f // indirect
 	github.com/buildpacks/imgutil v0.0.0-20240605145725-186f89b2d168 // indirect
@@ -199,7 +199,7 @@ require (
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/opencontainers/runc v1.1.13 // indirect
 	github.com/opencontainers/runtime-spec v1.2.0 // indirect
-	github.com/prometheus/client_golang v1.19.1 // indirect
+	github.com/prometheus/client_golang v1.20.0 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.55.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
