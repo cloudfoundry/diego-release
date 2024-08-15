@@ -9,6 +9,8 @@ replace (
 	code.cloudfoundry.org/grootfs => ../grootfs
 	code.cloudfoundry.org/guardian => ../guardian
 	code.cloudfoundry.org/idmapper => ../idmapper
+	github.com/buildpacks/lifecycle => github.com/buildpacks/lifecycle v0.19.7
+	github.com/moby/buildkit => github.com/moby/buildkit v0.13.2
 )
 
 require (

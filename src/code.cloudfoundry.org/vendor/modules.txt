@@ -360,7 +360,7 @@ github.com/buildpacks/imgutil/layout
 github.com/buildpacks/imgutil/layout/sparse
 github.com/buildpacks/imgutil/local
 github.com/buildpacks/imgutil/remote
-# github.com/buildpacks/lifecycle v0.20.0
+# github.com/buildpacks/lifecycle v0.20.0 => github.com/buildpacks/lifecycle v0.19.7
 ## explicit; go 1.22
 github.com/buildpacks/lifecycle/api
 github.com/buildpacks/lifecycle/archive
@@ -828,11 +828,10 @@ github.com/mitchellh/hashstructure
 # github.com/mitchellh/ioprogress v0.0.0-20180201004757-6a23b12fa88e
 ## explicit
 github.com/mitchellh/ioprogress
-# github.com/moby/buildkit v0.15.2
-## explicit; go 1.21.0
+# github.com/moby/buildkit v0.15.1 => github.com/moby/buildkit v0.13.2
+## explicit; go 1.21
 github.com/moby/buildkit/frontend/dockerfile/command
 github.com/moby/buildkit/frontend/dockerfile/instructions
-github.com/moby/buildkit/frontend/dockerfile/linter
 github.com/moby/buildkit/frontend/dockerfile/parser
 github.com/moby/buildkit/frontend/dockerfile/shell
 github.com/moby/buildkit/util/stack
@@ -1277,3 +1276,5 @@ gopkg.in/yaml.v3
 # code.cloudfoundry.org/grootfs => ../grootfs
 # code.cloudfoundry.org/guardian => ../guardian
 # code.cloudfoundry.org/idmapper => ../idmapper
+# github.com/buildpacks/lifecycle => github.com/buildpacks/lifecycle v0.19.7
+# github.com/moby/buildkit => github.com/moby/buildkit v0.13.2
