@@ -57,7 +57,7 @@ code.cloudfoundry.org/credhub-cli/credhub/server
 # code.cloudfoundry.org/debugserver v0.2.0
 ## explicit; go 1.19
 code.cloudfoundry.org/debugserver
-# code.cloudfoundry.org/diego-logging-client v0.3.0
+# code.cloudfoundry.org/diego-logging-client v0.4.0
 ## explicit; go 1.22
 code.cloudfoundry.org/diego-logging-client
 code.cloudfoundry.org/diego-logging-client/testhelpers
@@ -233,8 +233,8 @@ github.com/aws/aws-sdk-go/service/sso/ssoiface
 github.com/aws/aws-sdk-go/service/ssooidc
 github.com/aws/aws-sdk-go/service/sts
 github.com/aws/aws-sdk-go/service/sts/stsiface
-# github.com/aws/aws-sdk-go-v2 v1.30.3
-## explicit; go 1.20
+# github.com/aws/aws-sdk-go-v2 v1.30.4
+## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/aws
 github.com/aws/aws-sdk-go-v2/aws/defaults
 github.com/aws/aws-sdk-go-v2/aws/middleware
@@ -260,11 +260,11 @@ github.com/aws/aws-sdk-go-v2/internal/shareddefaults
 github.com/aws/aws-sdk-go-v2/internal/strings
 github.com/aws/aws-sdk-go-v2/internal/sync/singleflight
 github.com/aws/aws-sdk-go-v2/internal/timeconv
-# github.com/aws/aws-sdk-go-v2/config v1.27.27
-## explicit; go 1.20
+# github.com/aws/aws-sdk-go-v2/config v1.27.28
+## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/config
-# github.com/aws/aws-sdk-go-v2/credentials v1.17.27
-## explicit; go 1.20
+# github.com/aws/aws-sdk-go-v2/credentials v1.17.28
+## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/credentials
 github.com/aws/aws-sdk-go-v2/credentials/ec2rolecreds
 github.com/aws/aws-sdk-go-v2/credentials/endpointcreds
@@ -272,47 +272,47 @@ github.com/aws/aws-sdk-go-v2/credentials/endpointcreds/internal/client
 github.com/aws/aws-sdk-go-v2/credentials/processcreds
 github.com/aws/aws-sdk-go-v2/credentials/ssocreds
 github.com/aws/aws-sdk-go-v2/credentials/stscreds
-# github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.11
-## explicit; go 1.20
+# github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.12
+## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/feature/ec2/imds
 github.com/aws/aws-sdk-go-v2/feature/ec2/imds/internal/config
-# github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.15
-## explicit; go 1.20
+# github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.16
+## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/internal/configsources
-# github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.15
-## explicit; go 1.20
+# github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.16
+## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/internal/endpoints/v2
-# github.com/aws/aws-sdk-go-v2/internal/ini v1.8.0
-## explicit; go 1.20
+# github.com/aws/aws-sdk-go-v2/internal/ini v1.8.1
+## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/internal/ini
-# github.com/aws/aws-sdk-go-v2/service/ecr v1.32.0
-## explicit; go 1.20
+# github.com/aws/aws-sdk-go-v2/service/ecr v1.32.1
+## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/service/ecr
 github.com/aws/aws-sdk-go-v2/service/ecr/internal/endpoints
 github.com/aws/aws-sdk-go-v2/service/ecr/types
-# github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.25.3
-## explicit; go 1.20
+# github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.25.4
+## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/service/ecrpublic
 github.com/aws/aws-sdk-go-v2/service/ecrpublic/internal/endpoints
 github.com/aws/aws-sdk-go-v2/service/ecrpublic/types
-# github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.11.3
-## explicit; go 1.20
+# github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.11.4
+## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding
-# github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.17
-## explicit; go 1.20
+# github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.18
+## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url
-# github.com/aws/aws-sdk-go-v2/service/sso v1.22.4
-## explicit; go 1.20
+# github.com/aws/aws-sdk-go-v2/service/sso v1.22.5
+## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/service/sso
 github.com/aws/aws-sdk-go-v2/service/sso/internal/endpoints
 github.com/aws/aws-sdk-go-v2/service/sso/types
-# github.com/aws/aws-sdk-go-v2/service/ssooidc v1.26.4
-## explicit; go 1.20
+# github.com/aws/aws-sdk-go-v2/service/ssooidc v1.26.5
+## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/service/ssooidc
 github.com/aws/aws-sdk-go-v2/service/ssooidc/internal/endpoints
 github.com/aws/aws-sdk-go-v2/service/ssooidc/types
-# github.com/aws/aws-sdk-go-v2/service/sts v1.30.3
-## explicit; go 1.20
+# github.com/aws/aws-sdk-go-v2/service/sts v1.30.4
+## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/service/sts
 github.com/aws/aws-sdk-go-v2/service/sts/internal/endpoints
 github.com/aws/aws-sdk-go-v2/service/sts/types
@@ -595,8 +595,8 @@ github.com/docker/go-units
 # github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 ## explicit
 github.com/docker/libtrust
-# github.com/envoyproxy/go-control-plane v0.12.0
-## explicit; go 1.17
+# github.com/envoyproxy/go-control-plane v0.13.0
+## explicit; go 1.21
 github.com/envoyproxy/go-control-plane/envoy/annotations
 github.com/envoyproxy/go-control-plane/envoy/config/accesslog/v3
 github.com/envoyproxy/go-control-plane/envoy/config/bootstrap/v3
@@ -686,7 +686,6 @@ github.com/golang-jwt/jwt/v4
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/struct
-github.com/golang/protobuf/ptypes/timestamp
 github.com/golang/protobuf/ptypes/wrappers
 # github.com/google/go-cmp v0.6.0
 ## explicit; go 1.13
@@ -969,6 +968,15 @@ github.com/pkg/errors
 ## explicit; go 1.15
 github.com/pkg/sftp
 github.com/pkg/sftp/internal/encoding/ssh/filexfer
+# github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10
+## explicit; go 1.20
+github.com/planetscale/vtprotobuf/protohelpers
+github.com/planetscale/vtprotobuf/types/known/anypb
+github.com/planetscale/vtprotobuf/types/known/durationpb
+github.com/planetscale/vtprotobuf/types/known/emptypb
+github.com/planetscale/vtprotobuf/types/known/structpb
+github.com/planetscale/vtprotobuf/types/known/timestamppb
+github.com/planetscale/vtprotobuf/types/known/wrapperspb
 # github.com/prometheus/client_golang v1.20.0
 ## explicit; go 1.20
 github.com/prometheus/client_golang/internal/github.com/golang/gddo/httputil
