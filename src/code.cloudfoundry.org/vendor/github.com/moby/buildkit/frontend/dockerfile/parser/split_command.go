@@ -36,7 +36,7 @@ func extractBuilderFlags(line string) (string, []string, error) {
 
 	words := []string{}
 	phase := inSpaces
-	sbuilder := &strings.Builder{}
+	word := ""
 	quote := '\000'
 	blankOK := false
 	var ch rune
@@ -62,14 +62,13 @@ func extractBuilderFlags(line string) (string, []string, error) {
 			phase = inWord // found something with "--", fall through
 		}
 		if (phase == inWord || phase == inQuote) && (pos == len(line)) {
-			if word := sbuilder.String(); word != "--" && (blankOK || len(word) > 0) {
+			if word != "--" && (blankOK || len(word) > 0) {
 				words = append(words, word)
 			}
 			break
 		}
 		if phase == inWord {
 			if unicode.IsSpace(ch) {
-				word := sbuilder.String()
 				phase = inSpaces
 				if word == "--" {
 					return line[pos:], words, nil
@@ -77,7 +76,7 @@ func extractBuilderFlags(line string) (string, []string, error) {
 				if blankOK || len(word) > 0 {
 					words = append(words, word)
 				}
-				sbuilder.Reset()
+				word = ""
 				blankOK = false
 				continue
 			}
@@ -94,9 +93,7 @@ func extractBuilderFlags(line string) (string, []string, error) {
 				pos++
 				ch = rune(line[pos])
 			}
-			if _, err := sbuilder.WriteRune(ch); err != nil {
-				return "", nil, err
-			}
+			word += string(ch)
 			continue
 		}
 		if phase == inQuote {
@@ -112,9 +109,7 @@ func extractBuilderFlags(line string) (string, []string, error) {
 				pos++
 				ch = rune(line[pos])
 			}
-			if _, err := sbuilder.WriteRune(ch); err != nil {
-				return "", nil, err
-			}
+			word += string(ch)
 		}
 	}
 
