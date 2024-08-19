@@ -48,6 +48,7 @@ func EnvWithMonitor(logger lager.Logger, ctx context.Context, res http.ResponseW
 
 	env := NewHttpDriverEnv(logger, cancelCtx)
 
+	//lint:ignore SA1019 "too lazy to fix right now"
 	if closer, ok := res.(http.CloseNotifier); ok {
 		// Note: make calls in this thread to ensure reference on context
 		doneOrTimeoutChannel := ctx.Done()

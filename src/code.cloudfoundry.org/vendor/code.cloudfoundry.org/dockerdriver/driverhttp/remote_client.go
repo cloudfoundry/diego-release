@@ -254,7 +254,7 @@ func (r *remoteClient) Path(env dockerdriver.Env, pathRequest dockerdriver.PathR
 }
 
 func (r *remoteClient) Unmount(env dockerdriver.Env, unmountRequest dockerdriver.UnmountRequest) dockerdriver.ErrorResponse {
-	logger := env.Logger().Session("mount")
+	logger := env.Logger().Session("unmount")
 	logger.Info("start")
 	defer logger.Info("end")
 

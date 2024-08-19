@@ -21,7 +21,7 @@ func NewVolumeIdFromEncodedString(volumeString string) (VolumeId, error) {
 	parts := strings.Split(volumeString, "_")
 
 	if len(parts) != 2 {
-		return VolumeId{}, fmt.Errorf("Incorrectly encoded volume ID string: %q", volumeString)
+		return VolumeId{}, fmt.Errorf("incorrectly encoded volume ID string: %q", volumeString)
 	}
 
 	return VolumeId{Prefix: strings.Replace(parts[0], "=", "_", -1), Suffix: strings.Replace(parts[1], "=", "_", -1)}, nil

@@ -16,6 +16,6 @@ func NewRemoteClientFactory() RemoteClientFactory {
 
 type remoteClientFactory struct{}
 
-func (_ *remoteClientFactory) NewRemoteClient(url string, tls *dockerdriver.TLSConfig) (dockerdriver.Driver, error) {
+func (*remoteClientFactory) NewRemoteClient(url string, tls *dockerdriver.TLSConfig) (dockerdriver.Driver, error) {
 	return NewRemoteClient(url, tls)
 }
