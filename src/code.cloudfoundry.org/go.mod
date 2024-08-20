@@ -28,7 +28,7 @@ require (
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240819130425-9b9cc2447389
 	code.cloudfoundry.org/debugserver v0.2.0
 	code.cloudfoundry.org/diego-logging-client v0.4.0
-	code.cloudfoundry.org/dockerdriver v0.1.0
+	code.cloudfoundry.org/dockerdriver v0.2.0
 	code.cloudfoundry.org/durationjson v0.1.0
 	code.cloudfoundry.org/eventhub v0.1.0
 	code.cloudfoundry.org/garden v0.0.0-20240813204544-f3b1f29b4fca
@@ -81,7 +81,7 @@ require (
 	github.com/square/certstrap v1.3.0
 	github.com/tedsuo/ifrit v0.0.0-20230516164442-7862c310ad26
 	github.com/tedsuo/rata v1.0.0
-	github.com/vito/go-sse v1.1.1
+	github.com/vito/go-sse v1.1.2
 	golang.org/x/crypto v0.26.0
 	golang.org/x/net v0.28.0
 	golang.org/x/oauth2 v0.22.0
@@ -196,7 +196,7 @@ require (
 	github.com/opencontainers/runc v1.1.13 // indirect
 	github.com/opencontainers/runtime-spec v1.2.0 // indirect
 	github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10 // indirect
-	github.com/prometheus/client_golang v1.20.0 // indirect
+	github.com/prometheus/client_golang v1.20.1 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.55.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
@@ -217,6 +217,6 @@ require (
 	golang.org/x/term v0.23.0 // indirect
 	golang.org/x/text v0.17.0 // indirect
 	golang.org/x/tools v0.24.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240814211410-ddb44dafa142 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240814211410-ddb44dafa142 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240820151423-278611b39280 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240820151423-278611b39280 // indirect
 )
