@@ -9,7 +9,7 @@ set +e
   if [ 0 -eq $? ]; then
     zone_flag="-zone=z${azure_fd}"
   else
-    echo "Warning: Failed to curl azure metadata endpoint for fault domain"
+    echo "{\"timestamp\":\"$(date --rfc-3339=ns | sed 's/ /T/' | sed 's/+00:00/Z/')\",\"level\":\"info\",\"source\":\"rep\",\"message\":\"Warning: Failed to curl azure metadata endpoint for fault domain\"}"
   fi
   azure_zone=$(curl -f --max-time 5 --silent -H Metadata:true "http://169.254.169.254/metadata/instance/compute/zone?api-version=2017-12-01&format=text")
   if [ 0 -eq $? ]; then
@@ -17,7 +17,7 @@ set +e
       zone_flag=""
     fi
   else
-    echo "Warning: Failed to curl azure metadata endpoint for availability zone"
+  echo "{\"timestamp\":\"$(date --rfc-3339=ns | sed 's/ /T/' | sed 's/+00:00/Z/')\",\"level\":\"info\",\"source\":\"rep\",\"message\":\"Warning: Failed to curl azure metadata endpoint for availability zone\"}"
   fi
 set -e
 <% end %>
