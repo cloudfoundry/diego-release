@@ -20,14 +20,14 @@ require (
 	code.cloudfoundry.org/bytefmt v0.1.0
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
 	code.cloudfoundry.org/certsplitter v0.1.0
-	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240304203209-3404f81a986b
+	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240821054706-b28ee5fb37eb
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240813185447-19972a81fc85
 	code.cloudfoundry.org/cfhttp/v2 v2.2.0
 	code.cloudfoundry.org/clock v1.3.0
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240819130425-9b9cc2447389
 	code.cloudfoundry.org/debugserver v0.2.0
-	code.cloudfoundry.org/diego-logging-client v0.4.0
+	code.cloudfoundry.org/diego-logging-client v0.5.0
 	code.cloudfoundry.org/dockerdriver v0.2.0
 	code.cloudfoundry.org/durationjson v0.1.0
 	code.cloudfoundry.org/eventhub v0.1.0
@@ -46,7 +46,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0
 	github.com/cloudfoundry-community/go-uaa v0.3.3
 	github.com/cloudfoundry/dropsonde v1.1.0
-	github.com/containers/image/v5 v5.32.1
+	github.com/containers/image/v5 v5.32.2
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/envoyproxy/go-control-plane v0.13.0
 	github.com/fsnotify/fsnotify v1.7.0
