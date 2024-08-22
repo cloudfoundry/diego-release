@@ -1,19 +1,19 @@
 # cel.dev/expr v0.16.0
 ## explicit; go 1.18
 cel.dev/expr
-# code.cloudfoundry.org/archiver v0.1.0
+# code.cloudfoundry.org/archiver v0.2.0
 ## explicit; go 1.20
 code.cloudfoundry.org/archiver/compressor
 code.cloudfoundry.org/archiver/extractor
 code.cloudfoundry.org/archiver/extractor/test_helper
-# code.cloudfoundry.org/bytefmt v0.1.0
+# code.cloudfoundry.org/bytefmt v0.2.0
 ## explicit; go 1.20
 code.cloudfoundry.org/bytefmt
 # code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
 ## explicit; go 1.21
 code.cloudfoundry.org/cacheddownloader
 code.cloudfoundry.org/cacheddownloader/cacheddownloaderfakes
-# code.cloudfoundry.org/certsplitter v0.2.0
+# code.cloudfoundry.org/certsplitter v0.3.0
 ## explicit; go 1.20
 code.cloudfoundry.org/certsplitter/cmd/certsplitter
 # code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240821054706-b28ee5fb37eb
@@ -22,11 +22,11 @@ code.cloudfoundry.org/cf-routing-test-helpers/tls
 # code.cloudfoundry.org/cf-tcp-router v0.0.0-20240813185447-19972a81fc85
 ## explicit
 code.cloudfoundry.org/cf-tcp-router/utils
-# code.cloudfoundry.org/cfhttp/v2 v2.2.0
+# code.cloudfoundry.org/cfhttp/v2 v2.3.0
 ## explicit; go 1.19
 code.cloudfoundry.org/cfhttp/v2
 code.cloudfoundry.org/cfhttp/v2/handlers
-# code.cloudfoundry.org/clock v1.3.0
+# code.cloudfoundry.org/clock v1.4.0
 ## explicit; go 1.20
 code.cloudfoundry.org/clock
 code.cloudfoundry.org/clock/fakeclock
@@ -41,7 +41,7 @@ code.cloudfoundry.org/cnbapplifecycle/pkg/errors
 code.cloudfoundry.org/cnbapplifecycle/pkg/keychain
 code.cloudfoundry.org/cnbapplifecycle/pkg/log
 code.cloudfoundry.org/cnbapplifecycle/pkg/staging
-# code.cloudfoundry.org/commandrunner v0.1.0
+# code.cloudfoundry.org/commandrunner v0.2.0
 ## explicit; go 1.20
 code.cloudfoundry.org/commandrunner
 # code.cloudfoundry.org/credhub-cli v0.0.0-20240819130425-9b9cc2447389
@@ -54,26 +54,26 @@ code.cloudfoundry.org/credhub-cli/credhub/credentials/generate
 code.cloudfoundry.org/credhub-cli/credhub/credentials/values
 code.cloudfoundry.org/credhub-cli/credhub/permissions
 code.cloudfoundry.org/credhub-cli/credhub/server
-# code.cloudfoundry.org/debugserver v0.2.0
+# code.cloudfoundry.org/debugserver v0.3.0
 ## explicit; go 1.19
 code.cloudfoundry.org/debugserver
-# code.cloudfoundry.org/diego-logging-client v0.5.0
+# code.cloudfoundry.org/diego-logging-client v0.6.0
 ## explicit; go 1.22
 code.cloudfoundry.org/diego-logging-client
 code.cloudfoundry.org/diego-logging-client/testhelpers
-# code.cloudfoundry.org/dockerdriver v0.2.0
+# code.cloudfoundry.org/dockerdriver v0.4.0
 ## explicit; go 1.21
 code.cloudfoundry.org/dockerdriver
 code.cloudfoundry.org/dockerdriver/dockerdriverfakes
 code.cloudfoundry.org/dockerdriver/driverhttp
 code.cloudfoundry.org/dockerdriver/utils
-# code.cloudfoundry.org/durationjson v0.1.0
+# code.cloudfoundry.org/durationjson v0.2.0
 ## explicit; go 1.19
 code.cloudfoundry.org/durationjson
-# code.cloudfoundry.org/eventhub v0.1.0
+# code.cloudfoundry.org/eventhub v0.2.0
 ## explicit; go 1.19
 code.cloudfoundry.org/eventhub
-# code.cloudfoundry.org/garden v0.0.0-20240821205034-986bea9dbba9 => ../garden
+# code.cloudfoundry.org/garden v0.0.0-20240822205122-48ae705920d5 => ../garden
 ## explicit; go 1.20
 code.cloudfoundry.org/garden
 code.cloudfoundry.org/garden/client
@@ -113,14 +113,14 @@ code.cloudfoundry.org/guardian/rundmc/cgroups
 code.cloudfoundry.org/guardian/rundmc/cgroups/fs
 code.cloudfoundry.org/guardian/rundmc/event
 code.cloudfoundry.org/guardian/rundmc/goci
-# code.cloudfoundry.org/lager/v3 v3.1.0
+# code.cloudfoundry.org/lager/v3 v3.2.0
 ## explicit; go 1.20
 code.cloudfoundry.org/lager/v3
 code.cloudfoundry.org/lager/v3/internal/truncate
 code.cloudfoundry.org/lager/v3/lagerctx
 code.cloudfoundry.org/lager/v3/lagerflags
 code.cloudfoundry.org/lager/v3/lagertest
-# code.cloudfoundry.org/localip v0.1.0
+# code.cloudfoundry.org/localip v0.2.0
 ## explicit; go 1.20
 code.cloudfoundry.org/localip
 # code.cloudfoundry.org/tlsconfig v0.1.0
@@ -260,10 +260,10 @@ github.com/aws/aws-sdk-go-v2/internal/shareddefaults
 github.com/aws/aws-sdk-go-v2/internal/strings
 github.com/aws/aws-sdk-go-v2/internal/sync/singleflight
 github.com/aws/aws-sdk-go-v2/internal/timeconv
-# github.com/aws/aws-sdk-go-v2/config v1.27.28
+# github.com/aws/aws-sdk-go-v2/config v1.27.29
 ## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/config
-# github.com/aws/aws-sdk-go-v2/credentials v1.17.28
+# github.com/aws/aws-sdk-go-v2/credentials v1.17.29
 ## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/credentials
 github.com/aws/aws-sdk-go-v2/credentials/ec2rolecreds
@@ -285,7 +285,7 @@ github.com/aws/aws-sdk-go-v2/internal/endpoints/v2
 # github.com/aws/aws-sdk-go-v2/internal/ini v1.8.1
 ## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/internal/ini
-# github.com/aws/aws-sdk-go-v2/service/ecr v1.32.1
+# github.com/aws/aws-sdk-go-v2/service/ecr v1.32.2
 ## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/service/ecr
 github.com/aws/aws-sdk-go-v2/service/ecr/internal/endpoints
@@ -311,7 +311,7 @@ github.com/aws/aws-sdk-go-v2/service/sso/types
 github.com/aws/aws-sdk-go-v2/service/ssooidc
 github.com/aws/aws-sdk-go-v2/service/ssooidc/internal/endpoints
 github.com/aws/aws-sdk-go-v2/service/ssooidc/types
-# github.com/aws/aws-sdk-go-v2/service/sts v1.30.4
+# github.com/aws/aws-sdk-go-v2/service/sts v1.30.5
 ## explicit; go 1.21
 github.com/aws/aws-sdk-go-v2/service/sts
 github.com/aws/aws-sdk-go-v2/service/sts/internal/endpoints
@@ -360,7 +360,7 @@ github.com/buildpacks/imgutil/layout
 github.com/buildpacks/imgutil/layout/sparse
 github.com/buildpacks/imgutil/local
 github.com/buildpacks/imgutil/remote
-# github.com/buildpacks/lifecycle v0.20.0
+# github.com/buildpacks/lifecycle v0.20.1
 ## explicit; go 1.22
 github.com/buildpacks/lifecycle/api
 github.com/buildpacks/lifecycle/archive
@@ -443,7 +443,7 @@ github.com/cloudfoundry/socks5-proxy
 # github.com/cloudfoundry/sonde-go v0.0.0-20240807231527-361c7ad33dc7
 ## explicit; go 1.18
 github.com/cloudfoundry/sonde-go/events
-# github.com/cncf/xds/go v0.0.0-20240723142845-024c85f92f20
+# github.com/cncf/xds/go v0.0.0-20240822171458-6449f94b4d59
 ## explicit; go 1.19
 github.com/cncf/xds/go/udpa/annotations
 github.com/cncf/xds/go/xds/annotations/v3
@@ -1025,7 +1025,7 @@ github.com/tedsuo/rata
 # github.com/vbatts/tar-split v0.11.5
 ## explicit; go 1.17
 github.com/vbatts/tar-split/archive/tar
-# github.com/vishvananda/netlink v1.2.1-beta.2
+# github.com/vishvananda/netlink v1.2.1
 ## explicit; go 1.12
 github.com/vishvananda/netlink
 github.com/vishvananda/netlink/nl
@@ -1100,7 +1100,7 @@ golang.org/x/crypto/salsa20/salsa
 golang.org/x/crypto/scrypt
 golang.org/x/crypto/ssh
 golang.org/x/crypto/ssh/internal/bcrypt_pbkdf
-# golang.org/x/exp v0.0.0-20240808152545-0cdaa3abc0fa
+# golang.org/x/exp v0.0.0-20240822175202-778ce7bba035
 ## explicit; go 1.20
 golang.org/x/exp/constraints
 golang.org/x/exp/maps
@@ -1174,10 +1174,10 @@ golang.org/x/time/rate
 ## explicit; go 1.19
 golang.org/x/tools/cover
 golang.org/x/tools/go/ast/inspector
-# google.golang.org/genproto/googleapis/api v0.0.0-20240820151423-278611b39280
+# google.golang.org/genproto/googleapis/api v0.0.0-20240822170219-fc7c04adadcd
 ## explicit; go 1.21
 google.golang.org/genproto/googleapis/api/expr/v1alpha1
-# google.golang.org/genproto/googleapis/rpc v0.0.0-20240820151423-278611b39280
+# google.golang.org/genproto/googleapis/rpc v0.0.0-20240822170219-fc7c04adadcd
 ## explicit; go 1.21
 google.golang.org/genproto/googleapis/rpc/status
 # google.golang.org/grpc v1.65.0
