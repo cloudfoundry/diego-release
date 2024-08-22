@@ -19,7 +19,7 @@ require (
 	code.cloudfoundry.org/archiver v0.1.0
 	code.cloudfoundry.org/bytefmt v0.1.0
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.1.0
+	code.cloudfoundry.org/certsplitter v0.2.0
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240821054706-b28ee5fb37eb
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240813185447-19972a81fc85
 	code.cloudfoundry.org/cfhttp/v2 v2.2.0
@@ -31,7 +31,7 @@ require (
 	code.cloudfoundry.org/dockerdriver v0.2.0
 	code.cloudfoundry.org/durationjson v0.1.0
 	code.cloudfoundry.org/eventhub v0.1.0
-	code.cloudfoundry.org/garden v0.0.0-20240813204544-f3b1f29b4fca
+	code.cloudfoundry.org/garden v0.0.0-20240821205034-986bea9dbba9
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.39.0
 	code.cloudfoundry.org/guardian v0.0.0-20240814195134-e40f72265652
@@ -68,7 +68,7 @@ require (
 	github.com/nats-io/nats-server/v2 v2.10.18
 	github.com/nats-io/nats.go v1.37.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
-	github.com/onsi/ginkgo/v2 v2.20.0
+	github.com/onsi/ginkgo/v2 v2.20.1
 	github.com/onsi/gomega v1.34.1
 	github.com/onsi/say v1.1.0
 	github.com/opencontainers/go-digest v1.0.0
@@ -137,7 +137,7 @@ require (
 	github.com/cloudfoundry/go-socks5 v0.0.0-20180221174514-54f73bdb8a8e // indirect
 	github.com/cloudfoundry/socks5-proxy v0.2.121 // indirect
 	github.com/cloudfoundry/sonde-go v0.0.0-20240807231527-361c7ad33dc7 // indirect
-	github.com/cncf/xds/go v0.0.0-20240723142845-024c85f92f20 // indirect
+	github.com/cncf/xds/go v0.0.0-20240822131251-abab9052669e // indirect
 	github.com/containerd/log v0.1.0 // indirect
 	github.com/containerd/stargz-snapshotter/estargz v0.15.1 // indirect
 	github.com/containerd/typeurl/v2 v2.2.0 // indirect
