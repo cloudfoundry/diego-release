@@ -30,9 +30,9 @@ require (
 	code.cloudfoundry.org/clock v1.5.0
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240819130425-9b9cc2447389
-	code.cloudfoundry.org/debugserver v0.4.0
-	code.cloudfoundry.org/diego-logging-client v0.7.0
-	code.cloudfoundry.org/dockerdriver v0.5.0
+	code.cloudfoundry.org/debugserver v0.5.0
+	code.cloudfoundry.org/diego-logging-client v0.8.0
+	code.cloudfoundry.org/dockerdriver v0.6.0
 	code.cloudfoundry.org/durationjson v0.3.0
 	code.cloudfoundry.org/eventhub v0.3.0
 	code.cloudfoundry.org/garden v0.0.0-20240823205131-490159a0f76e
@@ -210,7 +210,7 @@ require (
 	github.com/vbatts/tar-split v0.11.5 // indirect
 	github.com/vishvananda/netlink v1.3.0 // indirect
 	github.com/vishvananda/netns v0.0.4 // indirect
-	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.53.0 // indirect
+	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.54.0 // indirect
 	go.opentelemetry.io/otel v1.29.0 // indirect
 	go.opentelemetry.io/otel/metric v1.29.0 // indirect
 	go.opentelemetry.io/otel/trace v1.29.0 // indirect
