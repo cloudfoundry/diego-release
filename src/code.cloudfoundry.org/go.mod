@@ -25,7 +25,7 @@ require (
 	code.cloudfoundry.org/cfhttp/v2 v2.4.0
 	code.cloudfoundry.org/clock v1.5.0
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
-	code.cloudfoundry.org/credhub-cli v0.0.0-20240819130425-9b9cc2447389
+	code.cloudfoundry.org/credhub-cli v0.0.0-20240826130714-db1bf1b6b6ac
 	code.cloudfoundry.org/debugserver v0.5.0
 	code.cloudfoundry.org/diego-logging-client v0.8.0
 	code.cloudfoundry.org/dockerdriver v0.6.0
@@ -41,7 +41,7 @@ require (
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/aws/aws-sdk-go v1.55.5
-	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240823171036-ae5ff3e791a3
+	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240826150212-5dc58b6e29f8
 	github.com/cactus/go-statsd-client v3.1.1-0.20161031215955-d8eabe07bc70+incompatible
 	github.com/cespare/xxhash/v2 v2.3.0
 	github.com/cloudfoundry-community/go-uaa v0.3.3
