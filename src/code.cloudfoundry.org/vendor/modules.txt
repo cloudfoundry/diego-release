@@ -1,20 +1,20 @@
 # cel.dev/expr v0.16.0
 ## explicit; go 1.18
 cel.dev/expr
-# code.cloudfoundry.org/archiver v0.3.0
-## explicit; go 1.20
+# code.cloudfoundry.org/archiver v0.4.0
+## explicit; go 1.22
 code.cloudfoundry.org/archiver/compressor
 code.cloudfoundry.org/archiver/extractor
 code.cloudfoundry.org/archiver/extractor/test_helper
-# code.cloudfoundry.org/bytefmt v0.3.0
-## explicit; go 1.20
+# code.cloudfoundry.org/bytefmt v0.4.0
+## explicit; go 1.22
 code.cloudfoundry.org/bytefmt
 # code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
 ## explicit; go 1.21
 code.cloudfoundry.org/cacheddownloader
 code.cloudfoundry.org/cacheddownloader/cacheddownloaderfakes
-# code.cloudfoundry.org/certsplitter v0.4.0
-## explicit; go 1.20
+# code.cloudfoundry.org/certsplitter v0.5.0
+## explicit; go 1.22
 code.cloudfoundry.org/certsplitter/cmd/certsplitter
 # code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240821054706-b28ee5fb37eb
 ## explicit
@@ -22,12 +22,12 @@ code.cloudfoundry.org/cf-routing-test-helpers/tls
 # code.cloudfoundry.org/cf-tcp-router v0.0.0-20240813185447-19972a81fc85
 ## explicit
 code.cloudfoundry.org/cf-tcp-router/utils
-# code.cloudfoundry.org/cfhttp/v2 v2.4.0
-## explicit; go 1.19
+# code.cloudfoundry.org/cfhttp/v2 v2.5.0
+## explicit; go 1.22
 code.cloudfoundry.org/cfhttp/v2
 code.cloudfoundry.org/cfhttp/v2/handlers
-# code.cloudfoundry.org/clock v1.5.0
-## explicit; go 1.20
+# code.cloudfoundry.org/clock v1.6.0
+## explicit; go 1.22
 code.cloudfoundry.org/clock
 code.cloudfoundry.org/clock/fakeclock
 # code.cloudfoundry.org/cnbapplifecycle v0.0.2
@@ -54,27 +54,27 @@ code.cloudfoundry.org/credhub-cli/credhub/credentials/generate
 code.cloudfoundry.org/credhub-cli/credhub/credentials/values
 code.cloudfoundry.org/credhub-cli/credhub/permissions
 code.cloudfoundry.org/credhub-cli/credhub/server
-# code.cloudfoundry.org/debugserver v0.5.0
-## explicit; go 1.19
+# code.cloudfoundry.org/debugserver v0.6.0
+## explicit; go 1.22
 code.cloudfoundry.org/debugserver
-# code.cloudfoundry.org/diego-logging-client v0.8.0
+# code.cloudfoundry.org/diego-logging-client v0.9.0
 ## explicit; go 1.22
 code.cloudfoundry.org/diego-logging-client
 code.cloudfoundry.org/diego-logging-client/testhelpers
-# code.cloudfoundry.org/dockerdriver v0.6.0
-## explicit; go 1.21
+# code.cloudfoundry.org/dockerdriver v0.7.0
+## explicit; go 1.22
 code.cloudfoundry.org/dockerdriver
 code.cloudfoundry.org/dockerdriver/dockerdriverfakes
 code.cloudfoundry.org/dockerdriver/driverhttp
 code.cloudfoundry.org/dockerdriver/utils
-# code.cloudfoundry.org/durationjson v0.3.0
-## explicit; go 1.19
+# code.cloudfoundry.org/durationjson v0.4.0
+## explicit; go 1.22
 code.cloudfoundry.org/durationjson
 # code.cloudfoundry.org/eventhub v0.3.0
 ## explicit; go 1.19
 code.cloudfoundry.org/eventhub
-# code.cloudfoundry.org/garden v0.0.0-20240823205131-490159a0f76e => ../garden
-## explicit; go 1.20
+# code.cloudfoundry.org/garden v0.0.0-20240827205525-d20c12167221 => ../garden
+## explicit; go 1.22
 code.cloudfoundry.org/garden
 code.cloudfoundry.org/garden/client
 code.cloudfoundry.org/garden/client/connection
@@ -120,8 +120,8 @@ code.cloudfoundry.org/lager/v3/internal/truncate
 code.cloudfoundry.org/lager/v3/lagerctx
 code.cloudfoundry.org/lager/v3/lagerflags
 code.cloudfoundry.org/lager/v3/lagertest
-# code.cloudfoundry.org/localip v0.3.0
-## explicit; go 1.20
+# code.cloudfoundry.org/localip v0.4.0
+## explicit; go 1.22
 code.cloudfoundry.org/localip
 # code.cloudfoundry.org/tlsconfig v0.1.0
 ## explicit; go 1.21
@@ -532,7 +532,7 @@ github.com/dimchansky/utfbom
 # github.com/distribution/reference v0.6.0
 ## explicit; go 1.20
 github.com/distribution/reference
-# github.com/docker/cli v27.1.2+incompatible
+# github.com/docker/cli v27.2.0+incompatible
 ## explicit
 github.com/docker/cli/cli/config
 github.com/docker/cli/cli/config/configfile
@@ -550,7 +550,7 @@ github.com/docker/distribution/registry/client/auth/challenge
 github.com/docker/distribution/registry/client/transport
 github.com/docker/distribution/registry/storage/cache
 github.com/docker/distribution/registry/storage/cache/memory
-# github.com/docker/docker v27.1.2+incompatible
+# github.com/docker/docker v27.2.0+incompatible
 ## explicit
 github.com/docker/docker/api
 github.com/docker/docker/api/types
@@ -726,8 +726,8 @@ github.com/google/go-containerregistry/pkg/v1/stream
 github.com/google/go-containerregistry/pkg/v1/tarball
 github.com/google/go-containerregistry/pkg/v1/types
 github.com/google/go-containerregistry/pkg/v1/validate
-# github.com/google/pprof v0.0.0-20240727154555-813a5fbdbec8
-## explicit; go 1.19
+# github.com/google/pprof v0.0.0-20240827171923-fa2c70bbbfe5
+## explicit; go 1.22
 github.com/google/pprof/profile
 # github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510
 ## explicit; go 1.13
@@ -862,8 +862,8 @@ github.com/morikuni/aec
 # github.com/nats-io/jwt/v2 v2.5.8
 ## explicit; go 1.18
 github.com/nats-io/jwt/v2
-# github.com/nats-io/nats-server/v2 v2.10.18
-## explicit; go 1.21
+# github.com/nats-io/nats-server/v2 v2.10.19
+## explicit; go 1.21.0
 github.com/nats-io/nats-server/v2
 github.com/nats-io/nats-server/v2/conf
 github.com/nats-io/nats-server/v2/internal/fastrand
@@ -1176,10 +1176,10 @@ golang.org/x/time/rate
 ## explicit; go 1.19
 golang.org/x/tools/cover
 golang.org/x/tools/go/ast/inspector
-# google.golang.org/genproto/googleapis/api v0.0.0-20240826202546-f6391c0de4c7
+# google.golang.org/genproto/googleapis/api v0.0.0-20240827150818-7e3bb234dfed
 ## explicit; go 1.21
 google.golang.org/genproto/googleapis/api/expr/v1alpha1
-# google.golang.org/genproto/googleapis/rpc v0.0.0-20240826202546-f6391c0de4c7
+# google.golang.org/genproto/googleapis/rpc v0.0.0-20240827150818-7e3bb234dfed
 ## explicit; go 1.21
 google.golang.org/genproto/googleapis/rpc/status
 # google.golang.org/grpc v1.65.0

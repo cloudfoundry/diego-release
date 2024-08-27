@@ -20,27 +20,27 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.3.0
-	code.cloudfoundry.org/bytefmt v0.3.0
+	code.cloudfoundry.org/archiver v0.4.0
+	code.cloudfoundry.org/bytefmt v0.4.0
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.4.0
+	code.cloudfoundry.org/certsplitter v0.5.0
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240821054706-b28ee5fb37eb
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240813185447-19972a81fc85
-	code.cloudfoundry.org/cfhttp/v2 v2.4.0
-	code.cloudfoundry.org/clock v1.5.0
+	code.cloudfoundry.org/cfhttp/v2 v2.5.0
+	code.cloudfoundry.org/clock v1.6.0
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240826130714-db1bf1b6b6ac
-	code.cloudfoundry.org/debugserver v0.5.0
-	code.cloudfoundry.org/diego-logging-client v0.8.0
-	code.cloudfoundry.org/dockerdriver v0.6.0
-	code.cloudfoundry.org/durationjson v0.3.0
+	code.cloudfoundry.org/debugserver v0.6.0
+	code.cloudfoundry.org/diego-logging-client v0.9.0
+	code.cloudfoundry.org/dockerdriver v0.7.0
+	code.cloudfoundry.org/durationjson v0.4.0
 	code.cloudfoundry.org/eventhub v0.3.0
-	code.cloudfoundry.org/garden v0.0.0-20240823205131-490159a0f76e
+	code.cloudfoundry.org/garden v0.0.0-20240827205525-d20c12167221
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.39.0
 	code.cloudfoundry.org/guardian v0.0.0-20240814195134-e40f72265652
 	code.cloudfoundry.org/lager/v3 v3.3.0
-	code.cloudfoundry.org/localip v0.3.0
+	code.cloudfoundry.org/localip v0.4.0
 	code.cloudfoundry.org/tlsconfig v0.1.0
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
@@ -69,7 +69,7 @@ require (
 	github.com/lib/pq v1.10.9
 	github.com/mitchellh/hashstructure v1.1.0
 	github.com/moby/term v0.5.0
-	github.com/nats-io/nats-server/v2 v2.10.18
+	github.com/nats-io/nats-server/v2 v2.10.19
 	github.com/nats-io/nats.go v1.37.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/onsi/ginkgo/v2 v2.20.1
@@ -153,9 +153,9 @@ require (
 	github.com/cyphar/filepath-securejoin v0.3.1 // indirect
 	github.com/dimchansky/utfbom v1.1.1 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
-	github.com/docker/cli v27.1.2+incompatible // indirect
+	github.com/docker/cli v27.2.0+incompatible // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
-	github.com/docker/docker v27.1.2+incompatible // indirect
+	github.com/docker/docker v27.2.0+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.8.2 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-metrics v0.0.1 // indirect
@@ -169,7 +169,7 @@ require (
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/go-containerregistry v0.20.2 // indirect
-	github.com/google/pprof v0.0.0-20240727154555-813a5fbdbec8 // indirect
+	github.com/google/pprof v0.0.0-20240827171923-fa2c70bbbfe5 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/hashicorp/go-version v1.7.0 // indirect
@@ -221,6 +221,6 @@ require (
 	golang.org/x/term v0.23.0 // indirect
 	golang.org/x/text v0.17.0 // indirect
 	golang.org/x/tools v0.24.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240826202546-f6391c0de4c7 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240826202546-f6391c0de4c7 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240827150818-7e3bb234dfed // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240827150818-7e3bb234dfed // indirect
 )
