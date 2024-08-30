@@ -17,26 +17,26 @@ replace (
 
 require (
 	code.cloudfoundry.org/archiver v0.5.0
-	code.cloudfoundry.org/bytefmt v0.4.0
+	code.cloudfoundry.org/bytefmt v0.5.0
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.6.0
+	code.cloudfoundry.org/certsplitter v0.7.0
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240821054706-b28ee5fb37eb
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240813185447-19972a81fc85
-	code.cloudfoundry.org/cfhttp/v2 v2.6.0
-	code.cloudfoundry.org/clock v1.7.0
+	code.cloudfoundry.org/cfhttp/v2 v2.7.0
+	code.cloudfoundry.org/clock v1.8.0
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240826130714-db1bf1b6b6ac
-	code.cloudfoundry.org/debugserver v0.7.0
-	code.cloudfoundry.org/diego-logging-client v0.10.0
-	code.cloudfoundry.org/dockerdriver v0.8.0
-	code.cloudfoundry.org/durationjson v0.5.0
-	code.cloudfoundry.org/eventhub v0.4.0
-	code.cloudfoundry.org/garden v0.0.0-20240828205541-a750c1e932f1
+	code.cloudfoundry.org/debugserver v0.8.0
+	code.cloudfoundry.org/diego-logging-client v0.11.0
+	code.cloudfoundry.org/dockerdriver v0.9.0
+	code.cloudfoundry.org/durationjson v0.6.0
+	code.cloudfoundry.org/eventhub v0.5.0
+	code.cloudfoundry.org/garden v0.0.0-20240829205754-f4b89addcda3
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.39.0
 	code.cloudfoundry.org/guardian v0.0.0-20240814195134-e40f72265652
 	code.cloudfoundry.org/lager/v3 v3.3.0
-	code.cloudfoundry.org/localip v0.5.0
+	code.cloudfoundry.org/localip v0.6.0
 	code.cloudfoundry.org/tlsconfig v0.1.0
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
@@ -65,7 +65,7 @@ require (
 	github.com/lib/pq v1.10.9
 	github.com/mitchellh/hashstructure v1.1.0
 	github.com/moby/term v0.5.0
-	github.com/nats-io/nats-server/v2 v2.10.19
+	github.com/nats-io/nats-server/v2 v2.10.20
 	github.com/nats-io/nats.go v1.37.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/onsi/ginkgo/v2 v2.20.2
@@ -95,7 +95,7 @@ require (
 
 require (
 	cel.dev/expr v0.16.1 // indirect
-	code.cloudfoundry.org/commandrunner v0.4.0 // indirect
+	code.cloudfoundry.org/commandrunner v0.5.0 // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240813203737-5032edb05ceb // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/azure-sdk-for-go v68.0.0+incompatible // indirect
