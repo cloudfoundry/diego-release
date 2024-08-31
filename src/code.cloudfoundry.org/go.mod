@@ -41,7 +41,7 @@ require (
 	code.cloudfoundry.org/guardian v0.0.0-20240814195134-e40f72265652
 	code.cloudfoundry.org/lager/v3 v3.3.0
 	code.cloudfoundry.org/localip v0.6.0
-	code.cloudfoundry.org/tlsconfig v0.1.0
+	code.cloudfoundry.org/tlsconfig v0.2.0
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/aws/aws-sdk-go v1.55.5
@@ -138,8 +138,8 @@ require (
 	github.com/buildpacks/pack v0.35.1 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
 	github.com/chrismellard/docker-credential-acr-env v0.0.0-20230304212654-82a0ddb27589 // indirect
-	github.com/cloudfoundry/go-socks5 v0.0.0-20180221174514-54f73bdb8a8e // indirect
-	github.com/cloudfoundry/socks5-proxy v0.2.121 // indirect
+	github.com/cloudfoundry/go-socks5 v0.0.0-20240831012420-2590b55236ee // indirect
+	github.com/cloudfoundry/socks5-proxy v0.2.122 // indirect
 	github.com/cloudfoundry/sonde-go v0.0.0-20240807231527-361c7ad33dc7 // indirect
 	github.com/cncf/xds/go v0.0.0-20240830210341-88aa3b3c978a // indirect
 	github.com/containerd/log v0.1.0 // indirect

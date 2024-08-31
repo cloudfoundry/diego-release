@@ -105,6 +105,15 @@ func (s *Server) ListenAndServe(network, addr string) error {
 	return s.Serve(l)
 }
 
+// Listen only starts listening, useful if you want to block and wait for listening before serving
+func (s *Server) Listen(network, addr string) (net.Listener, error) {
+	l, err := net.Listen(network, addr)
+	if err != nil {
+		return nil, err
+	}
+	return l, nil
+}
+
 // Serve is used to serve connections from a listener
 func (s *Server) Serve(l net.Listener) error {
 	for {
