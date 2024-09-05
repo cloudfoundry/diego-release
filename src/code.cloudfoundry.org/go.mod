@@ -16,28 +16,28 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.6.0
-	code.cloudfoundry.org/bytefmt v0.6.0
+	code.cloudfoundry.org/archiver v0.7.0
+	code.cloudfoundry.org/bytefmt v0.7.0
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
-	code.cloudfoundry.org/certsplitter v0.8.0
+	code.cloudfoundry.org/certsplitter v0.9.0
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240821054706-b28ee5fb37eb
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240813185447-19972a81fc85
-	code.cloudfoundry.org/cfhttp/v2 v2.8.0
-	code.cloudfoundry.org/clock v1.9.0
+	code.cloudfoundry.org/cfhttp/v2 v2.9.0
+	code.cloudfoundry.org/clock v1.10.0
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240902130721-726266af5f6a
-	code.cloudfoundry.org/debugserver v0.9.0
-	code.cloudfoundry.org/diego-logging-client v0.13.0
+	code.cloudfoundry.org/debugserver v0.10.0
+	code.cloudfoundry.org/diego-logging-client v0.14.0
 	code.cloudfoundry.org/dockerdriver v0.9.0
-	code.cloudfoundry.org/durationjson v0.7.0
-	code.cloudfoundry.org/eventhub v0.6.0
-	code.cloudfoundry.org/garden v0.0.0-20240903210206-78ca42d0b3af
+	code.cloudfoundry.org/durationjson v0.8.0
+	code.cloudfoundry.org/eventhub v0.7.0
+	code.cloudfoundry.org/garden v0.0.0-20240904210308-248eacb9f907
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.39.0
 	code.cloudfoundry.org/guardian v0.0.0-20240814195134-e40f72265652
 	code.cloudfoundry.org/lager/v3 v3.3.0
-	code.cloudfoundry.org/localip v0.7.0
-	code.cloudfoundry.org/tlsconfig v0.2.0
+	code.cloudfoundry.org/localip v0.8.0
+	code.cloudfoundry.org/tlsconfig v0.3.0
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/aws/aws-sdk-go v1.55.5
@@ -82,7 +82,7 @@ require (
 	github.com/tedsuo/ifrit v0.0.0-20230516164442-7862c310ad26
 	github.com/tedsuo/rata v1.0.0
 	github.com/vito/go-sse v1.1.2
-	golang.org/x/crypto v0.26.0
+	golang.org/x/crypto v0.27.0
 	golang.org/x/net v0.28.0
 	golang.org/x/oauth2 v0.23.0
 	golang.org/x/sys v0.25.0
@@ -95,7 +95,7 @@ require (
 
 require (
 	cel.dev/expr v0.16.1 // indirect
-	code.cloudfoundry.org/commandrunner v0.6.0 // indirect
+	code.cloudfoundry.org/commandrunner v0.7.0 // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240813203737-5032edb05ceb // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/azure-sdk-for-go v68.0.0+incompatible // indirect
@@ -113,19 +113,19 @@ require (
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apex/log v1.9.0 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.30.5 // indirect
-	github.com/aws/aws-sdk-go-v2/config v1.27.32 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.17.31 // indirect
+	github.com/aws/aws-sdk-go-v2/config v1.27.33 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.17.32 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.13 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.17 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.17 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.1 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ecr v1.32.3 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.25.5 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ecr v1.32.4 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.25.6 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.11.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.19 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.22.6 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.26.6 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sts v1.30.6 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.22.7 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.26.7 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sts v1.30.7 // indirect
 	github.com/aws/smithy-go v1.20.4 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bmizerany/pat v0.0.0-20210406213842-e4b6760bdd6f // indirect
@@ -196,9 +196,9 @@ require (
 	github.com/opencontainers/runc v1.1.14 // indirect
 	github.com/opencontainers/runtime-spec v1.2.0 // indirect
 	github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10 // indirect
-	github.com/prometheus/client_golang v1.20.2 // indirect
+	github.com/prometheus/client_golang v1.20.3 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
-	github.com/prometheus/common v0.58.0 // indirect
+	github.com/prometheus/common v0.59.1 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
@@ -212,7 +212,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.29.0 // indirect
 	go.step.sm/crypto v0.51.2 // indirect
 	go.uber.org/automaxprocs v1.5.3 // indirect
-	golang.org/x/exp v0.0.0-20240823005443-9b4947da3948 // indirect
+	golang.org/x/exp v0.0.0-20240904232852-e7e105dedf7e // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/term v0.24.0 // indirect
 	golang.org/x/text v0.18.0 // indirect
