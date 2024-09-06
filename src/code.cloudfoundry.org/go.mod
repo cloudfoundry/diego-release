@@ -1,8 +1,8 @@
 module code.cloudfoundry.org
 
-go 1.22
+go 1.22.0
 
-toolchain go1.22.1
+toolchain go1.22.7
 
 replace (
 	code.cloudfoundry.org/garden => ../garden
@@ -25,20 +25,20 @@ require (
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
 	code.cloudfoundry.org/certsplitter v0.10.0
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240821054706-b28ee5fb37eb
-	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240813185447-19972a81fc85
+	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240906112606-41037f0a7a20
 	code.cloudfoundry.org/cfhttp/v2 v2.10.0
 	code.cloudfoundry.org/clock v1.11.0
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
-	code.cloudfoundry.org/credhub-cli v0.0.0-20240902130721-726266af5f6a
+	code.cloudfoundry.org/credhub-cli v0.0.0-20240906130858-907ed5401334
 	code.cloudfoundry.org/debugserver v0.11.0
-	code.cloudfoundry.org/diego-logging-client v0.15.0
+	code.cloudfoundry.org/diego-logging-client v0.16.0
 	code.cloudfoundry.org/dockerdriver v0.9.0
 	code.cloudfoundry.org/durationjson v0.9.0
 	code.cloudfoundry.org/eventhub v0.8.0
-	code.cloudfoundry.org/garden v0.0.0-20240905210341-1c10b86d2995
+	code.cloudfoundry.org/garden v0.0.0-20240906210158-d3ba7afc2097
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.39.0
-	code.cloudfoundry.org/guardian v0.0.0-20240814195134-e40f72265652
+	code.cloudfoundry.org/guardian v0.0.0-20240906205454-32ef24f0b17c
 	code.cloudfoundry.org/lager/v3 v3.3.0
 	code.cloudfoundry.org/localip v0.9.0
 	code.cloudfoundry.org/tlsconfig v0.4.0
@@ -99,7 +99,7 @@ require (
 
 require (
 	cel.dev/expr v0.16.1 // indirect
-	code.cloudfoundry.org/commandrunner v0.7.0 // indirect
+	code.cloudfoundry.org/commandrunner v0.8.0 // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20240813203737-5032edb05ceb // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/azure-sdk-for-go v68.0.0+incompatible // indirect
