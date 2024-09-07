@@ -57,7 +57,7 @@ code.cloudfoundry.org/credhub-cli/credhub/server
 # code.cloudfoundry.org/debugserver v0.11.0
 ## explicit; go 1.22
 code.cloudfoundry.org/debugserver
-# code.cloudfoundry.org/diego-logging-client v0.15.0
+# code.cloudfoundry.org/diego-logging-client v0.16.0
 ## explicit; go 1.22
 code.cloudfoundry.org/diego-logging-client
 code.cloudfoundry.org/diego-logging-client/testhelpers
@@ -73,7 +73,7 @@ code.cloudfoundry.org/durationjson
 # code.cloudfoundry.org/eventhub v0.8.0
 ## explicit; go 1.22
 code.cloudfoundry.org/eventhub
-# code.cloudfoundry.org/garden v0.0.0-20240905210341-1c10b86d2995 => ../garden
+# code.cloudfoundry.org/garden v0.0.0-20240906210158-d3ba7afc2097 => ../garden
 ## explicit; go 1.22
 code.cloudfoundry.org/garden
 code.cloudfoundry.org/garden/client
@@ -100,8 +100,8 @@ code.cloudfoundry.org/goshims/filepathshim
 code.cloudfoundry.org/goshims/http_wrap
 code.cloudfoundry.org/goshims/osshim
 code.cloudfoundry.org/goshims/osshim/os_fake
-# code.cloudfoundry.org/guardian v0.0.0-20240814195134-e40f72265652 => ../guardian
-## explicit; go 1.21
+# code.cloudfoundry.org/guardian v0.0.0-20240906222318-4127d0dffd4d => ../guardian
+## explicit; go 1.22
 code.cloudfoundry.org/guardian/gardener
 code.cloudfoundry.org/guardian/gardener/container-spec
 code.cloudfoundry.org/guardian/gqt/cgrouper
@@ -437,8 +437,8 @@ github.com/cloudfoundry/dropsonde/runtime_stats
 # github.com/cloudfoundry/go-socks5 v0.0.0-20240831012420-2590b55236ee
 ## explicit; go 1.21.0
 github.com/cloudfoundry/go-socks5
-# github.com/cloudfoundry/socks5-proxy v0.2.122
-## explicit; go 1.21.0
+# github.com/cloudfoundry/socks5-proxy v0.2.123
+## explicit; go 1.22.0
 github.com/cloudfoundry/socks5-proxy
 # github.com/cloudfoundry/sonde-go v0.0.0-20240807231527-361c7ad33dc7
 ## explicit; go 1.18
@@ -756,8 +756,8 @@ github.com/jackc/pgpassfile
 # github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761
 ## explicit; go 1.14
 github.com/jackc/pgservicefile
-# github.com/jackc/pgx/v5 v5.6.0
-## explicit; go 1.20
+# github.com/jackc/pgx/v5 v5.7.0
+## explicit; go 1.21
 github.com/jackc/pgx/v5
 github.com/jackc/pgx/v5/internal/iobufpool
 github.com/jackc/pgx/v5/internal/pgio

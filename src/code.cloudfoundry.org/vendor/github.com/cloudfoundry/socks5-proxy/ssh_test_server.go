@@ -77,7 +77,7 @@ func StartTestSSHServer(httpServerURL, sshPrivateKey, userName string) string {
 	}
 	c := &checker{
 		lastMessageTime: time.Now(),
-		timeout:         500 * time.Millisecond,
+		timeout:         5000 * time.Millisecond,
 	}
 
 	go func() {

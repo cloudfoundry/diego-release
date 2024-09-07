@@ -27,14 +27,14 @@ require (
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240906130858-907ed5401334
 	code.cloudfoundry.org/debugserver v0.11.0
-	code.cloudfoundry.org/diego-logging-client v0.15.0
+	code.cloudfoundry.org/diego-logging-client v0.16.0
 	code.cloudfoundry.org/dockerdriver v0.9.0
 	code.cloudfoundry.org/durationjson v0.9.0
 	code.cloudfoundry.org/eventhub v0.8.0
-	code.cloudfoundry.org/garden v0.0.0-20240905210341-1c10b86d2995
+	code.cloudfoundry.org/garden v0.0.0-20240906210158-d3ba7afc2097
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.39.0
-	code.cloudfoundry.org/guardian v0.0.0-20240814195134-e40f72265652
+	code.cloudfoundry.org/guardian v0.0.0-20240906222318-4127d0dffd4d
 	code.cloudfoundry.org/lager/v3 v3.3.0
 	code.cloudfoundry.org/localip v0.9.0
 	code.cloudfoundry.org/tlsconfig v0.4.0
@@ -59,7 +59,7 @@ require (
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510
 	github.com/hashicorp/errwrap v1.1.0
 	github.com/hashicorp/go-multierror v1.1.1
-	github.com/jackc/pgx/v5 v5.6.0
+	github.com/jackc/pgx/v5 v5.7.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/kr/pty v1.1.8
 	github.com/lib/pq v1.10.9
@@ -135,7 +135,7 @@ require (
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
 	github.com/chrismellard/docker-credential-acr-env v0.0.0-20230304212654-82a0ddb27589 // indirect
 	github.com/cloudfoundry/go-socks5 v0.0.0-20240831012420-2590b55236ee // indirect
-	github.com/cloudfoundry/socks5-proxy v0.2.122 // indirect
+	github.com/cloudfoundry/socks5-proxy v0.2.123 // indirect
 	github.com/cloudfoundry/sonde-go v0.0.0-20240807231527-361c7ad33dc7 // indirect
 	github.com/cncf/xds/go v0.0.0-20240905190251-b4127c9b8d78 // indirect
 	github.com/containerd/log v0.1.0 // indirect
