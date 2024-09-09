@@ -28,14 +28,14 @@ require (
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240906130858-907ed5401334
 	code.cloudfoundry.org/debugserver v0.11.0
 	code.cloudfoundry.org/diego-logging-client v0.16.0
-	code.cloudfoundry.org/dockerdriver v0.9.0
+	code.cloudfoundry.org/dockerdriver v0.10.0
 	code.cloudfoundry.org/durationjson v0.9.0
 	code.cloudfoundry.org/eventhub v0.8.0
 	code.cloudfoundry.org/garden v0.0.0-20240906210158-d3ba7afc2097
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.39.0
 	code.cloudfoundry.org/guardian v0.0.0-20240906222318-4127d0dffd4d
-	code.cloudfoundry.org/lager/v3 v3.3.0
+	code.cloudfoundry.org/lager/v3 v3.4.0
 	code.cloudfoundry.org/localip v0.9.0
 	code.cloudfoundry.org/tlsconfig v0.4.0
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
@@ -149,9 +149,9 @@ require (
 	github.com/cyphar/filepath-securejoin v0.3.1 // indirect
 	github.com/dimchansky/utfbom v1.1.1 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
-	github.com/docker/cli v27.2.0+incompatible // indirect
+	github.com/docker/cli v27.2.1+incompatible // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
-	github.com/docker/docker v27.2.0+incompatible // indirect
+	github.com/docker/docker v27.2.1+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.8.2 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-metrics v0.0.1 // indirect
@@ -212,11 +212,11 @@ require (
 	go.opentelemetry.io/otel/trace v1.29.0 // indirect
 	go.step.sm/crypto v0.51.2 // indirect
 	go.uber.org/automaxprocs v1.5.3 // indirect
-	golang.org/x/exp v0.0.0-20240904232852-e7e105dedf7e // indirect
+	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/term v0.24.0 // indirect
 	golang.org/x/text v0.18.0 // indirect
-	golang.org/x/tools v0.24.0 // indirect
+	golang.org/x/tools v0.25.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240903143218-8af14fe29dc1 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240903143218-8af14fe29dc1 // indirect
 )
