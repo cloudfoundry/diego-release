@@ -74,7 +74,7 @@ code.cloudfoundry.org/durationjson
 ## explicit; go 1.22.0
 code.cloudfoundry.org/eventhub
 # code.cloudfoundry.org/garden v0.0.0-20240909195930-f8558dc30506 => ../garden
-## explicit; go 1.22.0
+## explicit; go 1.22
 code.cloudfoundry.org/garden
 code.cloudfoundry.org/garden/client
 code.cloudfoundry.org/garden/client/connection
@@ -101,7 +101,7 @@ code.cloudfoundry.org/goshims/http_wrap
 code.cloudfoundry.org/goshims/osshim
 code.cloudfoundry.org/goshims/osshim/os_fake
 # code.cloudfoundry.org/guardian v0.0.0-20240909211350-79721e0b5fa7 => ../guardian
-## explicit; go 1.22.0
+## explicit; go 1.22
 code.cloudfoundry.org/guardian/gardener
 code.cloudfoundry.org/guardian/gardener/container-spec
 code.cloudfoundry.org/guardian/gqt/cgrouper
@@ -595,8 +595,8 @@ github.com/docker/go-units
 # github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 ## explicit
 github.com/docker/libtrust
-# github.com/envoyproxy/go-control-plane v0.13.0
-## explicit; go 1.21
+# github.com/envoyproxy/go-control-plane v0.13.0 => github.com/envoyproxy/go-control-plane v0.12.0
+## explicit; go 1.17
 github.com/envoyproxy/go-control-plane/envoy/annotations
 github.com/envoyproxy/go-control-plane/envoy/config/accesslog/v3
 github.com/envoyproxy/go-control-plane/envoy/config/bootstrap/v3
@@ -686,6 +686,7 @@ github.com/golang-jwt/jwt/v4
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/struct
+github.com/golang/protobuf/ptypes/timestamp
 github.com/golang/protobuf/ptypes/wrappers
 # github.com/google/go-cmp v0.6.0
 ## explicit; go 1.13
@@ -844,6 +845,8 @@ github.com/moby/sys/mountinfo
 # github.com/moby/sys/user v0.3.0
 ## explicit; go 1.17
 github.com/moby/sys/user
+# github.com/moby/sys/userns v0.1.0
+## explicit; go 1.21
 # github.com/moby/term v0.5.0
 ## explicit; go 1.18
 github.com/moby/term
@@ -966,15 +969,6 @@ github.com/pkg/errors
 ## explicit; go 1.15
 github.com/pkg/sftp
 github.com/pkg/sftp/internal/encoding/ssh/filexfer
-# github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10
-## explicit; go 1.20
-github.com/planetscale/vtprotobuf/protohelpers
-github.com/planetscale/vtprotobuf/types/known/anypb
-github.com/planetscale/vtprotobuf/types/known/durationpb
-github.com/planetscale/vtprotobuf/types/known/emptypb
-github.com/planetscale/vtprotobuf/types/known/structpb
-github.com/planetscale/vtprotobuf/types/known/timestamppb
-github.com/planetscale/vtprotobuf/types/known/wrapperspb
 # github.com/prometheus/client_golang v1.20.3
 ## explicit; go 1.20
 github.com/prometheus/client_golang/internal/github.com/golang/gddo/httputil
@@ -1285,4 +1279,5 @@ gopkg.in/yaml.v3
 # code.cloudfoundry.org/guardian => ../guardian
 # code.cloudfoundry.org/idmapper => ../idmapper
 # github.com/buildpacks/lifecycle => github.com/buildpacks/lifecycle v0.19.7
+# github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.12.0
 # github.com/moby/buildkit => github.com/moby/buildkit v0.13.2

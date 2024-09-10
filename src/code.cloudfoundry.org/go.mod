@@ -12,6 +12,11 @@ replace (
 
 	// buildpacks/lifecycle depends on moby/buildkit and new versions of both are incompatible with one another
 	github.com/buildpacks/lifecycle => github.com/buildpacks/lifecycle v0.19.7
+
+	// We have to pin this dep to v0.12.0 to remain compatible with Enovy 1.28 until Xenial is out of support
+	// https://www.pivotaltracker.com/n/projects/2477027/stories/186946795
+	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.12.0
+
 	github.com/moby/buildkit => github.com/moby/buildkit v0.13.2
 )
 
@@ -187,6 +192,7 @@ require (
 	github.com/moby/docker-image-spec v1.3.1 // indirect
 	github.com/moby/sys/mountinfo v0.7.2 // indirect
 	github.com/moby/sys/user v0.3.0 // indirect
+	github.com/moby/sys/userns v0.1.0 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/nats-io/jwt/v2 v2.5.8 // indirect
@@ -194,7 +200,6 @@ require (
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/opencontainers/runc v1.1.14 // indirect
 	github.com/opencontainers/runtime-spec v1.2.0 // indirect
-	github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10 // indirect
 	github.com/prometheus/client_golang v1.20.3 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.59.1 // indirect
