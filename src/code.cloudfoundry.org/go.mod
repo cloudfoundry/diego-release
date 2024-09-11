@@ -2,8 +2,6 @@ module code.cloudfoundry.org
 
 go 1.22.0
 
-toolchain go1.22.7
-
 replace (
 	code.cloudfoundry.org/garden => ../garden
 	code.cloudfoundry.org/grootfs => ../grootfs
