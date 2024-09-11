@@ -31,9 +31,9 @@ require (
 	code.cloudfoundry.org/clock v1.13.0
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240909193755-fd43d7668e9f
-	code.cloudfoundry.org/debugserver v0.13.0
-	code.cloudfoundry.org/diego-logging-client v0.18.0
-	code.cloudfoundry.org/dockerdriver v0.12.0
+	code.cloudfoundry.org/debugserver v0.14.0
+	code.cloudfoundry.org/diego-logging-client v0.19.0
+	code.cloudfoundry.org/dockerdriver v0.13.0
 	code.cloudfoundry.org/durationjson v0.11.0
 	code.cloudfoundry.org/eventhub v0.10.0
 	code.cloudfoundry.org/garden v0.0.0-20240910210657-fba22f3dc9f0
@@ -92,7 +92,7 @@ require (
 	golang.org/x/oauth2 v0.23.0
 	golang.org/x/sys v0.25.0
 	golang.org/x/time v0.6.0
-	google.golang.org/grpc v1.66.1
+	google.golang.org/grpc v1.66.2
 	google.golang.org/protobuf v1.34.2
 	gopkg.in/yaml.v2 v2.4.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -124,7 +124,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.17 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.17 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.1 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ecr v1.32.4 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ecr v1.33.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.25.6 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.11.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.19 // indirect
