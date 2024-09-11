@@ -1,20 +1,20 @@
 # cel.dev/expr v0.16.1
 ## explicit; go 1.18
 cel.dev/expr
-# code.cloudfoundry.org/archiver v0.8.0
-## explicit; go 1.22
+# code.cloudfoundry.org/archiver v0.9.0
+## explicit; go 1.22.0
 code.cloudfoundry.org/archiver/compressor
 code.cloudfoundry.org/archiver/extractor
 code.cloudfoundry.org/archiver/extractor/test_helper
-# code.cloudfoundry.org/bytefmt v0.8.0
-## explicit; go 1.22
+# code.cloudfoundry.org/bytefmt v0.9.0
+## explicit; go 1.22.0
 code.cloudfoundry.org/bytefmt
 # code.cloudfoundry.org/cacheddownloader v0.0.0-20240408163934-09b8631e33d0
 ## explicit; go 1.21
 code.cloudfoundry.org/cacheddownloader
 code.cloudfoundry.org/cacheddownloader/cacheddownloaderfakes
-# code.cloudfoundry.org/certsplitter v0.10.0
-## explicit; go 1.22
+# code.cloudfoundry.org/certsplitter v0.11.0
+## explicit; go 1.22.0
 code.cloudfoundry.org/certsplitter/cmd/certsplitter
 # code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240821054706-b28ee5fb37eb
 ## explicit
@@ -22,12 +22,12 @@ code.cloudfoundry.org/cf-routing-test-helpers/tls
 # code.cloudfoundry.org/cf-tcp-router v0.0.0-20240906112606-41037f0a7a20
 ## explicit
 code.cloudfoundry.org/cf-tcp-router/utils
-# code.cloudfoundry.org/cfhttp/v2 v2.10.0
-## explicit; go 1.22
+# code.cloudfoundry.org/cfhttp/v2 v2.11.0
+## explicit; go 1.22.0
 code.cloudfoundry.org/cfhttp/v2
 code.cloudfoundry.org/cfhttp/v2/handlers
-# code.cloudfoundry.org/clock v1.11.0
-## explicit; go 1.22
+# code.cloudfoundry.org/clock v1.12.0
+## explicit; go 1.22.0
 code.cloudfoundry.org/clock
 code.cloudfoundry.org/clock/fakeclock
 # code.cloudfoundry.org/cnbapplifecycle v0.0.2
@@ -41,10 +41,10 @@ code.cloudfoundry.org/cnbapplifecycle/pkg/errors
 code.cloudfoundry.org/cnbapplifecycle/pkg/keychain
 code.cloudfoundry.org/cnbapplifecycle/pkg/log
 code.cloudfoundry.org/cnbapplifecycle/pkg/staging
-# code.cloudfoundry.org/commandrunner v0.8.0
-## explicit; go 1.22
+# code.cloudfoundry.org/commandrunner v0.9.0
+## explicit; go 1.22.0
 code.cloudfoundry.org/commandrunner
-# code.cloudfoundry.org/credhub-cli v0.0.0-20240906130858-907ed5401334
+# code.cloudfoundry.org/credhub-cli v0.0.0-20240909193755-fd43d7668e9f
 ## explicit; go 1.22.0
 code.cloudfoundry.org/credhub-cli/credhub
 code.cloudfoundry.org/credhub-cli/credhub/auth
@@ -54,26 +54,26 @@ code.cloudfoundry.org/credhub-cli/credhub/credentials/generate
 code.cloudfoundry.org/credhub-cli/credhub/credentials/values
 code.cloudfoundry.org/credhub-cli/credhub/permissions
 code.cloudfoundry.org/credhub-cli/credhub/server
-# code.cloudfoundry.org/debugserver v0.11.0
-## explicit; go 1.22
+# code.cloudfoundry.org/debugserver v0.12.0
+## explicit; go 1.22.0
 code.cloudfoundry.org/debugserver
-# code.cloudfoundry.org/diego-logging-client v0.16.0
-## explicit; go 1.22
+# code.cloudfoundry.org/diego-logging-client v0.17.0
+## explicit; go 1.22.0
 code.cloudfoundry.org/diego-logging-client
 code.cloudfoundry.org/diego-logging-client/testhelpers
-# code.cloudfoundry.org/dockerdriver v0.9.0
-## explicit; go 1.22
+# code.cloudfoundry.org/dockerdriver v0.11.0
+## explicit; go 1.22.0
 code.cloudfoundry.org/dockerdriver
 code.cloudfoundry.org/dockerdriver/dockerdriverfakes
 code.cloudfoundry.org/dockerdriver/driverhttp
 code.cloudfoundry.org/dockerdriver/utils
-# code.cloudfoundry.org/durationjson v0.9.0
-## explicit; go 1.22
+# code.cloudfoundry.org/durationjson v0.10.0
+## explicit; go 1.22.0
 code.cloudfoundry.org/durationjson
-# code.cloudfoundry.org/eventhub v0.8.0
-## explicit; go 1.22
+# code.cloudfoundry.org/eventhub v0.9.0
+## explicit; go 1.22.0
 code.cloudfoundry.org/eventhub
-# code.cloudfoundry.org/garden v0.0.0-20240906210158-d3ba7afc2097 => ../garden
+# code.cloudfoundry.org/garden v0.0.0-20240909195930-f8558dc30506 => ../garden
 ## explicit; go 1.22
 code.cloudfoundry.org/garden
 code.cloudfoundry.org/garden/client
@@ -100,7 +100,7 @@ code.cloudfoundry.org/goshims/filepathshim
 code.cloudfoundry.org/goshims/http_wrap
 code.cloudfoundry.org/goshims/osshim
 code.cloudfoundry.org/goshims/osshim/os_fake
-# code.cloudfoundry.org/guardian v0.0.0-20240906222318-4127d0dffd4d => ../guardian
+# code.cloudfoundry.org/guardian v0.0.0-20240909211350-79721e0b5fa7 => ../guardian
 ## explicit; go 1.22
 code.cloudfoundry.org/guardian/gardener
 code.cloudfoundry.org/guardian/gardener/container-spec
@@ -113,15 +113,15 @@ code.cloudfoundry.org/guardian/rundmc/cgroups
 code.cloudfoundry.org/guardian/rundmc/cgroups/fs
 code.cloudfoundry.org/guardian/rundmc/event
 code.cloudfoundry.org/guardian/rundmc/goci
-# code.cloudfoundry.org/lager/v3 v3.3.0
-## explicit; go 1.20
+# code.cloudfoundry.org/lager/v3 v3.5.0
+## explicit; go 1.22.0
 code.cloudfoundry.org/lager/v3
 code.cloudfoundry.org/lager/v3/internal/truncate
 code.cloudfoundry.org/lager/v3/lagerctx
 code.cloudfoundry.org/lager/v3/lagerflags
 code.cloudfoundry.org/lager/v3/lagertest
-# code.cloudfoundry.org/localip v0.9.0
-## explicit; go 1.22
+# code.cloudfoundry.org/localip v0.10.0
+## explicit; go 1.22.0
 code.cloudfoundry.org/localip
 # code.cloudfoundry.org/tlsconfig v0.4.0
 ## explicit; go 1.22
@@ -339,7 +339,7 @@ github.com/aws/smithy-go/time
 github.com/aws/smithy-go/transport/http
 github.com/aws/smithy-go/transport/http/internal/io
 github.com/aws/smithy-go/waiter
-# github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240905205714-e112906c5a2b
+# github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.0.0-20240909191326-0ee4ec5d16bf
 ## explicit; go 1.21
 github.com/awslabs/amazon-ecr-credential-helper/ecr-login
 github.com/awslabs/amazon-ecr-credential-helper/ecr-login/api
@@ -360,7 +360,7 @@ github.com/buildpacks/imgutil/layout
 github.com/buildpacks/imgutil/layout/sparse
 github.com/buildpacks/imgutil/local
 github.com/buildpacks/imgutil/remote
-# github.com/buildpacks/lifecycle v0.20.1
+# github.com/buildpacks/lifecycle v0.20.1 => github.com/buildpacks/lifecycle v0.19.7
 ## explicit; go 1.22
 github.com/buildpacks/lifecycle/api
 github.com/buildpacks/lifecycle/archive
@@ -532,7 +532,7 @@ github.com/dimchansky/utfbom
 # github.com/distribution/reference v0.6.0
 ## explicit; go 1.20
 github.com/distribution/reference
-# github.com/docker/cli v27.2.0+incompatible
+# github.com/docker/cli v27.2.1+incompatible
 ## explicit
 github.com/docker/cli/cli/config
 github.com/docker/cli/cli/config/configfile
@@ -550,7 +550,7 @@ github.com/docker/distribution/registry/client/auth/challenge
 github.com/docker/distribution/registry/client/transport
 github.com/docker/distribution/registry/storage/cache
 github.com/docker/distribution/registry/storage/cache/memory
-# github.com/docker/docker v27.2.0+incompatible
+# github.com/docker/docker v27.2.1+incompatible
 ## explicit
 github.com/docker/docker/api
 github.com/docker/docker/api/types
@@ -595,8 +595,8 @@ github.com/docker/go-units
 # github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 ## explicit
 github.com/docker/libtrust
-# github.com/envoyproxy/go-control-plane v0.13.0
-## explicit; go 1.21
+# github.com/envoyproxy/go-control-plane v0.13.0 => github.com/envoyproxy/go-control-plane v0.12.0
+## explicit; go 1.17
 github.com/envoyproxy/go-control-plane/envoy/annotations
 github.com/envoyproxy/go-control-plane/envoy/config/accesslog/v3
 github.com/envoyproxy/go-control-plane/envoy/config/bootstrap/v3
@@ -675,7 +675,6 @@ github.com/gogo/protobuf/protoc-gen-gogo/generator/internal/remap
 github.com/gogo/protobuf/protoc-gen-gogo/grpc
 github.com/gogo/protobuf/protoc-gen-gogo/plugin
 github.com/gogo/protobuf/protoc-gen-gogoslick
-github.com/gogo/protobuf/sortkeys
 github.com/gogo/protobuf/vanity
 github.com/gogo/protobuf/vanity/command
 # github.com/golang-jwt/jwt/v4 v4.5.0
@@ -683,8 +682,6 @@ github.com/gogo/protobuf/vanity/command
 github.com/golang-jwt/jwt/v4
 # github.com/golang/protobuf v1.5.4
 ## explicit; go 1.17
-github.com/golang/protobuf/proto
-github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/struct
@@ -726,7 +723,7 @@ github.com/google/go-containerregistry/pkg/v1/stream
 github.com/google/go-containerregistry/pkg/v1/tarball
 github.com/google/go-containerregistry/pkg/v1/types
 github.com/google/go-containerregistry/pkg/v1/validate
-# github.com/google/pprof v0.0.0-20240903155634-a8630aee4ab9
+# github.com/google/pprof v0.0.0-20240910150728-a0b0bb1d4134
 ## explicit; go 1.22
 github.com/google/pprof/profile
 # github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510
@@ -759,7 +756,7 @@ github.com/jackc/pgpassfile
 # github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761
 ## explicit; go 1.14
 github.com/jackc/pgservicefile
-# github.com/jackc/pgx/v5 v5.7.0
+# github.com/jackc/pgx/v5 v5.7.1
 ## explicit; go 1.21
 github.com/jackc/pgx/v5
 github.com/jackc/pgx/v5/internal/iobufpool
@@ -773,7 +770,7 @@ github.com/jackc/pgx/v5/pgproto3
 github.com/jackc/pgx/v5/pgtype
 github.com/jackc/pgx/v5/pgxpool
 github.com/jackc/pgx/v5/stdlib
-# github.com/jackc/puddle/v2 v2.2.1
+# github.com/jackc/puddle/v2 v2.2.2
 ## explicit; go 1.19
 github.com/jackc/puddle/v2
 github.com/jackc/puddle/v2/internal/genstack
@@ -818,9 +815,6 @@ github.com/mattn/go-colorable
 # github.com/mattn/go-isatty v0.0.20
 ## explicit; go 1.15
 github.com/mattn/go-isatty
-# github.com/matttproud/golang_protobuf_extensions v1.0.4
-## explicit; go 1.9
-github.com/matttproud/golang_protobuf_extensions/pbutil
 # github.com/minio/highwayhash v1.0.3
 ## explicit; go 1.15
 github.com/minio/highwayhash
@@ -833,7 +827,7 @@ github.com/mitchellh/hashstructure
 # github.com/mitchellh/ioprogress v0.0.0-20180201004757-6a23b12fa88e
 ## explicit
 github.com/mitchellh/ioprogress
-# github.com/moby/buildkit v0.15.2 => github.com/moby/buildkit v0.13.2
+# github.com/moby/buildkit v0.16.0 => github.com/moby/buildkit v0.13.2
 ## explicit; go 1.21
 github.com/moby/buildkit/frontend/dockerfile/command
 github.com/moby/buildkit/frontend/dockerfile/instructions
@@ -859,6 +853,9 @@ github.com/moby/term/windows
 # github.com/morikuni/aec v1.0.0
 ## explicit
 github.com/morikuni/aec
+# github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822
+## explicit
+github.com/munnerz/goautoneg
 # github.com/nats-io/jwt/v2 v2.5.8
 ## explicit; go 1.18
 github.com/nats-io/jwt/v2
@@ -876,10 +873,11 @@ github.com/nats-io/nats-server/v2/server/certstore
 github.com/nats-io/nats-server/v2/server/pse
 github.com/nats-io/nats-server/v2/server/stree
 github.com/nats-io/nats-server/v2/server/sysmem
-# github.com/nats-io/nats.go v1.37.0 => github.com/nats-io/nats.go v1.16.1-0.20220906180156-a1017eec10b0
-## explicit; go 1.16
+# github.com/nats-io/nats.go v1.37.0
+## explicit; go 1.20
 github.com/nats-io/nats.go
 github.com/nats-io/nats.go/encoders/builtin
+github.com/nats-io/nats.go/internal/parser
 github.com/nats-io/nats.go/util
 # github.com/nats-io/nkeys v0.4.7
 ## explicit; go 1.20
@@ -970,27 +968,19 @@ github.com/pkg/errors
 ## explicit; go 1.15
 github.com/pkg/sftp
 github.com/pkg/sftp/internal/encoding/ssh/filexfer
-# github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10
+# github.com/prometheus/client_golang v1.20.3
 ## explicit; go 1.20
-github.com/planetscale/vtprotobuf/protohelpers
-github.com/planetscale/vtprotobuf/types/known/anypb
-github.com/planetscale/vtprotobuf/types/known/durationpb
-github.com/planetscale/vtprotobuf/types/known/emptypb
-github.com/planetscale/vtprotobuf/types/known/structpb
-github.com/planetscale/vtprotobuf/types/known/timestamppb
-github.com/planetscale/vtprotobuf/types/known/wrapperspb
-# github.com/prometheus/client_golang v1.20.3 => github.com/prometheus/client_golang v1.11.1
-## explicit; go 1.13
+github.com/prometheus/client_golang/internal/github.com/golang/gddo/httputil
+github.com/prometheus/client_golang/internal/github.com/golang/gddo/httputil/header
 github.com/prometheus/client_golang/prometheus
 github.com/prometheus/client_golang/prometheus/internal
 github.com/prometheus/client_golang/prometheus/promhttp
 # github.com/prometheus/client_model v0.6.1
 ## explicit; go 1.19
 github.com/prometheus/client_model/go
-# github.com/prometheus/common v0.59.1 => github.com/prometheus/common v0.30.0
-## explicit; go 1.13
+# github.com/prometheus/common v0.59.1
+## explicit; go 1.20
 github.com/prometheus/common/expfmt
-github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg
 github.com/prometheus/common/model
 # github.com/prometheus/procfs v0.15.1
 ## explicit; go 1.20
@@ -1000,8 +990,8 @@ github.com/prometheus/procfs/internal/util
 # github.com/sirupsen/logrus v1.9.3
 ## explicit; go 1.13
 github.com/sirupsen/logrus
-# github.com/spf13/cobra v1.8.1 => github.com/spf13/cobra v0.0.0-20160722081547-f62e98d28ab7
-## explicit
+# github.com/spf13/cobra v1.8.1
+## explicit; go 1.15
 github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.5
 ## explicit; go 1.12
@@ -1064,7 +1054,7 @@ go.opentelemetry.io/otel/metric/noop
 ## explicit; go 1.21
 go.opentelemetry.io/otel/trace
 go.opentelemetry.io/otel/trace/embedded
-# go.step.sm/crypto v0.51.2
+# go.step.sm/crypto v0.52.0
 ## explicit; go 1.22
 go.step.sm/crypto/fingerprint
 go.step.sm/crypto/internal/bcrypt_pbkdf
@@ -1103,8 +1093,8 @@ golang.org/x/crypto/salsa20/salsa
 golang.org/x/crypto/scrypt
 golang.org/x/crypto/ssh
 golang.org/x/crypto/ssh/internal/bcrypt_pbkdf
-# golang.org/x/exp v0.0.0-20240904232852-e7e105dedf7e
-## explicit; go 1.20
+# golang.org/x/exp v0.0.0-20240909161429-701f63a606c0
+## explicit; go 1.22.0
 golang.org/x/exp/maps
 # golang.org/x/net v0.29.0
 ## explicit; go 1.18
@@ -1171,8 +1161,8 @@ golang.org/x/text/width
 # golang.org/x/time v0.6.0
 ## explicit; go 1.18
 golang.org/x/time/rate
-# golang.org/x/tools v0.24.0
-## explicit; go 1.19
+# golang.org/x/tools v0.25.0
+## explicit; go 1.22.0
 golang.org/x/tools/cover
 golang.org/x/tools/go/ast/inspector
 # google.golang.org/genproto/googleapis/api v0.0.0-20240903143218-8af14fe29dc1
@@ -1181,7 +1171,7 @@ google.golang.org/genproto/googleapis/api/expr/v1alpha1
 # google.golang.org/genproto/googleapis/rpc v0.0.0-20240903143218-8af14fe29dc1
 ## explicit; go 1.21
 google.golang.org/genproto/googleapis/rpc/status
-# google.golang.org/grpc v1.66.0
+# google.golang.org/grpc v1.66.1
 ## explicit; go 1.21
 google.golang.org/grpc
 google.golang.org/grpc/attributes
@@ -1240,6 +1230,7 @@ google.golang.org/grpc/status
 google.golang.org/grpc/tap
 # google.golang.org/protobuf v1.34.2
 ## explicit; go 1.20
+google.golang.org/protobuf/encoding/protodelim
 google.golang.org/protobuf/encoding/protojson
 google.golang.org/protobuf/encoding/prototext
 google.golang.org/protobuf/encoding/protowire
@@ -1247,7 +1238,6 @@ google.golang.org/protobuf/internal/descfmt
 google.golang.org/protobuf/internal/descopts
 google.golang.org/protobuf/internal/detrand
 google.golang.org/protobuf/internal/editiondefaults
-google.golang.org/protobuf/internal/editionssupport
 google.golang.org/protobuf/internal/encoding/defval
 google.golang.org/protobuf/internal/encoding/json
 google.golang.org/protobuf/internal/encoding/messageset
@@ -1266,13 +1256,11 @@ google.golang.org/protobuf/internal/strs
 google.golang.org/protobuf/internal/version
 google.golang.org/protobuf/proto
 google.golang.org/protobuf/protoadapt
-google.golang.org/protobuf/reflect/protodesc
 google.golang.org/protobuf/reflect/protoreflect
 google.golang.org/protobuf/reflect/protoregistry
 google.golang.org/protobuf/runtime/protoiface
 google.golang.org/protobuf/runtime/protoimpl
 google.golang.org/protobuf/types/descriptorpb
-google.golang.org/protobuf/types/gofeaturespb
 google.golang.org/protobuf/types/known/anypb
 google.golang.org/protobuf/types/known/durationpb
 google.golang.org/protobuf/types/known/emptypb
@@ -1289,10 +1277,6 @@ gopkg.in/yaml.v3
 # code.cloudfoundry.org/grootfs => ../grootfs
 # code.cloudfoundry.org/guardian => ../guardian
 # code.cloudfoundry.org/idmapper => ../idmapper
-# github.com/buildpack/lifecycle => github.com/buildpack/lifecycle v0.19.7
+# github.com/buildpacks/lifecycle => github.com/buildpacks/lifecycle v0.19.7
+# github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.12.0
 # github.com/moby/buildkit => github.com/moby/buildkit v0.13.2
-# github.com/nats-io/nats.go => github.com/nats-io/nats.go v1.16.1-0.20220906180156-a1017eec10b0
-# github.com/prometheus/client_golang => github.com/prometheus/client_golang v1.11.1
-# github.com/prometheus/common => github.com/prometheus/common v0.30.0
-# github.com/spf13/cobra => github.com/spf13/cobra v0.0.0-20160722081547-f62e98d28ab7
-# github.com/zorkian/go-datadog-api => github.com/zorkian/go-datadog-api v0.0.0-20150915071709-8f1192dcd661

@@ -94,7 +94,7 @@ func (e *DefaultBuildExecutor) Build(d BpDescriptor, inputs BuildInputs, logger 
 	}
 
 	logger.Debug("Updating environment")
-	if err := d.setupEnv(bpLayersDir, createdLayers, inputs.Env); err != nil {
+	if err := d.setupEnv(createdLayers, inputs.Env); err != nil {
 		return BuildOutputs{}, err
 	}
 
@@ -162,41 +162,39 @@ func runBuildCmd(d BpDescriptor, bpLayersDir, planPath string, inputs BuildInput
 	return nil
 }
 
-func (d BpDescriptor) processLayers(bpLayersDir string, logger log.Logger) (map[string]LayerMetadataFile, error) {
-	bpLayers := make(map[string]LayerMetadataFile)
-	if err := eachLayer(bpLayersDir, func(layerPath string) error {
-		layerFile, err := DecodeLayerMetadataFile(layerPath+".toml", d.WithAPI, logger)
+func (d BpDescriptor) processLayers(layersDir string, logger log.Logger) (map[string]LayerMetadataFile, error) {
+	return eachLayer(layersDir, d.WithAPI, func(path, buildpackAPI string) (LayerMetadataFile, error) {
+		layerMetadataFile, err := DecodeLayerMetadataFile(path+".toml", buildpackAPI, logger)
 		if err != nil {
-			return fmt.Errorf("failed to decode layer metadata file: %w", err)
+			return LayerMetadataFile{}, err
 		}
-		if err = renameLayerDirIfNeeded(layerFile, layerPath); err != nil {
-			return fmt.Errorf("failed to rename layer directory: %w", err)
+		if err := renameLayerDirIfNeeded(layerMetadataFile, path); err != nil {
+			return LayerMetadataFile{}, err
 		}
-		bpLayers[layerPath] = layerFile
-		return nil
-	}); err != nil {
-		return nil, fmt.Errorf("failed to process buildpack layer: %w", err)
-	}
-	return bpLayers, nil
+		return layerMetadataFile, nil
+	})
 }
 
-func eachLayer(bpLayersDir string, fn func(layerPath string) error) error {
+func eachLayer(bpLayersDir, buildpackAPI string, fn func(path, api string) (LayerMetadataFile, error)) (map[string]LayerMetadataFile, error) {
 	files, err := os.ReadDir(bpLayersDir)
 	if os.IsNotExist(err) {
-		return nil
+		return map[string]LayerMetadataFile{}, nil
 	} else if err != nil {
-		return err
+		return map[string]LayerMetadataFile{}, err
 	}
+	bpLayers := map[string]LayerMetadataFile{}
 	for _, f := range files {
 		if f.IsDir() || !strings.HasSuffix(f.Name(), ".toml") {
 			continue
 		}
 		path := filepath.Join(bpLayersDir, strings.TrimSuffix(f.Name(), ".toml"))
-		if err = fn(path); err != nil {
-			return err
+		layerMetadataFile, err := fn(path, buildpackAPI)
+		if err != nil {
+			return map[string]LayerMetadataFile{}, err
 		}
+		bpLayers[path] = layerMetadataFile
 	}
-	return nil
+	return bpLayers, nil
 }
 
 func renameLayerDirIfNeeded(layerMetadataFile LayerMetadataFile, layerDir string) error {
@@ -209,25 +207,23 @@ func renameLayerDirIfNeeded(layerMetadataFile LayerMetadataFile, layerDir string
 	return nil
 }
 
-func (d BpDescriptor) setupEnv(bpLayersDir string, createdLayers map[string]LayerMetadataFile, buildEnv BuildEnv) error {
+func (d BpDescriptor) setupEnv(createdLayers map[string]LayerMetadataFile, buildEnv BuildEnv) error {
 	bpAPI := api.MustParse(d.WithAPI)
-	return eachLayer(bpLayersDir, func(layerPath string) error {
-		var err error
-		layerMetadataFile, ok := createdLayers[layerPath]
-		if !ok {
-			return fmt.Errorf("failed to find layer metadata for %s", layerPath)
-		}
+	for path, layerMetadataFile := range createdLayers {
 		if !layerMetadataFile.Build {
-			return nil
+			continue
 		}
-		if err = buildEnv.AddRootDir(layerPath); err != nil {
+		if err := buildEnv.AddRootDir(path); err != nil {
 			return err
 		}
-		if err = buildEnv.AddEnvDir(filepath.Join(layerPath, "env"), env.DefaultActionType(bpAPI)); err != nil {
+		if err := buildEnv.AddEnvDir(filepath.Join(path, "env"), env.DefaultActionType(bpAPI)); err != nil {
 			return err
 		}
-		return buildEnv.AddEnvDir(filepath.Join(layerPath, "env.build"), env.DefaultActionType(bpAPI))
-	})
+		if err := buildEnv.AddEnvDir(filepath.Join(path, "env.build"), env.DefaultActionType(bpAPI)); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (d BpDescriptor) readOutputFilesBp(bpLayersDir, bpPlanPath string, bpPlanIn Plan, bpLayers map[string]LayerMetadataFile, logger log.Logger) (BuildOutputs, error) {
