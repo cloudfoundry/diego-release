@@ -29,15 +29,15 @@ require (
 	code.cloudfoundry.org/clock v1.13.0
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
 	code.cloudfoundry.org/credhub-cli v0.0.0-20240909193755-fd43d7668e9f
-	code.cloudfoundry.org/debugserver v0.13.0
-	code.cloudfoundry.org/diego-logging-client v0.18.0
-	code.cloudfoundry.org/dockerdriver v0.12.0
+	code.cloudfoundry.org/debugserver v0.14.0
+	code.cloudfoundry.org/diego-logging-client v0.19.0
+	code.cloudfoundry.org/dockerdriver v0.13.0
 	code.cloudfoundry.org/durationjson v0.11.0
 	code.cloudfoundry.org/eventhub v0.10.0
 	code.cloudfoundry.org/garden v0.0.0-20240910210657-fba22f3dc9f0
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.39.0
-	code.cloudfoundry.org/guardian v0.0.0-20240910211332-d7f54dca3a23
+	code.cloudfoundry.org/guardian v0.0.0-20240911195342-87e1e97abbd8
 	code.cloudfoundry.org/lager/v3 v3.6.0
 	code.cloudfoundry.org/localip v0.11.0
 	code.cloudfoundry.org/tlsconfig v0.5.0
@@ -90,7 +90,7 @@ require (
 	golang.org/x/oauth2 v0.23.0
 	golang.org/x/sys v0.25.0
 	golang.org/x/time v0.6.0
-	google.golang.org/grpc v1.66.1
+	google.golang.org/grpc v1.66.2
 	google.golang.org/protobuf v1.34.2
 	gopkg.in/yaml.v2 v2.4.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -99,7 +99,7 @@ require (
 require (
 	cel.dev/expr v0.16.1 // indirect
 	code.cloudfoundry.org/commandrunner v0.10.0 // indirect
-	code.cloudfoundry.org/go-diodes v0.0.0-20240813203737-5032edb05ceb // indirect
+	code.cloudfoundry.org/go-diodes v0.0.0-20240911205836-e7f77fdf9650 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/azure-sdk-for-go v68.0.0+incompatible // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
@@ -122,7 +122,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.17 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.17 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.1 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ecr v1.32.4 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ecr v1.33.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.25.6 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.11.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.19 // indirect
@@ -207,7 +207,7 @@ require (
 	github.com/vbatts/tar-split v0.11.5 // indirect
 	github.com/vishvananda/netlink v1.3.0 // indirect
 	github.com/vishvananda/netns v0.0.4 // indirect
-	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.54.0 // indirect
+	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.55.0 // indirect
 	go.opentelemetry.io/otel v1.30.0 // indirect
 	go.opentelemetry.io/otel/metric v1.30.0 // indirect
 	go.opentelemetry.io/otel/trace v1.30.0 // indirect
