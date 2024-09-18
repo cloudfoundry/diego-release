@@ -230,6 +230,20 @@ func (ac *ExternalAuthorization) Validate(vr *ValidationResults) {
 	}
 }
 
+const (
+	ClusterTrafficSystem = "system"
+	ClusterTrafficOwner  = "owner"
+)
+
+type ClusterTraffic string
+
+func (ct ClusterTraffic) Valid() error {
+	if ct == "" || ct == ClusterTrafficSystem || ct == ClusterTrafficOwner {
+		return nil
+	}
+	return fmt.Errorf("unknown cluster traffic option: %q", ct)
+}
+
 // Account holds account specific claims data
 type Account struct {
 	Imports            Imports               `json:"imports,omitempty"`
@@ -241,7 +255,7 @@ type Account struct {
 	Mappings           Mapping               `json:"mappings,omitempty"`
 	Authorization      ExternalAuthorization `json:"authorization,omitempty"`
 	Trace              *MsgTrace             `json:"trace,omitempty"`
-	ClusterTraffic     string                `json:"cluster_traffic,omitempty"`
+	ClusterTraffic     ClusterTraffic        `json:"cluster_traffic,omitempty"`
 	Info
 	GenericFields
 }
@@ -309,6 +323,10 @@ func (a *Account) Validate(acct *AccountClaims, vr *ValidationResults) {
 	}
 	a.SigningKeys.Validate(vr)
 	a.Info.Validate(vr)
+
+	if err := a.ClusterTraffic.Valid(); err != nil {
+		vr.AddError(err.Error())
+	}
 }
 
 // AccountClaims defines the body of an account JWT

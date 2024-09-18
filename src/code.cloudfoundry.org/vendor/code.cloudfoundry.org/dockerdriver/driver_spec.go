@@ -12,7 +12,7 @@ import (
 )
 
 func WriteDriverSpec(logger lager.Logger, pluginsDirectory string, driver string, extension string, contents []byte) error {
-	err := os.MkdirAll(pluginsDirectory, 0666)
+	err := os.MkdirAll(pluginsDirectory, 0755)
 	if err != nil {
 		logger.Error("error-creating-directory", err)
 		return err

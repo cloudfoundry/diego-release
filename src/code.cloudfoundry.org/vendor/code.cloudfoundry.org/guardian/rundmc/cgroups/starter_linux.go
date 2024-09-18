@@ -248,7 +248,7 @@ func (s *CgroupStarter) modifyAllowedDevices(dir string, devices []specs.LinuxDe
 		return nil
 	}
 
-	if err := os.WriteFile(filepath.Join(dir, "devices.deny"), []byte("a"), 0770); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, "devices.deny"), []byte("a"), 0640); err != nil {
 		return err
 	}
 
