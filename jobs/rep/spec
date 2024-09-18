@@ -235,7 +235,9 @@ properties:
   enable_declarative_healthcheck:
     description: "When set, enables the rep to prefer the LRP CheckDefinition to healthcheck instances over the Monitor action. Requires Garden-Runc v1.10.0+"
     default: false
-
+  enable_healthcheck_metrics:
+    description: "When set, enables the rep to emit healtcheck failure metrics. Requires enable_declarative_healthcheck to be set to true."
+    default: false
   cell_registrations.locket.enabled:
     description: Enable the cell rep to register itself as a service with Locket.
     default: true

@@ -237,13 +237,16 @@ properties:
   diego.rep.locket.client_keepalive_timeout: 
     description: "Timeout in seconds to receive a response to the keepalive ping. If a response is not received within this time, the locket client will reconnect to another server."
     default: 22
-  
+
   enable_declarative_healthcheck:
     description: "When set, enables the rep to prefer the LRP CheckDefinition to healthcheck instances over the Monitor action."
     default: false
   declarative_healthcheck_path:
     description: "The directory containing the declarative healthcheck binary"
     default: "/var/vcap/packages/healthcheck_windows/external"
+  enable_healthcheck_metrics:
+    description: "When set, enables the rep to emit healtcheck failure metrics. Requires enable_declarative_healthcheck to be set to true."
+    default: false
 
   cell_registrations.locket.enabled:
     description: Enable the cell rep to register itself as a service with Locket.
