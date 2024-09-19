@@ -220,7 +220,7 @@ func DefaultGdnRunnerConfig(binaries Binaries) GdnRunnerConfig {
 	var err error
 	config.TmpDir, err = os.MkdirTemp("", fmt.Sprintf("test-garden-%s-", config.Tag))
 	Expect(err).NotTo(HaveOccurred())
-	Expect(os.Chmod(config.TmpDir, 0777)).To(Succeed())
+	Expect(os.Chmod(config.TmpDir, 0755)).To(Succeed())
 
 	config.ConsoleSocketsPath = filepath.Join(config.TmpDir, "console-sockets")
 	config.DepotDir = filepath.Join(config.TmpDir, "containers")

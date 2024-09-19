@@ -191,6 +191,6 @@ func buildCertPem(privKey *rsa.PrivateKey, caFilePath string) (cert []byte, key 
 func writeClientCredFile(data []byte) string {
 	tempFile, err := os.CreateTemp(os.TempDir(), "clientcredstest")
 	Expect(err).NotTo(HaveOccurred())
-	Expect(os.WriteFile(tempFile.Name(), data, os.ModePerm)).To(Succeed())
+	Expect(os.WriteFile(tempFile.Name(), data, 0600)).To(Succeed())
 	return tempFile.Name()
 }
