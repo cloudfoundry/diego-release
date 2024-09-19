@@ -44,6 +44,10 @@ files:
   - code.cloudfoundry.org/vendor/github.com/bmizerany/pat/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/creack/pty/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/creack/pty/*.s # gosub
+  - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/gogoproto/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/proto/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/protoc-gen-gogo/descriptor/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/sortkeys/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/golang-jwt/jwt/v4/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/google/shlex/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/kr/fs/*.go # gosub
@@ -169,7 +173,6 @@ files:
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/reflect/protoregistry/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/runtime/protoiface/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/runtime/protoimpl/*.go # gosub
-  - code.cloudfoundry.org/vendor/google.golang.org/protobuf/types/descriptorpb/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/types/known/anypb/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/types/known/durationpb/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/types/known/timestamppb/*.go # gosub
