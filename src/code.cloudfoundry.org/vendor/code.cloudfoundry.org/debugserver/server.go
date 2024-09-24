@@ -85,6 +85,7 @@ func Handler(sink *lager.ReconfigurableSink) http.Handler {
 		rate, err := strconv.Atoi(string(_rate))
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
+			// #nosec G104 - ignore errors writing http response to avoid spamming logs during  DoS
 			w.Write([]byte(err.Error()))
 			return
 		}
@@ -104,6 +105,7 @@ func Handler(sink *lager.ReconfigurableSink) http.Handler {
 		rate, err := strconv.Atoi(string(_rate))
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
+			// #nosec G104 - ignore errors writing http response to avoid spamming logs during  DoS
 			w.Write([]byte(err.Error()))
 			return
 		}

@@ -29,7 +29,11 @@ func WriteDriverSpec(logger lager.Logger, pluginsDirectory string, driver string
 		logger.Error("error-writing-file ", err)
 		return err
 	}
-	f.Sync()
+	err = f.Sync()
+	if err != nil {
+		logger.Error("error-syncing-file ", err)
+		return err
+	}
 	return nil
 }
 
