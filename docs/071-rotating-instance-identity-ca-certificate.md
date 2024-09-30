@@ -1,3 +1,9 @@
+---
+title: Rotating Instance Identity CA Certificates
+expires_at : never
+tags: [diego-release]
+---
+
 # Rotating Instance Identity CA Certificates
 
 Instance identity certificate provides each application with PEM encoded

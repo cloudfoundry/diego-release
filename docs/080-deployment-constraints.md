@@ -1,3 +1,9 @@
+---
+title: Deployment Constraints
+expires_at : never
+tags: [diego-release]
+---
+
 # Deployment Constraints
 
 ## <a name="required-dependencies"></a>Required Dependencies

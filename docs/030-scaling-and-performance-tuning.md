@@ -1,3 +1,9 @@
+---
+title: Scaling and Performance Tuning Recommendations
+expires_at : never
+tags: [diego-release]
+---
+
 # Scaling and Performance Tuning Recommendations
 
 This document describes recommendations for performance tuning of the Diego

@@ -1,3 +1,9 @@
+---
+title: Container Metrics
+expires_at: never
+tags: [diego-release]
+---
+
 # Container Metrics
 
 A list of container metrics emitted by Diego. Each metric is a separate value in an envelope. Some metrics are separated into different envelopes to ensure Loggregator v1 subscribers can still receive these metrics.
