@@ -1,3 +1,9 @@
+---
+title: Envoy Proxy Configuration
+expires_at : never
+tags: [diego-release]
+---
+
 # Envoy Proxy Configuration
 
 This document describes how to enable the per-container [Envoy proxy](https://github.com/envoyproxy/envoy) on Linux Diego cells, how its ports are configured to proxy incoming TCP traffic, and how operators can configure an additional memory allocation for each container to compensate for its memory usage. 

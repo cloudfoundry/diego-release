@@ -1,3 +1,9 @@
+---
+title: Troubleshooting error responses
+expires_at: never
+tags: [diego-release]
+---
+
 # Troubleshooting error responses
 
 ## Components exiting due to Locket Lock Request Failures

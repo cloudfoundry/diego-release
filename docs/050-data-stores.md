@@ -1,3 +1,9 @@
+---
+title: Data Stores
+expires_at: never
+tags: [diego-release]
+---
+
 # Data Stores for Diego
 
 This document describes the different types of data store supported by Diego across its different versions.

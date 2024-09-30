@@ -1,3 +1,9 @@
+---
+title: Setting up the cfdot CLI tool
+expires_at: never
+tags: [diego-release]
+---
+
 # Setting up the `cfdot` CLI tool
 
 The BOSH release for Diego contains a `cfdot` job template that deploys `cfdot` and `jq` binaries as well as a `setup` script to make them easy to invoke. If you deploy Diego with cf-deployment, `cfdot` is already available on the Diego VMs. To use it:

@@ -1,3 +1,9 @@
+---
+title: Understanding Diego Logs for Pushing an Application
+expires_at: never
+tags: [diego-release]
+---
+
 # Understanding Diego Logs for Pushing an Application
 
 The goal of this tutorial is to provide a framework to help the reader debug issues encountered by the many components that make up Diego.

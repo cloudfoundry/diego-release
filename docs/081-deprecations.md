@@ -1,3 +1,13 @@
+---
+title: Deployment Constraints
+expires_at : 2025-09-30
+tags: [diego-release]
+---
+<!---
+deprecate this doc if it hasn't been updated in 3 years.
+-->
+
+
 # <a name="deprecations"></a>Deprecations
 
 This document lists deprecated properties of the job templates in this BOSH release, metrics for Diego components, and API fields and endpoints.

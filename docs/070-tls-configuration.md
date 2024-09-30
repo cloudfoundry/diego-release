@@ -1,3 +1,9 @@
+---
+title: TLS Configuration
+expires_at: never
+tags: [diego-release]
+---
+
 ## <a name="tls-configuration"></a>TLS Configuration
 
 TLS with mutual authentication has to be enabled (as of version 2.0) for

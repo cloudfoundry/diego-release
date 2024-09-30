@@ -1,3 +1,9 @@
+---
+title: Diego Logging Format 
+expires_at : never
+tags: [diego-release]
+---
+
 # Diego Logging Format
 
 Diego components log using a JSON format provided by the [lager](https://github.com/cloudfoundry/lager) library.
