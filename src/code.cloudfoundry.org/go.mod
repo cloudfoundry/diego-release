@@ -21,7 +21,7 @@ replace (
 require (
 	code.cloudfoundry.org/archiver v0.11.0
 	code.cloudfoundry.org/bytefmt v0.10.0
-	code.cloudfoundry.org/cacheddownloader v0.0.0-20240916163925-a52cc2a85daa
+	code.cloudfoundry.org/cacheddownloader v0.0.0-20241001173837-fdbfab074c13
 	code.cloudfoundry.org/certsplitter v0.12.0
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240920121531-99a9a4bd418e
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240920121448-5431d45dbc75
@@ -36,7 +36,7 @@ require (
 	code.cloudfoundry.org/eventhub v0.10.0
 	code.cloudfoundry.org/garden v0.0.0-20240925195854-5948a5d99b4a
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
-	code.cloudfoundry.org/goshims v0.39.0
+	code.cloudfoundry.org/goshims v0.41.0
 	code.cloudfoundry.org/guardian v0.0.0-20240916141817-cd421f9135d0
 	code.cloudfoundry.org/lager/v3 v3.6.0
 	code.cloudfoundry.org/localip v0.11.0

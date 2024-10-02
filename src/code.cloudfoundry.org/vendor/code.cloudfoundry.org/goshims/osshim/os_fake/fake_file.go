@@ -2,7 +2,7 @@
 package os_fake
 
 import (
-	"os"
+	"io/fs"
 	"sync"
 
 	"code.cloudfoundry.org/goshims/osshim"
@@ -90,16 +90,16 @@ type FakeFile struct {
 		result1 int64
 		result2 error
 	}
-	StatStub        func() (os.FileInfo, error)
+	StatStub        func() (fs.FileInfo, error)
 	statMutex       sync.RWMutex
 	statArgsForCall []struct {
 	}
 	statReturns struct {
-		result1 os.FileInfo
+		result1 fs.FileInfo
 		result2 error
 	}
 	statReturnsOnCall map[int]struct {
-		result1 os.FileInfo
+		result1 fs.FileInfo
 		result2 error
 	}
 	WriteStub        func([]byte) (int, error)
@@ -151,15 +151,16 @@ func (fake *FakeFile) Chdir() error {
 	ret, specificReturn := fake.chdirReturnsOnCall[len(fake.chdirArgsForCall)]
 	fake.chdirArgsForCall = append(fake.chdirArgsForCall, struct {
 	}{})
+	stub := fake.ChdirStub
+	fakeReturns := fake.chdirReturns
 	fake.recordInvocation("Chdir", []interface{}{})
 	fake.chdirMutex.Unlock()
-	if fake.ChdirStub != nil {
-		return fake.ChdirStub()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.chdirReturns
 	return fakeReturns.result1
 }
 
@@ -203,15 +204,16 @@ func (fake *FakeFile) Close() error {
 	ret, specificReturn := fake.closeReturnsOnCall[len(fake.closeArgsForCall)]
 	fake.closeArgsForCall = append(fake.closeArgsForCall, struct {
 	}{})
+	stub := fake.CloseStub
+	fakeReturns := fake.closeReturns
 	fake.recordInvocation("Close", []interface{}{})
 	fake.closeMutex.Unlock()
-	if fake.CloseStub != nil {
-		return fake.CloseStub()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.closeReturns
 	return fakeReturns.result1
 }
 
@@ -255,15 +257,16 @@ func (fake *FakeFile) Fd() uintptr {
 	ret, specificReturn := fake.fdReturnsOnCall[len(fake.fdArgsForCall)]
 	fake.fdArgsForCall = append(fake.fdArgsForCall, struct {
 	}{})
+	stub := fake.FdStub
+	fakeReturns := fake.fdReturns
 	fake.recordInvocation("Fd", []interface{}{})
 	fake.fdMutex.Unlock()
-	if fake.FdStub != nil {
-		return fake.FdStub()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.fdReturns
 	return fakeReturns.result1
 }
 
@@ -307,15 +310,16 @@ func (fake *FakeFile) Name() string {
 	ret, specificReturn := fake.nameReturnsOnCall[len(fake.nameArgsForCall)]
 	fake.nameArgsForCall = append(fake.nameArgsForCall, struct {
 	}{})
+	stub := fake.NameStub
+	fakeReturns := fake.nameReturns
 	fake.recordInvocation("Name", []interface{}{})
 	fake.nameMutex.Unlock()
-	if fake.NameStub != nil {
-		return fake.NameStub()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.nameReturns
 	return fakeReturns.result1
 }
 
@@ -365,15 +369,16 @@ func (fake *FakeFile) Read(arg1 []byte) (int, error) {
 	fake.readArgsForCall = append(fake.readArgsForCall, struct {
 		arg1 []byte
 	}{arg1Copy})
+	stub := fake.ReadStub
+	fakeReturns := fake.readReturns
 	fake.recordInvocation("Read", []interface{}{arg1Copy})
 	fake.readMutex.Unlock()
-	if fake.ReadStub != nil {
-		return fake.ReadStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.readReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -434,15 +439,16 @@ func (fake *FakeFile) ReadAt(arg1 []byte, arg2 int64) (int, error) {
 		arg1 []byte
 		arg2 int64
 	}{arg1Copy, arg2})
+	stub := fake.ReadAtStub
+	fakeReturns := fake.readAtReturns
 	fake.recordInvocation("ReadAt", []interface{}{arg1Copy, arg2})
 	fake.readAtMutex.Unlock()
-	if fake.ReadAtStub != nil {
-		return fake.ReadAtStub(arg1, arg2)
+	if stub != nil {
+		return stub(arg1, arg2)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.readAtReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -498,15 +504,16 @@ func (fake *FakeFile) Seek(arg1 int64, arg2 int) (int64, error) {
 		arg1 int64
 		arg2 int
 	}{arg1, arg2})
+	stub := fake.SeekStub
+	fakeReturns := fake.seekReturns
 	fake.recordInvocation("Seek", []interface{}{arg1, arg2})
 	fake.seekMutex.Unlock()
-	if fake.SeekStub != nil {
-		return fake.SeekStub(arg1, arg2)
+	if stub != nil {
+		return stub(arg1, arg2)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.seekReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -555,20 +562,21 @@ func (fake *FakeFile) SeekReturnsOnCall(i int, result1 int64, result2 error) {
 	}{result1, result2}
 }
 
-func (fake *FakeFile) Stat() (os.FileInfo, error) {
+func (fake *FakeFile) Stat() (fs.FileInfo, error) {
 	fake.statMutex.Lock()
 	ret, specificReturn := fake.statReturnsOnCall[len(fake.statArgsForCall)]
 	fake.statArgsForCall = append(fake.statArgsForCall, struct {
 	}{})
+	stub := fake.StatStub
+	fakeReturns := fake.statReturns
 	fake.recordInvocation("Stat", []interface{}{})
 	fake.statMutex.Unlock()
-	if fake.StatStub != nil {
-		return fake.StatStub()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.statReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -578,34 +586,34 @@ func (fake *FakeFile) StatCallCount() int {
 	return len(fake.statArgsForCall)
 }
 
-func (fake *FakeFile) StatCalls(stub func() (os.FileInfo, error)) {
+func (fake *FakeFile) StatCalls(stub func() (fs.FileInfo, error)) {
 	fake.statMutex.Lock()
 	defer fake.statMutex.Unlock()
 	fake.StatStub = stub
 }
 
-func (fake *FakeFile) StatReturns(result1 os.FileInfo, result2 error) {
+func (fake *FakeFile) StatReturns(result1 fs.FileInfo, result2 error) {
 	fake.statMutex.Lock()
 	defer fake.statMutex.Unlock()
 	fake.StatStub = nil
 	fake.statReturns = struct {
-		result1 os.FileInfo
+		result1 fs.FileInfo
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeFile) StatReturnsOnCall(i int, result1 os.FileInfo, result2 error) {
+func (fake *FakeFile) StatReturnsOnCall(i int, result1 fs.FileInfo, result2 error) {
 	fake.statMutex.Lock()
 	defer fake.statMutex.Unlock()
 	fake.StatStub = nil
 	if fake.statReturnsOnCall == nil {
 		fake.statReturnsOnCall = make(map[int]struct {
-			result1 os.FileInfo
+			result1 fs.FileInfo
 			result2 error
 		})
 	}
 	fake.statReturnsOnCall[i] = struct {
-		result1 os.FileInfo
+		result1 fs.FileInfo
 		result2 error
 	}{result1, result2}
 }
@@ -621,15 +629,16 @@ func (fake *FakeFile) Write(arg1 []byte) (int, error) {
 	fake.writeArgsForCall = append(fake.writeArgsForCall, struct {
 		arg1 []byte
 	}{arg1Copy})
+	stub := fake.WriteStub
+	fakeReturns := fake.writeReturns
 	fake.recordInvocation("Write", []interface{}{arg1Copy})
 	fake.writeMutex.Unlock()
-	if fake.WriteStub != nil {
-		return fake.WriteStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.writeReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -690,15 +699,16 @@ func (fake *FakeFile) WriteAt(arg1 []byte, arg2 int64) (int, error) {
 		arg1 []byte
 		arg2 int64
 	}{arg1Copy, arg2})
+	stub := fake.WriteAtStub
+	fakeReturns := fake.writeAtReturns
 	fake.recordInvocation("WriteAt", []interface{}{arg1Copy, arg2})
 	fake.writeAtMutex.Unlock()
-	if fake.WriteAtStub != nil {
-		return fake.WriteAtStub(arg1, arg2)
+	if stub != nil {
+		return stub(arg1, arg2)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.writeAtReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -753,15 +763,16 @@ func (fake *FakeFile) WriteString(arg1 string) (int, error) {
 	fake.writeStringArgsForCall = append(fake.writeStringArgsForCall, struct {
 		arg1 string
 	}{arg1})
+	stub := fake.WriteStringStub
+	fakeReturns := fake.writeStringReturns
 	fake.recordInvocation("WriteString", []interface{}{arg1})
 	fake.writeStringMutex.Unlock()
-	if fake.WriteStringStub != nil {
-		return fake.WriteStringStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.writeStringReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
