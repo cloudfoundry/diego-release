@@ -8,5 +8,5 @@ import os_http "net/http"
 Wraps http client side calls.
 */
 type Client interface {
-Do(req *os_http.Request) (resp *os_http.Response, err error)
+	Do(req *os_http.Request) (resp *os_http.Response, err error)
 }

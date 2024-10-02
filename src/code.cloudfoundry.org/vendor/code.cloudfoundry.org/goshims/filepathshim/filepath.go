@@ -23,5 +23,4 @@ type Filepath interface {
 	Dir(path string) string
 	VolumeName(path string) string
 	IsAbs(path string) bool
-	HasPrefix(p, prefix string) bool
 }

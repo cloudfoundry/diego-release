@@ -73,7 +73,3 @@ func (sh *FilepathShim) VolumeName(path string) string {
 func (sh *FilepathShim) IsAbs(path string) bool {
 	return filepath.IsAbs(path)
 }
-
-func (sh *FilepathShim) HasPrefix(p string, prefix string) bool {
-	return filepath.HasPrefix(p, prefix)
-}

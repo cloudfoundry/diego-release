@@ -98,25 +98,40 @@ func New(
 	downloader *Downloader,
 	cache *FileCache,
 	transformer CacheTransformer,
-) *cachedDownloader {
-	os.MkdirAll(cache.CachedPath, 0750)
+) (*cachedDownloader, error) {
+	err := os.MkdirAll(cache.CachedPath, 0750)
+	if err != nil {
+		return nil, fmt.Errorf("could not create cache path %s: %s", cache.CachedPath, err)
+	}
+
+	uncachedPath, err := createTempCachedDir(cache.CachedPath)
+	if err != nil {
+		return nil, err
+	}
 	return &cachedDownloader{
 		cache:         cache,
 		cacheLocation: filepath.Join(cache.CachedPath, "saved_cache.json"),
-		uncachedPath:  createTempCachedDir(cache.CachedPath),
+		uncachedPath:  uncachedPath,
 		downloader:    downloader,
 		transformer:   transformer,
 
 		lock:       &sync.Mutex{},
 		inProgress: map[string]chan struct{}{},
-	}
+	}, nil
 }
 
-func createTempCachedDir(path string) string {
+func createTempCachedDir(path string) (string, error) {
 	workDir := filepath.Join(path, "temp")
-	os.RemoveAll(workDir)
-	os.MkdirAll(workDir, 0755)
-	return workDir
+	err := os.RemoveAll(workDir)
+	if err != nil {
+		return "", fmt.Errorf("could not remove %s: %s", path, err)
+	}
+
+	err = os.MkdirAll(workDir, 0755)
+	if err != nil {
+		return "", fmt.Errorf("could not create path %s: %s", path, err)
+	}
+	return workDir, nil
 }
 
 func (c *cachedDownloader) SaveState(logger lager.Logger) error {
@@ -138,8 +153,9 @@ func (c *cachedDownloader) RecoverState(logger lager.Logger) error {
 
 	if err == nil {
 		// parse the file only if it exists
-		//we explicitly don't want json decoding errors to propagate here
+		// #nosec G104 - we explicitly don't want json decoding errors to propagate here
 		json.NewDecoder(file).Decode(c.cache)
+		// #nosec G104 - we explicitly don't want file.Close errors to propagate here
 		file.Close()
 	}
 
@@ -224,6 +240,7 @@ func (c *cachedDownloader) fetchCachedFile(logger lager.Logger, url *url.URL, ca
 	download, cacheIsWarm, size, err := c.populateCache(logger, url, cacheKey, currentCachingInfo, checksum, c.transformer, cancelChan)
 	if err != nil {
 		if currentReader != nil {
+			// #nosec G104 - ignore errors closing a cache we're disregarding
 			currentReader.Close()
 		}
 		return nil, 0, err
@@ -237,6 +254,7 @@ func (c *cachedDownloader) fetchCachedFile(logger lager.Logger, url *url.URL, ca
 
 	// current cache is not fresh; disregard it
 	if currentReader != nil {
+		// #nosec G104 - ignore errors closing a cache we're disregarding
 		currentReader.Close()
 	}
 
@@ -276,7 +294,10 @@ func (c *cachedDownloader) fetchCachedDirectory(logger lager.Logger, url *url.UR
 	download, cacheIsWarm, size, err := c.populateCache(logger, url, cacheKey, currentCachingInfo, checksum, TarTransform, cancelChan)
 	if err != nil {
 		if currentDirectory != "" {
-			c.cache.CloseDirectory(logger, cacheKey, currentDirectory)
+			closeErr := c.cache.CloseDirectory(logger, cacheKey, currentDirectory)
+			if closeErr != nil {
+				logger.Debug("failed-to-close-cached-dir", lager.Data{"error": closeErr, "dir": currentDirectory})
+			}
 		}
 		return "", 0, err
 	}
@@ -289,7 +310,10 @@ func (c *cachedDownloader) fetchCachedDirectory(logger lager.Logger, url *url.UR
 
 	// current cache is not fresh; disregard it
 	if currentDirectory != "" {
-		c.cache.CloseDirectory(logger, cacheKey, currentDirectory)
+		closeErr := c.cache.CloseDirectory(logger, cacheKey, currentDirectory)
+		if closeErr != nil {
+			logger.Debug("failed-to-close-cached-dir", lager.Data{"error": closeErr, "dir": currentDirectory})
+		}
 	}
 
 	// fetch uncached data
@@ -345,6 +369,7 @@ func tempFileRemoveOnClose(path string) (*CachedFile, error) {
 	}
 
 	return NewFileCloser(f, func(path string) {
+		// #nosec G104 - we're just trying to clean up temp files that we've created. best effort at clean up, ignore errors
 		os.RemoveAll(path)
 	}), nil
 }
