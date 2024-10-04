@@ -65,6 +65,7 @@ func (c *container) Info() (garden.ContainerInfo, error) {
 		state = "stopped"
 	}
 
+	// #nosec G104 - in 639b15c1100db2e899ffb95ec878482573c59ac1, we explicitly stopped checking for errors when requesting mappedPortsCfg above, so we probably also don't want to error when its failed call returns invalid json
 	json.Unmarshal([]byte(mappedPortsCfg), &mappedPorts)
 	return garden.ContainerInfo{
 		State:         state,
@@ -180,6 +181,7 @@ func (c *container) SetProperty(name string, value string) error {
 }
 
 func (c *container) RemoveProperty(name string) error {
+	// #nosec G104 - we explicitly stopped handling this in 2016, see git blame + commit log
 	c.propertyManager.Remove(c.handle, name)
 	return nil
 }
