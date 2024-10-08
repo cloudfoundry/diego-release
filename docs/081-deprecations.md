@@ -143,7 +143,7 @@ This document lists deprecated properties of the job templates in this BOSH rele
 
 ## <a name="component-apis"></a>Component APIs
 
-The [BBS API docs](https://github.com/cloudfoundry/bbs/tree/master/doc) and [routes](https://github.com/cloudfoundry/bbs/blob/master/routes.go) list the currently deprecated fields and endpoints inline. The current standard practice in Diego is to retain deprecated API fields and endpoints for at least a full major version of the release for cross-version compatibility.
+The [BBS API docs](https://github.com/cloudfoundry/bbs/tree/main/docs) and [routes](https://github.com/cloudfoundry/bbs/blob/main/routes.go) list the currently deprecated fields and endpoints inline. The current standard practice in Diego is to retain deprecated API fields and endpoints for at least a full major version of the release for cross-version compatibility.
 
 ### BBS
 

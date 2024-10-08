@@ -57,7 +57,7 @@ Diego. Below are links to the component certificates in
 #### TLS Certificates for Loggregator V2 API
 
 Since
-[loggregator release version 75](https://github.com/cloudfoundry/loggregator/releases/tag/v75) metron
+[loggregator release version 75](https://github.com/cloudfoundry/loggregator-release/releases/tag/v75) metron
 supports the loggregator V2 API which uses gRPC and supports TLS.
 
 In order to enable the loggregator V2 API you need to set the following
