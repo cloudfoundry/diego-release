@@ -1,86 +1,180 @@
-# Cloud Foundry Diego (BOSH release) [![slack.cloudfoundry.org](https://slack.cloudfoundry.org/badge.svg)](https://slack.cloudfoundry.org)
+# Contributing
 
-----
-This repository is a [BOSH](https://github.com/cloudfoundry/bosh) release for
-deploying Diego and associated tasks for testing a Diego deployment.
-Diego is the new container runtime system for Cloud Foundry, replacing the DEAs and Health Manager.
+See the [Contributing.md](./.github/CONTRIBUTING.md) for more
+information on how to contribute.
 
-This release depends on external services such as a relational database (either [MySQL](https://github.com/cloudfoundry/cf-mysql-release) or [Postgres](https://github.com/cloudfoundry/postgres-release)) for data storage and [Consul](https://github.com/hashicorp/consul) or [BOSH DNS](https://github.com/cloudfoundry/bosh-dns-release) for inter-component service discovery. It also integrates with [NATS](https://github.com/nats-io/nats-server) to register routes to applications and [Loggregator](https://github.com/cloudfoundry/loggregator) to emit application logs and Diego component metrics. In practice, these dependencies typically come from [cf-deployment](https://github.com/cloudfoundry/cf-deployment).
+# Working Group Charter
 
-The [Diego Design Notes](https://github.com/cloudfoundry/diego-design-notes) present an overview of Diego, and links to the various Diego components.
+This repository is maintained by [App Runtime
+Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
+under `Diego` area.
 
-## Table of Contents
+# Docs
 
-1. [Diego Operator Resources](#diego-operator-resources)
-    1. [Deploying Diego-Backed Cloud Foundry](#deploying-diego-backed-cloud-foundry)
-    1. [Deployment Examples](#deployment-examples)
-    1. [Deployment Requirements and Constraints](#deployment-requirements-constraints)
-    1. [Configuration at Scale](#configuration-at-scale)
-    1. [Security Configuration](#security-configuration)
-    1. [Data Store Configuration](#data-store-configuration)
-    1. [Component Coordination](#component-coordination)
-    1. [Monitoring and Inspection](#monitoring-inspection)
-1. [CF App Developer Resources](#cf-app-developer-resources)
-1. [Diego Contributor Resources](#diego-contributor-resources)
+-   [Diego Metrics](./docs/010-metrics.md)
+-   [Container Metrics](./docs/011-container-metrics.md)
+-   [Troubleshooting error
+    responses](./docs/020-troubleshooting-error-responses.md)
+-   [Understanding Diego Logs for Pushing an
+    Application](./docs/021-cf-push-diego-logs.md)
+-   [Diego Logging Format](./docs/022-logging-format.md)
+-   [Scaling and Performance Tuning
+    Recommendations](./docs/030-scaling-and-performance-tuning.md)
+-   [Setting up the cfdot CLI tool](./docs/040-cfdot-setup.md)
+-   [Data Stores](./docs/050-data-stores.md)
+-   [Data Store Encryption](./docs/051-data-store-encryption.md)
+-   [Envoy Proxy Configuration](./docs/060-envoy-proxy-configuration.md)
+-   [TLS Configuration](./docs/070-tls-configuration.md)
+-   [Rotating Instance Identity CA
+    Certificates](./docs/071-rotating-instance-identity-ca-certificate.md)
+-   [Deployment Constraints](./docs/080-deployment-constraints.md)
+-   [Deployment Constraints](./docs/081-deprecations.md)
 
----
+# Contributing
 
-## <a name="diego-operator-resources"></a>Diego Operator Resources
+See the [Contributing.md](./.github/CONTRIBUTING.md) for more
+information on how to contribute.
 
-### <a name="deploying-diego-backed-cloud-foundry"></a>Deploying Diego-Backed Cloud Foundry
+# Working Group Charter
 
-Diego is typically deployed as part of a Cloud Foundry Application Runtime deployment to serve as its container runtime. The [cf-deployment](https://github.com/cloudfoundry/cf-deployment) repository contains the latest recommended way to use BOSH to deploy a Cloud Foundry cluster to infrastructure platforms such as AWS, GCP, and Azure.
+This repository is maintained by [App Runtime
+Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
+under `Garden Containers` area.
 
-- [Release Compatibility](docs/release-compatibility.md) illustrates how to select versions of CF and other BOSH releases to deploy alongside Diego.
+# Contributing
 
-### <a name="deployment-examples"></a>Deployment Examples
+See the [Contributing.md](./.github/CONTRIBUTING.md) for more
+information on how to contribute.
 
-#### Deploying to BOSH-Lite
+# Working Group Charter
 
-- Create a BOSH-Lite VM using either the [v2 BOSH CLI](https://bosh.io/docs/bosh-lite.html) or [bosh-bootloader](https://github.com/cloudfoundry/cf-deployment/tree/master/iaas-support/bosh-lite). Note that to create a BOSH-Lite VM in your local VirtualBox, you must use the BOSH CLI.
-- Follow the instructions in [CF-Deployment](https://github.com/cloudfoundry/cf-deployment/tree/master/iaas-support/bosh-lite#5-upload-the-cloud-config) to deploy CF to the BOSH-Lite VM.
+This repository is maintained by [App Runtime
+Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
+under `Diego` area.
 
+# Contributing
 
-### <a name="deployment-requirements-constraints"></a>Deployment Requirements and Constraints
+See the [Contributing.md](./.github/CONTRIBUTING.md) for more
+information on how to contribute.
 
-- [Required Dependency Versions](docs/required-dependency-versions.md) details the minimum versions of the BOSH director, stemcell, and dependency releases required to deploy Diego correctly.
-- [Deployment Constraints](docs/deployment-constraints.md) describes the dependencies that must be deployed before deploying the Diego cluster and restrictions on Diego instance update order and rates to ensure correct cluster operation.
-- [Deprecations](docs/deprecations.md) lists deprecated BOSH job properties, component metrics, and endpoints and fields for Diego component APIs.
+# Working Group Charter
 
-### <a name="configuration-at-scale"></a> Configuration at Scale
+This repository is maintained by [App Runtime
+Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
+under `Networking` area.
 
-- [Component Scaling & Performance Tuning](docs/scaling-and-performance-tuning.md) describes recommendations and considerations on how to scale Diego components and their dependencies effectively.
+# Contributing
 
-### <a name="security-configuration"></a>Security Configuration
+See the [Contributing.md](./.github/CONTRIBUTING.md) for more
+information on how to contribute.
 
-- [TLS Configuration](docs/tls-configuration.md) describes how to generate TLS certificates for secure communication amongst the Diego and greater CF components.
-- [Enabling Instance Identity](https://docs.cloudfoundry.org/adminguide/instance-identity.html) explains how to enable the Diego cell reps to provide per-instance identity credentials.
-- [Envoy Proxy Configuration](docs/envoy-proxy-configuration.md) explains how to enable the per-instance Envoy proxy to support improved route integrity, as well as some guidelines for operators to account for its additional memory overhead.
+# Working Group Charter
 
-### <a name="data-store-configuration"></a>Data Store Configuration
+This repository is maintained by [App Runtime
+Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
+under `Diego` area.
 
-- [Supported Data Stores for Diego](docs/data-stores.md) describes how to configure Diego to use SQL for its data store.
-- [Data Store Encryption](docs/data-store-encryption.md) explains how to manage the ring of encryption keys that Diego uses to secure data at rest.
+# Contributing
 
+See the [Contributing.md](./.github/CONTRIBUTING.md) for more
+information on how to contribute.
 
-### <a name="component-coordination"></a>Component Coordination
+# Working Group Charter
 
-- [Migrating from Consul to SQL Locks](docs/migrating-from-consul-to-sql-locks.md) explains how to migrate the BBS and auctioneer from coordinating around a lock in Consul to coordinating around one stored in the Diego relational database.
+This repository is maintained by [App Runtime
+Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
+under `Volume Services` area.
 
+# Contributing
 
-### <a name="monitoring-inspection"></a>Monitoring and Inspection
+See the [Contributing.md](./.github/CONTRIBUTING.md) for more
+information on how to contribute.
 
-- [Diego Metrics](docs/metrics.md) lists the various component metrics that Diego emits through the Loggregator system.
-- [Container Metrics](docs/container-metrics.md) lists the various container metrics that Diego emits through the Loggregator system.
-- [`cfdot` Setup](docs/cfdot-setup.md) shows how to set up the `cfdot` CF Diego Operator Tool CLI for use in inspecting and interacting with a Diego deployment.
-- [Logging format](docs/logging-format.md) shows how to configure the logging format for Diego components.
+# Working Group Charter
 
-## <a name="cf-app-developer-resources"></a>CF App Developer Resources
+This repository is maintained by [App Runtime
+Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
+under `Networking` area.
 
-- [Migrating to Diego](https://github.com/cloudfoundry/diego-design-notes/blob/master/migrating-to-diego.md) describes how developers can switch from the DEAs to Diego and details various operational differences between the DEAs and Diego.
-- The [Docker Support Notes](https://github.com/cloudfoundry/diego-design-notes/blob/master/docker-support.md) describe how Diego runs Docker-image-based apps in Cloud Foundry.
+# Contributing
 
+See the [Contributing.md](./.github/CONTRIBUTING.md) for more
+information on how to contribute.
 
-## <a name="diego-contributor-resources"></a>Diego Contributor Resources
+# Working Group Charter
 
-See the [Contributing.md](./.github/CONTRIBUTING.md) for more information on how to contribute.
+This repository is maintained by [App Runtime
+Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
+under `Volume Services` area.
+
+# Contributing
+
+See the [Contributing.md](./.github/CONTRIBUTING.md) for more
+information on how to contribute.
+
+# Working Group Charter
+
+This repository is maintained by [App Runtime
+Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
+under `Networking` area.
+
+# Contributing
+
+See the [Contributing.md](./.github/CONTRIBUTING.md) for more
+information on how to contribute.
+
+# Working Group Charter
+
+This repository is maintained by [App Runtime
+Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
+under `Networking` area.
+
+# Contributing
+
+See the [Contributing.md](./.github/CONTRIBUTING.md) for more
+information on how to contribute.
+
+# Working Group Charter
+
+This repository is maintained by [App Runtime
+Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
+under `Volume Services` area.
+
+# Contributing
+
+See the [Contributing.md](./.github/CONTRIBUTING.md) for more
+information on how to contribute.
+
+# Working Group Charter
+
+This repository is maintained by [App Runtime
+Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
+under `Networking` area.
+
+# Contributing
+
+See the [Contributing.md](./.github/CONTRIBUTING.md) for more
+information on how to contribute.
+
+# Working Group Charter
+
+This repository is maintained by [App Runtime
+Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
+under `Volume Services` area.
+
+# Contributing
+
+See the [Contributing.md](./.github/CONTRIBUTING.md) for more
+information on how to contribute.
+
+# Working Group Charter
+
+This repository is maintained by [App Runtime
+Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
+under `Networking` area.
+
+> \[!IMPORTANT\]
+>
+> Content in this file is managed by the [CI task
+> `sync-readme`](https://github.com/cloudfoundry/wg-app-platform-runtime-ci/blob/c83c224ad06515ed52f51bdadf6075f56300ec93/shared/tasks/sync-readme/metadata.yml)
+> and is generated by CI following a convention.
