@@ -142,6 +142,18 @@ func (sh *OsShim) Readlink(name string) (string, error) {
 	return os.Readlink(name)
 }
 
+func (sh *OsShim) ReadDir(name string) ([]os.DirEntry, error) {
+	return os.ReadDir(name)
+}
+
+func (sh *OsShim) ReadFile(name string) ([]byte, error) {
+	return os.ReadFile(name)
+}
+
+func (sh *OsShim) WriteFile(name string, data []byte, perm os.FileMode) error {
+	return os.WriteFile(name, data, perm)
+}
+
 func (sh *OsShim) Chown(name string, uid int, gid int) error {
 	return os.Chown(name, uid, gid)
 }
