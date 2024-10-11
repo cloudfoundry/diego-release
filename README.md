@@ -61,7 +61,7 @@ information on how to contribute.
 
 This repository is maintained by [App Runtime
 Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
-under `Networking` area.
+under `Diego` area.
 
 # Contributing
 
@@ -72,7 +72,7 @@ information on how to contribute.
 
 This repository is maintained by [App Runtime
 Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
-under `Networking` area.
+under `Volume Services` area.
 
 # Contributing
 
@@ -160,7 +160,7 @@ information on how to contribute.
 
 This repository is maintained by [App Runtime
 Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
-under `Diego` area.
+under `Networking` area.
 
 # Contributing
 
@@ -171,7 +171,7 @@ information on how to contribute.
 
 This repository is maintained by [App Runtime
 Platform](https://github.com/cloudfoundry/community/blob/main/toc/working-groups/app-runtime-platform.md)
-under `Volume Services` area.
+under `Networking` area.
 
 > \[!IMPORTANT\]
 >
