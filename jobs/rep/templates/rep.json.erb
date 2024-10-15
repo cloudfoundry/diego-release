@@ -4,6 +4,7 @@
   trusted_certs_dir = "/var/vcap/data/rep/shared/garden/trusted_certs"
   instance_identity_dir = "/var/vcap/data/rep/shared/garden/instance_identity"
   download_cache_dir= "/var/vcap/data/rep/shared/garden/download_cache"
+  service_binding_root_dir = "/var/vcap/data/rep/shared/garden/service_binding_root"
 
   zone = spec.az
   if_p("diego.rep.zone") do |value|
@@ -104,6 +105,7 @@
     report_interval: "1m",
     max_data_string_length: p("logging.max_data_string_length"),
     max_log_lines_per_second: p("diego.executor.max_log_lines_per_second"),
+    service_binding_root: "#{service_binding_root_dir}"
   }
 
   if p("containers.graceful_shutdown_interval_in_seconds") < 10

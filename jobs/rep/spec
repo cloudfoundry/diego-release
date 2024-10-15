@@ -22,6 +22,7 @@ templates:
   tls.key.erb: config/certs/tls.key
   tls_ca.crt.erb: config/certs/tls_ca.crt
   indicators.yml.erb: config/indicators.yml
+  setup_service_binding_root.erb: bin/setup_service_binding_root
 
 packages:
   - pid_utils

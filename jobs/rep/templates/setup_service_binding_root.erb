@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+<%
+  _max_containers = 250
+  if_p("diego.rep.max_containers") do |value|
+    _max_containers = value
+  end
+  if _max_containers <= 0
+    raise "The max_containers prop should be a positive integer"
+  end
+%>
+max_containers=<%= _max_containers %>
+
+# Define the service binding root directory
+service_binding_root="/var/vcap/data/rep/shared/garden/service_binding_root"
+
+# Calculate the size for the tmpfs (1MB per container)
+root_tmpfs_size=$((max_containers * 1))M
+
+# Ensure the root directory is safely removed and recreated
+if [ -d "$service_binding_root" ]; then
+  # Ensure the root directory is unmounted before removing it
+  if mountpoint -q "$service_binding_root"; then
+    fuser -k "$service_binding_root"
+    umount -l "$service_binding_root"
+  fi
+
+  sleep 10
+
+  rm -rf "$service_binding_root"
+fi
+
+mkdir -p "$service_binding_root"
+
+# Mount the root tmpfs
+mount -t tmpfs -o size="$root_tmpfs_size" tmpfs "$service_binding_root" || exit 1
+
+# Set permissions and ownership for the root directory and all subdirectories
+chmod 0700 "$service_binding_root"
+chown vcap:vcap "$service_binding_root"

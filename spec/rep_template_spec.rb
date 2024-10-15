@@ -106,5 +106,18 @@ describe 'rep' do
         end.to raise_error(/The max_containers prop should be a positive integer/)
       end
     end
-  end  
+  end
+
+  describe 'setup_service_binding_root.erb' do
+    let(:template) { job.template('bin/setup_service_binding_root') }
+
+    context 'checks the max_containers value' do
+      it 'raises an error if max_containers is <= 0' do
+        deployment_manifest_fragment['diego']['rep']['max_containers'] = -10
+        expect do
+          rendered_template
+        end.to raise_error(/The max_containers prop should be a positive integer/)
+      end
+    end
+  end
 end
