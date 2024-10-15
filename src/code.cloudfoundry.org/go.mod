@@ -21,27 +21,27 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.13.0
-	code.cloudfoundry.org/bytefmt v0.12.0
+	code.cloudfoundry.org/archiver v0.14.0
+	code.cloudfoundry.org/bytefmt v0.13.0
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20241001173837-fdbfab074c13
-	code.cloudfoundry.org/certsplitter v0.15.0
+	code.cloudfoundry.org/certsplitter v0.17.0
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20240920121531-99a9a4bd418e
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20240920121448-5431d45dbc75
-	code.cloudfoundry.org/cfhttp/v2 v2.15.0
-	code.cloudfoundry.org/clock v1.15.0
+	code.cloudfoundry.org/cfhttp/v2 v2.16.0
+	code.cloudfoundry.org/clock v1.16.0
 	code.cloudfoundry.org/cnbapplifecycle v0.0.2
 	code.cloudfoundry.org/credhub-cli v0.0.0-20241007130734-43a9b718dfb3
-	code.cloudfoundry.org/debugserver v0.17.0
-	code.cloudfoundry.org/diego-logging-client v0.23.0
-	code.cloudfoundry.org/dockerdriver v0.18.0
-	code.cloudfoundry.org/durationjson v0.13.0
-	code.cloudfoundry.org/eventhub v0.12.0
+	code.cloudfoundry.org/debugserver v0.18.0
+	code.cloudfoundry.org/diego-logging-client v0.24.0
+	code.cloudfoundry.org/dockerdriver v0.19.0
+	code.cloudfoundry.org/durationjson v0.14.0
+	code.cloudfoundry.org/eventhub v0.13.0
 	code.cloudfoundry.org/garden v0.0.0-20241009020314-b824595a23ce
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
-	code.cloudfoundry.org/goshims v0.43.0
+	code.cloudfoundry.org/goshims v0.44.0
 	code.cloudfoundry.org/guardian v0.0.0-20241010105807-0e04e225bfa3
-	code.cloudfoundry.org/lager/v3 v3.9.0
-	code.cloudfoundry.org/localip v0.13.0
+	code.cloudfoundry.org/lager/v3 v3.10.0
+	code.cloudfoundry.org/localip v0.14.0
 	code.cloudfoundry.org/tlsconfig v0.7.0
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
@@ -140,7 +140,7 @@ require (
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
 	github.com/chrismellard/docker-credential-acr-env v0.0.0-20230304212654-82a0ddb27589 // indirect
 	github.com/cloudfoundry/go-socks5 v0.0.0-20240831012420-2590b55236ee // indirect
-	github.com/cloudfoundry/socks5-proxy v0.2.126 // indirect
+	github.com/cloudfoundry/socks5-proxy v0.2.127 // indirect
 	github.com/cloudfoundry/sonde-go v0.0.0-20241007161526-e3ce7aa1aabc // indirect
 	github.com/cncf/xds/go v0.0.0-20240905190251-b4127c9b8d78 // indirect
 	github.com/containerd/log v0.1.0 // indirect
@@ -209,10 +209,10 @@ require (
 	github.com/vbatts/tar-split v0.11.6 // indirect
 	github.com/vishvananda/netlink v1.3.0 // indirect
 	github.com/vishvananda/netns v0.0.4 // indirect
-	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.55.0 // indirect
-	go.opentelemetry.io/otel v1.30.0 // indirect
-	go.opentelemetry.io/otel/metric v1.30.0 // indirect
-	go.opentelemetry.io/otel/trace v1.30.0 // indirect
+	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.56.0 // indirect
+	go.opentelemetry.io/otel v1.31.0 // indirect
+	go.opentelemetry.io/otel/metric v1.31.0 // indirect
+	go.opentelemetry.io/otel/trace v1.31.0 // indirect
 	go.step.sm/crypto v0.54.0 // indirect
 	go.uber.org/automaxprocs v1.6.0 // indirect
 	golang.org/x/exp v0.0.0-20241009180824-f66d83c29e7c // indirect
