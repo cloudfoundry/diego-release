@@ -42,6 +42,9 @@ type Os interface {
 	Link(oldname, newname string) error
 	Symlink(oldname, newname string) error
 	Readlink(name string) (string, error)
+	ReadDir(name string) ([]os.DirEntry, error)
+	ReadFile(name string) ([]byte, error)
+	WriteFile(name string, data []byte, perm os.FileMode) error
 	Chown(name string, uid, gid int) error
 	Lchown(name string, uid, gid int) error
 	TempDir() string

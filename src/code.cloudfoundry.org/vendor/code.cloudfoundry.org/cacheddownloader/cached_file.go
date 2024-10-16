@@ -18,6 +18,7 @@ func NewFileCloser(file *os.File, onClose func(string)) *CachedFile {
 	}
 
 	runtime.SetFinalizer(fc, func(f *CachedFile) {
+		// #nosec G104 - ignore this error closing a file. not that important and we dont have a logger plumbed
 		f.Close()
 	})
 

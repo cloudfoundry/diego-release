@@ -6,6 +6,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased] ##
 
+## [0.3.4] - 2024-10-09 ##
+
+### Fixed ###
+- Previously, some testing mocks we had resulted in us doing `import "testing"`
+  in non-`_test.go` code, which made some downstreams like Kubernetes unhappy.
+  This has been fixed. (#32)
+
+## [0.3.3] - 2024-09-30 ##
+
+### Fixed ###
+- The mode and owner verification logic in `MkdirAll` has been removed. This
+  was originally intended to protect against some theoretical attacks but upon
+  further consideration these protections don't actually buy us anything and
+  they were causing spurious errors with more complicated filesystem setups.
+- The "is the created directory empty" logic in `MkdirAll` has also been
+  removed. This was not causing us issues yet, but some pseudofilesystems (such
+  as `cgroup`) create non-empty directories and so this logic would've been
+  wrong for such cases.
+
 ## [0.3.2] - 2024-09-13 ##
 
 ### Changed ###
@@ -145,7 +164,9 @@ This is our first release of `github.com/cyphar/filepath-securejoin`,
 containing a full implementation with a coverage of 93.5% (the only missing
 cases are the error cases, which are hard to mocktest at the moment).
 
-[Unreleased]: https://github.com/cyphar/filepath-securejoin/compare/v0.3.2...HEAD
+[Unreleased]: https://github.com/cyphar/filepath-securejoin/compare/v0.3.4...HEAD
+[0.3.3]: https://github.com/cyphar/filepath-securejoin/compare/v0.3.3...v0.3.4
+[0.3.3]: https://github.com/cyphar/filepath-securejoin/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/cyphar/filepath-securejoin/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/cyphar/filepath-securejoin/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/cyphar/filepath-securejoin/compare/v0.2.5...v0.3.0

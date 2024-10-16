@@ -2,7 +2,7 @@
 name: rep
 
 dependencies:
-  - golang-1.22-linux
+  - golang-1.23-linux
 
 files:
   - code.cloudfoundry.org/go.mod
@@ -89,7 +89,6 @@ files:
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/aws/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/aws/defaults/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/aws/middleware/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/aws/middleware/private/metrics/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/aws/protocol/query/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/aws/protocol/restjson/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/aws/protocol/xml/*.go # gosub
@@ -196,11 +195,13 @@ files:
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/internal/sync/singleflight/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/io/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/logging/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/metrics/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/middleware/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/private/requestcompression/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/ptr/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/rand/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/time/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/tracing/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/transport/http/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/transport/http/internal/io/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/waiter/*.go # gosub

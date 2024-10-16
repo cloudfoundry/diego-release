@@ -88,12 +88,12 @@ func (sh *OsShim) Chdir(dir string) error {
 
 func (sh *OsShim) Open(name string) (File, error) {
 	o, err := os.Open(name)
-	return &FileShim{Delegate:o}, err
+	return &FileShim{Delegate: o}, err
 }
 
 func (sh *OsShim) Create(name string) (File, error) {
 	o, err := os.Create(name)
-	return &FileShim{Delegate:o}, err
+	return &FileShim{Delegate: o}, err
 }
 
 func (sh *OsShim) Rename(oldpath string, newpath string) error {
@@ -106,7 +106,7 @@ func (sh *OsShim) NewFile(fd uintptr, name string) File {
 
 func (sh *OsShim) OpenFile(name string, flag int, perm os.FileMode) (File, error) {
 	o, err := os.OpenFile(name, flag, perm)
-	return &FileShim{Delegate:o}, err
+	return &FileShim{Delegate: o}, err
 }
 
 func (sh *OsShim) Truncate(name string, size int64) error {
@@ -127,7 +127,7 @@ func (sh *OsShim) Chtimes(name string, atime time.Time, mtime time.Time) error {
 
 func (sh *OsShim) Pipe() (File, File, error) {
 	r, w, err := os.Pipe()
-	return &FileShim{Delegate:r}, &FileShim{Delegate:w}, err
+	return &FileShim{Delegate: r}, &FileShim{Delegate: w}, err
 }
 
 func (sh *OsShim) Link(oldname string, newname string) error {
@@ -140,6 +140,18 @@ func (sh *OsShim) Symlink(oldname string, newname string) error {
 
 func (sh *OsShim) Readlink(name string) (string, error) {
 	return os.Readlink(name)
+}
+
+func (sh *OsShim) ReadDir(name string) ([]os.DirEntry, error) {
+	return os.ReadDir(name)
+}
+
+func (sh *OsShim) ReadFile(name string) ([]byte, error) {
+	return os.ReadFile(name)
+}
+
+func (sh *OsShim) WriteFile(name string, data []byte, perm os.FileMode) error {
+	return os.WriteFile(name, data, perm)
 }
 
 func (sh *OsShim) Chown(name string, uid int, gid int) error {

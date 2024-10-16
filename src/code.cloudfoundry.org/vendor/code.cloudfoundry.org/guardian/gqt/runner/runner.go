@@ -406,7 +406,9 @@ func (r *RunningGarden) DestroyAndStop() error {
 func (r *RunningGarden) forceStop() error {
 	if runtime.GOOS == "windows" {
 		// Windows doesn't support SIGTERM
-		r.Kill()
+		err := r.Kill()
+		fmt.Printf("error on r.Kill() during forceStop: %s\n", err.Error())
+		return ErrGardenStop{error: err}
 	} else {
 		if err := r.Stop(); err != nil {
 			fmt.Printf("error on r.Stop() during forceStop: %s\n", err.Error())
@@ -563,7 +565,8 @@ func initGrootStore(grootBin, storePath string, idMappings []string) {
 		freeCmd := exec.Command("free", "-h")
 		freeCmd.Stdout = GinkgoWriter
 		freeCmd.Stderr = GinkgoWriter
-		freeCmd.Run()
+		err := freeCmd.Run()
+		Expect(err).NotTo(HaveOccurred())
 	}
 	Expect(err).NotTo(HaveOccurred(), "grootfs init-store failed. This might be because the machine is running out of RAM. Check the output of `free` above for more info.")
 }

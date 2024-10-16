@@ -102,7 +102,9 @@ func NewDownloaderWithIdleTimeout(requestTimeout time.Duration, idleTimeout time
 				return nil, err
 			}
 			if tc, ok := c.(*net.TCPConn); ok {
+				// #nosec G104 - avoid logging this error because it will spam for each request made
 				tc.SetKeepAlive(true)
+				// #nosec G104 - avoid logging this error because it will spam for each request made
 				tc.SetKeepAlivePeriod(30 * time.Second)
 			}
 			return &idleTimeoutConn{idleTimeout, c}, nil
@@ -242,6 +244,7 @@ func (downloader *Downloader) fetchToFile(
 		select {
 		case <-completeChan:
 		case <-cancelChan:
+			// #nosec G104 - ignore errors from closing response bodies to avoid spamming logs with network issues
 			resp.Body.Close()
 		}
 	}()
@@ -261,9 +264,15 @@ func copyToDestinationFile(
 	logger = logger.Session("copy-to-destination-file", lager.Data{"destination": destinationFile.Name()})
 
 	defer func() {
-		destinationFile.Close()
+		closeErr := destinationFile.Close()
+		if closeErr != nil {
+			logger.Debug("failed-to-close-destination-file", lager.Data{"error": closeErr, "destination": destinationFile.Name()})
+		}
 		if err != nil {
-			os.Remove(destinationFile.Name())
+			rmErr := os.Remove(destinationFile.Name())
+			if rmErr != nil {
+				logger.Debug("failed-to-delete-destination-file", lager.Data{"error": rmErr, "destination": destinationFile.Name()})
+			}
 		}
 	}()
 

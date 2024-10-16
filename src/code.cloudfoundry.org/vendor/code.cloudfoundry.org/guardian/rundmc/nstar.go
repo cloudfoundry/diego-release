@@ -64,7 +64,10 @@ func (n *nstar) StreamOut(log lager.Logger, pid int, path, user string) (io.Read
 		return nil, fmt.Errorf("error streaming out: %v. Output: %s", err, errOut.String())
 	}
 
-	writer.Close()
+	err = writer.Close()
+	if err != nil {
+		log.Debug("failed-to-close-writer", lager.Data{"error": err})
+	}
 
 	go func() {
 		if err := n.CommandRunner.Wait(cmd); err != nil {
