@@ -36,10 +36,10 @@ require (
 	code.cloudfoundry.org/dockerdriver v0.19.0
 	code.cloudfoundry.org/durationjson v0.14.0
 	code.cloudfoundry.org/eventhub v0.13.0
-	code.cloudfoundry.org/garden v0.0.0-20241015133258-e596c7c58892
+	code.cloudfoundry.org/garden v0.0.0-20241018132925-991b03c78f6c
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.44.0
-	code.cloudfoundry.org/guardian v0.0.0-20241016021009-af10d19ce8f0
+	code.cloudfoundry.org/guardian v0.0.0-20241018133518-6c74accd9d4b
 	code.cloudfoundry.org/lager/v3 v3.10.0
 	code.cloudfoundry.org/localip v0.14.0
 	code.cloudfoundry.org/tlsconfig v0.7.0
@@ -70,7 +70,7 @@ require (
 	github.com/lib/pq v1.10.9
 	github.com/mitchellh/hashstructure v1.1.0
 	github.com/moby/term v0.5.0
-	github.com/nats-io/nats-server/v2 v2.10.21
+	github.com/nats-io/nats-server/v2 v2.10.22
 	github.com/nats-io/nats.go v1.37.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
 	github.com/onsi/ginkgo/v2 v2.20.2
@@ -148,7 +148,7 @@ require (
 	github.com/containerd/typeurl/v2 v2.2.0 // indirect
 	github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 // indirect
 	github.com/containers/ocicrypt v1.2.0 // indirect
-	github.com/containers/storage v1.55.0 // indirect
+	github.com/containers/storage v1.55.1 // indirect
 	github.com/coreos/go-systemd/v22 v22.5.0 // indirect
 	github.com/creack/pty v1.1.23 // indirect
 	github.com/cyphar/filepath-securejoin v0.3.4 // indirect
@@ -170,7 +170,7 @@ require (
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/go-containerregistry v0.20.2 // indirect
-	github.com/google/pprof v0.0.0-20241009165004-a3522334989c // indirect
+	github.com/google/pprof v0.0.0-20241017200806-017d972448fc // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/hashicorp/go-version v1.7.0 // indirect
