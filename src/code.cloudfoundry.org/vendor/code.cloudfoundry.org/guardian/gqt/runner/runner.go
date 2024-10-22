@@ -405,10 +405,8 @@ func (r *RunningGarden) DestroyAndStop() error {
 
 func (r *RunningGarden) forceStop() error {
 	if runtime.GOOS == "windows" {
-		// Windows doesn't support SIGTERM
-		err := r.Kill()
-		fmt.Printf("error on r.Kill() during forceStop: %s\n", err.Error())
-		return ErrGardenStop{error: err}
+		// nosec G104 - windows doesn't support signalling and throws an error which we want to ignore
+		r.Kill()
 	} else {
 		if err := r.Stop(); err != nil {
 			fmt.Printf("error on r.Stop() during forceStop: %s\n", err.Error())
