@@ -81,7 +81,7 @@ require (
 	github.com/openzipkin/zipkin-go v0.4.3
 	github.com/pborman/getopt v1.1.0
 	github.com/pkg/errors v0.9.1
-	github.com/pkg/sftp v1.13.6
+	github.com/pkg/sftp v1.13.7
 	github.com/spf13/cobra v1.8.1
 	github.com/square/certstrap v1.3.0
 	github.com/tedsuo/ifrit v0.0.0-20230516164442-7862c310ad26
@@ -99,7 +99,7 @@ require (
 )
 
 require (
-	cel.dev/expr v0.17.0 // indirect
+	cel.dev/expr v0.18.0 // indirect
 	code.cloudfoundry.org/commandrunner v0.14.0 // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20241007161556-ec30366c7912 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
@@ -202,7 +202,7 @@ require (
 	github.com/opencontainers/runtime-spec v1.2.0 // indirect
 	github.com/prometheus/client_golang v1.20.5 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
-	github.com/prometheus/common v0.60.0 // indirect
+	github.com/prometheus/common v0.60.1 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
