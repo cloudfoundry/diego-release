@@ -10,9 +10,6 @@ replace (
 	code.cloudfoundry.org/guardian => ../guardian
 	code.cloudfoundry.org/idmapper => ../idmapper
 
-	// buildpacks/lifecycle depends on moby/buildkit and new versions of both are incompatible with one another
-	github.com/buildpacks/lifecycle => github.com/buildpacks/lifecycle v0.19.7
-
 	// We have to pin this dep to v0.12.0 to remain compatible with Enovy 1.28 until Xenial is out of support
 	// https://www.pivotaltracker.com/n/projects/2477027/stories/186946795
 	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.12.0
@@ -51,7 +48,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0
 	github.com/cloudfoundry-community/go-uaa v0.3.3
 	github.com/cloudfoundry/dropsonde v1.1.0
-	github.com/containers/image/v5 v5.32.2
+	github.com/containers/image/v5 v5.33.0
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/envoyproxy/go-control-plane v0.13.1
 	github.com/fsnotify/fsnotify v1.8.0
@@ -87,7 +84,7 @@ require (
 	github.com/tedsuo/ifrit v0.0.0-20230516164442-7862c310ad26
 	github.com/tedsuo/rata v1.0.0
 	github.com/vito/go-sse v1.1.2
-	golang.org/x/crypto v0.28.0
+	golang.org/x/crypto v0.29.0
 	golang.org/x/net v0.30.0
 	golang.org/x/oauth2 v0.24.0
 	golang.org/x/sys v0.27.0
@@ -217,8 +214,8 @@ require (
 	go.uber.org/automaxprocs v1.6.0 // indirect
 	golang.org/x/exp v0.0.0-20241009180824-f66d83c29e7c // indirect
 	golang.org/x/sync v0.9.0 // indirect
-	golang.org/x/term v0.25.0 // indirect
-	golang.org/x/text v0.19.0 // indirect
+	golang.org/x/term v0.26.0 // indirect
+	golang.org/x/text v0.20.0 // indirect
 	golang.org/x/tools v0.26.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20241104194629-dd2ea8efbc28 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20241104194629-dd2ea8efbc28 // indirect
