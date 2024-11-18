@@ -13,8 +13,6 @@ replace (
 	// We have to pin this dep to v0.12.0 to remain compatible with Enovy 1.28 until Xenial is out of support
 	// https://www.pivotaltracker.com/n/projects/2477027/stories/186946795
 	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.12.0
-
-	github.com/moby/buildkit => github.com/moby/buildkit v0.13.2
 )
 
 require (
