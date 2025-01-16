@@ -9,6 +9,7 @@ replace (
 	code.cloudfoundry.org/grootfs => ../grootfs
 	code.cloudfoundry.org/guardian => ../guardian
 	code.cloudfoundry.org/idmapper => ../idmapper
+	github.com/cyphar/filepath-securejoin => github.com/cyphar/filepath-securejoin v0.3.6
 
 	// We have to pin this dep to v0.12.0 to remain compatible with Enovy 1.28 until Xenial is out of support
 	// https://www.pivotaltracker.com/n/projects/2477027/stories/186946795
