@@ -17,6 +17,7 @@ templates:
   tls.key.erb: config/certs/tls.key
   tls_ca.crt.erb: config/certs/tls_ca.crt
   indicators.yml.erb: config/indicators.yml
+  volume_mounted_files.erb: bin/volume_mounted_files
 
 packages:
   - rep_windows
