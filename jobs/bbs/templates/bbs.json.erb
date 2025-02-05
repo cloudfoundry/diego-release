@@ -196,16 +196,16 @@
     config[:loggregator][:loggregator_instance_id] = spec.id
   end
 
-config[:advanced_metrics] = {}
-if_p("diego.bbs.metrics.advanced_metrics.enabled") do |value|
-  if value
-    config[:advanced_metrics][:enabled] = value
-    config[:advanced_metrics][:route_config] = {
-      request_count: p("diego.bbs.metrics.advanced_metrics.route_config.request_count"),
-      request_latency: p("diego.bbs.metrics.advanced_metrics.route_config.request_latency")
-    }
+  if_p("diego.bbs.metrics.advanced_metrics.enabled") do |value|
+    if value
+      config[:advanced_metrics] = {}
+      config[:advanced_metrics][:enabled] = value
+      config[:advanced_metrics][:route_config] = {
+        request_count: p("diego.bbs.metrics.advanced_metrics.route_config.request_count"),
+        request_latency: p("diego.bbs.metrics.advanced_metrics.route_config.request_latency")
+      }
+    end
   end
-end
 
   config.to_json
 %>
