@@ -51,6 +51,8 @@ properties:
   diego.rep.use_azure_fault_domains:
     description: "If set to true the rep zone will be determined by IAAS. If VM belongs to Azure Fault-Domain the value of the zone will be z<Fault-Domain-index>. e.g. z0, z1, etc. If VM belongs to Azure Availability Zone the value of zone determined in diego.rep.zone will be used."
     default: false
+  diego.rep.sidecar_rootfs:
+    description: "name:absolute_path representing the root filesystem used for sidecar processes"
   diego.rep.preloaded_rootfses:
     description: "Array of name:absolute_path pairs representing root filesystems preloaded onto the underlying garden"
   diego.rep.rootfs_providers:
