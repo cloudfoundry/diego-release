@@ -53,6 +53,7 @@ properties:
     default: false
   diego.rep.sidecar_rootfs:
     description: "name:absolute_path representing the root filesystem used for sidecar processes"
+    default: ""
   diego.rep.preloaded_rootfses:
     description: "Array of name:absolute_path pairs representing root filesystems preloaded onto the underlying garden"
   diego.rep.rootfs_providers:
