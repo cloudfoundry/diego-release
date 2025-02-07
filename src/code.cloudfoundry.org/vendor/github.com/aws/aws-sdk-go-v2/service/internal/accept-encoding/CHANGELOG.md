@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # v1.12.2 (2025-01-24)
 
 * **Dependency Update**: Upgrade to smithy-go v1.22.2.
@@ -15,8 +14,6 @@
 
 * No change notes available for this release.
 
-=======
->>>>>>> 8ce727573 (Update go.mod dependencies)
 # v1.11.4 (2024-08-15)
 
 * **Dependency Update**: Bump minimum Go version to 1.21.

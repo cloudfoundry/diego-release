@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 ## 2.22.2
 
 ### Maintenance
@@ -33,8 +28,6 @@ This allows serial tests to be filtered using the `label-filter`
 ### Maintenance
 Various doc fixes
 
-=======
->>>>>>> 15f76c672 (go mod tidy && go mod vendor)
 ## 2.21.0
 
 
@@ -50,11 +43,6 @@ Various doc fixes
   ### Maintenance
   - bump various dependencies [7e65a00]
 
-<<<<<<< HEAD
-=======
->>>>>>> c45717251 (Update go.mod dependencies)
-=======
->>>>>>> 15f76c672 (go mod tidy && go mod vendor)
 ## 2.20.2
 
 Require Go 1.22+
@@ -62,21 +50,11 @@ Require Go 1.22+
 ### Maintenance
 - bump go to v1.22 [a671816]
 
-<<<<<<< HEAD
-=======
->>>>>>> c4973fb9c (Update go.mod dependencies)
-=======
->>>>>>> c45717251 (Update go.mod dependencies)
 ## 2.20.1
 
 ### Fixes
 - make BeSpecEvent duration matcher more forgiving [d6f9640]
 
-<<<<<<< HEAD
-=======
->>>>>>> 2e2edb3bb (Update go.mod dependencies)
-=======
->>>>>>> c4973fb9c (Update go.mod dependencies)
 ## 2.20.0
 
 ### Features
@@ -86,11 +64,6 @@ Require Go 1.22+
 - Add update-deps to makefile [d303d14]
 - bump all dependencies [7a50221]
 
-<<<<<<< HEAD
-=======
->>>>>>> 0854e8485 (go mod tidy && go mod vendor)
-=======
->>>>>>> 2e2edb3bb (Update go.mod dependencies)
 ## 2.19.1
 
 ### Fixes

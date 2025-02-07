@@ -81,11 +81,7 @@ func (l *LoggerWrapper) Errorf(format string, args ...any) {
 }
 
 // V reports whether verbosity level l is at least the requested verbose level.
-<<<<<<< HEAD
 func (*LoggerWrapper) V(int) bool {
-=======
-func (*LoggerWrapper) V(l int) bool {
->>>>>>> c45717251 (Update go.mod dependencies)
 	// Returns true for all verbose level.
 	return true
 }

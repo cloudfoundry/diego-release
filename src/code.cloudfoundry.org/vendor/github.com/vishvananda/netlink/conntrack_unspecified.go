@@ -33,11 +33,7 @@ func ConntrackTableFlush(table ConntrackTableType) error {
 // ConntrackDeleteFilter deletes entries on the specified table on the base of the filter
 // conntrack -D [table] parameters         Delete conntrack or expectation
 //
-<<<<<<< HEAD
 // Deprecated: use [ConntrackDeleteFilters] instead.
-=======
-// Deprecated: use [ConntrackDeleteFilter] instead.
->>>>>>> f9a0b31c2 (Update go.mod dependencies)
 func ConntrackDeleteFilter(table ConntrackTableType, family InetFamily, filter *ConntrackFilter) (uint, error) {
 	return 0, ErrNotImplemented
 }

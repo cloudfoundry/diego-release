@@ -176,12 +176,9 @@ var defaultPartitions = endpoints.Partitions{
 				Region: "ap-southeast-5",
 			}: endpoints.Endpoint{},
 			endpoints.EndpointKey{
-<<<<<<< HEAD
 				Region: "ap-southeast-7",
 			}: endpoints.Endpoint{},
 			endpoints.EndpointKey{
-=======
->>>>>>> bf1357502 (Update go.mod dependencies)
 				Region: "aws-global",
 			}: endpoints.Endpoint{
 				Hostname: "sts.amazonaws.com",

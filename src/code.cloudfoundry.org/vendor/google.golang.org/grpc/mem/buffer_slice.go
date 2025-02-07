@@ -19,8 +19,6 @@
 package mem
 
 import (
-<<<<<<< HEAD
-<<<<<<< HEAD
 	"io"
 )
 
@@ -29,14 +27,6 @@ const (
 	readAllBufSize = 32 * 1024
 )
 
-=======
-	"compress/flate"
-=======
->>>>>>> 58a961646 (Update go.mod dependencies)
-	"io"
-)
-
->>>>>>> c45717251 (Update go.mod dependencies)
 // BufferSlice offers a means to represent data that spans one or more Buffer
 // instances. A BufferSlice is meant to be immutable after creation, and methods
 // like Ref create and return copies of the slice. This is why all methods have
@@ -106,23 +96,11 @@ func (s BufferSlice) Materialize() []byte {
 }
 
 // MaterializeToBuffer functions like Materialize except that it writes the data
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 58a961646 (Update go.mod dependencies)
 // to a single Buffer pulled from the given BufferPool.
 //
 // As a special case, if the input BufferSlice only actually has one Buffer, this
 // function simply increases the refcount before returning said Buffer. Freeing this
 // buffer won't release it until the BufferSlice is itself released.
-<<<<<<< HEAD
-=======
-// to a single Buffer pulled from the given BufferPool. As a special case, if the
-// input BufferSlice only actually has one Buffer, this function has nothing to
-// do and simply returns said Buffer.
->>>>>>> c45717251 (Update go.mod dependencies)
-=======
->>>>>>> 58a961646 (Update go.mod dependencies)
 func (s BufferSlice) MaterializeToBuffer(pool BufferPool) Buffer {
 	if len(s) == 1 {
 		s[0].Ref()
@@ -152,17 +130,8 @@ func (s BufferSlice) Reader() Reader {
 // Remaining(), which returns the number of unread bytes remaining in the slice.
 // Buffers will be freed as they are read.
 type Reader interface {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	io.Reader
 	io.ByteReader
-=======
-	flate.Reader
->>>>>>> c45717251 (Update go.mod dependencies)
-=======
-	io.Reader
-	io.ByteReader
->>>>>>> 58a961646 (Update go.mod dependencies)
 	// Close frees the underlying BufferSlice and never returns an error. Subsequent
 	// calls to Read will return (0, io.EOF).
 	Close() error
@@ -255,7 +224,6 @@ func (w *writer) Write(p []byte) (n int, err error) {
 
 // NewWriter wraps the given BufferSlice and BufferPool to implement the
 // io.Writer interface. Every call to Write copies the contents of the given
-<<<<<<< HEAD
 // buffer into a new Buffer pulled from the given pool and the Buffer is
 // added to the given BufferSlice.
 func NewWriter(buffers *BufferSlice, pool BufferPool) io.Writer {
@@ -311,10 +279,3 @@ nextBuffer:
 		}
 	}
 }
-=======
-// buffer into a new Buffer pulled from the given pool and the Buffer is added to
-// the given BufferSlice.
-func NewWriter(buffers *BufferSlice, pool BufferPool) io.Writer {
-	return &writer{buffers: buffers, pool: pool}
-}
->>>>>>> c45717251 (Update go.mod dependencies)

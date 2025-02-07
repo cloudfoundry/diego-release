@@ -499,11 +499,7 @@ func (s *Server) initRaftNode(accName string, cfg *RaftConfig, labels pprofLabel
 	// If we fail to do this for some reason then this is fatal — we cannot
 	// continue setting up or the Raft node may be partially/totally isolated.
 	if err := n.createInternalSubs(); err != nil {
-<<<<<<< HEAD
 		n.shutdown()
-=======
-		n.shutdown(false)
->>>>>>> d1f566753 (Update go.mod dependencies)
 		return nil, err
 	}
 

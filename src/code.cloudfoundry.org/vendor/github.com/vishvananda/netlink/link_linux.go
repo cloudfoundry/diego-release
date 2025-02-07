@@ -1824,13 +1824,6 @@ func (h *Handle) linkByNameDump(name string) (Link, error) {
 				return link, executeErr
 			}
 		}
-
-		// support finding interfaces also via altnames
-		for _, altName := range link.Attrs().AltNames {
-			if altName == name {
-				return link, nil
-			}
-		}
 	}
 	return nil, LinkNotFoundError{fmt.Errorf("Link %s not found", name)}
 }

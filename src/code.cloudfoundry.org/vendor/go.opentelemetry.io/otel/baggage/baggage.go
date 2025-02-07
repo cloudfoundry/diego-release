@@ -50,15 +50,7 @@ type Property struct {
 // component boundaries may impose their own restrictions on Property key.
 // For example, the W3C Baggage specification restricts the Property keys to strings that
 // satisfy the token definition from RFC7230, Section 3.2.6.
-<<<<<<< HEAD
-<<<<<<< HEAD
 // For maximum compatibility, alphanumeric value are strongly recommended to be used as Property key.
-=======
-// For maximum compatibility, alpha-numeric value are strongly recommended to be used as Property key.
->>>>>>> f9a0b31c2 (Update go.mod dependencies)
-=======
-// For maximum compatibility, alphanumeric value are strongly recommended to be used as Property key.
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 func NewKeyProperty(key string) (Property, error) {
 	if !validateBaggageName(key) {
 		return newInvalidProperty(), fmt.Errorf("%w: %q", errInvalidKey, key)
@@ -98,15 +90,7 @@ func NewKeyValueProperty(key, value string) (Property, error) {
 // component boundaries may impose their own restrictions on Property key.
 // For example, the W3C Baggage specification restricts the Property keys to strings that
 // satisfy the token definition from RFC7230, Section 3.2.6.
-<<<<<<< HEAD
-<<<<<<< HEAD
 // For maximum compatibility, alphanumeric value are strongly recommended to be used as Property key.
-=======
-// For maximum compatibility, alpha-numeric value are strongly recommended to be used as Property key.
->>>>>>> f9a0b31c2 (Update go.mod dependencies)
-=======
-// For maximum compatibility, alphanumeric value are strongly recommended to be used as Property key.
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 func NewKeyValuePropertyRaw(key, value string) (Property, error) {
 	if !validateBaggageName(key) {
 		return newInvalidProperty(), fmt.Errorf("%w: %q", errInvalidKey, key)
@@ -303,15 +287,7 @@ func NewMember(key, value string, props ...Property) (Member, error) {
 // component boundaries may impose their own restrictions on baggage key.
 // For example, the W3C Baggage specification restricts the baggage keys to strings that
 // satisfy the token definition from RFC7230, Section 3.2.6.
-<<<<<<< HEAD
-<<<<<<< HEAD
 // For maximum compatibility, alphanumeric value are strongly recommended to be used as baggage key.
-=======
-// For maximum compatibility, alpha-numeric value are strongly recommended to be used as baggage key.
->>>>>>> f9a0b31c2 (Update go.mod dependencies)
-=======
-// For maximum compatibility, alphanumeric value are strongly recommended to be used as baggage key.
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 func NewMemberRaw(key, value string, props ...Property) (Member, error) {
 	m := Member{
 		key:        key,
@@ -379,11 +355,7 @@ func parseMember(member string) (Member, error) {
 }
 
 // replaceInvalidUTF8Sequences replaces invalid UTF-8 sequences with '�'.
-<<<<<<< HEAD
 func replaceInvalidUTF8Sequences(c int, unescapeVal string) string {
-=======
-func replaceInvalidUTF8Sequences(cap int, unescapeVal string) string {
->>>>>>> f9a0b31c2 (Update go.mod dependencies)
 	if utf8.ValidString(unescapeVal) {
 		return unescapeVal
 	}
@@ -391,11 +363,7 @@ func replaceInvalidUTF8Sequences(cap int, unescapeVal string) string {
 	// https://github.com/w3c/baggage/blob/8c215efbeebd3fa4b1aceb937a747e56444f22f3/baggage/HTTP_HEADER_FORMAT.md?plain=1#L69
 
 	var b strings.Builder
-<<<<<<< HEAD
 	b.Grow(c)
-=======
-	b.Grow(cap)
->>>>>>> f9a0b31c2 (Update go.mod dependencies)
 	for i := 0; i < len(unescapeVal); {
 		r, size := utf8.DecodeRuneInString(unescapeVal[i:])
 		if r == utf8.RuneError && size == 1 {

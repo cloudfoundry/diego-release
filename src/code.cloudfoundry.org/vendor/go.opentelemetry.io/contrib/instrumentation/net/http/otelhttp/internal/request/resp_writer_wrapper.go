@@ -44,19 +44,9 @@ func (w *RespWriterWrapper) Write(p []byte) (int, error) {
 	w.mu.Lock()
 	defer w.mu.Unlock()
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 	if !w.wroteHeader {
 		w.writeHeader(http.StatusOK)
 	}
-=======
-	w.writeHeader(http.StatusOK)
->>>>>>> 25a4f88bf (Update go.mod dependencies)
-=======
-	if !w.wroteHeader {
-		w.writeHeader(http.StatusOK)
-	}
->>>>>>> 58a961646 (Update go.mod dependencies)
 
 	n, err := w.ResponseWriter.Write(p)
 	n1 := int64(n)
@@ -92,22 +82,12 @@ func (w *RespWriterWrapper) writeHeader(statusCode int) {
 
 // Flush implements [http.Flusher].
 func (w *RespWriterWrapper) Flush() {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 58a961646 (Update go.mod dependencies)
 	w.mu.Lock()
 	defer w.mu.Unlock()
 
 	if !w.wroteHeader {
 		w.writeHeader(http.StatusOK)
 	}
-<<<<<<< HEAD
-=======
-	w.WriteHeader(http.StatusOK)
->>>>>>> 25a4f88bf (Update go.mod dependencies)
-=======
->>>>>>> 58a961646 (Update go.mod dependencies)
 
 	if f, ok := w.ResponseWriter.(http.Flusher); ok {
 		f.Flush()

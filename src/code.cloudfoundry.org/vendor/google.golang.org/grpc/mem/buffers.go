@@ -65,12 +65,9 @@ var (
 	refObjectPool    = sync.Pool{New: func() any { return new(atomic.Int32) }}
 )
 
-<<<<<<< HEAD
 // IsBelowBufferPoolingThreshold returns true if the given size is less than or
 // equal to the threshold for buffer pooling. This is used to determine whether
 // to pool buffers or allocate them directly.
-=======
->>>>>>> c45717251 (Update go.mod dependencies)
 func IsBelowBufferPoolingThreshold(size int) bool {
 	return size <= bufferPoolingThreshold
 }
@@ -95,15 +92,11 @@ func newBuffer() *buffer {
 //
 // Note that the backing array of the given data is not copied.
 func NewBuffer(data *[]byte, pool BufferPool) Buffer {
-<<<<<<< HEAD
 	// Use the buffer's capacity instead of the length, otherwise buffers may
 	// not be reused under certain conditions. For example, if a large buffer
 	// is acquired from the pool, but fewer bytes than the buffering threshold
 	// are written to it, the buffer will not be returned to the pool.
 	if pool == nil || IsBelowBufferPoolingThreshold(cap(*data)) {
-=======
-	if pool == nil || IsBelowBufferPoolingThreshold(len(*data)) {
->>>>>>> c45717251 (Update go.mod dependencies)
 		return (SliceBuffer)(*data)
 	}
 	b := newBuffer()
@@ -208,32 +201,19 @@ func (b *buffer) read(buf []byte) (int, Buffer) {
 	return n, b
 }
 
-<<<<<<< HEAD
-=======
-// String returns a string representation of the buffer. May be used for
-// debugging purposes.
->>>>>>> c45717251 (Update go.mod dependencies)
 func (b *buffer) String() string {
 	return fmt.Sprintf("mem.Buffer(%p, data: %p, length: %d)", b, b.ReadOnlyData(), len(b.ReadOnlyData()))
 }
 
-<<<<<<< HEAD
 // ReadUnsafe reads bytes from the given Buffer into the provided slice.
 // It does not perform safety checks.
-=======
->>>>>>> c45717251 (Update go.mod dependencies)
 func ReadUnsafe(dst []byte, buf Buffer) (int, Buffer) {
 	return buf.read(dst)
 }
 
 // SplitUnsafe modifies the receiver to point to the first n bytes while it
-<<<<<<< HEAD
 // returns a new reference to the remaining bytes. The returned Buffer
 // functions just like a normal reference acquired using Ref().
-=======
-// returns a new reference to the remaining bytes. The returned Buffer functions
-// just like a normal reference acquired using Ref().
->>>>>>> c45717251 (Update go.mod dependencies)
 func SplitUnsafe(buf Buffer, n int) (left, right Buffer) {
 	return buf.split(n)
 }
@@ -251,7 +231,6 @@ func (e emptyBuffer) Len() int {
 	return 0
 }
 
-<<<<<<< HEAD
 func (e emptyBuffer) split(int) (left, right Buffer) {
 	return e, e
 }
@@ -275,22 +254,6 @@ func (s SliceBuffer) Free() {}
 
 // Len is a noop implementation of Len.
 func (s SliceBuffer) Len() int { return len(s) }
-=======
-func (e emptyBuffer) split(n int) (left, right Buffer) {
-	return e, e
-}
-
-func (e emptyBuffer) read(buf []byte) (int, Buffer) {
-	return 0, e
-}
-
-type SliceBuffer []byte
-
-func (s SliceBuffer) ReadOnlyData() []byte { return s }
-func (s SliceBuffer) Ref()                 {}
-func (s SliceBuffer) Free()                {}
-func (s SliceBuffer) Len() int             { return len(s) }
->>>>>>> c45717251 (Update go.mod dependencies)
 
 func (s SliceBuffer) split(n int) (left, right Buffer) {
 	return s[:n], s[n:]

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Release (2025-01-21)
 
 ## General Highlights
@@ -46,8 +45,6 @@
 * `github.com/aws/smithy-go/tracing/smithyoteltracing`: [v1.0.0](tracing/smithyoteltracing/CHANGELOG.md#v100-2024-09-19)
   * **Release**: Initial release of `smithyoteltracing` module, which is used to adapt an OpenTelemetry SDK tracer provider to be used with Smithy clients.
 
-=======
->>>>>>> 4feb34b65 (Update go.mod dependencies)
 # Release (2024-08-14)
 
 ## Module Highlights

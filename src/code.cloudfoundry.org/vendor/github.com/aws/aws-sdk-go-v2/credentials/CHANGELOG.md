@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 # v1.17.57 (2025-01-31)
 
 * **Dependency Update**: Updated to the latest SDK module versions
@@ -103,53 +97,26 @@
 
 * **Dependency Update**: Updated to the latest SDK module versions
 
-=======
->>>>>>> 59f9170a4 (Update go.mod dependencies)
 # v1.17.33 (2024-09-17)
 
 * **Dependency Update**: Updated to the latest SDK module versions
 
-<<<<<<< HEAD
-=======
->>>>>>> 51f3ccb88 (Update go.mod dependencies)
-=======
->>>>>>> 59f9170a4 (Update go.mod dependencies)
 # v1.17.32 (2024-09-04)
 
 * **Dependency Update**: Updated to the latest SDK module versions
 
-<<<<<<< HEAD
-=======
->>>>>>> b93b7e30f (Update go.mod dependencies)
-=======
->>>>>>> 51f3ccb88 (Update go.mod dependencies)
 # v1.17.31 (2024-09-03)
 
 * **Dependency Update**: Updated to the latest SDK module versions
 
-<<<<<<< HEAD
-=======
->>>>>>> 15c176a21 (Update go.mod dependencies)
-=======
->>>>>>> b93b7e30f (Update go.mod dependencies)
 # v1.17.30 (2024-08-26)
 
 * **Bug Fix**: Save SSO cached token expiry in UTC to ensure cross-SDK compatibility.
 
-<<<<<<< HEAD
-=======
->>>>>>> bf1357502 (Update go.mod dependencies)
-=======
->>>>>>> 15c176a21 (Update go.mod dependencies)
 # v1.17.29 (2024-08-22)
 
 * **Dependency Update**: Updated to the latest SDK module versions
 
-<<<<<<< HEAD
-=======
->>>>>>> 8ce727573 (Update go.mod dependencies)
-=======
->>>>>>> bf1357502 (Update go.mod dependencies)
 # v1.17.28 (2024-08-15)
 
 * **Dependency Update**: Bump minimum Go version to 1.21.

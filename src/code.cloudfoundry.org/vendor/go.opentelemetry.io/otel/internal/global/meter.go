@@ -5,10 +5,7 @@ package global // import "go.opentelemetry.io/otel/internal/global"
 
 import (
 	"container/list"
-<<<<<<< HEAD
 	"context"
-=======
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 	"reflect"
 	"sync"
 
@@ -157,7 +154,6 @@ func (m *meter) Int64Counter(name string, options ...metric.Int64CounterOption) 
 		return m.delegate.Int64Counter(name, options...)
 	}
 
-<<<<<<< HEAD
 	cfg := metric.NewInt64CounterConfig(options...)
 	id := instID{
 		name:        name,
@@ -169,16 +165,6 @@ func (m *meter) Int64Counter(name string, options ...metric.Int64CounterOption) 
 		return f.(metric.Int64Counter), nil
 	}
 	i := &siCounter{name: name, opts: options}
-=======
-	i := &siCounter{name: name, opts: options}
-	cfg := metric.NewInt64CounterConfig(options...)
-	id := instID{
-		name:        name,
-		kind:        reflect.TypeOf(i),
-		description: cfg.Description(),
-		unit:        cfg.Unit(),
-	}
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 	m.instruments[id] = i
 	return i, nil
 }
@@ -191,7 +177,6 @@ func (m *meter) Int64UpDownCounter(name string, options ...metric.Int64UpDownCou
 		return m.delegate.Int64UpDownCounter(name, options...)
 	}
 
-<<<<<<< HEAD
 	cfg := metric.NewInt64UpDownCounterConfig(options...)
 	id := instID{
 		name:        name,
@@ -203,16 +188,6 @@ func (m *meter) Int64UpDownCounter(name string, options ...metric.Int64UpDownCou
 		return f.(metric.Int64UpDownCounter), nil
 	}
 	i := &siUpDownCounter{name: name, opts: options}
-=======
-	i := &siUpDownCounter{name: name, opts: options}
-	cfg := metric.NewInt64UpDownCounterConfig(options...)
-	id := instID{
-		name:        name,
-		kind:        reflect.TypeOf(i),
-		description: cfg.Description(),
-		unit:        cfg.Unit(),
-	}
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 	m.instruments[id] = i
 	return i, nil
 }
@@ -225,7 +200,6 @@ func (m *meter) Int64Histogram(name string, options ...metric.Int64HistogramOpti
 		return m.delegate.Int64Histogram(name, options...)
 	}
 
-<<<<<<< HEAD
 	cfg := metric.NewInt64HistogramConfig(options...)
 	id := instID{
 		name:        name,
@@ -237,16 +211,6 @@ func (m *meter) Int64Histogram(name string, options ...metric.Int64HistogramOpti
 		return f.(metric.Int64Histogram), nil
 	}
 	i := &siHistogram{name: name, opts: options}
-=======
-	i := &siHistogram{name: name, opts: options}
-	cfg := metric.NewInt64HistogramConfig(options...)
-	id := instID{
-		name:        name,
-		kind:        reflect.TypeOf(i),
-		description: cfg.Description(),
-		unit:        cfg.Unit(),
-	}
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 	m.instruments[id] = i
 	return i, nil
 }
@@ -259,7 +223,6 @@ func (m *meter) Int64Gauge(name string, options ...metric.Int64GaugeOption) (met
 		return m.delegate.Int64Gauge(name, options...)
 	}
 
-<<<<<<< HEAD
 	cfg := metric.NewInt64GaugeConfig(options...)
 	id := instID{
 		name:        name,
@@ -271,16 +234,6 @@ func (m *meter) Int64Gauge(name string, options ...metric.Int64GaugeOption) (met
 		return f.(metric.Int64Gauge), nil
 	}
 	i := &siGauge{name: name, opts: options}
-=======
-	i := &siGauge{name: name, opts: options}
-	cfg := metric.NewInt64GaugeConfig(options...)
-	id := instID{
-		name:        name,
-		kind:        reflect.TypeOf(i),
-		description: cfg.Description(),
-		unit:        cfg.Unit(),
-	}
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 	m.instruments[id] = i
 	return i, nil
 }
@@ -293,7 +246,6 @@ func (m *meter) Int64ObservableCounter(name string, options ...metric.Int64Obser
 		return m.delegate.Int64ObservableCounter(name, options...)
 	}
 
-<<<<<<< HEAD
 	cfg := metric.NewInt64ObservableCounterConfig(options...)
 	id := instID{
 		name:        name,
@@ -305,16 +257,6 @@ func (m *meter) Int64ObservableCounter(name string, options ...metric.Int64Obser
 		return f.(metric.Int64ObservableCounter), nil
 	}
 	i := &aiCounter{name: name, opts: options}
-=======
-	i := &aiCounter{name: name, opts: options}
-	cfg := metric.NewInt64ObservableCounterConfig(options...)
-	id := instID{
-		name:        name,
-		kind:        reflect.TypeOf(i),
-		description: cfg.Description(),
-		unit:        cfg.Unit(),
-	}
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 	m.instruments[id] = i
 	return i, nil
 }
@@ -327,7 +269,6 @@ func (m *meter) Int64ObservableUpDownCounter(name string, options ...metric.Int6
 		return m.delegate.Int64ObservableUpDownCounter(name, options...)
 	}
 
-<<<<<<< HEAD
 	cfg := metric.NewInt64ObservableUpDownCounterConfig(options...)
 	id := instID{
 		name:        name,
@@ -339,16 +280,6 @@ func (m *meter) Int64ObservableUpDownCounter(name string, options ...metric.Int6
 		return f.(metric.Int64ObservableUpDownCounter), nil
 	}
 	i := &aiUpDownCounter{name: name, opts: options}
-=======
-	i := &aiUpDownCounter{name: name, opts: options}
-	cfg := metric.NewInt64ObservableUpDownCounterConfig(options...)
-	id := instID{
-		name:        name,
-		kind:        reflect.TypeOf(i),
-		description: cfg.Description(),
-		unit:        cfg.Unit(),
-	}
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 	m.instruments[id] = i
 	return i, nil
 }
@@ -361,7 +292,6 @@ func (m *meter) Int64ObservableGauge(name string, options ...metric.Int64Observa
 		return m.delegate.Int64ObservableGauge(name, options...)
 	}
 
-<<<<<<< HEAD
 	cfg := metric.NewInt64ObservableGaugeConfig(options...)
 	id := instID{
 		name:        name,
@@ -373,16 +303,6 @@ func (m *meter) Int64ObservableGauge(name string, options ...metric.Int64Observa
 		return f.(metric.Int64ObservableGauge), nil
 	}
 	i := &aiGauge{name: name, opts: options}
-=======
-	i := &aiGauge{name: name, opts: options}
-	cfg := metric.NewInt64ObservableGaugeConfig(options...)
-	id := instID{
-		name:        name,
-		kind:        reflect.TypeOf(i),
-		description: cfg.Description(),
-		unit:        cfg.Unit(),
-	}
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 	m.instruments[id] = i
 	return i, nil
 }
@@ -395,7 +315,6 @@ func (m *meter) Float64Counter(name string, options ...metric.Float64CounterOpti
 		return m.delegate.Float64Counter(name, options...)
 	}
 
-<<<<<<< HEAD
 	cfg := metric.NewFloat64CounterConfig(options...)
 	id := instID{
 		name:        name,
@@ -407,16 +326,6 @@ func (m *meter) Float64Counter(name string, options ...metric.Float64CounterOpti
 		return f.(metric.Float64Counter), nil
 	}
 	i := &sfCounter{name: name, opts: options}
-=======
-	i := &sfCounter{name: name, opts: options}
-	cfg := metric.NewFloat64CounterConfig(options...)
-	id := instID{
-		name:        name,
-		kind:        reflect.TypeOf(i),
-		description: cfg.Description(),
-		unit:        cfg.Unit(),
-	}
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 	m.instruments[id] = i
 	return i, nil
 }
@@ -429,7 +338,6 @@ func (m *meter) Float64UpDownCounter(name string, options ...metric.Float64UpDow
 		return m.delegate.Float64UpDownCounter(name, options...)
 	}
 
-<<<<<<< HEAD
 	cfg := metric.NewFloat64UpDownCounterConfig(options...)
 	id := instID{
 		name:        name,
@@ -441,16 +349,6 @@ func (m *meter) Float64UpDownCounter(name string, options ...metric.Float64UpDow
 		return f.(metric.Float64UpDownCounter), nil
 	}
 	i := &sfUpDownCounter{name: name, opts: options}
-=======
-	i := &sfUpDownCounter{name: name, opts: options}
-	cfg := metric.NewFloat64UpDownCounterConfig(options...)
-	id := instID{
-		name:        name,
-		kind:        reflect.TypeOf(i),
-		description: cfg.Description(),
-		unit:        cfg.Unit(),
-	}
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 	m.instruments[id] = i
 	return i, nil
 }
@@ -463,7 +361,6 @@ func (m *meter) Float64Histogram(name string, options ...metric.Float64Histogram
 		return m.delegate.Float64Histogram(name, options...)
 	}
 
-<<<<<<< HEAD
 	cfg := metric.NewFloat64HistogramConfig(options...)
 	id := instID{
 		name:        name,
@@ -475,16 +372,6 @@ func (m *meter) Float64Histogram(name string, options ...metric.Float64Histogram
 		return f.(metric.Float64Histogram), nil
 	}
 	i := &sfHistogram{name: name, opts: options}
-=======
-	i := &sfHistogram{name: name, opts: options}
-	cfg := metric.NewFloat64HistogramConfig(options...)
-	id := instID{
-		name:        name,
-		kind:        reflect.TypeOf(i),
-		description: cfg.Description(),
-		unit:        cfg.Unit(),
-	}
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 	m.instruments[id] = i
 	return i, nil
 }
@@ -497,7 +384,6 @@ func (m *meter) Float64Gauge(name string, options ...metric.Float64GaugeOption) 
 		return m.delegate.Float64Gauge(name, options...)
 	}
 
-<<<<<<< HEAD
 	cfg := metric.NewFloat64GaugeConfig(options...)
 	id := instID{
 		name:        name,
@@ -509,16 +395,6 @@ func (m *meter) Float64Gauge(name string, options ...metric.Float64GaugeOption) 
 		return f.(metric.Float64Gauge), nil
 	}
 	i := &sfGauge{name: name, opts: options}
-=======
-	i := &sfGauge{name: name, opts: options}
-	cfg := metric.NewFloat64GaugeConfig(options...)
-	id := instID{
-		name:        name,
-		kind:        reflect.TypeOf(i),
-		description: cfg.Description(),
-		unit:        cfg.Unit(),
-	}
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 	m.instruments[id] = i
 	return i, nil
 }
@@ -531,7 +407,6 @@ func (m *meter) Float64ObservableCounter(name string, options ...metric.Float64O
 		return m.delegate.Float64ObservableCounter(name, options...)
 	}
 
-<<<<<<< HEAD
 	cfg := metric.NewFloat64ObservableCounterConfig(options...)
 	id := instID{
 		name:        name,
@@ -543,16 +418,6 @@ func (m *meter) Float64ObservableCounter(name string, options ...metric.Float64O
 		return f.(metric.Float64ObservableCounter), nil
 	}
 	i := &afCounter{name: name, opts: options}
-=======
-	i := &afCounter{name: name, opts: options}
-	cfg := metric.NewFloat64ObservableCounterConfig(options...)
-	id := instID{
-		name:        name,
-		kind:        reflect.TypeOf(i),
-		description: cfg.Description(),
-		unit:        cfg.Unit(),
-	}
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 	m.instruments[id] = i
 	return i, nil
 }
@@ -565,7 +430,6 @@ func (m *meter) Float64ObservableUpDownCounter(name string, options ...metric.Fl
 		return m.delegate.Float64ObservableUpDownCounter(name, options...)
 	}
 
-<<<<<<< HEAD
 	cfg := metric.NewFloat64ObservableUpDownCounterConfig(options...)
 	id := instID{
 		name:        name,
@@ -577,16 +441,6 @@ func (m *meter) Float64ObservableUpDownCounter(name string, options ...metric.Fl
 		return f.(metric.Float64ObservableUpDownCounter), nil
 	}
 	i := &afUpDownCounter{name: name, opts: options}
-=======
-	i := &afUpDownCounter{name: name, opts: options}
-	cfg := metric.NewFloat64ObservableUpDownCounterConfig(options...)
-	id := instID{
-		name:        name,
-		kind:        reflect.TypeOf(i),
-		description: cfg.Description(),
-		unit:        cfg.Unit(),
-	}
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 	m.instruments[id] = i
 	return i, nil
 }
@@ -599,7 +453,6 @@ func (m *meter) Float64ObservableGauge(name string, options ...metric.Float64Obs
 		return m.delegate.Float64ObservableGauge(name, options...)
 	}
 
-<<<<<<< HEAD
 	cfg := metric.NewFloat64ObservableGaugeConfig(options...)
 	id := instID{
 		name:        name,
@@ -611,16 +464,6 @@ func (m *meter) Float64ObservableGauge(name string, options ...metric.Float64Obs
 		return f.(metric.Float64ObservableGauge), nil
 	}
 	i := &afGauge{name: name, opts: options}
-=======
-	i := &afGauge{name: name, opts: options}
-	cfg := metric.NewFloat64ObservableGaugeConfig(options...)
-	id := instID{
-		name:        name,
-		kind:        reflect.TypeOf(i),
-		description: cfg.Description(),
-		unit:        cfg.Unit(),
-	}
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 	m.instruments[id] = i
 	return i, nil
 }
@@ -631,12 +474,7 @@ func (m *meter) RegisterCallback(f metric.Callback, insts ...metric.Observable) 
 	defer m.mtx.Unlock()
 
 	if m.delegate != nil {
-<<<<<<< HEAD
 		return m.delegate.RegisterCallback(unwrapCallback(f), unwrapInstruments(insts)...)
-=======
-		insts = unwrapInstruments(insts)
-		return m.delegate.RegisterCallback(f, insts...)
->>>>>>> 1eda7d3ea (Update go.mod dependencies)
 	}
 
 	reg := &registration{instruments: insts, function: f}

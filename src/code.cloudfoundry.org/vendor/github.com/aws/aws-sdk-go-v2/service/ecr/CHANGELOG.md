@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 # v1.40.1 (2025-01-31)
 
 * **Dependency Update**: Switch to code-generated waiter matchers, removing the dependency on go-jmespath.
@@ -119,64 +112,32 @@
 * **Feature**: Add tracing and metrics support to service clients.
 * **Dependency Update**: Updated to the latest SDK module versions
 
-=======
->>>>>>> 59f9170a4 (Update go.mod dependencies)
 # v1.34.0 (2024-09-17)
 
 * **Feature**: The `DescribeImageScanning` API now includes `fixAvailable`, `exploitAvailable`, and `fixedInVersion` fields to provide more detailed information about the availability of fixes, exploits, and fixed versions for identified image vulnerabilities.
 * **Bug Fix**: **BREAKFIX**: Only generate AccountIDEndpointMode config for services that use it. This is a compiler break, but removes no actual functionality, as no services currently use the account ID in endpoint resolution.
 
-<<<<<<< HEAD
-=======
->>>>>>> 58a961646 (Update go.mod dependencies)
-=======
->>>>>>> 59f9170a4 (Update go.mod dependencies)
 # v1.33.0 (2024-09-11)
 
 * **Feature**: Added KMS_DSSE to EncryptionType
 
-<<<<<<< HEAD
-=======
->>>>>>> 51f3ccb88 (Update go.mod dependencies)
-=======
->>>>>>> 58a961646 (Update go.mod dependencies)
 # v1.32.4 (2024-09-04)
 
 * No change notes available for this release.
 
-<<<<<<< HEAD
-=======
->>>>>>> b93b7e30f (Update go.mod dependencies)
-=======
->>>>>>> 51f3ccb88 (Update go.mod dependencies)
 # v1.32.3 (2024-09-03)
 
 * **Dependency Update**: Updated to the latest SDK module versions
 
-<<<<<<< HEAD
-=======
->>>>>>> bf1357502 (Update go.mod dependencies)
-=======
->>>>>>> b93b7e30f (Update go.mod dependencies)
 # v1.32.2 (2024-08-22)
 
 * No change notes available for this release.
 
-<<<<<<< HEAD
-=======
->>>>>>> 8ce727573 (Update go.mod dependencies)
-=======
->>>>>>> bf1357502 (Update go.mod dependencies)
 # v1.32.1 (2024-08-15)
 
 * **Dependency Update**: Bump minimum Go version to 1.21.
 * **Dependency Update**: Updated to the latest SDK module versions
 
-<<<<<<< HEAD
-=======
->>>>>>> be6fdb996 (Update go.mod dependencies)
-=======
->>>>>>> 8ce727573 (Update go.mod dependencies)
 # v1.32.0 (2024-08-05)
 
 * **Feature**: Released two new APIs along with documentation updates. The GetAccountSetting API is used to view the current basic scan type version setting for your registry, while the PutAccountSetting API is used to update the basic scan type version for your registry.

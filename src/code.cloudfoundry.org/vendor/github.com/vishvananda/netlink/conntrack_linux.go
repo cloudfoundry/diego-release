@@ -74,11 +74,7 @@ func ConntrackUpdate(table ConntrackTableType, family InetFamily, flow *Conntrac
 // ConntrackDeleteFilter deletes entries on the specified table on the base of the filter
 // conntrack -D [table] parameters         Delete conntrack or expectation
 //
-<<<<<<< HEAD
 // Deprecated: use [ConntrackDeleteFilters] instead.
-=======
-// Deprecated: use [ConntrackDeleteFilter] instead.
->>>>>>> f9a0b31c2 (Update go.mod dependencies)
 func ConntrackDeleteFilter(table ConntrackTableType, family InetFamily, filter CustomConntrackFilter) (uint, error) {
 	return pkgHandle.ConntrackDeleteFilters(table, family, filter)
 }
@@ -152,10 +148,6 @@ func (h *Handle) ConntrackUpdate(table ConntrackTableType, family InetFamily, fl
 	return err
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> f9a0b31c2 (Update go.mod dependencies)
 // ConntrackDeleteFilter deletes entries on the specified table on the base of the filter using the netlink handle passed
 // conntrack -D [table] parameters         Delete conntrack or expectation
 //
@@ -166,10 +158,6 @@ func (h *Handle) ConntrackDeleteFilter(table ConntrackTableType, family InetFami
 
 // ConntrackDeleteFilters deletes entries on the specified table matching any of the specified filters using the netlink handle passed
 // conntrack -D [table] parameters         Delete conntrack or expectation
-=======
-// ConntrackDeleteFilters deletes entries on the specified table matching any of the specified filters using the netlink handle passed
-// conntrack -D [table] parameters         Delete conntrack or expectation
->>>>>>> bf1357502 (Update go.mod dependencies)
 func (h *Handle) ConntrackDeleteFilters(table ConntrackTableType, family InetFamily, filters ...CustomConntrackFilter) (uint, error) {
 	res, err := h.dumpConntrackTable(table, family)
 	if err != nil {
@@ -185,19 +173,12 @@ func (h *Handle) ConntrackDeleteFilters(table ConntrackTableType, family InetFam
 				req2 := h.newConntrackRequest(table, family, nl.IPCTNL_MSG_CT_DELETE, unix.NLM_F_ACK)
 				// skip the first 4 byte that are the netfilter header, the newConntrackRequest is adding it already
 				req2.AddRawData(dataRaw[4:])
-<<<<<<< HEAD
 				if _, err = req2.Execute(unix.NETLINK_NETFILTER, 0); err == nil {
 					matched++
 					// flow is already deleted, no need to match on other filters and continue to the next flow.
 					break
 				}
 				errMsgs = append(errMsgs, fmt.Sprintf("failed to delete conntrack flow '%s': %s", flow.String(), err.Error()))
-=======
-				req2.Execute(unix.NETLINK_NETFILTER, 0)
-				matched++
-				// flow is already deleted, no need to match on other filters and continue to the next flow.
-				break
->>>>>>> bf1357502 (Update go.mod dependencies)
 			}
 		}
 	}

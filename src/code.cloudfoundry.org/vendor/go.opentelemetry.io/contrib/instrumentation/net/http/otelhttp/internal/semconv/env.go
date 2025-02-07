@@ -38,14 +38,11 @@ type HTTPServer struct {
 	requestBytesCounter  metric.Int64Counter
 	responseBytesCounter metric.Int64Counter
 	serverLatencyMeasure metric.Float64Histogram
-<<<<<<< HEAD
 
 	// New metrics
 	requestBodySizeHistogram  metric.Int64Histogram
 	responseBodySizeHistogram metric.Int64Histogram
 	requestDurationHistogram  metric.Float64Histogram
-=======
->>>>>>> 25a4f88bf (Update go.mod dependencies)
 }
 
 // RequestTraceAttrs returns trace attributes for an HTTP request received by a
@@ -99,7 +96,6 @@ func (s HTTPServer) Status(code int) (codes.Code, string) {
 	return codes.Unset, ""
 }
 
-<<<<<<< HEAD
 type ServerMetricData struct {
 	ServerName   string
 	ResponseSize int64
@@ -161,55 +157,19 @@ func (s HTTPServer) RecordMetrics(ctx context.Context, md ServerMetricData) {
 
 func NewHTTPServer(meter metric.Meter) HTTPServer {
 	env := strings.ToLower(os.Getenv(OTelSemConvStabilityOptIn))
-=======
-type MetricData struct {
-	ServerName           string
-	Req                  *http.Request
-	StatusCode           int
-	AdditionalAttributes []attribute.KeyValue
-
-	RequestSize  int64
-	ResponseSize int64
-	ElapsedTime  float64
-}
-
-func (s HTTPServer) RecordMetrics(ctx context.Context, md MetricData) {
-	if s.requestBytesCounter == nil || s.responseBytesCounter == nil || s.serverLatencyMeasure == nil {
-		// This will happen if an HTTPServer{} is used insted of NewHTTPServer.
-		return
-	}
-
-	attributes := oldHTTPServer{}.MetricAttributes(md.ServerName, md.Req, md.StatusCode, md.AdditionalAttributes)
-	o := metric.WithAttributeSet(attribute.NewSet(attributes...))
-	addOpts := []metric.AddOption{o} // Allocate vararg slice once.
-	s.requestBytesCounter.Add(ctx, md.RequestSize, addOpts...)
-	s.responseBytesCounter.Add(ctx, md.ResponseSize, addOpts...)
-	s.serverLatencyMeasure.Record(ctx, md.ElapsedTime, o)
-
-	// TODO: Duplicate Metrics
-}
-
-func NewHTTPServer(meter metric.Meter) HTTPServer {
-	env := strings.ToLower(os.Getenv("OTEL_SEMCONV_STABILITY_OPT_IN"))
->>>>>>> 25a4f88bf (Update go.mod dependencies)
 	duplicate := env == "http/dup"
 	server := HTTPServer{
 		duplicate: duplicate,
 	}
-<<<<<<< HEAD
 	server.requestBytesCounter, server.responseBytesCounter, server.serverLatencyMeasure = OldHTTPServer{}.createMeasures(meter)
 	if duplicate {
 		server.requestBodySizeHistogram, server.responseBodySizeHistogram, server.requestDurationHistogram = CurrentHTTPServer{}.createMeasures(meter)
 	}
-=======
-	server.requestBytesCounter, server.responseBytesCounter, server.serverLatencyMeasure = oldHTTPServer{}.createMeasures(meter)
->>>>>>> 25a4f88bf (Update go.mod dependencies)
 	return server
 }
 
 type HTTPClient struct {
 	duplicate bool
-<<<<<<< HEAD
 
 	// old metrics
 	requestBytesCounter  metric.Int64Counter
@@ -233,43 +193,23 @@ func NewHTTPClient(meter metric.Meter) HTTPClient {
 	}
 
 	return client
-=======
-}
-
-func NewHTTPClient() HTTPClient {
-	env := strings.ToLower(os.Getenv("OTEL_SEMCONV_STABILITY_OPT_IN"))
-	return HTTPClient{duplicate: env == "http/dup"}
->>>>>>> 25a4f88bf (Update go.mod dependencies)
 }
 
 // RequestTraceAttrs returns attributes for an HTTP request made by a client.
 func (c HTTPClient) RequestTraceAttrs(req *http.Request) []attribute.KeyValue {
 	if c.duplicate {
-<<<<<<< HEAD
 		return append(OldHTTPClient{}.RequestTraceAttrs(req), CurrentHTTPClient{}.RequestTraceAttrs(req)...)
 	}
 	return OldHTTPClient{}.RequestTraceAttrs(req)
-=======
-		return append(oldHTTPClient{}.RequestTraceAttrs(req), newHTTPClient{}.RequestTraceAttrs(req)...)
-	}
-	return oldHTTPClient{}.RequestTraceAttrs(req)
->>>>>>> 25a4f88bf (Update go.mod dependencies)
 }
 
 // ResponseTraceAttrs returns metric attributes for an HTTP request made by a client.
 func (c HTTPClient) ResponseTraceAttrs(resp *http.Response) []attribute.KeyValue {
 	if c.duplicate {
-<<<<<<< HEAD
 		return append(OldHTTPClient{}.ResponseTraceAttrs(resp), CurrentHTTPClient{}.ResponseTraceAttrs(resp)...)
 	}
 
 	return OldHTTPClient{}.ResponseTraceAttrs(resp)
-=======
-		return append(oldHTTPClient{}.ResponseTraceAttrs(resp), newHTTPClient{}.ResponseTraceAttrs(resp)...)
-	}
-
-	return oldHTTPClient{}.ResponseTraceAttrs(resp)
->>>>>>> 25a4f88bf (Update go.mod dependencies)
 }
 
 func (c HTTPClient) Status(code int) (codes.Code, string) {
@@ -284,16 +224,11 @@ func (c HTTPClient) Status(code int) (codes.Code, string) {
 
 func (c HTTPClient) ErrorType(err error) attribute.KeyValue {
 	if c.duplicate {
-<<<<<<< HEAD
 		return CurrentHTTPClient{}.ErrorType(err)
-=======
-		return newHTTPClient{}.ErrorType(err)
->>>>>>> 25a4f88bf (Update go.mod dependencies)
 	}
 
 	return attribute.KeyValue{}
 }
-<<<<<<< HEAD
 
 type MetricOpts struct {
 	measurement metric.MeasurementOption
@@ -353,5 +288,3 @@ func (s HTTPClient) RecordResponseSize(ctx context.Context, responseData int64, 
 
 	s.responseBytesCounter.Add(ctx, responseData, opts["old"].AddOptions())
 }
-=======
->>>>>>> 25a4f88bf (Update go.mod dependencies)

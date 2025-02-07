@@ -223,13 +223,6 @@ var (
 	// default resolver scheme.
 	UserSetDefaultScheme = false
 
-<<<<<<< HEAD
-=======
-	// ShuffleAddressListForTesting pseudo-randomizes the order of addresses.  n
-	// is the number of elements.  swap swaps the elements with indexes i and j.
-	ShuffleAddressListForTesting any // func(n int, swap func(i, j int))
-
->>>>>>> c45717251 (Update go.mod dependencies)
 	// ConnectedAddress returns the connected address for a SubConnState. The
 	// address is only valid if the state is READY.
 	ConnectedAddress any // func (scs SubConnState) resolver.Address
@@ -238,22 +231,9 @@ var (
 	SetConnectedAddress any // func(scs *SubConnState, addr resolver.Address)
 
 	// SnapshotMetricRegistryForTesting snapshots the global data of the metric
-<<<<<<< HEAD
-<<<<<<< HEAD
 	// registry. Returns a cleanup function that sets the metric registry to its
 	// original state. Only called in testing functions.
 	SnapshotMetricRegistryForTesting func() func()
-=======
-	// registry. Registers a cleanup function on the provided testing.T that
-	// sets the metric registry to its original state. Only called in testing
-	// functions.
-	SnapshotMetricRegistryForTesting any // func(t *testing.T)
->>>>>>> c45717251 (Update go.mod dependencies)
-=======
-	// registry. Returns a cleanup function that sets the metric registry to its
-	// original state. Only called in testing functions.
-	SnapshotMetricRegistryForTesting func() func()
->>>>>>> 58a961646 (Update go.mod dependencies)
 
 	// SetDefaultBufferPoolForTesting updates the default buffer pool, for
 	// testing purposes.

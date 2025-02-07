@@ -1113,19 +1113,11 @@ func (t *http2Server) writeStatus(s *ServerStream, st *status.Status) error {
 
 // Write converts the data into HTTP2 data frame and sends it out. Non-nil error
 // is returns if it fails (e.g., framing error, transport error).
-<<<<<<< HEAD
 func (t *http2Server) write(s *ServerStream, hdr []byte, data mem.BufferSlice, _ *WriteOptions) error {
 	reader := data.Reader()
 
 	if !s.isHeaderSent() { // Headers haven't been written yet.
 		if err := t.writeHeader(s, nil); err != nil {
-=======
-func (t *http2Server) Write(s *Stream, hdr []byte, data mem.BufferSlice, opts *Options) error {
-	reader := data.Reader()
-
-	if !s.isHeaderSent() { // Headers haven't been written yet.
-		if err := t.WriteHeader(s, nil); err != nil {
->>>>>>> c45717251 (Update go.mod dependencies)
 			_ = reader.Close()
 			return err
 		}
@@ -1151,10 +1143,7 @@ func (t *http2Server) Write(s *Stream, hdr []byte, data mem.BufferSlice, opts *O
 		_ = reader.Close()
 		return err
 	}
-<<<<<<< HEAD
 	t.incrMsgSent()
-=======
->>>>>>> c45717251 (Update go.mod dependencies)
 	return nil
 }
 

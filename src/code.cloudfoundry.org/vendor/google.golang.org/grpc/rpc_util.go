@@ -556,46 +556,6 @@ func (o ForceCodecV2CallOption) before(c *callInfo) error {
 
 func (o ForceCodecV2CallOption) after(*callInfo, *csAttempt) {}
 
-// ForceCodecV2 returns a CallOption that will set codec to be used for all
-// request and response messages for a call. The result of calling Name() will
-// be used as the content-subtype after converting to lowercase, unless
-// CallContentSubtype is also used.
-//
-// See Content-Type on
-// https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md#requests for
-// more details. Also see the documentation on RegisterCodec and
-// CallContentSubtype for more details on the interaction between Codec and
-// content-subtype.
-//
-// This function is provided for advanced users; prefer to use only
-// CallContentSubtype to select a registered codec instead.
-//
-// # Experimental
-//
-// Notice: This API is EXPERIMENTAL and may be changed or removed in a
-// later release.
-func ForceCodecV2(codec encoding.CodecV2) CallOption {
-	return ForceCodecV2CallOption{CodecV2: codec}
-}
-
-// ForceCodecV2CallOption is a CallOption that indicates the codec used for
-// marshaling messages.
-//
-// # Experimental
-//
-// Notice: This type is EXPERIMENTAL and may be changed or removed in a
-// later release.
-type ForceCodecV2CallOption struct {
-	CodecV2 encoding.CodecV2
-}
-
-func (o ForceCodecV2CallOption) before(c *callInfo) error {
-	c.codec = o.CodecV2
-	return nil
-}
-
-func (o ForceCodecV2CallOption) after(c *callInfo, attempt *csAttempt) {}
-
 // CallCustomCodec behaves like ForceCodec, but accepts a grpc.Codec instead of
 // an encoding.Codec.
 //
@@ -662,11 +622,7 @@ func (pf payloadFormat) isCompressed() bool {
 }
 
 type streamReader interface {
-<<<<<<< HEAD
 	ReadMessageHeader(header []byte) error
-=======
-	ReadHeader(header []byte) error
->>>>>>> c45717251 (Update go.mod dependencies)
 	Read(n int) (mem.BufferSlice, error)
 }
 
@@ -700,11 +656,7 @@ type parser struct {
 // that the underlying streamReader must not return an incompatible
 // error.
 func (p *parser) recvMsg(maxReceiveMessageSize int) (payloadFormat, mem.BufferSlice, error) {
-<<<<<<< HEAD
 	err := p.r.ReadMessageHeader(p.header[:])
-=======
-	err := p.r.ReadHeader(p.header[:])
->>>>>>> c45717251 (Update go.mod dependencies)
 	if err != nil {
 		return 0, nil, err
 	}
@@ -836,14 +788,8 @@ func checkRecvPayload(pf payloadFormat, recvCompress string, haveCompressor bool
 		if !haveCompressor {
 			if isServer {
 				return status.Newf(codes.Unimplemented, "grpc: Decompressor is not installed for grpc-encoding %q", recvCompress)
-<<<<<<< HEAD
 			}
 			return status.Newf(codes.Internal, "grpc: Decompressor is not installed for grpc-encoding %q", recvCompress)
-=======
-			} else {
-				return status.Newf(codes.Internal, "grpc: Decompressor is not installed for grpc-encoding %q", recvCompress)
-			}
->>>>>>> c45717251 (Update go.mod dependencies)
 		}
 	default:
 		return status.Newf(codes.Internal, "grpc: received unexpected payload format %d", pf)
@@ -868,11 +814,7 @@ func (p *payloadInfo) free() {
 // the buffer is no longer needed.
 // TODO: Refactor this function to reduce the number of arguments.
 // See: https://google.github.io/styleguide/go/best-practices.html#function-argument-lists
-<<<<<<< HEAD
 func recvAndDecompress(p *parser, s recvCompressor, dc Decompressor, maxReceiveMessageSize int, payInfo *payloadInfo, compressor encoding.Compressor, isServer bool,
-=======
-func recvAndDecompress(p *parser, s *transport.Stream, dc Decompressor, maxReceiveMessageSize int, payInfo *payloadInfo, compressor encoding.Compressor, isServer bool,
->>>>>>> c45717251 (Update go.mod dependencies)
 ) (out mem.BufferSlice, err error) {
 	pf, compressed, err := p.recvMsg(maxReceiveMessageSize)
 	if err != nil {
@@ -896,11 +838,7 @@ func recvAndDecompress(p *parser, s *transport.Stream, dc Decompressor, maxRecei
 			var uncompressedBuf []byte
 			uncompressedBuf, err = dc.Do(compressed.Reader())
 			if err == nil {
-<<<<<<< HEAD
 				out = mem.BufferSlice{mem.SliceBuffer(uncompressedBuf)}
-=======
-				out = mem.BufferSlice{mem.NewBuffer(&uncompressedBuf, nil)}
->>>>>>> c45717251 (Update go.mod dependencies)
 			}
 			size = len(uncompressedBuf)
 		} else {
@@ -936,56 +874,22 @@ func decompress(compressor encoding.Compressor, d mem.BufferSlice, maxReceiveMes
 		return nil, 0, err
 	}
 
-<<<<<<< HEAD
 	out, err := mem.ReadAll(io.LimitReader(dcReader, int64(maxReceiveMessageSize)+1), pool)
-=======
-	// TODO: Can/should this still be preserved with the new BufferSlice API? Are
-	//  there any actual benefits to allocating a single large buffer instead of
-	//  multiple smaller ones?
-	//if sizer, ok := compressor.(interface {
-	//	DecompressedSize(compressedBytes []byte) int
-	//}); ok {
-	//	if size := sizer.DecompressedSize(d); size >= 0 {
-	//		if size > maxReceiveMessageSize {
-	//			return nil, size, nil
-	//		}
-	//		// size is used as an estimate to size the buffer, but we
-	//		// will read more data if available.
-	//		// +MinRead so ReadFrom will not reallocate if size is correct.
-	//		//
-	//		// TODO: If we ensure that the buffer size is the same as the DecompressedSize,
-	//		// we can also utilize the recv buffer pool here.
-	//		buf := bytes.NewBuffer(make([]byte, 0, size+bytes.MinRead))
-	//		bytesRead, err := buf.ReadFrom(io.LimitReader(dcReader, int64(maxReceiveMessageSize)+1))
-	//		return buf.Bytes(), int(bytesRead), err
-	//	}
-	//}
-
-	var out mem.BufferSlice
-	_, err = io.Copy(mem.NewWriter(&out, pool), io.LimitReader(dcReader, int64(maxReceiveMessageSize)+1))
->>>>>>> c45717251 (Update go.mod dependencies)
 	if err != nil {
 		out.Free()
 		return nil, 0, err
 	}
 	return out, out.Len(), nil
-<<<<<<< HEAD
 }
 
 type recvCompressor interface {
 	RecvCompress() string
-=======
->>>>>>> c45717251 (Update go.mod dependencies)
 }
 
 // For the two compressor parameters, both should not be set, but if they are,
 // dc takes precedence over compressor.
 // TODO(dfawley): wrap the old compressor/decompressor using the new API?
-<<<<<<< HEAD
 func recv(p *parser, c baseCodec, s recvCompressor, dc Decompressor, m any, maxReceiveMessageSize int, payInfo *payloadInfo, compressor encoding.Compressor, isServer bool) error {
-=======
-func recv(p *parser, c baseCodec, s *transport.Stream, dc Decompressor, m any, maxReceiveMessageSize int, payInfo *payloadInfo, compressor encoding.Compressor, isServer bool) error {
->>>>>>> c45717251 (Update go.mod dependencies)
 	data, err := recvAndDecompress(p, s, dc, maxReceiveMessageSize, payInfo, compressor, isServer)
 	if err != nil {
 		return err

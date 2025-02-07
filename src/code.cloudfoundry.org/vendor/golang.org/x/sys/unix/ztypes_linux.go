@@ -87,7 +87,6 @@ type StatxTimestamp struct {
 }
 
 type Statx_t struct {
-<<<<<<< HEAD
 	Mask                      uint32
 	Blksize                   uint32
 	Attributes                uint64
@@ -117,33 +116,6 @@ type Statx_t struct {
 	Atomic_write_segments_max uint32
 	_                         [1]uint32
 	_                         [9]uint64
-=======
-	Mask             uint32
-	Blksize          uint32
-	Attributes       uint64
-	Nlink            uint32
-	Uid              uint32
-	Gid              uint32
-	Mode             uint16
-	_                [1]uint16
-	Ino              uint64
-	Size             uint64
-	Blocks           uint64
-	Attributes_mask  uint64
-	Atime            StatxTimestamp
-	Btime            StatxTimestamp
-	Ctime            StatxTimestamp
-	Mtime            StatxTimestamp
-	Rdev_major       uint32
-	Rdev_minor       uint32
-	Dev_major        uint32
-	Dev_minor        uint32
-	Mnt_id           uint64
-	Dio_mem_align    uint32
-	Dio_offset_align uint32
-	Subvol           uint64
-	_                [11]uint64
->>>>>>> cf305e78a (Update go.mod dependencies)
 }
 
 type Fsid struct {
@@ -3870,11 +3842,7 @@ const (
 	ETHTOOL_MSG_MODULE_NTF                    = 0x24
 	ETHTOOL_MSG_PSE_GET_REPLY                 = 0x25
 	ETHTOOL_MSG_RSS_GET_REPLY                 = 0x26
-<<<<<<< HEAD
 	ETHTOOL_MSG_KERNEL_MAX                    = 0x2e
-=======
-	ETHTOOL_MSG_KERNEL_MAX                    = 0x2b
->>>>>>> eca10b02a (Update go.mod dependencies)
 	ETHTOOL_FLAG_COMPACT_BITSETS              = 0x1
 	ETHTOOL_FLAG_OMIT_REPLY                   = 0x2
 	ETHTOOL_FLAG_STATS                        = 0x4

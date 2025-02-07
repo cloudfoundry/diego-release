@@ -3,32 +3,4 @@
 package ecr
 
 // goModuleVersion is the tagged release for this module
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 const goModuleVersion = "1.40.1"
-=======
-const goModuleVersion = "1.32.0"
->>>>>>> be6fdb996 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.32.1"
->>>>>>> 8ce727573 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.32.2"
->>>>>>> bf1357502 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.32.3"
->>>>>>> b93b7e30f (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.32.4"
->>>>>>> 51f3ccb88 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.33.0"
->>>>>>> 58a961646 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.34.0"
->>>>>>> 59f9170a4 (Update go.mod dependencies)

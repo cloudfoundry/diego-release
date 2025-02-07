@@ -62,11 +62,7 @@ func (p *PreparedMsg) Encode(s Stream, msg any) error {
 
 	materializedData := data.Materialize()
 	data.Free()
-<<<<<<< HEAD
 	p.encodedData = mem.BufferSlice{mem.SliceBuffer(materializedData)}
-=======
-	p.encodedData = mem.BufferSlice{mem.NewBuffer(&materializedData, nil)}
->>>>>>> c45717251 (Update go.mod dependencies)
 
 	// TODO: it should be possible to grab the bufferPool from the underlying
 	//  stream implementation with a type cast to its actual type (such as
@@ -80,11 +76,7 @@ func (p *PreparedMsg) Encode(s Stream, msg any) error {
 	if p.pf.isCompressed() {
 		materializedCompData := compData.Materialize()
 		compData.Free()
-<<<<<<< HEAD
 		compData = mem.BufferSlice{mem.SliceBuffer(materializedCompData)}
-=======
-		compData = mem.BufferSlice{mem.NewBuffer(&materializedCompData, nil)}
->>>>>>> c45717251 (Update go.mod dependencies)
 	}
 
 	p.hdr, p.payload = msgHeader(p.encodedData, compData, p.pf)

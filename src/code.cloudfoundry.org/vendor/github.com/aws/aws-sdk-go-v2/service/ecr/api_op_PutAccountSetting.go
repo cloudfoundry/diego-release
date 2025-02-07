@@ -10,12 +10,7 @@ import (
 	smithyhttp "github.com/aws/smithy-go/transport/http"
 )
 
-<<<<<<< HEAD
 // Allows you to change the basic scan type version or registry policy scope.
-=======
-// Allows you to change the basic scan type version by setting the name parameter
-// to either CLAIR to AWS_NATIVE .
->>>>>>> be6fdb996 (Update go.mod dependencies)
 func (c *Client) PutAccountSetting(ctx context.Context, params *PutAccountSettingInput, optFns ...func(*Options)) (*PutAccountSettingOutput, error) {
 	if params == nil {
 		params = &PutAccountSettingInput{}
@@ -33,24 +28,15 @@ func (c *Client) PutAccountSetting(ctx context.Context, params *PutAccountSettin
 
 type PutAccountSettingInput struct {
 
-<<<<<<< HEAD
 	// The name of the account setting, such as BASIC_SCAN_TYPE_VERSION or
 	// REGISTRY_POLICY_SCOPE .
-=======
-	// Basic scan type version name.
->>>>>>> be6fdb996 (Update go.mod dependencies)
 	//
 	// This member is required.
 	Name *string
 
-<<<<<<< HEAD
 	// Setting value that is specified. The following are valid values for the basic
 	// scan type being used: AWS_NATIVE or CLAIR . The following are valid values for
 	// the registry policy scope being used: V1 or V2 .
-=======
-	// Setting value that determines what basic scan type is being used: AWS_NATIVE or
-	// CLAIR .
->>>>>>> be6fdb996 (Update go.mod dependencies)
 	//
 	// This member is required.
 	Value *string
@@ -60,17 +46,10 @@ type PutAccountSettingInput struct {
 
 type PutAccountSettingOutput struct {
 
-<<<<<<< HEAD
 	// Retrieves the name of the account setting.
 	Name *string
 
 	// Retrieves the value of the specified account setting.
-=======
-	// Retrieves the the basic scan type version name.
-	Name *string
-
-	// Retrieves the basic scan type value, either AWS_NATIVE or - .
->>>>>>> be6fdb996 (Update go.mod dependencies)
 	Value *string
 
 	// Metadata pertaining to the operation's result.
@@ -122,12 +101,9 @@ func (c *Client) addOperationPutAccountSettingMiddlewares(stack *middleware.Stac
 	if err = addRecordResponseTiming(stack); err != nil {
 		return err
 	}
-<<<<<<< HEAD
 	if err = addSpanRetryLoop(stack, options); err != nil {
 		return err
 	}
-=======
->>>>>>> be6fdb996 (Update go.mod dependencies)
 	if err = addClientUserAgent(stack, options); err != nil {
 		return err
 	}
@@ -167,7 +143,6 @@ func (c *Client) addOperationPutAccountSettingMiddlewares(stack *middleware.Stac
 	if err = addDisableHTTPSMiddleware(stack, options); err != nil {
 		return err
 	}
-<<<<<<< HEAD
 	if err = addSpanInitializeStart(stack); err != nil {
 		return err
 	}
@@ -180,8 +155,6 @@ func (c *Client) addOperationPutAccountSettingMiddlewares(stack *middleware.Stac
 	if err = addSpanBuildRequestEnd(stack); err != nil {
 		return err
 	}
-=======
->>>>>>> be6fdb996 (Update go.mod dependencies)
 	return nil
 }
 

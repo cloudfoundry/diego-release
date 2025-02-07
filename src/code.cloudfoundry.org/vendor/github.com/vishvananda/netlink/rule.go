@@ -28,14 +28,7 @@ type Rule struct {
 	IPProto           int
 	UIDRange          *RuleUIDRange
 	Protocol          uint8
-<<<<<<< HEAD
-<<<<<<< HEAD
 	Type              uint8
-=======
->>>>>>> bf1357502 (Update go.mod dependencies)
-=======
-	Type              uint8
->>>>>>> f9a0b31c2 (Update go.mod dependencies)
 }
 
 func (r Rule) String() string {

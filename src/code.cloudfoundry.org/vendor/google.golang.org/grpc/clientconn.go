@@ -822,7 +822,6 @@ func (cc *ClientConn) newAddrConnLocked(addrs []resolver.Address, opts balancer.
 	}
 
 	ac := &addrConn{
-<<<<<<< HEAD
 		state:        connectivity.Idle,
 		cc:           cc,
 		addrs:        copyAddresses(addrs),
@@ -830,16 +829,6 @@ func (cc *ClientConn) newAddrConnLocked(addrs []resolver.Address, opts balancer.
 		dopts:        cc.dopts,
 		channelz:     channelz.RegisterSubChannel(cc.channelz, ""),
 		resetBackoff: make(chan struct{}),
-=======
-		state:          connectivity.Idle,
-		cc:             cc,
-		addrs:          copyAddresses(addrs),
-		scopts:         opts,
-		dopts:          cc.dopts,
-		channelz:       channelz.RegisterSubChannel(cc.channelz, ""),
-		resetBackoff:   make(chan struct{}),
-		stateReadyChan: make(chan struct{}),
->>>>>>> c45717251 (Update go.mod dependencies)
 	}
 	ac.ctx, ac.cancel = context.WithCancel(cc.ctx)
 	// Start with our address set to the first address; this may be updated if
@@ -1191,12 +1180,7 @@ type addrConn struct {
 	addrs   []resolver.Address // All addresses that the resolver resolved to.
 
 	// Use updateConnectivityState for updating addrConn's connectivity state.
-<<<<<<< HEAD
 	state connectivity.State
-=======
-	state          connectivity.State
-	stateReadyChan chan struct{} // closed and recreated on every READY state change.
->>>>>>> c45717251 (Update go.mod dependencies)
 
 	backoffIdx   int // Needs to be stateful for resetConnectBackoff.
 	resetBackoff chan struct{}
@@ -1522,32 +1506,6 @@ func (ac *addrConn) getReadyTransport() transport.ClientTransport {
 	return nil
 }
 
-<<<<<<< HEAD
-=======
-// getTransport waits until the addrconn is ready and returns the transport.
-// If the context expires first, returns an appropriate status.  If the
-// addrConn is stopped first, returns an Unavailable status error.
-func (ac *addrConn) getTransport(ctx context.Context) (transport.ClientTransport, error) {
-	for ctx.Err() == nil {
-		ac.mu.Lock()
-		t, state, sc := ac.transport, ac.state, ac.stateReadyChan
-		ac.mu.Unlock()
-		if state == connectivity.Ready {
-			return t, nil
-		}
-		if state == connectivity.Shutdown {
-			return nil, status.Errorf(codes.Unavailable, "SubConn shutting down")
-		}
-
-		select {
-		case <-ctx.Done():
-		case <-sc:
-		}
-	}
-	return nil, status.FromContextError(ctx.Err()).Err()
-}
-
->>>>>>> c45717251 (Update go.mod dependencies)
 // tearDown starts to tear down the addrConn.
 //
 // Note that tearDown doesn't remove ac from ac.cc.conns, so the addrConn struct

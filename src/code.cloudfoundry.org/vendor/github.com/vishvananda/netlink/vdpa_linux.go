@@ -1,10 +1,7 @@
 package netlink
 
 import (
-<<<<<<< HEAD
 	"errors"
-=======
->>>>>>> bf1357502 (Update go.mod dependencies)
 	"fmt"
 	"net"
 	"syscall"
@@ -122,12 +119,9 @@ func VDPADelDev(name string) error {
 
 // VDPAGetDevList returns list of VDPA devices
 // Equivalent to: `vdpa dev show`
-<<<<<<< HEAD
 //
 // If the returned error is [ErrDumpInterrupted], results may be inconsistent
 // or incomplete.
-=======
->>>>>>> bf1357502 (Update go.mod dependencies)
 func VDPAGetDevList() ([]*VDPADev, error) {
 	return pkgHandle.VDPAGetDevList()
 }
@@ -140,12 +134,9 @@ func VDPAGetDevByName(name string) (*VDPADev, error) {
 
 // VDPAGetDevConfigList returns list of VDPA devices configurations
 // Equivalent to: `vdpa dev config show`
-<<<<<<< HEAD
 //
 // If the returned error is [ErrDumpInterrupted], results may be inconsistent
 // or incomplete.
-=======
->>>>>>> bf1357502 (Update go.mod dependencies)
 func VDPAGetDevConfigList() ([]*VDPADevConfig, error) {
 	return pkgHandle.VDPAGetDevConfigList()
 }
@@ -164,12 +155,9 @@ func VDPAGetDevVStats(name string, queueIndex uint32) (*VDPADevVStats, error) {
 
 // VDPAGetMGMTDevList returns list of mgmt devices
 // Equivalent to: `vdpa mgmtdev show`
-<<<<<<< HEAD
 //
 // If the returned error is [ErrDumpInterrupted], results may be inconsistent
 // or incomplete.
-=======
->>>>>>> bf1357502 (Update go.mod dependencies)
 func VDPAGetMGMTDevList() ([]*VDPAMGMTDev, error) {
 	return pkgHandle.VDPAGetMGMTDevList()
 }
@@ -283,15 +271,9 @@ func (h *Handle) vdpaRequest(command uint8, extraFlags int, attrs []*nl.RtAttr) 
 		req.AddData(a)
 	}
 
-<<<<<<< HEAD
 	resp, executeErr := req.Execute(unix.NETLINK_GENERIC, 0)
 	if executeErr != nil && !errors.Is(executeErr, ErrDumpInterrupted) {
 		return nil, executeErr
-=======
-	resp, err := req.Execute(unix.NETLINK_GENERIC, 0)
-	if err != nil {
-		return nil, err
->>>>>>> bf1357502 (Update go.mod dependencies)
 	}
 	messages := make([]vdpaNetlinkMessage, 0, len(resp))
 	for _, m := range resp {
@@ -301,7 +283,6 @@ func (h *Handle) vdpaRequest(command uint8, extraFlags int, attrs []*nl.RtAttr) 
 		}
 		messages = append(messages, attrs)
 	}
-<<<<<<< HEAD
 	return messages, executeErr
 }
 
@@ -309,12 +290,6 @@ func (h *Handle) vdpaRequest(command uint8, extraFlags int, attrs []*nl.RtAttr) 
 //
 // If dev is nil and the returned error is [ErrDumpInterrupted], results may be inconsistent
 // or incomplete.
-=======
-	return messages, nil
-}
-
-// dump all devices if dev is nil
->>>>>>> bf1357502 (Update go.mod dependencies)
 func (h *Handle) vdpaDevGet(dev *string) ([]*VDPADev, error) {
 	var extraFlags int
 	var attrs []*nl.RtAttr
@@ -323,15 +298,9 @@ func (h *Handle) vdpaDevGet(dev *string) ([]*VDPADev, error) {
 	} else {
 		extraFlags = extraFlags | unix.NLM_F_DUMP
 	}
-<<<<<<< HEAD
 	messages, executeErr := h.vdpaRequest(nl.VDPA_CMD_DEV_GET, extraFlags, attrs)
 	if executeErr != nil && !errors.Is(executeErr, ErrDumpInterrupted) {
 		return nil, executeErr
-=======
-	messages, err := h.vdpaRequest(nl.VDPA_CMD_DEV_GET, extraFlags, attrs)
-	if err != nil {
-		return nil, err
->>>>>>> bf1357502 (Update go.mod dependencies)
 	}
 	devs := make([]*VDPADev, 0, len(messages))
 	for _, m := range messages {
@@ -339,7 +308,6 @@ func (h *Handle) vdpaDevGet(dev *string) ([]*VDPADev, error) {
 		d.parseAttributes(m)
 		devs = append(devs, d)
 	}
-<<<<<<< HEAD
 	return devs, executeErr
 }
 
@@ -347,12 +315,6 @@ func (h *Handle) vdpaDevGet(dev *string) ([]*VDPADev, error) {
 //
 // If dev is nil, and the returned error is [ErrDumpInterrupted], results may be inconsistent
 // or incomplete.
-=======
-	return devs, nil
-}
-
-// dump all devices if dev is nil
->>>>>>> bf1357502 (Update go.mod dependencies)
 func (h *Handle) vdpaDevConfigGet(dev *string) ([]*VDPADevConfig, error) {
 	var extraFlags int
 	var attrs []*nl.RtAttr
@@ -361,15 +323,9 @@ func (h *Handle) vdpaDevConfigGet(dev *string) ([]*VDPADevConfig, error) {
 	} else {
 		extraFlags = extraFlags | unix.NLM_F_DUMP
 	}
-<<<<<<< HEAD
 	messages, executeErr := h.vdpaRequest(nl.VDPA_CMD_DEV_CONFIG_GET, extraFlags, attrs)
 	if executeErr != nil && !errors.Is(executeErr, ErrDumpInterrupted) {
 		return nil, executeErr
-=======
-	messages, err := h.vdpaRequest(nl.VDPA_CMD_DEV_CONFIG_GET, extraFlags, attrs)
-	if err != nil {
-		return nil, err
->>>>>>> bf1357502 (Update go.mod dependencies)
 	}
 	cfgs := make([]*VDPADevConfig, 0, len(messages))
 	for _, m := range messages {
@@ -377,7 +333,6 @@ func (h *Handle) vdpaDevConfigGet(dev *string) ([]*VDPADevConfig, error) {
 		cfg.parseAttributes(m)
 		cfgs = append(cfgs, cfg)
 	}
-<<<<<<< HEAD
 	return cfgs, executeErr
 }
 
@@ -385,12 +340,6 @@ func (h *Handle) vdpaDevConfigGet(dev *string) ([]*VDPADevConfig, error) {
 //
 // If dev is nil and the returned error is [ErrDumpInterrupted], results may be inconsistent
 // or incomplete.
-=======
-	return cfgs, nil
-}
-
-// dump all devices if dev is nil
->>>>>>> bf1357502 (Update go.mod dependencies)
 func (h *Handle) vdpaMGMTDevGet(bus, dev *string) ([]*VDPAMGMTDev, error) {
 	var extraFlags int
 	var attrs []*nl.RtAttr
@@ -406,15 +355,9 @@ func (h *Handle) vdpaMGMTDevGet(bus, dev *string) ([]*VDPAMGMTDev, error) {
 	} else {
 		extraFlags = extraFlags | unix.NLM_F_DUMP
 	}
-<<<<<<< HEAD
 	messages, executeErr := h.vdpaRequest(nl.VDPA_CMD_MGMTDEV_GET, extraFlags, attrs)
 	if executeErr != nil && !errors.Is(executeErr, ErrDumpInterrupted) {
 		return nil, executeErr
-=======
-	messages, err := h.vdpaRequest(nl.VDPA_CMD_MGMTDEV_GET, extraFlags, attrs)
-	if err != nil {
-		return nil, err
->>>>>>> bf1357502 (Update go.mod dependencies)
 	}
 	cfgs := make([]*VDPAMGMTDev, 0, len(messages))
 	for _, m := range messages {
@@ -422,11 +365,7 @@ func (h *Handle) vdpaMGMTDevGet(bus, dev *string) ([]*VDPAMGMTDev, error) {
 		cfg.parseAttributes(m)
 		cfgs = append(cfgs, cfg)
 	}
-<<<<<<< HEAD
 	return cfgs, executeErr
-=======
-	return cfgs, nil
->>>>>>> bf1357502 (Update go.mod dependencies)
 }
 
 // VDPANewDev adds new VDPA device
@@ -465,12 +404,9 @@ func (h *Handle) VDPADelDev(name string) error {
 
 // VDPAGetDevList returns list of VDPA devices
 // Equivalent to: `vdpa dev show`
-<<<<<<< HEAD
 //
 // If the returned error is [ErrDumpInterrupted], results may be inconsistent
 // or incomplete.
-=======
->>>>>>> bf1357502 (Update go.mod dependencies)
 func (h *Handle) VDPAGetDevList() ([]*VDPADev, error) {
 	return h.vdpaDevGet(nil)
 }
@@ -490,12 +426,9 @@ func (h *Handle) VDPAGetDevByName(name string) (*VDPADev, error) {
 
 // VDPAGetDevConfigList returns list of VDPA devices configurations
 // Equivalent to: `vdpa dev config show`
-<<<<<<< HEAD
 //
 // If the returned error is [ErrDumpInterrupted], results may be inconsistent
 // or incomplete.
-=======
->>>>>>> bf1357502 (Update go.mod dependencies)
 func (h *Handle) VDPAGetDevConfigList() ([]*VDPADevConfig, error) {
 	return h.vdpaDevConfigGet(nil)
 }
@@ -533,12 +466,9 @@ func (h *Handle) VDPAGetDevVStats(name string, queueIndex uint32) (*VDPADevVStat
 
 // VDPAGetMGMTDevList returns list of mgmt devices
 // Equivalent to: `vdpa mgmtdev show`
-<<<<<<< HEAD
 //
 // If the returned error is [ErrDumpInterrupted], results may be inconsistent
 // or incomplete.
-=======
->>>>>>> bf1357502 (Update go.mod dependencies)
 func (h *Handle) VDPAGetMGMTDevList() ([]*VDPAMGMTDev, error) {
 	return h.vdpaMGMTDevGet(nil, nil)
 }

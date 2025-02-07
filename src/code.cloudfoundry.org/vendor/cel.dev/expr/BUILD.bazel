@@ -16,15 +16,7 @@ go_library(
     importpath = "cel.dev/expr",
     visibility = ["//visibility:public"],
     deps = [
-<<<<<<< HEAD
-<<<<<<< HEAD
         "@org_golang_google_genproto_googleapis_rpc//status:go_default_library",
-=======
-        "//proto/cel/expr:google_rpc_status_go_proto",
->>>>>>> c45717251 (Update go.mod dependencies)
-=======
-        "@org_golang_google_genproto_googleapis_rpc//status:go_default_library",
->>>>>>> 59f9170a4 (Update go.mod dependencies)
         "@org_golang_google_protobuf//reflect/protoreflect",
         "@org_golang_google_protobuf//runtime/protoimpl",
         "@org_golang_google_protobuf//types/known/anypb",

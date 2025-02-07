@@ -52,19 +52,7 @@ import (
 const (
 	Major      = 1
 	Minor      = 36
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	Patch      = 4
-=======
-	Patch      = 2
->>>>>>> 2d8490891 (go mod tidy && go mod vendor)
-=======
-	Patch      = 3
->>>>>>> 6b5bfaa10 (go mod tidy && go mod vendor)
-=======
-	Patch      = 4
->>>>>>> c6d5c71f1 (go mod tidy && go mod vendor)
 	PreRelease = ""
 )
 

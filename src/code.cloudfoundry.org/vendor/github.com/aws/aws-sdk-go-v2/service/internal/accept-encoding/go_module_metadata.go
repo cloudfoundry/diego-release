@@ -3,8 +3,4 @@
 package acceptencoding
 
 // goModuleVersion is the tagged release for this module
-<<<<<<< HEAD
 const goModuleVersion = "1.12.2"
-=======
-const goModuleVersion = "1.11.4"
->>>>>>> 8ce727573 (Update go.mod dependencies)

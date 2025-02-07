@@ -345,10 +345,6 @@ func ptrEqual(a, b *uint32) bool {
 	}
 	return *a == *b
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> f9a0b31c2 (Update go.mod dependencies)
 
 func (r Rule) typeString() string {
 	switch r.Type {
@@ -380,8 +376,3 @@ func (r Rule) typeString() string {
 		return fmt.Sprintf("type(0x%x)", r.Type)
 	}
 }
-<<<<<<< HEAD
-=======
->>>>>>> bf1357502 (Update go.mod dependencies)
-=======
->>>>>>> f9a0b31c2 (Update go.mod dependencies)

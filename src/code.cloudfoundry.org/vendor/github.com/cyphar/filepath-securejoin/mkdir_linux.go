@@ -104,29 +104,9 @@ func MkdirAllHandle(root *os.File, unsafePath string, mode int) (_ *os.File, Err
 		return nil, fmt.Errorf("%w: yet-to-be-created path %q contains '..' components", unix.ENOENT, remainingPath)
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 	// Make sure the mode doesn't have any type bits.
 	mode &^= unix.S_IFMT
 
-	// The setgid bit (S_ISGID = 0o2000) is inherited to child directories and
-	// affects the group of any inodes created in said directory, so if the
-	// starting directory has it set we need to adjust our expected mode and
-	// owner to match.
-	if st, err := fstatFile(currentDir); err != nil {
-		return nil, fmt.Errorf("failed to stat starting path for mkdir %q: %w", currentDir.Name(), err)
-	} else if st.Mode&unix.S_ISGID == unix.S_ISGID {
-		expectedMode |= unix.S_ISGID
-		expectedGid = st.Gid
-	}
-
-=======
->>>>>>> 6b5bfaa10 (go mod tidy && go mod vendor)
-=======
-	// Make sure the mode doesn't have any type bits.
-	mode &^= unix.S_IFMT
-
->>>>>>> 5ac8bf352 (go mod tidy && go mod vendor)
 	// Create the remaining components.
 	for _, part := range remainingParts {
 		switch part {

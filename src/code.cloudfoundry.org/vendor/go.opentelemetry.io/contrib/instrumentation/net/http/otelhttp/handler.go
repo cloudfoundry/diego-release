@@ -12,10 +12,7 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/internal/request"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/internal/semconv"
 	"go.opentelemetry.io/otel"
-<<<<<<< HEAD
 	"go.opentelemetry.io/otel/attribute"
-=======
->>>>>>> 25a4f88bf (Update go.mod dependencies)
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/trace"
 )
@@ -25,7 +22,6 @@ type middleware struct {
 	operation string
 	server    string
 
-<<<<<<< HEAD
 	tracer             trace.Tracer
 	propagators        propagation.TextMapPropagator
 	spanStartOptions   []trace.SpanStartOption
@@ -36,17 +32,6 @@ type middleware struct {
 	publicEndpoint     bool
 	publicEndpointFn   func(*http.Request) bool
 	metricAttributesFn func(*http.Request) []attribute.KeyValue
-=======
-	tracer            trace.Tracer
-	propagators       propagation.TextMapPropagator
-	spanStartOptions  []trace.SpanStartOption
-	readEvent         bool
-	writeEvent        bool
-	filters           []Filter
-	spanNameFormatter func(string, *http.Request) string
-	publicEndpoint    bool
-	publicEndpointFn  func(*http.Request) bool
->>>>>>> 25a4f88bf (Update go.mod dependencies)
 
 	semconv semconv.HTTPServer
 }
@@ -96,16 +81,7 @@ func (h *middleware) configure(c *config) {
 	h.publicEndpointFn = c.PublicEndpointFn
 	h.server = c.ServerName
 	h.semconv = semconv.NewHTTPServer(c.Meter)
-<<<<<<< HEAD
 	h.metricAttributesFn = c.MetricAttributesFn
-=======
-}
-
-func handleErr(err error) {
-	if err != nil {
-		otel.Handle(err)
-	}
->>>>>>> 25a4f88bf (Update go.mod dependencies)
 }
 
 // serveHTTP sets up tracing and calls the given next http.Handler with the span
@@ -216,7 +192,6 @@ func (h *middleware) serveHTTP(w http.ResponseWriter, r *http.Request, next http
 	// Use floating point division here for higher precision (instead of Millisecond method).
 	elapsedTime := float64(time.Since(requestStartTime)) / float64(time.Millisecond)
 
-<<<<<<< HEAD
 	metricAttributes := semconv.MetricAttributes{
 		Req:                  r,
 		StatusCode:           statusCode,
@@ -240,17 +215,6 @@ func (h *middleware) metricAttributesFromRequest(r *http.Request) []attribute.Ke
 		attributeForRequest = h.metricAttributesFn(r)
 	}
 	return attributeForRequest
-=======
-	h.semconv.RecordMetrics(ctx, semconv.MetricData{
-		ServerName:           h.server,
-		Req:                  r,
-		StatusCode:           statusCode,
-		AdditionalAttributes: labeler.Get(),
-		RequestSize:          bw.BytesRead(),
-		ResponseSize:         bytesWritten,
-		ElapsedTime:          elapsedTime,
-	})
->>>>>>> 25a4f88bf (Update go.mod dependencies)
 }
 
 // WithRouteTag annotates spans and metrics with the provided route name

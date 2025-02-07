@@ -3,28 +3,4 @@
 package credentials
 
 // goModuleVersion is the tagged release for this module
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 const goModuleVersion = "1.17.57"
-=======
-const goModuleVersion = "1.17.28"
->>>>>>> 8ce727573 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.17.29"
->>>>>>> bf1357502 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.17.30"
->>>>>>> 15c176a21 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.17.31"
->>>>>>> b93b7e30f (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.17.32"
->>>>>>> 51f3ccb88 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.17.33"
->>>>>>> 59f9170a4 (Update go.mod dependencies)

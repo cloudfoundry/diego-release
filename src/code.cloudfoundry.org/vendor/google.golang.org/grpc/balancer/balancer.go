@@ -73,17 +73,6 @@ func unregisterForTesting(name string) {
 	delete(m, name)
 }
 
-// connectedAddress returns the connected address for a SubConnState. The
-// address is only valid if the state is READY.
-func connectedAddress(scs SubConnState) resolver.Address {
-	return scs.connectedAddress
-}
-
-// setConnectedAddress sets the connected address for a SubConnState.
-func setConnectedAddress(scs *SubConnState, addr resolver.Address) {
-	scs.connectedAddress = addr
-}
-
 func init() {
 	internal.BalancerUnregister = unregisterForTesting
 	internal.ConnectedAddress = connectedAddress
@@ -373,21 +362,6 @@ type ExitIdler interface {
 	ExitIdle()
 }
 
-<<<<<<< HEAD
-=======
-// SubConnState describes the state of a SubConn.
-type SubConnState struct {
-	// ConnectivityState is the connectivity state of the SubConn.
-	ConnectivityState connectivity.State
-	// ConnectionError is set if the ConnectivityState is TransientFailure,
-	// describing the reason the SubConn failed.  Otherwise, it is nil.
-	ConnectionError error
-	// connectedAddr contains the connected address when ConnectivityState is
-	// Ready. Otherwise, it is indeterminate.
-	connectedAddress resolver.Address
-}
-
->>>>>>> c45717251 (Update go.mod dependencies)
 // ClientConnState describes the state of a ClientConn relevant to the
 // balancer.
 type ClientConnState struct {

@@ -2610,13 +2610,10 @@ func (m *awsAwsjson11_deserializeOpGetAccountSetting) HandleDeserialize(ctx cont
 		return out, metadata, err
 	}
 
-<<<<<<< HEAD
 	_, span := tracing.StartSpan(ctx, "OperationDeserializer")
 	endTimer := startMetricTimer(ctx, "client.call.deserialization_duration")
 	defer endTimer()
 	defer span.End()
-=======
->>>>>>> be6fdb996 (Update go.mod dependencies)
 	response, ok := out.RawResponse.(*smithyhttp.Response)
 	if !ok {
 		return out, metadata, &smithy.DeserializationError{Err: fmt.Errorf("unknown transport type %T", out.RawResponse)}
@@ -3927,13 +3924,10 @@ func (m *awsAwsjson11_deserializeOpPutAccountSetting) HandleDeserialize(ctx cont
 		return out, metadata, err
 	}
 
-<<<<<<< HEAD
 	_, span := tracing.StartSpan(ctx, "OperationDeserializer")
 	endTimer := startMetricTimer(ctx, "client.call.deserialization_duration")
 	defer endTimer()
 	defer span.End()
-=======
->>>>>>> be6fdb996 (Update go.mod dependencies)
 	response, ok := out.RawResponse.(*smithyhttp.Response)
 	if !ok {
 		return out, metadata, &smithy.DeserializationError{Err: fmt.Errorf("unknown transport type %T", out.RawResponse)}

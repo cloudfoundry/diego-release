@@ -3,12 +3,4 @@
 package configsources
 
 // goModuleVersion is the tagged release for this module
-<<<<<<< HEAD
-<<<<<<< HEAD
 const goModuleVersion = "1.3.31"
-=======
-const goModuleVersion = "1.3.16"
->>>>>>> 8ce727573 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.3.17"
->>>>>>> b93b7e30f (Update go.mod dependencies)

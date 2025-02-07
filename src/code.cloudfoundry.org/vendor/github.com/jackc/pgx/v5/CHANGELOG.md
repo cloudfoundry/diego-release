@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 5.7.2 (December 21, 2024)
 
 * Fix prepared statement already exists on batch prepare failure
@@ -18,9 +17,6 @@
 * Update golang.org/x/crypto and golang.org/x/text
 
 # 5.7.0 (September 7, 2024)
-=======
-# 5.7.0 (September 2024)
->>>>>>> f7c23ee10 (Update go.mod dependencies)
 
 * Add support for sslrootcert=system (Yann Soubeyrand)
 * Add LoadTypes to load multiple types in a single SQL query (Nick Farrell)

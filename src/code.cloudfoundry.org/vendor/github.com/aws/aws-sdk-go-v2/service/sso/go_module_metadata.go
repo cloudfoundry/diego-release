@@ -3,20 +3,4 @@
 package sso
 
 // goModuleVersion is the tagged release for this module
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 const goModuleVersion = "1.24.14"
-=======
-const goModuleVersion = "1.22.5"
->>>>>>> 8ce727573 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.22.6"
->>>>>>> b93b7e30f (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.22.7"
->>>>>>> 51f3ccb88 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.22.8"
->>>>>>> 59f9170a4 (Update go.mod dependencies)

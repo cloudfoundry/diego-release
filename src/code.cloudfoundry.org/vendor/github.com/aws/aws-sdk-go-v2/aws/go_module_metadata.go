@@ -3,12 +3,4 @@
 package aws
 
 // goModuleVersion is the tagged release for this module
-<<<<<<< HEAD
-<<<<<<< HEAD
 const goModuleVersion = "1.36.0"
-=======
-const goModuleVersion = "1.30.4"
->>>>>>> 8ce727573 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.30.5"
->>>>>>> b93b7e30f (Update go.mod dependencies)

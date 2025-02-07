@@ -71,11 +71,7 @@ func (c codecV0Bridge) Marshal(v any) (mem.BufferSlice, error) {
 	if err != nil {
 		return nil, err
 	}
-<<<<<<< HEAD
 	return mem.BufferSlice{mem.SliceBuffer(data)}, nil
-=======
-	return mem.BufferSlice{mem.NewBuffer(&data, nil)}, nil
->>>>>>> c45717251 (Update go.mod dependencies)
 }
 
 func (c codecV0Bridge) Unmarshal(data mem.BufferSlice, v any) (err error) {

@@ -3,12 +3,10 @@
 package utils
 
 import (
-	"errors"
 	"fmt"
 	"math"
 	"os"
 	"path/filepath"
-<<<<<<< HEAD
 	"runtime"
 	"strconv"
 	"strings"
@@ -17,15 +15,6 @@ import (
 
 	securejoin "github.com/cyphar/filepath-securejoin"
 	"github.com/sirupsen/logrus"
-=======
-	"strconv"
-	"strings"
-	_ "unsafe" // for go:linkname
-
-	"github.com/opencontainers/runc/libcontainer/system"
-
-	securejoin "github.com/cyphar/filepath-securejoin"
->>>>>>> b93b7e30f (Update go.mod dependencies)
 	"golang.org/x/sys/unix"
 )
 
@@ -167,7 +156,6 @@ func NewSockPair(name string) (parent, child *os.File, err error) {
 	return os.NewFile(uintptr(fds[1]), name+"-p"), os.NewFile(uintptr(fds[0]), name+"-c"), nil
 }
 
-<<<<<<< HEAD
 // WithProcfd runs the passed closure with a procfd path (/proc/self/fd/...)
 // corresponding to the unsafePath resolved within the root. Before passing the
 // fd, this path is verified to have been inside the root -- so operating on it
@@ -274,8 +262,6 @@ func ProcThreadSelfFd(fd uintptr) (string, ProcThreadSelfCloser) {
 	return ProcThreadSelf("fd/" + strconv.FormatUint(uint64(fd), 10))
 }
 
-=======
->>>>>>> b93b7e30f (Update go.mod dependencies)
 // IsLexicallyInRoot is shorthand for strings.HasPrefix(path+"/", root+"/"),
 // but properly handling the case where path or root are "/".
 //
@@ -310,7 +296,6 @@ func IsLexicallyInRoot(root, path string) bool {
 // This means that the path also must not contain ".." elements, otherwise an
 // error will occur.
 //
-<<<<<<< HEAD
 // This uses securejoin.MkdirAllHandle under the hood, but it has special
 // handling if unsafePath has already been scoped within the rootfs (this is
 // needed for a lot of runc callers and fixing this would require reworking a
@@ -328,32 +313,12 @@ func MkdirAllInRootOpen(root, unsafePath string, mode uint32) (_ *os.File, Err e
 			return nil, err
 		}
 		unsafePath = subPath
-=======
-// This is a somewhat less safe alternative to
-// <https://github.com/cyphar/filepath-securejoin/pull/13>, but it should
-// detect attempts to trick us into creating directories outside of the root.
-// We should migrate to securejoin.MkdirAll once it is merged.
-func MkdirAllInRootOpen(root, unsafePath string, mode uint32) (_ *os.File, Err error) {
-	// If the path is already "within" the root, use it verbatim.
-	fullPath := unsafePath
-	if !IsLexicallyInRoot(root, unsafePath) {
-		var err error
-		fullPath, err = securejoin.SecureJoin(root, unsafePath)
-		if err != nil {
-			return nil, err
-		}
-	}
-	subPath, err := filepath.Rel(root, fullPath)
-	if err != nil {
-		return nil, err
->>>>>>> b93b7e30f (Update go.mod dependencies)
 	}
 
 	// Check for any silly mode bits.
 	if mode&^0o7777 != 0 {
 		return nil, fmt.Errorf("tried to include non-mode bits in MkdirAll mode: 0o%.3o", mode)
 	}
-<<<<<<< HEAD
 	// Linux (and thus os.MkdirAll) silently ignores the suid and sgid bits if
 	// passed. While it would make sense to return an error in that case (since
 	// the user has asked for a mode that won't be applied), for compatibility
@@ -370,62 +335,6 @@ func MkdirAllInRootOpen(root, unsafePath string, mode uint32) (_ *os.File, Err e
 	defer rootDir.Close()
 
 	return securejoin.MkdirAllHandle(rootDir, unsafePath, int(mode))
-=======
-
-	currentDir, err := os.OpenFile(root, unix.O_DIRECTORY|unix.O_CLOEXEC, 0)
-	if err != nil {
-		return nil, fmt.Errorf("open root handle: %w", err)
-	}
-	defer func() {
-		if Err != nil {
-			currentDir.Close()
-		}
-	}()
-
-	for _, part := range strings.Split(subPath, string(filepath.Separator)) {
-		switch part {
-		case "", ".":
-			// Skip over no-op components.
-			continue
-		case "..":
-			return nil, fmt.Errorf("possible breakout detected: found %q component in SecureJoin subpath %s", part, subPath)
-		}
-
-		nextDir, err := system.Openat(currentDir, part, unix.O_DIRECTORY|unix.O_NOFOLLOW|unix.O_CLOEXEC, 0)
-		switch {
-		case err == nil:
-			// Update the currentDir.
-			_ = currentDir.Close()
-			currentDir = nextDir
-
-		case errors.Is(err, unix.ENOTDIR):
-			// This might be a symlink or some other random file. Either way,
-			// error out.
-			return nil, fmt.Errorf("cannot mkdir in %s/%s: %w", currentDir.Name(), part, unix.ENOTDIR)
-
-		case errors.Is(err, os.ErrNotExist):
-			// Luckily, mkdirat will not follow trailing symlinks, so this is
-			// safe to do as-is.
-			if err := system.Mkdirat(currentDir, part, mode); err != nil {
-				return nil, err
-			}
-			// Open the new directory. There is a race here where an attacker
-			// could swap the directory with a different directory, but
-			// MkdirAll's fuzzy semantics mean we don't care about that.
-			nextDir, err := system.Openat(currentDir, part, unix.O_DIRECTORY|unix.O_NOFOLLOW|unix.O_CLOEXEC, 0)
-			if err != nil {
-				return nil, fmt.Errorf("open newly created directory: %w", err)
-			}
-			// Update the currentDir.
-			_ = currentDir.Close()
-			currentDir = nextDir
-
-		default:
-			return nil, err
-		}
-	}
-	return currentDir, nil
->>>>>>> b93b7e30f (Update go.mod dependencies)
 }
 
 // MkdirAllInRoot is a wrapper around MkdirAllInRootOpen which closes the
@@ -437,7 +346,6 @@ func MkdirAllInRoot(root, unsafePath string, mode uint32) error {
 	}
 	return err
 }
-<<<<<<< HEAD
 
 // Openat is a Go-friendly openat(2) wrapper.
 func Openat(dir *os.File, path string, flags int, mode uint32) (*os.File, error) {
@@ -453,5 +361,3 @@ func Openat(dir *os.File, path string, flags int, mode uint32) (*os.File, error)
 	}
 	return os.NewFile(uintptr(fd), dir.Name()+"/"+path), nil
 }
-=======
->>>>>>> b93b7e30f (Update go.mod dependencies)

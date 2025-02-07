@@ -2485,20 +2485,8 @@ func (o *consumer) processTerm(sseq, dseq, dc uint64, reason, reply string) bool
 		Domain:      o.srv.getOpts().JetStreamDomain,
 	}
 
-<<<<<<< HEAD
 	subj := JSAdvisoryConsumerMsgTerminatedPre + "." + o.stream + "." + o.name
 	o.sendAdvisory(subj, e)
-=======
-	j, err := json.Marshal(e)
-	if err != nil {
-		// We had an error during the marshal, so we can't send the advisory,
-		// but we still need to tell the caller that the ack was processed.
-		return ackedInPlace
-	}
-
-	subj := JSAdvisoryConsumerMsgTerminatedPre + "." + o.stream + "." + o.name
-	o.sendAdvisory(subj, j)
->>>>>>> d1f566753 (Update go.mod dependencies)
 	return ackedInPlace
 }
 
@@ -2805,15 +2793,6 @@ func (o *consumer) processAckMsg(sseq, dseq, dc uint64, reply string, doSample b
 	if o.closed {
 		o.mu.Unlock()
 		return false
-<<<<<<< HEAD
-=======
-	}
-
-	// Check if this ack is above the current pointer to our next to deliver.
-	// This could happen on a cooperative takeover with high speed deliveries.
-	if sseq >= o.sseq {
-		o.sseq = sseq + 1
->>>>>>> d1f566753 (Update go.mod dependencies)
 	}
 
 	mset := o.mset
@@ -2822,7 +2801,6 @@ func (o *consumer) processAckMsg(sseq, dseq, dc uint64, reply string, doSample b
 		return false
 	}
 
-<<<<<<< HEAD
 	// Check if this ack is above the current pointer to our next to deliver.
 	// This could happen on a cooperative takeover with high speed deliveries.
 	if sseq >= o.sseq {
@@ -2841,8 +2819,6 @@ func (o *consumer) processAckMsg(sseq, dseq, dc uint64, reply string, doSample b
 		o.sseq = sseq + 1
 	}
 
-=======
->>>>>>> d1f566753 (Update go.mod dependencies)
 	// Let the owning stream know if we are interest or workqueue retention based.
 	// If this consumer is clustered (o.node != nil) this will be handled by
 	// processReplicatedAck after the ack has propagated.
@@ -2886,12 +2862,8 @@ func (o *consumer) processAckMsg(sseq, dseq, dc uint64, reply string, doSample b
 		// no-op
 		if dseq <= o.adflr || sseq <= o.asflr {
 			o.mu.Unlock()
-<<<<<<< HEAD
 			// Return true to let caller respond back to the client.
 			return true
-=======
-			return ackInPlace
->>>>>>> d1f566753 (Update go.mod dependencies)
 		}
 		if o.maxp > 0 && len(o.pending) >= o.maxp {
 			needSignal = true
@@ -2999,28 +2971,6 @@ func (o *consumer) isFiltered() bool {
 		}
 	}
 	return false
-}
-
-// Check if we would have matched and needed an ack for this store seq.
-// This is called for interest based retention streams to remove messages.
-func (o *consumer) matchAck(sseq uint64) bool {
-	o.mu.RLock()
-	defer o.mu.RUnlock()
-
-	// Check if we are filtered, and if so check if this is even applicable to us.
-	if o.isFiltered() {
-		if o.mset == nil {
-			return false
-		}
-		var svp StoreMsg
-		if _, err := o.mset.store.LoadMsg(sseq, &svp); err != nil {
-			return false
-		}
-		if !o.isFilteredMatch(svp.subj) {
-			return false
-		}
-	}
-	return true
 }
 
 // Check if we need an ack for this store seq.
@@ -4974,16 +4924,12 @@ func (o *consumer) selectStartingSeqNo() {
 			o.sseq = o.cfg.OptStartSeq
 		}
 
-		// Only clip the sseq if the OptStartSeq is not provided, otherwise
-		// it's possible that the stream just doesn't contain OptStartSeq yet.
-		if o.cfg.OptStartSeq == 0 {
-			if state.FirstSeq == 0 {
-				o.sseq = 1
-			} else if o.sseq < state.FirstSeq {
-				o.sseq = state.FirstSeq
-			} else if o.sseq > state.LastSeq {
-				o.sseq = state.LastSeq + 1
-			}
+		if state.FirstSeq == 0 {
+			o.sseq = 1
+		} else if o.sseq < state.FirstSeq {
+			o.sseq = state.FirstSeq
+		} else if o.sseq > state.LastSeq {
+			o.sseq = state.LastSeq + 1
 		}
 	}
 
@@ -5631,7 +5577,6 @@ func (o *consumer) checkStateForInterestStream(ss *StreamState) error {
 		return errAckFloorHigherThanLastSeq
 	}
 
-<<<<<<< HEAD
 	var smv StoreMsg
 	var seq, nseq uint64
 	// Start at first stream seq or a previous check floor, whichever is higher.
@@ -5640,12 +5585,6 @@ func (o *consumer) checkStateForInterestStream(ss *StreamState) error {
 	fseq := ss.FirstSeq
 	if chkfloor > fseq {
 		fseq = chkfloor
-=======
-	for seq := ss.FirstSeq; asflr > 0 && seq <= asflr; seq++ {
-		if o.matchAck(seq) {
-			mset.ackMsg(o, seq)
-		}
->>>>>>> d1f566753 (Update go.mod dependencies)
 	}
 
 	for seq = fseq; asflr > 0 && seq <= asflr; seq++ {

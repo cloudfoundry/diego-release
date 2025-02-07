@@ -98,7 +98,6 @@ func New(
 	downloader *Downloader,
 	cache *FileCache,
 	transformer CacheTransformer,
-<<<<<<< HEAD
 ) (*cachedDownloader, error) {
 	err := os.MkdirAll(cache.CachedPath, 0750)
 	if err != nil {
@@ -109,10 +108,6 @@ func New(
 	if err != nil {
 		return nil, err
 	}
-=======
-) *cachedDownloader {
-	os.MkdirAll(cache.CachedPath, 0750)
->>>>>>> 59f9170a4 (Update go.mod dependencies)
 	return &cachedDownloader{
 		cache:         cache,
 		cacheLocation: filepath.Join(cache.CachedPath, "saved_cache.json"),

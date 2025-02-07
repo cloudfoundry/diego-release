@@ -3,32 +3,4 @@
 package config
 
 // goModuleVersion is the tagged release for this module
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 const goModuleVersion = "1.29.4"
-=======
-const goModuleVersion = "1.27.28"
->>>>>>> 8ce727573 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.27.29"
->>>>>>> bf1357502 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.27.30"
->>>>>>> f9a0b31c2 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.27.31"
->>>>>>> 15c176a21 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.27.32"
->>>>>>> b93b7e30f (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.27.33"
->>>>>>> 51f3ccb88 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.27.35"
->>>>>>> 59f9170a4 (Update go.mod dependencies)

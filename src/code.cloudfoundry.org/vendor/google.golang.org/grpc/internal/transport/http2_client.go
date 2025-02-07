@@ -992,27 +992,6 @@ func (t *http2Client) Close(err error) {
 		// should unblock it so that the goroutine eventually exits.
 		t.kpDormancyCond.Signal()
 	}
-<<<<<<< HEAD
-=======
-	t.mu.Unlock()
-
-	// Per HTTP/2 spec, a GOAWAY frame must be sent before closing the
-	// connection. See https://httpwg.org/specs/rfc7540.html#GOAWAY. It
-	// also waits for loopyWriter to be closed with a timer to avoid the
-	// long blocking in case the connection is blackholed, i.e. TCP is
-	// just stuck.
-	t.controlBuf.put(&goAway{code: http2.ErrCodeNo, debugData: []byte("client transport shutdown"), closeConn: err})
-	timer := time.NewTimer(goAwayLoopyWriterTimeout)
-	defer timer.Stop()
-	select {
-	case <-t.writerDone: // success
-	case <-timer.C:
-		t.logger.Infof("Failed to write a GOAWAY frame as part of connection close after %s. Giving up and closing the transport.", goAwayLoopyWriterTimeout)
-	}
-	t.cancel()
-	t.conn.Close()
-	channelz.RemoveEntry(t.channelz.ID)
->>>>>>> c45717251 (Update go.mod dependencies)
 	// Append info about previous goaways if there were any, since this may be important
 	// for understanding the root cause for this connection to be closed.
 	goAwayDebugMessage := t.goAwayDebugMessage
@@ -1088,11 +1067,7 @@ func (t *http2Client) GracefulClose() {
 
 // Write formats the data into HTTP2 data frame(s) and sends it out. The caller
 // should proceed only if Write returns nil.
-<<<<<<< HEAD
 func (t *http2Client) write(s *ClientStream, hdr []byte, data mem.BufferSlice, opts *WriteOptions) error {
-=======
-func (t *http2Client) Write(s *Stream, hdr []byte, data mem.BufferSlice, opts *Options) error {
->>>>>>> c45717251 (Update go.mod dependencies)
 	reader := data.Reader()
 
 	if opts.Last {
@@ -1121,10 +1096,7 @@ func (t *http2Client) Write(s *Stream, hdr []byte, data mem.BufferSlice, opts *O
 		_ = reader.Close()
 		return err
 	}
-<<<<<<< HEAD
 	t.incrMsgSent()
-=======
->>>>>>> c45717251 (Update go.mod dependencies)
 	return nil
 }
 
@@ -1350,12 +1322,7 @@ func (t *http2Client) handleGoAway(f *http2.GoAwayFrame) error {
 	id := f.LastStreamID
 	if id > 0 && id%2 == 0 {
 		t.mu.Unlock()
-<<<<<<< HEAD
 		return connectionErrorf(true, nil, "received goaway with non-zero even-numbered stream id: %v", id)
-=======
-		t.Close(connectionErrorf(true, nil, "received goaway with non-zero even-numbered stream id: %v", id))
-		return
->>>>>>> c45717251 (Update go.mod dependencies)
 	}
 	// A client can receive multiple GoAways from the server (see
 	// https://github.com/grpc/grpc-go/issues/1387).  The idea is that the first

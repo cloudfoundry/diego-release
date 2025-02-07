@@ -3,8 +3,4 @@
 package ini
 
 // goModuleVersion is the tagged release for this module
-<<<<<<< HEAD
 const goModuleVersion = "1.8.2"
-=======
-const goModuleVersion = "1.8.1"
->>>>>>> 8ce727573 (Update go.mod dependencies)

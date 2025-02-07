@@ -3,24 +3,4 @@
 package sts
 
 // goModuleVersion is the tagged release for this module
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 const goModuleVersion = "1.33.12"
-=======
-const goModuleVersion = "1.30.4"
->>>>>>> 8ce727573 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.30.5"
->>>>>>> bf1357502 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.30.6"
->>>>>>> b93b7e30f (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.30.7"
->>>>>>> 51f3ccb88 (Update go.mod dependencies)
-=======
-const goModuleVersion = "1.30.8"
->>>>>>> 59f9170a4 (Update go.mod dependencies)
