@@ -95,8 +95,8 @@ require (
 
 require (
 	cel.dev/expr v0.19.2 // indirect
-	code.cloudfoundry.org/commandrunner v0.27.0 // indirect
-	code.cloudfoundry.org/go-diodes v0.0.0-20250120125122-6d632ec80998 // indirect
+	code.cloudfoundry.org/commandrunner v0.28.0 // indirect
+	code.cloudfoundry.org/go-diodes v0.0.0-20250211080108-4c71ef7b9a72 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Azure/azure-sdk-for-go v68.0.0+incompatible // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20250102033503-faa5f7b0171c // indirect
@@ -136,7 +136,7 @@ require (
 	github.com/chrismellard/docker-credential-acr-env v0.0.0-20230304212654-82a0ddb27589 // indirect
 	github.com/cloudfoundry/go-socks5 v0.0.0-20240831012420-2590b55236ee // indirect
 	github.com/cloudfoundry/socks5-proxy v0.2.141 // indirect
-	github.com/cloudfoundry/sonde-go v0.0.0-20250127102140-78b0e7da13b3 // indirect
+	github.com/cloudfoundry/sonde-go v0.0.0-20250211080004-ff2843c4063b // indirect
 	github.com/cncf/xds/go v0.0.0-20250121191232-2f005788dc42 // indirect
 	github.com/containerd/log v0.1.0 // indirect
 	github.com/containerd/stargz-snapshotter/estargz v0.16.3 // indirect
