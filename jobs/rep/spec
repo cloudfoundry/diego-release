@@ -55,7 +55,7 @@ properties:
   diego.rep.preloaded_rootfses:
     description: "Array of name:absolute_path pairs representing root filesystems preloaded onto the underlying garden"
   diego.rep.sidecar_rootfs_path:
-    description: "absolute_path representing the root filesystem used for sidecar processes (ie. "/var/vcap/packages/cflinuxfs4/rootfs.tar"). Must be one of the preloaded_rootfses paths. Leaving the default empty string is ok, as it will then select the first of he preloaded_rootfses"
+    description: "absolute_path representing the root filesystem used for sidecar processes (ie. '/var/vcap/packages/cflinuxfs4/rootfs.tar'). Must be one of the preloaded_rootfses paths. Leaving the default empty string is ok, as it will then select the first of he preloaded_rootfses"
     default: ""
   diego.rep.rootfs_providers:
     description: "Array of schemes for which the underlying garden can support arbitrary root filesystems"
