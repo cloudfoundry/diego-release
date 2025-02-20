@@ -1,5 +1,6 @@
 <%=
   require 'uri'
+  $LOAD_PATH.unshift(File.expand_path('./constants/bbs/constants', __dir__))
 
   conf_dir = "/var/vcap/jobs/bbs/config"
   log_dir = "/var/vcap/sys/log/bbs"
@@ -196,6 +197,31 @@
     config[:loggregator][:loggregator_instance_id] = spec.id
   end
 
+  # Validate diego.bbs.metrics.advanced_metrics
+  if_p("diego.bbs.metrics.advanced_metrics.enabled") do |value|
+    raise "diego.bbs.metrics.advanced_metrics.enabled should be a boolean" unless [true, false].include?(value)
+
+    # If the value is true and both of the arrays are empty, raise an error
+    if value
+      if p("diego.bbs.metrics.advanced_metrics.route_config.request_count").empty? &&
+         p("diego.bbs.metrics.advanced_metrics.route_config.request_latency").empty?
+        raise "diego.bbs.metrics.advanced_metrics.route_config.request_count and " \
+              "diego.bbs.metrics.advanced_metrics.route_config.request_latency cannot both be empty. " \
+              "One of them should contain at least one of the following values: #{Constants::ENDPOINTS.join(', ')}"
+      end
+    end
+    %w[request_count request_latency].each do |metric|
+      if_p("diego.bbs.metrics.advanced_metrics.route_config.#{metric}") do |endpoints|
+        raise "diego.bbs.metrics.advanced_metrics.route_config.#{metric} should be an array" unless endpoints.is_a?(Array)
+        endpoints.each do |endpoint|
+          raise "diego.bbs.metrics.advanced_metrics.route_config.#{metric} should only contain the following values: " \
+                "#{Constants::ENDPOINTS.join(', ')}" unless Constants::ENDPOINTS.include?(endpoint)
+        end
+      end
+    end
+  end
+
+  # Load advanced_metrics in config
   if_p("diego.bbs.metrics.advanced_metrics.enabled") do |value|
     if value
       config[:advanced_metrics] = {}
