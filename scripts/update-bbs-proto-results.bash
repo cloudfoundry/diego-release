@@ -37,6 +37,6 @@ function cleanup() {
   rm -rf "${task_tmp_dir}"
 }
 
-task_tmp_dir="$(mktemp -d -t 'XXXX-linter-tmp-dir')"
+task_tmp_dir="$(mktemp -d -t 'XXXX-bbs-proto-perf-tmp-dir')"
 trap cleanup EXIT
 run $task_tmp_dir "$@"
