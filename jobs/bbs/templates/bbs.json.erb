@@ -1,6 +1,6 @@
 <%=
   require 'uri'
-  $LOAD_PATH.unshift(File.expand_path('./constants/bbs/constants', __dir__))
+  require_relative './jobs/bbs/templates/constants/bbs/constants'
 
   conf_dir = "/var/vcap/jobs/bbs/config"
   log_dir = "/var/vcap/sys/log/bbs"
