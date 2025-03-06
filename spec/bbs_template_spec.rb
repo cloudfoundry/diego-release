@@ -141,7 +141,6 @@ describe 'bbs' do
     describe 'Advanced Metrics' do
       it 'check if bbs.json doesn\'t include \'advanced_metrics\' on \'enabled\' value equal to false' do
         # if diego.bbs.metrics.advanced_metrics misses diego.bbs.metrics.advanced_metrics.enabled defaults to false
-        # deployment_manifest_fragment['diego']['bbs']['locket']['client_keepalive_time'] = 23
         deployment_manifest_fragment['diego']['bbs']['metrics'] = nil
         expect(rendered_template).not_to include('advanced_metrics')
       end
