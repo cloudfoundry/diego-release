@@ -57,6 +57,9 @@ properties:
   diego.rep.sidecar_rootfs_path:
     description: "absolute_path representing the root filesystem used for sidecar processes (ie. '/var/vcap/packages/cflinuxfs4/rootfs.tar'). Must be one of the preloaded_rootfses paths. Leaving the default empty string is ok, as it will then select the first of he preloaded_rootfses"
     default: ""
+  diego.rep.extra_root_fs_dir:
+    description: "dir to scan for extra rootfs to be loaded by rep"
+    default: "/var/vcap/store/rootfses"
   diego.rep.rootfs_providers:
     description: "Array of schemes for which the underlying garden can support arbitrary root filesystems"
     default:

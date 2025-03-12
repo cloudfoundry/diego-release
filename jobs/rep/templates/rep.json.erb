@@ -73,6 +73,7 @@
     container_proxy_config_path: "/var/vcap/data/rep/shared/garden/proxy_config",
     evacuation_polling_interval: "#{p("diego.rep.evacuation_polling_interval_in_seconds")}s",
     evacuation_timeout: "#{p("diego.rep.evacuation_timeout_in_seconds")}s",
+    extra_root_fs_dir: "#{p("diego.rep.extra_root_fs_dir")}",
     garden_addr: p("diego.executor.garden.address"),
     garden_healthcheck_command_retry_pause: p("diego.executor.garden_healthcheck.command_retry_pause"),
     garden_healthcheck_interval: p("diego.executor.garden_healthcheck.interval"),
