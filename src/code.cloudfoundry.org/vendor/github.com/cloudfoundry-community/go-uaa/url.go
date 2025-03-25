@@ -8,7 +8,7 @@ import (
 )
 
 // BuildTargetURL returns a URL. If the target does not include a scheme, https
-/// will be used.
+// will be used.
 func BuildTargetURL(target string) (*url.URL, error) {
 	if !strings.Contains(target, "://") {
 		target = fmt.Sprintf("https://%s", target)

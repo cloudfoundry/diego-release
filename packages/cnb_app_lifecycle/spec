@@ -198,6 +198,7 @@ files:
   - code.cloudfoundry.org/vendor/github.com/docker/docker/api/types/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/docker/docker/api/types/blkiodev/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/docker/docker/api/types/checkpoint/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/docker/docker/api/types/common/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/docker/docker/api/types/container/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/docker/docker/api/types/events/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/docker/docker/api/types/filters/*.go # gosub
@@ -205,6 +206,7 @@ files:
   - code.cloudfoundry.org/vendor/github.com/docker/docker/api/types/mount/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/docker/docker/api/types/network/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/docker/docker/api/types/registry/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/docker/docker/api/types/storage/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/docker/docker/api/types/strslice/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/docker/docker/api/types/swarm/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/docker/docker/api/types/swarm/runtime/*.go # gosub
@@ -214,7 +216,9 @@ files:
   - code.cloudfoundry.org/vendor/github.com/docker/docker/api/types/volume/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/docker/docker/client/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/docker/docker/errdefs/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/docker/docker/internal/lazyregexp/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/docker/docker/internal/multierror/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/docker/docker/pkg/atomicwriter/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/docker/docker/pkg/ioutils/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/docker/docker/pkg/jsonmessage/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/docker/docker/registry/*.go # gosub
@@ -271,6 +275,7 @@ files:
   - code.cloudfoundry.org/vendor/github.com/klauspost/compress/huff0/*.s # gosub
   - code.cloudfoundry.org/vendor/github.com/klauspost/compress/internal/cpuinfo/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/klauspost/compress/internal/cpuinfo/*.s # gosub
+  - code.cloudfoundry.org/vendor/github.com/klauspost/compress/internal/le/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/klauspost/compress/internal/snapref/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/klauspost/compress/zstd/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/klauspost/compress/zstd/*.s # gosub
@@ -335,6 +340,7 @@ files:
   - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/semconv/v1.26.0/*.go # gosub
   - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/trace/*.go # gosub
   - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/trace/embedded/*.go # gosub
+  - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/trace/internal/telemetry/*.go # gosub
   - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/trace/noop/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/pkcs12/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/crypto/pkcs12/internal/rc2/*.go # gosub

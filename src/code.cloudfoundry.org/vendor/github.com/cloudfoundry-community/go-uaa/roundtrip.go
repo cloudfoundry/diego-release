@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"errors"
@@ -16,6 +17,9 @@ import (
 )
 
 func (a *API) doJSON(method string, url *url.URL, body io.Reader, response interface{}, needsAuthentication bool) error {
+	if strings.Contains(url.Path, "/Users/") || strings.Contains(url.Path, "/Groups/") && method == "PUT" {
+		return a.doJSONWithHeaders(method, url, map[string]string{"If-Match": "*"}, body, response, needsAuthentication)
+	}
 	return a.doJSONWithHeaders(method, url, nil, body, response, needsAuthentication)
 }
 

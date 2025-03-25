@@ -33,13 +33,13 @@ func (t *uaaTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 func (t *uaaTransport) logRequest(req *http.Request) {
 	if t.LoggingEnabled {
 		bytes, _ := httputil.DumpRequest(req, false)
-		fmt.Printf(string(bytes))
+		fmt.Printf("%s", string(bytes))
 	}
 }
 
 func (t *uaaTransport) logResponse(resp *http.Response) {
 	if t.LoggingEnabled {
 		bytes, _ := httputil.DumpResponse(resp, true)
-		fmt.Printf(string(bytes))
+		fmt.Printf("%s", string(bytes))
 	}
 }

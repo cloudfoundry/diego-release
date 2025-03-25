@@ -20,10 +20,11 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	"golang.org/x/crypto/ssh"
+
 	"go.step.sm/crypto/internal/utils"
 	"go.step.sm/crypto/keyutil"
 	"go.step.sm/crypto/x25519"
-	"golang.org/x/crypto/ssh"
 )
 
 // DefaultEncCipher is the default algorithm used when encrypting sensitive
@@ -67,7 +68,7 @@ type context struct {
 func newContext(name string) *context {
 	return &context{
 		filename: name,
-		perm:     0600,
+		perm:     0o600,
 	}
 }
 
@@ -127,7 +128,7 @@ func WithFilename(name string) Options {
 		ctx.filename = name
 		// Default perm mode if not set
 		if ctx.perm == 0 {
-			ctx.perm = 0600
+			ctx.perm = 0o600
 		}
 		return nil
 	}
@@ -159,6 +160,23 @@ func WithPasswordFile(filename string) Options {
 			return err
 		}
 		ctx.password = b
+		return nil
+	}
+}
+
+// WithMinLengthPasswordFile is a method that adds the password in a file to the
+// context. If the password does not meet the minimum length requirement an
+// error is returned. If minimum length input is <=0 then the requirement is
+// ignored.
+func WithMinLengthPasswordFile(filename string, minLength int) Options {
+	return func(ctx *context) error {
+		if err := WithPasswordFile(filename)(ctx); err != nil {
+			return err
+		}
+
+		if minLength > 0 && len(ctx.password) < minLength {
+			return fmt.Errorf("password does not meet minimum length requirement; must be at least %v characters", minLength)
+		}
 		return nil
 	}
 }
@@ -640,7 +658,7 @@ func Serialize(in interface{}, opts ...Options) (*pem.Block, error) {
 				}
 			} else {
 				var err error
-				p, err = x509.EncryptPEMBlock(rand.Reader, p.Type, p.Bytes, password, DefaultEncCipher)
+				p, err = x509.EncryptPEMBlock(rand.Reader, p.Type, p.Bytes, password, DefaultEncCipher) //nolint:staticcheck // support legacy use cases
 				if err != nil {
 					return nil, errors.Wrap(err, "failed to serialize to PEM")
 				}

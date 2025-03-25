@@ -67,6 +67,7 @@ type GdnRunnerConfig struct {
 	ImagePluginExtraArgs           []string `flag:"image-plugin-extra-arg"`
 	RuntimePluginExtraArgs         []string `flag:"runtime-plugin-extra-arg"`
 	PrivilegedImagePluginExtraArgs []string `flag:"privileged-image-plugin-extra-arg"`
+	DeviceCgroupRules              []string `flag:"device-cgroup-rule"`
 	MaxContainers                  *uint64  `flag:"max-containers"`
 	DebugIP                        string   `flag:"debug-bind-ip"`
 	DebugPort                      *int     `flag:"debug-bind-port"`
