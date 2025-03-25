@@ -1,54 +1,6 @@
 <%=
   require 'uri'
 
-unless defined?(ENDPOINTS)
-  ENDPOINTS = %w[
-    Ping
-    Domains
-    UpsertDomain
-    ActualLRPs
-    ActualLRPGroups
-    ActualLRPGroupsByProcessGuid
-    ActualLRPGroupByProcessGuidAndIndex
-    ClaimActualLRP
-    StartActualLRP
-    StartActualLRP_r0
-    CrashActualLRP
-    FailActualLRP
-    RemoveActualLRP
-    RetireActualLRP
-    RemoveEvacuatingActualLRP
-    EvacuateClaimedActualLRP
-    EvacuateCrashedActualLRP
-    EvacuateStoppedActualLRP
-    EvacuateRunningActualLRP
-    EvacuateRunningActualLRP_r0
-    DesiredLRPs
-    DesiredLRPSchedulingInfos
-    DesiredLRPSchedulingInfoByProcessGuid
-    DesiredLRPRoutingInfos
-    DesiredLRPByProcessGuid
-    DesiredLRPs_r2
-    DesiredLRPByProcessGuid_r2
-    DesireDesiredLRP
-    UpdateDesiredLRP
-    RemoveDesiredLRP
-    Tasks
-    TaskByGuid
-    DesireTask
-    StartTask
-    CancelTask
-    FailTask
-    RejectTask
-    CompleteTask
-    ResolvingTask
-    DeleteTask
-    Tasks_r2
-    TaskByGuid_r2
-    Cells
-  ].freeze
-end
-
   conf_dir = "/var/vcap/jobs/bbs/config"
   log_dir = "/var/vcap/sys/log/bbs"
 
@@ -253,17 +205,12 @@ end
       if p("diego.bbs.metrics.advanced_metrics.route_config.request_count").empty? &&
          p("diego.bbs.metrics.advanced_metrics.route_config.request_latency").empty?
         raise "diego.bbs.metrics.advanced_metrics.route_config.request_count and " \
-              "diego.bbs.metrics.advanced_metrics.route_config.request_latency cannot both be empty. " \
-              "One of them should contain at least one of the following values: #{ENDPOINTS.join(', ')}"
+              "diego.bbs.metrics.advanced_metrics.route_config.request_latency cannot both be empty."
       end
     end
     %w[request_count request_latency].each do |metric|
       if_p("diego.bbs.metrics.advanced_metrics.route_config.#{metric}") do |endpoints|
         raise "diego.bbs.metrics.advanced_metrics.route_config.#{metric} should be an array" unless endpoints.is_a?(Array)
-        endpoints.each do |endpoint|
-          raise "diego.bbs.metrics.advanced_metrics.route_config.#{metric} should only contain the following values: " \
-                "#{ENDPOINTS.join(', ')}" unless ENDPOINTS.include?(endpoint)
-        end
       end
     end
   end

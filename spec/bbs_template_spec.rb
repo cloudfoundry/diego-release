@@ -5,52 +5,6 @@ require 'rspec'
 require 'json'
 require 'bosh/template/test'
 
-ENDPOINTS = %w[
-  Ping
-  Domains
-  UpsertDomain
-  ActualLRPs
-  ActualLRPGroups
-  ActualLRPGroupsByProcessGuid
-  ActualLRPGroupByProcessGuidAndIndex
-  ClaimActualLRP
-  StartActualLRP
-  StartActualLRP_r0
-  CrashActualLRP
-  FailActualLRP
-  RemoveActualLRP
-  RetireActualLRP
-  RemoveEvacuatingActualLRP
-  EvacuateClaimedActualLRP
-  EvacuateCrashedActualLRP
-  EvacuateStoppedActualLRP
-  EvacuateRunningActualLRP
-  EvacuateRunningActualLRP_r0
-  DesiredLRPs
-  DesiredLRPSchedulingInfos
-  DesiredLRPSchedulingInfoByProcessGuid
-  DesiredLRPRoutingInfos
-  DesiredLRPByProcessGuid
-  DesiredLRPs_r2
-  DesiredLRPByProcessGuid_r2
-  DesireDesiredLRP
-  UpdateDesiredLRP
-  RemoveDesiredLRP
-  Tasks
-  TaskByGuid
-  DesireTask
-  StartTask
-  CancelTask
-  FailTask
-  RejectTask
-  CompleteTask
-  ResolvingTask
-  DeleteTask
-  Tasks_r2
-  TaskByGuid_r2
-  Cells
-].freeze
-
 describe 'bbs' do
   let(:release_path) { File.join(File.dirname(__FILE__), '..') }
   let(:release) { Bosh::Template::Test::ReleaseDir.new(release_path) }
@@ -183,25 +137,6 @@ describe 'bbs' do
         end.to raise_error('diego.bbs.metrics.advanced_metrics.route_config.request_count should be an array')
       end
 
-      it 'fails if the endpoint is not valid' do
-        deployment_manifest_fragment['diego']['bbs']['metrics']['advanced_metrics']['route_config']['request_count'] =
-          ['InvalidEndpoint']
-
-        expect do
-          rendered_template
-        end.to raise_error('diego.bbs.metrics.advanced_metrics.route_config.request_count should only contain the ' \
-                                     "following values: #{ENDPOINTS.join(', ')}")
-      end
-
-      it 'succeeds if the endpoint is valid' do
-        deployment_manifest_fragment['diego']['bbs']['metrics']['advanced_metrics']['route_config']['request_count'] =
-          [ENDPOINTS[0]]
-        rendered_template_json = JSON.parse(rendered_template)
-
-        expect(rendered_template_json['advanced_metrics']['route_config']['request_count']).to \
-          eq([ENDPOINTS[0]])
-      end
-
       it 'fails if request_count and request_latency are both empty' do
         deployment_manifest_fragment['diego']['bbs']['metrics']['advanced_metrics']['route_config']['request_count'] = \
           []
@@ -209,9 +144,7 @@ describe 'bbs' do
         expect do
           rendered_template
         end.to raise_error('diego.bbs.metrics.advanced_metrics.route_config.request_count and ' \
-                           'diego.bbs.metrics.advanced_metrics.route_config.request_latency cannot both be empty. ' \
-                           'One of them should contain at least one of the following values: ' \
-                           "#{ENDPOINTS.join(', ')}")
+                           'diego.bbs.metrics.advanced_metrics.route_config.request_latency cannot both be empty.')
       end
 
       it 'succeeds if at leas one of request_count or request_latency is not empty' do
