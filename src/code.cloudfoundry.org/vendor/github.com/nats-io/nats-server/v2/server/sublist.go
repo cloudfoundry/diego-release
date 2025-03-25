@@ -1,4 +1,4 @@
-// Copyright 2016-2024 The NATS Authors
+// Copyright 2016-2025 The NATS Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -1744,7 +1744,13 @@ func IntersectStree[T any](st *stree.SubjectTree[T], sl *Sublist, cb func(subj [
 
 func intersectStree[T any](st *stree.SubjectTree[T], r *level, subj []byte, cb func(subj []byte, entry *T)) {
 	if r.numNodes() == 0 {
-		st.Match(subj, cb)
+		// For wildcards we can't avoid Match, but if it's a literal subject at
+		// this point, using Find is considerably cheaper.
+		if subjectHasWildcard(bytesToString(subj)) {
+			st.Match(subj, cb)
+		} else if e, ok := st.Find(subj); ok {
+			cb(subj, e)
+		}
 		return
 	}
 	nsubj := subj

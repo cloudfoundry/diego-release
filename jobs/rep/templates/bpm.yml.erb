@@ -11,3 +11,4 @@ processes:
     - path: <%= p("diego.executor.volman.driver_paths") %>
     - path : /var/vcap/data/garden
       writable: true
+    - path: <%= p("diego.rep.extra_root_fs_dir") %>
