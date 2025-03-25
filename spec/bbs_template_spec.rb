@@ -147,7 +147,7 @@ describe 'bbs' do
                            'diego.bbs.metrics.advanced_metrics.route_config.request_latency cannot both be empty.')
       end
 
-      it 'succeeds if at leas one of request_count or request_latency is not empty' do
+      it 'succeeds if at least one of request_count or request_latency is not empty' do
         rendered_template
       end
     end
