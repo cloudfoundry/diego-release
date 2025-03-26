@@ -2,13 +2,16 @@ os: linux
 dist: focal
 
 vm:
-  size: 2x-large
+  size: x-large
 
 language: go
 go:
   # This should be quoted or use .x, but should not be unquoted.
   # Remember that a YAML bare float drops trailing zeroes.
-  - "1.23.6"
+  # These toolchain versions define the test environment.
+  # When updating, also update the GOTOOLCHAIN value in .goreleaser.yml.
+  - "1.24.1"
+  - "1.23.7"
 
 go_import_path: github.com/nats-io/nats-server
 
@@ -45,13 +48,8 @@ jobs:
       env: TEST_SUITE=srv_pkg_non_js_tests
     - name: "Run all tests from all other packages"
       env: TEST_SUITE=non_srv_pkg_tests
+    - name: "Compile with older Go release"
+      go: "1.23.x"
+      env: TEST_SUITE=build_only
 
 script: ./scripts/runTestsOnTravis.sh $TEST_SUITE
-
-deploy:
-  provider: script
-  cleanup: true
-  script: curl -o /tmp/goreleaser.tar.gz -sLf https://github.com/goreleaser/goreleaser/releases/download/v1.26.2/goreleaser_Linux_x86_64.tar.gz && tar -xvf /tmp/goreleaser.tar.gz -C /tmp/ && /tmp/goreleaser
-  on:
-    tags: true
-    condition: ($TRAVIS_GO_VERSION =~ 1.23) && ($TEST_SUITE = "compile")
