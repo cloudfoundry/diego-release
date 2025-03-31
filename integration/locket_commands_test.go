@@ -54,7 +54,7 @@ var _ = Describe("Locket commands", func() {
 					Key:      "test-key",
 					Owner:    "test-owner",
 					Value:    "test-value",
-					TypeCode: models.TypeCode_LOCK,
+					TypeCode: models.LOCK,
 				},
 				TtlInSeconds: 10,
 			}
@@ -102,7 +102,7 @@ var _ = Describe("Locket commands", func() {
 				Key:      "test-key",
 				Owner:    "test-owner",
 				Type:     "lock",
-				TypeCode: models.TypeCode_LOCK,
+				TypeCode: models.LOCK,
 			}))
 		})
 
@@ -140,7 +140,7 @@ var _ = Describe("Locket commands", func() {
 						Key:      "key",
 						Owner:    "owner",
 						Value:    "value",
-						TypeCode: models.TypeCode_LOCK,
+						TypeCode: models.LOCK,
 					},
 					TtlInSeconds: 10,
 				}
