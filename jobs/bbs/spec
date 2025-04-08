@@ -147,6 +147,18 @@ properties:
     description: "Timeout in seconds to receive a response to the keepalive ping. If a response is not received within this time, the locket client will reconnect to another server."
     default: 22
 
+  diego.bbs.metrics.advanced_metrics.enabled:
+    description: Enables emitting BBS Metrics per specified routes/endpoints in advanced_metrics, useful for debugging issues. May impact performances.
+    default: false
+
+  diego.bbs.metrics.advanced_metrics.route_config.request_count:
+    description: Set the routes for which request_count should be emitted. If empty, no request_count metrics will be emitted.
+    default: []
+
+  diego.bbs.metrics.advanced_metrics.route_config.request_latency:
+    description: Set the routes for which request_latency should be emitted. If empty, no request_latency metrics will be emitted.
+    default: []
+
   limits.open_files:
     description: Maximum number of files (including sockets) the BBS process may have open.
     default: 100000

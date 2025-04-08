@@ -2,7 +2,7 @@
 name: vizzini
 
 dependencies:
-  - golang-1.23-linux
+  - golang-1.24-linux
 
 files:
   - code.cloudfoundry.org/go.mod
@@ -79,6 +79,10 @@ files:
   - code.cloudfoundry.org/vendor/github.com/openzipkin/zipkin-go/model/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/tedsuo/rata/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/vito/go-sse/sse/*.go # gosub
+  - code.cloudfoundry.org/vendor/go.uber.org/automaxprocs/*.go # gosub
+  - code.cloudfoundry.org/vendor/go.uber.org/automaxprocs/internal/cgroups/*.go # gosub
+  - code.cloudfoundry.org/vendor/go.uber.org/automaxprocs/internal/runtime/*.go # gosub
+  - code.cloudfoundry.org/vendor/go.uber.org/automaxprocs/maxprocs/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/html/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/html/atom/*.go # gosub
   - code.cloudfoundry.org/vendor/golang.org/x/net/html/charset/*.go # gosub

@@ -1,3 +1,29 @@
+# v1.43.2 (2025-04-03)
+
+* No change notes available for this release.
+
+# v1.43.1 (2025-04-02)
+
+* **Documentation**: Fix for customer issues related to AWS account ID and size limitation for token.
+
+# v1.43.0 (2025-03-11)
+
+* **Feature**: This release adds Amazon ECR to Amazon ECR pull through cache rules support.
+
+# v1.42.1 (2025-03-04.2)
+
+* **Bug Fix**: Add assurance test for operation order.
+
+# v1.42.0 (2025-02-27)
+
+* **Feature**: Track credential providers via User-Agent Feature ids
+* **Dependency Update**: Updated to the latest SDK module versions
+
+# v1.41.1 (2025-02-18)
+
+* **Bug Fix**: Bump go version to 1.22
+* **Dependency Update**: Updated to the latest SDK module versions
+
 # v1.41.0 (2025-02-07)
 
 * **Feature**: Adds support to handle the new basic scanning daily quota.

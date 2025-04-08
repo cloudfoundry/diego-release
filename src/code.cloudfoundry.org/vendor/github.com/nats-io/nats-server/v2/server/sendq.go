@@ -1,4 +1,4 @@
-// Copyright 2020-2023 The NATS Authors
+// Copyright 2020-2024 The NATS Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -29,10 +29,11 @@ type sendq struct {
 	mu sync.Mutex
 	q  *ipQueue[*outMsg]
 	s  *Server
+	a  *Account
 }
 
-func (s *Server) newSendQ() *sendq {
-	sq := &sendq{s: s, q: newIPQueue[*outMsg](s, "SendQ")}
+func (s *Server) newSendQ(acc *Account) *sendq {
+	sq := &sendq{s: s, q: newIPQueue[*outMsg](s, "SendQ"), a: acc}
 	s.startGoRoutine(sq.internalLoop)
 	return sq
 }
@@ -45,7 +46,7 @@ func (sq *sendq) internalLoop() {
 	defer s.grWG.Done()
 
 	c := s.createInternalSystemClient()
-	c.registerWithAccount(s.SystemAccount())
+	c.registerWithAccount(sq.a)
 	c.noIcb = true
 
 	defer c.closeConnection(ClientClosed)

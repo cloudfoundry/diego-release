@@ -52,6 +52,15 @@ describe 'bbs' do
               'ca_cert' => 'CA CERT',
               'client_cert' => 'CLIENT CERT',
               'client_key' => 'CLIENT KEY'
+            },
+            'metrics' => {
+              'advanced_metrics' => {
+                'enabled' => true,
+                'route_config' => {
+                  'request_count' => ['StartActualLRP'],
+                  'request_latency' => []
+                }
+              }
             }
           },
           'enable_consul_service_registration' => 'false',
@@ -70,6 +79,7 @@ describe 'bbs' do
       }
     end
 
+    let(:deployment_manifest_fragment_default) { deployment_manifest_fragment.dup }
     let(:template) { job.template('config/bbs.json') }
     let(:rendered_template) { template.render(deployment_manifest_fragment) }
 
@@ -79,6 +89,66 @@ describe 'bbs' do
         expect do
           rendered_template
         end.to raise_error(/The locket client keepalive time property should not be larger than the timeout/)
+      end
+    end
+
+    describe 'Advanced Metrics' do
+      it 'check if bbs.json doesn\'t include \'advanced_metrics\' on \'enabled\' value equal to false' do
+        # if diego.bbs.metrics.advanced_metrics misses diego.bbs.metrics.advanced_metrics.enabled defaults to false
+        deployment_manifest_fragment['diego']['bbs']['metrics'] = nil
+        expect(rendered_template).not_to include('advanced_metrics')
+      end
+
+      it 'check if bbs.json includes \'advanced_metrics\' on \'enabled\' value equal to true' do
+        # if diego.bbs.metrics.advanced_metrics misses diego.bbs.metrics.advanced_metrics.enabled defaults to false
+        # test data already has diego.bbs.metrics.advanced_metrics.enabled set to true
+        rendered_template_json = JSON.parse(rendered_template)
+
+        expect(rendered_template_json['advanced_metrics']).not_to eq(nil)
+        expect(rendered_template_json['advanced_metrics']['enabled']).to eq(true)
+        expect(rendered_template_json['advanced_metrics']['route_config']).not_to eq(nil)
+        expect(rendered_template_json['advanced_metrics']['route_config']['request_count']).to eq(['StartActualLRP'])
+        expect(rendered_template_json['advanced_metrics']['route_config']['request_latency']).to eq([])
+      end
+
+      it 'fails if the diego.bbs.metrics.advanced_metrics.enabled is not a boolean' do
+        deployment_manifest_fragment['diego']['bbs']['metrics']['advanced_metrics']['enabled'] = 'true'
+
+        expect do
+          rendered_template
+        end.to raise_error('diego.bbs.metrics.advanced_metrics.enabled should be a boolean')
+      end
+
+      it 'fails if the diego.bbs.metrics.advanced_metrics.route_config.request_count is not an array' do
+        deployment_manifest_fragment['diego']['bbs']['metrics']['advanced_metrics']['route_config']['request_count'] =
+          'true'
+
+        expect do
+          rendered_template
+        end.to raise_error('diego.bbs.metrics.advanced_metrics.route_config.request_count should be an array')
+      end
+
+      it 'fails if the diego.bbs.metrics.advanced_metrics.route_config.request_latency is not an array' do
+        deployment_manifest_fragment['diego']['bbs']['metrics']['advanced_metrics']['route_config']['request_count'] =
+          'true'
+
+        expect do
+          rendered_template
+        end.to raise_error('diego.bbs.metrics.advanced_metrics.route_config.request_count should be an array')
+      end
+
+      it 'fails if request_count and request_latency are both empty' do
+        deployment_manifest_fragment['diego']['bbs']['metrics']['advanced_metrics']['route_config']['request_count'] = \
+          []
+
+        expect do
+          rendered_template
+        end.to raise_error('diego.bbs.metrics.advanced_metrics.route_config.request_count and ' \
+                           'diego.bbs.metrics.advanced_metrics.route_config.request_latency cannot both be empty.')
+      end
+
+      it 'succeeds if at least one of request_count or request_latency is not empty' do
+        rendered_template
       end
     end
   end

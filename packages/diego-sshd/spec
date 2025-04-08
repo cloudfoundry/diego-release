@@ -2,7 +2,7 @@
 name: diego-sshd
 
 dependencies:
-  - golang-1.23-linux
+  - golang-1.24-linux
 
 files:
   - code.cloudfoundry.org/go.mod
@@ -54,6 +54,7 @@ files:
   - code.cloudfoundry.org/vendor/github.com/pborman/getopt/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/pkg/sftp/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/pkg/sftp/internal/encoding/ssh/filexfer/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/pkg/sftp/internal/encoding/ssh/filexfer/openssh/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/tedsuo/ifrit/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/tedsuo/ifrit/grouper/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/tedsuo/ifrit/http_server/*.go # gosub
@@ -90,6 +91,7 @@ files:
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/backoff/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/balancer/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/balancer/base/*.go # gosub
+  - code.cloudfoundry.org/vendor/google.golang.org/grpc/balancer/endpointsharding/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/balancer/grpclb/state/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/balancer/pickfirst/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/balancer/pickfirst/internal/*.go # gosub
@@ -121,7 +123,9 @@ files:
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/idle/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/metadata/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/pretty/*.go # gosub
+  - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/proxyattributes/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/resolver/*.go # gosub
+  - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/resolver/delegatingresolver/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/resolver/dns/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/resolver/dns/internal/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/internal/resolver/passthrough/*.go # gosub

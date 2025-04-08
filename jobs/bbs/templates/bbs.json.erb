@@ -196,5 +196,36 @@
     config[:loggregator][:loggregator_instance_id] = spec.id
   end
 
+  # Validate diego.bbs.metrics.advanced_metrics
+  if_p("diego.bbs.metrics.advanced_metrics.enabled") do |value|
+    raise "diego.bbs.metrics.advanced_metrics.enabled should be a boolean" unless [true, false].include?(value)
+
+    # If the value is true and both of the arrays are empty, raise an error
+    if value
+      if p("diego.bbs.metrics.advanced_metrics.route_config.request_count").empty? &&
+         p("diego.bbs.metrics.advanced_metrics.route_config.request_latency").empty?
+        raise "diego.bbs.metrics.advanced_metrics.route_config.request_count and " \
+              "diego.bbs.metrics.advanced_metrics.route_config.request_latency cannot both be empty."
+      end
+    end
+    %w[request_count request_latency].each do |metric|
+      if_p("diego.bbs.metrics.advanced_metrics.route_config.#{metric}") do |endpoints|
+        raise "diego.bbs.metrics.advanced_metrics.route_config.#{metric} should be an array" unless endpoints.is_a?(Array)
+      end
+    end
+  end
+
+  # Load advanced_metrics in config
+  if_p("diego.bbs.metrics.advanced_metrics.enabled") do |value|
+    if value
+      config[:advanced_metrics] = {}
+      config[:advanced_metrics][:enabled] = value
+      config[:advanced_metrics][:route_config] = {
+        request_count: p("diego.bbs.metrics.advanced_metrics.route_config.request_count"),
+        request_latency: p("diego.bbs.metrics.advanced_metrics.route_config.request_latency")
+      }
+    end
+  end
+
   config.to_json
 %>
