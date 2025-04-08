@@ -22,7 +22,7 @@ var _ = Describe("TLSFlags", func() {
 			Run: func(cmd *cobra.Command, args []string) {},
 		}
 		output = gbytes.NewBuffer()
-		dummyCmd.SetOutput(output)
+		dummyCmd.SetOut(output)
 
 		validTLSFlags = map[string]string{
 			"--clientCertFile": "fixtures/bbsClient.crt",

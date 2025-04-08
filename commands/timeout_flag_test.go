@@ -24,7 +24,7 @@ var _ = Describe("Timeout Flag", func() {
 		}
 		commands.AddBBSAndTimeoutFlags(dummyCmd)
 		output = gbytes.NewBuffer()
-		dummyCmd.SetOutput(output)
+		dummyCmd.SetOut(output)
 
 		validFlags = map[string]string{
 			"--bbsURL":         "https://example.com",

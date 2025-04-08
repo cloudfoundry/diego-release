@@ -24,7 +24,7 @@ var _ = Describe("BBS Flags", func() {
 		}
 		commands.AddBBSFlags(dummyCmd)
 		output = gbytes.NewBuffer()
-		dummyCmd.SetOutput(output)
+		dummyCmd.SetOut(output)
 
 		validFlags = map[string]string{
 			"--bbsURL":         "https://example.com",

@@ -24,7 +24,7 @@ var _ = Describe("Locket Flags", func() {
 		}
 		commands.AddLocketFlags(dummyCmd)
 		output = gbytes.NewBuffer()
-		dummyCmd.SetOutput(output)
+		dummyCmd.SetOut(output)
 
 		validTLSFlags = map[string]string{
 			"--locketAPILocation": "127.0.0.1:9802",
