@@ -1,11 +1,10 @@
+//go:build modules
 // +build modules
 
 package modules
 
 import (
 	_ "code.cloudfoundry.org/certsplitter/cmd/certsplitter"
-	_ "code.cloudfoundry.org/cnbapplifecycle/cmd/builder"
-	_ "code.cloudfoundry.org/cnbapplifecycle/cmd/launcher"
 )
 
 // imporing modules that are needed for building and testing this module
