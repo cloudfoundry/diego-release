@@ -137,8 +137,8 @@ properties:
     description: "Use total space available to containers reported by Garden. If false the total size of image plugin store minus max_cache_size_in_bytes is used."
     default: false
   diego.executor.proxy_healthcheck_interval:
-    description: "Interval that checks envoy responsiveness every 30s."
-    default: 30
+    description: "Interval that checks envoy responsiveness."
+    default: "30s"
   diego.executor.enable_container_proxy_healthcheck:
     description: "When set, enables the liveness health check for the envoy proxy in the container."
     default: false
