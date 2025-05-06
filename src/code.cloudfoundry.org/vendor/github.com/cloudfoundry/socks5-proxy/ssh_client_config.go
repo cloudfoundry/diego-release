@@ -1,8 +1,9 @@
 package proxy
 
 import (
-	"golang.org/x/crypto/ssh"
 	"time"
+
+	"golang.org/x/crypto/ssh"
 )
 
 func NewSSHClientConfig(user string, hostKeyCallback ssh.HostKeyCallback, authMethods ...ssh.AuthMethod) *ssh.ClientConfig {

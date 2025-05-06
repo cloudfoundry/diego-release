@@ -33,7 +33,7 @@ func (c *checker) check(reqs <-chan *ssh.Request) {
 			}
 
 			if req.WantReply {
-				req.Reply(false, nil)
+				req.Reply(false, nil) //nolint:errcheck
 			}
 
 		default:
@@ -97,7 +97,7 @@ func StartTestSSHServer(httpServerURL, sshPrivateKey, userName string) string {
 
 			for newChannel := range chans {
 				if newChannel.ChannelType() != "direct-tcpip" {
-					newChannel.Reject(ssh.UnknownChannelType, "unknown channel type")
+					newChannel.Reject(ssh.UnknownChannelType, "unknown channel type") //nolint:errcheck
 					continue
 				}
 
@@ -106,7 +106,7 @@ func StartTestSSHServer(httpServerURL, sshPrivateKey, userName string) string {
 				c.RUnlock()
 
 				if expired {
-					newChannel.Reject(ssh.ConnectionFailed, "no keepalive sent, you died")
+					newChannel.Reject(ssh.ConnectionFailed, "no keepalive sent, you died") //nolint:errcheck
 					continue
 				}
 
@@ -114,7 +114,7 @@ func StartTestSSHServer(httpServerURL, sshPrivateKey, userName string) string {
 				if err != nil {
 					log.Fatalf("Could not accept channel: %v", err)
 				}
-				defer channel.Close()
+				defer channel.Close() //nolint:errcheck,staticcheck
 
 				data, err := bufio.NewReader(channel).ReadString('\n')
 				if err != nil {
@@ -125,7 +125,7 @@ func StartTestSSHServer(httpServerURL, sshPrivateKey, userName string) string {
 				if err != nil {
 					log.Fatalf("Could not open connection to http server: %v", err)
 				}
-				defer httpConn.Close()
+				defer httpConn.Close() //nolint:errcheck,staticcheck
 
 				_, err = httpConn.Write([]byte(data + "\r\n\r\n"))
 				if err != nil {

@@ -10,7 +10,7 @@ mkdir -p ${DEST}
 
 source /var/vcap/packages/golang-*-linux/bosh/compile.env
 
-pushd src/code.cloudfoundry.org
+pushd src/cnbapplifecycle
 
 CGO_ENABLED=0 go build -o ${DEST}/ -ldflags "-s -w" -a -installsuffix static code.cloudfoundry.org/cnbapplifecycle/cmd/builder code.cloudfoundry.org/cnbapplifecycle/cmd/launcher
 

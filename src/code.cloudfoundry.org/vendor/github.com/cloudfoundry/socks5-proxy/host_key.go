@@ -34,7 +34,7 @@ func (h HostKey) Get(username, privateKey, serverURL string) (ssh.PublicKey, err
 			dialErrorChannel <- err
 			return
 		}
-		defer conn.Close()
+		defer conn.Close() //nolint:errcheck
 		dialErrorChannel <- nil
 	}()
 

@@ -15,8 +15,8 @@ const (
 )
 
 var (
-	UserAuthFailed  = fmt.Errorf("User authentication failed")
-	NoSupportedAuth = fmt.Errorf("No supported authentication mechanism")
+	UserAuthFailed  = fmt.Errorf("User authentication failed")            //nolint:staticcheck
+	NoSupportedAuth = fmt.Errorf("No supported authentication mechanism") //nolint:staticcheck
 )
 
 // A Request encapsulates authentication state provided
@@ -71,7 +71,7 @@ func (a UserPassAuthenticator) Authenticate(reader io.Reader, writer io.Writer) 
 
 	// Ensure we are compatible
 	if header[0] != userAuthVersion {
-		return nil, fmt.Errorf("Unsupported auth version: %v", header[0])
+		return nil, fmt.Errorf("Unsupported auth version: %v", header[0]) //nolint:staticcheck
 	}
 
 	// Get the user name
@@ -114,7 +114,7 @@ func (s *Server) authenticate(conn io.Writer, bufConn io.Reader) (*AuthContext, 
 	// Get the methods
 	methods, err := readMethods(bufConn)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to get auth methods: %v", err)
+		return nil, fmt.Errorf("Failed to get auth methods: %v", err) //nolint:staticcheck
 	}
 
 	// Select a usable method
@@ -132,7 +132,7 @@ func (s *Server) authenticate(conn io.Writer, bufConn io.Reader) (*AuthContext, 
 // noAcceptableAuth is used to handle when we have no eligible
 // authentication mechanism
 func noAcceptableAuth(conn io.Writer) error {
-	conn.Write([]byte{socks5Version, noAcceptable})
+	conn.Write([]byte{socks5Version, noAcceptable}) //nolint:errcheck
 	return NoSupportedAuth
 }
 

@@ -3,14 +3,13 @@ package proxy
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net"
 	"strconv"
 	"sync"
 	"time"
 
 	socks5 "github.com/cloudfoundry/go-socks5"
-
-	"log"
 
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/net/context"
@@ -97,7 +96,7 @@ func (s *Socks5Proxy) Dialer(username, key, url string) (DialFunc, error) {
 
 	go func(cl *ssh.Client, errChan chan error) {
 		t := time.NewTicker(s.keepAliveInterval)
-		for {
+		for { //nolint:staticcheck
 			select {
 			case <-t.C:
 				_, _, err := cl.SendRequest("bosh-cli-keep-alive@bosh.io", true, nil)
@@ -109,7 +108,7 @@ func (s *Socks5Proxy) Dialer(username, key, url string) (DialFunc, error) {
 	}(conn, errChan)
 
 	go func(errChan chan error) {
-		for {
+		for { //nolint:staticcheck
 			select {
 			case err := <-errChan:
 				s.logger.Printf("error sending ssh keep-alive: %s", err)
@@ -147,7 +146,7 @@ func (s *Socks5Proxy) StartWithDialer(dialer DialFunc) error {
 		return err
 	}
 	go func() {
-		server.Serve(listener)
+		server.Serve(listener) //nolint:errcheck
 	}()
 
 	s.started = true
@@ -169,7 +168,7 @@ func openPort() (int, error) {
 		return 0, err
 	}
 
-	defer l.Close()
+	defer l.Close() //nolint:errcheck
 	_, port, err := net.SplitHostPort(l.Addr().String())
 	if err != nil {
 		return 0, err
