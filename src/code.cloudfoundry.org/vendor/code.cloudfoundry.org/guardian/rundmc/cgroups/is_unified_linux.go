@@ -1,7 +1,7 @@
 package cgroups
 
 import (
-	"github.com/opencontainers/runc/libcontainer/cgroups"
+	"github.com/opencontainers/cgroups"
 )
 
 func IsCgroup2UnifiedMode() bool {

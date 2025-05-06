@@ -5,9 +5,9 @@ import (
 	"path/filepath"
 
 	"code.cloudfoundry.org/garden"
-	"github.com/opencontainers/runc/libcontainer/cgroups"
-	"github.com/opencontainers/runc/libcontainer/cgroups/fs"
-	"github.com/opencontainers/runc/libcontainer/cgroups/fs2"
+	"github.com/opencontainers/cgroups"
+	"github.com/opencontainers/cgroups/fs"
+	"github.com/opencontainers/cgroups/fs2"
 	"github.com/opencontainers/runc/libcontainer/configs"
 )
 

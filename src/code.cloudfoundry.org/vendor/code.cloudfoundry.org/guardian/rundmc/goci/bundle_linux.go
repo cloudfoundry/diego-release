@@ -3,7 +3,7 @@ package goci
 import (
 	"fmt"
 
-	"github.com/opencontainers/runc/libcontainer/cgroups"
+	"github.com/opencontainers/cgroups"
 	specs "github.com/opencontainers/runtime-spec/specs-go"
 )
 
