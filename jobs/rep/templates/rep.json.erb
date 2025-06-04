@@ -219,12 +219,7 @@
     end
   end
 
-  if_p("logging.format.timestamp") do |format|
-    if format != "unix-epoch" and format != "rfc3339"
-      raise "logging.format.timestamp should be one of: 'unix-epoch' or 'rfc3339'"
-    end
-    config[:time_format] = format
-  end
+  config[:time_format] = "rfc3339"
 
   if_p("containers.layering_mode") do |mode|
     if mode != "single-layer" and mode != "two-layer"
