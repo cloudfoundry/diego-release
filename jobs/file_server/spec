@@ -60,10 +60,6 @@ properties:
   tls.key:
     description: "PEM-encoded tls key"
 
-  logging.format.timestamp:
-    description: "Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."
-    default: "unix-epoch"
-
   loggregator.use_v2_api:
     description: "Whether component should use the v2 loggregator API when sending data to the metron agent instead of the 'legacy' v1 API."
     default: false

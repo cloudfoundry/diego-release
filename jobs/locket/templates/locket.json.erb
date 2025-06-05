@@ -66,13 +66,7 @@ if p("diego.locket.sql.require_ssl")
    config[:sql_enable_identity_verification] = p("database.tls.enable_identity_verification")
 end
 
-if_p("logging.format.timestamp") do |format|
-  if format != "unix-epoch" and format != "rfc3339"
-    raise "logging.format.timestamp should be one of: 'unix-epoch' or 'rfc3339'"
-  end
-  config[:time_format] = format
-end
-
+config[:time_format] = "rfc3339"
 config[:loggregator]={}
 config[:loggregator][:loggregator_use_v2_api] = p("loggregator.use_v2_api")
 if p("loggregator.use_v2_api") == true
