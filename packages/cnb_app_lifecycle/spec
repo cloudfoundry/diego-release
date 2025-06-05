@@ -16,10 +16,19 @@ files:
   - cnbapplifecycle/cmd/launcher/cli/*.go # gosub
   - cnbapplifecycle/pkg/archive/*.go # gosub
   - cnbapplifecycle/pkg/buildpacks/*.go # gosub
+  - cnbapplifecycle/pkg/credhub/*.go # gosub
   - cnbapplifecycle/pkg/errors/*.go # gosub
   - cnbapplifecycle/pkg/keychain/*.go # gosub
   - cnbapplifecycle/pkg/log/*.go # gosub
   - cnbapplifecycle/pkg/staging/*.go # gosub
+  - cnbapplifecycle/vendor/code.cloudfoundry.org/credhub-cli/credhub/*.go # gosub
+  - cnbapplifecycle/vendor/code.cloudfoundry.org/credhub-cli/credhub/auth/*.go # gosub
+  - cnbapplifecycle/vendor/code.cloudfoundry.org/credhub-cli/credhub/auth/uaa/*.go # gosub
+  - cnbapplifecycle/vendor/code.cloudfoundry.org/credhub-cli/credhub/credentials/*.go # gosub
+  - cnbapplifecycle/vendor/code.cloudfoundry.org/credhub-cli/credhub/credentials/generate/*.go # gosub
+  - cnbapplifecycle/vendor/code.cloudfoundry.org/credhub-cli/credhub/credentials/values/*.go # gosub
+  - cnbapplifecycle/vendor/code.cloudfoundry.org/credhub-cli/credhub/permissions/*.go # gosub
+  - cnbapplifecycle/vendor/code.cloudfoundry.org/credhub-cli/credhub/server/*.go # gosub
   - cnbapplifecycle/vendor/github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/runtime/2019-08-15-preview/containerregistry/*.go # gosub
   - cnbapplifecycle/vendor/github.com/Azure/azure-sdk-for-go/version/*.go # gosub
   - cnbapplifecycle/vendor/github.com/Azure/go-ansiterm/*.go # gosub
@@ -172,6 +181,8 @@ files:
   - cnbapplifecycle/vendor/github.com/chrismellard/docker-credential-acr-env/pkg/credhelper/*.go # gosub
   - cnbapplifecycle/vendor/github.com/chrismellard/docker-credential-acr-env/pkg/registry/*.go # gosub
   - cnbapplifecycle/vendor/github.com/chrismellard/docker-credential-acr-env/pkg/token/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/cloudfoundry/go-socks5/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/cloudfoundry/socks5-proxy/*.go # gosub
   - cnbapplifecycle/vendor/github.com/containerd/log/*.go # gosub
   - cnbapplifecycle/vendor/github.com/containerd/stargz-snapshotter/estargz/*.go # gosub
   - cnbapplifecycle/vendor/github.com/containerd/stargz-snapshotter/estargz/errorutil/*.go # gosub
@@ -263,6 +274,7 @@ files:
   - cnbapplifecycle/vendor/github.com/google/go-containerregistry/pkg/v1/validate/*.go # gosub
   - cnbapplifecycle/vendor/github.com/google/uuid/*.go # gosub
   - cnbapplifecycle/vendor/github.com/gorilla/mux/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/hashicorp/go-version/*.go # gosub
   - cnbapplifecycle/vendor/github.com/heroku/color/*.go # gosub
   - cnbapplifecycle/vendor/github.com/inconshreveable/mousetrap/*.go # gosub
   - cnbapplifecycle/vendor/github.com/klauspost/compress/*.go # gosub
@@ -332,8 +344,20 @@ files:
   - cnbapplifecycle/vendor/go.opentelemetry.io/otel/trace/*.go # gosub
   - cnbapplifecycle/vendor/go.opentelemetry.io/otel/trace/embedded/*.go # gosub
   - cnbapplifecycle/vendor/go.opentelemetry.io/otel/trace/noop/*.go # gosub
+  - cnbapplifecycle/vendor/golang.org/x/crypto/blowfish/*.go # gosub
+  - cnbapplifecycle/vendor/golang.org/x/crypto/chacha20/*.go # gosub
+  - cnbapplifecycle/vendor/golang.org/x/crypto/chacha20/*.s # gosub
+  - cnbapplifecycle/vendor/golang.org/x/crypto/curve25519/*.go # gosub
+  - cnbapplifecycle/vendor/golang.org/x/crypto/internal/alias/*.go # gosub
+  - cnbapplifecycle/vendor/golang.org/x/crypto/internal/poly1305/*.go # gosub
+  - cnbapplifecycle/vendor/golang.org/x/crypto/internal/poly1305/*.s # gosub
   - cnbapplifecycle/vendor/golang.org/x/crypto/pkcs12/*.go # gosub
   - cnbapplifecycle/vendor/golang.org/x/crypto/pkcs12/internal/rc2/*.go # gosub
+  - cnbapplifecycle/vendor/golang.org/x/crypto/ssh/*.go # gosub
+  - cnbapplifecycle/vendor/golang.org/x/crypto/ssh/internal/bcrypt_pbkdf/*.go # gosub
+  - cnbapplifecycle/vendor/golang.org/x/net/context/*.go # gosub
+  - cnbapplifecycle/vendor/golang.org/x/net/internal/socks/*.go # gosub
+  - cnbapplifecycle/vendor/golang.org/x/net/proxy/*.go # gosub
   - cnbapplifecycle/vendor/golang.org/x/sync/errgroup/*.go # gosub
   - cnbapplifecycle/vendor/golang.org/x/sys/unix/*.go # gosub
   - cnbapplifecycle/vendor/golang.org/x/sys/unix/*.s # gosub
