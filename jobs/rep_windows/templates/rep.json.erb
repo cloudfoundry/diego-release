@@ -110,6 +110,7 @@
     max_data_string_length: p("logging.max_data_string_length"),
     max_log_lines_per_second: p("diego.executor.max_log_lines_per_second"),
     volume_mounted_files: "#{volume_mounted_files}",
+    declarative_healthcheck_default_timeout: p("diego.executor.declarative_healthcheck_default_timeout"),
   }
 
   if p("containers.graceful_shutdown_interval_in_seconds") < 10

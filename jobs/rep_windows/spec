@@ -207,6 +207,9 @@ properties:
   diego.executor.max_log_lines_per_second:
     description: "EXPERIMENTAL: Maximum log lines allowed per second per app instance. Default value of 0 will disable rate limiting. Minimum recommended value is 100."
     default: 0
+  diego.executor.declarative_healthcheck_default_timeout:
+    description: "Default timeout for declarative healthcheck. This value is used when the LRP spec does not specify a timeout. Only used if 'enable_declarative_healthcheck' is set to true."
+    default: "1s"
 
   diego.rep.bbs.api_location:
     description: "Address of the BBS server"
