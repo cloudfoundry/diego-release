@@ -2,51 +2,6 @@
 
 set -e
 
-<% if p("bpm.enabled") %>
 /var/vcap/jobs/bpm/bin/bpm stop auctioneer 1>&2 || true
 echo "0"
 exit 0
-<% else %>
-run_dir=/var/vcap/sys/run/auctioneer
-pidfile=$run_dir/auctioneer.pid
-log_dir=/var/vcap/sys/log/auctioneer
-logfile=$log_dir/drain.log
-
-mkdir -p $log_dir
-
-exec 3>&1
-
-source /var/vcap/packages/pid_utils/pid_utils.sh
-
-exec 1>> $logfile
-exec 2>> $logfile
-
-output_for_bosh() {
-  exit_code=$?
-
-  if [ $exit_code -eq 0 ]; then
-    echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): auctioneer exited"
-  else
-    echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): drain failed"
-  fi
-
-  echo $exit_code >&3
-}
-
-trap output_for_bosh EXIT
-
-if [ ! -f $pidfile ]; then
-  echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): pidfile does not exist"
-  exit 0
-fi
-
-pid=$(cat $pidfile)
-
-if [ ! -e /proc/$pid ]; then
-  echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): auctioneer process not running"
-  exit 0
-fi
-
-echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): drain triggered"
-kill_and_wait $pidfile
-<% end %>

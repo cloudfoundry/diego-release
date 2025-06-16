@@ -26,9 +26,6 @@ packages:
   - auctioneer
 
 properties:
-  bpm.enabled:
-    description: "use the BOSH Process Manager to manage the auctioneer process."
-    default: false
   diego.auctioneer.ca_cert:
     description: "REQUIRED: PEM-encoded CA certificate for the auctioneer API server."
   diego.auctioneer.server_cert:

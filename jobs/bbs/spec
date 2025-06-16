@@ -30,10 +30,6 @@ packages:
   - bbs
 
 properties:
-  bpm.enabled:
-    description: "use the BOSH Process Manager to manage the BBS process."
-    default: false
-
   tasks.max_retries:
     description: "The number of times task placement should be retried after pre-execution task failure."
     default: 3
