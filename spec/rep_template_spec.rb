@@ -52,7 +52,6 @@ describe 'rep' do
         ]
       },
       'enable_consul_service_registration' => 'false',
-      'enable_declarative_healthcheck' => 'true',
       'loggregator' => {},
       'tls' => {
         'ca_cert' => 'CA CERT',
