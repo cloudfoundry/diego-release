@@ -99,15 +99,12 @@
 
   config[:time_format] = "rfc3339"
 
-  if p("locks.locket.enabled")
-    config[:locket_enabled] = true
-    config[:locket_session_name] = "route-emitter"
-    config[:locket_address] = "#{p("locks.locket.hostname")}:#{p("locks.locket.port")}"
-    config[:uuid] = spec.id
-    config[:locket_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
-    config[:locket_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"
-    config[:locket_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
-  end
+  config[:locket_session_name] = "route-emitter"
+  config[:locket_address] = "#{p("locks.locket.hostname")}:#{p("locks.locket.port")}"
+  config[:uuid] = spec.id
+  config[:locket_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
+  config[:locket_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"
+  config[:locket_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
 
   config[:bbs_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
   config[:bbs_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"

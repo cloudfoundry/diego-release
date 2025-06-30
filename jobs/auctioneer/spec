@@ -89,10 +89,6 @@ properties:
     description: "Timeout in seconds to receive a response to the keepalive ping. If a response is not received within this time, the locket client will reconnect to another server."
     default: 22
 
-  locks.locket.enabled:
-    description: When set, the auctioneer attempts to claim a lock from the Locket API.
-    default: true
-
   loggregator.use_v2_api:
     description: "True to use local metron agent gRPC v2 API. False to use UDP v1 API."
     default: false
