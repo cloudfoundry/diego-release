@@ -33,7 +33,6 @@
     listen_address: p("diego.bbs.listen_addr"),
     health_address: p("diego.bbs.health_addr"),
     rep_client_session_cache_size: p("diego.bbs.rep.client_session_cache_size"),
-    rep_require_tls: p("diego.bbs.rep.require_tls"),
     log_level: p("diego.bbs.log_level"),
     active_key_label: p("diego.bbs.active_key_label"),
     debug_address: p("diego.bbs.debug_addr"),
@@ -144,13 +143,7 @@
     config[:kick_task_duration] = "#{value}s" # add time unit
   end
 
-  if_p("logging.format.timestamp") do |format|
-    if format != "unix-epoch" and format != "rfc3339"
-      raise "logging.format.timestamp should be one of: 'unix-epoch' or 'rfc3339'"
-    end
-    config[:time_format] = format
-  end
-
+  config[:time_format] = "rfc3339"
   config[:advertise_url] = advertise_url "https"
   config[:ca_file] = "#{conf_dir}/certs/ca.crt"
   config[:cert_file] = "#{conf_dir}/certs/server.crt"

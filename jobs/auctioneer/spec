@@ -26,9 +26,6 @@ packages:
   - auctioneer
 
 properties:
-  bpm.enabled:
-    description: "use the BOSH Process Manager to manage the auctioneer process."
-    default: false
   diego.auctioneer.ca_cert:
     description: "REQUIRED: PEM-encoded CA certificate for the auctioneer API server."
   diego.auctioneer.server_cert:
@@ -72,9 +69,6 @@ properties:
   diego.auctioneer.bbs.max_idle_conns_per_host:
     description: "maximum number of idle http connections"
 
-  diego.auctioneer.rep.require_tls:
-    description: "Whether to require TLS for communication to the securable rep API server. Deprecated, Diego V2 and later require Rep communication to use TLS.  This is only relevant when upgrading from V1 to ensure no downtime during the upgrade"
-    default: false
   diego.auctioneer.rep.ca_cert:
     description: "CA cert for communication to the rep."
   diego.auctioneer.rep.client_cert:
@@ -98,10 +92,6 @@ properties:
   locks.locket.enabled:
     description: When set, the auctioneer attempts to claim a lock from the Locket API.
     default: true
-
-  logging.format.timestamp:
-    description: "Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."
-    default: "unix-epoch"
 
   loggregator.use_v2_api:
     description: "True to use local metron agent gRPC v2 API. False to use UDP v1 API."

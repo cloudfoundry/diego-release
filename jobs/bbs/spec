@@ -30,10 +30,6 @@ packages:
   - bbs
 
 properties:
-  bpm.enabled:
-    description: "use the BOSH Process Manager to manage the BBS process."
-    default: false
-
   tasks.max_retries:
     description: "The number of times task placement should be retried after pre-execution task failure."
     default: 3
@@ -162,10 +158,6 @@ properties:
   limits.open_files:
     description: Maximum number of files (including sockets) the BBS process may have open.
     default: 100000
-
-  logging.format.timestamp:
-    description: "Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."
-    default: "unix-epoch"
 
   logging.max_data_string_length:
     description: "Length in bytes above which logged strings will be truncated. If set to 0, turns off truncation."

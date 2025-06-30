@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-const SAY_VERSION = "1.1.0"
+const SAY_VERSION = "1.2.0"
 
 const COLS = 80
 
@@ -20,6 +20,10 @@ const (
 	ColorModeTerminal
 	ColorModePassthrough
 )
+
+func ClearScrollBack() {
+	fmt.Print("\033[H\033[2J\033]1337;ClearScrollback\007")
+}
 
 var SingletonFormatter = New(ColorModeTerminal)
 

@@ -96,12 +96,7 @@
     config[:jitter_factor] = value
   end
 
-  if_p("logging.format.timestamp") do |format|
-    if format != "unix-epoch" and format != "rfc3339"
-      raise "logging.format.timestamp should be one of: 'unix-epoch' or 'rfc3339'"
-    end
-    config[:time_format] = format
-  end
+  config[:time_format] = "rfc3339"
 
   if p("locks.locket.enabled")
     config[:locket_enabled] = true

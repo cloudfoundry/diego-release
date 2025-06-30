@@ -26,7 +26,6 @@
     locks_locket_enabled: p("locks.locket.enabled"),
     log_level: p("diego.auctioneer.log_level"),
     rep_client_session_cache_size: p("diego.auctioneer.rep.client_session_cache_size"),
-    rep_require_tls: p("diego.auctioneer.rep.require_tls"),
     cell_state_timeout: p("diego.auctioneer.cell_state_timeout"),
     bin_pack_first_fit_weight: p("diego.auctioneer.bin_pack_first_fit_weight"),
     starting_container_weight: p("diego.auctioneer.starting_container_weight"),
@@ -37,13 +36,7 @@
   config[:bbs_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"
   config[:bbs_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
   config[:bbs_address] = "https://#{p("diego.auctioneer.bbs.api_location")}"
-
-  if_p("logging.format.timestamp") do |format|
-    if format != "unix-epoch" and format != "rfc3339"
-      raise "logging.format.timestamp should be one of: 'unix-epoch' or 'rfc3339'"
-    end
-    config[:time_format] = format
-  end
+  config[:time_format] ="rfc3339" 
 
   if_p("diego.auctioneer.bbs.client_session_cache_size") do |value|
     config[:bbs_client_session_cache_size] = value

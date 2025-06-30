@@ -30,9 +30,6 @@ provides:
   - https_url
 
 properties:
-  bpm.enabled:
-    description: "use the BOSH Process Manager to manage the file-server process."
-    default: false
   diego.file_server.listen_addr:
     description: "Address of interface on which to serve files"
     default: "0.0.0.0:8080"
@@ -59,10 +56,6 @@ properties:
     description: "PEM-encoded tls certificate that can be used for server auth"
   tls.key:
     description: "PEM-encoded tls key"
-
-  logging.format.timestamp:
-    description: "Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."
-    default: "unix-epoch"
 
   loggregator.use_v2_api:
     description: "Whether component should use the v2 loggregator API when sending data to the metron agent instead of the 'legacy' v1 API."

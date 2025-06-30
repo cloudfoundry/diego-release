@@ -32,9 +32,6 @@ packages:
   - certsplitter
 
 properties:
-  bpm.enabled:
-    description: "use the BOSH Process Manager to manage the cell rep process."
-    default: false
   diego.rep.debug_addr:
     description: "address at which to serve debug info"
     default: "127.0.0.1:17008"
@@ -215,6 +212,9 @@ properties:
   diego.executor.max_log_lines_per_second:
     description: "EXPERIMENTAL: Maximum log lines allowed per second per app instance. Default value of 0 will disable rate limiting. Minimum recommended value is 100."
     default: 0
+  diego.executor.declarative_healthcheck_default_timeout:
+    description: "Default timeout for declarative healthcheck. This value is used when the LRP spec does not specify a timeout. Only used if 'enable_declarative_healthcheck' is set to true."
+    default: "1s"
 
   diego.rep.bbs.api_location:
     description: "Address of the BBS server"
@@ -331,10 +331,6 @@ properties:
     description: "EXPERIMENTAL:  When set, the envoy proxy consumes dynamic config from the specified Aggregated Discovery Service servers (specified as a list of host:port).  This config is in addition to the static configuration that supports TLS termination / route-integrity."
     default: []
     example: [ "169.254.0.2:15001" ]
-
-  logging.format.timestamp:
-    description: "Format for timestamp in component logs. Valid values are 'unix-epoch' and 'rfc3339'."
-    default: "unix-epoch"
 
   logging.max_data_string_length:
     description: "Length in bytes above which logged strings will be truncated. If set to 0, turns off truncation."

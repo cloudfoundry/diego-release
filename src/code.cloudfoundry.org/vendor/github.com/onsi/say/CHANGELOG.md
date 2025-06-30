@@ -1,3 +1,13 @@
+## 1.2.0
+
+- add clear scrollback helper [b0786b1]
+
+### Features
+
+### Fixes
+
+### Maintenance
+
 ## 1.1.0
 
 ### Features
