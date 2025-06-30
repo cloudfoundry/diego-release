@@ -4,7 +4,6 @@
 package tools
 
 import (
-	_ "github.com/gogo/protobuf/protoc-gen-gogoslick"
 	_ "github.com/nats-io/nats-server/v2"
 	_ "github.com/onsi/ginkgo/v2/ginkgo"
 )

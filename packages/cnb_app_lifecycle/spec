@@ -209,6 +209,7 @@ files:
   - cnbapplifecycle/vendor/github.com/docker/docker/api/types/*.go # gosub
   - cnbapplifecycle/vendor/github.com/docker/docker/api/types/blkiodev/*.go # gosub
   - cnbapplifecycle/vendor/github.com/docker/docker/api/types/checkpoint/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/docker/docker/api/types/common/*.go # gosub
   - cnbapplifecycle/vendor/github.com/docker/docker/api/types/container/*.go # gosub
   - cnbapplifecycle/vendor/github.com/docker/docker/api/types/events/*.go # gosub
   - cnbapplifecycle/vendor/github.com/docker/docker/api/types/filters/*.go # gosub
@@ -216,6 +217,7 @@ files:
   - cnbapplifecycle/vendor/github.com/docker/docker/api/types/mount/*.go # gosub
   - cnbapplifecycle/vendor/github.com/docker/docker/api/types/network/*.go # gosub
   - cnbapplifecycle/vendor/github.com/docker/docker/api/types/registry/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/docker/docker/api/types/storage/*.go # gosub
   - cnbapplifecycle/vendor/github.com/docker/docker/api/types/strslice/*.go # gosub
   - cnbapplifecycle/vendor/github.com/docker/docker/api/types/swarm/*.go # gosub
   - cnbapplifecycle/vendor/github.com/docker/docker/api/types/swarm/runtime/*.go # gosub
@@ -225,7 +227,9 @@ files:
   - cnbapplifecycle/vendor/github.com/docker/docker/api/types/volume/*.go # gosub
   - cnbapplifecycle/vendor/github.com/docker/docker/client/*.go # gosub
   - cnbapplifecycle/vendor/github.com/docker/docker/errdefs/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/docker/docker/internal/lazyregexp/*.go # gosub
   - cnbapplifecycle/vendor/github.com/docker/docker/internal/multierror/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/docker/docker/pkg/homedir/*.go # gosub
   - cnbapplifecycle/vendor/github.com/docker/docker/pkg/ioutils/*.go # gosub
   - cnbapplifecycle/vendor/github.com/docker/docker/pkg/jsonmessage/*.go # gosub
   - cnbapplifecycle/vendor/github.com/docker/docker/registry/*.go # gosub
@@ -283,6 +287,7 @@ files:
   - cnbapplifecycle/vendor/github.com/klauspost/compress/huff0/*.s # gosub
   - cnbapplifecycle/vendor/github.com/klauspost/compress/internal/cpuinfo/*.go # gosub
   - cnbapplifecycle/vendor/github.com/klauspost/compress/internal/cpuinfo/*.s # gosub
+  - cnbapplifecycle/vendor/github.com/klauspost/compress/internal/le/*.go # gosub
   - cnbapplifecycle/vendor/github.com/klauspost/compress/internal/snapref/*.go # gosub
   - cnbapplifecycle/vendor/github.com/klauspost/compress/zstd/*.go # gosub
   - cnbapplifecycle/vendor/github.com/klauspost/compress/zstd/*.s # gosub
@@ -300,19 +305,25 @@ files:
   - cnbapplifecycle/vendor/github.com/moby/buildkit/util/stack/*.go # gosub
   - cnbapplifecycle/vendor/github.com/moby/buildkit/util/suggest/*.go # gosub
   - cnbapplifecycle/vendor/github.com/moby/docker-image-spec/specs-go/v1/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/moby/sys/atomicwriter/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/moby/sys/sequential/*.go # gosub
   - cnbapplifecycle/vendor/github.com/moby/term/*.go # gosub
   - cnbapplifecycle/vendor/github.com/moby/term/windows/*.go # gosub
   - cnbapplifecycle/vendor/github.com/morikuni/aec/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/munnerz/goautoneg/*.go # gosub
   - cnbapplifecycle/vendor/github.com/opencontainers/go-digest/*.go # gosub
   - cnbapplifecycle/vendor/github.com/opencontainers/image-spec/specs-go/*.go # gosub
   - cnbapplifecycle/vendor/github.com/opencontainers/image-spec/specs-go/v1/*.go # gosub
   - cnbapplifecycle/vendor/github.com/pkg/errors/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/planetscale/vtprotobuf/protohelpers/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/prometheus/client_golang/internal/github.com/golang/gddo/httputil/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/prometheus/client_golang/internal/github.com/golang/gddo/httputil/header/*.go # gosub
   - cnbapplifecycle/vendor/github.com/prometheus/client_golang/prometheus/*.go # gosub
   - cnbapplifecycle/vendor/github.com/prometheus/client_golang/prometheus/internal/*.go # gosub
   - cnbapplifecycle/vendor/github.com/prometheus/client_golang/prometheus/promhttp/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/prometheus/client_golang/prometheus/promhttp/internal/*.go # gosub
   - cnbapplifecycle/vendor/github.com/prometheus/client_model/go/*.go # gosub
   - cnbapplifecycle/vendor/github.com/prometheus/common/expfmt/*.go # gosub
-  - cnbapplifecycle/vendor/github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg/*.go # gosub
   - cnbapplifecycle/vendor/github.com/prometheus/common/model/*.go # gosub
   - cnbapplifecycle/vendor/github.com/prometheus/procfs/*.go # gosub
   - cnbapplifecycle/vendor/github.com/prometheus/procfs/internal/fs/*.go # gosub
@@ -320,6 +331,7 @@ files:
   - cnbapplifecycle/vendor/github.com/sirupsen/logrus/*.go # gosub
   - cnbapplifecycle/vendor/github.com/spf13/cobra/*.go # gosub
   - cnbapplifecycle/vendor/github.com/spf13/pflag/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/tonistiigi/go-csvvalue/*.go # gosub
   - cnbapplifecycle/vendor/github.com/vbatts/tar-split/archive/tar/*.go # gosub
   - cnbapplifecycle/vendor/go.opentelemetry.io/auto/sdk/*.go # gosub
   - cnbapplifecycle/vendor/go.opentelemetry.io/auto/sdk/internal/telemetry/*.go # gosub
@@ -329,10 +341,9 @@ files:
   - cnbapplifecycle/vendor/go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp/internal/semconvutil/*.go # gosub
   - cnbapplifecycle/vendor/go.opentelemetry.io/otel/*.go # gosub
   - cnbapplifecycle/vendor/go.opentelemetry.io/otel/attribute/*.go # gosub
+  - cnbapplifecycle/vendor/go.opentelemetry.io/otel/attribute/internal/*.go # gosub
   - cnbapplifecycle/vendor/go.opentelemetry.io/otel/baggage/*.go # gosub
   - cnbapplifecycle/vendor/go.opentelemetry.io/otel/codes/*.go # gosub
-  - cnbapplifecycle/vendor/go.opentelemetry.io/otel/internal/*.go # gosub
-  - cnbapplifecycle/vendor/go.opentelemetry.io/otel/internal/attribute/*.go # gosub
   - cnbapplifecycle/vendor/go.opentelemetry.io/otel/internal/baggage/*.go # gosub
   - cnbapplifecycle/vendor/go.opentelemetry.io/otel/internal/global/*.go # gosub
   - cnbapplifecycle/vendor/go.opentelemetry.io/otel/metric/*.go # gosub
@@ -343,6 +354,7 @@ files:
   - cnbapplifecycle/vendor/go.opentelemetry.io/otel/semconv/v1.26.0/*.go # gosub
   - cnbapplifecycle/vendor/go.opentelemetry.io/otel/trace/*.go # gosub
   - cnbapplifecycle/vendor/go.opentelemetry.io/otel/trace/embedded/*.go # gosub
+  - cnbapplifecycle/vendor/go.opentelemetry.io/otel/trace/internal/telemetry/*.go # gosub
   - cnbapplifecycle/vendor/go.opentelemetry.io/otel/trace/noop/*.go # gosub
   - cnbapplifecycle/vendor/golang.org/x/crypto/blowfish/*.go # gosub
   - cnbapplifecycle/vendor/golang.org/x/crypto/chacha20/*.go # gosub
@@ -392,4 +404,5 @@ files:
   - cnbapplifecycle/vendor/google.golang.org/protobuf/reflect/protoregistry/*.go # gosub
   - cnbapplifecycle/vendor/google.golang.org/protobuf/runtime/protoiface/*.go # gosub
   - cnbapplifecycle/vendor/google.golang.org/protobuf/runtime/protoimpl/*.go # gosub
+  - cnbapplifecycle/vendor/google.golang.org/protobuf/types/known/anypb/*.go # gosub
   - cnbapplifecycle/vendor/google.golang.org/protobuf/types/known/timestamppb/*.go # gosub

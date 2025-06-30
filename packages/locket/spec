@@ -10,7 +10,10 @@ files:
   - code.cloudfoundry.org/vendor/modules.txt
   - code.cloudfoundry.org/bbs/db/sqldb/helpers/*.go # gosub
   - code.cloudfoundry.org/bbs/db/sqldb/helpers/monitor/*.go # gosub
+  - code.cloudfoundry.org/bbs/encryption/*.go # gosub
+  - code.cloudfoundry.org/bbs/format/*.go # gosub
   - code.cloudfoundry.org/bbs/guidprovider/*.go # gosub
+  - code.cloudfoundry.org/bbs/models/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/clock/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/debugserver/*.go # gosub
   - code.cloudfoundry.org/vendor/code.cloudfoundry.org/diego-logging-client/*.go # gosub
@@ -37,7 +40,6 @@ files:
   - code.cloudfoundry.org/vendor/filippo.io/edwards25519/field/*.go # gosub
   - code.cloudfoundry.org/vendor/filippo.io/edwards25519/field/*.s # gosub
   - code.cloudfoundry.org/vendor/github.com/go-sql-driver/mysql/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/gogo/protobuf/proto/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/pgpassfile/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/pgservicefile/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/*.go # gosub
@@ -179,6 +181,7 @@ files:
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/reflect/protoregistry/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/runtime/protoiface/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/runtime/protoimpl/*.go # gosub
+  - code.cloudfoundry.org/vendor/google.golang.org/protobuf/types/descriptorpb/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/types/known/anypb/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/types/known/durationpb/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/protobuf/types/known/timestamppb/*.go # gosub
