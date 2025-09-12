@@ -1567,7 +1567,7 @@ func (maker v1ComponentMaker) RepN(n int, modifyConfigFuncs ...func(*repconfig.R
 			DeleteWorkPoolSize:                   32,
 			ReadWorkPoolSize:                     64,
 			MetricsWorkPoolSize:                  8,
-			HealthCheckWorkPoolSize:              64,
+			HealthCheckWorkPoolSize:              1,
 			MaxConcurrentDownloads:               5,
 			GardenHealthcheckInterval:            durationjson.Duration(10 * time.Minute),
 			GardenHealthcheckEmissionInterval:    durationjson.Duration(30 * time.Second),
