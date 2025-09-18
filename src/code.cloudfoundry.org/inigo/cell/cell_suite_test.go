@@ -112,11 +112,11 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 	componentMaker.Setup()
 })
 
-var _ = AfterSuite(func() {
+var _ = SynchronizedAfterSuite(func() {
 	if componentMaker != nil {
 		componentMaker.Teardown()
 	}
-
+}, func() {
 	os.RemoveAll(suiteTempDir)
 })
 
