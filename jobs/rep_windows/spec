@@ -273,7 +273,7 @@ properties:
 
   containers.proxy.require_and_verify_client_certificates:
     default: false
-    description: "whether the per-container proxy should require and verify a TLS certificate from a client connecting to one of its ingress listeners. Proxy will trust the set of CA certificates supplied in the containers.proxy.trusted_ca_certificates property. 
+    description: "whether the per-container proxy should require and verify a TLS certificate from a client connecting to one of its ingress listeners. Proxy will trust the set of CA certificates supplied in the containers.proxy.trusted_ca_certificates property."
 
   containers.proxy.trusted_ca_certificates:
     default: []
@@ -304,7 +304,7 @@ properties:
 
   containers.proxy.enable_unproxied_port_mappings:
     default: true
-    description: "EXPERIMENTAL: whether the cell should still map host ports directly to the unproxied container ports. 
+    description: "EXPERIMENTAL: whether the cell should still map host ports directly to the unproxied container ports."
 
   containers.trusted_ca_certificates:
     description: "List of PEM-encoded CA certificates to make available inside containers in a conventional location. List entries may be individual or concatenated CAs."
