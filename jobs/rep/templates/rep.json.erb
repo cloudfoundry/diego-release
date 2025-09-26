@@ -59,7 +59,7 @@
     disk_mb: p("diego.executor.disk_capacity_mb").to_s,
     declarative_healthcheck_path: "/var/vcap/packages/healthcheck",
     enable_healthcheck_metrics: p("enable_healthcheck_metrics"),
-    enable_container_proxy: "true",
+    enable_container_proxy: true,
     container_proxy_require_and_verify_client_certs: p("containers.proxy.require_and_verify_client_certificates"),
     container_proxy_trusted_ca_certs: p("containers.proxy.trusted_ca_certificates"),
     container_proxy_verify_subject_alt_name: p("containers.proxy.verify_subject_alt_name"),
