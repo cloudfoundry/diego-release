@@ -101,6 +101,15 @@ properties:
   diego.bbs.sql.max_idle_connections:
     description: "Maximum number of idle connections to the SQL database"
     default: 200
+  diego.bbs.sql.connection_timeout: 
+    description: "Timeout in seconds for a db client to wait for a connection to be established."
+    default: 600
+  diego.bbs.sql.read_timeout: 
+    description: "Timeout in seconds for a db client to wait for data to be received from the server."
+    default: 600
+  diego.bbs.sql.write_timeout: 
+    description: "Timeout in seconds for a db client to wait for data to be sent to the server."
+    default: 600
   diego.bbs.sql.require_ssl:
     description: "Whether to require SSL for BBS communication to the SQL backend"
     default: false
