@@ -13,26 +13,26 @@ replace (
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.48.0
-	code.cloudfoundry.org/bytefmt v0.53.0
+	code.cloudfoundry.org/archiver v0.49.0
+	code.cloudfoundry.org/bytefmt v0.54.0
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20250312193827-23c030d5e4f3
 	code.cloudfoundry.org/certsplitter v0.58.0
 	code.cloudfoundry.org/cf-routing-test-helpers v0.0.0-20250228152907-f87c227cf5e7
 	code.cloudfoundry.org/cf-tcp-router v0.0.0-20250228153011-2de6b290768e
-	code.cloudfoundry.org/cfhttp/v2 v2.58.0
-	code.cloudfoundry.org/clock v1.50.0
-	code.cloudfoundry.org/credhub-cli v0.0.0-20250922235709-cc15f8fa273c
-	code.cloudfoundry.org/debugserver v0.69.0
-	code.cloudfoundry.org/diego-logging-client v0.71.0
+	code.cloudfoundry.org/cfhttp/v2 v2.59.0
+	code.cloudfoundry.org/clock v1.51.0
+	code.cloudfoundry.org/credhub-cli v0.0.0-20251006131851-da8a271bccef
+	code.cloudfoundry.org/debugserver v0.70.0
+	code.cloudfoundry.org/diego-logging-client v0.72.0
 	code.cloudfoundry.org/dockerdriver v0.61.0
-	code.cloudfoundry.org/durationjson v0.53.0
-	code.cloudfoundry.org/eventhub v0.53.0
-	code.cloudfoundry.org/garden v0.0.0-20250924021457-81a82acd3d4b
+	code.cloudfoundry.org/durationjson v0.54.0
+	code.cloudfoundry.org/eventhub v0.54.0
+	code.cloudfoundry.org/garden v0.0.0-20250930202639-e70ce4d3bcd2
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
-	code.cloudfoundry.org/goshims v0.79.0
-	code.cloudfoundry.org/guardian v0.0.0-20250924022113-d4bb255a1409
-	code.cloudfoundry.org/lager/v3 v3.50.0
-	code.cloudfoundry.org/localip v0.52.0
+	code.cloudfoundry.org/goshims v0.80.0
+	code.cloudfoundry.org/guardian v0.0.0-20251001022146-bccaf3ca44a9
+	code.cloudfoundry.org/lager/v3 v3.51.0
+	code.cloudfoundry.org/localip v0.53.0
 	code.cloudfoundry.org/tlsconfig v0.35.0
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
@@ -62,9 +62,9 @@ require (
 	github.com/mitchellh/hashstructure v1.1.0
 	github.com/moby/term v0.5.2
 	github.com/nats-io/nats-server/v2 v2.12.0
-	github.com/nats-io/nats.go v1.46.0
+	github.com/nats-io/nats.go v1.46.1
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d
-	github.com/onsi/ginkgo/v2 v2.25.3
+	github.com/onsi/ginkgo/v2 v2.26.0
 	github.com/onsi/gomega v1.38.2
 	github.com/onsi/say v1.2.0
 	github.com/opencontainers/go-digest v1.0.0
@@ -83,8 +83,8 @@ require (
 	golang.org/x/oauth2 v0.31.0
 	golang.org/x/sys v0.36.0
 	golang.org/x/time v0.13.0
-	google.golang.org/grpc v1.75.1
-	google.golang.org/protobuf v1.36.9
+	google.golang.org/grpc v1.76.0
+	google.golang.org/protobuf v1.36.10
 	gopkg.in/yaml.v2 v2.4.0
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -127,8 +127,8 @@ require (
 	github.com/cyphar/filepath-securejoin v0.5.0 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
-	github.com/docker/docker v28.4.0+incompatible // indirect
-	github.com/docker/docker-credential-helpers v0.9.3 // indirect
+	github.com/docker/docker v28.5.0+incompatible // indirect
+	github.com/docker/docker-credential-helpers v0.9.4 // indirect
 	github.com/docker/go-connections v0.6.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/envoyproxy/protoc-gen-validate v1.2.1 // indirect
@@ -137,7 +137,7 @@ require (
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/go-tpm v0.9.6 // indirect
-	github.com/google/pprof v0.0.0-20250923004556-9e5a51aed1e8 // indirect
+	github.com/google/pprof v0.0.0-20251002213607-436353cc1ee6 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/hashicorp/go-version v1.7.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
@@ -159,11 +159,10 @@ require (
 	github.com/nats-io/nkeys v0.4.11 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/opencontainers/cgroups v0.0.5 // indirect
-	github.com/opencontainers/runc v1.3.1 // indirect
+	github.com/opencontainers/runc v1.3.2 // indirect
 	github.com/opencontainers/runtime-spec v1.2.1 // indirect
 	github.com/prometheus/common v0.63.0 // indirect
 	github.com/prometheus/procfs v0.16.1 // indirect
-	github.com/rogpeppe/go-internal v1.13.1 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/vishvananda/netlink v1.3.1 // indirect
@@ -171,9 +170,10 @@ require (
 	go.step.sm/crypto v0.70.0 // indirect
 	go.uber.org/automaxprocs v1.6.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
+	golang.org/x/mod v0.28.0 // indirect
 	golang.org/x/sync v0.17.0 // indirect
 	golang.org/x/text v0.29.0 // indirect
 	golang.org/x/tools v0.37.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20250929231259-57b25ae835d4 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250929231259-57b25ae835d4 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20251006185510-65f7160b3a87 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20251006185510-65f7160b3a87 // indirect
 )
