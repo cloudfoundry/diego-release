@@ -122,6 +122,18 @@
     config[:max_idle_database_connections] = value
   end
 
+  if_p("diego.bbs.sql.connection_timeout") do |value|
+    config[:db_connection_timeout] = value
+  end
+
+  if_p("diego.bbs.sql.read_timeout") do |value|
+    config[:db_read_timeout] = value
+  end
+
+  if_p("diego.bbs.sql.write_timeout") do |value|
+    config[:db_write_timeout] = value
+  end
+
   if_p("diego.bbs.sql.db_driver") do |value|
     config[:database_driver] = value
   end
