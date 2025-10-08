@@ -483,8 +483,13 @@ func (maker commonComponentMaker) SQL(argv ...string) ifrit.Runner {
 		defer GinkgoRecover()
 
 		logger := lagertest.NewTestLogger("component-maker")
-
-		db, err := helpers.Connect(logger, maker.dbDriverName, maker.dbBaseConnectionString, "", false)
+		dbParams := &helpers.BBSDBParam{
+			DriverName:                    maker.dbDriverName,
+			DatabaseConnectionString:      maker.dbBaseConnectionString,
+			SqlCACertFile:                 "",
+			SqlEnableIdentityVerification: false,
+		}
+		db, err := helpers.Connect(logger, dbParams)
 		Expect(err).NotTo(HaveOccurred())
 		defer db.Close()
 
@@ -497,7 +502,8 @@ func (maker commonComponentMaker) SQL(argv ...string) ifrit.Runner {
 		Expect(err).NotTo(HaveOccurred())
 
 		dbWithDatabaseNameConnectionString := fmt.Sprintf("%s%s", maker.dbBaseConnectionString, sqlDBName)
-		db, err = helpers.Connect(logger, maker.dbDriverName, dbWithDatabaseNameConnectionString, "", false)
+		dbParams.DatabaseConnectionString = dbWithDatabaseNameConnectionString
+		db, err = helpers.Connect(logger, dbParams)
 		Expect(err).NotTo(HaveOccurred())
 		Eventually(db.Ping).Should(Succeed())
 
@@ -506,7 +512,7 @@ func (maker commonComponentMaker) SQL(argv ...string) ifrit.Runner {
 		close(ready)
 
 		<-signals
-		db, err = helpers.Connect(logger, maker.dbDriverName, maker.dbBaseConnectionString, "", false)
+		db, err = helpers.Connect(logger, dbParams)
 		Expect(err).NotTo(HaveOccurred())
 		Eventually(db.Ping).ShouldNot(HaveOccurred())
 
