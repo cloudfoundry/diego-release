@@ -1,17 +1,17 @@
 package ecrhelper
 
 import (
+	"context"
 	"encoding/base64"
 	"fmt"
 	"net/url"
 	"regexp"
 	"strings"
 
-	"github.com/aws/aws-sdk-go/aws"                    //lint:ignore SA1019 - need tot bump to aws-sdk-go-v2
-	"github.com/aws/aws-sdk-go/aws/credentials"        //lint:ignore SA1019 - need tot bump to aws-sdk-go-v2
-	"github.com/aws/aws-sdk-go/aws/endpoints"          //lint:ignore SA1019 - need tot bump to aws-sdk-go-v2
-	awssession "github.com/aws/aws-sdk-go/aws/session" //lint:ignore SA1019 - need tot bump to aws-sdk-go-v2
-	"github.com/aws/aws-sdk-go/service/ecr"            //lint:ignore SA1019 - need tot bump to aws-sdk-go-v2
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials"
+	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	ecrapi "github.com/awslabs/amazon-ecr-credential-helper/ecr-login/api"
 )
 
@@ -53,30 +53,19 @@ func (h ecrHelper) GetECRCredentials(registryURL string, username string, passwo
 	if err != nil {
 		return "", "", err
 	}
-
-	awsSession, err := awssession.NewSession(&aws.Config{
-		Credentials: credentials.NewStaticCredentials(username, password, ""),
-	})
+	cfg, err := config.LoadDefaultConfig(
+		context.TODO(), config.WithRegion(registry.Region),
+		config.WithUseFIPSEndpoint(aws.FIPSEndpointStateEnabled),
+		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(username, password, "")),
+	)
 	if err != nil {
 		return "", "", err
 	}
 
-	awsConfig := &aws.Config{Region: aws.String(registry.Region)}
-	if registry.FIPS {
-		resolver := endpoints.DefaultResolver()
-		endpoint, err := resolver.EndpointFor("ecr-fips", registry.Region, func(opts *endpoints.Options) {
-			opts.ResolveUnknownService = true
-		})
-		if err != nil {
-			return "", "", err
-		}
-		awsConfig = awsConfig.WithEndpoint(endpoint.URL)
-	}
-
-	ecrClient := ecr.New(awsSession, awsConfig)
+	ecrClient := ecr.NewFromConfig(cfg)
 
 	input := &ecr.GetAuthorizationTokenInput{}
-	output, err := ecrClient.GetAuthorizationToken(input)
+	output, err := ecrClient.GetAuthorizationToken(context.TODO(), input)
 	if err != nil {
 		return "", "", err
 	}
@@ -86,8 +75,8 @@ func (h ecrHelper) GetECRCredentials(registryURL string, username string, passwo
 
 	for _, authData := range output.AuthorizationData {
 		if authData.ProxyEndpoint != nil && authData.AuthorizationToken != nil {
-			token := aws.StringValue(authData.AuthorizationToken)
-			decodedToken, err := base64.StdEncoding.DecodeString(token)
+			token := authData.AuthorizationToken
+			decodedToken, err := base64.StdEncoding.DecodeString(*token)
 			if err != nil {
 				return "", "", err
 			}
