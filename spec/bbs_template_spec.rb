@@ -92,6 +92,25 @@ describe 'bbs' do
       end
     end
 
+    describe 'Database timeout configurations' do 
+      it 'includes db timeout settings when specified' do 
+        deployment_manifest_fragment['diego']['bbs']['sql']['db_connection_timeout'] = '30s' 
+        deployment_manifest_fragment['diego']['bbs']['sql']['db_read_timeout'] = '60s' 
+        deployment_manifest_fragment['diego']['bbs']['sql']['db_write_timeout'] = '45s' 
+        rendered_template_json = JSON.parse(rendered_template) 
+        expect(rendered_template_json['db_connection_timeout']).to eq('30s') 
+        expect(rendered_template_json['db_read_timeout']).to eq('60s') 
+        expect(rendered_template_json['db_write_timeout']).to eq('45s') 
+      end
+
+      it 'uses default timeout values when not specified' do 
+        rendered_template_json = JSON.parse(rendered_template) 
+        expect(rendered_template_json['db_connection_timeout']).to be_nil 
+        expect(rendered_template_json['db_read_timeout']).to be_nil 
+        expect(rendered_template_json['db_write_timeout']).to be_nil 
+      end 
+    end 
+
     describe 'Advanced Metrics' do
       it 'check if bbs.json doesn\'t include \'advanced_metrics\' on \'enabled\' value equal to false' do
         # if diego.bbs.metrics.advanced_metrics misses diego.bbs.metrics.advanced_metrics.enabled defaults to false
