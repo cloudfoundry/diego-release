@@ -94,9 +94,9 @@ describe 'bbs' do
 
     describe 'Database timeout configurations' do 
       it 'includes db timeout settings when specified' do 
-        deployment_manifest_fragment['diego']['bbs']['sql']['db_connection_timeout'] = '30s'
-        deployment_manifest_fragment['diego']['bbs']['sql']['db_read_timeout'] = '60s'
-        deployment_manifest_fragment['diego']['bbs']['sql']['db_write_timeout'] = '45s'
+        deployment_manifest_fragment['diego']['bbs']['sql']['db_connection_timeout'] = '30'
+        deployment_manifest_fragment['diego']['bbs']['sql']['db_read_timeout'] = '60'
+        deployment_manifest_fragment['diego']['bbs']['sql']['db_write_timeout'] = '45'
         rendered_template_json = JSON.parse(rendered_template) 
         expect(rendered_template_json['db_connection_timeout']).to eq('30s') 
         expect(rendered_template_json['db_read_timeout']).to eq('60s') 
