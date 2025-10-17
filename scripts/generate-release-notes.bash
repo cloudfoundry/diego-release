@@ -29,7 +29,7 @@ pushd src/cnbapplifecycle > /dev/null
 popd > /dev/null
 echo ""
 
-for repo in auction auctioneer bbs buildpackapplifecycle cacheddownloader cfdot diego-ssh dockerapplifecycle ecrhelper executor fileserver healthcheck inigo localdriver locket operationq rep route-emitter vizzini volman workpool; do
+for repo in bbs buildpackapplifecycle cacheddownloader executor locket rep; do
   START_REF_REPO=$(git rev-parse "${local_start_ref}:src/code.cloudfoundry.org/${repo}")
   END_REF_REPO=$(git rev-parse "${local_end_ref}:src/code.cloudfoundry.org/${repo}")
   pushd src/code.cloudfoundry.org/${repo} > /dev/null
