@@ -1104,7 +1104,7 @@ func (maker commonComponentMaker) BBSServiceClient(logger lager.Logger) servicec
 	locketClient, err := locket.NewClient(logger, maker.locketClientConfig())
 	Expect(err).NotTo(HaveOccurred())
 
-	return serviceclient.NewServiceClient(locketClient)
+	return serviceclient.NewServiceClient(locketClient, time.Duration(30)*time.Second)
 }
 
 func (maker commonComponentMaker) BBSURL() string {
