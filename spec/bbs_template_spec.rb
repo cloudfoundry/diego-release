@@ -91,24 +91,61 @@ describe 'bbs' do
       end
     end
 
-    describe 'Database timeout configurations' do 
-      it 'includes db timeout settings when specified' do 
+    describe 'Database timeout configurations' do
+      it 'includes db timeout settings when specified' do
         deployment_manifest_fragment['diego']['bbs']['sql']['db_connection_timeout'] = '30'
         deployment_manifest_fragment['diego']['bbs']['sql']['db_read_timeout'] = '60'
         deployment_manifest_fragment['diego']['bbs']['sql']['db_write_timeout'] = '45'
-        rendered_template_json = JSON.parse(rendered_template) 
-        expect(rendered_template_json['db_connection_timeout']).to eq('30s') 
-        expect(rendered_template_json['db_read_timeout']).to eq('60s') 
-        expect(rendered_template_json['db_write_timeout']).to eq('45s') 
+        rendered_template_json = JSON.parse(rendered_template)
+        expect(rendered_template_json['db_connection_timeout']).to eq('30s')
+        expect(rendered_template_json['db_read_timeout']).to eq('60s')
+        expect(rendered_template_json['db_write_timeout']).to eq('45s')
       end
 
-      it 'uses default timeout values when not specified' do 
-        rendered_template_json = JSON.parse(rendered_template) 
-        expect(rendered_template_json['db_connection_timeout']).to eq('30s') 
-        expect(rendered_template_json['db_read_timeout']).to eq('600s') 
-        expect(rendered_template_json['db_write_timeout']).to eq('600s')  
-      end 
-    end 
+      it 'uses default timeout values when not specified' do
+        rendered_template_json = JSON.parse(rendered_template)
+        expect(rendered_template_json['db_connection_timeout']).to eq('30s')
+        expect(rendered_template_json['db_read_timeout']).to eq('600s')
+        expect(rendered_template_json['db_write_timeout']).to eq('600s')
+      end
+    end
+
+    describe 'logging' do
+      context 'log level' do
+        it 'sets the default log level' do
+          rendered_template_json = JSON.parse(rendered_template)
+          expect(rendered_template_json['log_level']).to eq('info')
+        end
+
+        context 'when log level is specified' do
+          before do
+            deployment_manifest_fragment['diego']['bbs']['log_level']= 'debug'
+          end
+          it do
+          rendered_template_json = JSON.parse(rendered_template)
+          expect(rendered_template_json['log_level']).to eq('debug')
+          end
+        end
+      end
+
+      context 'debug_lrp_start_heartbeats' do
+        it 'sets the debug_lrp_start_heartbeats off by default' do
+          rendered_template_json = JSON.parse(rendered_template)
+          expect(rendered_template_json['debug_lrp_start_heartbeats']).to be false
+        end
+
+        context 'when log level is specified' do
+          before do
+            deployment_manifest_fragment['diego']['bbs']['debug_lrp_start_heartbeats'] = true
+          end
+          it do
+          rendered_template_json = JSON.parse(rendered_template)
+          expect(rendered_template_json['debug_lrp_start_heartbeats']).to be true
+          end
+        end
+      end
+    end
+
 
     describe 'Advanced Metrics' do
       it 'check if bbs.json doesn\'t include \'advanced_metrics\' on \'enabled\' value equal to false' do

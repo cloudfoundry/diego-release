@@ -59,6 +59,9 @@ properties:
   diego.bbs.log_level:
     description: "Log level"
     default: "info"
+  diego.bbs.debug_lrp_start_heartbeats:
+    description: "When this property is set to 'true', container heartbeat log messages are issued at a debug level, which reduces log volume. When this property is set to 'false', container heartbeat log messages issued at an info level."
+    default: false
   diego.bbs.enable_access_log:
     description: "Enable access log, i.e. log every request made to the bbs"
     default: false
