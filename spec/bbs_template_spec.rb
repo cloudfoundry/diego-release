@@ -110,6 +110,18 @@ describe 'bbs' do
       end 
     end 
 
+    describe 'database connection lifetime' do 
+      it 'sets the db connection lifetime when specified' do
+        deployment_manifest_fragment['diego']['bbs']['sql']['max_connection_lifetime'] = '10'
+        rendered_template_json = JSON.parse(rendered_template)
+        expect(rendered_template_json['max_database_connection_lifetime']).to eq('10s')
+      end
+      it 'sets the db connection lifetime when specified' do
+        rendered_template_json = JSON.parse(rendered_template)
+        expect(rendered_template_json['max_database_connection_lifetime']).to eq('90s')
+      end
+    end
+
     describe 'Advanced Metrics' do
       it 'check if bbs.json doesn\'t include \'advanced_metrics\' on \'enabled\' value equal to false' do
         # if diego.bbs.metrics.advanced_metrics misses diego.bbs.metrics.advanced_metrics.enabled defaults to false

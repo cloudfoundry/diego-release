@@ -118,6 +118,8 @@
     config[:max_open_database_connections] = value
   end
 
+  config[:max_database_connection_lifetime] = "#{p("diego.bbs.sql.max_connection_lifetime")}s"
+
   if_p("diego.bbs.sql.max_idle_connections") do |value|
     config[:max_idle_database_connections] = value
   end

@@ -101,6 +101,9 @@ properties:
   diego.bbs.sql.max_idle_connections:
     description: "Maximum number of idle connections to the SQL database"
     default: 200
+  diego.bbs.sql.max_connection_lifetime:
+    description: "Maximum lifetime of connections to the SQL database before connections are recreated"
+    default: 90
   diego.bbs.sql.db_connection_timeout: 
     description: "Timeout in seconds for a db client to wait for a connection to be established"
     default: "30"
