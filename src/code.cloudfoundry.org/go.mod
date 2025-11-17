@@ -9,7 +9,6 @@ replace (
 	code.cloudfoundry.org/grootfs => ../grootfs
 	code.cloudfoundry.org/guardian => ../guardian
 	code.cloudfoundry.org/idmapper => ../idmapper
-	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.12.0
 )
 
 require (
@@ -47,7 +46,7 @@ require (
 	github.com/cloudfoundry/dropsonde v1.1.0
 	github.com/containers/image/v5 v5.36.2
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
-	github.com/envoyproxy/go-control-plane v0.13.4
+	github.com/envoyproxy/go-control-plane/envoy v1.32.4
 	github.com/fsnotify/fsnotify v1.9.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-sql-driver/mysql v1.9.3
@@ -113,7 +112,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.39.0 // indirect
 	github.com/aws/smithy-go v1.23.2 // indirect
 	github.com/bmizerany/pat v0.0.0-20210406213842-e4b6760bdd6f // indirect
-	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
 	github.com/cloudfoundry/go-socks5 v0.0.0-20250423223041-4ad5fea42851 // indirect
 	github.com/cloudfoundry/socks5-proxy v0.2.159 // indirect
 	github.com/cloudfoundry/sonde-go v0.0.0-20251008062332-ece9fc2bedb4 // indirect
@@ -157,8 +155,8 @@ require (
 	github.com/nats-io/nkeys v0.4.11 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/opencontainers/cgroups v0.0.6 // indirect
-	github.com/opencontainers/runc v1.3.2 // indirect
 	github.com/opencontainers/runtime-spec v1.3.0 // indirect
+	github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10 // indirect
 	github.com/prometheus/common v0.63.0 // indirect
 	github.com/prometheus/procfs v0.16.1 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
