@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -46,7 +47,8 @@ var (
 	natsPort           uint16
 	healthCheckAddress string
 
-	oauthServer *ghttp.Server
+	oauthServer      *ghttp.Server
+	auctioneerServer *ghttp.Server
 
 	bbsPath      string
 	bbsURL       *url.URL
@@ -185,7 +187,7 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 		},
 		ListenAddress:            bbsAddress,
 		AdvertiseURL:             bbsURL.String(),
-		AuctioneerAddress:        "http://some-address",
+		AuctioneerAddress:        "",
 		DatabaseDriver:           sqlRunner.DriverName(),
 		DatabaseConnectionString: sqlRunner.ConnectionString(),
 		HealthAddress:            bbsHealthAddress,
@@ -240,10 +242,22 @@ func startOAuthServer() *ghttp.Server {
 	return server
 }
 
+func startAuctioneerServer() *ghttp.Server {
+	server := ghttp.NewServer()
+	// Handle LRP auction requests
+	server.RouteToHandler("POST", "/v1/lrps", ghttp.RespondWith(http.StatusAccepted, nil))
+	// Handle task auction requests
+	server.RouteToHandler("POST", "/v1/tasks", ghttp.RespondWith(http.StatusAccepted, nil))
+	return server
+}
+
 var _ = BeforeEach(func() {
 	cfgs = nil
 	oauthServer = startOAuthServer()
+	auctioneerServer = startAuctioneerServer()
 	sqlProcess = ginkgomon.Invoke(sqlRunner)
+	// Wait for SQL database to be ready before starting locket
+	time.Sleep(200 * time.Millisecond)
 
 	fixturesPath := "fixtures"
 	var err error
@@ -271,9 +285,23 @@ var _ = BeforeEach(func() {
 	logger := lagertest.NewTestLogger("test")
 	logger.Debug(fmt.Sprintf("bbs locket address: %s", locketAddress))
 	locketProcess = ginkgomon.Invoke(locketRunner)
+	// Wait for locket to be ready before BBS tries to connect
+	// First check TCP connectivity
+	Eventually(func() error {
+		conn, err := net.DialTimeout("tcp", locketAddress, 100*time.Millisecond)
+		if err != nil {
+			return err
+		}
+		conn.Close()
+		return nil
+	}, 5*time.Second, 100*time.Millisecond).Should(Succeed())
+	// Additional wait to ensure gRPC service is fully initialized
+	// The TCP check may pass before gRPC is ready
+	time.Sleep(500 * time.Millisecond)
 
 	bbsConfig.ClientLocketConfig = locketrunner.ClientLocketConfig()
 	bbsConfig.ClientLocketConfig.LocketAddress = locketAddress
+	bbsConfig.AuctioneerAddress = auctioneerServer.URL()
 	startBBS()
 
 	certDepot, err = os.MkdirTemp("", "")
@@ -316,6 +344,9 @@ var _ = AfterEach(func() {
 	ginkgomon.Kill(locketProcess)
 	Eventually(locketProcess.Wait()).Should(Receive())
 
+	if auctioneerServer != nil {
+		auctioneerServer.Close()
+	}
 	testIngressServer.Stop()
 	close(signalMetricsChan)
 

@@ -19,6 +19,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"net/http/httputil"
@@ -340,6 +341,19 @@ var _ = Describe("Route Emitter", func() {
 
 		})
 		routingAPILocketProcess = ginkgomon.Invoke(routingAPILocketRunner)
+		// Wait for routing-api locket to be ready before routing-api tries to connect
+		// First check TCP connectivity
+		Eventually(func() error {
+			conn, err := net.DialTimeout("tcp", routingAPILocketAddress, 100*time.Millisecond)
+			if err != nil {
+				return err
+			}
+			conn.Close()
+			return nil
+		}, 5*time.Second, 100*time.Millisecond).Should(Succeed())
+		// Additional wait to ensure gRPC service is fully initialized
+		// The TCP check may pass before gRPC is ready
+		time.Sleep(500 * time.Millisecond)
 		routingAPIPort := port + 2
 		routingAPIRunner, err = runners.NewRoutingAPIRunner(routingAPIPath, int(port+1), sqlConfig, func(cfg *runners.Config) {
 			cfg.API = routinapiconfig.APIConfig{
@@ -2287,7 +2301,7 @@ var _ = Describe("Route Emitter", func() {
 						}
 					}()
 
-					Eventually(registeredRoutes, 3*msgReceiveTimeout).Should(Receive(MatchRegistryMessage(routingtable.RegistryMessage{
+					expectedRoute1Message := routingtable.RegistryMessage{
 						Host:                 "1.2.3.4",
 						Port:                 65100,
 						TlsPort:              0,
@@ -2304,7 +2318,23 @@ var _ = Describe("Route Emitter", func() {
 							"some-tag":  "some-value",
 						},
 						AvailabilityZone: "some-zone",
-					})))
+					}
+
+					// Drain messages until we find route-1 with the new details
+					// We may receive route-2 messages first, so we need to keep reading
+					Eventually(func() bool {
+						select {
+						case msg := <-registeredRoutes:
+							matched, err := MatchRegistryMessage(expectedRoute1Message).Match(msg)
+							if err != nil {
+								return false
+							}
+							return matched
+						case <-time.After(100 * time.Millisecond):
+							// No message received, continue waiting
+							return false
+						}
+					}, 3*msgReceiveTimeout).Should(BeTrue())
 					done <- struct{}{}
 
 					Consistently(unregisteredRoutes, 3*msgReceiveTimeout).ShouldNot(Receive())
