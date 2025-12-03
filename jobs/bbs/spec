@@ -112,10 +112,10 @@ properties:
     default: "30"
   diego.bbs.sql.db_read_timeout: 
     description: "Timeout in seconds for a db client to wait for data to be received from the server"
-    default: "600"
+    default: "60"
   diego.bbs.sql.db_write_timeout: 
     description: "Timeout in seconds for a db client to wait for data to be sent to the server"
-    default: "600"
+    default: "60"
   diego.bbs.sql.require_ssl:
     description: "Whether to require SSL for BBS communication to the SQL backend"
     default: false
