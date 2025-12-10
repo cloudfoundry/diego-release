@@ -66,6 +66,8 @@ properties:
     description: "Comma separated list of allowed MAC algorithms"
   diego.ssh_proxy.allowed_keyexchanges:
     description: "Comma separated list of allowed key exchange algorithms"
+  diego.ssh_proxy.allowed_host_key_algorithms:
+    description: "Comma separated list of allowed host key algorithms"
   diego.ssh_proxy.debug_addr:
     description: "address at which to serve debug info"
     default: "127.0.0.1:17016"

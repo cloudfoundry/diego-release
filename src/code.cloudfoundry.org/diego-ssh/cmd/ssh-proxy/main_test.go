@@ -929,6 +929,47 @@ var _ = Describe("SSH proxy", Serial, func() {
 			})
 		})
 
+		Context("when the proxy is configured with a host key algorithm that doesnt match the host key", func() {
+			BeforeEach(func() {
+				sshProxyConfig.AllowedHostKeyAlgorithms = "non-rsa-algorithm"
+			})
+
+			It("exits with non-zero status code", func() {
+				Eventually(process.Wait()).Should(Receive(HaveOccurred()))
+			})
+		})
+
+		Context("when the proxy provides a supported host key algorithm", func() {
+			BeforeEach(func() {
+				sshProxyConfig.AllowedHostKeyAlgorithms = "rsa-sha2-256,rsa-sha2-512"
+				clientConfig = &ssh.ClientConfig{
+					User:            "diego:" + processGuid + "/99",
+					Auth:            []ssh.AuthMethod{ssh.Password(diegoCredentials)},
+					HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+				}
+			})
+
+			It("allows a client to complete a handshake", func() {
+				client, err := ssh.Dial("tcp", address, clientConfig)
+				Expect(err).NotTo(HaveOccurred())
+
+				err = client.Close()
+				Expect(err).NotTo(HaveOccurred())
+			})
+		})
+
+		Context("when the proxy provides the default host key algorithm", func() {
+			BeforeEach(func() {
+				clientConfig.HostKeyAlgorithms = []string{"ssh-ed25519"}
+			})
+
+			It("errors when the client doesn't provide the host key algorithm: 'ssh-ed25519'", func() {
+				_, err := ssh.Dial("tcp", address, clientConfig)
+				Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for host key; we offered: [ssh-ed25519], peer offered: [rsa-sha2-256 rsa-sha2-512 ssh-rsa]"))
+				Expect(fakeBBS.ReceivedRequests()).To(HaveLen(0))
+			})
+		})
+
 		Context("when a non-existent process guid is used", func() {
 			BeforeEach(func() {
 				clientConfig.User = "diego:bad-process-guid/999"

@@ -183,9 +183,10 @@ func configureProxy(logger lager.Logger, sshProxyConfig config.SSHProxyConfig) (
 		logger.Fatal("host-key-required", err)
 	}
 
-	key, err := parsePrivateKey(logger, sshProxyConfig.HostKey)
+	key, err := parsePrivateKey(logger, sshProxyConfig)
 	if err != nil {
 		logger.Fatal("failed-to-parse-host-key", err)
+		return nil, err
 	}
 
 	sshConfig.AddHostKey(key)
@@ -211,12 +212,24 @@ func configureProxy(logger lager.Logger, sshProxyConfig config.SSHProxyConfig) (
 	return sshConfig, err
 }
 
-func parsePrivateKey(logger lager.Logger, encodedKey string) (ssh.Signer, error) {
-	key, err := ssh.ParsePrivateKey([]byte(encodedKey))
+func parsePrivateKey(logger lager.Logger, sshProxyConfig config.SSHProxyConfig) (ssh.Signer, error) {
+	key, err := ssh.ParsePrivateKey([]byte(sshProxyConfig.HostKey))
 	if err != nil {
 		logger.Error("failed-to-parse-private-key", err)
 		return nil, err
 	}
+
+	if sshProxyConfig.AllowedHostKeyAlgorithms != "" {
+		key, err = ssh.NewSignerWithAlgorithms(
+			key.(ssh.AlgorithmSigner),
+			strings.Split(sshProxyConfig.AllowedHostKeyAlgorithms, ","),
+		)
+		if err != nil {
+			logger.Error("failed-to-restrict-host-key-algorithms", err)
+			return nil, err
+		}
+	}
+
 	return key, nil
 }
 

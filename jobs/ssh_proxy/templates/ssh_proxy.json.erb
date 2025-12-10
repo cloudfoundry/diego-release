@@ -76,6 +76,9 @@
   if_p("diego.ssh_proxy.allowed_keyexchanges") do |value|
     config[:allowed_key_exchanges] = value
   end
+  if_p("diego.ssh_proxy.allowed_host_key_algorithms") do |value|
+    config[:allowed_host_key_algorithms] = value
+  end
   if_p("diego.ssh_proxy.bbs.client_session_cache_size") do |value|
     config[:bbs_client_session_cache_size] = value
   end

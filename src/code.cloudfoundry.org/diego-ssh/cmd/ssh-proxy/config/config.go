@@ -40,6 +40,7 @@ type SSHProxyConfig struct {
 	AllowedCiphers            string                `json:"allowed_ciphers"`
 	AllowedMACs               string                `json:"allowed_macs"`
 	AllowedKeyExchanges       string                `json:"allowed_key_exchanges"`
+	AllowedHostKeyAlgorithms  string                `json:"allowed_host_key_algorithms"`
 	LoggregatorConfig         loggingclient.Config  `json:"loggregator"`
 	CommunicationTimeout      durationjson.Duration `json:"communication_timeout,omitempty"`
 	IdleConnectionTimeout     durationjson.Duration `json:"idle_connection_timeout,omitempty"`
