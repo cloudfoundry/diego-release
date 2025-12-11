@@ -56,6 +56,18 @@ properties:
   diego.bbs.health_addr:
     description: "address at which BBS serves '/ping' health-check endpoint"
     default: "127.0.0.1:8890"
+  diego.bbs.health_check_timeout:
+    description: Number of seconds to wait for the DB health check insert/retrieve operation should time out
+    default: 5
+  diego.bbs.health_check_interval:
+    description: Number of seconds to wait between DB health checks
+    default: 10
+  diego.bbs.health_check_failure_threshold:
+    description: Number of consecutive failed DB health checks before restarting BBS
+    default: 3
+  diego.bbs.enable_db_health_check:
+    description: Whether or not to enable DB health checks in BBS to ensure it restarts in a timely fashion upon severe DB degradation
+    default: false
   diego.bbs.log_level:
     description: "Log level"
     default: "info"

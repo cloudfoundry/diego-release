@@ -110,6 +110,28 @@ describe 'bbs' do
       end
     end
 
+    describe 'DB Health Check configurations' do
+      it 'includes db health check configurations when specified' do
+        deployment_manifest_fragment['diego']['bbs']['health_check_failure_threshold'] = 42
+        deployment_manifest_fragment['diego']['bbs']['health_check_timeout'] = 20
+        deployment_manifest_fragment['diego']['bbs']['health_check_interval'] = 30
+        deployment_manifest_fragment['diego']['bbs']['enable_db_health_check'] = true
+        rendered_template_json = JSON.parse(rendered_template)
+        expect(rendered_template_json['enable_db_health_check']).to be true
+        expect(rendered_template_json['health_check_timeout']).to eq('20s')
+        expect(rendered_template_json['health_check_failure_threshold']).to eq(42)
+        expect(rendered_template_json['health_check_interval']).to eq('30s')
+      end
+
+      it 'uses default values when not specified' do
+        rendered_template_json = JSON.parse(rendered_template)
+        expect(rendered_template_json['enable_db_health_check']).to be false
+        expect(rendered_template_json['health_check_timeout']).to eq('5s')
+        expect(rendered_template_json['health_check_failure_threshold']).to eq(3)
+        expect(rendered_template_json['health_check_interval']).to eq('10s')
+      end
+    end
+
     describe 'logging' do
       context 'log level' do
         it 'sets the default log level' do

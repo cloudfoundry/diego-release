@@ -32,6 +32,8 @@
     task_callback_workers: 1000,
     listen_address: p("diego.bbs.listen_addr"),
     health_address: p("diego.bbs.health_addr"),
+    health_check_failure_threshold: p("diego.bbs.health_check_failure_threshold"),
+    enable_db_health_check: p("diego.bbs.enable_db_health_check"),
     rep_client_session_cache_size: p("diego.bbs.rep.client_session_cache_size"),
     log_level: p("diego.bbs.log_level"),
     debug_lrp_start_heartbeats: p("diego.bbs.debug_lrp_start_heartbeats"),
@@ -135,6 +137,13 @@
 
   if_p("diego.bbs.sql.db_write_timeout") do |value|
     config[:db_write_timeout] = "#{value}s" # add time unit
+  end
+
+  if_p("diego.bbs.health_check_timeout") do |value|
+    config[:health_check_timeout] = "#{value}s" # add time unit
+  end
+  if_p("diego.bbs.health_check_interval") do |value|
+    config[:health_check_interval] = "#{value}s" # add time unit
   end
 
   if_p("diego.bbs.sql.db_driver") do |value|
