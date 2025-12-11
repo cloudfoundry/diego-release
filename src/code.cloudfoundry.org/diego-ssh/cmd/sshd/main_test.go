@@ -40,9 +40,10 @@ var _ = Describe("SSH daemon", func() {
 		privateKey    string
 		authorizedKey string
 
-		allowedCiphers      string
-		allowedMACs         string
-		allowedKeyExchanges string
+		allowedCiphers           string
+		allowedMACs              string
+		allowedKeyExchanges      string
+		allowedHostKeyAlgorithms string
 
 		allowUnauthenticatedClients bool
 		inheritDaemonEnv            bool
@@ -56,6 +57,7 @@ var _ = Describe("SSH daemon", func() {
 		allowedCiphers = ""
 		allowedMACs = ""
 		allowedKeyExchanges = ""
+		allowedHostKeyAlgorithms = ""
 
 		allowUnauthenticatedClients = false
 		inheritDaemonEnv = false
@@ -67,9 +69,10 @@ var _ = Describe("SSH daemon", func() {
 			HostKey:       string(hostKey),
 			AuthorizedKey: string(authorizedKey),
 
-			AllowedCiphers:      string(allowedCiphers),
-			AllowedMACs:         string(allowedMACs),
-			AllowedKeyExchanges: string(allowedKeyExchanges),
+			AllowedCiphers:           string(allowedCiphers),
+			AllowedMACs:              string(allowedMACs),
+			AllowedKeyExchanges:      string(allowedKeyExchanges),
+			AllowedHostKeyAlgorithms: string(allowedHostKeyAlgorithms),
 
 			AllowUnauthenticatedClients: allowUnauthenticatedClients,
 			InheritDaemonEnv:            inheritDaemonEnv,
@@ -131,6 +134,30 @@ var _ = Describe("SSH daemon", func() {
 				})
 			})
 		})
+
+		Context("when allowedHostKeyAlgorithms is set", func() {
+			Context("and the value is invalid", func() {
+				BeforeEach(func() {
+					allowedHostKeyAlgorithms = "invalid"
+				})
+
+				It("reports and dies", func() {
+					Expect(runner).To(gbytes.Say("failed-to-restrict-host-key-algorithms"))
+					Expect(runner).NotTo(gexec.Exit(0))
+				})
+			})
+
+			Context("and the algorithm matches the key type", func() {
+				BeforeEach(func() {
+					allowedHostKeyAlgorithms = "ssh-rsa"
+				})
+
+				It("starts normally", func() {
+					Expect(process).NotTo(BeNil())
+				})
+			})
+		})
+
 	})
 
 	Describe("env variable validation", func() {
