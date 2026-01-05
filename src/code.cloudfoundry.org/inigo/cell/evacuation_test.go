@@ -180,6 +180,57 @@ var _ = Describe("Evacuation", func() {
 		Consistently(helpers.ResponseCodeFromHostPoller(componentMaker.Addresses().Router, helpers.DefaultHost)).Should(Equal(http.StatusOK))
 	})
 
+	FContext("when garden Create is slow", func() {
+		BeforeEach(func() {
+			replaceGrootFSWithSlowCreateVersion()
+		})
+
+		JustBeforeEach(func() {
+			// kill cell-b to simplify the test. otherwise, we will have to figure
+			// out which cell to evacuate
+			ginkgomon.Kill(cellB)
+		})
+		It("does not leave the container undestroyed", func() {
+			index := int32(0)
+			err := bbsClient.DesireLRP(lgr, "", lrp)
+			Expect(err).NotTo(HaveOccurred())
+			By("running an actual LRP instance")
+			Eventually(helpers.LRPStatePoller(lgr, bbsClient, processGuid, nil)).Should(Equal(models.ActualLRPStateClaimed))
+
+			factory := componentMaker.RepClientFactory()
+			addr := fmt.Sprintf("https://%s.cell.service.cf.internal:%d", cellAID, cellPortsStart)
+			secureAddr := fmt.Sprintf("https://%s.cell.service.cf.internal:%d", cellAID, cellPortsStart+1)
+			// NewClientFactory <<- tls
+			client, err := factory.CreateClient(addr, secureAddr, "")
+			Expect(err).NotTo(HaveOccurred())
+			go func() {
+				lrps, err := bbsClient.ActualLRPs(lgr, "", models.ActualLRPFilter{
+					ProcessGuid: processGuid,
+					Index:       &index,
+				})
+				Expect(err).ToNot(HaveOccurred())
+				for i := 0; i < 100; i++ {
+					err := client.StopLRPInstance(lgr, lrps[0].ActualLRPKey, lrps[0].ActualLRPInstanceKey)
+					if err != nil {
+						return
+					}
+					time.Sleep(100 * time.Millisecond)
+				}
+			}()
+			time.Sleep(10 * time.Second)
+
+			findLrps := func() (int, error) {
+				lrps, err := bbsClient.ActualLRPs(lgr, "", models.ActualLRPFilter{
+					ProcessGuid: processGuid,
+					Index:       &index,
+				})
+				return len(lrps), err
+			}
+			Consistently(findLrps, "90s").Should(Equal(0))
+		})
+
+	})
+
 	Context("when garden Destroy hangs", func() {
 		BeforeEach(func() {
 			replaceGrootFSWithHangingVersion()
@@ -248,6 +299,32 @@ var _ = Describe("Evacuation", func() {
 		})
 	})
 })
+
+func replaceGrootFSWithSlowCreateVersion() {
+	f, err := os.CreateTemp(os.TempDir(), "image_plugin")
+	Expect(err).NotTo(HaveOccurred())
+	Expect(f.Chmod(0755)).To(Succeed())
+	path := filepath.Join(os.Getenv("GARDEN_BINPATH"), "grootfs")
+	os.Remove(fmt.Sprintf("/tmp/image_plugin_create_delay_%d", GinkgoParallelProcess()))
+	fmt.Fprintf(f, `#!/usr/bin/env bash
+echo $(date +%%s) "$@" >> /tmp/image_plugin_trace
+lock_file=/tmp/image_plugin_create_delay_%d
+# sleep on create operation to create race condition window
+if [[ "x$3" == "xcreate" && ! -f $lock_file ]]; then
+  touch $lock_file
+  # Delaying container creation...
+  sleep 5
+  rm -f $lock_file
+fi
+%s "$@"
+`, GinkgoParallelProcess(), path)
+	Expect(f.Close()).To(Succeed())
+	ginkgomon.Interrupt(gardenProcess)
+	gardenProcess = ginkgomon.Invoke(componentMaker.Garden(func(config *runner.GdnRunnerConfig) {
+		config.ImagePluginBin = f.Name()
+		config.PrivilegedImagePluginBin = f.Name()
+	}))
+}
 
 func replaceGrootFSWithHangingVersion() {
 	f, err := os.CreateTemp(os.TempDir(), "image_plugin")
