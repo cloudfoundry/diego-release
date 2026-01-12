@@ -31,16 +31,16 @@ func (fake *FakeSSHKeyFactory) NewKeyPair(arg1 int) (keys.KeyPair, error) {
 	fake.newKeyPairArgsForCall = append(fake.newKeyPairArgsForCall, struct {
 		arg1 int
 	}{arg1})
+	stub := fake.NewKeyPairStub
+	fakeReturns := fake.newKeyPairReturns
 	fake.recordInvocation("NewKeyPair", []interface{}{arg1})
-	newKeyPairStubCopy := fake.NewKeyPairStub
 	fake.newKeyPairMutex.Unlock()
-	if newKeyPairStubCopy != nil {
-		return newKeyPairStubCopy(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	fakeReturns := fake.newKeyPairReturns
 	return fakeReturns.result1, fakeReturns.result2
 }
 
@@ -92,8 +92,6 @@ func (fake *FakeSSHKeyFactory) NewKeyPairReturnsOnCall(i int, result1 keys.KeyPa
 func (fake *FakeSSHKeyFactory) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
-	fake.newKeyPairMutex.RLock()
-	defer fake.newKeyPairMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

@@ -59,6 +59,16 @@ type FakeKeyPair struct {
 	publicKeyReturnsOnCall map[int]struct {
 		result1 ssh.PublicKey
 	}
+	SHA256FingerprintStub        func() string
+	sHA256FingerprintMutex       sync.RWMutex
+	sHA256FingerprintArgsForCall []struct {
+	}
+	sHA256FingerprintReturns struct {
+		result1 string
+	}
+	sHA256FingerprintReturnsOnCall map[int]struct {
+		result1 string
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
@@ -68,16 +78,16 @@ func (fake *FakeKeyPair) AuthorizedKey() string {
 	ret, specificReturn := fake.authorizedKeyReturnsOnCall[len(fake.authorizedKeyArgsForCall)]
 	fake.authorizedKeyArgsForCall = append(fake.authorizedKeyArgsForCall, struct {
 	}{})
+	stub := fake.AuthorizedKeyStub
+	fakeReturns := fake.authorizedKeyReturns
 	fake.recordInvocation("AuthorizedKey", []interface{}{})
-	authorizedKeyStubCopy := fake.AuthorizedKeyStub
 	fake.authorizedKeyMutex.Unlock()
-	if authorizedKeyStubCopy != nil {
-		return authorizedKeyStubCopy()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.authorizedKeyReturns
 	return fakeReturns.result1
 }
 
@@ -121,16 +131,16 @@ func (fake *FakeKeyPair) Fingerprint() string {
 	ret, specificReturn := fake.fingerprintReturnsOnCall[len(fake.fingerprintArgsForCall)]
 	fake.fingerprintArgsForCall = append(fake.fingerprintArgsForCall, struct {
 	}{})
+	stub := fake.FingerprintStub
+	fakeReturns := fake.fingerprintReturns
 	fake.recordInvocation("Fingerprint", []interface{}{})
-	fingerprintStubCopy := fake.FingerprintStub
 	fake.fingerprintMutex.Unlock()
-	if fingerprintStubCopy != nil {
-		return fingerprintStubCopy()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.fingerprintReturns
 	return fakeReturns.result1
 }
 
@@ -174,16 +184,16 @@ func (fake *FakeKeyPair) PEMEncodedPrivateKey() string {
 	ret, specificReturn := fake.pEMEncodedPrivateKeyReturnsOnCall[len(fake.pEMEncodedPrivateKeyArgsForCall)]
 	fake.pEMEncodedPrivateKeyArgsForCall = append(fake.pEMEncodedPrivateKeyArgsForCall, struct {
 	}{})
+	stub := fake.PEMEncodedPrivateKeyStub
+	fakeReturns := fake.pEMEncodedPrivateKeyReturns
 	fake.recordInvocation("PEMEncodedPrivateKey", []interface{}{})
-	pEMEncodedPrivateKeyStubCopy := fake.PEMEncodedPrivateKeyStub
 	fake.pEMEncodedPrivateKeyMutex.Unlock()
-	if pEMEncodedPrivateKeyStubCopy != nil {
-		return pEMEncodedPrivateKeyStubCopy()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.pEMEncodedPrivateKeyReturns
 	return fakeReturns.result1
 }
 
@@ -227,16 +237,16 @@ func (fake *FakeKeyPair) PrivateKey() ssh.Signer {
 	ret, specificReturn := fake.privateKeyReturnsOnCall[len(fake.privateKeyArgsForCall)]
 	fake.privateKeyArgsForCall = append(fake.privateKeyArgsForCall, struct {
 	}{})
+	stub := fake.PrivateKeyStub
+	fakeReturns := fake.privateKeyReturns
 	fake.recordInvocation("PrivateKey", []interface{}{})
-	privateKeyStubCopy := fake.PrivateKeyStub
 	fake.privateKeyMutex.Unlock()
-	if privateKeyStubCopy != nil {
-		return privateKeyStubCopy()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.privateKeyReturns
 	return fakeReturns.result1
 }
 
@@ -280,16 +290,16 @@ func (fake *FakeKeyPair) PublicKey() ssh.PublicKey {
 	ret, specificReturn := fake.publicKeyReturnsOnCall[len(fake.publicKeyArgsForCall)]
 	fake.publicKeyArgsForCall = append(fake.publicKeyArgsForCall, struct {
 	}{})
+	stub := fake.PublicKeyStub
+	fakeReturns := fake.publicKeyReturns
 	fake.recordInvocation("PublicKey", []interface{}{})
-	publicKeyStubCopy := fake.PublicKeyStub
 	fake.publicKeyMutex.Unlock()
-	if publicKeyStubCopy != nil {
-		return publicKeyStubCopy()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	fakeReturns := fake.publicKeyReturns
 	return fakeReturns.result1
 }
 
@@ -328,19 +338,62 @@ func (fake *FakeKeyPair) PublicKeyReturnsOnCall(i int, result1 ssh.PublicKey) {
 	}{result1}
 }
 
+func (fake *FakeKeyPair) SHA256Fingerprint() string {
+	fake.sHA256FingerprintMutex.Lock()
+	ret, specificReturn := fake.sHA256FingerprintReturnsOnCall[len(fake.sHA256FingerprintArgsForCall)]
+	fake.sHA256FingerprintArgsForCall = append(fake.sHA256FingerprintArgsForCall, struct {
+	}{})
+	stub := fake.SHA256FingerprintStub
+	fakeReturns := fake.sHA256FingerprintReturns
+	fake.recordInvocation("SHA256Fingerprint", []interface{}{})
+	fake.sHA256FingerprintMutex.Unlock()
+	if stub != nil {
+		return stub()
+	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fakeReturns.result1
+}
+
+func (fake *FakeKeyPair) SHA256FingerprintCallCount() int {
+	fake.sHA256FingerprintMutex.RLock()
+	defer fake.sHA256FingerprintMutex.RUnlock()
+	return len(fake.sHA256FingerprintArgsForCall)
+}
+
+func (fake *FakeKeyPair) SHA256FingerprintCalls(stub func() string) {
+	fake.sHA256FingerprintMutex.Lock()
+	defer fake.sHA256FingerprintMutex.Unlock()
+	fake.SHA256FingerprintStub = stub
+}
+
+func (fake *FakeKeyPair) SHA256FingerprintReturns(result1 string) {
+	fake.sHA256FingerprintMutex.Lock()
+	defer fake.sHA256FingerprintMutex.Unlock()
+	fake.SHA256FingerprintStub = nil
+	fake.sHA256FingerprintReturns = struct {
+		result1 string
+	}{result1}
+}
+
+func (fake *FakeKeyPair) SHA256FingerprintReturnsOnCall(i int, result1 string) {
+	fake.sHA256FingerprintMutex.Lock()
+	defer fake.sHA256FingerprintMutex.Unlock()
+	fake.SHA256FingerprintStub = nil
+	if fake.sHA256FingerprintReturnsOnCall == nil {
+		fake.sHA256FingerprintReturnsOnCall = make(map[int]struct {
+			result1 string
+		})
+	}
+	fake.sHA256FingerprintReturnsOnCall[i] = struct {
+		result1 string
+	}{result1}
+}
+
 func (fake *FakeKeyPair) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
-	fake.authorizedKeyMutex.RLock()
-	defer fake.authorizedKeyMutex.RUnlock()
-	fake.fingerprintMutex.RLock()
-	defer fake.fingerprintMutex.RUnlock()
-	fake.pEMEncodedPrivateKeyMutex.RLock()
-	defer fake.pEMEncodedPrivateKeyMutex.RUnlock()
-	fake.privateKeyMutex.RLock()
-	defer fake.privateKeyMutex.RUnlock()
-	fake.publicKeyMutex.RLock()
-	defer fake.publicKeyMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

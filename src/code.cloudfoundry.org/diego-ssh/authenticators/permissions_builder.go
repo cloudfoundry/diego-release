@@ -89,11 +89,17 @@ func (pb *permissionsBuilder) createPermissions(
 				tlsAddress = fmt.Sprintf("%s:%d", actual.InstanceAddress, mapping.ContainerTlsProxyPort)
 			}
 
+			// Prefer SHA256 fingerprint if available, fall back to legacy fingerprint
+			hostFingerprint := sshRoute.Host256Fingerprint
+			if hostFingerprint == "" {
+				hostFingerprint = sshRoute.HostFingerprint
+			}
+
 			targetConfig = &proxy.TargetConfig{
 				Address:             fmt.Sprintf("%s:%d", address, port),
 				TLSAddress:          tlsAddress,
 				ServerCertDomainSAN: actual.ActualLRPInstanceKey.InstanceGuid,
-				HostFingerprint:     sshRoute.HostFingerprint,
+				HostFingerprint:     hostFingerprint,
 				User:                sshRoute.User,
 				Password:            sshRoute.Password,
 				PrivateKey:          sshRoute.PrivateKey,

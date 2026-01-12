@@ -17,6 +17,7 @@ type KeyPair interface {
 
 	PublicKey() ssh.PublicKey
 	Fingerprint() string
+	SHA256Fingerprint() string // New method for SHA256
 	AuthorizedKey() string
 }
 
@@ -80,6 +81,10 @@ func (k *rsaKeyPair) PublicKey() ssh.PublicKey {
 
 func (k *rsaKeyPair) Fingerprint() string {
 	return helpers.MD5Fingerprint(k.PublicKey())
+}
+
+func (k *rsaKeyPair) SHA256Fingerprint() string {
+	return helpers.SHA256Fingerprint(k.PublicKey())
 }
 
 func (k *rsaKeyPair) AuthorizedKey() string {

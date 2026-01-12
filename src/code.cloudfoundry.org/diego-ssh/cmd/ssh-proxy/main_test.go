@@ -60,6 +60,7 @@ var _ = Describe("SSH proxy", Serial, func() {
 		healthCheckAddress          string
 		diegoCredentials            string
 		hostKeyFingerprint          string
+		hostKeySHA256Fingerprint    string
 		expectedGetActualLRPRequest *models.ActualLRPsRequest
 		actualLRPsResponse          *models.ActualLRPsResponse
 		getDesiredLRPRequest        *models.DesiredLRPByProcessGuidRequest
@@ -110,6 +111,7 @@ var _ = Describe("SSH proxy", Serial, func() {
 		privateKey, err := ssh.ParsePrivateKey([]byte(hostKeyPem))
 		Expect(err).NotTo(HaveOccurred())
 		hostKeyFingerprint = helpers.MD5Fingerprint(privateKey.PublicKey())
+		hostKeySHA256Fingerprint = helpers.SHA256Fingerprint(privateKey.PublicKey())
 
 		address = fmt.Sprintf("127.0.0.1:%d", sshProxyPort)
 		healthCheckAddress = fmt.Sprintf("127.0.0.1:%d", healthCheckProxyPort)
@@ -551,6 +553,37 @@ var _ = Describe("SSH proxy", Serial, func() {
 			output, err := session.Output("echo -n hello")
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(output)).To(Equal("hello"))
+		})
+
+		Context("when SHA256 fingerprint is provided", func() {
+			BeforeEach(func() {
+				paddedFingerprint := fmt.Sprintf("%s=", hostKeySHA256Fingerprint)
+
+				sshRoute, err := json.Marshal(routes.SSHRoute{
+					ContainerPort:      uint32(sshdContainerPort),
+					PrivateKey:         privateKeyPem,
+					Host256Fingerprint: paddedFingerprint,
+				})
+				Expect(err).NotTo(HaveOccurred())
+
+				sshRouteMessage := json.RawMessage(sshRoute)
+				desiredLRPResponse.DesiredLrp.Routes = &models.Routes{
+					routes.DIEGO_SSH: &sshRouteMessage,
+				}
+			})
+
+			It("successfully validates using SHA256 fingerprint", func() {
+				client, err := ssh.Dial("tcp", address, clientConfig)
+				Expect(err).NotTo(HaveOccurred())
+
+				session, err := client.NewSession()
+				Expect(err).NotTo(HaveOccurred())
+				output, err := session.Output("echo -n hello")
+				Expect(err).NotTo(HaveOccurred())
+				Expect(string(output)).To(Equal("hello"))
+
+				client.Close()
+			})
 		})
 
 		Context("when a tls intermediary is configured", func() {

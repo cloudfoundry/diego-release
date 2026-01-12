@@ -66,6 +66,28 @@ var _ = Describe("Diego SSH Route", func() {
 				Expect(payload).To(MatchJSON(expectedJson))
 			})
 		})
+		Context("when both fingerprints are present", func() {
+			BeforeEach(func() {
+				route = routes.SSHRoute{
+					ContainerPort:      2222,
+					HostFingerprint:    "24:2e:53:c3:72:4f:25:b8:72:29:2d:e3:56:63:4b:c8",
+					Host256Fingerprint: "x+EcRzt7EfVuXTxnFt01lkxabPULguUgpvcpo52/Puc=",
+					PrivateKey:         "FAKE_PEM_ENCODED_KEY",
+				}
+			})
+
+			It("marshals both fingerprints correctly", func() {
+				payload, err := json.Marshal(route)
+				Expect(err).NotTo(HaveOccurred())
+
+				var result routes.SSHRoute
+				err = json.Unmarshal(payload, &result)
+				Expect(err).NotTo(HaveOccurred())
+
+				Expect(result.HostFingerprint).To(Equal(route.HostFingerprint))
+				Expect(result.Host256Fingerprint).To(Equal(route.Host256Fingerprint))
+			})
+		})
 	})
 
 	Describe("Round Trip Marshalling", func() {
