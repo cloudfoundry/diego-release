@@ -248,7 +248,7 @@ var _ = Describe("Proxy", func() {
 						BeforeEach(func() {
 							targetConfigJson, err := json.Marshal(proxy.TargetConfig{
 								Address:         sshdListener.Addr().String(),
-								HostFingerprint: helpers.SHA256Fingerprint(TestHostKey.PublicKey()),
+								HostFingerprint: helpers.SHA1Fingerprint(TestHostKey.PublicKey()),
 								User:            "some-user",
 								Password:        "fake-some-password",
 							})

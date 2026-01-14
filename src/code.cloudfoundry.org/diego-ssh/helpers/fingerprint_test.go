@@ -39,8 +39,8 @@ feuxbZkmphtEOKtaVDSWxGbNXbuN8H9eQqsGhK1Xcn/FxKVu7k+9GYyqeOwhjaqy
 HbXzxBM4Ki0l1kaUjDVKjz3fsIq9Pl/lBoKYAmDvkK4xoxcs05ws
 -----END RSA PRIVATE KEY-----`
 
-	ExpectedMD5Fingerprint    = `24:2e:53:c3:72:4f:25:b8:72:29:2d:e3:56:63:4b:c8`
-	ExpectedSHA256Fingerprint = `c7:e1:1c:47:3b:7b:11:f5:6e:5d:3c:67:16:dd:35:96:4c:5a:6c:f5:0b:82:e5:20:a6:f7:29:a3:9d:bf:3e:e7`
+	ExpectedMD5Fingerprint  = `24:2e:53:c3:72:4f:25:b8:72:29:2d:e3:56:63:4b:c8`
+	ExpectedSHA1Fingerprint = `8b:d1:ce:b8:3a:f0:37:7f:56:9e:33:1a:72:4b:32:5a:bc:9d:3b:49`
 )
 
 var _ = Describe("Fingerprint", func() {
@@ -68,17 +68,17 @@ var _ = Describe("Fingerprint", func() {
 		})
 	})
 
-	Describe("SHA256 Fingerprint", func() {
+	Describe("SHA1 Fingerprint", func() {
 		BeforeEach(func() {
-			fingerprint = helpers.SHA256Fingerprint(publicKey)
+			fingerprint = helpers.SHA1Fingerprint(publicKey)
 		})
 
 		It("should have the correct length", func() {
-			Expect(utf8.RuneCountInString(fingerprint)).To(Equal(helpers.SHA256_FINGERPRINT_LENGTH))
+			Expect(utf8.RuneCountInString(fingerprint)).To(Equal(helpers.SHA1_FINGERPRINT_LENGTH))
 		})
 
 		It("should match the expected fingerprint", func() {
-			Expect(fingerprint).To(Equal(ExpectedSHA256Fingerprint))
+			Expect(fingerprint).To(Equal(ExpectedSHA1Fingerprint))
 		})
 	})
 })
