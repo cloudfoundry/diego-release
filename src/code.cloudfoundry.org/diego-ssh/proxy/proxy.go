@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"net"
-	"strings"
 	"sync"
 	"unicode/utf8"
 
@@ -406,8 +405,6 @@ func NewClientConn(logger lager.Logger, permissions *ssh.Permissions, tlsConfig 
 				actualFingerprint = helpers.SHA1Fingerprint(key)
 			case helpers.SHA256_FINGERPRINT_LENGTH:
 				actualFingerprint = helpers.SHA256Fingerprint(key)
-				//sshkey ruby gem pads the base64 output, but golang implementation returns unpaded
-				expectedFingerprint = strings.TrimRight(expectedFingerprint, "=")
 			}
 
 			if expectedFingerprint != actualFingerprint {

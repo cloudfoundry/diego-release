@@ -1,7 +1,6 @@
 package helpers_test
 
 import (
-	"fmt"
 	"unicode/utf8"
 
 	"code.cloudfoundry.org/diego-ssh/helpers"
@@ -42,7 +41,7 @@ HbXzxBM4Ki0l1kaUjDVKjz3fsIq9Pl/lBoKYAmDvkK4xoxcs05ws
 
 	ExpectedMD5Fingerprint    = `24:2e:53:c3:72:4f:25:b8:72:29:2d:e3:56:63:4b:c8`
 	ExpectedSHA1Fingerprint   = `8b:d1:ce:b8:3a:f0:37:7f:56:9e:33:1a:72:4b:32:5a:bc:9d:3b:49`
-	ExpectedSHA256Fingerprint = `x+EcRzt7EfVuXTxnFt01lkxabPULguUgpvcpo52/Puc=`
+	ExpectedSHA256Fingerprint = `c7:e1:1c:47:3b:7b:11:f5:6e:5d:3c:67:16:dd:35:96:4c:5a:6c:f5:0b:82:e5:20:a6:f7:29:a3:9d:bf:3e:e7`
 )
 
 var _ = Describe("Fingerprint", func() {
@@ -86,7 +85,7 @@ var _ = Describe("Fingerprint", func() {
 
 	Describe("SHA256 Fingerprint", func() {
 		BeforeEach(func() {
-			fingerprint = fmt.Sprintf("%s=", helpers.SHA256Fingerprint(publicKey))
+			fingerprint = helpers.SHA256Fingerprint(publicKey)
 		})
 
 		It("should have the correct length", func() {
