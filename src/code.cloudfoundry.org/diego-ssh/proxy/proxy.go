@@ -401,8 +401,6 @@ func NewClientConn(logger lager.Logger, permissions *ssh.Permissions, tlsConfig 
 			switch utf8.RuneCountInString(expectedFingerprint) {
 			case helpers.MD5_FINGERPRINT_LENGTH:
 				actualFingerprint = helpers.MD5Fingerprint(key)
-			case helpers.SHA1_FINGERPRINT_LENGTH:
-				actualFingerprint = helpers.SHA1Fingerprint(key)
 			case helpers.SHA256_FINGERPRINT_LENGTH:
 				actualFingerprint = helpers.SHA256Fingerprint(key)
 			}
