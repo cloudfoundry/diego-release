@@ -20,8 +20,12 @@ ldd $DEST/builder && echo "builder must be statically linked" && false
 ldd $DEST/launcher && echo "launcher must be statically linked" && false
 
 cp /var/vcap/packages/diego-sshd/diego-sshd ${DEST}/diego-sshd
+cp /var/vcap/packages/cf-pcap/cf-pcap ${DEST}/cf-pcap
 cp /var/vcap/packages/healthcheck/healthcheck ${DEST}/healthcheck
 
+setcap cap_net_raw+ep ${DEST}/cf-pcap
+
 tar -czf ${BOSH_INSTALL_TARGET}/cnb_app_lifecycle.tgz \
+  --xattrs --xattrs-include='*' \
   -C ${DEST} \
-  builder launcher healthcheck diego-sshd
+  builder launcher healthcheck diego-sshd cf-pcap

@@ -2,6 +2,11 @@
 processes:
 - name: rep
   executable: /var/vcap/jobs/rep/bin/rep
+<% if p("diego.rep.enable_cf_pcap", false) -%>
+  # This is required to preserve the file capabilities of cf-pcap to allow the vcap user to capture
+  # packets inside the app container without root.
+  capabilities: [ "SETFCAP" ]
+<% end -%>
   limits:
     open_files: 100000
   hooks:

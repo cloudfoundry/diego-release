@@ -1,0 +1,22 @@
+set -e
+
+tar -xf libpcap/libpcap-*.tar.xz
+
+LIBPCAP_DIR=$(ls -d libpcap-*)
+
+pushd ${LIBPCAP_DIR}
+  ./configure
+  make
+popd
+
+source /var/vcap/packages/golang-*-linux/bosh/compile.env
+
+pushd code.cloudfoundry.org
+  # -I adds the local libpcap to the search path for the compiler
+  export CGO_CFLAGS="-I${BOSH_COMPILE_TARGET}/${LIBPCAP_DIR}"
+  # -L adds the local libpcap to the search path for the linker
+  # -linkmode external: use an external linker: https://cs.opensource.google/go/go/+/refs/tags/go1.18:src/cmd/cgo/doc.go;l=794
+  # -extldflags -static: pass -static to ld, see man page for details
+  export CGO_LDFLAGS="-L${BOSH_COMPILE_TARGET}/${LIBPCAP_DIR} -static"
+  go build -ldflags '-linkmode external' -o ${BOSH_INSTALL_TARGET}/cf-pcap -a -installsuffix static code.cloudfoundry.org/cf-pcap
+popd

@@ -1,0 +1,20 @@
+---
+name: cf-pcap
+dependencies:
+  - golang-1.25-linux
+
+files:
+  - libpcap/libpcap-*.tar.xz
+  - code.cloudfoundry.org/go.mod
+  - code.cloudfoundry.org/go.sum
+  - code.cloudfoundry.org/vendor/modules.txt
+  - code.cloudfoundry.org/cf-pcap/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/gopacket/gopacket/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/gopacket/gopacket/endian/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/gopacket/gopacket/layers/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/gopacket/gopacket/pcap/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/gopacket/gopacket/pcapgo/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/net/bpf/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/sys/unix/*.go # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/sys/unix/*.s # gosub
+  - code.cloudfoundry.org/vendor/golang.org/x/sys/windows/*.go # gosub

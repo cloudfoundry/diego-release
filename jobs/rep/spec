@@ -245,6 +245,10 @@ properties:
     description: "Maximum container capacity per rep"
     default: 250
 
+  diego.rep.enable_cf_pcap:
+    description: "Allow app developers to capture tcpdumps within their app containers."
+    default: false
+
   enable_healthcheck_metrics:
     description: "When set, enables the rep to emit healtcheck failure metrics."
     default: false
