@@ -502,6 +502,13 @@ github.com/google/pprof/profile
 # github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510
 ## explicit; go 1.13
 github.com/google/shlex
+# github.com/gopacket/gopacket v1.5.0
+## explicit; go 1.24.0
+github.com/gopacket/gopacket
+github.com/gopacket/gopacket/endian
+github.com/gopacket/gopacket/layers
+github.com/gopacket/gopacket/pcap
+github.com/gopacket/gopacket/pcapgo
 # github.com/gorilla/mux v1.8.1
 ## explicit; go 1.20
 github.com/gorilla/mux
@@ -806,6 +813,7 @@ golang.org/x/crypto/ssh/internal/bcrypt_pbkdf
 golang.org/x/mod/semver
 # golang.org/x/net v0.49.0
 ## explicit; go 1.24.0
+golang.org/x/net/bpf
 golang.org/x/net/context
 golang.org/x/net/html
 golang.org/x/net/html/atom
