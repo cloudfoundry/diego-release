@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	"strings"
 	"sync"
 	"unicode/utf8"
 
@@ -403,6 +404,9 @@ func NewClientConn(logger lager.Logger, permissions *ssh.Permissions, tlsConfig 
 				actualFingerprint = helpers.MD5Fingerprint(key)
 			case helpers.SHA1_FINGERPRINT_LENGTH:
 				actualFingerprint = helpers.SHA1Fingerprint(key)
+			case helpers.SHA256_FINGERPRINT_LENGTH, helpers.SHA256_FINGERPRINT_LENGTH + 1: // 43 or 44 (with padding)
+				actualFingerprint = helpers.SHA256Fingerprint(key)
+				expectedFingerprint = strings.TrimRight(expectedFingerprint, "=")
 			}
 
 			if expectedFingerprint != actualFingerprint {

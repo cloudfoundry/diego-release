@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net"
 	"os"
@@ -249,6 +250,29 @@ var _ = Describe("Proxy", func() {
 							targetConfigJson, err := json.Marshal(proxy.TargetConfig{
 								Address:         sshdListener.Addr().String(),
 								HostFingerprint: helpers.SHA1Fingerprint(TestHostKey.PublicKey()),
+								User:            "some-user",
+								Password:        "fake-some-password",
+							})
+							Expect(err).NotTo(HaveOccurred())
+
+							permissions := &ssh.Permissions{
+								CriticalOptions: map[string]string{
+									"proxy-target-config": string(targetConfigJson),
+								},
+							}
+							proxyAuthenticator.AuthenticateReturns(permissions, nil)
+						})
+
+						It("handshakes with the target using the provided configuration", func() {
+							Eventually(daemonAuthenticator.AuthenticateCallCount).Should(Equal(1))
+						})
+					})
+
+					Context("when the host fingerprint is a sha256 hash", func() {
+						BeforeEach(func() {
+							targetConfigJson, err := json.Marshal(proxy.TargetConfig{
+								Address:         sshdListener.Addr().String(),
+								HostFingerprint: fmt.Sprintf("%s=", helpers.SHA256Fingerprint(TestHostKey.PublicKey())),
 								User:            "some-user",
 								Password:        "fake-some-password",
 							})

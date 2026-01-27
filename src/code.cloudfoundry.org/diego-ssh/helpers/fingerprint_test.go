@@ -1,6 +1,7 @@
 package helpers_test
 
 import (
+	"fmt"
 	"unicode/utf8"
 
 	"code.cloudfoundry.org/diego-ssh/helpers"
@@ -39,8 +40,9 @@ feuxbZkmphtEOKtaVDSWxGbNXbuN8H9eQqsGhK1Xcn/FxKVu7k+9GYyqeOwhjaqy
 HbXzxBM4Ki0l1kaUjDVKjz3fsIq9Pl/lBoKYAmDvkK4xoxcs05ws
 -----END RSA PRIVATE KEY-----`
 
-	ExpectedMD5Fingerprint  = `24:2e:53:c3:72:4f:25:b8:72:29:2d:e3:56:63:4b:c8`
-	ExpectedSHA1Fingerprint = `8b:d1:ce:b8:3a:f0:37:7f:56:9e:33:1a:72:4b:32:5a:bc:9d:3b:49`
+	ExpectedMD5Fingerprint    = `24:2e:53:c3:72:4f:25:b8:72:29:2d:e3:56:63:4b:c8`
+	ExpectedSHA1Fingerprint   = `8b:d1:ce:b8:3a:f0:37:7f:56:9e:33:1a:72:4b:32:5a:bc:9d:3b:49`
+	ExpectedSHA256Fingerprint = `x+EcRzt7EfVuXTxnFt01lkxabPULguUgpvcpo52/Puc`
 )
 
 var _ = Describe("Fingerprint", func() {
@@ -79,6 +81,49 @@ var _ = Describe("Fingerprint", func() {
 
 		It("should match the expected fingerprint", func() {
 			Expect(fingerprint).To(Equal(ExpectedSHA1Fingerprint))
+		})
+	})
+
+	Describe("SHA256 Fingerprint", func() {
+		BeforeEach(func() {
+			fingerprint = helpers.SHA256Fingerprint(publicKey)
+		})
+
+		It("should return unpadded base64 (43 characters)", func() {
+			// Go's ssh.FingerprintSHA256 returns unpadded base64
+			Expect(utf8.RuneCountInString(fingerprint)).To(Equal(43))
+		})
+
+		Context("when comparing with CAPI format", func() {
+			It("matches CAPI fingerprint when padding is added", func() {
+				// CAPI uses Base64.strict_encode64 which includes padding
+				// Ruby sends: "x+EcRzt7EfVuXTxnFt01lkxabPULguUgpvcpo52/Puc="
+				paddedFingerprint := fmt.Sprintf("%s=", fingerprint)
+
+				// This is what CAPI sends (44 chars with padding)
+				capiFormat := `x+EcRzt7EfVuXTxnFt01lkxabPULguUgpvcpo52/Puc=`
+				Expect(paddedFingerprint).To(Equal(capiFormat))
+				Expect(utf8.RuneCountInString(paddedFingerprint)).To(Equal(44))
+			})
+
+		})
+	})
+
+	Describe("Fingerprint comparison", func() {
+		It("generates different fingerprints with different algorithms", func() {
+			md5 := helpers.MD5Fingerprint(publicKey)
+			sha1 := helpers.SHA1Fingerprint(publicKey)
+			sha256 := helpers.SHA256Fingerprint(publicKey)
+
+			Expect(md5).NotTo(Equal(sha1))
+			Expect(md5).NotTo(Equal(sha256))
+			Expect(sha1).NotTo(Equal(sha256))
+		})
+
+		It("generates consistent fingerprints for the same key", func() {
+			fp1 := helpers.SHA256Fingerprint(publicKey)
+			fp2 := helpers.SHA256Fingerprint(publicKey)
+			Expect(fp1).To(Equal(fp2))
 		})
 	})
 })
