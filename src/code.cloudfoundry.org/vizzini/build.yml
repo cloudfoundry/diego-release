@@ -1,0 +1,14 @@
+---
+platform: linux
+
+image: docker:///cloudfoundry/diego-inigo-ci
+
+params:
+  ROUTABLE_DOMAIN_SUFFIX: 10.244.0.34.xip.io
+
+inputs:
+  - name: vizzini
+    path: gopath/src/code.cloudfoundry.org/vizzini
+
+run:
+  path: gopath/src/code.cloudfoundry.org/vizzini/scripts/ci/run-vizzini

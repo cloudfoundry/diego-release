@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e -x
+
+ginkgo \
+  -nodes=4 \
+  -randomizeAllSpecs \
+  -progress \
+  -trace \
+  "$@" \
+  -- \
+  --bbs-address=https://10.244.16.2:8889 \
+  --bbs-client-cert=$GOPATH/manifest-generation/bosh-lite-stubs/bbs-certs/client.crt \
+  --bbs-client-key=$GOPATH/manifest-generation/bosh-lite-stubs/bbs-certs/client.key \
+  --routable-domain-suffix=bosh-lite.com

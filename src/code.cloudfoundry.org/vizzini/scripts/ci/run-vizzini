@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e -x
+
+cd gopath/
+
+export GOPATH=$PWD
+export PATH=$GOPATH/bin:$PATH
+
+cd src/code.cloudfoundry.org/vizzini/
+
+go get -t -d -v ./...
+
+go install github.com/onsi/ginkgo/ginkgo
+
+ginkgo \
+  -nodes=8 \
+  -randomizeAllSpecs \
+  -progress \
+  -trace \
+  "$@" \
+  -- \
+  --bbs-address=${BBS_ADDRESS} \
+  --routable-domain-suffix=${ROUTABLE_DOMAIN_SUFFIX}
