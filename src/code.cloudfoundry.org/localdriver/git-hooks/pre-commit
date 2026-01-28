@@ -1,0 +1,15 @@
+#!/bin/bash
+
+STAGED_GO_FILES=$(git diff --cached --name-only | grep ".go$")
+
+if [ -z "$STAGED_GO_FILES" ]; then
+  exit 0
+fi
+
+go vet ./...
+if [ $? -ne "0" ]; then
+  printf "\t\033[31mgo vet $FILE\033[0m \033[0;30m\033[41mFAILURE!\033[0m\n"
+  exit 1
+fi
+
+exit 0
