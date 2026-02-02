@@ -7,11 +7,13 @@ import (
 	"io"
 	"net"
 	"os"
+	"path/filepath"
 	"time"
 
 	"code.cloudfoundry.org/bbs/models"
 	"code.cloudfoundry.org/clock"
-	loggingclient "code.cloudfoundry.org/diego-logging-client"
+	diego_logging_client "code.cloudfoundry.org/diego-logging-client"
+	"code.cloudfoundry.org/diego-logging-client/testhelpers"
 	"code.cloudfoundry.org/durationjson"
 	"code.cloudfoundry.org/executor"
 	"code.cloudfoundry.org/executor/gardenhealth"
@@ -43,11 +45,29 @@ var _ = Describe("Executor/Garden", func() {
 		ownerName               string
 		gardenHealthcheckRootFS string
 
-		expectedDiskCapacityMB int
+		expectedDiskCapacityMB                                  int
+		signalMetricsChan                                       chan struct{}
+		testIngressServer                                       *testhelpers.TestIngressServer
+		metronCAFile, metronServerCertFile, metronServerKeyFile string
+		metricsPort                                             int
 	)
 
 	BeforeEach(func() {
 		gardenHealthcheckRootFS = ""
+
+		fixturesPath := "../fixtures/certs"
+
+		var err error
+		metronCAFile = filepath.Join(fixturesPath, "metron", "CA.crt")
+		metronServerCertFile = filepath.Join(fixturesPath, "metron", "metron.crt")
+		metronServerKeyFile = filepath.Join(fixturesPath, "metron", "metron.key")
+		testIngressServer, err = testhelpers.NewTestIngressServer(metronServerCertFile, metronServerKeyFile, metronCAFile)
+		Expect(err).NotTo(HaveOccurred())
+		receiversChan := testIngressServer.Receivers()
+		testIngressServer.Start()
+		metricsPort, _ = testIngressServer.Port()
+
+		_, signalMetricsChan = testhelpers.TestMetricChan(receiversChan)
 
 		randomName, err := uuid.NewV4()
 		Expect(err).NotTo(HaveOccurred())
@@ -63,7 +83,6 @@ var _ = Describe("Executor/Garden", func() {
 			ContainerInodeLimit:                200000,
 			ContainerMaxCpuShares:              0,
 			CachePath:                          "/tmp/cache",
-			EnableDeclarativeHealthcheck:       false,
 			MaxCacheSizeInBytes:                10 * 1024 * 1024 * 1024,
 			SkipCertVerify:                     false,
 			HealthyMonitoringInterval:          durationjson.Duration(30 * time.Second),
@@ -112,7 +131,12 @@ var _ = Describe("Executor/Garden", func() {
 
 		logger = lagertest.NewTestLogger("test")
 		var executorMembers grouper.Members
-		metronClient, err := loggingclient.NewIngressClient(loggingclient.Config{})
+		metronClient, err := diego_logging_client.NewIngressClient(diego_logging_client.Config{
+			APIPort:    metricsPort,
+			CACertPath: metronCAFile,
+			CertPath:   metronServerCertFile,
+			KeyPath:    metronServerKeyFile,
+		})
 		Expect(err).NotTo(HaveOccurred())
 
 		rootFSes := map[string]string{"somestack": gardenHealthcheckRootFS}
@@ -135,6 +159,9 @@ var _ = Describe("Executor/Garden", func() {
 		if executorClient != nil {
 			executorClient.Cleanup(logger)
 		}
+
+		testIngressServer.Stop()
+		close(signalMetricsChan)
 
 		os.RemoveAll(cachePath)
 	})

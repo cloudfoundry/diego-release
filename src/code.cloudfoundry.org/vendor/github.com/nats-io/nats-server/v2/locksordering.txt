@@ -34,3 +34,16 @@ inconsistent observer states.
 The "clsMu" lock protects the consumer list on a stream, used for signalling consumer activity.
 
     stream -> clsMu
+
+The "clMu", "ddMu" and "batchMu" locks protect clustered, dedupe and batch state respectively.
+The stream lock (`mset.mu`) is optional, but if holding "clMu", "ddMu" or "batchMu",
+locking the stream lock afterward would violate locking order.
+
+    stream -> clMu
+    stream -> batchMu -> clMu
+    stream -> ddMu
+
+The "mset.batches.mu" lock protects the batching state without needing to hold the stream lock.
+If "clMu" is used to commit a batch, it should only be acquired while already holding the batch lock.
+
+    mset.batches.mu -> clMu

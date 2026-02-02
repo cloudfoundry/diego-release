@@ -15,6 +15,7 @@ A helper function for running a pre-configured
 
 # Docs
 
+-   [Usage](./docs/running-debugserver-tests.md)
 -   [Usage](./docs/usage.md)
 
 # Contributing

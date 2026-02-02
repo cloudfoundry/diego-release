@@ -12,6 +12,8 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	loggingclient "code.cloudfoundry.org/diego-logging-client"
+
 	"code.cloudfoundry.org/fileserver/cmd/file-server/config"
 	"code.cloudfoundry.org/lager/v3/lagerflags"
 	"code.cloudfoundry.org/tlsconfig"
@@ -68,12 +70,18 @@ var _ = Describe("File server", func() {
 					LogLevel:   lagerflags.INFO,
 					TimeFormat: lagerflags.FormatUnixEpoch,
 				},
+				LoggregatorConfig: loggingclient.Config{
+					CACertPath: metronCAFile,
+					CertPath:   metronServerCertFile,
+					KeyPath:    metronServerKeyFile,
+				},
 				StaticDirectory: servedDirectory,
 				ServerAddress:   fmt.Sprintf("localhost:%d", port),
 			}
 		})
 
 		JustBeforeEach(func() {
+			cfg.LoggregatorConfig.APIPort, _ = testIngressServer.Port()
 			configFile, err := os.CreateTemp("", "file_server-test-config")
 			Expect(err).NotTo(HaveOccurred())
 			configPath = configFile.Name()
@@ -114,6 +122,11 @@ var _ = Describe("File server", func() {
 					LogLevel:   lagerflags.INFO,
 					TimeFormat: lagerflags.FormatUnixEpoch,
 				},
+				LoggregatorConfig: loggingclient.Config{
+					CACertPath: metronCAFile,
+					CertPath:   metronServerCertFile,
+					KeyPath:    metronServerKeyFile,
+				},
 				HTTPSServerEnabled: true,
 				StaticDirectory:    servedDirectory,
 				ServerAddress:      fmt.Sprintf("localhost:%d", port),
@@ -121,6 +134,10 @@ var _ = Describe("File server", func() {
 		})
 
 		JustBeforeEach(func() {
+			cfg.LoggregatorConfig.APIPort, _ = testIngressServer.Port()
+			cfg.LoggregatorConfig.CACertPath = metronCAFile
+			cfg.LoggregatorConfig.CertPath = metronServerCertFile
+			cfg.LoggregatorConfig.KeyPath = metronServerKeyFile
 			configFile, err := os.CreateTemp("", "file_server-test-config")
 			Expect(err).NotTo(HaveOccurred())
 			configPath = configFile.Name()

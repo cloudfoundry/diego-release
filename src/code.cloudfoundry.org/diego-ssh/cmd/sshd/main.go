@@ -73,6 +73,12 @@ var allowedKeyExchanges = flag.String(
 	"Limit key exchanges algorithms to those provided (comma separated)",
 )
 
+var allowedHostKeyAlgorithms = flag.String(
+	"allowedHostKeyAlgorithms",
+	"",
+	"Limit key host key algorithms to those provided (comma separated)",
+)
+
 var hostKeyPEM string
 var authorizedKeyValue string
 
@@ -134,6 +140,7 @@ func runServer() error {
 			fmt.Sprintf("--inheritDaemonEnv=%t", *inheritDaemonEnv),
 			fmt.Sprintf("--allowedCiphers=%s", *allowedCiphers),
 			fmt.Sprintf("--allowedMACs=%s", *allowedMACs),
+			fmt.Sprintf("--allowedHostKeyAlgorithms=%s", *allowedHostKeyAlgorithms),
 			fmt.Sprintf("--logLevel=%s", logLevel),
 			fmt.Sprintf("--debugAddr=%s", debugserver.DebugAddress(flag.CommandLine)),
 		}, os.Environ())
@@ -225,7 +232,7 @@ func configure(logger lager.Logger) (*ssh.ServerConfig, error) {
 	key, err := acquireHostKey(logger)
 	if err != nil {
 		logger.Error("failed-to-acquire-host-key", err)
-		errorStrings = append(errorStrings, err.Error())
+		return nil, err
 	}
 
 	sshConfig.AddHostKey(key)
@@ -290,6 +297,18 @@ func acquireHostKey(logger lager.Logger) (ssh.Signer, error) {
 		logger.Error("failed-to-parse-host-key", err)
 		return nil, err
 	}
+
+	if *allowedHostKeyAlgorithms != "" {
+		key, err = ssh.NewSignerWithAlgorithms(
+			key.(ssh.AlgorithmSigner),
+			strings.Split(*allowedHostKeyAlgorithms, ","),
+		)
+		if err != nil {
+			logger.Error("failed-to-restrict-host-key-algorithms", err)
+			return nil, err
+		}
+	}
+
 	return key, nil
 }
 

@@ -38,12 +38,17 @@ var _ = Describe("Tasks", func() {
 		}
 		var fileServerRunner ifrit.Runner
 
-		fileServerRunner, fileServerStaticDir = componentMaker.FileServer()
+		fileServerRunner, fileServerStaticDir = componentMaker.FileServer(modifyFunFileServerLoggregatorConfig)
+
+		modifyFunRepLoggregatorConfig := func(cfg *repconfig.RepConfig) {
+			cfg.LoggregatorConfig = setupMetronConfig(cfg.LoggregatorConfig)
+			cfg.MemoryMB = "1024"
+		}
 
 		cellGroup := grouper.Members{
 			{Name: "file-server", Runner: fileServerRunner},
-			{Name: "rep", Runner: componentMaker.Rep(func(config *repconfig.RepConfig) { config.MemoryMB = "1024" })},
-			{Name: "auctioneer", Runner: componentMaker.Auctioneer()},
+			{Name: "rep", Runner: componentMaker.Rep(modifyFunRepLoggregatorConfig)},
+			{Name: "auctioneer", Runner: componentMaker.Auctioneer(modifyFunAuctioneerLoggregatorConfig)},
 		}
 		cellProcess = ginkgomon.Invoke(grouper.NewParallel(os.Interrupt, cellGroup))
 

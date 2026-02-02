@@ -157,6 +157,10 @@ var _ = Describe("Routing Related Tests", func() {
 
 			for i := 0; i < 4; i++ {
 				By(fmt.Sprintf("Scaling down then back up #%d", i+1))
+				Eventually(func() error {
+					_, err := bbsClient.DesiredLRPByProcessGuid(logger, traceID, guid)
+					return err
+				}, "60s", "500ms").Should(Succeed())
 				Expect(bbsClient.UpdateDesiredLRP(logger, traceID, guid, &updateToOne)).To(Succeed())
 				Eventually(ActualByProcessGuidGetter(logger, guid)).Should(ConsistOf(
 					BeActualLRPWithState(guid, 0, models.ActualLRPStateRunning),
@@ -195,7 +199,7 @@ var _ = Describe("Routing Related Tests", func() {
 
 		JustBeforeEach(func() {
 			Expect(bbsClient.DesireLRP(logger, traceID, lrp)).To(Succeed())
-			Eventually(IndexCounter(guid), 15).Should(Equal(int(lrp.Instances)))
+			Eventually(IndexCounter(guid), 60).Should(Equal(int(lrp.Instances)))
 		})
 
 		AfterEach(func() {

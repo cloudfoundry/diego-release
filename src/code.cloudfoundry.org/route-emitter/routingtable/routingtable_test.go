@@ -563,7 +563,7 @@ var _ = Describe("RoutingTable", func() {
 			Expect(messagesToEmit).To(MatchMessagesToEmit(expectedHTTP))
 
 			Expect(tcpRouteMappings.Unregistrations).Should(ConsistOf(
-				tcpmodels.NewTcpRouteMapping("router-group-guid", 5222, endpoint1.ContainerIP, uint16(endpoint1.ContainerPort), int(endpoint1.ContainerTlsProxyPort), "ig-1", nil, 0, tcpmodels.ModificationTag{}),
+				tcpmodels.NewTcpRouteMapping("router-group-guid", 5222, endpoint1.ContainerIP, uint16(endpoint1.ContainerPort), int(endpoint1.ContainerTlsProxyPort), "ig-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 			))
 		})
 
@@ -626,7 +626,7 @@ var _ = Describe("RoutingTable", func() {
 						Expect(messagesToEmit).To(MatchMessagesToEmit(expectedHTTP))
 
 						Expect(tcpRouteMappings.Unregistrations).Should(ConsistOf(
-							tcpmodels.NewTcpRouteMapping("router-group-guid", 5222, endpoint1.ContainerIP, uint16(endpoint1.ContainerPort), int(endpoint1.ContainerTlsProxyPort), "ig-1", nil, 0, tcpmodels.ModificationTag{}),
+							tcpmodels.NewTcpRouteMapping("router-group-guid", 5222, endpoint1.ContainerIP, uint16(endpoint1.ContainerPort), int(endpoint1.ContainerTlsProxyPort), "ig-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 						))
 					})
 
@@ -644,7 +644,7 @@ var _ = Describe("RoutingTable", func() {
 						Expect(messagesToEmit).To(MatchMessagesToEmit(expectedHTTP))
 
 						Expect(tcpRouteMappings.Registrations).Should(ConsistOf(
-							tcpmodels.NewTcpRouteMapping("router-group-guid", 5222, endpoint1.ContainerIP, uint16(endpoint1.ContainerPort), int(endpoint1.ContainerTlsProxyPort), "ig-1", nil, 0, tcpmodels.ModificationTag{}),
+							tcpmodels.NewTcpRouteMapping("router-group-guid", 5222, endpoint1.ContainerIP, uint16(endpoint1.ContainerPort), int(endpoint1.ContainerTlsProxyPort), "ig-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 						))
 					})
 				})
@@ -1167,8 +1167,8 @@ var _ = Describe("RoutingTable", func() {
 			It("returns only the external messages to emit", func() {
 				tcpRouteMappings, messagesToEmit = table.GetExternalRoutingEvents()
 				Expect(tcpRouteMappings.Registrations).Should(ConsistOf(
-					tcpmodels.NewTcpRouteMapping(logGuid, 9999, endpoint1.ContainerIP, uint16(endpoint1.ContainerPort), int(endpoint1.ContainerTlsProxyPort), "ig-1", nil, 0, tcpmodels.ModificationTag{}),
-					tcpmodels.NewTcpRouteMapping(logGuid, 9999, endpoint2.Host, uint16(endpoint2.Port), int(endpoint2.TlsProxyPort), "ig-2", nil, 0, tcpmodels.ModificationTag{}),
+					tcpmodels.NewTcpRouteMapping(logGuid, 9999, endpoint1.ContainerIP, uint16(endpoint1.ContainerPort), int(endpoint1.ContainerTlsProxyPort), "ig-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+					tcpmodels.NewTcpRouteMapping(logGuid, 9999, endpoint2.Host, uint16(endpoint2.Port), int(endpoint2.TlsProxyPort), "ig-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 				))
 
 				expected := routingtable.MessagesToEmit{

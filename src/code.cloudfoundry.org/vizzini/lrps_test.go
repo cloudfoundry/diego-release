@@ -193,9 +193,6 @@ var _ = Describe("LRPs", func() {
 		})
 
 		It("should run", func() {
-			if !config.EnableDeclarativeHealthcheck {
-				Skip("declarative are not enabled")
-			}
 
 			Eventually(ActualByDomainGetter(logger, domain)).Should(ContainElement(BeActualLRPWithState(guid, 0, models.ActualLRPStateRunning)))
 		})
@@ -369,7 +366,7 @@ var _ = Describe("LRPs", func() {
 					dlu.SetInstances(&instances)
 					Expect(bbsClient.UpdateDesiredLRP(logger, traceID, guid, dlu)).To(Succeed())
 
-					Eventually(IndexCounter(guid)).Should(Equal(0))
+					Eventually(IndexCounter(guid), 60).Should(Equal(0))
 				})
 
 				It("allows updating routes", func() {

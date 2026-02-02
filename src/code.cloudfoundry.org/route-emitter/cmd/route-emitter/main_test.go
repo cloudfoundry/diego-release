@@ -7,6 +7,7 @@ import (
 
 	"code.cloudfoundry.org/bbs"
 	"code.cloudfoundry.org/clock"
+	loggingclient "code.cloudfoundry.org/diego-logging-client"
 	"code.cloudfoundry.org/diego-logging-client/testhelpers"
 	"code.cloudfoundry.org/inigo/helpers/certauthority"
 	locketconfig "code.cloudfoundry.org/locket/cmd/locket/config"
@@ -18,6 +19,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"net/http/httputil"
@@ -163,10 +165,15 @@ var _ = Describe("Route Emitter", func() {
 			EnableTCPEmitter:             false,
 			EnableInternalEmitter:        false,
 			RegisterDirectInstanceRoutes: false,
+			LoggregatorConfig: loggingclient.Config{
+				CACertPath: metronCAFile,
+				CertPath:   metronServerCertFile,
+				KeyPath:    metronServerKeyFile,
+			},
 		}
 		cfg.ClientLocketConfig = locketrunner.ClientLocketConfig()
 		cfg.ClientLocketConfig.LocketAddress = locketAddress
-
+		cfg.LoggregatorConfig.APIPort, _ = testIngressServer.Port()
 		for _, f := range modifyConfig {
 			f(&cfg)
 		}
@@ -327,8 +334,26 @@ var _ = Describe("Route Emitter", func() {
 			cfg.DatabaseConnectionString = sqlRunner.ConnectionString()
 			cfg.DatabaseDriver = sqlRunner.DriverName()
 			cfg.ListenAddress = routingAPILocketAddress
+			cfg.LoggregatorConfig.APIPort, _ = testIngressServer.Port()
+			cfg.LoggregatorConfig.CACertPath = metronCAFile
+			cfg.LoggregatorConfig.CertPath = metronServerCertFile
+			cfg.LoggregatorConfig.KeyPath = metronServerKeyFile
+
 		})
 		routingAPILocketProcess = ginkgomon.Invoke(routingAPILocketRunner)
+		// Wait for routing-api locket to be ready before routing-api tries to connect
+		// First check TCP connectivity
+		Eventually(func() error {
+			conn, err := net.DialTimeout("tcp", routingAPILocketAddress, 100*time.Millisecond)
+			if err != nil {
+				return err
+			}
+			conn.Close()
+			return nil
+		}, 5*time.Second, 100*time.Millisecond).Should(Succeed())
+		// Additional wait to ensure gRPC service is fully initialized
+		// The TCP check may pass before gRPC is ready
+		time.Sleep(500 * time.Millisecond)
 		routingAPIPort := port + 2
 		routingAPIRunner, err = runners.NewRoutingAPIRunner(routingAPIPath, uint16(port+1), sqlConfig, func(cfg *runners.Config) {
 			cfg.API = routinapiconfig.APIConfig{
@@ -414,10 +439,6 @@ var _ = Describe("Route Emitter", func() {
 			emitter ifrit.Process
 		)
 
-		BeforeEach(func() {
-			useLoggregatorV2 = true
-		})
-
 		JustBeforeEach(func() {
 			testIngressServer.Stop()
 			runner = createEmitterRunner("emitter1", "", cfgs...)
@@ -473,8 +494,8 @@ var _ = Describe("Route Emitter", func() {
 			cfgs = append(cfgs, func(cfg *config.RouteEmitterConfig) {
 				cfg.EnableTCPEmitter = true
 			})
-			expectedTcpRouteMapping = apimodels.NewTcpRouteMapping("", 5222, "some-ip", 62003, -1, "", nil, 120, apimodels.ModificationTag{})
-			notExpectedTcpRouteMapping = apimodels.NewTcpRouteMapping("", 1883, "some-ip-1", 62003, -1, "", nil, 120, apimodels.ModificationTag{})
+			expectedTcpRouteMapping = apimodels.NewTcpRouteMapping("", 5222, "some-ip", 62003, -1, "", nil, 120, apimodels.ModificationTag{}, false, "")
+			notExpectedTcpRouteMapping = apimodels.NewTcpRouteMapping("", 1883, "some-ip-1", 62003, -1, "", nil, 120, apimodels.ModificationTag{}, false, "")
 			expectedTcpRouteMapping.RouterGroupGuid = routerGUID
 			notExpectedTcpRouteMapping.RouterGroupGuid = routerGUID
 			cellID = ""
@@ -711,7 +732,7 @@ var _ = Describe("Route Emitter", func() {
 							By("unblocking the sync loop")
 							close(blkChannel)
 
-							expectedTcpRouteMapping = apimodels.NewTcpRouteMapping(routerGUID, 5222, "some-ip", 5222, -1, "", nil, 120, apimodels.ModificationTag{})
+							expectedTcpRouteMapping = apimodels.NewTcpRouteMapping(routerGUID, 5222, "some-ip", 5222, -1, "", nil, 120, apimodels.ModificationTag{}, false, "")
 
 							Eventually(routingAPIClient.TcpRouteMappings, 5*time.Second).Should(
 								ContainElement(matchTCPRouteMapping(expectedTcpRouteMapping)),
@@ -805,21 +826,10 @@ var _ = Describe("Route Emitter", func() {
 							cellID = "cell-id"
 						})
 
-						Context("when using loggregator v2 api", func() {
-							BeforeEach(func() {
-								useLoggregatorV2 = true
-							})
-
-							It("emits the tcp route count", func() {
-								Eventually(testMetricsChan).Should(Receive(testhelpers.MatchV2MetricAndValue(testhelpers.MetricAndValue{Name: "TCPRouteCount", Value: int32(1)})))
-							})
+						It("emits the tcp route count", func() {
+							Eventually(testMetricsChan).Should(Receive(testhelpers.MatchV2MetricAndValue(testhelpers.MetricAndValue{Name: "TCPRouteCount", Value: int32(1)})))
 						})
 
-						Context("when not using the loggregator v2 api", func() {
-							It("doesn't emit any metrics", func() {
-								Consistently(testMetricsChan).ShouldNot(Receive())
-							})
-						})
 					})
 
 					Context("and the route-emitter cell id doesn't match the actual lrp cell", func() {
@@ -958,7 +968,7 @@ var _ = Describe("Route Emitter", func() {
 						By("unblocking the sync loop")
 						close(blkChannel)
 
-						expectedTcpRouteMapping = apimodels.NewTcpRouteMapping(routerGUID, 5222, "some-ip", 5222, -1, "", nil, 120, apimodels.ModificationTag{})
+						expectedTcpRouteMapping = apimodels.NewTcpRouteMapping(routerGUID, 5222, "some-ip", 5222, -1, "", nil, 120, apimodels.ModificationTag{}, false, "")
 
 						Eventually(routingAPIClient.TcpRouteMappings, 5*time.Second).Should(
 							ContainElement(matchTCPRouteMapping(expectedTcpRouteMapping)),
@@ -1072,11 +1082,14 @@ var _ = Describe("Route Emitter", func() {
 				cfg.DatabaseConnectionString = sqlRunner.ConnectionString()
 				cfg.DatabaseDriver = sqlRunner.DriverName()
 				cfg.ListenAddress = locketAddress
+				cfg.LoggregatorConfig.APIPort, _ = testIngressServer.Port()
+				cfg.LoggregatorConfig.CACertPath = metronCAFile
+				cfg.LoggregatorConfig.CertPath = metronServerCertFile
+				cfg.LoggregatorConfig.KeyPath = metronServerKeyFile
 			})
 			locketProcess = ginkgomon.Invoke(locketRunner)
 			cfgs = append(cfgs, func(cfg *config.RouteEmitterConfig) {
 				cfg.ClientLocketConfig = locketrunner.ClientLocketConfig()
-				cfg.LocketEnabled = true
 				cfg.LocketAddress = locketAddress
 			})
 		})
@@ -1316,21 +1329,10 @@ var _ = Describe("Route Emitter", func() {
 						cellID = "cell-id"
 					})
 
-					Context("when using loggregator v2 api", func() {
-						BeforeEach(func() {
-							useLoggregatorV2 = true
-						})
-
-						It("emits the http route count", func() {
-							Eventually(testMetricsChan, "2s").Should(Receive(testhelpers.MatchV2MetricAndValue(testhelpers.MetricAndValue{Name: "HTTPRouteCount", Value: int32(2)})))
-						})
+					It("emits the http route count", func() {
+						Eventually(testMetricsChan, "2s").Should(Receive(testhelpers.MatchV2MetricAndValue(testhelpers.MetricAndValue{Name: "HTTPRouteCount", Value: int32(2)})))
 					})
 
-					Context("when not using the loggregator v2 api", func() {
-						It("doesn't emit any metrics", func() {
-							Consistently(testMetricsChan).ShouldNot(Receive())
-						})
-					})
 				})
 
 				Context("when backing store loses its data", func() {
@@ -1799,7 +1801,6 @@ var _ = Describe("Route Emitter", func() {
 
 		BeforeEach(func() {
 			cellID = ""
-			useLoggregatorV2 = true
 
 			internalHostnames = []string{"foo1.bar", "foo2.bar"}
 			routes = newInternalRoutes(internalHostnames)
@@ -2302,7 +2303,7 @@ var _ = Describe("Route Emitter", func() {
 						}
 					}()
 
-					Eventually(registeredRoutes, 3*msgReceiveTimeout).Should(Receive(MatchRegistryMessage(routingtable.RegistryMessage{
+					expectedRoute1Message := routingtable.RegistryMessage{
 						Host:                 "1.2.3.4",
 						Port:                 65100,
 						TlsPort:              0,
@@ -2319,7 +2320,23 @@ var _ = Describe("Route Emitter", func() {
 							"some-tag":  "some-value",
 						},
 						AvailabilityZone: "some-zone",
-					})))
+					}
+
+					// Drain messages until we find route-1 with the new details
+					// We may receive route-2 messages first, so we need to keep reading
+					Eventually(func() bool {
+						select {
+						case msg := <-registeredRoutes:
+							matched, err := MatchRegistryMessage(expectedRoute1Message).Match(msg)
+							if err != nil {
+								return false
+							}
+							return matched
+						case <-time.After(100 * time.Millisecond):
+							// No message received, continue waiting
+							return false
+						}
+					}, 3*msgReceiveTimeout).Should(BeTrue())
 					done <- struct{}{}
 
 					Consistently(unregisteredRoutes, 3*msgReceiveTimeout).ShouldNot(Receive())

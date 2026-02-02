@@ -65,7 +65,6 @@ describe 'bbs' do
           },
           'enable_consul_service_registration' => 'false',
           'loggregator' => {
-            'use_v2_api' => 'true',
             'ca_cert' => 'CA CERT',
             'client_cert' => 'CLIENT CERT',
             'client_key' => 'CLIENT KEY'
@@ -89,6 +88,74 @@ describe 'bbs' do
         expect do
           rendered_template
         end.to raise_error(/The locket client keepalive time property should not be larger than the timeout/)
+      end
+    end
+
+    describe 'Database timeout configurations' do
+      it 'includes db timeout settings when specified' do
+        deployment_manifest_fragment['diego']['bbs']['sql']['db_connection_timeout'] = '30'
+        deployment_manifest_fragment['diego']['bbs']['sql']['db_read_timeout'] = '30'
+        deployment_manifest_fragment['diego']['bbs']['sql']['db_write_timeout'] = '45'
+        rendered_template_json = JSON.parse(rendered_template)
+        expect(rendered_template_json['db_connection_timeout']).to eq('30s')
+        expect(rendered_template_json['db_read_timeout']).to eq('30s')
+        expect(rendered_template_json['db_write_timeout']).to eq('45s')
+      end
+
+      it 'uses default timeout values when not specified' do
+        rendered_template_json = JSON.parse(rendered_template)
+        expect(rendered_template_json['db_connection_timeout']).to eq('30s')
+        expect(rendered_template_json['db_read_timeout']).to eq('60s')
+        expect(rendered_template_json['db_write_timeout']).to eq('60s')
+      end
+    end
+
+    describe 'logging' do
+      context 'log level' do
+        it 'sets the default log level' do
+          rendered_template_json = JSON.parse(rendered_template)
+          expect(rendered_template_json['log_level']).to eq('info')
+        end
+
+        context 'when log level is specified' do
+          before do
+            deployment_manifest_fragment['diego']['bbs']['log_level']= 'debug'
+          end
+          it do
+          rendered_template_json = JSON.parse(rendered_template)
+          expect(rendered_template_json['log_level']).to eq('debug')
+          end
+        end
+      end
+
+      context 'debug_lrp_start_heartbeats' do
+        it 'sets the debug_lrp_start_heartbeats off by default' do
+          rendered_template_json = JSON.parse(rendered_template)
+          expect(rendered_template_json['debug_lrp_start_heartbeats']).to be false
+        end
+
+        context 'when log level is specified' do
+          before do
+            deployment_manifest_fragment['diego']['bbs']['debug_lrp_start_heartbeats'] = true
+          end
+          it do
+          rendered_template_json = JSON.parse(rendered_template)
+          expect(rendered_template_json['debug_lrp_start_heartbeats']).to be true
+          end
+        end
+      end
+    end
+
+
+    describe 'database connection lifetime' do 
+      it 'sets the db connection lifetime when specified' do
+        deployment_manifest_fragment['diego']['bbs']['sql']['max_connection_lifetime'] = '10'
+        rendered_template_json = JSON.parse(rendered_template)
+        expect(rendered_template_json['max_database_connection_lifetime']).to eq('10s')
+      end
+      it 'sets the db connection lifetime when specified' do
+        rendered_template_json = JSON.parse(rendered_template)
+        expect(rendered_template_json['max_database_connection_lifetime']).to eq('90s')
       end
     end
 

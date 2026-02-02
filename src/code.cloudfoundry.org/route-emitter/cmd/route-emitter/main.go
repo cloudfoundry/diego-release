@@ -149,7 +149,7 @@ func main() {
 		{Name: "unregistration", Runner: unregistrationSender},
 	}
 
-	if cfg.CellID == "" && cfg.LocketEnabled {
+	if cfg.CellID == "" {
 		locketClient, err := locket.NewClient(logger, cfg.ClientLocketConfig)
 		if err != nil {
 			logger.Fatal("failed-to-create-locket-client", err)
@@ -266,10 +266,8 @@ func initializeMetron(logger lager.Logger, locketConfig config.RouteEmitterConfi
 		return nil, err
 	}
 
-	if locketConfig.LoggregatorConfig.UseV2API {
-		emitter := runtimeemitter.NewV1(client)
-		go emitter.Run()
-	}
+	emitter := runtimeemitter.NewV1(client)
+	go emitter.Run()
 
 	return client, nil
 }

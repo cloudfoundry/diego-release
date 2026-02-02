@@ -15,7 +15,10 @@ import (
 	"code.cloudfoundry.org/bbs/encryption"
 	"code.cloudfoundry.org/bbs/test_helpers"
 	"code.cloudfoundry.org/bbs/test_helpers/sqlrunner"
+	loggingclient "code.cloudfoundry.org/diego-logging-client"
+	"code.cloudfoundry.org/diego-logging-client/testhelpers"
 	"code.cloudfoundry.org/durationjson"
+	"code.cloudfoundry.org/go-loggregator/v9/rpc/loggregator_v2"
 	"code.cloudfoundry.org/inigo/helpers/portauthority"
 	"code.cloudfoundry.org/lager/v3"
 	"code.cloudfoundry.org/lager/v3/lagerflags"
@@ -30,6 +33,8 @@ import (
 	ginkgomon "github.com/tedsuo/ifrit/ginkgomon_v2"
 	"google.golang.org/grpc/grpclog"
 )
+
+const fixturesPath = "fixtures"
 
 var (
 	auctioneerPath       string
@@ -48,11 +53,17 @@ var (
 	locketProcess ifrit.Process
 	locketRunner  *ginkgomon.Runner
 
+	testMetricsChan   chan *loggregator_v2.Envelope
+	signalMetricsChan chan struct{}
+	testIngressServer *testhelpers.TestIngressServer
+
 	sqlProcess ifrit.Process
 	sqlRunner  sqlrunner.SQLRunner
 
 	logger        lager.Logger
 	portAllocator portauthority.PortAllocator
+
+	metronCAFile, metronServerCertFile, metronServerKeyFile string
 )
 
 func TestAuctioneer(t *testing.T) {
@@ -117,8 +128,6 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 		Host:   bbsAddress,
 	}
 
-	fixturesPath := "fixtures"
-
 	bbsConfig = bbsconfig.BBSConfig{
 		UUID:                        "bbs",
 		SessionName:                 "bbs",
@@ -140,6 +149,11 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 		AuctioneerRequireTLS:        false,
 		RepClientSessionCacheSize:   0,
 		LagerConfig:                 lagerflags.DefaultLagerConfig(),
+		LoggregatorConfig: loggingclient.Config{
+			CACertPath: path.Join(fixturesPath, "metron", "CA.crt"),
+			CertPath:   path.Join(fixturesPath, "metron", "client.crt"),
+			KeyPath:    path.Join(fixturesPath, "metron", "client.key"),
+		},
 
 		ListenAddress:     bbsAddress,
 		AdvertiseURL:      bbsURL.String(),
@@ -163,11 +177,28 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 })
 
 var _ = BeforeEach(func() {
+
+	var err error
+	metronCAFile = path.Join(fixturesPath, "metron", "CA.crt")
+	metronServerCertFile = path.Join(fixturesPath, "metron", "metron.crt")
+	metronServerKeyFile = path.Join(fixturesPath, "metron", "metron.key")
+	testIngressServer, err = testhelpers.NewTestIngressServer(metronServerCertFile, metronServerKeyFile, metronCAFile)
+	Expect(err).NotTo(HaveOccurred())
+	receiversChan := testIngressServer.Receivers()
+	testIngressServer.Start()
+
+	testMetricsChan, signalMetricsChan = testhelpers.TestMetricChan(receiversChan)
+
 	locketRunner = locketrunner.NewLocketRunner(locketBinPath, func(cfg *locketconfig.LocketConfig) {
 		cfg.DatabaseConnectionString = sqlRunner.ConnectionString()
 		cfg.DatabaseDriver = sqlRunner.DriverName()
 		cfg.ListenAddress = locketAddress
+		cfg.LoggregatorConfig.APIPort, _ = testIngressServer.Port()
+		cfg.LoggregatorConfig.CACertPath = metronCAFile
+		cfg.LoggregatorConfig.CertPath = metronServerCertFile
+		cfg.LoggregatorConfig.KeyPath = metronServerKeyFile
 	})
+	bbsConfig.LoggregatorConfig.APIPort, _ = testIngressServer.Port()
 	locketProcess = ginkgomon.Invoke(locketRunner)
 
 	bbsRunner = bbstestrunner.New(bbsBinPath, bbsConfig)
@@ -177,6 +208,9 @@ var _ = BeforeEach(func() {
 var _ = AfterEach(func() {
 	ginkgomon.Interrupt(locketProcess)
 	ginkgomon.Kill(bbsProcess)
+
+	testIngressServer.Stop()
+	close(signalMetricsChan)
 
 	sqlRunner.Reset()
 })

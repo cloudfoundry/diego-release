@@ -33,6 +33,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"runtime"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -47,7 +48,7 @@ import (
 
 // Default Constants
 const (
-	Version                   = "1.43.0"
+	Version                   = "1.47.0"
 	DefaultURL                = "nats://127.0.0.1:4222"
 	DefaultPort               = 4222
 	DefaultMaxReconnect       = 60
@@ -84,68 +85,73 @@ const (
 	// ACCOUNT_AUTHENTICATION_EXPIRED_ERR is for when nats server account authorization has expired.
 	ACCOUNT_AUTHENTICATION_EXPIRED_ERR = "account authentication expired"
 
-	// MAX_CONNECTIONS_ERR is for when nats server denies the connection due to server max_connections limit
+	// MAX_CONNECTIONS_ERR is for when nats server denies the connection due to server max_connections limit.
 	MAX_CONNECTIONS_ERR = "maximum connections exceeded"
 
-	// MAX_SUBSCRIPTIONS_ERR is for when nats server denies the connection due to server subscriptions limit
+	// MAX_ACCOUNT_CONNECTIONS_ERR is for when nats server denies the connection due to server max_connections limit on the account.
+	MAX_ACCOUNT_CONNECTIONS_ERR = `maximum account active connections exceeded`
+
+	// MAX_SUBSCRIPTIONS_ERR is for when nats server denies the connection due to server subscriptions limit.
 	MAX_SUBSCRIPTIONS_ERR = "maximum subscriptions exceeded"
 )
 
 // Errors
 var (
-	ErrConnectionClosed            = errors.New("nats: connection closed")
-	ErrConnectionDraining          = errors.New("nats: connection draining")
-	ErrDrainTimeout                = errors.New("nats: draining connection timed out")
-	ErrConnectionReconnecting      = errors.New("nats: connection reconnecting")
-	ErrSecureConnRequired          = errors.New("nats: secure connection required")
-	ErrSecureConnWanted            = errors.New("nats: secure connection not available")
-	ErrBadSubscription             = errors.New("nats: invalid subscription")
-	ErrTypeSubscription            = errors.New("nats: invalid subscription type")
-	ErrBadSubject                  = errors.New("nats: invalid subject")
-	ErrBadQueueName                = errors.New("nats: invalid queue name")
-	ErrSlowConsumer                = errors.New("nats: slow consumer, messages dropped")
-	ErrTimeout                     = errors.New("nats: timeout")
-	ErrBadTimeout                  = errors.New("nats: timeout invalid")
-	ErrAuthorization               = errors.New("nats: authorization violation")
-	ErrAuthExpired                 = errors.New("nats: authentication expired")
-	ErrAuthRevoked                 = errors.New("nats: authentication revoked")
-	ErrPermissionViolation         = errors.New("nats: permissions violation")
-	ErrAccountAuthExpired          = errors.New("nats: account authentication expired")
-	ErrNoServers                   = errors.New("nats: no servers available for connection")
-	ErrJsonParse                   = errors.New("nats: connect message, json parse error")
-	ErrChanArg                     = errors.New("nats: argument needs to be a channel type")
-	ErrMaxPayload                  = errors.New("nats: maximum payload exceeded")
-	ErrMaxMessages                 = errors.New("nats: maximum messages delivered")
-	ErrSyncSubRequired             = errors.New("nats: illegal call on an async subscription")
-	ErrMultipleTLSConfigs          = errors.New("nats: multiple tls.Configs not allowed")
-	ErrClientCertOrRootCAsRequired = errors.New("nats: at least one of certCB or rootCAsCB must be set")
-	ErrNoInfoReceived              = errors.New("nats: protocol exception, INFO not received")
-	ErrReconnectBufExceeded        = errors.New("nats: outbound buffer limit exceeded")
-	ErrInvalidConnection           = errors.New("nats: invalid connection")
-	ErrInvalidMsg                  = errors.New("nats: invalid message or message nil")
-	ErrInvalidArg                  = errors.New("nats: invalid argument")
-	ErrInvalidContext              = errors.New("nats: invalid context")
-	ErrNoDeadlineContext           = errors.New("nats: context requires a deadline")
-	ErrNoEchoNotSupported          = errors.New("nats: no echo option not supported by this server")
-	ErrClientIDNotSupported        = errors.New("nats: client ID not supported by this server")
-	ErrUserButNoSigCB              = errors.New("nats: user callback defined without a signature handler")
-	ErrNkeyButNoSigCB              = errors.New("nats: nkey defined without a signature handler")
-	ErrNoUserCB                    = errors.New("nats: user callback not defined")
-	ErrNkeyAndUser                 = errors.New("nats: user callback and nkey defined")
-	ErrNkeysNotSupported           = errors.New("nats: nkeys not supported by the server")
-	ErrStaleConnection             = errors.New("nats: " + STALE_CONNECTION)
-	ErrTokenAlreadySet             = errors.New("nats: token and token handler both set")
-	ErrUserInfoAlreadySet          = errors.New("nats: cannot set user info callback and user/pass")
-	ErrMsgNotBound                 = errors.New("nats: message is not bound to subscription/connection")
-	ErrMsgNoReply                  = errors.New("nats: message does not have a reply")
-	ErrClientIPNotSupported        = errors.New("nats: client IP not supported by this server")
-	ErrDisconnected                = errors.New("nats: server is disconnected")
-	ErrHeadersNotSupported         = errors.New("nats: headers not supported by this server")
-	ErrBadHeaderMsg                = errors.New("nats: message could not decode headers")
-	ErrNoResponders                = errors.New("nats: no responders available for request")
-	ErrMaxConnectionsExceeded      = errors.New("nats: server maximum connections exceeded")
-	ErrConnectionNotTLS            = errors.New("nats: connection is not tls")
-	ErrMaxSubscriptionsExceeded    = errors.New("nats: server maximum subscriptions exceeded")
+	ErrConnectionClosed              = errors.New("nats: connection closed")
+	ErrConnectionDraining            = errors.New("nats: connection draining")
+	ErrDrainTimeout                  = errors.New("nats: draining connection timed out")
+	ErrConnectionReconnecting        = errors.New("nats: connection reconnecting")
+	ErrSecureConnRequired            = errors.New("nats: secure connection required")
+	ErrSecureConnWanted              = errors.New("nats: secure connection not available")
+	ErrBadSubscription               = errors.New("nats: invalid subscription")
+	ErrTypeSubscription              = errors.New("nats: invalid subscription type")
+	ErrBadSubject                    = errors.New("nats: invalid subject")
+	ErrBadQueueName                  = errors.New("nats: invalid queue name")
+	ErrSlowConsumer                  = errors.New("nats: slow consumer, messages dropped")
+	ErrTimeout                       = errors.New("nats: timeout")
+	ErrBadTimeout                    = errors.New("nats: timeout invalid")
+	ErrAuthorization                 = errors.New("nats: authorization violation")
+	ErrAuthExpired                   = errors.New("nats: authentication expired")
+	ErrAuthRevoked                   = errors.New("nats: authentication revoked")
+	ErrPermissionViolation           = errors.New("nats: permissions violation")
+	ErrAccountAuthExpired            = errors.New("nats: account authentication expired")
+	ErrNoServers                     = errors.New("nats: no servers available for connection")
+	ErrJsonParse                     = errors.New("nats: connect message, json parse error")
+	ErrChanArg                       = errors.New("nats: argument needs to be a channel type")
+	ErrMaxPayload                    = errors.New("nats: maximum payload exceeded")
+	ErrMaxMessages                   = errors.New("nats: maximum messages delivered")
+	ErrSyncSubRequired               = errors.New("nats: illegal call on an async subscription")
+	ErrMultipleTLSConfigs            = errors.New("nats: multiple tls.Configs not allowed")
+	ErrClientCertOrRootCAsRequired   = errors.New("nats: at least one of certCB or rootCAsCB must be set")
+	ErrNoInfoReceived                = errors.New("nats: protocol exception, INFO not received")
+	ErrReconnectBufExceeded          = errors.New("nats: outbound buffer limit exceeded")
+	ErrInvalidConnection             = errors.New("nats: invalid connection")
+	ErrInvalidMsg                    = errors.New("nats: invalid message or message nil")
+	ErrInvalidArg                    = errors.New("nats: invalid argument")
+	ErrInvalidContext                = errors.New("nats: invalid context")
+	ErrNoDeadlineContext             = errors.New("nats: context requires a deadline")
+	ErrNoEchoNotSupported            = errors.New("nats: no echo option not supported by this server")
+	ErrClientIDNotSupported          = errors.New("nats: client ID not supported by this server")
+	ErrUserButNoSigCB                = errors.New("nats: user callback defined without a signature handler")
+	ErrNkeyButNoSigCB                = errors.New("nats: nkey defined without a signature handler")
+	ErrNoUserCB                      = errors.New("nats: user callback not defined")
+	ErrNkeyAndUser                   = errors.New("nats: user callback and nkey defined")
+	ErrNkeysNotSupported             = errors.New("nats: nkeys not supported by the server")
+	ErrStaleConnection               = errors.New("nats: " + STALE_CONNECTION)
+	ErrTokenAlreadySet               = errors.New("nats: token and token handler both set")
+	ErrUserInfoAlreadySet            = errors.New("nats: cannot set user info callback and user/pass")
+	ErrMsgNotBound                   = errors.New("nats: message is not bound to subscription/connection")
+	ErrMsgNoReply                    = errors.New("nats: message does not have a reply")
+	ErrClientIPNotSupported          = errors.New("nats: client IP not supported by this server")
+	ErrDisconnected                  = errors.New("nats: server is disconnected")
+	ErrHeadersNotSupported           = errors.New("nats: headers not supported by this server")
+	ErrBadHeaderMsg                  = errors.New("nats: message could not decode headers")
+	ErrNoResponders                  = errors.New("nats: no responders available for request")
+	ErrMaxConnectionsExceeded        = errors.New("nats: server maximum connections exceeded")
+	ErrMaxAccountConnectionsExceeded = errors.New("nats: maximum account active connections exceeded")
+	ErrConnectionNotTLS              = errors.New("nats: connection is not tls")
+	ErrMaxSubscriptionsExceeded      = errors.New("nats: server maximum subscriptions exceeded")
+	ErrWebSocketHeadersAlreadySet    = errors.New("nats: websocket connection headers already set")
 )
 
 // GetDefaultOptions returns default configuration options for the client.
@@ -244,6 +250,9 @@ type UserInfoCB func() (string, string)
 // again. Note that this is invoked after the library tried the
 // whole list of URLs and failed to reconnect.
 type ReconnectDelayHandler func(attempts int) time.Duration
+
+// WebSocketHeadersHandler is an optional callback handler for generating token used for WebSocket connections.
+type WebSocketHeadersHandler func() (http.Header, error)
 
 // asyncCB is used to preserve order for async callbacks.
 type asyncCB struct {
@@ -519,6 +528,12 @@ type Options struct {
 	// from SubscribeSync if the server returns a permissions error for a subscription.
 	// Defaults to false.
 	PermissionErrOnSubscribe bool
+
+	// WebSocketConnectionHeaders is an optional http request headers to be sent with the WebSocket request.
+	WebSocketConnectionHeaders http.Header
+
+	// WebSocketConnectionHeadersHandler is an optional callback handler for generating token  used for WebSocket connections.
+	WebSocketConnectionHeadersHandler WebSocketHeadersHandler
 }
 
 const (
@@ -1247,6 +1262,35 @@ func UserCredentials(userOrChainedFile string, seedFiles ...string) Option {
 	return UserJWT(userCB, sigCB)
 }
 
+// UserCredentialBytes is a convenience function that takes the JWT and seed
+// values as byte slices. This allows passing credentials directly from memory
+// or environment variables without needing to write them to disk.
+func UserCredentialBytes(userOrChainedFileBytes []byte, seedFiles ...[]byte) Option {
+	userCB := func() (string, error) {
+		return nkeys.ParseDecoratedJWT(userOrChainedFileBytes)
+	}
+
+	var seedBytes []byte
+	if len(seedFiles) > 0 {
+		seedBytes = seedFiles[0]
+	} else {
+		seedBytes = userOrChainedFileBytes
+	}
+
+	sigCB := func(nonce []byte) ([]byte, error) {
+		kp, err := nkeys.ParseDecoratedNKey(seedBytes)
+		if err != nil {
+			return nil, fmt.Errorf("unable to extract key pair from bytes: %w", err)
+		}
+		defer kp.Wipe()
+
+		sig, _ := kp.Sign(nonce)
+		return sig, nil
+	}
+
+	return UserJWT(userCB, sigCB)
+}
+
 // UserJWTAndSeed is a convenience function that takes the JWT and seed
 // values as strings.
 func UserJWTAndSeed(jwt string, seed string) Option {
@@ -1434,6 +1478,36 @@ func TLSHandshakeFirst() Option {
 	return func(o *Options) error {
 		o.TLSHandshakeFirst = true
 		o.Secure = true
+		return nil
+	}
+}
+
+// WebSocketConnectionHeaders sets a fixed set of HTTP headers that will be
+// sent during the WebSocket connection handshake.
+// This option is mutually exclusive with WebSocketConnectionHeadersHandler;
+// if a headers handler has already been configured, it returns
+// ErrWebSocketHeadersAlreadySet.
+func WebSocketConnectionHeaders(headers http.Header) Option {
+	return func(o *Options) error {
+		if o.WebSocketConnectionHeadersHandler != nil {
+			return ErrWebSocketHeadersAlreadySet
+		}
+		o.WebSocketConnectionHeaders = headers
+		return nil
+	}
+}
+
+// WebSocketConnectionHeadersHandler registers a callback used to supply HTTP
+// headers for the WebSocket connection handshake.
+// This option is mutually exclusive with WebSocketConnectionHeaders; if
+// non-empty static headers have already been configured, it returns
+// ErrWebSocketHeadersAlreadySet.
+func WebSocketConnectionHeadersHandler(cb WebSocketHeadersHandler) Option {
+	return func(o *Options) error {
+		if len(o.WebSocketConnectionHeaders) != 0 {
+			return ErrWebSocketHeadersAlreadySet
+		}
+		o.WebSocketConnectionHeadersHandler = cb
 		return nil
 	}
 }
@@ -1626,16 +1700,21 @@ func (o Options) Connect() (*Conn, error) {
 	// Create reader/writer
 	nc.newReaderWriter()
 
+	// Spin up the async cb dispatcher before connect so it's ready
+	// to handle callbacks, especially when RetryOnFailedConnect is used
+	// and initial connection fails.
+	go nc.ach.asyncCBDispatcher()
+
 	connectionEstablished, err := nc.connect()
 	if err != nil {
+		nc.ach.close()
 		return nil, err
 	}
 
-	// Spin up the async cb dispatcher on success
-	go nc.ach.asyncCBDispatcher()
-
-	if connectionEstablished && nc.Opts.ConnectedCB != nil {
-		nc.ach.push(func() { nc.Opts.ConnectedCB(nc) })
+	if connectionEstablished {
+		if connectedCB := nc.Opts.ConnectedCB; connectedCB != nil {
+			nc.ach.push(func() { connectedCB(nc) })
+		}
 	}
 
 	return nc, nil
@@ -2520,7 +2599,7 @@ func (nc *Conn) connect() (bool, error) {
 		nc.setup()
 		nc.changeConnStatus(RECONNECTING)
 		nc.bw.switchToPending()
-		go nc.doReconnect(ErrNoServers, false)
+		go nc.doReconnect(err, false)
 		err = nil
 	} else {
 		nc.current = nil
@@ -2710,8 +2789,10 @@ func (nc *Conn) sendConnect() error {
 	// Construct the CONNECT protocol string
 	cProto, err := nc.connectProto()
 	if err != nil {
-		if !nc.initc && nc.Opts.AsyncErrorCB != nil {
-			nc.ach.push(func() { nc.Opts.AsyncErrorCB(nc, nil, err) })
+		if !nc.initc {
+			if asyncErrorCB := nc.Opts.AsyncErrorCB; asyncErrorCB != nil {
+				nc.ach.push(func() { asyncErrorCB(nc, nil, err) })
+			}
 		}
 		return err
 	}
@@ -2727,8 +2808,10 @@ func (nc *Conn) sendConnect() error {
 	// reading byte-by-byte here is ok.
 	proto, err := nc.readProto()
 	if err != nil {
-		if !nc.initc && nc.Opts.AsyncErrorCB != nil {
-			nc.ach.push(func() { nc.Opts.AsyncErrorCB(nc, nil, err) })
+		if !nc.initc {
+			if asyncErrorCB := nc.Opts.AsyncErrorCB; asyncErrorCB != nil {
+				nc.ach.push(func() { asyncErrorCB(nc, nil, err) })
+			}
 		}
 		return err
 	}
@@ -2738,8 +2821,10 @@ func (nc *Conn) sendConnect() error {
 		// Read the rest now...
 		proto, err = nc.readProto()
 		if err != nil {
-			if !nc.initc && nc.Opts.AsyncErrorCB != nil {
-				nc.ach.push(func() { nc.Opts.AsyncErrorCB(nc, nil, err) })
+			if !nc.initc {
+				if asyncErrorCB := nc.Opts.AsyncErrorCB; asyncErrorCB != nil {
+					nc.ach.push(func() { asyncErrorCB(nc, nil, err) })
+				}
 			}
 			return err
 		}
@@ -2843,13 +2928,20 @@ func (nc *Conn) doReconnect(err error, forceReconnect bool) {
 
 	// Clear any errors.
 	nc.err = nil
+
 	// Perform appropriate callback if needed for a disconnect.
 	// DisconnectedErrCB has priority over deprecated DisconnectedCB
 	if !nc.initc {
-		if nc.Opts.DisconnectedErrCB != nil {
-			nc.ach.push(func() { nc.Opts.DisconnectedErrCB(nc, err) })
-		} else if nc.Opts.DisconnectedCB != nil {
-			nc.ach.push(func() { nc.Opts.DisconnectedCB(nc) })
+		if disconnectedErrCB := nc.Opts.DisconnectedErrCB; disconnectedErrCB != nil {
+			nc.ach.push(func() { disconnectedErrCB(nc, err) })
+		} else if disconnectedCB := nc.Opts.DisconnectedCB; disconnectedCB != nil {
+			nc.ach.push(func() { disconnectedCB(nc) })
+		}
+	} else if nc.Opts.RetryOnFailedConnect && nc.initc && err != nil {
+		// For initial connection failure with RetryOnFailedConnect,
+		// report the error via ReconnectErrCB if available
+		if nc.Opts.ReconnectErrCB != nil {
+			nc.ach.push(func() { nc.Opts.ReconnectErrCB(nc, err) })
 		}
 	}
 
@@ -2952,8 +3044,8 @@ func (nc *Conn) doReconnect(err error, forceReconnect bool) {
 		// Continue to hold the lock
 		if err != nil {
 			// Perform appropriate callback for a failed connection attempt.
-			if nc.Opts.ReconnectErrCB != nil {
-				nc.ach.push(func() { nc.Opts.ReconnectErrCB(nc, err) })
+			if reconnectErrCB := nc.Opts.ReconnectErrCB; reconnectErrCB != nil {
+				nc.ach.push(func() { reconnectErrCB(nc, err) })
 			}
 			nc.err = nil
 			continue
@@ -3003,10 +3095,10 @@ func (nc *Conn) doReconnect(err error, forceReconnect bool) {
 		// Queue up the correct callback. If we are in initial connect state
 		// (using retry on failed connect), we will call the ConnectedCB,
 		// otherwise the ReconnectedCB.
-		if nc.Opts.ReconnectedCB != nil && !nc.initc {
-			nc.ach.push(func() { nc.Opts.ReconnectedCB(nc) })
-		} else if nc.Opts.ConnectedCB != nil && nc.initc {
-			nc.ach.push(func() { nc.Opts.ConnectedCB(nc) })
+		if reconnectedCB := nc.Opts.ReconnectedCB; reconnectedCB != nil && !nc.initc {
+			nc.ach.push(func() { reconnectedCB(nc) })
+		} else if connectedCB := nc.Opts.ConnectedCB; connectedCB != nil && nc.initc {
+			nc.ach.push(func() { connectedCB(nc) })
 		}
 
 		// If we are here with a retry on failed connect, indicate that the
@@ -3320,8 +3412,8 @@ func (nc *Conn) processMsg(data []byte) {
 			// We will pass the message through but send async error.
 			nc.mu.Lock()
 			nc.err = ErrBadHeaderMsg
-			if nc.Opts.AsyncErrorCB != nil {
-				nc.ach.push(func() { nc.Opts.AsyncErrorCB(nc, sub, ErrBadHeaderMsg) })
+			if asyncErrorCB := nc.Opts.AsyncErrorCB; asyncErrorCB != nil {
+				nc.ach.push(func() { asyncErrorCB(nc, sub, ErrBadHeaderMsg) })
 			}
 			nc.mu.Unlock()
 		}
@@ -3403,6 +3495,10 @@ func (nc *Conn) processMsg(data []byte) {
 		if sub.mch != nil {
 			select {
 			case sub.mch <- m:
+				// For ChanSubscribe, track delivered count here
+				if sub.typ == ChanSubscription {
+					sub.delivered++
+				}
 			default:
 				goto slowConsumer
 			}
@@ -3462,6 +3558,19 @@ func (nc *Conn) processMsg(data []byte) {
 		nc.checkForSequenceMismatch(m, sub, jsi)
 	}
 
+	// Check if we need to auto-unsubscribe for chan subscriptions
+	if sub.typ == ChanSubscription && sub.max > 0 && !ctrlMsg {
+		sub.mu.Lock()
+		if sub.delivered >= sub.max {
+			sub.mu.Unlock()
+			nc.mu.Lock()
+			nc.removeSub(sub)
+			nc.mu.Unlock()
+		} else {
+			sub.mu.Unlock()
+		}
+	}
+
 	return
 
 slowConsumer:
@@ -3481,8 +3590,8 @@ slowConsumer:
 		// is already experiencing client-side slow consumer situation.
 		nc.mu.Lock()
 		nc.err = ErrSlowConsumer
-		if nc.Opts.AsyncErrorCB != nil {
-			nc.ach.push(func() { nc.Opts.AsyncErrorCB(nc, sub, ErrSlowConsumer) })
+		if asyncErrorCB := nc.Opts.AsyncErrorCB; asyncErrorCB != nil {
+			nc.ach.push(func() { asyncErrorCB(nc, sub, ErrSlowConsumer) })
 		}
 		nc.mu.Unlock()
 	} else {
@@ -3525,8 +3634,8 @@ func (nc *Conn) processTransientError(err error) {
 			}
 		}
 	}
-	if nc.Opts.AsyncErrorCB != nil {
-		nc.ach.push(func() { nc.Opts.AsyncErrorCB(nc, nil, err) })
+	if asyncErrorCB := nc.Opts.AsyncErrorCB; asyncErrorCB != nil {
+		nc.ach.push(func() { asyncErrorCB(nc, nil, err) })
 	}
 	nc.mu.Unlock()
 }
@@ -3538,8 +3647,10 @@ func (nc *Conn) processTransientError(err error) {
 // Connection lock is held on entry
 func (nc *Conn) processAuthError(err error) bool {
 	nc.err = err
-	if !nc.initc && nc.Opts.AsyncErrorCB != nil {
-		nc.ach.push(func() { nc.Opts.AsyncErrorCB(nc, nil, err) })
+	if !nc.initc {
+		if asyncErrorCB := nc.Opts.AsyncErrorCB; asyncErrorCB != nil {
+			nc.ach.push(func() { asyncErrorCB(nc, nil, err) })
+		}
 	}
 	// We should give up if we tried twice on this server and got the
 	// same error. This behavior can be modified using IgnoreAuthErrorAbort.
@@ -3584,8 +3695,8 @@ func (nc *Conn) flusher() {
 				if nc.err == nil {
 					nc.err = err
 				}
-				if nc.Opts.AsyncErrorCB != nil {
-					nc.ach.push(func() { nc.Opts.AsyncErrorCB(nc, nil, err) })
+				if asyncErrorCB := nc.Opts.AsyncErrorCB; asyncErrorCB != nil {
+					nc.ach.push(func() { asyncErrorCB(nc, nil, err) })
 				}
 			}
 		}
@@ -3699,12 +3810,16 @@ func (nc *Conn) processInfo(info string) error {
 		if !nc.Opts.NoRandomize {
 			nc.shufflePool(1)
 		}
-		if !nc.initc && nc.Opts.DiscoveredServersCB != nil {
-			nc.ach.push(func() { nc.Opts.DiscoveredServersCB(nc) })
+		if !nc.initc {
+			if discoveredServersCB := nc.Opts.DiscoveredServersCB; discoveredServersCB != nil {
+				nc.ach.push(func() { discoveredServersCB(nc) })
+			}
 		}
 	}
-	if !nc.initc && ncInfo.LameDuckMode && nc.Opts.LameDuckModeHandler != nil {
-		nc.ach.push(func() { nc.Opts.LameDuckModeHandler(nc) })
+	if !nc.initc && ncInfo.LameDuckMode {
+		if lameDuckModeHandler := nc.Opts.LameDuckModeHandler; lameDuckModeHandler != nil {
+			nc.ach.push(func() { lameDuckModeHandler(nc) })
+		}
 	}
 	return nil
 }
@@ -3765,6 +3880,8 @@ func (nc *Conn) processErr(ie string) {
 		close = nc.processOpErr(ErrStaleConnection)
 	} else if e == MAX_CONNECTIONS_ERR {
 		close = nc.processOpErr(ErrMaxConnectionsExceeded)
+	} else if e == MAX_ACCOUNT_CONNECTIONS_ERR {
+		close = nc.processOpErr(ErrMaxAccountConnectionsExceeded)
 	} else if strings.HasPrefix(e, PERMISSIONS_ERR) {
 		nc.processTransientError(fmt.Errorf("%w: %s", ErrPermissionViolation, ne))
 	} else if strings.HasPrefix(e, MAX_SUBSCRIPTIONS_ERR) {
@@ -4657,7 +4774,7 @@ func (s *Subscription) registerStatusChangeListener(status SubStatus, ch chan Su
 // will not block. Lock should be held entering.
 func (s *Subscription) sendStatusEvent(status SubStatus) {
 	for ch, statuses := range s.statListeners {
-		if !containsStatus(statuses, status) {
+		if !slices.Contains(statuses, status) {
 			continue
 		}
 		// only send event if someone's listening
@@ -4665,19 +4782,16 @@ func (s *Subscription) sendStatusEvent(status SubStatus) {
 		case ch <- status:
 		default:
 		}
-		if status == SubscriptionClosed {
+	}
+	// After sending SubscriptionClosed status to all listeners,
+	// close all channels and clear the map to prevent future
+	// sends to closed channels that could cause panics
+	if status == SubscriptionClosed {
+		for ch := range s.statListeners {
 			close(ch)
 		}
+		s.statListeners = nil
 	}
-}
-
-func containsStatus(statuses []SubStatus, status SubStatus) bool {
-	for _, s := range statuses {
-		if s == status {
-			return true
-		}
-	}
-	return false
 }
 
 // changeSubStatus changes subscription status and sends events
@@ -5158,8 +5272,8 @@ func (s *Subscription) ClearMaxPending() error {
 
 // Pending Limits
 const (
-	// DefaultSubPendingMsgsLimit will be 512k msgs.
-	DefaultSubPendingMsgsLimit = 512 * 1024
+	// DefaultSubPendingMsgsLimit will be 500k msgs.
+	DefaultSubPendingMsgsLimit = 500_000
 	// DefaultSubPendingBytesLimit is 64MB
 	DefaultSubPendingBytesLimit = 64 * 1024 * 1024
 )
@@ -5509,6 +5623,14 @@ func (nc *Conn) close(status Status, doCBs bool, err error) {
 			close(s.mch)
 		}
 		s.mch = nil
+
+		// Call closed handler for non-AsyncSubscription types (AsyncSubscription handlers
+		// are called by waitForMsgs when it exits)
+		var done func(string)
+		if s.typ != AsyncSubscription && s.pDone != nil {
+			done = s.pDone
+		}
+
 		// Mark as invalid, for signaling to waitForMsgs
 		s.closed = true
 		// Mark connection closed in subscription
@@ -5519,6 +5641,11 @@ func (nc *Conn) close(status Status, doCBs bool, err error) {
 		}
 
 		s.mu.Unlock()
+
+		// Call the closed handler outside the lock to avoid potential deadlocks
+		if done != nil {
+			done(s.Subject)
+		}
 	}
 	nc.subs = nil
 	nc.subsMu.Unlock()
@@ -5534,8 +5661,8 @@ func (nc *Conn) close(status Status, doCBs bool, err error) {
 				nc.ach.push(func() { disconnectedCB(nc) })
 			}
 		}
-		if nc.Opts.ClosedCB != nil {
-			nc.ach.push(func() { nc.Opts.ClosedCB(nc) })
+		if closedCB := nc.Opts.ClosedCB; closedCB != nil {
+			nc.ach.push(func() { closedCB(nc) })
 		}
 	}
 	// If this is terminal, then we have to notify the asyncCB handler that
@@ -6107,18 +6234,12 @@ func sigHandler(nonce []byte, seedFile string) ([]byte, error) {
 type timeoutWriter struct {
 	timeout time.Duration
 	conn    net.Conn
-	err     error
 }
 
 // Write implements the io.Writer interface.
 func (tw *timeoutWriter) Write(p []byte) (int, error) {
-	if tw.err != nil {
-		return 0, tw.err
-	}
-
-	var n int
 	tw.conn.SetWriteDeadline(time.Now().Add(tw.timeout))
-	n, tw.err = tw.conn.Write(p)
+	n, err := tw.conn.Write(p)
 	tw.conn.SetWriteDeadline(time.Time{})
-	return n, tw.err
+	return n, err
 }

@@ -3,12 +3,15 @@ package main_test
 import (
 	"encoding/json"
 	"fmt"
+	"path"
 	"runtime"
 	"testing"
 	"time"
 
+	"code.cloudfoundry.org/diego-logging-client/testhelpers"
 	"code.cloudfoundry.org/diego-ssh/cmd/sshd/testrunner"
 	"code.cloudfoundry.org/diego-ssh/keys"
+	"code.cloudfoundry.org/go-loggregator/v9/rpc/loggregator_v2"
 	"code.cloudfoundry.org/inigo/helpers/portauthority"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -35,7 +38,12 @@ var (
 	privateKeyPem       string
 	publicAuthorizedKey string
 
-	portAllocator portauthority.PortAllocator
+	testMetricsChan   chan *loggregator_v2.Envelope
+	signalMetricsChan chan struct{}
+	testIngressServer *testhelpers.TestIngressServer
+
+	portAllocator                                           portauthority.PortAllocator
+	metronCAFile, metronServerCertFile, metronServerKeyFile string
 )
 
 func TestSSHProxy(t *testing.T) {
@@ -112,6 +120,18 @@ var _ = BeforeEach(func() {
 	if runtime.GOOS == "windows" {
 		Skip("SSH not supported on Windows, and SSH proxy never runs on Windows anyway")
 	}
+	fixturesPath := "fixtures"
+
+	var err error
+	metronCAFile = path.Join(fixturesPath, "metron", "CA.crt")
+	metronServerCertFile = path.Join(fixturesPath, "metron", "metron.crt")
+	metronServerKeyFile = path.Join(fixturesPath, "metron", "metron.key")
+	testIngressServer, err = testhelpers.NewTestIngressServer(metronServerCertFile, metronServerKeyFile, metronCAFile)
+	Expect(err).NotTo(HaveOccurred())
+	receiversChan := testIngressServer.Receivers()
+	testIngressServer.Start()
+
+	testMetricsChan, signalMetricsChan = testhelpers.TestMetricChan(receiversChan)
 
 	sshdAddress = fmt.Sprintf("127.0.0.1:%d", sshdPort)
 	sshdArgs := testrunner.Args{
@@ -125,6 +145,8 @@ var _ = BeforeEach(func() {
 })
 
 var _ = AfterEach(func() {
+	testIngressServer.Stop()
+	close(signalMetricsChan)
 	ginkgomon.Kill(sshdProcess, 5*time.Second)
 })
 

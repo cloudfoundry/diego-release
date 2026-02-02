@@ -57,7 +57,6 @@ var _ = Describe("Config", func() {
 				"client_cert_file": "/tmp/routing_api_client_cert_file",
 				"client_key_file": "/tmp/routing_api_client_key_file"
 			},
-			"locket_enabled": true,
 			"locket_address": "127.0.0.1:18018",
 			"locket_ca_cert_file": "locket-ca-cert",
 			"report_interval": "1m",
@@ -72,7 +71,6 @@ var _ = Describe("Config", func() {
 				"skip_cert_verify": true
 			},
 			"loggregator": {
-			  "loggregator_use_v2_api": true,
 			  "loggregator_api_port": 1234,
 			  "loggregator_ca_path": "/var/ca_cert",
 			  "loggregator_cert_path": "/var/cert_path",
@@ -137,7 +135,6 @@ var _ = Describe("Config", func() {
 			EnableTCPEmitter:             true,
 			EnableInternalEmitter:        true,
 			RegisterDirectInstanceRoutes: true,
-			LocketEnabled:                true,
 			RoutingAPI: config.RoutingAPIConfig{
 				URL:            "https://routing-api.cf.service.internal",
 				Port:           443,
@@ -160,7 +157,6 @@ var _ = Describe("Config", func() {
 				SkipCertVerify:    true,
 			},
 			LoggregatorConfig: loggingclient.Config{
-				UseV2API:      true,
 				APIPort:       1234,
 				CACertPath:    "/var/ca_cert",
 				CertPath:      "/var/cert_path",

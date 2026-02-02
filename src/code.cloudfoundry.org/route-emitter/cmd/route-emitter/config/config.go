@@ -63,7 +63,6 @@ type RouteEmitterConfig struct {
 	UnregistrationInterval       durationjson.Duration `json:"unregistration_interval,omitempty"`
 	UnregistrationSendCount      int                   `json:"unregistration_send_count,omitempty"`
 	EnableInternalEmitter        bool                  `json:"enable_internal_emitter"`
-	LocketEnabled                bool                  `json:"locket_enabled"`
 	LocketSessionName            string                `json:"locket_session_name"`
 
 	lagerflags.LagerConfig

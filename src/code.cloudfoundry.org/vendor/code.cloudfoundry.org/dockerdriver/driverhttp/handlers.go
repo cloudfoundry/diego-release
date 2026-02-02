@@ -101,7 +101,7 @@ func newActivateHandler(logger lager.Logger, client dockerdriver.Driver) http.Ha
 
 		activateResponse := client.Activate(EnvWithMonitor(logger, req.Context(), w))
 		if activateResponse.Err != "" {
-			logger.Error("failed-activating-driver", fmt.Errorf(activateResponse.Err))
+			logger.Error("failed-activating-driver", fmt.Errorf("%s", activateResponse.Err))
 			cf_http_handlers.WriteJSONResponse(w, StatusInternalServerError, activateResponse)
 			return
 		}
@@ -181,7 +181,7 @@ func newPathHandler(logger lager.Logger, client dockerdriver.Driver) http.Handle
 
 		pathResponse := client.Path(EnvWithMonitor(logger, req.Context(), w), pathRequest)
 		if pathResponse.Err != "" {
-			logger.Error("failed-activating-driver", fmt.Errorf(pathResponse.Err))
+			logger.Error("failed-activating-driver", fmt.Errorf("%s", pathResponse.Err))
 			cf_http_handlers.WriteJSONResponse(w, StatusInternalServerError, pathResponse)
 			return
 		}

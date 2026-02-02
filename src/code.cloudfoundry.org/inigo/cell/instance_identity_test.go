@@ -126,7 +126,7 @@ var _ = Describe("InstanceIdentity", func() {
 			OrganizationalUnit: organizationalUnit,
 		}
 
-		fileServer, fileServerStaticDir = componentMaker.FileServer()
+		fileServer, fileServerStaticDir = componentMaker.FileServer(modifyFunFileServerLoggregatorConfig)
 		archiveFiles := fixtures.GoServerApp()
 		archive_helper.CreateTarGZArchive(filepath.Join(fileServerStaticDir, "lrp.tgz"), archiveFiles)
 		archive_helper.CreateZipArchive(
@@ -134,7 +134,7 @@ var _ = Describe("InstanceIdentity", func() {
 			archiveFiles,
 		)
 
-		rep = componentMaker.Rep(configRepCerts)
+		rep = componentMaker.Rep(configRepCerts, modifyFunRepLoggregatorConfig)
 		logger = lagertest.NewTestLogger("metron-agent")
 		metronAgent = ifrit.RunFunc(func(signals <-chan os.Signal, ready chan<- struct{}) error {
 			close(ready)
@@ -145,11 +145,12 @@ var _ = Describe("InstanceIdentity", func() {
 	})
 
 	JustBeforeEach(func() {
+
 		cellGroup := grouper.Members{
 			{Name: "metron-agent", Runner: metronAgent},
 			{Name: "file-server", Runner: fileServer},
 			{Name: "rep", Runner: rep},
-			{Name: "auctioneer", Runner: componentMaker.Auctioneer()},
+			{Name: "auctioneer", Runner: componentMaker.Auctioneer(modifyFunAuctioneerLoggregatorConfig)},
 		}
 		terminationSignal := os.Interrupt
 		if runtime.GOOS == "windows" {
@@ -379,7 +380,6 @@ var _ = Describe("InstanceIdentity", func() {
 				cfg.LoggregatorConfig = logging.Config{
 					BatchFlushInterval: 10 * time.Millisecond,
 					BatchMaxSize:       1,
-					UseV2API:           true,
 					APIPort:            metricsPort,
 					CACertPath:         metronCAFile,
 					KeyPath:            metronClientKeyFile,
@@ -429,7 +429,11 @@ var _ = Describe("InstanceIdentity", func() {
 			JustBeforeEach(func() {
 				err := bbsClient.DesireLRP(lgr, "", lrp)
 				Expect(err).NotTo(HaveOccurred())
-				Eventually(helpers.LRPStatePoller(lgr, bbsClient, processGUID, nil)).Should(Equal(models.ActualLRPStateRunning))
+				Eventually(
+					helpers.LRPStatePoller(lgr, bbsClient, processGUID, nil),
+					cellSuiteEventuallyTestTimeout,
+					cellSuiteEventuallyPollingInterval,
+				).Should(Equal(models.ActualLRPStateRunning))
 
 				address = getContainerInternalAddress(bbsClient, processGUID, 8080, true)
 			})
@@ -866,14 +870,7 @@ var _ = Describe("InstanceIdentity", func() {
 					config.ContainerProxyPath = sleepyEnvoyDir
 				}
 
-				enableDeclarativeHealthChecks := func(config *config.RepConfig) {
-					config.EnableDeclarativeHealthcheck = true
-					config.DeclarativeHealthCheckDefaultTimeout = durationjson.Duration(1 * time.Second)
-					config.DeclarativeHealthcheckPath = componentMaker.Artifacts().Healthcheck
-					config.HealthCheckWorkPoolSize = 1
-				}
-
-				rep = componentMaker.Rep(configRepCerts, enableContainerProxy, setSleepEnvoy, loggregatorConfig, enableDeclarativeHealthChecks)
+				rep = componentMaker.Rep(configRepCerts, enableContainerProxy, setSleepEnvoy, loggregatorConfig)
 			})
 
 			JustBeforeEach(func() {

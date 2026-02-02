@@ -35,17 +35,17 @@ var _ = Describe("Network Environment Variables", func() {
 		if runtime.GOOS == "windows" {
 			Skip(" not yet working on windows")
 		}
-		fileServer, fileServerStaticDir = componentMaker.FileServer()
+		fileServer, fileServerStaticDir = componentMaker.FileServer(modifyFunFileServerLoggregatorConfig)
 		modifyRepConfig = func(*repconfig.RepConfig) {}
 		guid = helpers.GenerateGuid()
 	})
 
 	JustBeforeEach(func() {
 		ifritRuntime = ginkgomon.Invoke(grouper.NewParallel(os.Kill, grouper.Members{
-			{Name: "rep", Runner: componentMaker.Rep(modifyRepConfig)},
-			{Name: "auctioneer", Runner: componentMaker.Auctioneer()},
+			{Name: "rep", Runner: componentMaker.Rep(modifyRepConfig, modifyFunRepLoggregatorConfig)},
+			{Name: "auctioneer", Runner: componentMaker.Auctioneer(modifyFunAuctioneerLoggregatorConfig)},
 			{Name: "router", Runner: componentMaker.Router()},
-			{Name: "route-emitter", Runner: componentMaker.RouteEmitter()},
+			{Name: "route-emitter", Runner: componentMaker.RouteEmitter(modifyFunRouteEmitterLoggregatorConfig)},
 			{Name: "file-server", Runner: fileServer},
 		}))
 	})

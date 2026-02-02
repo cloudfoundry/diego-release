@@ -66,22 +66,31 @@ if p("diego.locket.sql.require_ssl")
    config[:sql_enable_identity_verification] = p("database.tls.enable_identity_verification")
 end
 
+  if_p("diego.locket.sql.db_connection_timeout") do |value|
+    config[:db_connection_timeout] = "#{value}s" # add time unit
+  end
+
+  if_p("diego.locket.sql.db_read_timeout") do |value|
+    config[:db_read_timeout] = "#{value}s" # add time unit
+  end
+
+  if_p("diego.locket.sql.db_write_timeout") do |value|
+    config[:db_write_timeout] = "#{value}s" # add time unit
+  end
+
 config[:time_format] = "rfc3339"
 config[:loggregator]={}
-config[:loggregator][:loggregator_use_v2_api] = p("loggregator.use_v2_api")
-if p("loggregator.use_v2_api") == true
-  config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
-  config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"
-  config[:loggregator][:loggregator_cert_path] = "#{conf_dir}/certs/loggregator/client.crt"
-  config[:loggregator][:loggregator_key_path] = "#{conf_dir}/certs/loggregator/client.key"
-  config[:loggregator][:loggregator_job_deployment] = spec.deployment
-  config[:loggregator][:loggregator_job_name] = spec.name
-  config[:loggregator][:loggregator_job_index] = spec.id
-  config[:loggregator][:loggregator_job_ip] = spec.address
-  config[:loggregator][:loggregator_job_origin] = "locket"
-  config[:loggregator][:loggregator_source_id] = "locket"
-  config[:loggregator][:loggregator_instance_id] = spec.id
-end
+config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
+config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"
+config[:loggregator][:loggregator_cert_path] = "#{conf_dir}/certs/loggregator/client.crt"
+config[:loggregator][:loggregator_key_path] = "#{conf_dir}/certs/loggregator/client.key"
+config[:loggregator][:loggregator_job_deployment] = spec.deployment
+config[:loggregator][:loggregator_job_name] = spec.name
+config[:loggregator][:loggregator_job_index] = spec.id
+config[:loggregator][:loggregator_job_ip] = spec.address
+config[:loggregator][:loggregator_job_origin] = "locket"
+config[:loggregator][:loggregator_source_id] = "locket"
+config[:loggregator][:loggregator_instance_id] = spec.id
 
 config.to_json
 %>

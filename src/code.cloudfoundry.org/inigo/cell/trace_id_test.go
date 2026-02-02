@@ -41,15 +41,15 @@ var _ = Describe("TraceId", func() {
 		}
 		requestId = "0bc29108-c522-4360-93dd-30ca38cce13d"
 		loggedRequestId = strings.ReplaceAll(requestId, "-", "")
-		fileServer, fileServerStaticDir = componentMaker.FileServer()
+		fileServer, fileServerStaticDir = componentMaker.FileServer(modifyFunFileServerLoggregatorConfig)
 		test_helper.CreateZipArchive(
 			filepath.Join(fileServerStaticDir, "lrp.zip"),
 			fixtures.GoServerApp(),
 		)
-		rep = componentMaker.Rep()
-		auctioneer = componentMaker.Auctioneer()
+		rep = componentMaker.Rep(modifyFunRepLoggregatorConfig)
+		auctioneer = componentMaker.Auctioneer(modifyFunAuctioneerLoggregatorConfig)
 		router = componentMaker.Router()
-		routeEmitter = componentMaker.RouteEmitter()
+		routeEmitter = componentMaker.RouteEmitter(modifyFunRouteEmitterLoggregatorConfig)
 		ifritRuntime = ginkgomon.Invoke(grouper.NewParallel(os.Kill, grouper.Members{
 			{Name: "rep", Runner: rep},
 			{Name: "auctioneer", Runner: auctioneer},

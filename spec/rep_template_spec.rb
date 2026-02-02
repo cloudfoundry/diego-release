@@ -52,7 +52,6 @@ describe 'rep' do
         ]
       },
       'enable_consul_service_registration' => 'false',
-      'enable_declarative_healthcheck' => 'true',
       'loggregator' => {},
       'tls' => {
         'ca_cert' => 'CA CERT',
@@ -82,13 +81,11 @@ describe 'rep' do
     end
 
     it 'excludes the newer cpu_entitlement metric by default for backwards compatibility' do
-      deployment_manifest_fragment['loggregator']['use_v2_api'] = true
       expect(JSON.parse(rendered_template)['loggregator']['loggregator_app_metric_exclusion_filter']).to eq(%w[cpu_entitlement])
     end
 
     context 'when specific app metrics are configured to be excluded' do
       it 'configures the rep to exclude them' do
-        deployment_manifest_fragment['loggregator']['use_v2_api'] = true
         deployment_manifest_fragment['loggregator']['app_metric_exclusion_filter']= %w[absolute_entitlement absolute_usage]
         expect(JSON.parse(rendered_template)['loggregator']['loggregator_app_metric_exclusion_filter']).to eq(%w[absolute_entitlement absolute_usage])
       end

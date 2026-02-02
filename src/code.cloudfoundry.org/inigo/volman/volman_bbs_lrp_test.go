@@ -35,14 +35,14 @@ var _ = Describe("LRPs with volume mounts", func() {
 
 	BeforeEach(func() {
 		var fileServerRunner ifrit.Runner
-		fileServerRunner, fileServerStaticDir = componentMaker.FileServer()
+		fileServerRunner, fileServerStaticDir = componentMaker.FileServer(modifyFunFileServerLoggregatorConfig)
 		plumbing = ginkgomon.Invoke(grouper.NewOrdered(os.Kill, grouper.Members{
 			{Name: "initial-services", Runner: grouper.NewParallel(os.Kill, grouper.Members{
 				{Name: "sql", Runner: componentMaker.SQL()},
 				{Name: "nats", Runner: componentMaker.NATS()},
 			})},
-			{Name: "locket", Runner: componentMaker.Locket()},
-			{Name: "bbs", Runner: componentMaker.BBS()},
+			{Name: "locket", Runner: componentMaker.Locket(modifyFuncLocketLoggregatorConfig)},
+			{Name: "bbs", Runner: componentMaker.BBS(modifyFuncBBSLoggregatorConfig)},
 		}))
 
 		logger = lager.NewLogger("test")
@@ -51,9 +51,9 @@ var _ = Describe("LRPs with volume mounts", func() {
 		cellProcess = ginkgomon.Invoke(grouper.NewParallel(os.Kill, grouper.Members{
 			{Name: "router", Runner: componentMaker.Router()},
 			{Name: "file-server", Runner: fileServerRunner},
-			{Name: "rep", Runner: componentMaker.Rep()},
-			{Name: "auctioneer", Runner: componentMaker.Auctioneer()},
-			{Name: "route-emitter", Runner: componentMaker.RouteEmitter()},
+			{Name: "rep", Runner: componentMaker.Rep(modifyFunRepLoggregatorConfig)},
+			{Name: "auctioneer", Runner: componentMaker.Auctioneer(modifyFunAuctioneerLoggregatorConfig)},
+			{Name: "route-emitter", Runner: componentMaker.RouteEmitter(modifyFunRouteEmitterLoggregatorConfig)},
 		}))
 
 		bbsServiceClient := componentMaker.BBSServiceClient(logger)

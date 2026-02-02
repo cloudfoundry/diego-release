@@ -9,10 +9,14 @@ import (
 	"testing"
 	"time"
 
+	auctioneerconfig "code.cloudfoundry.org/auctioneer/cmd/auctioneer/config"
 	"code.cloudfoundry.org/durationjson"
+	fileserverconfig "code.cloudfoundry.org/fileserver/cmd/file-server/config"
 	"code.cloudfoundry.org/guardian/gqt/runner"
 	"code.cloudfoundry.org/lager/v3"
 	"code.cloudfoundry.org/localip"
+	repconfig "code.cloudfoundry.org/rep/cmd/rep/config"
+	routeemitterconfig "code.cloudfoundry.org/route-emitter/cmd/route-emitter/config"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
@@ -23,13 +27,20 @@ import (
 	"code.cloudfoundry.org/bbs"
 	bbsconfig "code.cloudfoundry.org/bbs/cmd/bbs/config"
 	"code.cloudfoundry.org/bbs/serviceclient"
+	loggingclient "code.cloudfoundry.org/diego-logging-client"
+	"code.cloudfoundry.org/diego-logging-client/testhelpers"
 	"code.cloudfoundry.org/garden"
+	"code.cloudfoundry.org/go-loggregator/v9/rpc/loggregator_v2"
 	"code.cloudfoundry.org/inigo/helpers"
 	"code.cloudfoundry.org/inigo/helpers/certauthority"
 	"code.cloudfoundry.org/inigo/helpers/portauthority"
 	"code.cloudfoundry.org/inigo/inigo_announcement_server"
 	"code.cloudfoundry.org/inigo/world"
+	locketconfig "code.cloudfoundry.org/locket/cmd/locket/config"
 )
+
+const cellSuiteEventuallyTestTimeout = 30 * time.Second
+const cellSuiteEventuallyPollingInterval = 1 * time.Second
 
 var (
 	componentMaker world.ComponentMaker
@@ -42,6 +53,17 @@ var (
 	gardenRunner                        *runner.GardenRunner
 	lgr                                 lager.Logger
 	suiteTempDir                        string
+
+	testMetricsChan   chan *loggregator_v2.Envelope
+	signalMetricsChan chan struct{}
+	testIngressServer *testhelpers.TestIngressServer
+
+	modifyFunAuctioneerLoggregatorConfig                    func(cfg *auctioneerconfig.AuctioneerConfig)
+	modifyFunRouteEmitterLoggregatorConfig                  func(cfg *routeemitterconfig.RouteEmitterConfig)
+	modifyFunRepLoggregatorConfig                           func(cfg *repconfig.RepConfig)
+	modifyFunFileServerLoggregatorConfig                    func(cfg *fileserverconfig.FileServerConfig)
+	modifyFuncBBSLoggregatorConfig                          func(cfg *bbsconfig.BBSConfig)
+	metronCAFile, metronServerCertFile, metronServerKeyFile string
 )
 
 func overrideConvergenceRepeatInterval(conf *bbsconfig.BBSConfig) {
@@ -109,26 +131,62 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 	componentMaker.Setup()
 })
 
-var _ = AfterSuite(func() {
+var _ = SynchronizedAfterSuite(func() {
 	if componentMaker != nil {
 		componentMaker.Teardown()
 	}
-
-	deleteSuiteTempDir := func() error { return os.RemoveAll(suiteTempDir) }
-	Eventually(deleteSuiteTempDir).Should(Succeed())
+}, func() {
+	os.RemoveAll(suiteTempDir)
 })
 
 var _ = BeforeEach(func() {
+
+	fixturesPath := "../fixtures/certs"
+	var err error
+	metronCAFile = filepath.Join(fixturesPath, "metron", "CA.crt")
+	metronServerCertFile = filepath.Join(fixturesPath, "metron", "metron.crt")
+	metronServerKeyFile = filepath.Join(fixturesPath, "metron", "metron.key")
+	testIngressServer, err = testhelpers.NewTestIngressServer(metronServerCertFile, metronServerKeyFile, metronCAFile)
+	Expect(err).NotTo(HaveOccurred())
+	receiversChan := testIngressServer.Receivers()
+	testIngressServer.Start()
+
+	testMetricsChan, signalMetricsChan = testhelpers.TestMetricChan(receiversChan)
+
+	modifyFuncLocketLoggregatorConfig := func(cfg *locketconfig.LocketConfig) {
+		cfg.LoggregatorConfig = setupMetronConfig(cfg.LoggregatorConfig)
+	}
+
+	modifyFuncBBSLoggregatorConfig = func(cfg *bbsconfig.BBSConfig) {
+		cfg.LoggregatorConfig = setupMetronConfig(cfg.LoggregatorConfig)
+	}
+
+	modifyFunAuctioneerLoggregatorConfig = func(cfg *auctioneerconfig.AuctioneerConfig) {
+		cfg.LoggregatorConfig = setupMetronConfig(cfg.LoggregatorConfig)
+	}
+
+	modifyFunRouteEmitterLoggregatorConfig = func(cfg *routeemitterconfig.RouteEmitterConfig) {
+		cfg.LoggregatorConfig = setupMetronConfig(cfg.LoggregatorConfig)
+	}
+
+	modifyFunRepLoggregatorConfig = func(cfg *repconfig.RepConfig) {
+		cfg.LoggregatorConfig = setupMetronConfig(cfg.LoggregatorConfig)
+	}
+
+	modifyFunFileServerLoggregatorConfig = func(cfg *fileserverconfig.FileServerConfig) {
+		cfg.LoggregatorConfig = setupMetronConfig(cfg.LoggregatorConfig)
+	}
+
 	plumbing = ginkgomon.Invoke(grouper.NewOrdered(os.Kill, grouper.Members{
 		{Name: "initial-services", Runner: grouper.NewParallel(os.Kill, grouper.Members{
 			{Name: "sql", Runner: componentMaker.SQL()},
 			{Name: "nats", Runner: componentMaker.NATS()},
 		})},
-		{Name: "locket", Runner: componentMaker.Locket()},
+		{Name: "locket", Runner: componentMaker.Locket(modifyFuncLocketLoggregatorConfig)},
 	}))
 	gardenRunner = componentMaker.Garden()
 	gardenProcess = ginkgomon.Invoke(gardenRunner)
-	bbsRunner = componentMaker.BBS()
+	bbsRunner = componentMaker.BBS(modifyFuncBBSLoggregatorConfig)
 	bbsProcess = ginkgomon.Invoke(bbsRunner)
 
 	lgr = lager.NewLogger("test")
@@ -150,6 +208,9 @@ var _ = AfterEach(func() {
 	helpers.StopProcesses(gardenProcess)
 	helpers.StopProcesses(plumbing)
 
+	testIngressServer.Stop()
+	close(signalMetricsChan)
+
 	Expect(destroyContainerErrors).To(
 		BeEmpty(),
 		"%d containers failed to be destroyed!",
@@ -170,8 +231,13 @@ func CompileHealthcheckExecutable(tmpDir string) string {
 	healthcheckPath, err := gexec.Build("code.cloudfoundry.org/healthcheck/cmd/healthcheck", "-race")
 	Expect(err).NotTo(HaveOccurred())
 
-	err = os.Rename(healthcheckPath, filepath.Join(healthcheckDir, "healthcheck"))
-	Expect(err).NotTo(HaveOccurred())
+	if runtime.GOOS == "windows" {
+		err = os.Rename(healthcheckPath, filepath.Join(healthcheckDir, "healthcheck.exe"))
+		Expect(err).NotTo(HaveOccurred())
+	} else {
+		err = os.Rename(healthcheckPath, filepath.Join(healthcheckDir, "healthcheck"))
+		Expect(err).NotTo(HaveOccurred())
+	}
 
 	return healthcheckDir
 }
@@ -225,4 +291,12 @@ func CompileTestedExecutables() world.BuiltExecutables {
 	Expect(err).NotTo(HaveOccurred())
 
 	return builtExecutables
+}
+
+func setupMetronConfig(cfg loggingclient.Config) loggingclient.Config {
+	cfg.APIPort, _ = testIngressServer.Port()
+	cfg.CACertPath = metronCAFile
+	cfg.CertPath = metronServerCertFile
+	cfg.KeyPath = metronServerKeyFile
+	return cfg
 }

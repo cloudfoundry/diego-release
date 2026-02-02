@@ -25,7 +25,7 @@
     communication_timeout: "10s",
     desired_lrp_creation_timeout: "1m",
     lock_ttl: "15s",
-    lock_retry_interval: "5s",
+    lock_retry_interval: "2s",
     report_interval: "1m",
     convergence_workers: 20,
     update_workers: 1000,
@@ -34,9 +34,9 @@
     health_address: p("diego.bbs.health_addr"),
     rep_client_session_cache_size: p("diego.bbs.rep.client_session_cache_size"),
     log_level: p("diego.bbs.log_level"),
+    debug_lrp_start_heartbeats: p("diego.bbs.debug_lrp_start_heartbeats"),
     active_key_label: p("diego.bbs.active_key_label"),
     debug_address: p("diego.bbs.debug_addr"),
-    locks_locket_enabled: p("locks.locket.enabled"),
     cell_registrations_locket_enabled: p("cell_registrations.locket.enabled"),
     max_task_retries: p("tasks.max_retries"),
     max_data_string_length: p("logging.max_data_string_length"),
@@ -119,8 +119,22 @@
     config[:max_open_database_connections] = value
   end
 
+  config[:max_database_connection_lifetime] = "#{p("diego.bbs.sql.max_connection_lifetime")}s"
+
   if_p("diego.bbs.sql.max_idle_connections") do |value|
     config[:max_idle_database_connections] = value
+  end
+
+  if_p("diego.bbs.sql.db_connection_timeout") do |value|
+    config[:db_connection_timeout] = "#{value}s" # add time unit
+  end
+
+  if_p("diego.bbs.sql.db_read_timeout") do |value|
+    config[:db_read_timeout] = "#{value}s" # add time unit
+  end
+
+  if_p("diego.bbs.sql.db_write_timeout") do |value|
+    config[:db_write_timeout] = "#{value}s" # add time unit
   end
 
   if_p("diego.bbs.sql.db_driver") do |value|
@@ -174,20 +188,17 @@
   end
 
   config[:loggregator]={}
-  config[:loggregator][:loggregator_use_v2_api] = p("loggregator.use_v2_api")
-  if p("loggregator.use_v2_api") == true
-    config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
-    config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"
-    config[:loggregator][:loggregator_cert_path] = "#{conf_dir}/certs/loggregator/client.crt"
-    config[:loggregator][:loggregator_key_path] = "#{conf_dir}/certs/loggregator/client.key"
-    config[:loggregator][:loggregator_job_deployment] = spec.deployment
-    config[:loggregator][:loggregator_job_name] = spec.name
-    config[:loggregator][:loggregator_job_index] = spec.id
-    config[:loggregator][:loggregator_job_ip] = spec.address
-    config[:loggregator][:loggregator_job_origin] = "bbs"
-    config[:loggregator][:loggregator_source_id] = "bbs"
-    config[:loggregator][:loggregator_instance_id] = spec.id
-  end
+  config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
+  config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"
+  config[:loggregator][:loggregator_cert_path] = "#{conf_dir}/certs/loggregator/client.crt"
+  config[:loggregator][:loggregator_key_path] = "#{conf_dir}/certs/loggregator/client.key"
+  config[:loggregator][:loggregator_job_deployment] = spec.deployment
+  config[:loggregator][:loggregator_job_name] = spec.name
+  config[:loggregator][:loggregator_job_index] = spec.id
+  config[:loggregator][:loggregator_job_ip] = spec.address
+  config[:loggregator][:loggregator_job_origin] = "bbs"
+  config[:loggregator][:loggregator_source_id] = "bbs"
+  config[:loggregator][:loggregator_instance_id] = spec.id
 
   # Validate diego.bbs.metrics.advanced_metrics
   if_p("diego.bbs.metrics.advanced_metrics.enabled") do |value|

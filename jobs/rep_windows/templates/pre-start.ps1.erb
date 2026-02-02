@@ -75,10 +75,8 @@ $bindmountDirs += $service_bindings_dir
   $bindmountDirs += $trusted_certs_dir
 <% end %>
 
-<% if p("enable_declarative_healthcheck") %>
-  $healthcheckDir = "<%= p("declarative_healthcheck_path") %>"
-  $bindmountDirs += $healthcheckDir
-<% end %>
+$healthcheckDir = "<%= p("declarative_healthcheck_path") %>"
+$bindmountDirs += $healthcheckDir
 
 <% if p("diego.rep.open_bindmounts_acl") %>
   foreach ($dir in $bindmountDirs)

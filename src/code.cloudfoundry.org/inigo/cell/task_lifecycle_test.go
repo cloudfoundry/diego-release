@@ -52,13 +52,16 @@ var _ = Describe("Task Lifecycle", func() {
 	Context("when a rep, and auctioneer are running", func() {
 		BeforeEach(func() {
 
+			modifyFunRepLoggregatorConfig := func(cfg *repconfig.RepConfig) {
+				cfg.LoggregatorConfig = setupMetronConfig(cfg.LoggregatorConfig)
+				cfg.MemoryMB = "1024"
+			}
+
 			cellProcess = ginkgomon.Invoke(grouper.NewParallel(os.Kill, grouper.Members{
-				{Name: "rep", Runner: componentMaker.Rep(func(config *repconfig.RepConfig) {
-					config.MemoryMB = "1024"
-				})},
+				{Name: "rep", Runner: componentMaker.Rep(modifyFunRepLoggregatorConfig)},
 			}))
 
-			auctioneerProcess = ginkgomon.Invoke(componentMaker.Auctioneer())
+			auctioneerProcess = ginkgomon.Invoke(componentMaker.Auctioneer(modifyFunAuctioneerLoggregatorConfig))
 		})
 
 		Context("and a standard Task is desired", func() {
@@ -195,6 +198,7 @@ var _ = Describe("Task Lifecycle", func() {
 					bbsProcess = ginkgomon.Invoke(componentMaker.BBS(
 						overrideConvergenceRepeatInterval,
 						overrideKickTaskDuration,
+						modifyFuncBBSLoggregatorConfig,
 					))
 				})
 
@@ -298,10 +302,11 @@ exit 0
 			bbsProcess = ginkgomon.Invoke(componentMaker.BBS(
 				overrideConvergenceRepeatInterval,
 				overrideKickTaskDuration,
+				modifyFuncBBSLoggregatorConfig,
 			))
 
 			cellProcess = ginkgomon.Invoke(grouper.NewParallel(os.Interrupt, grouper.Members{
-				{Name: "rep", Runner: componentMaker.Rep()},
+				{Name: "rep", Runner: componentMaker.Rep(modifyFunRepLoggregatorConfig)},
 			}))
 		})
 
@@ -325,7 +330,7 @@ exit 0
 
 			Context("and then an auctioneer come up", func() {
 				BeforeEach(func() {
-					auctioneerProcess = ginkgomon.Invoke(componentMaker.Auctioneer())
+					auctioneerProcess = ginkgomon.Invoke(componentMaker.Auctioneer(modifyFunAuctioneerLoggregatorConfig))
 				})
 
 				AfterEach(func() {
@@ -346,6 +351,7 @@ exit 0
 			bbsProcess = ginkgomon.Invoke(componentMaker.BBS(
 				overrideConvergenceRepeatInterval,
 				overrideExpirePendingTaskDuration,
+				modifyFuncBBSLoggregatorConfig,
 			))
 		})
 

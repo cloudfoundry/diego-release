@@ -4,8 +4,9 @@ package testhelpers
 import (
 	"sync"
 
+	"context"
+
 	"code.cloudfoundry.org/go-loggregator/v9/rpc/loggregator_v2"
-	"golang.org/x/net/context"
 	"google.golang.org/grpc/metadata"
 )
 

@@ -24,12 +24,12 @@ var _ = Describe("Tasks as specific user", func() {
 		}
 		var fileServerRunner ifrit.Runner
 
-		fileServerRunner, _ = componentMaker.FileServer()
+		fileServerRunner, _ = componentMaker.FileServer(modifyFunFileServerLoggregatorConfig)
 
 		cellGroup := grouper.Members{
 			{Name: "file-server", Runner: fileServerRunner},
-			{Name: "rep", Runner: componentMaker.Rep(func(config *repconfig.RepConfig) { config.MemoryMB = "1024" })},
-			{Name: "auctioneer", Runner: componentMaker.Auctioneer()},
+			{Name: "rep", Runner: componentMaker.Rep(modifyFunRepLoggregatorConfig, func(config *repconfig.RepConfig) { config.MemoryMB = "1024" })},
+			{Name: "auctioneer", Runner: componentMaker.Auctioneer(modifyFunAuctioneerLoggregatorConfig)},
 		}
 		cellProcess = ginkgomon.Invoke(grouper.NewParallel(os.Interrupt, cellGroup))
 

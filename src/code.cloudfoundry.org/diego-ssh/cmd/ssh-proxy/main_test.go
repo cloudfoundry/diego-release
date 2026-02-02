@@ -16,6 +16,8 @@ import (
 	"sync"
 	"time"
 
+	loggingclient "code.cloudfoundry.org/diego-logging-client"
+
 	"code.cloudfoundry.org/bbs/models"
 	"code.cloudfoundry.org/diego-logging-client/testhelpers"
 	"code.cloudfoundry.org/diego-ssh/authenticators"
@@ -117,6 +119,9 @@ var _ = Describe("SSH proxy", Serial, func() {
 		u, err := url.Parse(fakeUAA.URL())
 		Expect(err).NotTo(HaveOccurred())
 
+		metricsPort, err := testIngressServer.Port()
+		Expect(err).NotTo(HaveOccurred())
+
 		u.Path = "/oauth/token"
 
 		sshProxyConfig = &config.SSHProxyConfig{}
@@ -141,6 +146,12 @@ var _ = Describe("SSH proxy", Serial, func() {
 		sshProxyConfig.CommunicationTimeout = durationjson.Duration(10 * time.Second)
 		sshProxyConfig.ConnectToInstanceAddress = false
 		sshProxyConfig.LagerConfig = lagerflags.DefaultLagerConfig()
+		sshProxyConfig.LoggregatorConfig = loggingclient.Config{
+			CACertPath: metronCAFile,
+			CertPath:   metronServerCertFile,
+			KeyPath:    metronServerKeyFile,
+			APIPort:    metricsPort,
+		}
 
 		index := int32(99)
 		expectedGetActualLRPRequest = &models.ActualLRPsRequest{
@@ -714,7 +725,6 @@ var _ = Describe("SSH proxy", Serial, func() {
 				sshProxyConfig.LoggregatorConfig.BatchFlushInterval = 10 * time.Millisecond
 				sshProxyConfig.LoggregatorConfig.BatchMaxSize = 1
 				sshProxyConfig.LoggregatorConfig.APIPort = port
-				sshProxyConfig.LoggregatorConfig.UseV2API = true
 				sshProxyConfig.LoggregatorConfig.CACertPath = serverCAFile
 				sshProxyConfig.LoggregatorConfig.KeyPath = serverKeyFile
 				sshProxyConfig.LoggregatorConfig.CertPath = serverCertFile
@@ -745,24 +755,8 @@ var _ = Describe("SSH proxy", Serial, func() {
 					Expect(err).NotTo(HaveOccurred())
 				})
 
-				Context("when using loggregator v2 api", func() {
-					BeforeEach(func() {
-						sshProxyConfig.LoggregatorConfig.UseV2API = true
-					})
-
-					It("emits the number of current ssh-connections", func() {
-						Eventually(testMetricsChan).Should(Receive(testhelpers.MatchV2MetricAndValue(testhelpers.MetricAndValue{Name: "ssh-connections", Value: int32(1)})))
-					})
-				})
-
-				Context("when not using the loggregator v2 api", func() {
-					BeforeEach(func() {
-						sshProxyConfig.LoggregatorConfig.UseV2API = false
-					})
-
-					It("doesn't emit any metrics", func() {
-						Consistently(testMetricsChan).ShouldNot(Receive())
-					})
+				It("emits the number of current ssh-connections", func() {
+					Eventually(testMetricsChan).Should(Receive(testhelpers.MatchV2MetricAndValue(testhelpers.MetricAndValue{Name: "ssh-connections", Value: int32(1)})))
 				})
 			})
 		})
@@ -786,7 +780,7 @@ var _ = Describe("SSH proxy", Serial, func() {
 
 			It("errors when the client doesn't provide any of the algorithms: 'aes128-gcm@openssh.com', 'aes128-gcm@openssh.com', 'aes256-ctr', 'aes192-ctr', 'aes128-ctr'", func() {
 				_, err := ssh.Dial("tcp", address, clientConfig)
-				Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for client to server cipher; client offered: [arcfour128], server offered: [aes128-gcm@openssh.com aes256-ctr aes192-ctr aes128-ctr]"))
+				Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for client to server cipher; we offered: [arcfour128], peer offered: [aes128-gcm@openssh.com aes256-ctr aes192-ctr aes128-ctr]"))
 				Expect(fakeBBS.ReceivedRequests()).To(HaveLen(0))
 			})
 		})
@@ -889,7 +883,7 @@ var _ = Describe("SSH proxy", Serial, func() {
 
 				It("errors when the client doesn't provide one of the algorithms: 'hmac-sha2-256-etm@openssh.com', 'hmac-sha2-256'", func() {
 					_, err := ssh.Dial("tcp", address, clientConfig)
-					Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for client to server MAC; client offered: [hmac-sha1], server offered: [hmac-sha2-256-etm@openssh.com hmac-sha2-256]"))
+					Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for client to server MAC; we offered: [hmac-sha1], peer offered: [hmac-sha2-256-etm@openssh.com hmac-sha2-256]"))
 					Expect(fakeBBS.ReceivedRequests()).To(HaveLen(0))
 				})
 			})
@@ -933,7 +927,48 @@ var _ = Describe("SSH proxy", Serial, func() {
 
 			It("errors when the client doesn't provide the algorithm: 'curve25519-sha256@libssh.org'", func() {
 				_, err := ssh.Dial("tcp", address, clientConfig)
-				Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for key exchange; client offered: [diffie-hellman-group14-sha1 ext-info-c kex-strict-c-v00@openssh.com], server offered: [curve25519-sha256@libssh.org kex-strict-s-v00@openssh.com]"))
+				Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for key exchange; we offered: [diffie-hellman-group14-sha1 ext-info-c kex-strict-c-v00@openssh.com], peer offered: [curve25519-sha256@libssh.org kex-strict-s-v00@openssh.com]"))
+				Expect(fakeBBS.ReceivedRequests()).To(HaveLen(0))
+			})
+		})
+
+		Context("when the proxy is configured with a host key algorithm that doesnt match the host key", func() {
+			BeforeEach(func() {
+				sshProxyConfig.AllowedHostKeyAlgorithms = "non-rsa-algorithm"
+			})
+
+			It("exits with non-zero status code", func() {
+				Eventually(process.Wait()).Should(Receive(HaveOccurred()))
+			})
+		})
+
+		Context("when the proxy provides a supported host key algorithm", func() {
+			BeforeEach(func() {
+				sshProxyConfig.AllowedHostKeyAlgorithms = "rsa-sha2-256,rsa-sha2-512"
+				clientConfig = &ssh.ClientConfig{
+					User:            "diego:" + processGuid + "/99",
+					Auth:            []ssh.AuthMethod{ssh.Password(diegoCredentials)},
+					HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+				}
+			})
+
+			It("allows a client to complete a handshake", func() {
+				client, err := ssh.Dial("tcp", address, clientConfig)
+				Expect(err).NotTo(HaveOccurred())
+
+				err = client.Close()
+				Expect(err).NotTo(HaveOccurred())
+			})
+		})
+
+		Context("when the proxy provides the default host key algorithm", func() {
+			BeforeEach(func() {
+				clientConfig.HostKeyAlgorithms = []string{"ssh-ed25519"}
+			})
+
+			It("errors when the client doesn't provide the host key algorithm: 'ssh-ed25519'", func() {
+				_, err := ssh.Dial("tcp", address, clientConfig)
+				Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for host key; we offered: [ssh-ed25519], peer offered: [rsa-sha2-256 rsa-sha2-512 ssh-rsa]"))
 				Expect(fakeBBS.ReceivedRequests()).To(HaveLen(0))
 			})
 		})

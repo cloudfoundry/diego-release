@@ -66,6 +66,8 @@ properties:
     description: "Comma separated list of allowed MAC algorithms"
   diego.ssh_proxy.allowed_keyexchanges:
     description: "Comma separated list of allowed key exchange algorithms"
+  diego.ssh_proxy.allowed_host_key_algorithms:
+    description: "Comma separated list of allowed host key algorithms"
   diego.ssh_proxy.debug_addr:
     description: "address at which to serve debug info"
     default: "127.0.0.1:17016"
@@ -116,9 +118,6 @@ properties:
     description: "Connect directly to container IP instead of to the host IP and external port. Suitable only for deployments in which the gorouters and TCP routers can route directly to the container IP of instances."
     default: false
 
-  loggregator.use_v2_api:
-    description: "True to use local metron agent gRPC v2 API. False to use UDP v1 API."
-    default: false
   loggregator.v2_api_port:
     description: "Local metron agent gRPC port"
     default: 3458

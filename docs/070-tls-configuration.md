@@ -63,7 +63,6 @@ supports the loggregator V2 API which uses gRPC and supports TLS.
 In order to enable the loggregator V2 API you need to set the following
 properties:
 
- * `loggregator.use_v2_api`: Set this to true
  * `loggregator.v2_api_port`: Set this to the loggregator gRPC port
    (`metron_agent.grpc_port`), this property has a default value that matches
    the default value of `metron`'s

@@ -38,16 +38,19 @@ func DebugAddress(flags *flag.FlagSet) string {
 	if dbgFlag == nil {
 		return ""
 	}
-
 	return dbgFlag.Value.String()
 }
 
-func Runner(address string, sink ReconfigurableSinkInterface) ifrit.Runner {
-	return http_server.New(address, Handler(sink))
+// Run starts the debug server with the provided address and log controller.
+// Run() -> runProcess() -> Runner() -> http_server.New() -> Handler()
+func Run(address string, zapCtrl zapLogLevelController) (ifrit.Process, error) {
+	return runProcess(address, &LagerAdapter{zapCtrl})
 }
 
-func Run(address string, sink ReconfigurableSinkInterface) (ifrit.Process, error) {
-	p := ifrit.Invoke(Runner(address, sink))
+// runProcess starts the debug server and returns the process.
+// It invokes the Runner with the provided address and log controller.
+func runProcess(address string, zapCtrl zapLogLevelController) (ifrit.Process, error) {
+	p := ifrit.Invoke(Runner(address, zapCtrl))
 	select {
 	case <-p.Ready():
 	case err := <-p.Wait():
@@ -56,7 +59,12 @@ func Run(address string, sink ReconfigurableSinkInterface) (ifrit.Process, error
 	return p, nil
 }
 
-func Handler(sink ReconfigurableSinkInterface) http.Handler {
+// Runner creates an ifrit.Runner for the debug server with the provided address and log controller.
+func Runner(address string, zapCtrl zapLogLevelController) ifrit.Runner {
+	return http_server.New(address, Handler(zapCtrl))
+}
+
+func Handler(zapCtrl zapLogLevelController) http.Handler {
 	mux := http.NewServeMux()
 	mux.Handle("/debug/pprof/", http.HandlerFunc(pprof.Index))
 	mux.Handle("/debug/pprof/trace", http.HandlerFunc(pprof.Trace))
@@ -64,20 +72,40 @@ func Handler(sink ReconfigurableSinkInterface) http.Handler {
 	mux.Handle("/debug/pprof/profile", http.HandlerFunc(pprof.Profile))
 	mux.Handle("/debug/pprof/symbol", http.HandlerFunc(pprof.Symbol))
 	mux.Handle("/log-level", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Read the log level from the request body.
 		level, err := io.ReadAll(r.Body)
 		if err != nil {
+			http.Error(w, "Failed to read body", http.StatusBadRequest)
 			return
 		}
-
-		switch string(level) {
-		case "debug", "DEBUG", "d", strconv.Itoa(int(lager.DEBUG)):
-			sink.SetMinLevel(lager.DEBUG)
-		case "info", "INFO", "i", strconv.Itoa(int(lager.INFO)):
-			sink.SetMinLevel(lager.INFO)
-		case "error", "ERROR", "e", strconv.Itoa(int(lager.ERROR)):
-			sink.SetMinLevel(lager.ERROR)
-		case "fatal", "FATAL", "f", strconv.Itoa(int(lager.FATAL)):
-			sink.SetMinLevel(lager.FATAL)
+		// Validate the log level request.
+		var normalizedLevel string
+		if normalizedLevel, err = validateAndNormalize(w, r, level); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		// Convert the log level to lager.LogLevel.
+		if normalizedLevel == "warn" {
+			// Note that zapcore.WarnLevel is not directly supported by lager.
+			// And lager does not have a separate WARN level, it uses INFO for warnings.
+			// So to set the minimum level to "warn" we send an Invalid log level of 99,
+			// which hits the default case in the SetMinLevel method.
+			// This is a workaround to ensure that the log level is set correctly.
+			zapCtrl.SetMinLevel(lager.LogLevel(99))
+		} else {
+			lagerLogLevel, err := lager.LogLevelFromString(normalizedLevel)
+			if err != nil {
+				http.Error(w, "Invalid log level: "+err.Error(), http.StatusBadRequest)
+				return
+			}
+			zapCtrl.SetMinLevel(lagerLogLevel)
+		}
+		// Respond with a success message.
+		w.WriteHeader(http.StatusOK)
+		w.Header().Set("Content-Type", "text/plain")
+		w.Write([]byte("/log-level was invoked with Level: " + normalizedLevel + "\n"))
+		if normalizedLevel == "fatal" {
+			w.Write([]byte("Note: Fatal logs are reported as error logs in the Gorouter logs.\n"))
 		}
 	}))
 	mux.Handle("/block-profile-rate", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

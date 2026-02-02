@@ -57,10 +57,9 @@
     debug_address: p("diego.rep.debug_addr"),
     delete_work_pool_size: p("diego.executor.delete_work_pool_size"),
     disk_mb: p("diego.executor.disk_capacity_mb").to_s,
-    enable_declarative_healthcheck: p("enable_declarative_healthcheck"),
     declarative_healthcheck_path: "/var/vcap/packages/healthcheck",
     enable_healthcheck_metrics: p("enable_healthcheck_metrics"),
-    enable_container_proxy: p("containers.proxy.enabled"),
+    enable_container_proxy: true,
     container_proxy_require_and_verify_client_certs: p("containers.proxy.require_and_verify_client_certificates"),
     container_proxy_trusted_ca_certs: p("containers.proxy.trusted_ca_certificates"),
     container_proxy_verify_subject_alt_name: p("containers.proxy.verify_subject_alt_name"),
@@ -189,15 +188,11 @@
 
   config[:bbs_address] = "https://#{p("diego.rep.bbs.api_location")}"
 
-  if config[:enable_container_proxy]
-    begin
+  begin
       p("diego.executor.instance_identity_ca_cert")
       p("diego.executor.instance_identity_key")
-    rescue
-      raise '"when containers.proxy.enabled is true, diego.executor.instance_identity_ca_cert" and "diego.executor.instance_identity_key" must both be set'
-    end
-  elsif !p("containers.proxy.enable_unproxied_port_mappings")
-    raise 'containers.proxy.enabled must be set to true in order to disable the unproxied port mappings'
+  rescue
+      raise '"diego.executor.instance_identity_ca_cert" and "diego.executor.instance_identity_key" must both be set'
   end
 
   if config[:container_proxy_require_and_verify_client_certs]
@@ -207,10 +202,8 @@
       end
   end
 
-  if_p("diego.executor.instance_identity_ca_cert",
-       "diego.executor.instance_identity_key",
-       "diego.executor.instance_identity_validity_period_in_hours") do |cert, key, validity_period|
-    if !(cert.empty? || key.empty? || validity_period < 1)
+  if_p("diego.executor.instance_identity_validity_period_in_hours") do |validity_period|
+    if !(validity_period < 1)
       config[:instance_identity_ca_path] = "#{conf_dir}/certs/rep/instance_identity.crt"
       config[:instance_identity_private_key_path] = "#{conf_dir}/certs/rep/instance_identity.key"
       config[:instance_identity_cred_dir] = instance_identity_dir
@@ -230,21 +223,18 @@
   end
 
   config[:loggregator]={}
-  config[:loggregator][:loggregator_use_v2_api] = p("loggregator.use_v2_api")
-  if p("loggregator.use_v2_api")
-    config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
-    config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"
-    config[:loggregator][:loggregator_cert_path] = "#{conf_dir}/certs/loggregator/client.crt"
-    config[:loggregator][:loggregator_key_path] = "#{conf_dir}/certs/loggregator/client.key"
-    config[:loggregator][:loggregator_job_deployment] = spec.deployment
-    config[:loggregator][:loggregator_job_name] = spec.name
-    config[:loggregator][:loggregator_job_index] = spec.id
-    config[:loggregator][:loggregator_job_ip] = spec.address
-    config[:loggregator][:loggregator_job_origin] = "rep"
-    config[:loggregator][:loggregator_source_id] = "rep"
-    config[:loggregator][:loggregator_instance_id] = spec.id
-    config[:loggregator][:loggregator_app_metric_exclusion_filter] = p("loggregator.app_metric_exclusion_filter")
-  end
+  config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
+  config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"
+  config[:loggregator][:loggregator_cert_path] = "#{conf_dir}/certs/loggregator/client.crt"
+  config[:loggregator][:loggregator_key_path] = "#{conf_dir}/certs/loggregator/client.key"
+  config[:loggregator][:loggregator_job_deployment] = spec.deployment
+  config[:loggregator][:loggregator_job_name] = spec.name
+  config[:loggregator][:loggregator_job_index] = spec.id
+  config[:loggregator][:loggregator_job_ip] = spec.address
+  config[:loggregator][:loggregator_job_origin] = "rep"
+  config[:loggregator][:loggregator_source_id] = "rep"
+  config[:loggregator][:loggregator_instance_id] = spec.id
+  config[:loggregator][:loggregator_app_metric_exclusion_filter] = p("loggregator.app_metric_exclusion_filter")
 
   config.to_json
 %>

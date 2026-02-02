@@ -13,6 +13,7 @@ import (
 	"code.cloudfoundry.org/archiver/compressor"
 	archive_helper "code.cloudfoundry.org/archiver/extractor/test_helper"
 	"code.cloudfoundry.org/bbs/models"
+	sshproxyconfig "code.cloudfoundry.org/diego-ssh/cmd/ssh-proxy/config"
 	ssh_helpers "code.cloudfoundry.org/diego-ssh/helpers"
 	"code.cloudfoundry.org/diego-ssh/routes"
 	"code.cloudfoundry.org/inigo/fixtures"
@@ -69,14 +70,19 @@ var _ = Describe("SSH", func() {
 		address = componentMaker.Addresses().SSHProxy
 
 		var fileServer ifrit.Runner
-		fileServer, fileServerStaticDir = componentMaker.FileServer()
+
+		modifyFunSSHLoggregatorConfig := func(cfg *sshproxyconfig.SSHProxyConfig) {
+			cfg.LoggregatorConfig = setupMetronConfig(cfg.LoggregatorConfig)
+		}
+
+		fileServer, fileServerStaticDir = componentMaker.FileServer(modifyFunFileServerLoggregatorConfig)
 		ifritRuntime = ginkgomon.Invoke(grouper.NewParallel(os.Kill, grouper.Members{
 			{Name: "router", Runner: componentMaker.Router()},
 			{Name: "file-server", Runner: fileServer},
-			{Name: "rep", Runner: componentMaker.Rep()},
-			{Name: "auctioneer", Runner: componentMaker.Auctioneer()},
-			{Name: "route-emitter", Runner: componentMaker.RouteEmitter()},
-			{Name: "ssh-proxy", Runner: componentMaker.SSHProxy()},
+			{Name: "rep", Runner: componentMaker.Rep(modifyFunRepLoggregatorConfig)},
+			{Name: "auctioneer", Runner: componentMaker.Auctioneer(modifyFunAuctioneerLoggregatorConfig)},
+			{Name: "route-emitter", Runner: componentMaker.RouteEmitter(modifyFunRouteEmitterLoggregatorConfig)},
+			{Name: "ssh-proxy", Runner: componentMaker.SSHProxy(modifyFunSSHLoggregatorConfig)},
 		}))
 
 		tgCompressor := compressor.NewTgz()
@@ -176,10 +182,14 @@ var _ = Describe("SSH", func() {
 
 		Eventually(
 			helpers.LRPInstanceStatePoller(logger, bbsClient, processGuid, 0, nil),
+			cellSuiteEventuallyTestTimeout,
+			cellSuiteEventuallyPollingInterval,
 		).Should(Equal(models.ActualLRPStateRunning))
 
 		Eventually(
 			helpers.LRPInstanceStatePoller(logger, bbsClient, processGuid, 1, nil),
+			cellSuiteEventuallyTestTimeout,
+			cellSuiteEventuallyPollingInterval,
 		).Should(Equal(models.ActualLRPStateRunning))
 	})
 

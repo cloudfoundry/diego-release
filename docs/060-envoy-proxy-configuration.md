@@ -21,8 +21,6 @@ This document describes how to enable the per-container [Envoy proxy](https://gi
 
 ## <a name="enabling-per-container-envoy-proxy"/> Enabling Per-Container Envoy Proxy
 
-A deployment operator enables the Linux cell reps to run an Envoy proxy process for each container by setting the `containers.proxy.enabled` property on the `rep` job to `true`.
-
 [Instance Identity Credentials](https://docs.cloudfoundry.org/adminguide/instance-identity.html) must also be enabled on the Diego cell rep so that it can configure the Envoy proxy process with the required TLS configuration.
 
 
@@ -85,7 +83,7 @@ Container memory usage metrics sent through the Loggregator system and exposed o
 
 ### <a name="choosing-value-for-additional-memory-allocation"/> Choosing a value for the additional memory allocation
 
-The Diego team has in [story #155945585](https://www.pivotaltracker.com/story/show/155945585) done some investigation of how the Envoy proxy uses memory in practice, and as of Envoy version `0e1d66377d9bf8b8304b65df56a4c88fc01e87e8` has determined that Envoy initially uses between 5 and 10 MB of memory, and then uses approximately 30KB of memory per concurrent connection. The memory usage also remains at that level even if the number of concurrent connections decreases. Consequently, if operators have an estimate of `N` for the maximum number of concurrent connections from the gorouters to a single app instance, this assessment suggests that the `containers.proxy.additional_memory_allocation_mb` property should be set to the value `10 + 0.03 * N` (rounded to the nearest integer). This additional allocation may of course need to be adjusted according to the specifics of the applications running in each environment.
+The Diego team has done some investigation of how the Envoy proxy uses memory in practice, and as of Envoy version `0e1d66377d9bf8b8304b65df56a4c88fc01e87e8` has determined that Envoy initially uses between 5 and 10 MB of memory, and then uses approximately 30KB of memory per concurrent connection. The memory usage also remains at that level even if the number of concurrent connections decreases. Consequently, if operators have an estimate of `N` for the maximum number of concurrent connections from the gorouters to a single app instance, this assessment suggests that the `containers.proxy.additional_memory_allocation_mb` property should be set to the value `10 + 0.03 * N` (rounded to the nearest integer). This additional allocation may of course need to be adjusted according to the specifics of the applications running in each environment.
 
 ## <a name="http2"/> HTTP/2 Support via ALPN
 

@@ -49,10 +49,9 @@ var _ = Context("when declarative healthchecks is turned on", func() {
 		processGuid = helpers.GenerateGuid()
 
 		var fileServer ifrit.Runner
-		fileServer, fileServerStaticDir = componentMaker.FileServer()
+		fileServer, fileServerStaticDir = componentMaker.FileServer(modifyFunFileServerLoggregatorConfig)
 
 		turnOnLongRunningHealthchecks := func(cfg *config.RepConfig) {
-			cfg.EnableDeclarativeHealthcheck = true
 			cfg.DeclarativeHealthCheckDefaultTimeout = durationjson.Duration(1 * time.Second)
 			cfg.DeclarativeHealthcheckPath = componentMaker.Artifacts().Healthcheck
 			cfg.HealthCheckWorkPoolSize = 1
@@ -77,7 +76,6 @@ var _ = Context("when declarative healthchecks is turned on", func() {
 			cfg.LoggregatorConfig = logging.Config{
 				BatchFlushInterval: 10 * time.Millisecond,
 				BatchMaxSize:       1,
-				UseV2API:           true,
 				APIPort:            metricsPort,
 				CACertPath:         metronCAFile,
 				KeyPath:            metronClientKeyFile,
@@ -108,8 +106,8 @@ var _ = Context("when declarative healthchecks is turned on", func() {
 			{Name: "file-server", Runner: fileServer},
 			{Name: "metron-agent", Runner: metronAgent},
 			{Name: "rep", Runner: componentMaker.Rep(turnOnLongRunningHealthchecks, loggregatorConfig)},
-			{Name: "auctioneer", Runner: componentMaker.Auctioneer()},
-			{Name: "route-emitter", Runner: componentMaker.RouteEmitter()},
+			{Name: "auctioneer", Runner: componentMaker.Auctioneer(modifyFunAuctioneerLoggregatorConfig)},
+			{Name: "route-emitter", Runner: componentMaker.RouteEmitter(modifyFunRouteEmitterLoggregatorConfig)},
 		}))
 
 		archiveFiles = fixtures.GoServerApp()

@@ -23,7 +23,6 @@
     lock_ttl: "15s",
     debug_address: p("diego.auctioneer.debug_addr"),
     listen_address: p("diego.auctioneer.listen_addr"),
-    locks_locket_enabled: p("locks.locket.enabled"),
     log_level: p("diego.auctioneer.log_level"),
     rep_client_session_cache_size: p("diego.auctioneer.rep.client_session_cache_size"),
     cell_state_timeout: p("diego.auctioneer.cell_state_timeout"),
@@ -79,20 +78,17 @@
   end
 
   config[:loggregator]={}
-  config[:loggregator][:loggregator_use_v2_api] = p("loggregator.use_v2_api")
-  if p("loggregator.use_v2_api") == true
-    config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
-    config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"
-    config[:loggregator][:loggregator_cert_path] = "#{conf_dir}/certs/loggregator/client.crt"
-    config[:loggregator][:loggregator_key_path] = "#{conf_dir}/certs/loggregator/client.key"
-    config[:loggregator][:loggregator_job_deployment] = spec.deployment
-    config[:loggregator][:loggregator_job_name] = spec.name
-    config[:loggregator][:loggregator_job_index] = spec.id
-    config[:loggregator][:loggregator_job_ip] = spec.address
-    config[:loggregator][:loggregator_job_origin] = "auctioneer"
-    config[:loggregator][:loggregator_source_id] = "auctioneer"
-    config[:loggregator][:loggregator_instance_id] = spec.id
-  end
+  config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
+  config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"
+  config[:loggregator][:loggregator_cert_path] = "#{conf_dir}/certs/loggregator/client.crt"
+  config[:loggregator][:loggregator_key_path] = "#{conf_dir}/certs/loggregator/client.key"
+  config[:loggregator][:loggregator_job_deployment] = spec.deployment
+  config[:loggregator][:loggregator_job_name] = spec.name
+  config[:loggregator][:loggregator_job_index] = spec.id
+  config[:loggregator][:loggregator_job_ip] = spec.address
+  config[:loggregator][:loggregator_job_origin] = "auctioneer"
+  config[:loggregator][:loggregator_source_id] = "auctioneer"
+  config[:loggregator][:loggregator_instance_id] = spec.id
 
   config.to_json
 %>

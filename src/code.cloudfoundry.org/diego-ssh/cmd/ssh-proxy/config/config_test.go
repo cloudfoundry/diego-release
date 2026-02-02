@@ -43,6 +43,7 @@ var _ = Describe("SSHProxyConfig", func() {
 			"allowed_ciphers": "cipher1,cipher2,cipher3",
 			"allowed_macs": "mac1,mac2,mac3",
 			"allowed_key_exchanges": "exchange1,exchange2,exchange3",
+			"allowed_host_key_algorithms": "hostkeyalg1,hostkeyalg2,hostkeyalg3",
 			"log_level": "debug",
 			"debug_address": "5.5.5.5:9090",
 			"connect_to_instance_address": true,
@@ -102,6 +103,7 @@ var _ = Describe("SSHProxyConfig", func() {
 				AllowedCiphers:            "cipher1,cipher2,cipher3",
 				AllowedMACs:               "mac1,mac2,mac3",
 				AllowedKeyExchanges:       "exchange1,exchange2,exchange3",
+				AllowedHostKeyAlgorithms:  "hostkeyalg1,hostkeyalg2,hostkeyalg3",
 				ConnectToInstanceAddress:  true,
 				IdleConnectionTimeout:     durationjson.Duration(5 * time.Millisecond),
 				LagerConfig: lagerflags.LagerConfig{

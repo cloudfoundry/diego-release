@@ -89,10 +89,8 @@ func initializeMetron(logger lager.Logger, config config.FileServerConfig) (logg
 		return nil, err
 	}
 
-	if config.LoggregatorConfig.UseV2API {
-		emitter := runtimeemitter.NewV1(client)
-		go emitter.Run()
-	}
+	emitter := runtimeemitter.NewV1(client)
+	go emitter.Run()
 
 	return client, nil
 }

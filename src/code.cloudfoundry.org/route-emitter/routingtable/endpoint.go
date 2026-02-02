@@ -116,6 +116,8 @@ func (info ExternalEndpointInfo) MessageFor(e Endpoint, directInstanceRoute, _ b
 		nil,
 		0,
 		tcpmodels.ModificationTag{},
+		false,
+		"",
 	)
 	if e.IsDirectInstanceRoute(directInstanceRoute) {
 		mapping = tcpmodels.NewTcpRouteMapping(
@@ -128,6 +130,8 @@ func (info ExternalEndpointInfo) MessageFor(e Endpoint, directInstanceRoute, _ b
 			nil,
 			0,
 			tcpmodels.ModificationTag{},
+			false,
+			"",
 		)
 	}
 	return nil, &mapping, nil

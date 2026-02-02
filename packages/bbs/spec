@@ -2,7 +2,7 @@
 name: bbs
 
 dependencies:
-  - golang-1.24-linux
+  - golang-1.25-linux
 
 files:
   - code.cloudfoundry.org/go.mod
@@ -76,6 +76,7 @@ files:
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/credentials/ec2rolecreds/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/credentials/endpointcreds/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/credentials/endpointcreds/internal/client/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/credentials/logincreds/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/credentials/processcreds/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/credentials/ssocreds/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/credentials/stscreds/*.go # gosub
@@ -105,6 +106,9 @@ files:
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/ecrpublic/types/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/internal/presigned-url/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/signin/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/signin/internal/endpoints/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/signin/types/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/sso/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/sso/internal/endpoints/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/sso/types/*.go # gosub
@@ -114,48 +118,6 @@ files:
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/sts/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/sts/internal/endpoints/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/sts/types/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/auth/bearer/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/awserr/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/awsutil/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/client/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/client/metadata/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/corehandlers/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/credentials/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/credentials/ec2rolecreds/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/credentials/endpointcreds/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/credentials/processcreds/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/credentials/ssocreds/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/credentials/stscreds/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/csm/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/defaults/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/ec2metadata/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/endpoints/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/request/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/session/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/aws/signer/v4/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/internal/ini/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/internal/sdkio/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/internal/sdkmath/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/internal/sdkrand/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/internal/sdkuri/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/internal/shareddefaults/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/internal/strings/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/internal/sync/singleflight/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/private/protocol/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/private/protocol/json/jsonutil/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/private/protocol/jsonrpc/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/private/protocol/query/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/private/protocol/query/queryutil/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/private/protocol/rest/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/private/protocol/restjson/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/private/protocol/xml/xmlutil/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/service/ecr/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/service/sso/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/service/sso/ssoiface/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/service/ssooidc/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/service/sts/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go/service/sts/stsiface/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/auth/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/auth/bearer/*.go # gosub
@@ -166,6 +128,7 @@ files:
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/encoding/json/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/encoding/xml/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/endpoints/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/endpoints/private/rulesfn/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/internal/sync/singleflight/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/io/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/logging/*.go # gosub
@@ -201,7 +164,6 @@ files:
   - code.cloudfoundry.org/vendor/github.com/jackc/pgx/v5/stdlib/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/puddle/v2/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/jackc/puddle/v2/internal/genstack/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/jmespath/go-jmespath/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/mitchellh/go-homedir/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/nu7hatch/gouuid/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/openzipkin/zipkin-go/idgenerator/*.go # gosub
@@ -250,7 +212,6 @@ files:
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/balancer/grpclb/state/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/balancer/pickfirst/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/balancer/pickfirst/internal/*.go # gosub
-  - code.cloudfoundry.org/vendor/google.golang.org/grpc/balancer/pickfirst/pickfirstleaf/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/balancer/roundrobin/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/binarylog/grpc_binarylog_v1/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/channelz/*.go # gosub
@@ -259,6 +220,7 @@ files:
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/credentials/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/credentials/insecure/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/encoding/*.go # gosub
+  - code.cloudfoundry.org/vendor/google.golang.org/grpc/encoding/internal/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/encoding/proto/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/experimental/stats/*.go # gosub
   - code.cloudfoundry.org/vendor/google.golang.org/grpc/grpclog/*.go # gosub

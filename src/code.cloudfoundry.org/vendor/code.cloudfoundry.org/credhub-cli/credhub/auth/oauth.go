@@ -150,7 +150,7 @@ func (a *OAuthStrategy) requestToken() error {
 	}
 
 	if err != nil {
-		return fmt.Errorf(fmt.Sprintf("Error getting token. Your token may have expired and could not be refreshed. Please try logging in again. [%s]", err.Error()))
+		return fmt.Errorf("Error getting token. Your token may have expired and could not be refreshed. Please try logging in again. [%s]", err.Error())
 	}
 
 	a.SetTokens(accessToken, refreshToken)

@@ -98,6 +98,7 @@ func (runner *RoutingAPIRunner) Run(signals <-chan os.Signal, ready chan<- struc
 		"-ip", "localhost",
 		"-config", runner.configPath,
 		"-logLevel=debug",
+		"-timeFormat=rfc3339",
 		"-devMode=" + strconv.FormatBool(runner.Config.DevMode),
 	}
 	r := ginkgomon.New(ginkgomon.Config{

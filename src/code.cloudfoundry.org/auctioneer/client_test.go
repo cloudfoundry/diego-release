@@ -28,12 +28,13 @@ var _ = Describe("Auctioneer Client", func() {
 		BeforeEach(func() {
 			fakeAuctioneerServer = ghttp.NewServer()
 
-			fakeAuctioneerServer.AppendHandlers(ghttp.CombineHandlers(
+			reqHandler := ghttp.CombineHandlers(
 				func(rw http.ResponseWriter, r *http.Request) {
 					time.Sleep(2 * time.Second)
 				},
-				ghttp.RespondWith(http.StatusAccepted, nil),
-			))
+				ghttp.RespondWith(http.StatusAccepted, nil))
+
+			fakeAuctioneerServer.AppendHandlers(reqHandler, reqHandler, reqHandler)
 
 			dummyLogger = lagertest.NewTestLogger("client_test")
 		})
@@ -68,6 +69,15 @@ var _ = Describe("Auctioneer Client", func() {
 			err := c.RequestLRPAuctions(dummyLogger, traceID, []*auctioneer.LRPStartRequest{})
 			Expect(err.Error()).To(ContainSubstring(context.DeadlineExceeded.Error()))
 		})
+		Context("on failures", func() {
+			It("retries 3 times", func() {
+				c := auctioneer.NewClient(fakeAuctioneerServer.URL(), 1*time.Second)
+
+				err := c.RequestLRPAuctions(dummyLogger, traceID, []*auctioneer.LRPStartRequest{})
+				Expect(err.Error()).To(ContainSubstring(context.DeadlineExceeded.Error()))
+				Expect(fakeAuctioneerServer.ReceivedRequests()).To(HaveLen(3))
+			})
+		})
 	})
 
 	Describe("NewSecureClient", func() {
@@ -97,12 +107,14 @@ var _ = Describe("Auctioneer Client", func() {
 			fakeAuctioneerServer.HTTPTestServer.TLS = tlsConfig
 			fakeAuctioneerServer.HTTPTestServer.StartTLS()
 
-			fakeAuctioneerServer.AppendHandlers(ghttp.CombineHandlers(
-				func(rw http.ResponseWriter, r *http.Request) {
-					time.Sleep(2 * time.Second)
-				},
-				ghttp.RespondWith(http.StatusAccepted, nil),
-			))
+			reqHandler :=
+				ghttp.CombineHandlers(
+					func(rw http.ResponseWriter, r *http.Request) {
+						time.Sleep(2 * time.Second)
+					},
+					ghttp.RespondWith(http.StatusAccepted, nil))
+
+			fakeAuctioneerServer.AppendHandlers(reqHandler, reqHandler, reqHandler)
 
 			dummyLogger = lagertest.NewTestLogger("client_test")
 		})
@@ -149,6 +161,16 @@ var _ = Describe("Auctioneer Client", func() {
 			It("returns an error", func() {
 				_, err := auctioneer.NewSecureClient(fakeAuctioneerServer.URL(), caFile, certFile, keyFile, true, time.Second)
 				Expect(err.Error()).To(MatchRegexp("failed to load keypair.*"))
+			})
+		})
+		Context("on failures", func() {
+			It("retries 3 times", func() {
+				c, err := auctioneer.NewSecureClient(fakeAuctioneerServer.URL(), caFile, certFile, keyFile, true, time.Second)
+				Expect(err).NotTo(HaveOccurred())
+
+				err = c.RequestLRPAuctions(dummyLogger, traceID, []*auctioneer.LRPStartRequest{})
+				Expect(err.Error()).To(ContainSubstring(context.DeadlineExceeded.Error()))
+				Expect(fakeAuctioneerServer.ReceivedRequests()).To(HaveLen(3))
 			})
 		})
 	})

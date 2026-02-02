@@ -14,7 +14,6 @@ type VizziniConfig struct {
 	SSHPassword                    string   `json:"ssh_password"`
 	RoutableDomainSuffix           string   `json:"routable_domain_suffix"`
 	HostAddress                    string   `json:"host_addresss"`
-	EnableDeclarativeHealthcheck   bool     `json:"enable_declarative_healthcheck"`
 	EnableContainerProxyTests      bool     `json:"enable_container_proxy_tests"`
 	ProxyCAPath                    string   `json:"proxy_ca_path"`
 	ProxyClientCertPath            string   `json:"proxy_client_cert_path"`

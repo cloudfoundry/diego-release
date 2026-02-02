@@ -32,15 +32,17 @@ var _ = Describe("Placement Tags", func() {
 		guid = helpers.GenerateGuid()
 
 		var fileServer ifrit.Runner
-		fileServer, fileServerStaticDir := componentMaker.FileServer()
+
+		fileServer, fileServerStaticDir := componentMaker.FileServer(modifyFunFileServerLoggregatorConfig)
 		modifyRepConfig := func(config *repconfig.RepConfig) {
 			config.PlacementTags = []string{"inigo-tag"}
 			config.OptionalPlacementTags = []string{"inigo-optional-tag"}
 		}
+
 		ifritRuntime = ginkgomon.Invoke(grouper.NewParallel(os.Interrupt, grouper.Members{
 			{Name: "file-server", Runner: fileServer},
-			{Name: "rep-with-tag", Runner: componentMaker.Rep(modifyRepConfig)},
-			{Name: "auctioneer", Runner: componentMaker.Auctioneer()},
+			{Name: "rep-with-tag", Runner: componentMaker.Rep(modifyRepConfig, modifyFunRepLoggregatorConfig)},
+			{Name: "auctioneer", Runner: componentMaker.Auctioneer(modifyFunAuctioneerLoggregatorConfig)},
 		}))
 
 		archive_helper.CreateZipArchive(

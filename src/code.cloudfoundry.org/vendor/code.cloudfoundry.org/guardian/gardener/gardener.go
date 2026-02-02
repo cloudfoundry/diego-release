@@ -32,6 +32,7 @@ import (
 
 const ContainerInterfaceKey = "garden.network.interface"
 const ContainerIPKey = "garden.network.container-ip"
+const ContainerIPv6Key = "garden.network.container-ipv6"
 const BridgeIPKey = "garden.network.host-ip"
 const ExternalIPKey = "garden.network.external-ip"
 const MappedPortsKey = "garden.network.mapped-ports"

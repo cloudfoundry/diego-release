@@ -40,9 +40,10 @@ var _ = Describe("SSH daemon", func() {
 		privateKey    string
 		authorizedKey string
 
-		allowedCiphers      string
-		allowedMACs         string
-		allowedKeyExchanges string
+		allowedCiphers           string
+		allowedMACs              string
+		allowedKeyExchanges      string
+		allowedHostKeyAlgorithms string
 
 		allowUnauthenticatedClients bool
 		inheritDaemonEnv            bool
@@ -56,6 +57,7 @@ var _ = Describe("SSH daemon", func() {
 		allowedCiphers = ""
 		allowedMACs = ""
 		allowedKeyExchanges = ""
+		allowedHostKeyAlgorithms = ""
 
 		allowUnauthenticatedClients = false
 		inheritDaemonEnv = false
@@ -67,9 +69,10 @@ var _ = Describe("SSH daemon", func() {
 			HostKey:       string(hostKey),
 			AuthorizedKey: string(authorizedKey),
 
-			AllowedCiphers:      string(allowedCiphers),
-			AllowedMACs:         string(allowedMACs),
-			AllowedKeyExchanges: string(allowedKeyExchanges),
+			AllowedCiphers:           string(allowedCiphers),
+			AllowedMACs:              string(allowedMACs),
+			AllowedKeyExchanges:      string(allowedKeyExchanges),
+			AllowedHostKeyAlgorithms: string(allowedHostKeyAlgorithms),
 
 			AllowUnauthenticatedClients: allowUnauthenticatedClients,
 			InheritDaemonEnv:            inheritDaemonEnv,
@@ -131,6 +134,30 @@ var _ = Describe("SSH daemon", func() {
 				})
 			})
 		})
+
+		Context("when allowedHostKeyAlgorithms is set", func() {
+			Context("and the value is invalid", func() {
+				BeforeEach(func() {
+					allowedHostKeyAlgorithms = "invalid"
+				})
+
+				It("reports and dies", func() {
+					Expect(runner).To(gbytes.Say("failed-to-restrict-host-key-algorithms"))
+					Expect(runner).NotTo(gexec.Exit(0))
+				})
+			})
+
+			Context("and the algorithm matches the key type", func() {
+				BeforeEach(func() {
+					allowedHostKeyAlgorithms = "ssh-rsa"
+				})
+
+				It("starts normally", func() {
+					Expect(process).NotTo(BeNil())
+				})
+			})
+		})
+
 	})
 
 	Describe("env variable validation", func() {
@@ -407,7 +434,7 @@ var _ = Describe("SSH daemon", func() {
 			})
 
 			It("errors when the client doesn't provide one of the algorithm: 'aes128-gcm@openssh.com', 'aes256-ctr', 'aes192-ctr', 'aes128-ctr'", func() {
-				Expect(dialErr).To(MatchError("ssh: handshake failed: ssh: no common algorithm for client to server cipher; client offered: [arcfour128], server offered: [aes128-gcm@openssh.com aes256-ctr aes192-ctr aes128-ctr]"))
+				Expect(dialErr).To(MatchError("ssh: handshake failed: ssh: no common algorithm for client to server cipher; we offered: [arcfour128], peer offered: [aes128-gcm@openssh.com aes256-ctr aes192-ctr aes128-ctr]"))
 				Expect(client).To(BeNil())
 			})
 		})
@@ -479,7 +506,7 @@ var _ = Describe("SSH daemon", func() {
 				})
 
 				It("errors when the client doesn't provide one of the algorithms: 'hmac-sha2-256-etm@openssh.com', 'hmac-sha2-256'", func() {
-					Expect(dialErr).To(MatchError("ssh: handshake failed: ssh: no common algorithm for client to server MAC; client offered: [hmac-sha1], server offered: [hmac-sha2-256-etm@openssh.com hmac-sha2-256]"))
+					Expect(dialErr).To(MatchError("ssh: handshake failed: ssh: no common algorithm for client to server MAC; we offered: [hmac-sha1], peer offered: [hmac-sha2-256-etm@openssh.com hmac-sha2-256]"))
 					Expect(client).To(BeNil())
 				})
 			})
@@ -536,7 +563,7 @@ var _ = Describe("SSH daemon", func() {
 			})
 
 			It("errors when the client doesn't provide the algorithm: 'curve25519-sha256@libssh.org'", func() {
-				Expect(dialErr).To(MatchError("ssh: handshake failed: ssh: no common algorithm for key exchange; client offered: [diffie-hellman-group14-sha1 ext-info-c kex-strict-c-v00@openssh.com], server offered: [curve25519-sha256@libssh.org kex-strict-s-v00@openssh.com]"))
+				Expect(dialErr).To(MatchError("ssh: handshake failed: ssh: no common algorithm for key exchange; we offered: [diffie-hellman-group14-sha1 ext-info-c kex-strict-c-v00@openssh.com], peer offered: [curve25519-sha256@libssh.org kex-strict-s-v00@openssh.com]"))
 				Expect(client).To(BeNil())
 			})
 		})

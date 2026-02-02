@@ -44,16 +44,17 @@ var _ = Describe("Secure Downloading and Uploading", func() {
 		}
 		processGuid = helpers.GenerateGuid()
 
-		fileServer, fileServerStaticDir = componentMaker.FileServer()
+		fileServer, fileServerStaticDir = componentMaker.FileServer(modifyFunFileServerLoggregatorConfig)
 
 		archiveFiles = fixtures.GoServerApp()
 	})
 
 	JustBeforeEach(func() {
+
 		ifritRuntime = ginkgomon.Invoke(grouper.NewParallel(os.Kill, grouper.Members{
 			{Name: "file-server", Runner: fileServer},
-			{Name: "rep", Runner: componentMaker.Rep(cfgs...)},
-			{Name: "auctioneer", Runner: componentMaker.Auctioneer()},
+			{Name: "rep", Runner: componentMaker.Rep(modifyFunRepLoggregatorConfig)},
+			{Name: "auctioneer", Runner: componentMaker.Auctioneer(modifyFunAuctioneerLoggregatorConfig)},
 		}))
 		archive_helper.CreateZipArchive(
 			filepath.Join(fileServerStaticDir, "lrp.zip"),

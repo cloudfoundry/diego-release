@@ -19,6 +19,8 @@ type Client interface {
 	RequestTaskAuctions(logger lager.Logger, traceID string, tasks []*TaskStartRequest) error
 }
 
+const ClientRetryCount = 3
+
 type auctioneerClient struct {
 	httpClient         *http.Client
 	insecureHTTPClient *http.Client
@@ -107,27 +109,44 @@ func (c *auctioneerClient) RequestTaskAuctions(logger lager.Logger, traceID stri
 }
 
 func (c *auctioneerClient) createRequest(logger lager.Logger, traceID string, route string, params rata.Params, payload []byte) (*http.Response, error) {
-	resp, err := c.doRequest(c.httpClient, traceID, false, route, params, payload)
+	resp, err := c.doRequest(logger, c.httpClient, traceID, false, route, params, payload)
 	if err != nil {
 		// Fall back to HTTP and try again if we do not require TLS
 		if !c.requireTLS && c.insecureHTTPClient != nil {
 			logger.Error("retrying-on-http", err)
-			return c.doRequest(c.insecureHTTPClient, traceID, true, route, params, payload)
+			return c.doRequest(logger, c.insecureHTTPClient, traceID, true, route, params, payload)
 		}
 	}
 	return resp, err
 }
 
-func (c *auctioneerClient) doRequest(client *http.Client, traceID string, useHttp bool, route string, params rata.Params, payload []byte) (*http.Response, error) {
-	req, err := c.reqGen.CreateRequest(route, params, bytes.NewBuffer(payload))
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("X-Vcap-Request-Id", traceID)
+func (c *auctioneerClient) doRequest(logger lager.Logger, client *http.Client, traceID string, useHttp bool, route string, params rata.Params, payload []byte) (*http.Response, error) {
+	logger = logger.Session("do-request")
+	var resp *http.Response
+	var err error
+	for attempts := range ClientRetryCount {
+		logger.Debug("creating-request", lager.Data{"attempt": attempts + 1, "request_name": route})
+		var req *http.Request
+		req, err = c.reqGen.CreateRequest(route, params, bytes.NewBuffer(payload))
+		if err != nil {
+			return nil, err
+		}
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("X-Vcap-Request-Id", traceID)
 
-	if useHttp {
-		req.URL.Scheme = "http"
+		if useHttp {
+			req.URL.Scheme = "http"
+		}
+
+		logger.Debug("doing-request", lager.Data{"attempt": attempts + 1, "request_path": req.URL.Path})
+		resp, err = client.Do(req)
+		if err != nil {
+			logger.Error("failed-doing-request", err)
+			time.Sleep(500 * time.Millisecond)
+		} else {
+			logger.Debug("complete", lager.Data{"request_path": req.URL.Path})
+			break
+		}
 	}
-	return client.Do(req)
+	return resp, err
 }

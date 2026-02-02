@@ -44,6 +44,7 @@ func (c *container) Info() (garden.ContainerInfo, error) {
 	defer log.Debug("finished")
 
 	containerIP, _ := c.propertyManager.Get(c.handle, ContainerIPKey)
+	containerIPv6, _ := c.propertyManager.Get(c.handle, ContainerIPv6Key)
 	hostIP, _ := c.propertyManager.Get(c.handle, BridgeIPKey)
 	externalIP, _ := c.propertyManager.Get(c.handle, ExternalIPKey)
 
@@ -70,6 +71,7 @@ func (c *container) Info() (garden.ContainerInfo, error) {
 	return garden.ContainerInfo{
 		State:         state,
 		ContainerIP:   containerIP,
+		ContainerIPv6: containerIPv6,
 		HostIP:        hostIP,
 		ExternalIP:    externalIP,
 		ContainerPath: actualContainerSpec.BundlePath,

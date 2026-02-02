@@ -24,13 +24,15 @@ var _ = Describe("Privileges", func() {
 		if runtime.GOOS == "windows" {
 			Skip(" not yet working on windows")
 		}
-		fileServer, fileServerStaticDir := componentMaker.FileServer()
+
+		fileServer, fileServerStaticDir := componentMaker.FileServer(modifyFunFileServerLoggregatorConfig)
+
 		ifritRuntime = ginkgomon.Invoke(grouper.NewParallel(os.Kill, grouper.Members{
 			{Name: "router", Runner: componentMaker.Router()},
 			{Name: "file-server", Runner: fileServer},
-			{Name: "rep", Runner: componentMaker.Rep()},
-			{Name: "auctioneer", Runner: componentMaker.Auctioneer()},
-			{Name: "route-emitter", Runner: componentMaker.RouteEmitter()},
+			{Name: "rep", Runner: componentMaker.Rep(modifyFunRepLoggregatorConfig)},
+			{Name: "auctioneer", Runner: componentMaker.Auctioneer(modifyFunAuctioneerLoggregatorConfig)},
+			{Name: "route-emitter", Runner: componentMaker.RouteEmitter(modifyFunRouteEmitterLoggregatorConfig)},
 		}))
 
 		test_helper.CreateZipArchive(

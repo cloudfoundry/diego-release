@@ -9,8 +9,19 @@ import (
 	"path"
 	"path/filepath"
 
+	loggingclient "code.cloudfoundry.org/diego-logging-client"
+
+	auctioneerconfig "code.cloudfoundry.org/auctioneer/cmd/auctioneer/config"
+	bbsconfig "code.cloudfoundry.org/bbs/cmd/bbs/config"
+	fileserverconfig "code.cloudfoundry.org/fileserver/cmd/file-server/config"
+	locketconfig "code.cloudfoundry.org/locket/cmd/locket/config"
+	repconfig "code.cloudfoundry.org/rep/cmd/rep/config"
+	routeemitterconfig "code.cloudfoundry.org/route-emitter/cmd/route-emitter/config"
+
+	"code.cloudfoundry.org/diego-logging-client/testhelpers"
 	"code.cloudfoundry.org/dockerdriver"
 	"code.cloudfoundry.org/garden"
+	"code.cloudfoundry.org/go-loggregator/v9/rpc/loggregator_v2"
 	"code.cloudfoundry.org/inigo/helpers"
 	"code.cloudfoundry.org/inigo/helpers/certauthority"
 	"code.cloudfoundry.org/inigo/helpers/portauthority"
@@ -20,6 +31,7 @@ import (
 	"code.cloudfoundry.org/localip"
 	"code.cloudfoundry.org/volman"
 	. "github.com/onsi/ginkgo/v2"
+
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
 	"github.com/tedsuo/ifrit"
@@ -44,6 +56,19 @@ var (
 
 	driverPluginsPath string
 	certDepot         string
+
+	testMetricsChan   chan *loggregator_v2.Envelope
+	signalMetricsChan chan struct{}
+	testIngressServer *testhelpers.TestIngressServer
+
+	modifyFunAuctioneerLoggregatorConfig                    func(cfg *auctioneerconfig.AuctioneerConfig)
+	modifyFunRouteEmitterLoggregatorConfig                  func(cfg *routeemitterconfig.RouteEmitterConfig)
+	modifyFunRepLoggregatorConfig                           func(cfg *repconfig.RepConfig)
+	modifyFunFileServerLoggregatorConfig                    func(cfg *fileserverconfig.FileServerConfig)
+	modifyFuncBBSLoggregatorConfig                          func(cfg *bbsconfig.BBSConfig)
+	modifyFuncLocketLoggregatorConfig                       func(cfg *locketconfig.LocketConfig)
+	metronCAFile, metronServerCertFile, metronServerKeyFile string
+	metricsPort                                             int
 )
 
 var _ = SynchronizedBeforeSuite(func() []byte {
@@ -109,6 +134,44 @@ var _ = AfterSuite(func() {
 var _ = BeforeEach(func() {
 	logger = lagertest.NewTestLogger("volman-inigo-suite")
 
+	fixturesPath := "../fixtures/certs"
+
+	var err error
+	metronCAFile = filepath.Join(fixturesPath, "metron", "CA.crt")
+	metronServerCertFile = filepath.Join(fixturesPath, "metron", "metron.crt")
+	metronServerKeyFile = filepath.Join(fixturesPath, "metron", "metron.key")
+	testIngressServer, err = testhelpers.NewTestIngressServer(metronServerCertFile, metronServerKeyFile, metronCAFile)
+	Expect(err).NotTo(HaveOccurred())
+	receiversChan := testIngressServer.Receivers()
+	testIngressServer.Start()
+	metricsPort, _ = testIngressServer.Port()
+
+	testMetricsChan, signalMetricsChan = testhelpers.TestMetricChan(receiversChan)
+
+	modifyFuncLocketLoggregatorConfig = func(cfg *locketconfig.LocketConfig) {
+		cfg.LoggregatorConfig = setupMetronConfig(cfg.LoggregatorConfig)
+	}
+
+	modifyFuncBBSLoggregatorConfig = func(cfg *bbsconfig.BBSConfig) {
+		cfg.LoggregatorConfig = setupMetronConfig(cfg.LoggregatorConfig)
+	}
+
+	modifyFunAuctioneerLoggregatorConfig = func(cfg *auctioneerconfig.AuctioneerConfig) {
+		cfg.LoggregatorConfig = setupMetronConfig(cfg.LoggregatorConfig)
+	}
+
+	modifyFunRouteEmitterLoggregatorConfig = func(cfg *routeemitterconfig.RouteEmitterConfig) {
+		cfg.LoggregatorConfig = setupMetronConfig(cfg.LoggregatorConfig)
+	}
+
+	modifyFunRepLoggregatorConfig = func(cfg *repconfig.RepConfig) {
+		cfg.LoggregatorConfig = setupMetronConfig(cfg.LoggregatorConfig)
+	}
+
+	modifyFunFileServerLoggregatorConfig = func(cfg *fileserverconfig.FileServerConfig) {
+		cfg.LoggregatorConfig = setupMetronConfig(cfg.LoggregatorConfig)
+	}
+
 	gardenProcess = ginkgomon.Invoke(componentMaker.Garden())
 	gardenClient = componentMaker.GardenClient()
 
@@ -119,7 +182,7 @@ var _ = BeforeEach(func() {
 	driverPluginsPath = path.Join(componentMaker.VolmanDriverConfigDir(), fmt.Sprintf("node-%d", GinkgoParallelProcess()))
 	dockerdriver.WriteDriverSpec(logger, driverPluginsPath, "deaddriver", "json", []byte(`{"Name":"deaddriver","Addr":"https://127.0.0.1:1111"}`))
 
-	volmanClient, driverSyncer = componentMaker.VolmanClient(logger)
+	volmanClient, driverSyncer = componentMaker.VolmanClient(logger, metricsPort, metronCAFile, metronServerCertFile, metronServerKeyFile)
 	driverSyncerProcess = ginkgomon.Invoke(driverSyncer)
 })
 
@@ -133,6 +196,9 @@ var _ = AfterEach(func() {
 		"%d containers failed to be destroyed!",
 		len(destroyContainerErrors),
 	)
+
+	testIngressServer.Stop()
+	close(signalMetricsChan)
 
 	os.Remove(filepath.Join(driverPluginsPath, "deaddriver.json"))
 })
@@ -189,4 +255,12 @@ func CompileTestedExecutables() world.BuiltExecutables {
 	Expect(err).NotTo(HaveOccurred())
 
 	return builtExecutables
+}
+
+func setupMetronConfig(cfg loggingclient.Config) loggingclient.Config {
+	cfg.APIPort, _ = testIngressServer.Port()
+	cfg.CACertPath = metronCAFile
+	cfg.CertPath = metronServerCertFile
+	cfg.KeyPath = metronServerKeyFile
+	return cfg
 }

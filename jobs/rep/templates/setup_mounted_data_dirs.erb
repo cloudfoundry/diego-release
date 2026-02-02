@@ -72,7 +72,5 @@ rm -rf "$trusted_certs_dir"
 
 proxy_config_dir=${garden_shared_dir}/proxy_config
 rm -rf "$proxy_config_dir"
-<% if p("containers.proxy.enabled") %>
-  mkdir -p "$proxy_config_dir"
-  chown -R vcap:vcap "$proxy_config_dir"
-<% end %>
+mkdir -p "$proxy_config_dir"
+chown -R vcap:vcap "$proxy_config_dir"

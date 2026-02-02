@@ -1,6 +1,7 @@
 package proxy
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"log"
@@ -9,10 +10,9 @@ import (
 	"sync"
 	"time"
 
-	socks5 "github.com/cloudfoundry/go-socks5"
+	"github.com/cloudfoundry/go-socks5"
 
 	"golang.org/x/crypto/ssh"
-	"golang.org/x/net/context"
 )
 
 var netListen = net.Listen

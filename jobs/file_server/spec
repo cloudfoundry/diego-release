@@ -57,9 +57,6 @@ properties:
   tls.key:
     description: "PEM-encoded tls key"
 
-  loggregator.use_v2_api:
-    description: "Whether component should use the v2 loggregator API when sending data to the metron agent instead of the 'legacy' v1 API."
-    default: false
   loggregator.v2_api_port:
     description: "Port which the component should use to communicate to the metron agent's v2 API (host is assumed to be `localhost`)."
     default: 3458

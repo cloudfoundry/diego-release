@@ -24,7 +24,7 @@ import (
 	"code.cloudfoundry.org/bbs/serviceclient"
 	"code.cloudfoundry.org/bbs/test_helpers"
 	cfhttp "code.cloudfoundry.org/cfhttp/v2"
-	loggingclient "code.cloudfoundry.org/diego-logging-client"
+	diego_logging_client "code.cloudfoundry.org/diego-logging-client"
 	sshproxyconfig "code.cloudfoundry.org/diego-ssh/cmd/ssh-proxy/config"
 	"code.cloudfoundry.org/diego-ssh/keys"
 	"code.cloudfoundry.org/dockerdriver"
@@ -365,7 +365,7 @@ type ComponentMaker interface {
 	BBSURL() string
 	BBSSSLConfig() SSLConfig
 	DefaultStack() string
-	FileServer() (ifrit.Runner, string)
+	FileServer(modifyConfigFuncs ...func(*fileserverconfig.FileServerConfig)) (ifrit.Runner, string)
 	Garden(fs ...func(*runner.GdnRunnerConfig)) *runner.GardenRunner
 	GardenClient() garden.Client
 	GardenWithoutDefaultStack() ifrit.Runner
@@ -384,7 +384,7 @@ type ComponentMaker interface {
 	SSHProxy(modifyConfigFuncs ...func(*sshproxyconfig.SSHProxyConfig)) ifrit.Runner
 	Setup()
 	Teardown()
-	VolmanClient(logger lager.Logger) (volman.Manager, ifrit.Runner)
+	VolmanClient(logger lager.Logger, metricsPort int, metronCAFile string, metronServerCertFile string, metronServerKeyFile string) (volman.Manager, ifrit.Runner)
 	VolmanDriver(logger lager.Logger) (ifrit.Runner, dockerdriver.Driver)
 }
 
@@ -483,8 +483,13 @@ func (maker commonComponentMaker) SQL(argv ...string) ifrit.Runner {
 		defer GinkgoRecover()
 
 		logger := lagertest.NewTestLogger("component-maker")
-
-		db, err := helpers.Connect(logger, maker.dbDriverName, maker.dbBaseConnectionString, "", false)
+		dbParams := &helpers.BBSDBParam{
+			DriverName:                    maker.dbDriverName,
+			DatabaseConnectionString:      maker.dbBaseConnectionString,
+			SqlCACertFile:                 "",
+			SqlEnableIdentityVerification: false,
+		}
+		db, err := helpers.Connect(logger, dbParams)
 		Expect(err).NotTo(HaveOccurred())
 		defer db.Close()
 
@@ -497,7 +502,8 @@ func (maker commonComponentMaker) SQL(argv ...string) ifrit.Runner {
 		Expect(err).NotTo(HaveOccurred())
 
 		dbWithDatabaseNameConnectionString := fmt.Sprintf("%s%s", maker.dbBaseConnectionString, sqlDBName)
-		db, err = helpers.Connect(logger, maker.dbDriverName, dbWithDatabaseNameConnectionString, "", false)
+		dbParams.DatabaseConnectionString = dbWithDatabaseNameConnectionString
+		db, err = helpers.Connect(logger, dbParams)
 		Expect(err).NotTo(HaveOccurred())
 		Eventually(db.Ping).Should(Succeed())
 
@@ -506,7 +512,7 @@ func (maker commonComponentMaker) SQL(argv ...string) ifrit.Runner {
 		close(ready)
 
 		<-signals
-		db, err = helpers.Connect(logger, maker.dbDriverName, maker.dbBaseConnectionString, "", false)
+		db, err = helpers.Connect(logger, dbParams)
 		Expect(err).NotTo(HaveOccurred())
 		Eventually(db.Ping).ShouldNot(HaveOccurred())
 
@@ -787,6 +793,7 @@ func (maker commonComponentMaker) RouteEmitterN(n int, fs ...func(config *routee
 		EnableInternalEmitter:        false,
 		RegisterDirectInstanceRoutes: false,
 		ClientLocketConfig:           maker.locketClientConfig(),
+		UUID:                         "route-emitter-inigo-lock-owner",
 	}
 
 	for _, f := range fs {
@@ -813,7 +820,7 @@ func (maker commonComponentMaker) RouteEmitterN(n int, fs ...func(config *routee
 	})
 }
 
-func (maker commonComponentMaker) FileServer() (ifrit.Runner, string) {
+func (maker commonComponentMaker) FileServer(modifyConfigFuncs ...func(*fileserverconfig.FileServerConfig)) (ifrit.Runner, string) {
 	servedFilesDir := TempDirWithParent(maker.tmpDir, "file-server-files")
 
 	configFile, err := os.CreateTemp(TempDirWithParent(maker.tmpDir, "file-server"), "file-server-config")
@@ -827,6 +834,10 @@ func (maker commonComponentMaker) FileServer() (ifrit.Runner, string) {
 			TimeFormat: lagerflags.FormatRFC3339,
 		},
 		StaticDirectory: servedFilesDir,
+	}
+
+	for _, f := range modifyConfigFuncs {
+		f(&cfg)
 	}
 
 	buildpackAppLifeCycleDir := filepath.Join(servedFilesDir, "buildpack_app_lifecycle")
@@ -1097,18 +1108,23 @@ func (maker commonComponentMaker) BBSServiceClient(logger lager.Logger) servicec
 	locketClient, err := locket.NewClient(logger, maker.locketClientConfig())
 	Expect(err).NotTo(HaveOccurred())
 
-	return serviceclient.NewServiceClient(locketClient)
+	return serviceclient.NewServiceClient(locketClient, time.Duration(300)*time.Second)
 }
 
 func (maker commonComponentMaker) BBSURL() string {
 	return "https://" + maker.addresses.BBS
 }
 
-func (maker commonComponentMaker) VolmanClient(logger lager.Logger) (volman.Manager, ifrit.Runner) {
+func (maker commonComponentMaker) VolmanClient(logger lager.Logger, metricsPort int, metronCAFile string, metronServerCertFile string, metronServerKeyFile string) (volman.Manager, ifrit.Runner) {
 	driverConfig := volmanclient.NewDriverConfig()
 	driverConfig.DriverPaths = []string{path.Join(maker.volmanDriverConfigDir, fmt.Sprintf("node-%d", GinkgoParallelProcess()))}
 
-	metronClient, err := loggingclient.NewIngressClient(loggingclient.Config{})
+	metronClient, err := diego_logging_client.NewIngressClient(diego_logging_client.Config{
+		APIPort:    metricsPort,
+		CACertPath: metronCAFile,
+		CertPath:   metronServerCertFile,
+		KeyPath:    metronServerKeyFile,
+	})
 	Expect(err).NotTo(HaveOccurred())
 	return volmanclient.NewServer(logger, metronClient, driverConfig)
 }
@@ -1215,6 +1231,7 @@ func (maker v0ComponentMaker) RouteEmitter(modifyConfigFuncs ...func(config *rou
 			LogLevel:   "debug",
 			TimeFormat: lagerflags.FormatRFC3339,
 		},
+		UUID: "route-emitter-inigo-lock-owner",
 	}
 
 	for _, f := range modifyConfigFuncs {
@@ -1241,7 +1258,7 @@ func (maker v0ComponentMaker) RouteEmitter(modifyConfigFuncs ...func(config *rou
 	})
 }
 
-func (maker v0ComponentMaker) FileServer() (ifrit.Runner, string) {
+func (maker v0ComponentMaker) FileServer(modifyConfigFuncs ...func(*fileserverconfig.FileServerConfig)) (ifrit.Runner, string) {
 	servedFilesDir := TempDirWithParent(maker.tmpDir, fmt.Sprintf("file-server-files-%d-", GinkgoParallelProcess()))
 
 	return ginkgomon.New(ginkgomon.Config{
@@ -1454,9 +1471,10 @@ func (maker v1ComponentMaker) BBS(modifyConfigFuncs ...func(*bbsconfig.BBSConfig
 		ExpirePendingTaskDuration:   durationjson.Duration(30 * time.Minute),
 		ConvergeRepeatInterval:      durationjson.Duration(30 * time.Second),
 		KickTaskDuration:            durationjson.Duration(30 * time.Second),
-		LockTTL:                     durationjson.Duration(locket.DefaultSessionTTL),
-		LockRetryInterval:           durationjson.Duration(locket.RetryInterval),
+		LockTTL:                     durationjson.Duration(5 * time.Second),
+		LockRetryInterval:           durationjson.Duration(1 * time.Second),
 		ReportInterval:              durationjson.Duration(1 * time.Minute),
+		DBConnectionTimeout:         durationjson.Duration(30 * time.Second),
 		ConvergenceWorkers:          20,
 		UpdateWorkers:               1000,
 		TaskCallbackWorkers:         1000,
@@ -1521,14 +1539,6 @@ func (maker v1ComponentMaker) RepN(n int, modifyConfigFuncs ...func(*repconfig.R
 	executorTempDir := TempDirWithParent(maker.tmpDir, "executor")
 	cachePath := TempDirWithParent(executorTempDir, "cache")
 
-	// garden 1.16.5 checks the source of the bind mount for mount options.
-	// Furthermore Rep in version 1.25.2 bind mounted the healthcheck binaries
-	// unconditionally without paying attention to
-	// EnableDeclarativeHealthcheck.  We need to ensure that the source exist.
-	// see
-	// https://github.com/cloudfoundry/guardian/commit/1407257d989b483c64ea7d7cb6ea7d071fa75e84
-	healthcheckDummyDir := TempDirWithParent(maker.tmpDir, "healthcheck")
-
 	repConfig := repconfig.RepConfig{
 		AdvertiseDomain:           "cell.service.cf.internal",
 		BBSClientSessionCacheSize: 0,
@@ -1558,32 +1568,32 @@ func (maker v1ComponentMaker) RepN(n int, modifyConfigFuncs ...func(*repconfig.R
 		PreloadedRootFS:           maker.rootFSes,
 		ClientLocketConfig:        maker.locketClientConfig(),
 		ExecutorConfig: executorinit.ExecutorConfig{
-			MemoryMB:                           configuration.Automatic,
-			DiskMB:                             configuration.Automatic,
-			ReservedExpirationTime:             durationjson.Duration(time.Minute),
-			ContainerReapInterval:              durationjson.Duration(time.Minute),
-			ContainerInodeLimit:                200000,
-			EnableDeclarativeHealthcheck:       false,
-			DeclarativeHealthcheckPath:         healthcheckDummyDir,
-			MaxCacheSizeInBytes:                10 * 1024 * 1024 * 1024,
-			SkipCertVerify:                     false,
-			HealthyMonitoringInterval:          durationjson.Duration(30 * time.Second),
-			UnhealthyMonitoringInterval:        durationjson.Duration(500 * time.Millisecond),
-			CreateWorkPoolSize:                 32,
-			DeleteWorkPoolSize:                 32,
-			ReadWorkPoolSize:                   64,
-			MetricsWorkPoolSize:                8,
-			HealthCheckWorkPoolSize:            64,
-			MaxConcurrentDownloads:             5,
-			GardenHealthcheckInterval:          durationjson.Duration(10 * time.Minute),
-			GardenHealthcheckEmissionInterval:  durationjson.Duration(30 * time.Second),
-			GardenHealthcheckTimeout:           durationjson.Duration(10 * time.Minute),
-			GardenHealthcheckCommandRetryPause: durationjson.Duration(time.Second),
-			GardenHealthcheckProcessEnv:        []string{},
-			GracefulShutdownInterval:           durationjson.Duration(10 * time.Second),
-			ContainerMetricsReportInterval:     durationjson.Duration(15 * time.Second),
-			EnvoyConfigRefreshDelay:            durationjson.Duration(time.Second),
-			EnvoyDrainTimeout:                  durationjson.Duration(15 * time.Minute),
+			MemoryMB:                             configuration.Automatic,
+			DiskMB:                               configuration.Automatic,
+			ReservedExpirationTime:               durationjson.Duration(time.Minute),
+			ContainerReapInterval:                durationjson.Duration(time.Minute),
+			ContainerInodeLimit:                  200000,
+			DeclarativeHealthcheckPath:           maker.Artifacts().Healthcheck,
+			DeclarativeHealthCheckDefaultTimeout: durationjson.Duration(1 * time.Second),
+			MaxCacheSizeInBytes:                  10 * 1024 * 1024 * 1024,
+			SkipCertVerify:                       false,
+			HealthyMonitoringInterval:            durationjson.Duration(30 * time.Second),
+			UnhealthyMonitoringInterval:          durationjson.Duration(500 * time.Millisecond),
+			CreateWorkPoolSize:                   32,
+			DeleteWorkPoolSize:                   32,
+			ReadWorkPoolSize:                     64,
+			MetricsWorkPoolSize:                  8,
+			HealthCheckWorkPoolSize:              64,
+			MaxConcurrentDownloads:               5,
+			GardenHealthcheckInterval:            durationjson.Duration(10 * time.Minute),
+			GardenHealthcheckEmissionInterval:    durationjson.Duration(30 * time.Second),
+			GardenHealthcheckTimeout:             durationjson.Duration(10 * time.Minute),
+			GardenHealthcheckCommandRetryPause:   durationjson.Duration(time.Second),
+			GardenHealthcheckProcessEnv:          []string{},
+			GracefulShutdownInterval:             durationjson.Duration(10 * time.Second),
+			ContainerMetricsReportInterval:       durationjson.Duration(15 * time.Second),
+			EnvoyConfigRefreshDelay:              durationjson.Duration(time.Second),
+			EnvoyDrainTimeout:                    durationjson.Duration(15 * time.Minute),
 
 			EnableUnproxiedPortMappings:   true,
 			GardenNetwork:                 "tcp",

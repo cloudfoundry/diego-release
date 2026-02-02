@@ -212,8 +212,8 @@ var _ = Describe("TCPRoutingTable", func() {
 				Expect(routingTable.TCPAssociationsCount()).Should(Equal(2))
 
 				Expect(routingEvents.Registrations).Should(ConsistOf(
-					tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-					tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
+					tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+					tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 				))
 			})
 
@@ -228,8 +228,8 @@ var _ = Describe("TCPRoutingTable", func() {
 					Expect(routingTable.TCPAssociationsCount()).Should(Equal(2))
 
 					Expect(routingEvents.Registrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "container-ip-1", 5222, 5443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "container-ip-2", 5222, 5443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "container-ip-1", 5222, 5443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "container-ip-2", 5222, 5443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 				})
 
@@ -247,7 +247,7 @@ var _ = Describe("TCPRoutingTable", func() {
 						Expect(routingTable.TCPAssociationsCount()).Should(Equal(1))
 
 						Expect(routingEvents.Registrations).Should(ConsistOf(
-							tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+							tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 						))
 					})
 				})
@@ -324,13 +324,13 @@ var _ = Describe("TCPRoutingTable", func() {
 					routingEvents, _ := routingTable.SetRoutes(logger, nil, desiredLRP)
 
 					Expect(routingEvents.Unregistrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 
 					Expect(routingEvents.Registrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 
 					Expect(routingTable.TCPAssociationsCount()).Should(Equal(2))
@@ -378,10 +378,10 @@ var _ = Describe("TCPRoutingTable", func() {
 					routingEvents, _ := routingTable.SetRoutes(logger, nil, desiredLRP)
 
 					Expect(routingEvents.Registrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61002, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61002, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61002, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61002, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 					Expect(routingEvents.Unregistrations).Should(HaveLen(0))
 
@@ -444,17 +444,17 @@ var _ = Describe("TCPRoutingTable", func() {
 					routingEvents, _ := routingTable.SetRoutes(logger, nil, desiredLRP)
 
 					Expect(routingEvents.Registrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61002, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61002, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61003, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61003, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61002, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61002, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61003, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61003, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 
 					Expect(routingEvents.Unregistrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 
 					Expect(routingTable.TCPAssociationsCount()).Should(Equal(4))
@@ -484,13 +484,13 @@ var _ = Describe("TCPRoutingTable", func() {
 					routingEvents, _ := routingTable.SetRoutes(logger, nil, desiredLRP)
 
 					Expect(routingEvents.Unregistrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, -1, "", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-2", 62004, -1, "", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, -1, "", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-2", 62004, -1, "", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 
 					Expect(routingEvents.Registrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62004, -1, "", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-2", 62004, -1, "", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62004, -1, "", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-2", 62004, -1, "", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 
 					Expect(routingTable.TCPAssociationsCount()).Should(Equal(2))
@@ -546,12 +546,12 @@ var _ = Describe("TCPRoutingTable", func() {
 
 					// Two registration and one unregistration events
 					Expect(routingEvents.Registrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61002, "some-ip-1", 63004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61002, "some-ip-1", 63004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 
 					Expect(routingEvents.Unregistrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 					Expect(routingTable.TCPAssociationsCount()).Should(Equal(2))
 				})
@@ -628,11 +628,11 @@ var _ = Describe("TCPRoutingTable", func() {
 						routingEvents, _ := routingTable.SetRoutes(logger, beforeLRP, afterLRP)
 
 						Expect(routingEvents.Registrations).Should(ConsistOf(
-							tcpmodels.NewTcpRouteMapping("new-router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+							tcpmodels.NewTcpRouteMapping("new-router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 						))
 
 						Expect(routingEvents.Unregistrations).Should(ConsistOf(
-							tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+							tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 						))
 					})
 				})
@@ -643,11 +643,11 @@ var _ = Describe("TCPRoutingTable", func() {
 						routingEvents, _ := routingTable.SetRoutes(logger, nil, afterLRP)
 
 						Expect(routingEvents.Registrations).Should(ConsistOf(
-							tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+							tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 						))
 
 						Expect(routingEvents.Unregistrations).Should(ConsistOf(
-							tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+							tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 						))
 
 						Expect(routingTable.TCPAssociationsCount()).Should(Equal(1))
@@ -723,7 +723,7 @@ var _ = Describe("TCPRoutingTable", func() {
 							currentRoutesCount := routingTable.TCPAssociationsCount()
 							routingEvents, _ := routingTable.SetRoutes(logger, beforeLRP, afterLRP)
 							Expect(routingEvents.Registrations).Should(ConsistOf(
-								tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62006, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
+								tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62006, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 							))
 
 							Expect(routingEvents.Unregistrations).To(HaveLen(0))
@@ -781,8 +781,8 @@ var _ = Describe("TCPRoutingTable", func() {
 
 							It("emits two registration events", func() {
 								Expect(routingEvents.Registrations).Should(ConsistOf(
-									tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-									tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62005, 62443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+									tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+									tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62005, 62443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 								))
 							})
 						})
@@ -814,7 +814,7 @@ var _ = Describe("TCPRoutingTable", func() {
 							routingEvents, _ := routingTable.SetRoutes(logger, beforeLRP, afterLRP)
 
 							Expect(routingEvents.Registrations).Should(ConsistOf(
-								tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62006, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
+								tcpmodels.NewTcpRouteMapping("router-group-guid", 61001, "some-ip-1", 62006, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 							))
 							Expect(routingTable.TCPAssociationsCount()).Should(Equal(expectedRoutesCount))
 						})
@@ -832,7 +832,7 @@ var _ = Describe("TCPRoutingTable", func() {
 						afterLRP := getDesiredLRP("process-guid-1", "log-guid-1", newTcpRoutes, newModificationTag)
 						routingEvents, _ := routingTable.SetRoutes(logger, beforeLRP, afterLRP)
 						Expect(routingEvents.Unregistrations).Should(ConsistOf(
-							tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+							tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 						))
 					})
 
@@ -863,7 +863,7 @@ var _ = Describe("TCPRoutingTable", func() {
 							afterLRP := getDesiredLRP("process-guid-1", "log-guid-1", newTcpRoutes, newModificationTag)
 							routingEvents, _ := routingTable.SetRoutes(logger, beforeLRP, afterLRP)
 							Expect(routingEvents.Unregistrations).Should(ConsistOf(
-								tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+								tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 							))
 						})
 
@@ -893,10 +893,10 @@ var _ = Describe("TCPRoutingTable", func() {
 							Expect(routingEvents.Unregistrations).To(HaveLen(1))
 
 							Expect(routingEvents.Registrations).Should(ConsistOf(
-								tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62006, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+								tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62006, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 							))
 							Expect(routingEvents.Unregistrations).Should(ConsistOf(
-								tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+								tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 							))
 						})
 					})
@@ -929,7 +929,7 @@ var _ = Describe("TCPRoutingTable", func() {
 					Expect(routingEvents.Unregistrations).To(HaveLen(1))
 
 					Expect(routingEvents.Unregistrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 62000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 62000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 					Expect(routingTable.TCPAssociationsCount()).Should(Equal(1))
 				})
@@ -981,7 +981,7 @@ var _ = Describe("TCPRoutingTable", func() {
 					routingEvents, _ := routingTable.RemoveRoutes(logger, desiredLRP)
 					Expect(routingEvents.Unregistrations).To(HaveLen(1))
 					Expect(routingEvents.Unregistrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 61000, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 61000, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 					Expect(routingTable.TCPAssociationsCount()).Should(Equal(0))
 				})
@@ -1022,7 +1022,7 @@ var _ = Describe("TCPRoutingTable", func() {
 					routingEvents, _ := routingTable.AddEndpoint(logger, actualLRP)
 
 					Expect(routingEvents.Registrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 61104, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 61104, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 					Expect(routingTable.TCPAssociationsCount()).Should(Equal(1))
 				})
@@ -1044,7 +1044,7 @@ var _ = Describe("TCPRoutingTable", func() {
 						actualLRP := getActualLRP("process-guid-1", "instance-guid-3", "some-ip-3", "container-ip-3", 61104, 5222, 61443, 5443, newTag)
 						routingEvents, _ := routingTable.AddEndpoint(logger, actualLRP)
 						Expect(routingEvents.Registrations).Should(ConsistOf(
-							tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-3", 61104, 61443, "instance-guid-3", nil, 0, tcpmodels.ModificationTag{}),
+							tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-3", 61104, 61443, "instance-guid-3", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 						))
 						Expect(routingTable.TCPAssociationsCount()).Should(Equal(3))
 					})
@@ -1057,7 +1057,7 @@ var _ = Describe("TCPRoutingTable", func() {
 							actualLRP := getActualLRP("process-guid-1", "instance-guid-1", "some-ip-1", "container-ip-1", 61105, 5222, 61443, 5443, newTag)
 							routingEvents, _ := routingTable.AddEndpoint(logger, actualLRP)
 							Expect(routingEvents.Registrations).Should(ConsistOf(
-								tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 61105, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+								tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 61105, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 							))
 							Expect(routingTable.TCPAssociationsCount()).Should(Equal(2))
 						})
@@ -1080,11 +1080,11 @@ var _ = Describe("TCPRoutingTable", func() {
 							routingEvents, _ := routingTable.AddEndpoint(logger, newActualLRP)
 
 							Expect(routingEvents.Unregistrations).Should(ConsistOf(
-								tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+								tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 							))
 
 							Expect(routingEvents.Registrations).Should(ConsistOf(
-								tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 62443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+								tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 62443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 							))
 						})
 					})
@@ -1136,7 +1136,7 @@ var _ = Describe("TCPRoutingTable", func() {
 							actualLRP := getActualLRP("process-guid-1", "instance-guid-1", "some-ip-1", "container-ip-1", 62004, 5222, 61443, 5443, newTag)
 							routingEvents, _ := routingTable.RemoveEndpoint(logger, actualLRP)
 							Expect(routingEvents.Unregistrations).Should(ConsistOf(
-								tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+								tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 							))
 
 							Expect(routingTable.TCPAssociationsCount()).Should(Equal(0))
@@ -1148,7 +1148,7 @@ var _ = Describe("TCPRoutingTable", func() {
 							actualLRP := getActualLRP("process-guid-1", "instance-guid-1", "some-ip-1", "container-ip-1", 62004, 5222, 61443, 5443, modificationTag)
 							routingEvents, _ := routingTable.RemoveEndpoint(logger, actualLRP)
 							Expect(routingEvents.Unregistrations).Should(ConsistOf(
-								tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+								tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 							))
 							Expect(routingTable.TCPAssociationsCount()).Should(Equal(0))
 						})
@@ -1179,7 +1179,7 @@ var _ = Describe("TCPRoutingTable", func() {
 			It("returns routing events for entries in routing table", func() {
 				routingEvents, _ := routingTable.GetExternalRoutingEvents()
 				Expect(routingEvents.Registrations).Should(ConsistOf(
-					tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
+					tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 				))
 				Expect(routingTable.TCPAssociationsCount()).Should(Equal(1))
 			})
@@ -1218,13 +1218,13 @@ var _ = Describe("TCPRoutingTable", func() {
 				It("overwrites the existing entries and emits registration and unregistration routing events", func() {
 					routingEvents, _ := routingTable.Swap(logger, tempRoutingTable, models.DomainSet{})
 					Expect(routingEvents.Unregistrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 
 					Expect(routingEvents.Registrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-3", 63004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-4", 63004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-3", 63004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-4", 63004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 				})
 			})
@@ -1244,12 +1244,12 @@ var _ = Describe("TCPRoutingTable", func() {
 				It("overwrites the existing entries and emits registration and unregistration routing events", func() {
 					routingEvents, _ := routingTable.Swap(logger, tempRoutingTable, models.DomainSet{})
 					Expect(routingEvents.Unregistrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 					Expect(routingEvents.Registrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-3", 63004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-4", 63004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-3", 63004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-4", 63004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 
 					Expect(routingTable.TCPAssociationsCount()).Should(Equal(2))
@@ -1281,12 +1281,12 @@ var _ = Describe("TCPRoutingTable", func() {
 					routingEvents, _ := routingTable.Swap(logger, tempRoutingTable, domains)
 
 					Expect(routingEvents.Registrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("new-router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("new-router-group-guid", 61000, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("new-router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("new-router-group-guid", 61000, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 					Expect(routingEvents.Unregistrations).Should(ConsistOf(
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}),
-						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-1", nil, 0, tcpmodels.ModificationTag{}, false, ""),
+						tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-2", 62004, 61443, "instance-guid-2", nil, 0, tcpmodels.ModificationTag{}, false, ""),
 					))
 				})
 			})

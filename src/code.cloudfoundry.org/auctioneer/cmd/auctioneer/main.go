@@ -194,10 +194,8 @@ func initializeMetron(logger lager.Logger, cfg config.AuctioneerConfig) (logging
 		return nil, err
 	}
 
-	if cfg.LoggregatorConfig.UseV2API {
-		emitter := runtimeemitter.NewV1(client)
-		go emitter.Run()
-	}
+	emitter := runtimeemitter.NewV1(client)
+	go emitter.Run()
 
 	return client, nil
 }

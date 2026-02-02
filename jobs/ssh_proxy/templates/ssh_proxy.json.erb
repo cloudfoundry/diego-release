@@ -76,6 +76,9 @@
   if_p("diego.ssh_proxy.allowed_keyexchanges") do |value|
     config[:allowed_key_exchanges] = value
   end
+  if_p("diego.ssh_proxy.allowed_host_key_algorithms") do |value|
+    config[:allowed_host_key_algorithms] = value
+  end
   if_p("diego.ssh_proxy.bbs.client_session_cache_size") do |value|
     config[:bbs_client_session_cache_size] = value
   end
@@ -85,20 +88,18 @@
 
   config[:time_format] = "rfc3339"
   config[:loggregator]={}
-  config[:loggregator][:loggregator_use_v2_api] = p("loggregator.use_v2_api")
-  if p("loggregator.use_v2_api") == true
-    config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
-    config[:loggregator][:loggregator_ca_path] = "/var/vcap/jobs/ssh_proxy/config/certs/loggregator/ca.crt"
-    config[:loggregator][:loggregator_cert_path] = "/var/vcap/jobs/ssh_proxy/config/certs/loggregator/client.crt"
-    config[:loggregator][:loggregator_key_path] = "/var/vcap/jobs/ssh_proxy/config/certs/loggregator/client.key"
-    config[:loggregator][:loggregator_job_deployment] = spec.deployment
-    config[:loggregator][:loggregator_job_name] = spec.name
-    config[:loggregator][:loggregator_job_index] = spec.id
-    config[:loggregator][:loggregator_job_ip] = spec.address
-    config[:loggregator][:loggregator_job_origin] = "ssh_proxy"
-    config[:loggregator][:loggregator_source_id] = "ssh_proxy"
-    config[:loggregator][:loggregator_instance_id] = spec.id
-  end
+  config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
+  config[:loggregator][:loggregator_ca_path] = "/var/vcap/jobs/ssh_proxy/config/certs/loggregator/ca.crt"
+  config[:loggregator][:loggregator_cert_path] = "/var/vcap/jobs/ssh_proxy/config/certs/loggregator/client.crt"
+  config[:loggregator][:loggregator_key_path] = "/var/vcap/jobs/ssh_proxy/config/certs/loggregator/client.key"
+  config[:loggregator][:loggregator_job_deployment] = spec.deployment
+  config[:loggregator][:loggregator_job_name] = spec.name
+  config[:loggregator][:loggregator_job_index] = spec.id
+  config[:loggregator][:loggregator_job_ip] = spec.address
+  config[:loggregator][:loggregator_job_origin] = "ssh_proxy"
+  config[:loggregator][:loggregator_source_id] = "ssh_proxy"
+  config[:loggregator][:loggregator_instance_id] = spec.id
+
 
   config[:backends_tls_enabled] = p("backends.tls.enabled")
 

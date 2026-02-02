@@ -59,6 +59,9 @@ properties:
   diego.bbs.log_level:
     description: "Log level"
     default: "info"
+  diego.bbs.debug_lrp_start_heartbeats:
+    description: "When this property is set to 'true', container heartbeat log messages are issued at a debug level, which reduces log volume. When this property is set to 'false', container heartbeat log messages issued at an info level."
+    default: false
   diego.bbs.enable_access_log:
     description: "Enable access log, i.e. log every request made to the bbs"
     default: false
@@ -101,6 +104,18 @@ properties:
   diego.bbs.sql.max_idle_connections:
     description: "Maximum number of idle connections to the SQL database"
     default: 200
+  diego.bbs.sql.max_connection_lifetime:
+    description: "Maximum lifetime of connections to the SQL database before connections are recreated"
+    default: 90
+  diego.bbs.sql.db_connection_timeout: 
+    description: "Timeout in seconds for a db client to wait for a connection to be established"
+    default: "30"
+  diego.bbs.sql.db_read_timeout: 
+    description: "Timeout in seconds for a db client to wait for data to be received from the server"
+    default: "60"
+  diego.bbs.sql.db_write_timeout: 
+    description: "Timeout in seconds for a db client to wait for data to be sent to the server"
+    default: "60"
   diego.bbs.sql.require_ssl:
     description: "Whether to require SSL for BBS communication to the SQL backend"
     default: false
@@ -163,16 +178,10 @@ properties:
     description: "Length in bytes above which logged strings will be truncated. If set to 0, turns off truncation."
     default: 640
 
-  locks.locket.enabled:
-    description: When set, the BBS attempts to claim a lock from the Locket API.
-    default: true
   cell_registrations.locket.enabled:
     description: When set, the BBS will detect Diego cells registered with the Locket API.
     default: true
-
-  loggregator.use_v2_api:
-    description: "True to use local metron agent gRPC v2 API. False to use UDP v1 API."
-    default: false
+    
   loggregator.v2_api_port:
     description: "Local metron agent gRPC port"
     default: 3458

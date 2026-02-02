@@ -48,7 +48,7 @@ var _ = Describe("LocalRouteEmitter", func() {
 		processGuid = helpers.GenerateGuid()
 
 		var fileServer ifrit.Runner
-		fileServer, fileServerStaticDir = componentMaker.FileServer()
+		fileServer, fileServerStaticDir = componentMaker.FileServer(modifyFunFileServerLoggregatorConfig)
 
 		cellAID = "cell-a"
 		cellBID = "cell-b"
@@ -65,7 +65,7 @@ var _ = Describe("LocalRouteEmitter", func() {
 		ifritRuntime = ginkgomon.Invoke(grouper.NewParallel(os.Kill, grouper.Members{
 			{Name: "router", Runner: componentMaker.Router()},
 			{Name: "file-server", Runner: fileServer},
-			{Name: "auctioneer", Runner: componentMaker.Auctioneer()},
+			{Name: "auctioneer", Runner: componentMaker.Auctioneer(modifyFunAuctioneerLoggregatorConfig)},
 		}))
 
 		archiveFiles = fixtures.GoServerApp()
@@ -80,18 +80,21 @@ var _ = Describe("LocalRouteEmitter", func() {
 			config.CellID = cellAID
 			config.ListenAddr = cellARepAddr
 			config.EvacuationTimeout = durationjson.Duration(30 * time.Second)
+			config.LoggregatorConfig = setupMetronConfig(config.LoggregatorConfig)
 		})
 
 		repB := componentMaker.RepN(2, func(config *repconfig.RepConfig) {
 			config.CellID = cellBID
 			config.ListenAddr = cellBRepAddr
 			config.EvacuationTimeout = durationjson.Duration(30 * time.Second)
+			config.LoggregatorConfig = setupMetronConfig(config.LoggregatorConfig)
 		})
 
 		routeEmitterAConfigs := append(routeEmitterConfigs, func(config *routeemitterconfig.RouteEmitterConfig) {
 			config.SyncInterval = durationjson.Duration(time.Hour)
 			config.CellID = cellAID
 		})
+		routeEmitterAConfigs = append(routeEmitterAConfigs, modifyFunRouteEmitterLoggregatorConfig)
 		cellAProcess = ginkgomon.Invoke(grouper.NewParallel(os.Kill, grouper.Members{
 			{Name: "rep-a", Runner: repA},
 			{Name: "route-emitter-a", Runner: componentMaker.RouteEmitterN(1, routeEmitterAConfigs...)},
@@ -100,6 +103,7 @@ var _ = Describe("LocalRouteEmitter", func() {
 			config.SyncInterval = durationjson.Duration(time.Hour)
 			config.CellID = cellBID
 		})
+		routeEmitterBConfigs = append(routeEmitterBConfigs, modifyFunRouteEmitterLoggregatorConfig)
 		cellBProcess = ginkgomon.Invoke(grouper.NewParallel(os.Kill, grouper.Members{
 			{Name: "rep-b", Runner: repB},
 			{Name: "route-emitter-b", Runner: componentMaker.RouteEmitterN(1, routeEmitterBConfigs...)},

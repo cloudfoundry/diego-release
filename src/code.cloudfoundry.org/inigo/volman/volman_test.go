@@ -71,7 +71,7 @@ var _ = Describe("Given volman and localdriver", func() {
 				return os.IsNotExist(err)
 			}).Should(Equal(false))
 
-			volmanClient, driverSyncer = componentMaker.VolmanClient(logger)
+			volmanClient, driverSyncer = componentMaker.VolmanClient(logger, metricsPort, metronCAFile, metronServerCertFile, metronServerKeyFile)
 			driverSyncerProcess = ginkgomon.Invoke(driverSyncer)
 
 			Eventually(func() bool {

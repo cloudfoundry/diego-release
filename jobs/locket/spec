@@ -58,15 +58,21 @@ properties:
   diego.locket.sql.db_driver:
     description: "Database driver to use for SQL backend (for example: mysql,postgres)"
     default: mysql
+  diego.locket.sql.db_connection_timeout: 
+    description: "Timeout in seconds for a db client to wait for a connection to be established"
+    default: "30"
+  diego.locket.sql.db_read_timeout: 
+    description: "Timeout in seconds for a db client to wait for data to be received from the server"
+    default: "600"
+  diego.locket.sql.db_write_timeout: 
+    description: "Timeout in seconds for a db client to wait for data to be sent to the server"
+    default: "600"
   diego.locket.sql.require_ssl:
     description: "Whether to require SSL for Locket communication to the SQL backend"
     default: false
   diego.locket.sql.ca_cert:
     description: "Bundle of CA certificates for the Locket to verify the SQL server SSL certificate when connecting via SSL"
 
-  loggregator.use_v2_api:
-    description: "True to use local metron agent gRPC v2 API. False to use UDP v1 API."
-    default: false
   loggregator.v2_api_port:
     description: "Local metron agent gRPC port"
     default: 3458
