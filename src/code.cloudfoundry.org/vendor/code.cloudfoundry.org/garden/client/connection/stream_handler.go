@@ -11,8 +11,10 @@ import (
 )
 
 type streamHandler struct {
-	log lager.Logger
-	wg  *sync.WaitGroup
+	log         lager.Logger
+	wg          *sync.WaitGroup
+	stdoutMutex sync.Mutex
+	stderrMutex sync.Mutex
 }
 
 func newStreamHandler(log lager.Logger) *streamHandler {
@@ -40,13 +42,32 @@ func (sh *streamHandler) streamIn(processWriter io.WriteCloser, stdin io.Reader)
 }
 
 func (sh *streamHandler) streamOut(streamWriter io.Writer, streamReader io.Reader) {
+	sh.streamWithMutex(streamWriter, streamReader, &sh.stdoutMutex)
+}
+
+func (sh *streamHandler) streamErr(streamWriter io.Writer, streamReader io.Reader) {
+	sh.streamWithMutex(streamWriter, streamReader, &sh.stderrMutex)
+}
+
+func (sh *streamHandler) streamWithMutex(streamWriter io.Writer, streamReader io.Reader, mutex *sync.Mutex) {
+	if streamWriter == nil || streamReader == nil {
+		sh.log.Debug("nil-stream", lager.Data{
+			"streamWriter-nil": streamWriter == nil,
+			"streamReader-nil": streamReader == nil,
+		})
+		return
+	}
+
 	sh.wg.Add(1)
 	go func() {
+		mutex.Lock()
+		defer mutex.Unlock()
+		defer sh.wg.Done()
+
 		_, err := io.Copy(streamWriter, streamReader)
 		if err != nil {
 			sh.log.Debug("failed-to-copy-stream-data", lager.Data{"error": err})
 		}
-		sh.wg.Done()
 	}()
 }
 

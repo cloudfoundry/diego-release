@@ -456,10 +456,7 @@ func (e *Experiment) Sample(callback func(idx int), samplingConfig SamplingConfi
 	if samplingConfig.N > 0 {
 		maxN = samplingConfig.N
 	}
-	numParallel := 1
-	if samplingConfig.NumParallel > numParallel {
-		numParallel = samplingConfig.NumParallel
-	}
+	numParallel := max(samplingConfig.NumParallel, 1)
 	minSamplingInterval := samplingConfig.MinSamplingInterval
 
 	work := make(chan int)
@@ -469,9 +466,9 @@ func (e *Experiment) Sample(callback func(idx int), samplingConfig SamplingConfi
 		wg.Wait()
 	}()
 	if numParallel > 1 {
+		wg.Add(numParallel)
 		for worker := 0; worker < numParallel; worker++ {
 			go func() {
-				wg.Add(1)
 				for idx := range work {
 					callback(idx)
 				}
