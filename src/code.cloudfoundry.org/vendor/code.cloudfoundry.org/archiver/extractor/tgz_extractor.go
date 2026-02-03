@@ -105,5 +105,9 @@ func extractTarArchiveFile(header *tar.Header, dest string, input io.Reader) err
 	defer fileCopy.Close()
 
 	_, err = io.Copy(fileCopy, input)
-	return err
+	if err != nil {
+		return err
+	}
+
+	return setXattrsFromTar(filePath, header)
 }
