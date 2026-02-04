@@ -107,6 +107,32 @@ var _ = Describe("LRP Utils", func() {
 			})
 		})
 
+		Context("when actual has an IPv6 address", func() {
+			It("populates ContainerIPv6 on the endpoint", func() {
+				tag := models.ModificationTag{Epoch: "abc", Index: 0}
+				actualInfo := &models.ActualLRP{
+					ActualLRPKey:         models.NewActualLRPKey("process-guid", 0, "domain"),
+					ActualLRPInstanceKey: models.NewActualLRPInstanceKey("instance-guid", "cell-id"),
+					ActualLRPNetInfo: models.NewActualLRPNetInfoWithIPv6(
+						"1.1.1.1",
+						"2.2.2.2",
+						"fd00::1",
+						models.ActualLRPNetInfo_PreferredAddressHost,
+						models.NewPortMapping(11, 44),
+					),
+					Presence:         models.ActualLRP_Ordinary,
+					State:            models.ActualLRPStateRunning,
+					ModificationTag:  tag,
+					AvailabilityZone: "some-zone",
+				}
+
+				endpoints := routingtable.NewEndpointsFromActual(actualInfo)
+
+				Expect(endpoints).To(HaveLen(1))
+				Expect(endpoints[0].ContainerIPv6).To(Equal("fd00::1"))
+			})
+		})
+
 		Context("when actual is evacuating", func() {
 			It("builds a map of container port to endpoint", func() {
 				tag := models.ModificationTag{Epoch: "abc", Index: 0}

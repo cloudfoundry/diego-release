@@ -129,5 +129,8 @@ func populateMetricTags(input map[string]*models.MetricTagValue, endpoint Endpoi
 		tags[k] = value
 	}
 	tags["component"] = "route-emitter"
+	if endpoint.ContainerIPv6 != "" {
+		tags["cf_instance_ipv6"] = endpoint.ContainerIPv6
+	}
 	return tags
 }

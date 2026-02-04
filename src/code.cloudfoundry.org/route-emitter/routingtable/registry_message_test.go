@@ -222,6 +222,18 @@ var _ = Describe("RegistryMessage", func() {
 				Expect(message).To(Equal(expectedMessage))
 			})
 		})
+
+		Context("when the endpoint has an IPv6 address", func() {
+			BeforeEach(func() {
+				endpoint.ContainerIPv6 = "fd00::1"
+				expectedMessage.Tags["cf_instance_ipv6"] = "fd00::1"
+			})
+
+			It("includes the cf_instance_ipv6 tag", func() {
+				message := routingtable.RegistryMessageFor(endpoint, route, true)
+				Expect(message).To(Equal(expectedMessage))
+			})
+		})
 	})
 
 	Describe("InternalAddressRegistryMessageFor", func() {

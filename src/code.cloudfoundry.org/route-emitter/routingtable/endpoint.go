@@ -36,6 +36,7 @@ type Endpoint struct {
 	Index                 int32
 	Host                  string
 	ContainerIP           string
+	ContainerIPv6         string
 	Port                  uint32
 	ContainerPort         uint32
 	TlsProxyPort          uint32
@@ -239,6 +240,7 @@ func NewEndpointsFromActual(actualLRP *models.ActualLRP) []Endpoint {
 				Index:                 actualLRP.Index,
 				Host:                  actualLRP.Address,
 				ContainerIP:           actualLRP.InstanceAddress,
+				ContainerIPv6:         actualLRP.InstanceIpv6Address,
 				Port:                  portMapping.HostPort,
 				ContainerPort:         portMapping.ContainerPort,
 				Presence:              actualLRP.Presence,
