@@ -9,19 +9,19 @@ on:
 
 env:
   MAPPING: |
-        build_healthcheck=src/code.cloudfoundry.org/healthcheck
-        build_buildpack_app_lifecycle=src/code.cloudfoundry.org/buildpackapplifecycle
-        build_docker_app_lifecycle=src/code.cloudfoundry.org/dockerapplifecycle
+    build_healthcheck=src/code.cloudfoundry.org/healthcheck
+    build_buildpack_app_lifecycle=src/code.cloudfoundry.org/buildpackapplifecycle
+    build_docker_app_lifecycle=src/code.cloudfoundry.org/dockerapplifecycle
   FLAGS: |
-        --keep-going
-        --trace
-        -r
-        --fail-on-pending
-        --randomize-all
-        --nodes=7
-        --race
-        --timeout 30m
-        --flake-attempts 2
+    --keep-going
+    --trace
+    -r
+    --fail-on-pending
+    --randomize-all
+    --nodes=7
+    --race
+    --timeout 30m
+    --flake-attempts 2
   RUN_AS: root
   VERIFICATIONS: |
     verify_go repo/$DIR
@@ -56,9 +56,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: repo
-          path: | 
-              repo-artifact.tar.gz
-              ci-artifact.tar.gz
+          path: |
+            repo-artifact.tar.gz
+            ci-artifact.tar.gz
   template-tests:
     runs-on: ubuntu-latest
     needs: repo-clone
@@ -72,7 +72,9 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: repo
-    - run: "tar -xzvf repo-artifact.tar.gz\ntar -xzvf ci-artifact.tar.gz\n"
+    - run: |
+        tar -xzvf repo-artifact.tar.gz
+        tar -xzvf ci-artifact.tar.gz
     - name: template-tests
       run: |
         "${GITHUB_WORKSPACE}"/ci/shared/tasks/run-tests-templates/task.bash
@@ -88,10 +90,10 @@ jobs:
     - name: Download artifact
       uses: actions/download-artifact@v4
       with:
-          name: repo
+        name: repo
     - run: |
-          tar -xzvf repo-artifact.tar.gz
-          tar -xzvf ci-artifact.tar.gz 
+        tar -xzvf repo-artifact.tar.gz
+        tar -xzvf ci-artifact.tar.gz
     - name: build binaries
       run: |
         export DEFAULT_PARAMS="${GITHUB_WORKSPACE}/ci/diego-release/default-params/build-binaries/linux.yml"
@@ -116,10 +118,10 @@ jobs:
     - name: Download artifact
       uses: actions/download-artifact@v4
       with:
-          name: repo
+        name: repo
     - run: |
-           tar -xzvf repo-artifact.tar.gz
-           tar -xzvf ci-artifact.tar.gz
+        tar -xzvf repo-artifact.tar.gz
+        tar -xzvf ci-artifact.tar.gz
     - name: build binaries
       run: |
         export DEFAULT_PARAMS="${GITHUB_WORKSPACE}/ci/diego-release/default-params/build-binaries/linux.yml"
@@ -144,10 +146,10 @@ jobs:
     - name: Download artifact
       uses: actions/download-artifact@v4
       with:
-          name: repo
+        name: repo
     - run: |
-           tar -xzvf repo-artifact.tar.gz
-           tar -xzvf ci-artifact.tar.gz
+        tar -xzvf repo-artifact.tar.gz
+        tar -xzvf ci-artifact.tar.gz
     - name: build binaries
       run: |
         export DEFAULT_PARAMS="${GITHUB_WORKSPACE}/ci/diego-release/default-params/build-binaries/linux.yml"
@@ -172,10 +174,10 @@ jobs:
     - name: Download artifact
       uses: actions/download-artifact@v4
       with:
-          name: repo
+        name: repo
     - run: |
-           tar -xzvf repo-artifact.tar.gz
-           tar -xzvf ci-artifact.tar.gz
+        tar -xzvf repo-artifact.tar.gz
+        tar -xzvf ci-artifact.tar.gz
     - name: build binaries
       run: |
         export DEFAULT_PARAMS="${GITHUB_WORKSPACE}/ci/diego-release/default-params/build-binaries/linux.yml"
@@ -188,3 +190,4 @@ jobs:
       run: |
         "${GITHUB_WORKSPACE}"/ci/shared/tasks/run-bin-test/task.bash --keep-going --trace -r --fail-on-pending --randomize-all --nodes=7 --race --timeout 30m --flake-attempts 2
 #@ end
+#! test
