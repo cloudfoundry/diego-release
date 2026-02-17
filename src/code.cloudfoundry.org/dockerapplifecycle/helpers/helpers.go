@@ -86,6 +86,7 @@ func FetchMetadata(registryURL, repoName, tag string, ctx *types.SystemContext, 
 		manifest.DockerV2Schema2MediaType,
 		manifest.DockerV2Schema1SignedMediaType,
 		manifest.DockerV2Schema1MediaType,
+		manifest.DockerV2ListMediaType,
 	}
 
 	var imageConfig *v1.Image

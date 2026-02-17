@@ -164,6 +164,7 @@ var _ = Describe("Builder helpers", func() {
 					manifest.DockerV2Schema2MediaType,
 					manifest.DockerV2Schema1SignedMediaType,
 					manifest.DockerV2Schema1MediaType,
+					manifest.DockerV2ListMediaType,
 				),
 				http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 					w.Header().Set("X-Docker-Token", "token-1,token-2")
@@ -250,6 +251,7 @@ var _ = Describe("Builder helpers", func() {
 				manifest.DockerV2Schema2MediaType,
 				manifest.DockerV2Schema1SignedMediaType,
 				manifest.DockerV2Schema1MediaType,
+				manifest.DockerV2ListMediaType,
 			),
 			http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 				w.Header().Set("X-Docker-Token", "token-1,token-2")
@@ -271,6 +273,199 @@ var _ = Describe("Builder helpers", func() {
 		}
 		server.AppendHandlers(
 			ghttp.CombineHandlers(verifyRequests...),
+		)
+
+		if serverConfig.WithSlowImageConfig {
+			slowImageConfigHandler := ghttp.CombineHandlers(
+				ghttp.VerifyRequest("GET", fmt.Sprintf("/v2/some_user/some_repo/blobs/%s", configDigest)),
+				ghttp.RespondWith(418, "{\"details\": \"Push failed due to a network error. Please try again. If the problem persists, it may be due to a slow connection.\"}"),
+			)
+			server.AppendHandlers(
+				slowImageConfigHandler,
+				slowImageConfigHandler,
+				slowImageConfigHandler,
+			)
+		}
+		verifyRequests = []http.HandlerFunc{
+			ghttp.VerifyRequest("GET", fmt.Sprintf("/v2/some_user/some_repo/blobs/%s", configDigest)),
+			http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+				w.Header().Set("X-Docker-Token", "token-1,token-2")
+				w.Write([]byte(configBytes))
+			}),
+		}
+		if serverConfig.WithTokenAuthorization {
+			verifyRequests = append(
+				verifyRequests,
+				ghttp.VerifyHeaderKV("Authorization", "Bearer tokenstring"),
+			)
+		}
+		if serverConfig.WithBasicAuthorization {
+			verifyRequests = append(
+				verifyRequests,
+				ghttp.VerifyBasicAuth("username", "password"),
+			)
+		}
+		server.AppendHandlers(
+			ghttp.CombineHandlers(verifyRequests...),
+		)
+	}
+
+	v2Schema2ListManifest := func(serverConfig serverResponseConfig) {
+		if serverConfig.WithTokenAuthorization {
+			authenticateHeader := http.Header{}
+			authenticateHeader.Add("WWW-Authenticate", fmt.Sprintf(`Bearer realm="https://%s/token"`, server.Addr()))
+			server.AppendHandlers(
+				ghttp.CombineHandlers(
+					ghttp.VerifyRequest("GET", "/v2/"),
+					ghttp.RespondWith(401, "", authenticateHeader),
+				),
+			)
+			server.AppendHandlers(
+				ghttp.CombineHandlers(
+					ghttp.VerifyRequest("GET", "/token"),
+					ghttp.VerifyBasicAuth("username", "password"),
+					ghttp.RespondWith(200, `{"token":"tokenstring"}`),
+				),
+			)
+		} else if serverConfig.WithBasicAuthorization {
+			authenticateHeader := http.Header{}
+			authenticateHeader.Add("WWW-Authenticate", fmt.Sprintf(`Basic realm="http://%s/token"`, server.Addr()))
+			server.AppendHandlers(
+				ghttp.CombineHandlers(
+					ghttp.VerifyRequest("GET", "/v2/"),
+					ghttp.RespondWith(401, "", authenticateHeader),
+				),
+			)
+		} else {
+			server.AllowUnhandledRequests = true
+			server.AppendHandlers(
+				ghttp.VerifyRequest("GET", "/v2/"),
+			)
+		}
+
+		config := v1.Image{
+			Config: serverConfig.ImageConfig,
+		}
+
+		configBytes, err := json.Marshal(config)
+		Expect(err).ToNot(HaveOccurred())
+		configDigest := digest.FromBytes(configBytes)
+
+		// Create a platform-specific manifest
+		platformManifest := manifest.Schema2{
+			SchemaVersion: 2,
+			MediaType:     manifest.DockerV2Schema2MediaType,
+			ConfigDescriptor: manifest.Schema2Descriptor{
+				MediaType: manifest.DockerV2Schema2ConfigMediaType,
+				Size:      int64(len(configBytes)),
+				Digest:    configDigest,
+			},
+		}
+		platformManifestBytes, err := json.Marshal(platformManifest)
+		Expect(err).ToNot(HaveOccurred())
+		platformManifestDigest := digest.FromBytes(platformManifestBytes)
+
+		// Create the manifest list that references the platform-specific manifest
+		m := manifest.Schema2List{
+			SchemaVersion: 2,
+			MediaType:     manifest.DockerV2ListMediaType,
+			Manifests: []manifest.Schema2ManifestDescriptor{
+				{
+					Schema2Descriptor: manifest.Schema2Descriptor{
+						MediaType: manifest.DockerV2Schema2MediaType,
+						Size:      int64(len(platformManifestBytes)),
+						Digest:    platformManifestDigest,
+					},
+					Platform: manifest.Schema2PlatformSpec{
+						Architecture: "amd64",
+						OS:           "linux",
+					},
+				},
+				{
+					Schema2Descriptor: manifest.Schema2Descriptor{
+						MediaType: manifest.DockerV2Schema2MediaType,
+						Size:      int64(len(platformManifestBytes)),
+						Digest:    platformManifestDigest,
+					},
+					Platform: manifest.Schema2PlatformSpec{
+						Architecture: "arm64",
+						OS:           "linux",
+					},
+				},
+			},
+		}
+		manifestBytes, err := json.Marshal(m)
+		Expect(err).ToNot(HaveOccurred())
+
+		if serverConfig.WithSlowImageManifest {
+			slowImageManifestHandler := ghttp.CombineHandlers(
+				ghttp.VerifyRequest("GET", "/v2/some_user/some_repo/manifests/"+serverConfig.ImageTag),
+				ghttp.RespondWith(418, "{\"details\": \"Push failed due to a network error. Please try again. If the problem persists, it may be due to a slow connection.\"}"),
+			)
+			server.AppendHandlers(
+				slowImageManifestHandler,
+				ghttp.VerifyRequest("GET", "/v2/"),
+				slowImageManifestHandler,
+				ghttp.VerifyRequest("GET", "/v2/"),
+				slowImageManifestHandler,
+				ghttp.VerifyRequest("GET", "/v2/"),
+			)
+		}
+		verifyRequests := []http.HandlerFunc{
+			ghttp.VerifyRequest("GET", "/v2/some_user/some_repo/manifests/"+serverConfig.ImageTag),
+			ghttp.VerifyHeaderKV(
+				"Accept",
+				v1.MediaTypeImageIndex,
+				v1.MediaTypeImageManifest,
+				manifest.DockerV2Schema2MediaType,
+				manifest.DockerV2Schema1SignedMediaType,
+				manifest.DockerV2Schema1MediaType,
+				manifest.DockerV2ListMediaType,
+			),
+			http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+				w.Header().Set("X-Docker-Token", "token-1,token-2")
+				w.Header().Set("Content-Type", manifest.DockerV2ListMediaType)
+				w.Write(manifestBytes)
+			}),
+		}
+		if serverConfig.WithTokenAuthorization {
+			verifyRequests = append(
+				verifyRequests,
+				ghttp.VerifyHeaderKV("Authorization", "Bearer tokenstring"),
+			)
+		}
+		if serverConfig.WithBasicAuthorization {
+			verifyRequests = append(
+				verifyRequests,
+				ghttp.VerifyBasicAuth("username", "password"),
+			)
+		}
+		server.AppendHandlers(
+			ghttp.CombineHandlers(verifyRequests...),
+		)
+
+		// Add handler for fetching the platform-specific manifest
+		verifyPlatformManifestRequests := []http.HandlerFunc{
+			ghttp.VerifyRequest("GET", fmt.Sprintf("/v2/some_user/some_repo/manifests/%s", platformManifestDigest)),
+			http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+				w.Header().Set("Content-Type", manifest.DockerV2Schema2MediaType)
+				w.Write(platformManifestBytes)
+			}),
+		}
+		if serverConfig.WithTokenAuthorization {
+			verifyPlatformManifestRequests = append(
+				verifyPlatformManifestRequests,
+				ghttp.VerifyHeaderKV("Authorization", "Bearer tokenstring"),
+			)
+		}
+		if serverConfig.WithBasicAuthorization {
+			verifyPlatformManifestRequests = append(
+				verifyPlatformManifestRequests,
+				ghttp.VerifyBasicAuth("username", "password"),
+			)
+		}
+		server.AppendHandlers(
+			ghttp.CombineHandlers(verifyPlatformManifestRequests...),
 		)
 
 		if serverConfig.WithSlowImageConfig {
@@ -459,6 +654,27 @@ var _ = Describe("Builder helpers", func() {
 			Context("with manifest schema 2", func() {
 				BeforeEach(func() {
 					v2Schema2Manifest(serverResponseConfig{
+						ImageConfig: v1.ImageConfig{Cmd: []string{"dockerapp"}},
+						ImageTag:    "latest",
+					})
+				})
+
+				It("should not error", func() {
+					_, err := helpers.FetchMetadata(registryURL, repoName, tag, ctx, os.Stderr)
+					Expect(err).NotTo(HaveOccurred())
+				})
+
+				It("should return the top-most image layer metadata", func() {
+					imgConfig, _ := helpers.FetchMetadata(registryURL, repoName, tag, ctx, os.Stderr)
+					Expect(imgConfig).NotTo(BeNil())
+					Expect(imgConfig.Cmd).NotTo(BeNil())
+					Expect(imgConfig.Cmd).To(Equal([]string{"dockerapp"}))
+				})
+			})
+
+			Context("with manifest schema 2 list", func() {
+				BeforeEach(func() {
+					v2Schema2ListManifest(serverResponseConfig{
 						ImageConfig: v1.ImageConfig{Cmd: []string{"dockerapp"}},
 						ImageTag:    "latest",
 					})
