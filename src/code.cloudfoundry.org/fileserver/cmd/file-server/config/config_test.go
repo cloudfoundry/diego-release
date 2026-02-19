@@ -23,6 +23,7 @@ var _ = Describe("Config", func() {
 			"https_listen_addr": "192.168.1.1:8443",
 			"cert_file": "/tmp/cert_file",
 			"key_file": "/tmp/key_file",
+			"client_ca_cert_file": "/tmp/client_ca_cert_file",
 
 			"debug_address": "127.0.0.1:17017",
 			"log_level": "debug"
@@ -57,6 +58,7 @@ var _ = Describe("Config", func() {
 			HTTPSListenAddr:    "192.168.1.1:8443",
 			CertFile:           "/tmp/cert_file",
 			KeyFile:            "/tmp/key_file",
+			ClientCACertFile:   "/tmp/client_ca_cert_file",
 
 			DebugServerConfig: debugserver.DebugServerConfig{
 				DebugAddress: "127.0.0.1:17017",

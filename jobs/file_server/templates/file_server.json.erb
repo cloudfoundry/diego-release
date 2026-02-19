@@ -33,6 +33,10 @@
     config[:key_file]  = "#{conf_dir}/certs/tls.key"
   end
 
+  if_p("tls.client_ca_cert") do |_|
+    config[:client_ca_cert_file]  = "#{conf_dir}/certs/tls.client_ca_cert"
+  end
+
   if config[:https_server_enabled] && (config[:cert_file].nil? || config[:key_file].nil?)
     raise "tls.cert and tls.key are required if https_server_enabled is set to true"
   end

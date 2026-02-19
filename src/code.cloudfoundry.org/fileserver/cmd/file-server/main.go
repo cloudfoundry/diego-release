@@ -51,10 +51,15 @@ func main() {
 			logger.Fatal("invalid-https-configuration", nil)
 		}
 		var err error
-		tlsConfig, err = tlsconfig.Build(
+		builder := tlsconfig.Build(
 			tlsconfig.WithInternalServiceDefaults(),
 			tlsconfig.WithIdentityFromFile(cfg.CertFile, cfg.KeyFile),
-		).Server()
+		)
+		if strings.TrimSpace(cfg.ClientCACertFile) != "" {
+			tlsConfig, err = builder.Server(tlsconfig.WithClientAuthenticationFromFile(cfg.ClientCACertFile))
+		} else {
+			tlsConfig, err = builder.Server()
+		}
 		if err != nil {
 			logger.Fatal("failed-to-create-tls-config", err)
 		}

@@ -171,8 +171,9 @@ var _ = Describe("File server", func() {
 
 		Context("when all required HTTPS configuration is provided", func() {
 			var (
-				caCertPool        *x509.CertPool
-				certFile, keyFile *os.File
+				caCertPool                    *x509.CertPool
+				certFile, keyFile, caFile     *os.File
+				clientCertFile, clientKeyFile *os.File
 			)
 
 			BeforeEach(func() {
@@ -180,28 +181,50 @@ var _ = Describe("File server", func() {
 				Expect(err).NotTo(HaveOccurred())
 				cert, err := ca.BuildSignedCertificate("fileserver")
 				Expect(err).NotTo(HaveOccurred())
+				clientCert, err := ca.BuildSignedCertificate("client")
+				Expect(err).NotTo(HaveOccurred())
 				caCertPool, err = ca.CertPool()
 				Expect(err).NotTo(HaveOccurred())
 
+				caPem, err := ca.CertificatePEM()
+				Expect(err).NotTo(HaveOccurred())
 				pem, privKey, err := cert.CertificatePEMAndPrivateKey()
+				Expect(err).NotTo(HaveOccurred())
+				clientPem, clientPrivKey, err := clientCert.CertificatePEMAndPrivateKey()
 				Expect(err).NotTo(HaveOccurred())
 
 				certFile, err = os.CreateTemp("", "testcert")
 				Expect(err).NotTo(HaveOccurred())
 				keyFile, err = os.CreateTemp("", "testkey")
 				Expect(err).NotTo(HaveOccurred())
+				caFile, err = os.CreateTemp("", "testca")
+				Expect(err).NotTo(HaveOccurred())
+				clientCertFile, err = os.CreateTemp("", "testclientcert")
+				Expect(err).NotTo(HaveOccurred())
+				clientKeyFile, err = os.CreateTemp("", "testclientkey")
+				Expect(err).NotTo(HaveOccurred())
 
 				_, err = certFile.Write(pem)
 				Expect(err).NotTo(HaveOccurred())
 				_, err = keyFile.Write(privKey)
 				Expect(err).NotTo(HaveOccurred())
+				_, err = caFile.Write(caPem)
+				Expect(err).NotTo(HaveOccurred())
+				_, err = clientCertFile.Write(clientPem)
+				Expect(err).NotTo(HaveOccurred())
+				_, err = clientKeyFile.Write(clientPrivKey)
+				Expect(err).NotTo(HaveOccurred())
 
 				Expect(certFile.Close()).To(Succeed())
 				Expect(keyFile.Close()).To(Succeed())
+				Expect(caFile.Close()).To(Succeed())
+				Expect(clientCertFile.Close()).To(Succeed())
+				Expect(clientKeyFile.Close()).To(Succeed())
 
 				cfg.HTTPSListenAddr = fmt.Sprintf("localhost:%d", tlsPort)
 				cfg.CertFile = certFile.Name()
 				cfg.KeyFile = keyFile.Name()
+				cfg.ClientCACertFile = caFile.Name()
 			})
 
 			JustBeforeEach(func() {
@@ -212,11 +235,14 @@ var _ = Describe("File server", func() {
 			AfterEach(func() {
 				Expect(os.Remove(certFile.Name())).To(Succeed())
 				Expect(os.Remove(keyFile.Name())).To(Succeed())
+				Expect(os.Remove(caFile.Name())).To(Succeed())
+				Expect(os.Remove(clientCertFile.Name())).To(Succeed())
+				Expect(os.Remove(clientKeyFile.Name())).To(Succeed())
 			})
 
 			It("should successfully return the test file on an HTTPS GET request", func() {
 				clientTLSConfig, err := tlsconfig.Build(
-					tlsconfig.WithInternalServiceDefaults(),
+					tlsconfig.WithIdentityFromFile(clientCertFile.Name(), clientKeyFile.Name()),
 				).Client(tlsconfig.WithAuthority(caCertPool))
 				Expect(err).NotTo(HaveOccurred())
 
@@ -240,7 +266,7 @@ var _ = Describe("File server", func() {
 
 			It("fails to return test when caCertPool is missing", func() {
 				clientTLSConfig, err := tlsconfig.Build(
-					tlsconfig.WithInternalServiceDefaults(),
+					tlsconfig.WithIdentityFromFile(clientCertFile.Name(), clientKeyFile.Name()),
 				).Client()
 				Expect(err).NotTo(HaveOccurred())
 
@@ -250,12 +276,28 @@ var _ = Describe("File server", func() {
 					},
 				}
 				_, err = httpClient.Get(fmt.Sprintf("https://localhost:%d/v1/static/test", tlsPort))
-				Expect(err.Error()).To(ContainSubstring("x509: certificate signed by unknown authority"))
+				Expect(err.Error()).To(ContainSubstring("tls: failed to verify certificate: x509:"))
+			})
+
+			It("fails to return test when client certificate is not provided (mTLS required)", func() {
+				clientTLSConfig, err := tlsconfig.Build(
+					tlsconfig.WithInternalServiceDefaults(),
+				).Client(tlsconfig.WithAuthority(caCertPool))
+				Expect(err).NotTo(HaveOccurred())
+
+				httpClient := &http.Client{
+					Transport: &http.Transport{
+						TLSClientConfig: clientTLSConfig,
+					},
+				}
+				_, err = httpClient.Get(fmt.Sprintf("https://localhost:%d/v1/static/test", tlsPort))
+				Expect(err).To(HaveOccurred())
+				Expect(err.Error()).To(ContainSubstring("tls: certificate required"))
 			})
 
 			It("should return a 301 redirect to the HTTPS URL when making an HTTP Get request", func() {
 				clientTLSConfig, err := tlsconfig.Build(
-					tlsconfig.WithInternalServiceDefaults(),
+					tlsconfig.WithIdentityFromFile(clientCertFile.Name(), clientKeyFile.Name()),
 				).Client(tlsconfig.WithAuthority(caCertPool))
 				Expect(err).NotTo(HaveOccurred())
 

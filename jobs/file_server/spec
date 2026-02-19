@@ -13,6 +13,7 @@ templates:
   loggregator_client.key.erb: config/certs/loggregator/client.key
   tls.crt.erb: config/certs/tls.crt
   tls.key.erb: config/certs/tls.key
+  tls.client_ca_cert.erb: config/certs/tls.client_ca_cert
 
 packages:
   - pid_utils
@@ -56,6 +57,8 @@ properties:
     description: "PEM-encoded tls certificate that can be used for server auth"
   tls.key:
     description: "PEM-encoded tls key"
+  tls.client_ca_cert:
+    description: "PEM-encoded CA certificate for mTLS, optional"
 
   loggregator.v2_api_port:
     description: "Port which the component should use to communicate to the metron agent's v2 API (host is assumed to be `localhost`)."

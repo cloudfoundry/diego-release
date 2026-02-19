@@ -17,6 +17,7 @@ type FileServerConfig struct {
 	HTTPSListenAddr    string `json:"https_listen_addr"`
 	CertFile           string `json:"cert_file"`
 	KeyFile            string `json:"key_file"`
+	ClientCACertFile   string `json:"client_ca_cert_file,omitempty"`
 
 	LoggregatorConfig loggingclient.Config `json:"loggregator"`
 	debugserver.DebugServerConfig
