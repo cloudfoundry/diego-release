@@ -68,7 +68,7 @@ func main() {
 		{Name: "file server", Runner: initializeServer(logger, cfg.StaticDirectory, cfg.ServerAddress, cfg.HTTPSListenAddr, tlsConfig)},
 	}
 
-	if dbgAddr := debugserver.DebugAddress(flag.CommandLine); dbgAddr != "" {
+	if dbgAddr := cfg.DebugAddress; dbgAddr != "" {
 		members = append(grouper.Members{
 			{Name: "debug-server", Runner: debugserver.Runner(dbgAddr, reconfigurableSink)},
 		}, members...)

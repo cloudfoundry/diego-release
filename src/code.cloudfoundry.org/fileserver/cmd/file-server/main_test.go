@@ -12,6 +12,7 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	"code.cloudfoundry.org/debugserver"
 	loggingclient "code.cloudfoundry.org/diego-logging-client"
 
 	"code.cloudfoundry.org/fileserver/cmd/file-server/config"
@@ -320,6 +321,109 @@ var _ = Describe("File server", func() {
 				location, err := resp.Location()
 				Expect(err).NotTo(HaveOccurred())
 				Expect(location.String()).To(Equal(fmt.Sprintf("https://file-server.service.test.com:%d/v1/static/test", tlsPort)))
+			})
+		})
+	})
+
+	Context("debug server", func() {
+		var debugPort int
+
+		BeforeEach(func() {
+			servedDirectory, err = os.MkdirTemp("", "file_server-test")
+			Expect(err).NotTo(HaveOccurred())
+
+			port = 8182 + GinkgoParallelProcess()
+			debugPort = 17005 + GinkgoParallelProcess()
+		})
+
+		Context("when debug_address is configured", func() {
+			BeforeEach(func() {
+				cfg = config.FileServerConfig{
+					LagerConfig: lagerflags.LagerConfig{
+						LogLevel:   lagerflags.INFO,
+						TimeFormat: lagerflags.FormatUnixEpoch,
+					},
+					LoggregatorConfig: loggingclient.Config{
+						CACertPath: metronCAFile,
+						CertPath:   metronServerCertFile,
+						KeyPath:    metronServerKeyFile,
+					},
+					StaticDirectory: servedDirectory,
+					ServerAddress:   fmt.Sprintf("localhost:%d", port),
+				}
+				cfg.DebugAddress = fmt.Sprintf("127.0.0.1:%d", debugPort)
+			})
+
+			JustBeforeEach(func() {
+				cfg.LoggregatorConfig.APIPort, _ = testIngressServer.Port()
+				configFile, err := os.CreateTemp("", "file_server-test-config")
+				Expect(err).NotTo(HaveOccurred())
+				configPath = configFile.Name()
+
+				encoder := json.NewEncoder(configFile)
+				err = encoder.Encode(&cfg)
+				Expect(err).NotTo(HaveOccurred())
+
+				session = start()
+			})
+
+			It("should start the debug server and respond to requests", func() {
+				Eventually(func() error {
+					resp, err := http.Get(fmt.Sprintf("http://127.0.0.1:%d/debug/pprof/", debugPort))
+					if err != nil {
+						return err
+					}
+					defer resp.Body.Close()
+					if resp.StatusCode != http.StatusOK {
+						return fmt.Errorf("expected status 200, got %d", resp.StatusCode)
+					}
+					return nil
+				}).Should(Succeed())
+			})
+		})
+
+		Context("when debug_address is not configured", func() {
+			BeforeEach(func() {
+				cfg = config.FileServerConfig{
+					LagerConfig: lagerflags.LagerConfig{
+						LogLevel:   lagerflags.INFO,
+						TimeFormat: lagerflags.FormatUnixEpoch,
+					},
+					LoggregatorConfig: loggingclient.Config{
+						CACertPath: metronCAFile,
+						CertPath:   metronServerCertFile,
+						KeyPath:    metronServerKeyFile,
+					},
+					StaticDirectory: servedDirectory,
+					ServerAddress:   fmt.Sprintf("localhost:%d", port),
+					DebugServerConfig: debugserver.DebugServerConfig{
+						DebugAddress: "",
+					},
+				}
+			})
+
+			JustBeforeEach(func() {
+				cfg.LoggregatorConfig.APIPort, _ = testIngressServer.Port()
+				configFile, err := os.CreateTemp("", "file_server-test-config")
+				Expect(err).NotTo(HaveOccurred())
+				configPath = configFile.Name()
+
+				encoder := json.NewEncoder(configFile)
+				err = encoder.Encode(&cfg)
+				Expect(err).NotTo(HaveOccurred())
+
+				session = start()
+			})
+
+			It("should not start the debug server", func() {
+				Consistently(func() error {
+					resp, err := http.Get(fmt.Sprintf("http://127.0.0.1:%d/debug/pprof/", debugPort))
+					if err != nil {
+						return err
+					}
+					defer resp.Body.Close()
+					return nil
+				}).Should(HaveOccurred())
 			})
 		})
 	})

@@ -17,8 +17,8 @@ describe 'file_server' do
           'file_server' => {
             'listen_addr' => '0.0.0.0:8080',
             'static_directory' => '/var/vcap/jobs/file_server/packages/',
-            'debug_addr' => '127.0.0.1:17005',
-            'log_level' => 'info'
+            'log_level' => 'info',
+            'debug_addr' => ''
           }
         },
         'https_server_enabled' => false,
@@ -39,7 +39,7 @@ describe 'file_server' do
       it 'renders the config with default values' do
         rendered_template_json = JSON.parse(rendered_template)
         expect(rendered_template_json['server_address']).to eq('0.0.0.0:8080')
-        expect(rendered_template_json['debug_address']).to eq('127.0.0.1:17005')
+        expect(rendered_template_json['debug_address']).to eq('')
         expect(rendered_template_json['static_directory']).to eq('/var/vcap/jobs/file_server/packages/')
         expect(rendered_template_json['https_server_enabled']).to be false
         expect(rendered_template_json['https_listen_addr']).to eq('0.0.0.0:8443')
@@ -69,6 +69,19 @@ describe 'file_server' do
         deployment_manifest_fragment['diego']['file_server']['log_level'] = 'debug'
         rendered_template_json = JSON.parse(rendered_template)
         expect(rendered_template_json['log_level']).to eq('debug')
+      end
+    end
+
+    describe 'debug_addr configuration' do
+      it 'sets debug_address to empty string by default' do
+        rendered_template_json = JSON.parse(rendered_template)
+        expect(rendered_template_json['debug_address']).to eq('')
+      end
+
+      it 'renders the debug_address when debug_addr is configured' do
+        deployment_manifest_fragment['diego']['file_server']['debug_addr'] = '127.0.0.1:17005'
+        rendered_template_json = JSON.parse(rendered_template)
+        expect(rendered_template_json['debug_address']).to eq('127.0.0.1:17005')
       end
     end
 
