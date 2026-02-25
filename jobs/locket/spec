@@ -72,6 +72,18 @@ properties:
     default: false
   diego.locket.sql.ca_cert:
     description: "Bundle of CA certificates for the Locket to verify the SQL server SSL certificate when connecting via SSL"
+  diego.locket.health_check_timeout:
+    description: "Number of seconds to wait for the DB health check insert/retrieve operation to time out"
+    default: 5
+  diego.locket.health_check_interval:
+    description: "Number of seconds to wait between DB health checks"
+    default: 10
+  diego.locket.health_check_failure_threshold:
+    description: "Number of consecutive failed DB health checks before restarting Locket"
+    default: 3
+  diego.locket.enable_db_health_check:
+    description: "Whether or not to enable DB health checks in Locket to ensure it restarts in a timely fashion upon severe DB degradation"
+    default: false
 
   loggregator.v2_api_port:
     description: "Local metron agent gRPC port"
