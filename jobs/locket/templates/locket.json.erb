@@ -27,6 +27,8 @@ config = {
   log_level: p("diego.locket.log_level"),
   max_open_database_connections: p("database.max_open_connections"),
   max_database_connection_lifetime: "1h",
+  health_check_failure_threshold: p("diego.locket.health_check_failure_threshold"),
+  enable_db_health_check: p("diego.locket.enable_db_health_check"),
 }
 
 def db_params
@@ -76,6 +78,14 @@ end
 
   if_p("diego.locket.sql.db_write_timeout") do |value|
     config[:db_write_timeout] = "#{value}s" # add time unit
+  end
+
+  if_p("diego.locket.health_check_timeout") do |value|
+    config[:health_check_timeout] = "#{value}s" # add time unit
+  end
+
+  if_p("diego.locket.health_check_interval") do |value|
+    config[:health_check_interval] = "#{value}s" # add time unit
   end
 
 config[:time_format] = "rfc3339"
