@@ -19,6 +19,7 @@ echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse
 # nf_conntrack_max
 # Sets this to 65535 (the default when using 2gb+ of memory), so that if a BBS node has <2gb of memory,
 # it does not suffer from severe networking slowness when BBS handles many apps/cells, but on limited memory.
+modprobe nf_conntrack
 echo 65535 > /proc/sys/net/netfilter/nf_conntrack_max
 <% else %>
 echo "Not setting /proc/sys/ parameters"
