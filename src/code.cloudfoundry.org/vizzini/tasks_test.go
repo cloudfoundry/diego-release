@@ -126,7 +126,7 @@ var _ = Describe("Tasks", func() {
 				Expect(bbsClient.DesireTask(logger, traceID, guid, domain, task)).To(Succeed())
 			})
 
-			It("should be marked as failed and should not return the result file", func() {
+			It("should be marked as failed and should return the result file", func() {
 				Eventually(TaskGetter(logger, guid)).Should(HaveTaskState(models.Task_Completed))
 
 				task, err := bbsClient.TaskByGuid(logger, traceID, guid)
@@ -134,7 +134,7 @@ var _ = Describe("Tasks", func() {
 				Expect(task.TaskGuid).To(Equal(guid))
 				Expect(task.Failed).To(BeTrue())
 
-				Expect(task.Result).To(BeEmpty())
+				Expect(task.Result).ToNot(BeEmpty())
 
 				Expect(bbsClient.ResolvingTask(logger, traceID, guid)).To(Succeed())
 				Expect(bbsClient.DeleteTask(logger, traceID, guid)).To(Succeed())
