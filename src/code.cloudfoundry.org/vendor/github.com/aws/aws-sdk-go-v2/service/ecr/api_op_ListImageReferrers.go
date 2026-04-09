@@ -53,7 +53,7 @@ type ListImageReferrersInput struct {
 	// The remaining results of the initial request can be seen by sending another
 	// ListImageReferrers request with the returned nextToken value. This value can be
 	// between 1 and 50. If this parameter is not used, then ListImageReferrers
-	// returns up to 50 results and a nextToken value, if applicable.
+	// returns up to 20 results and a nextToken value, if applicable.
 	MaxResults *int32
 
 	// The nextToken value returned from a previous paginated ListImageReferrers
