@@ -814,8 +814,9 @@ func (maker commonComponentMaker) RouteEmitterN(n int, fs ...func(config *routee
 			"-config", configFile.Name(),
 		),
 		Cleanup: func() {
-			err := os.RemoveAll(configFile.Name())
-			Expect(err).ToNot(HaveOccurred())
+			if err := os.RemoveAll(configFile.Name()); err != nil {
+				fmt.Fprintf(os.Stderr, "Warning: failed to cleanup route emitter config file: %v\n", err)
+			}
 		},
 	})
 }
@@ -884,10 +885,12 @@ func (maker commonComponentMaker) FileServer(modifyConfigFuncs ...func(*fileserv
 			"-config", configFile.Name(),
 		),
 		Cleanup: func() {
-			err := os.RemoveAll(servedFilesDir)
-			Expect(err).ToNot(HaveOccurred())
-			err = os.RemoveAll(configFile.Name())
-			Expect(err).ToNot(HaveOccurred())
+			if err := os.RemoveAll(servedFilesDir); err != nil {
+				fmt.Fprintf(os.Stderr, "Warning: failed to cleanup file server directory: %v\n", err)
+			}
+			if err := os.RemoveAll(configFile.Name()); err != nil {
+				fmt.Fprintf(os.Stderr, "Warning: failed to cleanup file server config file: %v\n", err)
+			}
 		},
 	}), servedFilesDir
 }
@@ -1015,8 +1018,9 @@ pid_file: ""
 			"-c", configFile.Name(),
 		),
 		Cleanup: func() {
-			err := os.Remove(configFile.Name())
-			Expect(err).NotTo(HaveOccurred())
+			if err := os.Remove(configFile.Name()); err != nil {
+				fmt.Fprintf(os.Stderr, "Warning: failed to cleanup router config file: %v\n", err)
+			}
 		},
 	})
 }
@@ -1275,8 +1279,9 @@ func (maker v0ComponentMaker) FileServer(modifyConfigFuncs ...func(*fileserverco
 			}...,
 		),
 		Cleanup: func() {
-			err := os.RemoveAll(servedFilesDir)
-			Expect(err).NotTo(HaveOccurred())
+			if err := os.RemoveAll(servedFilesDir); err != nil {
+				fmt.Fprintf(os.Stderr, "Warning: failed to cleanup v0 file server directory: %v\n", err)
+			}
 		},
 	}), servedFilesDir
 }
