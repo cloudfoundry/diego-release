@@ -136,6 +136,7 @@ var _ = SynchronizedAfterSuite(func() {
 		componentMaker.Teardown()
 	}
 }, func() {
+	gexec.CleanupBuildArtifacts()
 	os.RemoveAll(suiteTempDir)
 })
 
