@@ -141,9 +141,12 @@ var _ = Describe("Auctioneer", func() {
 			testIngressServer.Stop()
 		})
 
-		It("exits with non-zero status code", func() {
-			auctioneerProcess = ifrit.Background(runner)
-			Eventually(auctioneerProcess.Wait()).Should(Receive(HaveOccurred()))
+		// diego-logging-client now dials loggregator non-blocking (lazy). The
+		// auctioneer starts successfully and retries the connection in the
+		// background, so it must NOT exit when metron is temporarily unavailable.
+		It("starts successfully and does not exit", func() {
+			auctioneerProcess = ginkgomon.Invoke(runner)
+			Consistently(auctioneerProcess.Wait()).ShouldNot(Receive())
 		})
 	})
 
