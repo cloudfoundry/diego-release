@@ -444,9 +444,13 @@ var _ = Describe("Route Emitter", func() {
 			runner = createEmitterRunner("emitter1", "", cfgs...)
 		})
 
-		It("exit with non-zero status code", func() {
-			emitter = ifrit.Background(runner)
-			Eventually(emitter.Wait()).Should(Receive(HaveOccurred()))
+		// diego-logging-client now dials loggregator non-blocking (lazy). The
+		// route-emitter starts successfully and retries the connection in the
+		// background, so it must NOT exit when the loggregator agent is
+		// temporarily unavailable.
+		It("starts successfully and does not exit", func() {
+			emitter = ginkgomon.Invoke(runner)
+			Consistently(emitter.Wait()).ShouldNot(Receive())
 		})
 	})
 
