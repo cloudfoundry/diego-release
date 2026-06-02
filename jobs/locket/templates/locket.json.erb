@@ -78,6 +78,10 @@ end
     config[:db_write_timeout] = "#{value}s" # add time unit
   end
 
+  if_p("diego.locket.sql.db_operation_timeout") do |value|
+    config[:db_operation_timeout] = "#{value}s" # add time unit
+  end
+
 config[:time_format] = "rfc3339"
 config[:loggregator]={}
 config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
