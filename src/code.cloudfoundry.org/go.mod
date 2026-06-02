@@ -77,7 +77,7 @@ require (
 	github.com/tedsuo/ifrit v0.0.0-20260418191334-846868129986
 	github.com/tedsuo/rata v1.0.0
 	github.com/vito/go-sse v1.1.3
-	golang.org/x/crypto v0.52.0
+	golang.org/x/crypto v0.52.1-0.20260528171630-4c4d20b72c2f
 	golang.org/x/oauth2 v0.36.0
 	golang.org/x/sys v0.45.0
 	golang.org/x/time v0.15.0
