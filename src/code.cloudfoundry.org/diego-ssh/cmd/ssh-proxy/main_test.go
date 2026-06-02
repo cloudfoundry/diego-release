@@ -772,8 +772,12 @@ var _ = Describe("SSH proxy", Serial, func() {
 					testIngressServer.Stop()
 				})
 
-				It("exits with non-zero status code", func() {
-					Eventually(process.Wait()).Should(Receive(HaveOccurred()))
+				// diego-logging-client now dials loggregator non-blocking (lazy).
+				// ssh-proxy starts successfully and retries the connection in the
+				// background, so it must NOT exit when the loggregator server is
+				// temporarily unavailable.
+				It("starts successfully and does not exit", func() {
+					Consistently(process.Wait()).ShouldNot(Receive())
 				})
 			})
 
