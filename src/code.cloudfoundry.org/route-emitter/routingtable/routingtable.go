@@ -471,11 +471,16 @@ func (g tcpRoutesGenerator) RoutesFrom(lrp *models.DesiredLRP) map[RoutingKey][]
 	for _, route := range routes {
 		key := RoutingKey{ProcessGUID: lrp.ProcessGuid, ContainerPort: route.ContainerPort}
 
-		routeEntries[key] = append(routeEntries[key], ExternalEndpointInfo{
-			RouterGroupGUID: route.RouterGroupGuid,
-			Port:            route.ExternalPort,
-			TLSEnabled:      g.tlsEnabled,
-		})
+		info := ExternalEndpointInfo{
+			RouterGroupGUID:      route.RouterGroupGuid,
+			Port:                 route.ExternalPort,
+			TLSEnabled:           g.tlsEnabled,
+			TerminateFrontendTLS: route.TerminateFrontendTLS,
+		}
+		if route.SniHostname != nil {
+			info.SniHostname = *route.SniHostname
+		}
+		routeEntries[key] = append(routeEntries[key], info)
 	}
 	return routeEntries
 }

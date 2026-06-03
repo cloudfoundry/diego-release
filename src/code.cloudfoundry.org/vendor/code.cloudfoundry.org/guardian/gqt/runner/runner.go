@@ -96,6 +96,7 @@ type GdnRunnerConfig struct {
 	CleanupProcessDirsOnWait       *bool    `flag:"cleanup-process-dirs-on-wait"`
 	DisablePrivilegedContainers    *bool    `flag:"disable-privileged-containers"`
 	AppArmor                       string   `flag:"apparmor"`
+	NoNewPrivileges                *bool    `flag:"no-new-privileges"`
 	Tag                            string   `flag:"tag"`
 	NetworkPool                    string   `flag:"network-pool"`
 	ContainerdSocket               string   `flag:"containerd-socket"`

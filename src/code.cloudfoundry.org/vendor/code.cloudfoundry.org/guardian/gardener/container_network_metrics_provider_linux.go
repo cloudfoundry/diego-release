@@ -103,6 +103,10 @@ func NewLinuxContainerNetworkMetricsProvider(
 func (l *LinuxContainerNetworkMetricsProvider) Get(log lager.Logger, handle string) (*garden.ContainerNetworkStat, error) {
 	log = log.Session("container-network-metrics")
 
+	if isHealthcheck, found := l.propertyManager.Get(handle, "network.healthcheck"); found && isHealthcheck == "true" {
+		return nil, nil
+	}
+
 	ifName, found := l.propertyManager.Get(handle, ContainerInterfaceKey)
 	if !found || ifName == "" {
 		return nil, nil

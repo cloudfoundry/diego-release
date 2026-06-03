@@ -96,6 +96,34 @@ var _ = Describe("TCPRoutingTable", func() {
 		}
 	})
 
+	Context("when TCP route specifies SNI and terminate_frontend_tls", func() {
+		BeforeEach(func() {
+			modificationTag = &models.ModificationTag{Epoch: "abc", Index: 1}
+			routingTable = routingtable.NewRoutingTable(false, true, fakeMetronClient)
+			sni := "sni-hostname"
+			sniTcpRoutes := tcp_routes.TCPRoutes{
+				{
+					RouterGroupGuid:      "router-group-guid",
+					ExternalPort:         61000,
+					ContainerPort:        8080,
+					SniHostname:          &sni,
+					TerminateFrontendTLS: true,
+				},
+			}
+			beforeLRP := getDesiredLRP("process-guid-sni", "log-guid-sni", sniTcpRoutes, modificationTag)
+			_, _ = routingTable.SetRoutes(logger, nil, beforeLRP)
+		})
+
+		It("emits TcpRouteMapping with SNI and terminate_frontend_tls on AddEndpoint", func() {
+			actual := getActualLRP("process-guid-sni", "instance-guid-sni", "some-ip-1", "container-ip-1", 62004, 8080, 61443, 5443, modificationTag)
+			events, _ := routingTable.AddEndpoint(logger, actual)
+			sni := "sni-hostname"
+			Expect(events.Registrations).To(ConsistOf(
+				tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-sni", &sni, nil, 0, tcpmodels.ModificationTag{}, true, ""),
+			))
+		})
+	})
+
 	Context("when no entry exist for route", func() {
 		BeforeEach(func() {
 			routingTable = routingtable.NewRoutingTable(false, false, fakeMetronClient)

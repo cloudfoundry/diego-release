@@ -92,8 +92,8 @@ describe 'rep' do
     end
 
     context 'extra_root_fs_dir' do
-      it 'is set to /var/vcap/store/rootfses by default' do
-        expect(JSON.parse(rendered_template)['extra_root_fs_dir']).to eq('/var/vcap/store/rootfses')
+      it 'is set to /var/vcap/data/rootfses by default' do
+        expect(JSON.parse(rendered_template)['extra_root_fs_dir']).to eq('/var/vcap/data/rootfses')
       end
 
       it 'is configurable' do

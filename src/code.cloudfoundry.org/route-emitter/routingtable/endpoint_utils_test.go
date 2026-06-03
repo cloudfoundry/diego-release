@@ -262,6 +262,44 @@ var _ = Describe("LRP Utils", func() {
 			})
 		})
 	})
+
+	Describe("MessageFor", func() {
+		var (
+			endpoint             routingtable.Endpoint
+			externalEndpointInfo routingtable.ExternalEndpointInfo
+		)
+
+		BeforeEach(func() {
+			endpoint = routingtable.Endpoint{
+				InstanceGUID:          "instance-guid",
+				Host:                  "host",
+				Port:                  1234,
+				ContainerIP:           "container-ip",
+				ContainerPort:         5678,
+				TlsProxyPort:          61001,
+				ContainerTlsProxyPort: 61002,
+			}
+			externalEndpointInfo = routingtable.ExternalEndpointInfo{
+				RouterGroupGUID:      "router-group-guid",
+				Port:                 8080,
+				TLSEnabled:           true,
+				SniHostname:          "sni-hostname",
+				TerminateFrontendTLS: true,
+			}
+		})
+
+		It("returns a TcpRouteMapping with the expected fields", func() {
+			_, mapping, _ := externalEndpointInfo.MessageFor(endpoint, false, false)
+			Expect(mapping.RouterGroupGuid).To(Equal("router-group-guid"))
+			Expect(mapping.ExternalPort).To(Equal(uint16(8080)))
+			Expect(mapping.HostIP).To(Equal("host"))
+			Expect(mapping.HostPort).To(Equal(uint16(1234)))
+			Expect(mapping.HostTLSPort).To(Equal(61001))
+			Expect(mapping.InstanceId).To(Equal("instance-guid"))
+			Expect(*mapping.SniHostname).To(Equal("sni-hostname"))
+			Expect(mapping.TerminateFrontendTLS).To(BeTrue())
+		})
+	})
 })
 
 func newEndpointWithTlsProxyPort(

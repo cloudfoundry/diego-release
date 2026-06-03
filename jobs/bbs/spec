@@ -186,6 +186,11 @@ properties:
     description: Maximum number of files (including sockets) the BBS process may have open.
     default: 100000
 
+  diego.bbs.gogc:
+    description: "Value for the GOGC environment variable controlling Go GC trigger threshold. Accepts an integer percentage (e.g. 100 means GC triggers when heap doubles, 200 when it triples) or 'off' to disable percentage-based GC triggering. When used with gomemlimit, setting this to 'off' lets the memory limit alone govern GC pacing, which reduces GC-induced latency spikes under high load."
+  diego.bbs.gomemlimit:
+    description: "Value for the GOMEMLIMIT environment variable setting a soft memory limit for the Go runtime (e.g. '8GiB'). Valid units: B, KiB, MiB, GiB, TiB. When set, the runtime paces garbage collection to stay under this limit. Recommended to set alongside gogc='off' for latency-sensitive workloads with sufficient available memory."
+
   logging.max_data_string_length:
     description: "Length in bytes above which logged strings will be truncated. If set to 0, turns off truncation."
     default: 640

@@ -241,4 +241,120 @@ describe 'bbs' do
       end
     end
   end
+
+  describe 'bpm.yml.erb' do
+    let(:template) { job.template('config/bpm.yml') }
+
+    let(:deployment_manifest_fragment) do
+      {
+        'diego' => {
+          'bbs' => {
+            'ca_cert' => 'CA CERT',
+            'server_cert' => 'SERVER CERT',
+            'server_key' => 'SERVER KEY',
+            'active_key_label' => 'ACTIVE KEY',
+            'encryption_keys' => [{ 'label' => 'KEY', 'passphrase' => 'PASS' }],
+            'sql' => {
+              'db_host' => 'localhost',
+              'db_port' => 3306,
+              'db_schema' => 'diego',
+              'db_username' => 'diego',
+              'db_password' => 'password',
+              'db_driver' => 'mysql'
+            }
+          }
+        },
+        'limits' => { 'open_files' => 100_000 }
+      }
+    end
+
+    let(:rendered_template) { template.render(deployment_manifest_fragment) }
+    let(:rendered_yaml) { YAML.safe_load(rendered_template) }
+    let(:process) { rendered_yaml['processes'][0] }
+
+    describe 'process configuration' do
+      it 'configures the bbs process with correct executable and args' do
+        expect(process['name']).to eq('bbs')
+        expect(process['executable']).to eq('/var/vcap/packages/bbs/bin/bbs')
+        expect(process['args']).to eq(['-config=/var/vcap/jobs/bbs/config/bbs.json'])
+      end
+
+      it 'configures the pre_start hook' do
+        expect(process['hooks']['pre_start']).to eq('/var/vcap/jobs/bbs/bin/bpm-pre-start')
+      end
+    end
+
+    describe 'limits.open_files' do
+      it 'sets open_files from the property' do
+        expect(process['limits']['open_files']).to eq(100_000)
+      end
+
+      it 'fails when open_files is not a positive integer' do
+        deployment_manifest_fragment['limits']['open_files'] = -1
+        expect { rendered_template }.to raise_error(/limits.open_files must be a positive integer/)
+      end
+
+      it 'fails when open_files is zero' do
+        deployment_manifest_fragment['limits']['open_files'] = 0
+        expect { rendered_template }.to raise_error(/limits.open_files must be a positive integer/)
+      end
+
+      it 'fails when open_files is not an integer' do
+        deployment_manifest_fragment['limits']['open_files'] = 'abc'
+        expect { rendered_template }.to raise_error(/limits.open_files must be a positive integer/)
+      end
+    end
+
+    describe 'GC environment variables' do
+      context 'when no GC properties are set' do
+        it 'does not include an env section' do
+          expect(process).not_to have_key('env')
+        end
+      end
+
+      context 'when only diego.bbs.gogc is set' do
+        before do
+          deployment_manifest_fragment['diego']['bbs']['gogc'] = 'off'
+        end
+
+        it 'includes env with GOGC only' do
+          expect(process['env']['GOGC']).to eq('off')
+          expect(process['env']).not_to have_key('GOMEMLIMIT')
+        end
+      end
+
+      context 'when only diego.bbs.gomemlimit is set' do
+        before do
+          deployment_manifest_fragment['diego']['bbs']['gomemlimit'] = '8GiB'
+        end
+
+        it 'includes env with GOMEMLIMIT only' do
+          expect(process['env']['GOMEMLIMIT']).to eq('8GiB')
+          expect(process['env']).not_to have_key('GOGC')
+        end
+      end
+
+      context 'when both diego.bbs.gogc and diego.bbs.gomemlimit are set' do
+        before do
+          deployment_manifest_fragment['diego']['bbs']['gogc'] = 'off'
+          deployment_manifest_fragment['diego']['bbs']['gomemlimit'] = '8GiB'
+        end
+
+        it 'includes env with both GOGC and GOMEMLIMIT' do
+          expect(process['env']['GOGC']).to eq('off')
+          expect(process['env']['GOMEMLIMIT']).to eq('8GiB')
+        end
+      end
+
+      context 'when gogc is an integer value' do
+        before do
+          deployment_manifest_fragment['diego']['bbs']['gogc'] = 200
+        end
+
+        it 'renders the integer as a string in the env' do
+          expect(process['env']['GOGC']).to eq('200')
+        end
+      end
+    end
+  end
 end

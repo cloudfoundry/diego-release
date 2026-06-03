@@ -6,7 +6,6 @@ import (
 	"time"
 
 	loggregator "code.cloudfoundry.org/go-loggregator/v9"
-	"google.golang.org/grpc"
 )
 
 type Config struct {
@@ -110,8 +109,10 @@ func newV2IngressClient(config Config) (IngressClient, error) {
 		opts = append(opts, loggregator.WithAddr(config.APIAddr()))
 	}
 
-	//lint:ignore SA1019 - we can't use grpc.WithContextDial until loggregator is updated for grpc.DialContext
-	opts = append(opts, loggregator.WithDialOptions(grpc.WithBlock(), grpc.WithTimeout(time.Second)))
+	// Non-blocking dial: connection is established lazily in the background.
+	// Loggregator may be briefly unavailable during BOSH upgrades; a blocking
+	// dial with a hard timeout caused rep to crash and Monit to restart it
+	// (~54s cycle) before the connection succeeded on retry.
 
 	c, err := loggregator.NewIngressClient(tlsConfig, opts...)
 	if err != nil {

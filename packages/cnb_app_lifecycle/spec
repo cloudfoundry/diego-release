@@ -65,6 +65,7 @@ files:
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/aws/signer/v4/*.go # gosub
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/aws/transport/http/*.go # gosub
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/config/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/config/internal/ini/*.go # gosub
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/credentials/*.go # gosub
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/credentials/ec2rolecreds/*.go # gosub
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/credentials/endpointcreds/*.go # gosub
@@ -82,7 +83,6 @@ files:
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/internal/endpoints/*.go # gosub
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/internal/endpoints/awsrulesfn/*.go # gosub
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/internal/endpoints/v2/*.go # gosub
-  - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/internal/ini/*.go # gosub
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/internal/middleware/*.go # gosub
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/internal/rand/*.go # gosub
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/internal/sdk/*.go # gosub
@@ -91,6 +91,9 @@ files:
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/internal/strings/*.go # gosub
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/internal/sync/singleflight/*.go # gosub
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/internal/timeconv/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/internal/v4a/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/internal/v4a/internal/crypto/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/internal/v4a/internal/v4/*.go # gosub
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/service/ecr/*.go # gosub
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/service/ecr/internal/endpoints/*.go # gosub
   - cnbapplifecycle/vendor/github.com/aws/aws-sdk-go-v2/service/ecr/types/*.go # gosub
@@ -260,6 +263,7 @@ files:
   - cnbapplifecycle/vendor/github.com/google/go-containerregistry/pkg/v1/mutate/*.go # gosub
   - cnbapplifecycle/vendor/github.com/google/go-containerregistry/pkg/v1/partial/*.go # gosub
   - cnbapplifecycle/vendor/github.com/google/go-containerregistry/pkg/v1/remote/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/google/go-containerregistry/pkg/v1/remote/internal/authchallenge/*.go # gosub
   - cnbapplifecycle/vendor/github.com/google/go-containerregistry/pkg/v1/remote/transport/*.go # gosub
   - cnbapplifecycle/vendor/github.com/google/go-containerregistry/pkg/v1/static/*.go # gosub
   - cnbapplifecycle/vendor/github.com/google/go-containerregistry/pkg/v1/stream/*.go # gosub
@@ -314,6 +318,7 @@ files:
   - cnbapplifecycle/vendor/github.com/moby/moby/api/types/volume/*.go # gosub
   - cnbapplifecycle/vendor/github.com/moby/moby/client/*.go # gosub
   - cnbapplifecycle/vendor/github.com/moby/moby/client/internal/*.go # gosub
+  - cnbapplifecycle/vendor/github.com/moby/moby/client/internal/mod/*.go # gosub
   - cnbapplifecycle/vendor/github.com/moby/moby/client/internal/timestamp/*.go # gosub
   - cnbapplifecycle/vendor/github.com/moby/moby/client/pkg/versions/*.go # gosub
   - cnbapplifecycle/vendor/github.com/moby/sys/atomicwriter/*.go # gosub

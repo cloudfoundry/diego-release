@@ -89,9 +89,11 @@ func NewEndpoint(
 }
 
 type ExternalEndpointInfo struct {
-	RouterGroupGUID string
-	Port            uint32
-	TLSEnabled      bool
+	RouterGroupGUID      string
+	Port                 uint32
+	TLSEnabled           bool
+	SniHostname          string
+	TerminateFrontendTLS bool
 }
 
 func (info ExternalEndpointInfo) Hash() interface{} {
@@ -107,6 +109,12 @@ func (info ExternalEndpointInfo) MessageFor(e Endpoint, directInstanceRoute, _ b
 		tlsContainerPort = int(e.ContainerTlsProxyPort)
 		instanceGUID = e.InstanceGUID
 	}
+
+	var sniHostname *string
+	if info.SniHostname != "" {
+		sniHostname = &info.SniHostname
+	}
+
 	mapping := tcpmodels.NewTcpRouteMapping(
 		info.RouterGroupGUID,
 		uint16(info.Port),
@@ -114,11 +122,11 @@ func (info ExternalEndpointInfo) MessageFor(e Endpoint, directInstanceRoute, _ b
 		uint16(e.Port),
 		tlsHostPort,
 		instanceGUID,
-		nil,
+		sniHostname,
 		nil,
 		0,
 		tcpmodels.ModificationTag{},
-		false,
+		info.TerminateFrontendTLS,
 		"",
 	)
 	if e.IsDirectInstanceRoute(directInstanceRoute) {
@@ -129,11 +137,11 @@ func (info ExternalEndpointInfo) MessageFor(e Endpoint, directInstanceRoute, _ b
 			uint16(e.ContainerPort),
 			tlsContainerPort,
 			instanceGUID,
-			nil,
+			sniHostname,
 			nil,
 			0,
 			tcpmodels.ModificationTag{},
-			false,
+			info.TerminateFrontendTLS,
 			"",
 		)
 	}

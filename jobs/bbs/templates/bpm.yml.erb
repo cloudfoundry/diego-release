@@ -13,3 +13,18 @@ processes:
     end
     %>
     open_files: <%= p('limits.open_files') %>
+<%
+  gogc = nil
+  gomemlimit = nil
+  if_p('diego.bbs.gogc') { |v| gogc = v }
+  if_p('diego.bbs.gomemlimit') { |v| gomemlimit = v }
+%>
+<% if gogc || gomemlimit %>
+  env:
+  <% if gogc %>
+    GOGC: '<%= gogc %>'
+  <% end %>
+  <% if gomemlimit %>
+    GOMEMLIMIT: '<%= gomemlimit %>'
+  <% end %>
+<% end %>
