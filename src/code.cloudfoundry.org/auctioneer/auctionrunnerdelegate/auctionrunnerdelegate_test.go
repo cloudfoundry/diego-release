@@ -41,8 +41,8 @@ var _ = Describe("Auction Runner Delegate", func() {
 	Describe("fetching cell reps", func() {
 		Context("when the BSS succeeds", func() {
 			BeforeEach(func() {
-				cellPresence1 := models.NewCellPresence("cell-A", "cell-a.url", "", "zone-1", models.NewCellCapacity(123, 456, 789), []string{}, []string{}, []string{}, []string{}, []string{})
-				cellPresence2 := models.NewCellPresence("cell-B", "cell-b.url", "", "zone-1", models.NewCellCapacity(123, 456, 789), []string{}, []string{}, []string{}, []string{}, []string{})
+				cellPresence1 := models.NewCellPresence("cell-A", "cell-a.url", "", "zone-1", models.NewCellCapacity(123, 456, 789), []string{}, []string{}, []string{}, []string{}, []string{}, nil)
+				cellPresence2 := models.NewCellPresence("cell-B", "cell-b.url", "", "zone-1", models.NewCellCapacity(123, 456, 789), []string{}, []string{}, []string{}, []string{}, []string{}, nil)
 				cells := []*models.CellPresence{&cellPresence1, &cellPresence2}
 
 				bbsClient.CellsReturns(cells, nil)
@@ -76,6 +76,7 @@ var _ = Describe("Auction Runner Delegate", func() {
 						[]string{},
 						[]string{},
 						[]string{},
+						nil,
 					)
 					cells := []*models.CellPresence{&cellPresence}
 					bbsClient.CellsReturns(cells, nil)
@@ -126,6 +127,7 @@ var _ = Describe("Auction Runner Delegate", func() {
 						[]string{},
 						[]string{},
 						[]string{},
+						nil,
 					)
 					cells := []*models.CellPresence{&cellPresence}
 					bbsClient.CellsReturns(cells, nil)
