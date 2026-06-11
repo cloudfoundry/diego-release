@@ -123,6 +123,39 @@ describe 'rep' do
         expect(JSON.parse(rendered_template)['sidecar_root_fs']).to eq('cflinuxfs4')
       end
     end
+
+    context 'disk_health_check_paths' do
+      it 'is empty by default (disk check disabled)' do
+        expect(JSON.parse(rendered_template)['disk_health_check_paths']).to eq([])
+      end
+
+      it 'is configurable' do
+        deployment_manifest_fragment['diego']['rep']['disk_health_check_paths'] = ['/var/vcap/data', '/var/vcap/store']
+        expect(JSON.parse(rendered_template)['disk_health_check_paths']).to eq(['/var/vcap/data', '/var/vcap/store'])
+      end
+    end
+
+    context 'disk_health_check_interval' do
+      it 'defaults to 15s' do
+        expect(JSON.parse(rendered_template)['disk_health_check_interval']).to eq('15s')
+      end
+
+      it 'is configurable' do
+        deployment_manifest_fragment['diego']['rep']['disk_health_check_interval'] = '42s'
+        expect(JSON.parse(rendered_template)['disk_health_check_interval']).to eq('42s')
+      end
+    end
+
+    context 'disk_health_check_failure_threshold' do
+      it 'defaults to 3' do
+        expect(JSON.parse(rendered_template)['disk_health_check_failure_threshold']).to eq(3)
+      end
+
+      it 'is configurable' do
+        deployment_manifest_fragment['diego']['rep']['disk_health_check_failure_threshold'] = 42
+        expect(JSON.parse(rendered_template)['disk_health_check_failure_threshold']).to eq(42)
+      end
+    end
   end
 
   describe 'setup_mounted_data_dirs.erb' do
