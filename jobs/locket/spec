@@ -64,12 +64,9 @@ properties:
   diego.locket.sql.db_read_timeout: 
     description: "Timeout in seconds for a db client to wait for data to be received from the server"
     default: "60"
-  diego.locket.sql.db_write_timeout:
+  diego.locket.sql.db_write_timeout: 
     description: "Timeout in seconds for a db client to wait for data to be sent to the server"
     default: "60"
-  diego.locket.sql.db_operation_timeout:
-    description: "Timeout in seconds for handler-initiated DB operations (Lock, Release, Fetch). Independent of gRPC client deadline."
-    default: "10"
   diego.locket.sql.require_ssl:
     description: "Whether to require SSL for Locket communication to the SQL backend"
     default: false

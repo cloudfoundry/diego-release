@@ -80,9 +80,6 @@ end
     config[:db_write_timeout] = "#{value}s" # add time unit
   end
 
-  if_p("diego.locket.sql.db_operation_timeout") do |value|
-    config[:db_operation_timeout] = "#{value}s" # add time unit
-    
   if_p("diego.locket.health_check_timeout") do |value|
     config[:health_check_timeout] = "#{value}s" # add time unit
   end
