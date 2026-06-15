@@ -224,6 +224,9 @@ properties:
   diego.rep.optional_placement_tags:
     description: "Array of optional tags used for scheduling Tasks and LRPs"
     default: []
+  diego.rep.cell_annotations:
+    description: "Map of string key-value annotations to attach to the cell presence"
+    default: {}
 
   syslog_daemon_config.address:
     description: "Syslog host"
