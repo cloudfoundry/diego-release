@@ -45,7 +45,8 @@ var _ = Describe("Cell", func() {
 		BeforeEach(func() {
 			cellId = "cell-id"
 			presence = &models.CellPresence{
-				CellId: cellId,
+				CellId:      cellId,
+				Annotations: map[string]string{},
 			}
 
 			stdout = gbytes.NewBuffer()
