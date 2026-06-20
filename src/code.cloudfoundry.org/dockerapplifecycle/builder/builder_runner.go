@@ -11,6 +11,7 @@ import (
 	"code.cloudfoundry.org/dockerapplifecycle/helpers"
 	"code.cloudfoundry.org/dockerapplifecycle/protocol"
 	"code.cloudfoundry.org/ecrhelper"
+	"code.cloudfoundry.org/gcrhelper"
 	"github.com/containers/image/v5/types"
 )
 
@@ -35,6 +36,7 @@ type Builder struct {
 	DockerPassword             string
 	DockerEmail                string
 	ECRHelper                  ecrhelper.ECRHelper
+	GCRHelper                  gcrhelper.GCRHelper
 }
 
 func (builder *Builder) Run(signals <-chan os.Signal, ready chan<- struct{}) error {
@@ -128,6 +130,19 @@ func (builder Builder) build() <-chan error {
 }
 
 func (builder Builder) getCredentials() (string, string, error) {
+	if builder.DockerUser == "" && builder.DockerPassword == "" {
+		isGCRRepo, err := builder.GCRHelper.IsGCRRepo(builder.RegistryURL)
+		if err != nil {
+			return "", "", fmt.Errorf(
+				"failed to check whether the registry URL is a GCR/Artifact Registry repo: %s",
+				err.Error(),
+			)
+		}
+		if isGCRRepo {
+			return builder.GCRHelper.GetGCRCredentials()
+		}
+	}
+
 	isECRRepo, err := builder.ECRHelper.IsECRRepo(builder.RegistryURL)
 	if err != nil {
 		return "", "", fmt.Errorf(
