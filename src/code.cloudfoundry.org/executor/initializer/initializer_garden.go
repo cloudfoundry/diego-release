@@ -132,9 +132,9 @@ func Initialize(
 	downloader := cacheddownloader.NewDownloader(10*time.Minute, math.MaxInt8, assetTLSConfig)
 	uploader := uploader.New(logger, 10*time.Minute, assetTLSConfig)
 
-	minFree := int64(config.MinCachePartitionFreeBytes)
-	if minFree == 0 {
-		minFree = defaultMinCachePartitionFreeBytes
+	minFree := int64(defaultMinCachePartitionFreeBytes)
+	if config.MinCachePartitionFreeBytes != nil {
+		minFree = int64(*config.MinCachePartitionFreeBytes)
 	}
 	cache := cacheddownloader.NewCache(config.CachePath, int64(config.MaxCacheSizeInBytes), minFree)
 	cachedDownloader, err := cacheddownloader.New(

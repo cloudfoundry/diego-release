@@ -3,6 +3,7 @@ package depot
 import (
 	"io"
 	"sync"
+	"syscall"
 
 	"code.cloudfoundry.org/executor"
 	"code.cloudfoundry.org/executor/depot/containerstore"
@@ -219,7 +220,17 @@ func (c *client) DeleteContainer(logger lager.Logger, traceID string, guid strin
 
 func (c *client) RemainingResources(logger lager.Logger) (executor.ExecutorResources, error) {
 	logger = logger.Session("remaining-resources")
-	return c.containerStore.RemainingResources(logger), nil
+	remaining := c.containerStore.RemainingResources(logger)
+	if c.diskPath != "" {
+		var stat syscall.Statfs_t
+		if err := syscall.Statfs(c.diskPath, &stat); err == nil {
+			liveDiskMB := int(int64(stat.Bavail) * int64(stat.Bsize) / (1024 * 1024))
+			if liveDiskMB < remaining.DiskMB {
+				remaining.DiskMB = liveDiskMB
+			}
+		}
+	}
+	return remaining, nil
 }
 
 func (c *client) Ping(logger lager.Logger) error {
@@ -229,7 +240,7 @@ func (c *client) Ping(logger lager.Logger) error {
 func (c *client) TotalResources(logger lager.Logger) (executor.ExecutorResources, error) {
 	return executor.ExecutorResources{
 		MemoryMB:   c.totalCapacity.MemoryMB,
-		DiskMB:     getDiskMB(c.diskPath, c.totalCapacity.DiskMB),
+		DiskMB:     c.totalCapacity.DiskMB,
 		Containers: c.totalCapacity.Containers,
 	}, nil
 }
