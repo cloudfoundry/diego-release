@@ -69,7 +69,7 @@ var _ = Describe("File cache", func() {
 
 		transformer = cacheddownloader.NoopTransform
 
-		cache = cacheddownloader.NewCache(cachedPath, maxSizeInBytes)
+		cache = cacheddownloader.NewCache(cachedPath, maxSizeInBytes, 0)
 		downloader = cacheddownloader.NewDownloader(1*time.Second, MAX_CONCURRENT_DOWNLOADS, nil)
 		cachedDownloader, err = cacheddownloader.New(downloader, cache, transformer)
 		Expect(err).NotTo(HaveOccurred())
@@ -89,7 +89,7 @@ var _ = Describe("File cache", func() {
 	Describe("When a new CachedDownloader fails to create a temp directory for the cache", func() {
 		It("returns an error", func() {
 			cachedPath = ""
-			cache = cacheddownloader.NewCache(cachedPath, maxSizeInBytes)
+			cache = cacheddownloader.NewCache(cachedPath, maxSizeInBytes, 0)
 			downloader = cacheddownloader.NewDownloader(1*time.Second, MAX_CONCURRENT_DOWNLOADS, nil)
 			cachedDownloader, err = cacheddownloader.New(downloader, cache, transformer)
 			Expect(err).To(HaveOccurred())
@@ -1048,7 +1048,7 @@ var _ = Describe("File cache", func() {
 					ghttp.RespondWith(http.StatusOK, string(downloadContent), returnedHeader),
 				))
 
-				cache = cacheddownloader.NewCache(cachedPath, maxSizeInBytes)
+				cache = cacheddownloader.NewCache(cachedPath, maxSizeInBytes, 0)
 				cachedDownloader, err = cacheddownloader.New(downloader, cache, cacheddownloader.TarTransform)
 				Expect(err).ToNot(HaveOccurred())
 
@@ -1321,7 +1321,7 @@ var _ = Describe("File cache", func() {
 				Expect(cachedDownloader.SaveState(logger)).To(Succeed())
 
 				maxSizeInBytes = 32
-				cache = cacheddownloader.NewCache(cachedPath, maxSizeInBytes)
+				cache = cacheddownloader.NewCache(cachedPath, maxSizeInBytes, 0)
 			})
 
 			It("should evict old entries from the cache", func() {

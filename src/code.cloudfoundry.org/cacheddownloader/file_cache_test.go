@@ -33,7 +33,7 @@ var _ = Describe("FileCache", func() {
 
 		maxSizeInBytes = 123424
 
-		cache = cacheddownloader.NewCache(cacheDir, maxSizeInBytes)
+		cache = cacheddownloader.NewCache(cacheDir, maxSizeInBytes, 0)
 	})
 
 	AfterEach(func() {
@@ -516,7 +516,7 @@ var _ = Describe("FileCache", func() {
 			Context("when there is not enough space in the cache", func() {
 				BeforeEach(func() {
 					maxSizeInBytes = 150
-					cache = cacheddownloader.NewCache(cacheDir, maxSizeInBytes)
+					cache = cacheddownloader.NewCache(cacheDir, maxSizeInBytes, 0)
 				})
 
 				JustBeforeEach(func() {
@@ -773,7 +773,7 @@ var _ = Describe("FileCache", func() {
 			Context("when there isn't enough space", func() {
 				BeforeEach(func() {
 					maxSizeInBytes = 10
-					cache = cacheddownloader.NewCache(cacheDir, maxSizeInBytes)
+					cache = cacheddownloader.NewCache(cacheDir, maxSizeInBytes, 0)
 				})
 
 				JustBeforeEach(func() {
@@ -832,6 +832,67 @@ var _ = Describe("FileCache", func() {
 			It("closes first the old, then the new", func() {
 				Expect(cache.CloseDirectory(logger, cacheKey, dir1)).To(Succeed())
 				Expect(cache.CloseDirectory(logger, cacheKey, dir2)).To(Succeed())
+			})
+		})
+	})
+
+	Describe("makeRoom partition free-space eviction", func() {
+		var (
+			cacheKey  string
+			cacheInfo cacheddownloader.CachingInfoType
+		)
+
+		BeforeEach(func() {
+			cacheKey = "key"
+			cacheInfo = cacheddownloader.CachingInfoType{}
+			// large in-memory ceiling so only partition pressure triggers eviction
+			maxSizeInBytes = 10 * 1024 * 1024 * 1024
+			cache = cacheddownloader.NewCache(cacheDir, maxSizeInBytes, 5*1024*1024*1024)
+		})
+
+		Context("when partition free space is below the minimum", func() {
+			BeforeEach(func() {
+				cache.FreeSpaceFunc = func(string) int64 { return 0 }
+			})
+
+			It("evicts non-in-use entries even though in-memory ceiling is not exceeded", func() {
+				f1 := createFile("cache-file-1", "content-1")
+				defer os.RemoveAll(f1.Name())
+				rc, err := cache.Add(logger, cacheKey, f1.Name(), 100, cacheInfo)
+				Expect(err).NotTo(HaveOccurred())
+				rc.Close()
+
+				f2 := createFile("cache-file-2", "content-2")
+				defer os.RemoveAll(f2.Name())
+				rc2, err := cache.Add(logger, "key2", f2.Name(), 100, cacheInfo)
+				Expect(err).NotTo(HaveOccurred())
+				rc2.Close()
+
+				_, _, err = cache.Get(logger, cacheKey)
+				Expect(err).To(Equal(cacheddownloader.EntryNotFound))
+			})
+		})
+
+		Context("when partition free space exceeds the minimum", func() {
+			BeforeEach(func() {
+				cache.FreeSpaceFunc = func(string) int64 { return 10 * 1024 * 1024 * 1024 }
+			})
+
+			It("does not evict entries solely due to partition pressure", func() {
+				f1 := createFile("cache-file-1", "content-1")
+				defer os.RemoveAll(f1.Name())
+				rc, err := cache.Add(logger, cacheKey, f1.Name(), 100, cacheInfo)
+				Expect(err).NotTo(HaveOccurred())
+				rc.Close()
+
+				f2 := createFile("cache-file-2", "content-2")
+				defer os.RemoveAll(f2.Name())
+				rc2, err := cache.Add(logger, "key2", f2.Name(), 100, cacheInfo)
+				Expect(err).NotTo(HaveOccurred())
+				rc2.Close()
+
+				_, _, err = cache.Get(logger, cacheKey)
+				Expect(err).NotTo(HaveOccurred())
 			})
 		})
 	})
