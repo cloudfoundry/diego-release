@@ -1,17 +1,13 @@
 //go:build !windows
-// +build !windows
 
 package depot
 
 import "syscall"
 
-func getDiskMB(diskPath string, fallback int) int {
-	if diskPath == "" {
-		return fallback
-	}
+func liveDiskMB(path string) (int, bool) {
 	var stat syscall.Statfs_t
-	if err := syscall.Statfs(diskPath, &stat); err == nil {
-		return int(int64(stat.Bavail) * int64(stat.Bsize) / (1024 * 1024))
+	if err := syscall.Statfs(path, &stat); err != nil {
+		return 0, false
 	}
-	return fallback
+	return int(int64(stat.Bavail) * int64(stat.Bsize) / (1024 * 1024)), true
 }

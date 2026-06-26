@@ -123,6 +123,17 @@ describe 'rep' do
         expect(JSON.parse(rendered_template)['sidecar_root_fs']).to eq('cflinuxfs4')
       end
     end
+
+    context 'min_cache_partition_free_bytes' do
+      it 'defaults to 5368709120 (5GB)' do
+        expect(JSON.parse(rendered_template)['min_cache_partition_free_bytes']).to eq(5_368_709_120)
+      end
+
+      it 'is configurable' do
+        deployment_manifest_fragment['diego']['executor']['min_cache_partition_free_bytes'] = 1_073_741_824
+        expect(JSON.parse(rendered_template)['min_cache_partition_free_bytes']).to eq(1_073_741_824)
+      end
+    end
   end
 
   describe 'setup_mounted_data_dirs.erb' do

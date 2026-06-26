@@ -125,6 +125,8 @@
     raise "additional_memory_allocation_mb cannot be negative"
   end
 
+  config[:min_cache_partition_free_bytes] = p("diego.executor.min_cache_partition_free_bytes")
+
   if_p("diego.executor.volman.driver_paths") do |value|
     config[:volman_driver_paths] = value
   end

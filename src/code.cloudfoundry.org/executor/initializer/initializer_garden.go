@@ -41,7 +41,6 @@ const (
 	maxConcurrentUploads           = 5
 	metricsReportInterval          = 1 * time.Minute
 	megabytesToBytes               = 1024 * 1024
-	defaultMinCachePartitionFreeBytes = 5 * 1024 * 1024 * 1024
 )
 
 type executorContainers struct {
@@ -132,11 +131,7 @@ func Initialize(
 	downloader := cacheddownloader.NewDownloader(10*time.Minute, math.MaxInt8, assetTLSConfig)
 	uploader := uploader.New(logger, 10*time.Minute, assetTLSConfig)
 
-	minFree := int64(config.MinCachePartitionFreeBytes)
-	if minFree == 0 {
-		minFree = defaultMinCachePartitionFreeBytes
-	}
-	cache := cacheddownloader.NewCache(config.CachePath, int64(config.MaxCacheSizeInBytes), minFree)
+	cache := cacheddownloader.NewCache(config.CachePath, int64(config.MaxCacheSizeInBytes), int64(config.MinCachePartitionFreeBytes))
 	cachedDownloader, err := cacheddownloader.New(
 		downloader,
 		cache,

@@ -219,7 +219,13 @@ func (c *client) DeleteContainer(logger lager.Logger, traceID string, guid strin
 
 func (c *client) RemainingResources(logger lager.Logger) (executor.ExecutorResources, error) {
 	logger = logger.Session("remaining-resources")
-	return c.containerStore.RemainingResources(logger), nil
+	remaining := c.containerStore.RemainingResources(logger)
+	if c.diskPath != "" {
+		if liveMB, ok := liveDiskMB(c.diskPath); ok && liveMB < remaining.DiskMB {
+			remaining.DiskMB = liveMB
+		}
+	}
+	return remaining, nil
 }
 
 func (c *client) Ping(logger lager.Logger) error {
@@ -227,9 +233,15 @@ func (c *client) Ping(logger lager.Logger) error {
 }
 
 func (c *client) TotalResources(logger lager.Logger) (executor.ExecutorResources, error) {
+	diskMB := c.totalCapacity.DiskMB
+	if c.diskPath != "" {
+		if liveMB, ok := liveDiskMB(c.diskPath); ok {
+			diskMB = liveMB
+		}
+	}
 	return executor.ExecutorResources{
 		MemoryMB:   c.totalCapacity.MemoryMB,
-		DiskMB:     getDiskMB(c.diskPath, c.totalCapacity.DiskMB),
+		DiskMB:     diskMB,
 		Containers: c.totalCapacity.Containers,
 	}, nil
 }

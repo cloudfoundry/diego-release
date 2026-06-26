@@ -4,11 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"math"
 	"os"
 	"path/filepath"
 	"sync"
-	"syscall"
 	"time"
 
 	"code.cloudfoundry.org/archiver/compressor"
@@ -32,14 +30,6 @@ type FileCache struct {
 	Entries                   map[string]*FileCacheEntry
 	OldEntries                map[string]*FileCacheEntry
 	Seq                       uint64
-}
-
-func defaultFreeSpaceOnPartition(path string) int64 {
-	var stat syscall.Statfs_t
-	if err := syscall.Statfs(path, &stat); err != nil {
-		return math.MaxInt64
-	}
-	return int64(stat.Bavail) * int64(stat.Bsize)
 }
 
 type FileCacheEntry struct {
@@ -201,6 +191,11 @@ func (e *FileCacheEntry) expandedDirectory() (string, error) {
 			err = os.RemoveAll(e.FilePath)
 			if err != nil {
 				fmt.Fprintln(os.Stderr, "Unable to delete the cached file", err)
+			} else {
+				// GetDirectory doubled Size before calling here; tar is now gone so halve it
+				// back to reflect only the .tar.d on disk. Mirrors the symmetric halving in
+				// decrementFileInUseCount() which fires when the tar is deleted later.
+				e.Size = e.Size / 2
 			}
 		}
 	}

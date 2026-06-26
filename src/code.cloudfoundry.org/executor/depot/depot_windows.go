@@ -1,8 +1,7 @@
 //go:build windows
-// +build windows
 
 package depot
 
-func getDiskMB(_ string, fallback int) int {
-	return fallback
+func liveDiskMB(path string) (int, bool) {
+	return 0, false
 }
