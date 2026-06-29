@@ -221,6 +221,9 @@ properties:
   diego.executor.instance_identity_validity_period_in_hours:
     description: "Validity period for the generated instance identity certificate"
     default: 24
+  diego.executor.spiffe_socket_dir:
+    description: "Host directory of the SPIFFE workload socket to bind-mount read-only into app containers (must equal spiffe-agent host_socket_dir). Empty disables."
+    default: ""
   diego.executor.max_log_lines_per_second:
     description: "EXPERIMENTAL: Maximum log lines allowed per second per app instance. Default value of 0 will disable rate limiting. Minimum recommended value is 100."
     default: 0

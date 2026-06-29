@@ -218,6 +218,10 @@
     end
   end
 
+  if_p("diego.executor.spiffe_socket_dir") do |spiffe_dir|
+    config[:spiffe_socket_dir] = spiffe_dir unless spiffe_dir.to_s.empty?
+  end
+
   config[:time_format] = "rfc3339"
 
   if_p("containers.layering_mode") do |mode|
