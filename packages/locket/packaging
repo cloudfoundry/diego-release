@@ -8,9 +8,6 @@ mv ${BOSH_INSTALL_TARGET}/src .
 source /var/vcap/packages/golang-*-linux/bosh/compile.env
 export GOBIN=${BOSH_INSTALL_TARGET}/bin
 
-# Partial vendor/ would force -mod=vendor; fetch deps from module cache instead.
-export GOFLAGS=-mod=mod
-
 pushd src/code.cloudfoundry.org
 go install code.cloudfoundry.org/locket/cmd/locket
 popd
