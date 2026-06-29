@@ -3,7 +3,6 @@ package depot
 import (
 	"io"
 	"sync"
-	"syscall"
 
 	"code.cloudfoundry.org/executor"
 	"code.cloudfoundry.org/executor/depot/containerstore"
@@ -228,16 +227,9 @@ func (c *client) Ping(logger lager.Logger) error {
 }
 
 func (c *client) TotalResources(logger lager.Logger) (executor.ExecutorResources, error) {
-	diskMB := c.totalCapacity.DiskMB
-	if c.diskPath != "" {
-		var stat syscall.Statfs_t
-		if err := syscall.Statfs(c.diskPath, &stat); err == nil {
-			diskMB = int(int64(stat.Bavail) * int64(stat.Bsize) / (1024 * 1024))
-		}
-	}
 	return executor.ExecutorResources{
 		MemoryMB:   c.totalCapacity.MemoryMB,
-		DiskMB:     diskMB,
+		DiskMB:     getDiskMB(c.diskPath, c.totalCapacity.DiskMB),
 		Containers: c.totalCapacity.Containers,
 	}, nil
 }
