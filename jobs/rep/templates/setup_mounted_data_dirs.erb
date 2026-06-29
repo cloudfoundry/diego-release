@@ -95,3 +95,19 @@ proxy_config_dir=${garden_shared_dir}/proxy_config
 rm -rf "$proxy_config_dir"
 mkdir -p "$proxy_config_dir"
 chown -R vcap:vcap "$proxy_config_dir"
+
+# SPIFFE workload socket directory (shared with the spiffe-agent job). The
+# executor bind-mounts this host directory read-only into every app container so
+# workloads can reach the spiffe-agent's Workload API socket. App containers run
+# as an unprivileged, user-namespaced uid that is neither the directory owner nor
+# in its group, so the directory must be world-traversable (o+x) for a workload
+# to reach the 0666 socket inside it. 0711 withholds read (o-r): containers can
+# connect to the known socket path but cannot enumerate the directory.
+<% if_p("diego.executor.spiffe_socket_dir") do |spiffe_socket_dir| %>
+<% unless spiffe_socket_dir.to_s.empty? %>
+spiffe_socket_dir="<%= spiffe_socket_dir %>"
+mkdir -p "$spiffe_socket_dir"
+chown vcap:vcap "$spiffe_socket_dir"
+chmod 0711 "$spiffe_socket_dir"
+<% end %>
+<% end %>
