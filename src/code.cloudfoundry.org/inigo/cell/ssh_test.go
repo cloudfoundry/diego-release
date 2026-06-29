@@ -1,9 +1,11 @@
 package cell_test
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -215,7 +217,9 @@ var _ = Describe("SSH", func() {
 
 			httpClient := &http.Client{
 				Transport: &http.Transport{
-					Dial: client.Dial,
+					DialContext: func(_ context.Context, n, addr string) (net.Conn, error) {
+						return client.Dial(n, addr)
+					},
 				},
 				Timeout: 5 * time.Second,
 			}
@@ -283,7 +287,9 @@ var _ = Describe("SSH", func() {
 
 				httpClient := &http.Client{
 					Transport: &http.Transport{
-						Dial: client.Dial,
+						DialContext: func(_ context.Context, n, addr string) (net.Conn, error) {
+							return client.Dial(n, addr)
+						},
 					},
 					Timeout: 5 * time.Second,
 				}
