@@ -1,0 +1,40 @@
+---
+name: spiffe-agent
+
+templates:
+  spiffe-agent.json.erb: config/spiffe-agent.json
+  bpm.yml.erb: config/bpm.yml
+  signer_ca.crt.erb: config/certs/signer/ca.crt
+  bbs_ca.crt.erb: config/certs/bbs/ca.crt
+  bbs_client.crt.erb: config/certs/bbs/client.crt
+  bbs_client.key.erb: config/certs/bbs/client.key
+
+packages:
+  - spiffe-agent
+
+properties:
+  spiffe_agent.trust_domain:
+    description: "REQUIRED: SPIFFE trust domain for issued identities (e.g. cf.internal)."
+  spiffe_agent.signer_url:
+    description: "REQUIRED: Base URL of the UAA SPIFFE signer endpoint."
+  spiffe_agent.signer_client_id:
+    description: "OAuth client id used to authenticate to the signer."
+  spiffe_agent.signer_client_secret:
+    description: "OAuth client secret used to authenticate to the signer."
+  spiffe_agent.signer_ca_cert:
+    description: "PEM-encoded CA certificate used to verify the signer TLS endpoint. If empty, system roots are used."
+  spiffe_agent.bbs.api_location:
+    description: "Address of the BBS server."
+    default: "bbs.service.cf.internal:8889"
+  spiffe_agent.bbs.ca_cert:
+    description: "REQUIRED: PEM-encoded CA certificate for the BBS server."
+  spiffe_agent.bbs.client_cert:
+    description: "REQUIRED: PEM-encoded client certificate for the BBS server."
+  spiffe_agent.bbs.client_key:
+    description: "REQUIRED: PEM-encoded client key for the BBS server."
+  spiffe_agent.host_socket_dir:
+    description: "Directory on the host (shared with workloads) where the workload API socket is created."
+    default: "/var/vcap/data/spiffe-agent/shared"
+  spiffe_agent.log_level:
+    description: "Log level (debug, info, error, fatal)."
+    default: "info"

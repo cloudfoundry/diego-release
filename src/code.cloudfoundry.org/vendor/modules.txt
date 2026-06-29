@@ -30,6 +30,9 @@ code.cloudfoundry.org/bbs/format
 ## explicit; go 1.26.2
 code.cloudfoundry.org/bbs/models
 code.cloudfoundry.org/bbs/models/test/model_helpers
+# code.cloudfoundry.org/buildpackapplifecycle v0.0.0-20260504201830-3e265382f635
+## explicit
+code.cloudfoundry.org/buildpackapplifecycle/databaseuri
 # code.cloudfoundry.org/bytefmt v0.78.0
 ## explicit; go 1.25.0
 code.cloudfoundry.org/bytefmt
@@ -157,6 +160,11 @@ code.cloudfoundry.org/routing-api/models
 code.cloudfoundry.org/routing-api/trace
 code.cloudfoundry.org/routing-api/uaaclient
 code.cloudfoundry.org/routing-api/uaaclient/fakes
+# code.cloudfoundry.org/routing-info v0.1.0
+## explicit; go 1.26
+code.cloudfoundry.org/routing-info/cfroutes
+code.cloudfoundry.org/routing-info/internalroutes
+code.cloudfoundry.org/routing-info/tcp_routes
 # code.cloudfoundry.org/tlsconfig v0.60.0
 ## explicit; go 1.25.8
 code.cloudfoundry.org/tlsconfig
@@ -315,9 +323,6 @@ github.com/awslabs/amazon-ecr-credential-helper/ecr-login/version
 # github.com/bmizerany/pat v0.0.0-20210406213842-e4b6760bdd6f
 ## explicit
 github.com/bmizerany/pat
-# github.com/cespare/xxhash/v2 v2.3.0
-## explicit; go 1.11
-github.com/cespare/xxhash/v2
 # github.com/cloudfoundry-community/go-uaa v0.4.0
 ## explicit; go 1.25.0
 github.com/cloudfoundry-community/go-uaa
@@ -763,6 +768,9 @@ github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.10
 ## explicit; go 1.12
 github.com/spf13/pflag
+# github.com/spiffe/go-spiffe/v2 v2.8.1
+## explicit; go 1.24.0
+github.com/spiffe/go-spiffe/v2/proto/spiffe/workload
 # github.com/square/certstrap v1.3.0
 ## explicit; go 1.18
 github.com/square/certstrap/pkix

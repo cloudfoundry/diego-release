@@ -1,0 +1,21 @@
+<%=
+  conf_dir = "/var/vcap/jobs/spiffe-agent/config"
+  host_socket_dir = p("spiffe_agent.host_socket_dir")
+
+  config = {
+    log_level: p("spiffe_agent.log_level"),
+    socket_path: "#{host_socket_dir}/workload.sock",
+    trust_domain: p("spiffe_agent.trust_domain"),
+    cell_id: spec.id,
+    signer_url: p("spiffe_agent.signer_url"),
+    signer_client_id: p("spiffe_agent.signer_client_id"),
+    signer_client_secret: p("spiffe_agent.signer_client_secret"),
+    signer_ca_cert_file: (p("spiffe_agent.signer_ca_cert", "").empty? ? "" : "#{conf_dir}/certs/signer/ca.crt"),
+    bbs_address: "https://#{p("spiffe_agent.bbs.api_location")}",
+    bbs_ca_cert_file: "#{conf_dir}/certs/bbs/ca.crt",
+    bbs_client_cert_file: "#{conf_dir}/certs/bbs/client.crt",
+    bbs_client_key_file: "#{conf_dir}/certs/bbs/client.key",
+  }
+
+  config.to_json
+%>

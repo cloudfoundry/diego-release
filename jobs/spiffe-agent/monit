@@ -1,0 +1,5 @@
+check process spiffe-agent
+  with pidfile /var/vcap/sys/run/bpm/spiffe-agent/spiffe-agent.pid
+  start program "/var/vcap/jobs/bpm/bin/bpm start spiffe-agent"
+  stop program "/var/vcap/jobs/bpm/bin/bpm stop spiffe-agent"
+  group vcap

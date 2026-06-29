@@ -1,0 +1,14 @@
+---
+processes:
+- name: spiffe-agent
+  executable: /var/vcap/packages/spiffe-agent/bin/spiffe-agent
+  args:
+    - -config=/var/vcap/jobs/spiffe-agent/config/spiffe-agent.json
+  limits:
+    open_files: 100000
+  unsafe:
+    privileged: true
+    host_pid_namespace: true
+  additional_volumes:
+  - path: <%= p("spiffe_agent.host_socket_dir") %>
+    writable: true

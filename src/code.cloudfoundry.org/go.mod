@@ -15,6 +15,7 @@ require (
 	code.cloudfoundry.org/bbs/encryption v1.7.0
 	code.cloudfoundry.org/bbs/format v1.7.0
 	code.cloudfoundry.org/bbs/models v1.6.0
+	code.cloudfoundry.org/buildpackapplifecycle v0.0.0-20260504201830-3e265382f635
 	code.cloudfoundry.org/bytefmt v0.78.0
 	code.cloudfoundry.org/cacheddownloader v0.0.0-20250312193827-23c030d5e4f3
 	code.cloudfoundry.org/certsplitter v0.77.0
@@ -34,6 +35,7 @@ require (
 	code.cloudfoundry.org/localip v0.77.0
 	code.cloudfoundry.org/locket v1.3.0
 	code.cloudfoundry.org/routing-api v0.2.0
+	code.cloudfoundry.org/routing-info v0.1.0
 	code.cloudfoundry.org/tlsconfig v0.60.0
 	github.com/GaryBoone/GoStats v0.0.0-20130122001700-1993eafbef57
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
@@ -42,7 +44,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/credentials v1.19.24
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.58.4
 	github.com/awslabs/amazon-ecr-credential-helper/ecr-login v0.12.0
-	github.com/cespare/xxhash/v2 v2.3.0
 	github.com/containers/image/v5 v5.36.2
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7
 	github.com/envoyproxy/go-control-plane/envoy v1.37.0
@@ -70,6 +71,7 @@ require (
 	github.com/pborman/getopt v1.1.0
 	github.com/pkg/sftp v1.13.10
 	github.com/spf13/cobra v1.10.2
+	github.com/spiffe/go-spiffe/v2 v2.8.1
 	github.com/square/certstrap v1.3.0
 	github.com/tedsuo/ifrit v0.0.0-20260418191334-846868129986
 	github.com/tedsuo/rata v1.0.0
@@ -81,7 +83,6 @@ require (
 	google.golang.org/grpc v1.81.1
 	google.golang.org/protobuf v1.36.12-0.20260120151049-f2248ac996af
 	gopkg.in/yaml.v2 v2.4.0
-	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -172,4 +173,5 @@ require (
 	golang.org/x/tools v0.46.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260622175928-b703f567277d // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260622175928-b703f567277d // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
