@@ -51,9 +51,13 @@ type signRequest struct {
 }
 
 type signResponse struct {
-	Svid      string `json:"svid"`
-	SpiffeID  string `json:"spiffe_id"`
-	ExpiresAt string `json:"expires_at"`
+	Svid     string `json:"svid"`
+	SpiffeID string `json:"spiffe_id"`
+	// ExpiresAt is the JWT-SVID expiry in Unix epoch seconds. UAA (Plan A,
+	// JwtSvidResponse) serializes this as a JSON number (Java long), so it must
+	// be decoded as an integer. Informational only: callers read expiry from the
+	// SVID's own exp claim, so the value is currently unused.
+	ExpiresAt int64 `json:"expires_at"`
 }
 
 // Sign proves possession of att.InstanceKey over the SPIFFE ID, audience, and a

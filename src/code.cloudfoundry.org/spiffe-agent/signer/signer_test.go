@@ -69,11 +69,11 @@ var _ = Describe("Signer", func() {
 			sum := sha256.Sum256([]byte(message))
 			Expect(rsa.VerifyPKCS1v15(pub, crypto.SHA256, sum[:], sig)).To(Succeed())
 
-			Expect(json.NewEncoder(w).Encode(signResponse{
-				Svid:      "jwt",
-				SpiffeID:  goldenSpiffeID,
-				ExpiresAt: "2026-06-29T00:00:00Z",
-			})).To(Succeed())
+			// UAA (Plan A) returns expires_at as a JSON number (epoch seconds).
+			// Emit raw JSON so this test pins the wire contract independently of
+			// signResponse's Go field types — this exact shape regressed e2e.
+			_, writeErr := w.Write([]byte(`{"svid":"jwt","spiffe_id":"` + goldenSpiffeID + `","expires_at":1782691200}`))
+			Expect(writeErr).NotTo(HaveOccurred())
 		}))
 		defer server.Close()
 
