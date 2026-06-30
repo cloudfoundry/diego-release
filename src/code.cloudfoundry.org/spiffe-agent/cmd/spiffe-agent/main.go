@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"os"
+	"time"
 
 	"code.cloudfoundry.org/bbs"
 	"code.cloudfoundry.org/lager/v3"
@@ -16,6 +17,10 @@ import (
 	"github.com/tedsuo/ifrit/grouper"
 	"github.com/tedsuo/ifrit/sigmon"
 )
+
+// defaultBundleRefreshInterval is how often FetchJWTBundles re-fetches UAA's
+// token_keys to detect signing-key rotation.
+const defaultBundleRefreshInterval = 60 * time.Second
 
 var configFilePath = flag.String(
 	"config",
@@ -42,8 +47,9 @@ func main() {
 		logger.Fatal("failed-to-build-signer-http-client", err)
 	}
 	sgnr := signer.New(httpClient, cfg.SignerURL, cfg.SignerClientID, cfg.SignerClientSecret, cfg.TrustDomain)
+	bundleSource := signer.NewBundleSource(httpClient, cfg.SignerURL+"/token_keys", cfg.TrustDomain)
 
-	srv := workloadapi.NewServer(attestor, sgnr)
+	srv := workloadapi.NewServer(attestor, sgnr, bundleSource, defaultBundleRefreshInterval)
 
 	members := grouper.Members{
 		{Name: "workload-api", Runner: workloadapi.NewRunner(cfg.SocketPath, srv, logger)},

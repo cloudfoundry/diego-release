@@ -1,9 +1,11 @@
 package workloadapi
 
 import (
+	"bytes"
 	"context"
 	"net"
 	"os"
+	"time"
 
 	"code.cloudfoundry.org/lager/v3"
 	"code.cloudfoundry.org/spiffe-agent/cfattestor"
@@ -28,17 +30,32 @@ type Signer interface {
 	Sign(ctx context.Context, att cfattestor.Attestation, audience string) (svid, spiffeID string, err error)
 }
 
+// BundleSource provides the current JWT trust bundles (JWKS documents) keyed by
+// trust domain SPIFFE ID, for the FetchJWTBundles RPC.
+type BundleSource interface {
+	Bundles(ctx context.Context) (map[string][]byte, error)
+}
+
 // Server implements the SPIFFE Workload API, issuing JWT-SVIDs to the local
 // process authenticated via SO_PEERCRED.
 type Server struct {
 	workload.UnimplementedSpiffeWorkloadAPIServer
-	attestor Attestor
-	signer   Signer
+	attestor        Attestor
+	signer          Signer
+	bundles         BundleSource
+	refreshInterval time.Duration
 }
 
-// NewServer wires an attestor and signer into a Workload API server.
-func NewServer(attestor Attestor, signer Signer) *Server {
-	return &Server{attestor: attestor, signer: signer}
+// NewServer wires an attestor, signer, and JWT bundle source into a Workload API
+// server. refreshInterval controls how often FetchJWTBundles polls the bundle
+// source for rotations.
+func NewServer(attestor Attestor, signer Signer, bundles BundleSource, refreshInterval time.Duration) *Server {
+	return &Server{
+		attestor:        attestor,
+		signer:          signer,
+		bundles:         bundles,
+		refreshInterval: refreshInterval,
+	}
 }
 
 // FetchJWTSVID attests the calling pid and returns a JWT-SVID for the first
@@ -72,6 +89,64 @@ func (s *Server) FetchJWTSVID(ctx context.Context, req *workload.JWTSVIDRequest)
 	return &workload.JWTSVIDResponse{
 		Svids: []*workload.JWTSVID{{SpiffeId: spiffeID, Svid: svid}},
 	}, nil
+}
+
+// FetchJWTBundles streams the JWT trust bundles (JWKS documents), keyed by trust
+// domain SPIFFE ID. It sends the current bundles immediately, then re-sends
+// whenever they change, polling the bundle source at the configured refresh
+// interval to pick up signing-key rotation. The stream stays open until the
+// client disconnects. Bundles are public, so no peer attestation is performed;
+// only the SPIFFE security header is required.
+func (s *Server) FetchJWTBundles(_ *workload.JWTBundlesRequest, stream workload.SpiffeWorkloadAPI_FetchJWTBundlesServer) error {
+	ctx := stream.Context()
+	if err := checkSecurityHeader(ctx); err != nil {
+		return err
+	}
+
+	last, err := s.bundles.Bundles(ctx)
+	if err != nil {
+		return status.Errorf(codes.Internal, "fetch bundles: %v", err)
+	}
+	if err := stream.Send(&workload.JWTBundlesResponse{Bundles: last}); err != nil {
+		return err
+	}
+
+	ticker := time.NewTicker(s.refreshInterval)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-ctx.Done():
+			return nil
+		case <-ticker.C:
+			current, err := s.bundles.Bundles(ctx)
+			if err != nil {
+				// Transient fetch failure: keep streaming the last good bundle
+				// rather than tearing down the client's stream.
+				continue
+			}
+			if sameBundles(current, last) {
+				continue
+			}
+			last = current
+			if err := stream.Send(&workload.JWTBundlesResponse{Bundles: current}); err != nil {
+				return err
+			}
+		}
+	}
+}
+
+// sameBundles reports whether two bundle maps have identical keys and bytes.
+func sameBundles(a, b map[string][]byte) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for k, av := range a {
+		bv, ok := b[k]
+		if !ok || !bytes.Equal(av, bv) {
+			return false
+		}
+	}
+	return true
 }
 
 func checkSecurityHeader(ctx context.Context) error {
