@@ -8,6 +8,7 @@ import (
 	"net"
 	"os"
 	"path/filepath"
+	"syscall"
 	"time"
 
 	"code.cloudfoundry.org/bbs/models"
@@ -377,12 +378,15 @@ var _ = Describe("Executor/Garden", func() {
 			})
 
 			It("returns the preset capacity", func() {
-				expectedResources := executor.ExecutorResources{
-					MemoryMB:   int(gardenCapacity.MemoryInBytes / 1024 / 1024),
-					DiskMB:     expectedDiskCapacityMB,
-					Containers: int(gardenCapacity.MaxContainers) - 1,
-				}
-				Expect(resources).To(Equal(expectedResources))
+				Expect(resources.MemoryMB).To(Equal(int(gardenCapacity.MemoryInBytes / 1024 / 1024)))
+				Expect(resources.Containers).To(Equal(int(gardenCapacity.MaxContainers) - 1))
+			})
+
+			It("returns live disk space at cache path", Serial, func() {
+				var stat syscall.Statfs_t
+				Expect(syscall.Statfs(cachePath, &stat)).To(Succeed())
+				expectedDisk := int(int64(stat.Bavail) * int64(stat.Bsize) / (1024 * 1024))
+				Expect(resources.DiskMB).To(Equal(expectedDisk))
 			})
 		})
 
