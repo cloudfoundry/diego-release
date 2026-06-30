@@ -1049,13 +1049,17 @@ dYbCU/DMZjsv+Pt9flhj7ELLo+WKHyI767hJSq9A7IT3GzFt8iGiEAt1qj2yS0DX
 				It("returns total capacity and state information", func() {
 					state, err := repClient.State(logger)
 					Expect(err).NotTo(HaveOccurred())
-					Expect(state.TotalResources).To(Equal(models.Resources{
-						MemoryMB:   1024,
-						DiskMB:     10 * 1024,
-						Containers: 3,
-					}))
+					Expect(state.TotalResources.MemoryMB).To(Equal(int32(1024)))
+					Expect(state.TotalResources.Containers).To(Equal(3))
 					Expect(state.PlacementTags).To(Equal([]string{"test"}))
 					Expect(state.OptionalPlacementTags).To(Equal([]string{"optional_tag"}))
+				})
+
+				It("returns actual total disk capacity", Serial, func() {
+					state, err := repClient.State(logger)
+					Expect(err).NotTo(HaveOccurred())
+					cachePath := fmt.Sprintf("%s-%d", "/tmp/cache", node)
+					Expect(state.TotalResources.DiskMB).To(Equal(expectedTotalDiskMB(cachePath)))
 				})
 
 				Context("when the container is removed", func() {
