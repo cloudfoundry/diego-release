@@ -8,7 +8,6 @@ import (
 	"net"
 	"os"
 	"path/filepath"
-	"syscall"
 	"time"
 
 	"code.cloudfoundry.org/bbs/models"
@@ -382,12 +381,7 @@ var _ = Describe("Executor/Garden", func() {
 				Expect(resources.Containers).To(Equal(int(gardenCapacity.MaxContainers) - 1))
 			})
 
-			It("returns live disk space at cache path", Serial, func() {
-				var stat syscall.Statfs_t
-				Expect(syscall.Statfs(cachePath, &stat)).To(Succeed())
-				expectedDisk := int(int64(stat.Bavail) * int64(stat.Bsize) / (1024 * 1024))
-				Expect(resources.DiskMB).To(Equal(expectedDisk))
-			})
+			registerDiskCapacityTest(&resources, &cachePath, &expectedDiskCapacityMB)
 		})
 
 		Describe("allocating a container", func() {
