@@ -96,7 +96,7 @@ func NewDownloader(requestTimeout time.Duration, maxConcurrentDownloads int, tls
 func NewDownloaderWithIdleTimeout(requestTimeout time.Duration, idleTimeout time.Duration, maxConcurrentDownloads int, tlsConfig *tls.Config) *Downloader {
 	transport := &http.Transport{
 		Proxy: http.ProxyFromEnvironment,
-		Dial: func(netw, addr string) (net.Conn, error) {
+		DialContext: func(ctx context.Context, netw, addr string) (net.Conn, error) {
 			c, err := net.DialTimeout(netw, addr, 10*time.Second)
 			if err != nil {
 				return nil, err

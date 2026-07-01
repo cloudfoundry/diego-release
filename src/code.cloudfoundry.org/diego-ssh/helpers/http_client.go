@@ -36,7 +36,7 @@ func NewHTTPSClient(insecureSkipVerify bool, caCertFiles []string, communication
 
 	return &http.Client{
 		Transport: &http.Transport{
-			Dial:            dialer.Dial,
+			DialContext:     dialer.DialContext,
 			TLSClientConfig: tlsConfig,
 		},
 		Timeout: communicationTimeout,

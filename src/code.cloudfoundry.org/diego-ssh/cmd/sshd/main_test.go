@@ -5,6 +5,7 @@ package main_test
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"fmt"
 	"io"
 	"net"
@@ -742,7 +743,7 @@ var _ = Describe("SSH daemon", func() {
 				Expect(err).NotTo(HaveOccurred())
 
 				transport := &http.Transport{
-					Dial: func(network, addr string) (net.Conn, error) {
+					DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
 						return lconn, nil
 					},
 				}
