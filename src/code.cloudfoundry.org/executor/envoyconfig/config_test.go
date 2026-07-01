@@ -134,12 +134,18 @@ func TestGenerateSDSCAResource(t *testing.T) {
 	container := executor.Container{Guid: "meow-guid"}
 	idCred := Credential{}
 	trusted := []string{}
-	yaml, err := GenerateSDSCAResource(container, idCred, trusted, []string{"spiffe://meow"})
+	yaml, err := GenerateSDSCAResource(container, idCred, trusted, []string{"some-guid.cf.internal", "gorouter.service.cf.internal"})
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !bytes.Contains(yaml, []byte("id-validation-context")) {
 		t.Error("YAML missing validation context name")
+	}
+	if !bytes.Contains(yaml, []byte("some-guid.cf.internal")) {
+		t.Error("YAML missing first DNS SAN")
+	}
+	if !bytes.Contains(yaml, []byte("gorouter.service.cf.internal")) {
+		t.Error("YAML missing second DNS SAN")
 	}
 }
 

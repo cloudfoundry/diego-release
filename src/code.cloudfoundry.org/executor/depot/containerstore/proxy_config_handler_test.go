@@ -651,8 +651,8 @@ var _ = Describe("ProxyConfigHandler", func() {
 							},
 						},
 						MatchTypedSubjectAltNames: []*envoy_tls.SubjectAltNameMatcher{
-							{SanType: envoy_tls.SubjectAltNameMatcher_URI, Matcher: &envoy_matcher.StringMatcher{MatchPattern: &envoy_matcher.StringMatcher_Exact{Exact: "valid-alt-name-1"}}},
-							{SanType: envoy_tls.SubjectAltNameMatcher_URI, Matcher: &envoy_matcher.StringMatcher{MatchPattern: &envoy_matcher.StringMatcher_Exact{Exact: "valid-alt-name-2"}}},
+							{SanType: envoy_tls.SubjectAltNameMatcher_DNS, Matcher: &envoy_matcher.StringMatcher{MatchPattern: &envoy_matcher.StringMatcher_Exact{Exact: "valid-alt-name-1"}}},
+							{SanType: envoy_tls.SubjectAltNameMatcher_DNS, Matcher: &envoy_matcher.StringMatcher{MatchPattern: &envoy_matcher.StringMatcher_Exact{Exact: "valid-alt-name-2"}}},
 						},
 					},
 				}))

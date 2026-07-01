@@ -423,7 +423,7 @@ func generateSDSCAResourceSecret(container executor.Container, idCred Credential
 	var matchers []*envoy_tls.SubjectAltNameMatcher
 	for _, s := range subjectAltNames {
 		matchers = append(matchers, &envoy_tls.SubjectAltNameMatcher{
-			SanType: envoy_tls.SubjectAltNameMatcher_URI,
+			SanType: envoy_tls.SubjectAltNameMatcher_DNS,
 			Matcher: &envoy_matcher.StringMatcher{MatchPattern: &envoy_matcher.StringMatcher_Exact{Exact: s}},
 		})
 	}
