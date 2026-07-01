@@ -426,7 +426,7 @@ func (n *storeNode) createGardenContainer(logger lager.Logger, traceID string, i
 				Max: uint64(info.MaxPids),
 			},
 			CPU: garden.CPULimits{
-				Weight: uint64(float64(n.config.MaxCPUShares) * float64(info.CPUWeight) / 100.0),
+				LimitInShares: uint64(float64(n.config.MaxCPUShares) * float64(info.CPUWeight) / 100.0),
 			},
 		},
 		Properties: gardenProperties,

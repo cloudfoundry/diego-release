@@ -601,14 +601,10 @@ func (t *transformer) StepsRunner(
 	}
 
 	var cumulativeStep ifrit.Runner
-	if container.Setup == nil {
-		cumulativeStep = longLivedAction
+	if postSetup == nil {
+		cumulativeStep = steps.NewSerial([]ifrit.Runner{setup, longLivedAction})
 	} else {
-		if postSetup == nil {
-			cumulativeStep = steps.NewSerial([]ifrit.Runner{setup, longLivedAction})
-		} else {
-			cumulativeStep = steps.NewSerial([]ifrit.Runner{setup, postSetup, longLivedAction})
-		}
+		cumulativeStep = steps.NewSerial([]ifrit.Runner{setup, postSetup, longLivedAction})
 	}
 
 	return cumulativeStep, readinessChan, nil

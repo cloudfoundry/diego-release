@@ -514,7 +514,6 @@ var _ = Describe("Container Store", func() {
 					Expect(int(containerSpec.Limits.Pid.Max)).To(Equal(resource.MaxPids))
 
 					expectedCPUShares := uint64(float64(maxCPUShares) * float64(runReq.CPUWeight) / 100.0)
-					//lint:ignore SA1019 - we still specify this to make the deprecated logic work until we get rid of the code in garden
 					Expect(containerSpec.Limits.CPU.LimitInShares).To(Equal(expectedCPUShares))
 
 					expectedCPUWeight := uint64(resource.MemoryMB)
@@ -537,7 +536,6 @@ var _ = Describe("Container Store", func() {
 				Expect(int(containerSpec.Limits.Pid.Max)).To(Equal(resource.MaxPids))
 
 				expectedCPUShares := uint64(float64(maxCPUShares) * float64(runReq.CPUWeight) / 100.0)
-				//lint:ignore SA1019 - we still specify this to make the deprecated logic work until we get rid of the code in garden
 				Expect(containerSpec.Limits.CPU.LimitInShares).To(Equal(expectedCPUShares))
 				Expect(containerSpec.Limits.CPU.Weight).To(BeZero())
 			})
