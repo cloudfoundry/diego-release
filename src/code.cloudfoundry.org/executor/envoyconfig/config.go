@@ -9,13 +9,17 @@ import (
 	"strconv"
 	"strings"
 
+	"os"
+
 	"code.cloudfoundry.org/executor"
+	envoy_accesslog "github.com/envoyproxy/go-control-plane/envoy/config/accesslog/v3"
 	envoy_bootstrap "github.com/envoyproxy/go-control-plane/envoy/config/bootstrap/v3"
 	envoy_cluster "github.com/envoyproxy/go-control-plane/envoy/config/cluster/v3"
 	envoy_core "github.com/envoyproxy/go-control-plane/envoy/config/core/v3"
 	envoy_endpoint "github.com/envoyproxy/go-control-plane/envoy/config/endpoint/v3"
 	envoy_listener "github.com/envoyproxy/go-control-plane/envoy/config/listener/v3"
 	envoy_metrics "github.com/envoyproxy/go-control-plane/envoy/config/metrics/v3"
+	envoy_file_access_log "github.com/envoyproxy/go-control-plane/envoy/extensions/access_loggers/file/v3"
 	envoy_tcp_proxy "github.com/envoyproxy/go-control-plane/envoy/extensions/filters/network/tcp_proxy/v3"
 	envoy_tls "github.com/envoyproxy/go-control-plane/envoy/extensions/transport_sockets/tls/v3"
 	envoy_discovery "github.com/envoyproxy/go-control-plane/envoy/service/discovery/v3"
@@ -219,9 +223,19 @@ func generateProxyConfig(
 	if err != nil {
 		return nil, fmt.Errorf("generating listeners: %w", err)
 	}
+	adminAccessLogAny, err := anypb.New(&envoy_file_access_log.FileAccessLog{Path: os.DevNull})
+	if err != nil {
+		return nil, fmt.Errorf("creating admin access log config: %w", err)
+	}
 	config := &envoy_bootstrap.Bootstrap{
 		Admin: &envoy_bootstrap.Admin{
 			Address: envoyAddr("127.0.0.1", adminPort),
+			AccessLog: []*envoy_accesslog.AccessLog{
+				{
+					Name:       "envoy.access_loggers.file",
+					ConfigType: &envoy_accesslog.AccessLog_TypedConfig{TypedConfig: adminAccessLogAny},
+				},
+			},
 		},
 		StatsConfig: &envoy_metrics.StatsConfig{
 			StatsMatcher: &envoy_metrics.StatsMatcher{

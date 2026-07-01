@@ -29,6 +29,7 @@ import (
 	envoy_core "github.com/envoyproxy/go-control-plane/envoy/config/core/v3"
 	envoy_endpoint "github.com/envoyproxy/go-control-plane/envoy/config/endpoint/v3"
 	envoy_listener "github.com/envoyproxy/go-control-plane/envoy/config/listener/v3"
+	envoy_file_access_log "github.com/envoyproxy/go-control-plane/envoy/extensions/access_loggers/file/v3"
 	envoy_tcp_proxy "github.com/envoyproxy/go-control-plane/envoy/extensions/filters/network/tcp_proxy/v3"
 	envoy_tls "github.com/envoyproxy/go-control-plane/envoy/extensions/transport_sockets/tls/v3"
 	envoy_discovery "github.com/envoyproxy/go-control-plane/envoy/service/discovery/v3"
@@ -483,9 +484,12 @@ var _ = Describe("ProxyConfigHandler", func() {
 				Expect(yamlFileToProto(proxyConfigFile, &proxyConfig)).To(Succeed())
 
 				admin := proxyConfig.Admin
-				Expect(proto.Equal(admin, &envoy_bootstrap.Admin{
-					Address: envoyAddr("127.0.0.1", 61002),
-				})).To(BeTrue())
+				Expect(proto.Equal(admin.GetAddress(), envoyAddr("127.0.0.1", 61002))).To(BeTrue())
+				Expect(admin.GetAccessLog()).To(HaveLen(1))
+				Expect(admin.GetAccessLog()[0].GetName()).To(Equal("envoy.access_loggers.file"))
+				var adminFileAccessLog envoy_file_access_log.FileAccessLog
+				Expect(admin.GetAccessLog()[0].GetTypedConfig().UnmarshalTo(&adminFileAccessLog)).To(Succeed())
+				Expect(adminFileAccessLog.GetPath()).To(Equal(os.DevNull))
 				statsMatcher := proxyConfig.StatsConfig
 				Expect(fmt.Sprintf("%+v", statsMatcher.StatsMatcher.StatsMatcher)).To(Equal("&{RejectAll:true}"))
 
@@ -665,9 +669,12 @@ var _ = Describe("ProxyConfigHandler", func() {
 			Expect(yamlFileToProto(proxyConfigFile, &proxyConfig)).To(Succeed())
 
 			admin := proxyConfig.Admin
-			Expect(proto.Equal(admin, &envoy_bootstrap.Admin{
-				Address: envoyAddr("127.0.0.1", 61002),
-			})).To(BeTrue())
+			Expect(proto.Equal(admin.GetAddress(), envoyAddr("127.0.0.1", 61002))).To(BeTrue())
+			Expect(admin.GetAccessLog()).To(HaveLen(1))
+			Expect(admin.GetAccessLog()[0].GetName()).To(Equal("envoy.access_loggers.file"))
+			var adminFileAccessLog envoy_file_access_log.FileAccessLog
+			Expect(admin.GetAccessLog()[0].GetTypedConfig().UnmarshalTo(&adminFileAccessLog)).To(Succeed())
+			Expect(adminFileAccessLog.GetPath()).To(Equal(os.DevNull))
 			statsMatcher := proxyConfig.StatsConfig
 			Expect(fmt.Sprintf("%+v", statsMatcher.StatsMatcher.StatsMatcher)).To(Equal("&{RejectAll:true}"))
 
@@ -853,9 +860,12 @@ var _ = Describe("ProxyConfigHandler", func() {
 				Expect(yamlFileToProto(proxyConfigFile, &proxyConfig)).To(Succeed())
 
 				admin := proxyConfig.Admin
-				Expect(proto.Equal(admin, &envoy_bootstrap.Admin{
-					Address: envoyAddr("127.0.0.1", 61003),
-				})).To(BeTrue())
+				Expect(proto.Equal(admin.GetAddress(), envoyAddr("127.0.0.1", 61003))).To(BeTrue())
+				Expect(admin.GetAccessLog()).To(HaveLen(1))
+				Expect(admin.GetAccessLog()[0].GetName()).To(Equal("envoy.access_loggers.file"))
+				var adminFileAccessLog envoy_file_access_log.FileAccessLog
+				Expect(admin.GetAccessLog()[0].GetTypedConfig().UnmarshalTo(&adminFileAccessLog)).To(Succeed())
+				Expect(adminFileAccessLog.GetPath()).To(Equal(os.DevNull))
 				statsMatcher := proxyConfig.StatsConfig
 				Expect(fmt.Sprintf("%+v", statsMatcher.StatsMatcher.StatsMatcher)).To(Equal("&{RejectAll:true}"))
 
