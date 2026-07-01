@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"math"
-	"os"
 	"strconv"
 	"strings"
 
@@ -222,8 +221,7 @@ func generateProxyConfig(
 	}
 	config := &envoy_bootstrap.Bootstrap{
 		Admin: &envoy_bootstrap.Admin{
-			AccessLogPath: os.DevNull,
-			Address:       envoyAddr("127.0.0.1", adminPort),
+			Address: envoyAddr("127.0.0.1", adminPort),
 		},
 		StatsConfig: &envoy_metrics.StatsConfig{
 			StatsMatcher: &envoy_metrics.StatsMatcher{
@@ -408,16 +406,19 @@ func generateSDSCAResourceSecret(container executor.Container, idCred Credential
 	if err != nil {
 		return nil, err
 	}
-	var matchers []*envoy_matcher.StringMatcher
+	var matchers []*envoy_tls.SubjectAltNameMatcher
 	for _, s := range subjectAltNames {
-		matchers = append(matchers, &envoy_matcher.StringMatcher{MatchPattern: &envoy_matcher.StringMatcher_Exact{Exact: s}})
+		matchers = append(matchers, &envoy_tls.SubjectAltNameMatcher{
+			SanType: envoy_tls.SubjectAltNameMatcher_URI,
+			Matcher: &envoy_matcher.StringMatcher{MatchPattern: &envoy_matcher.StringMatcher_Exact{Exact: s}},
+		})
 	}
 	return &envoy_tls.Secret{
 		Name: "id-validation-context",
 		Type: &envoy_tls.Secret_ValidationContext{
 			ValidationContext: &envoy_tls.CertificateValidationContext{
-				TrustedCa:            &envoy_core.DataSource{Specifier: &envoy_core.DataSource_InlineString{InlineString: certs}},
-				MatchSubjectAltNames: matchers,
+				TrustedCa:                 &envoy_core.DataSource{Specifier: &envoy_core.DataSource_InlineString{InlineString: certs}},
+				MatchTypedSubjectAltNames: matchers,
 			},
 		},
 	}, nil

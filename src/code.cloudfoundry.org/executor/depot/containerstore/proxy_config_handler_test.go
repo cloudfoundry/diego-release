@@ -484,8 +484,7 @@ var _ = Describe("ProxyConfigHandler", func() {
 
 				admin := proxyConfig.Admin
 				Expect(proto.Equal(admin, &envoy_bootstrap.Admin{
-					AccessLogPath: os.DevNull,
-					Address:       envoyAddr("127.0.0.1", 61002),
+					Address: envoyAddr("127.0.0.1", 61002),
 				})).To(BeTrue())
 				statsMatcher := proxyConfig.StatsConfig
 				Expect(fmt.Sprintf("%+v", statsMatcher.StatsMatcher.StatsMatcher)).To(Equal("&{RejectAll:true}"))
@@ -647,9 +646,9 @@ var _ = Describe("ProxyConfigHandler", func() {
 								InlineString: inlinedCert,
 							},
 						},
-						MatchSubjectAltNames: []*envoy_matcher.StringMatcher{
-							{MatchPattern: &envoy_matcher.StringMatcher_Exact{Exact: "valid-alt-name-1"}},
-							{MatchPattern: &envoy_matcher.StringMatcher_Exact{Exact: "valid-alt-name-2"}},
+						MatchTypedSubjectAltNames: []*envoy_tls.SubjectAltNameMatcher{
+							{SanType: envoy_tls.SubjectAltNameMatcher_URI, Matcher: &envoy_matcher.StringMatcher{MatchPattern: &envoy_matcher.StringMatcher_Exact{Exact: "valid-alt-name-1"}}},
+							{SanType: envoy_tls.SubjectAltNameMatcher_URI, Matcher: &envoy_matcher.StringMatcher{MatchPattern: &envoy_matcher.StringMatcher_Exact{Exact: "valid-alt-name-2"}}},
 						},
 					},
 				}))
@@ -667,8 +666,7 @@ var _ = Describe("ProxyConfigHandler", func() {
 
 			admin := proxyConfig.Admin
 			Expect(proto.Equal(admin, &envoy_bootstrap.Admin{
-				AccessLogPath: os.DevNull,
-				Address:       envoyAddr("127.0.0.1", 61002),
+				Address: envoyAddr("127.0.0.1", 61002),
 			})).To(BeTrue())
 			statsMatcher := proxyConfig.StatsConfig
 			Expect(fmt.Sprintf("%+v", statsMatcher.StatsMatcher.StatsMatcher)).To(Equal("&{RejectAll:true}"))
@@ -856,8 +854,7 @@ var _ = Describe("ProxyConfigHandler", func() {
 
 				admin := proxyConfig.Admin
 				Expect(proto.Equal(admin, &envoy_bootstrap.Admin{
-					AccessLogPath: os.DevNull,
-					Address:       envoyAddr("127.0.0.1", 61003),
+					Address: envoyAddr("127.0.0.1", 61003),
 				})).To(BeTrue())
 				statsMatcher := proxyConfig.StatsConfig
 				Expect(fmt.Sprintf("%+v", statsMatcher.StatsMatcher.StatsMatcher)).To(Equal("&{RejectAll:true}"))

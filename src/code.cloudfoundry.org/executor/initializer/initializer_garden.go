@@ -35,12 +35,12 @@ import (
 )
 
 const (
-	PingGardenInterval             = time.Second
-	StalledMetricHeartbeatInterval = 5 * time.Second
-	StalledGardenDuration          = "StalledGardenDuration"
-	maxConcurrentUploads           = 5
-	metricsReportInterval          = 1 * time.Minute
-	megabytesToBytes               = 1024 * 1024
+	PingGardenInterval                = time.Second
+	StalledMetricHeartbeatInterval    = 5 * time.Second
+	StalledGardenDuration             = "StalledGardenDuration"
+	maxConcurrentUploads              = 5
+	metricsReportInterval             = 1 * time.Minute
+	megabytesToBytes                  = 1024 * 1024
 	defaultMinCachePartitionFreeBytes = 5 * 1024 * 1024 * 1024
 )
 

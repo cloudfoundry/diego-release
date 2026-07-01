@@ -601,7 +601,7 @@ func (t *transformer) StepsRunner(
 	}
 
 	var cumulativeStep ifrit.Runner
-	if setup == nil {
+	if container.Setup == nil {
 		cumulativeStep = longLivedAction
 	} else {
 		if postSetup == nil {
