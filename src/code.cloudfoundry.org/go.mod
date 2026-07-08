@@ -20,7 +20,7 @@ require (
 	code.cloudfoundry.org/certsplitter v0.79.0
 	code.cloudfoundry.org/cfhttp/v2 v2.85.0
 	code.cloudfoundry.org/clock v1.78.0
-	code.cloudfoundry.org/cnbapplifecycle v0.0.7
+	code.cloudfoundry.org/cnbapplifecycle v0.0.8
 	code.cloudfoundry.org/credhub-cli v0.0.0-20260629130111-5ee9a1ab59ab
 	code.cloudfoundry.org/debugserver v0.105.0
 	code.cloudfoundry.org/diego-logging-client v0.114.0
