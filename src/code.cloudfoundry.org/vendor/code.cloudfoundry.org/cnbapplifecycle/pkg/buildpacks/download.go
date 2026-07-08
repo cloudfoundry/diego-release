@@ -97,15 +97,20 @@ func removeDuplicates(buildpacks []buildpack.BuildModule) []buildpack.BuildModul
 
 func extractBuildpacks(buildpacks []buildpack.BuildModule, dir string) error {
 	for _, bp := range buildpacks {
-		reader, err := bp.Open()
+		err := extractBuildpack(bp, dir)
 		if err != nil {
-			return err
-		}
-		defer reader.Close()
-
-		if err := archive.ExtractWithBaseOverride(reader, dist.BuildpacksDir, dir); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+func extractBuildpack(bp buildpack.BuildModule, dir string) error {
+	reader, err := bp.Open()
+	if err != nil {
+		return err
+	}
+	defer reader.Close()
+
+	return archive.ExtractWithBaseOverride(reader, dist.BuildpacksDir, dir)
 }
