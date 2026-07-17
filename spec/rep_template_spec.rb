@@ -209,6 +209,27 @@ describe 'rep' do
       end
     end
 
+    context 'when "/" is included in disk_health_check_paths' do
+      before do
+        deployment_manifest_fragment['diego']['rep']['disk_health_check_paths'] = [
+          '/',
+          '/var/vcap/data/tmp'
+        ]
+      end
+
+      it 'does not mount "/" as an additional volume' do
+        volumes = YAML.safe_load(rendered_template).dig('processes', 0, 'additional_volumes')
+        expect(volumes.map { |v| v['path'] }).not_to include('/')
+      end
+
+      it 'still mounts the other configured paths' do
+        volumes = YAML.safe_load(rendered_template).dig('processes', 0, 'additional_volumes')
+        data_tmp = volumes.find { |v| v['path'] == '/var/vcap/data/tmp' }
+        expect(data_tmp).not_to be_nil
+        expect(data_tmp['writable']).to be true
+      end
+    end
+
     context 'when a single disk_health_check_path is configured' do
       before do
         deployment_manifest_fragment['diego']['rep']['disk_health_check_paths'] = ['/var/vcap/data']
