@@ -17,3 +17,7 @@ processes:
     - path : /var/vcap/data/garden
       writable: true
     - path: <%= p("diego.rep.extra_root_fs_dir") %>
+<% p("diego.rep.disk_health_check_paths").each do |path| -%>
+    - path: <%= path %>
+      writable: true
+<% end -%>

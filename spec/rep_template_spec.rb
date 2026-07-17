@@ -161,4 +161,66 @@ describe 'rep' do
       end
     end
   end
+
+  describe 'bpm.yml.erb' do
+    let(:template) { job.template('config/bpm.yml') }
+
+    def additional_volume_paths(rendered)
+      YAML.safe_load(rendered).dig('processes', 0, 'additional_volumes')
+          .map { |v| v['path'] }
+    end
+
+    context 'when disk_health_check_paths is empty (default)' do
+      it 'adds no extra additional_volumes entries for disk health check paths' do
+        paths = additional_volume_paths(rendered_template)
+        # The only volumes present are the always-present ones; none of them
+        # should come from disk_health_check_paths (which defaults to []).
+        expect(paths).not_to be_empty   # guard: other volumes still present
+        deployment_manifest_fragment['diego']['rep']['disk_health_check_paths'] = []
+        paths_explicit_empty = additional_volume_paths(template.render(deployment_manifest_fragment))
+        expect(paths_explicit_empty).to eq(paths)
+      end
+    end
+
+    context 'when disk_health_check_paths is configured' do
+      before do
+        deployment_manifest_fragment['diego']['rep']['disk_health_check_paths'] = [
+          '/var/vcap/data/tmp',
+          '/var/vcap/store'
+        ]
+      end
+
+      it 'mounts each path as a writable additional_volume' do
+        volumes = YAML.safe_load(rendered_template).dig('processes', 0, 'additional_volumes')
+        check_volumes = volumes.select { |v| ['/var/vcap/data/tmp', '/var/vcap/store'].include?(v['path']) }
+
+        expect(check_volumes.map { |v| v['path'] }).to contain_exactly('/var/vcap/data/tmp', '/var/vcap/store')
+        check_volumes.each do |vol|
+          expect(vol['writable']).to be true
+        end
+      end
+
+      it 'does not affect the other always-present additional_volumes entries' do
+        volumes = YAML.safe_load(rendered_template).dig('processes', 0, 'additional_volumes')
+        paths = volumes.map { |v| v['path'] }
+
+        expect(paths).to include('/var/vcap/data/voldrivers')
+        expect(paths).to include('/var/vcap/data/garden')
+      end
+    end
+
+    context 'when a single disk_health_check_path is configured' do
+      before do
+        deployment_manifest_fragment['diego']['rep']['disk_health_check_paths'] = ['/var/vcap/data']
+      end
+
+      it 'mounts that single path as writable' do
+        volumes = YAML.safe_load(rendered_template).dig('processes', 0, 'additional_volumes')
+        data_vol = volumes.find { |v| v['path'] == '/var/vcap/data' }
+
+        expect(data_vol).not_to be_nil
+        expect(data_vol['writable']).to be true
+      end
+    end
+  end
 end
