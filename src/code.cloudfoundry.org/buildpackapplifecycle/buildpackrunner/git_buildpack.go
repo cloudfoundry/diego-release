@@ -40,7 +40,7 @@ func GitClone(repo url.URL, destination string) error {
 			}, branch)
 
 		if err != nil {
-			return fmt.Errorf("Failed to clone git repository at %s", gitUrl)
+			return fmt.Errorf("Failed to clone git repository at %s: %w", gitUrl, err)
 		}
 	}
 
