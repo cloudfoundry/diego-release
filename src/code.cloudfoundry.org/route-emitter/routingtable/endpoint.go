@@ -94,6 +94,7 @@ type ExternalEndpointInfo struct {
 	TLSEnabled           bool
 	SniHostname          string
 	TerminateFrontendTLS bool
+	EnableBackendMTLS    bool
 }
 
 func (info ExternalEndpointInfo) Hash() interface{} {
@@ -133,6 +134,7 @@ func (info ExternalEndpointInfo) MessageFor(e Endpoint, directInstanceRoute, _ b
 		info.TerminateFrontendTLS,
 		"",
 	)
+	mapping.EnableBackendMTLS = info.EnableBackendMTLS
 	if e.IsDirectInstanceRoute(directInstanceRoute) {
 		mapping = tcpmodels.NewTcpRouteMapping(
 			info.RouterGroupGUID,
@@ -148,6 +150,7 @@ func (info ExternalEndpointInfo) MessageFor(e Endpoint, directInstanceRoute, _ b
 			info.TerminateFrontendTLS,
 			"",
 		)
+		mapping.EnableBackendMTLS = info.EnableBackendMTLS
 	}
 	return nil, &mapping, nil
 }

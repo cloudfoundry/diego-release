@@ -477,6 +477,7 @@ func (g tcpRoutesGenerator) RoutesFrom(lrp *models.DesiredLRP) map[RoutingKey][]
 			Port:                 route.ExternalPort,
 			TLSEnabled:           g.tlsEnabled,
 			TerminateFrontendTLS: route.TerminateFrontendTLS,
+			EnableBackendMTLS:    route.EnableBackendMTLS,
 		}
 		if route.SniHostname != nil {
 			info.SniHostname = *route.SniHostname

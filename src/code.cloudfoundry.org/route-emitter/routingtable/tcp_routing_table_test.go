@@ -124,6 +124,35 @@ var _ = Describe("TCPRoutingTable", func() {
 		})
 	})
 
+	Context("when TCP route specifies enable_backend_mtls", func() {
+		BeforeEach(func() {
+			modificationTag = &models.ModificationTag{Epoch: "abc", Index: 1}
+			routingTable = routingtable.NewRoutingTable(false, true, fakeMetronClient)
+			sni := "sni-hostname"
+			sniTcpRoutes := tcp_routes.TCPRoutes{
+				{
+					RouterGroupGuid:      "router-group-guid",
+					ExternalPort:         61000,
+					ContainerPort:        8080,
+					SniHostname:          &sni,
+					TerminateFrontendTLS: true,
+					EnableBackendMTLS:    true,
+				},
+			}
+			beforeLRP := getDesiredLRP("process-guid-sni", "log-guid-sni", sniTcpRoutes, modificationTag)
+			_, _ = routingTable.SetRoutes(logger, nil, beforeLRP)
+		})
+
+		It("emits TcpRouteMapping with EnableBackendMTLS set on AddEndpoint", func() {
+			actual := getActualLRP("process-guid-sni", "instance-guid-sni", "some-ip-1", "container-ip-1", 62004, 8080, 61443, 5443, modificationTag)
+			events, _ := routingTable.AddEndpoint(logger, actual)
+			sni := "sni-hostname"
+			expected := tcpmodels.NewTcpRouteMapping("router-group-guid", 61000, "some-ip-1", 62004, 61443, "instance-guid-sni", &sni, nil, 0, tcpmodels.ModificationTag{}, true, "")
+			expected.EnableBackendMTLS = true
+			Expect(events.Registrations).To(ConsistOf(expected))
+		})
+	})
+
 	Context("when no entry exist for route", func() {
 		BeforeEach(func() {
 			routingTable = routingtable.NewRoutingTable(false, false, fakeMetronClient)

@@ -349,6 +349,7 @@ var _ = Describe("LRP Utils", func() {
 				TLSEnabled:           true,
 				SniHostname:          "sni-hostname",
 				TerminateFrontendTLS: true,
+				EnableBackendMTLS:    true,
 			}
 		})
 
@@ -362,6 +363,18 @@ var _ = Describe("LRP Utils", func() {
 			Expect(mapping.InstanceId).To(Equal("instance-guid"))
 			Expect(*mapping.SniHostname).To(Equal("sni-hostname"))
 			Expect(mapping.TerminateFrontendTLS).To(BeTrue())
+			Expect(mapping.EnableBackendMTLS).To(BeTrue())
+		})
+
+		Context("when EnableBackendMTLS is not set", func() {
+			BeforeEach(func() {
+				externalEndpointInfo.EnableBackendMTLS = false
+			})
+
+			It("defaults EnableBackendMTLS to false on the TcpRouteMapping", func() {
+				_, mapping, _ := externalEndpointInfo.MessageFor(endpoint, false, false)
+				Expect(mapping.EnableBackendMTLS).To(BeFalse())
+			})
 		})
 	})
 })
