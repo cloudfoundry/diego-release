@@ -71,6 +71,17 @@ describe 'rep' do
   describe 'rep.json.erb' do
     let(:template) { job.template('config/rep.json') }
     
+    context 'lock_ttl' do
+      it 'defaults to 15s' do
+        expect(JSON.parse(rendered_template)['lock_ttl']).to eq('15s')
+      end
+
+      it 'is configurable' do
+        deployment_manifest_fragment['diego']['rep']['locket']['lock_ttl'] = 30
+        expect(JSON.parse(rendered_template)['lock_ttl']).to eq('30s')
+      end
+    end
+
     context 'check if locket keepalive time is bigger than the timeout' do
       it 'fails if the keepalive time is bigger than timeout' do
         deployment_manifest_fragment['diego']['rep']['locket']['client_keepalive_time'] = 23
