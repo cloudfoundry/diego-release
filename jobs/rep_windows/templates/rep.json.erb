@@ -32,7 +32,7 @@
   config = {
     communication_timeout: p("diego.rep.bbs.request_timeout"),
     lock_retry_interval: "5s",
-    lock_ttl: "15s",
+    lock_ttl: "#{p("diego.rep.locket.lock_ttl")}s",
     session_name: "rep",
 
     reserved_expiration_time: "1m",
