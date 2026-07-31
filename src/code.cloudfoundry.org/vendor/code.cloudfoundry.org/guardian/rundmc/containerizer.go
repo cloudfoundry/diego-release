@@ -1,4 +1,5 @@
-//lint:file-ignore SA1019 LimitInShares is deprecated but still used until Weight migration completes
+//lint:file-ignore SA1019 - we still specify LimitInShares to make the deprecated logic work until we get rid of the code in garden
+
 package rundmc
 
 import (

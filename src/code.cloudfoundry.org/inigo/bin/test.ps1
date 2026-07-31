@@ -88,7 +88,6 @@ Setup-DnsNames
 Setup-TempDirContainerAccess
 
 $env:CODE_CLOUDFOUNDRY_ORG_MODULE="$env:DIEGO_RELEASE_PATH/src/code.cloudfoundry.org"
-$env:GUARDIAN_MODULE="$env:DIEGO_RELEASE_PATH/src/guardian"
 $env:ROUTER_GOPATH="$env:ROUTING_RELEASE_PATH\src\code.cloudfoundry.org"
 $env:ROUTING_API_GOPATH=$env:ROUTER_GOPATH
 $env:APP_LIFECYCLE_GOPATH=${env:CODE_CLOUDFOUNDRY_ORG_MODULE}
@@ -101,7 +100,7 @@ $env:REP_GOPATH=${env:CODE_CLOUDFOUNDRY_ORG_MODULE}
 $env:ROUTE_EMITTER_GOPATH=${env:CODE_CLOUDFOUNDRY_ORG_MODULE}
 $env:SSHD_GOPATH=${env:CODE_CLOUDFOUNDRY_ORG_MODULE}
 $env:SSH_PROXY_GOPATH=${env:CODE_CLOUDFOUNDRY_ORG_MODULE}
-$env:GARDEN_GOPATH=${env:GUARDIAN_MODULE}
+$env:GARDEN_GOPATH=${env:CODE_CLOUDFOUNDRY_ORG_MODULE}
 
 # used for routing to apps; same logic that Garden uses.
 $ipAddressObject = Find-NetRoute -RemoteIPAddress "8.8.8.8" | Select-Object IpAddress
