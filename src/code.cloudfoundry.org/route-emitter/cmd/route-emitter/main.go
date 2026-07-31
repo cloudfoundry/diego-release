@@ -173,7 +173,7 @@ func main() {
 			lockIdentifier,
 			locket.DefaultSessionTTLInSeconds,
 			clock,
-			locket.SQLRetryInterval,
+			locket.RetryInterval,
 		)})
 
 		members = append(members,

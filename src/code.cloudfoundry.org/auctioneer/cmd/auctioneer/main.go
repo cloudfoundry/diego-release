@@ -89,7 +89,7 @@ func main() {
 		lockIdentifier,
 		locket.DefaultSessionTTLInSeconds,
 		clock,
-		locket.SQLRetryInterval,
+		locket.RetryInterval,
 	)})
 
 	var lock ifrit.Runner
