@@ -77,6 +77,14 @@
     raise "The locket client keepalive time property should not be larger than the timeout"
   end
 
+  # BBS health check.
+  if p("diego.auctioneer.enable_bbs_health_check")
+    config[:enable_bbs_health_check] = true
+    config[:bbs_health_check_interval] = p("diego.auctioneer.bbs_health_check_interval")
+    config[:bbs_health_check_timeout] = p("diego.auctioneer.bbs_health_check_timeout")
+    config[:bbs_health_check_failure_threshold] = p("diego.auctioneer.bbs_health_check_failure_threshold")
+  end
+
   config[:loggregator]={}
   config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
   config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"

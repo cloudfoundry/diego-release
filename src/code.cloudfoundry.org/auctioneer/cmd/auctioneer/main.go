@@ -129,6 +129,25 @@ func main() {
 		{Name: "auction-server", Runner: auctionServer},
 	}
 
+	// Optional BBS-connectivity health check. When enabled,
+	// the auctioneer exits on N consecutive failed pings to BBS so
+	// monit can restart it and its Locket lock can be picked up by a
+	// healthy-AZ standby. See bbs_health_check_runner.go.
+	if cfg.EnableBBSHealthCheck {
+		bbsHealthCheck := newBBSHealthCheckRunner(
+			logger,
+			initializeBBSClient(logger, cfg),
+			clock,
+			time.Duration(cfg.BBSHealthCheckInterval),
+			time.Duration(cfg.BBSHealthCheckTimeout),
+			cfg.BBSHealthCheckFailureThreshold,
+		)
+		members = append(members, grouper.Member{
+			Name:   "bbs-health-check",
+			Runner: bbsHealthCheck,
+		})
+	}
+
 	if cfg.DebugAddress != "" {
 		members = append(grouper.Members{
 			{Name: "debug-server", Runner: debugserver.Runner(cfg.DebugAddress, reconfigurableSink)},

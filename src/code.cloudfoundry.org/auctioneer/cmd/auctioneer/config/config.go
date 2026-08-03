@@ -37,6 +37,19 @@ type AuctioneerConfig struct {
 	StartingContainerCountMaximum int                   `json:"starting_container_count_maximum,omitempty"`
 	StartingContainerWeight       float64               `json:"starting_container_weight,omitempty"`
 	UUID                          string                `json:"uuid,omitempty"`
+
+	// BBS connectivity health check.
+	// When EnableBBSHealthCheck is true, a runner probes BBS every
+	// BBSHealthCheckInterval with per-probe timeout
+	// BBSHealthCheckTimeout. After BBSHealthCheckFailureThreshold
+	// consecutive failures the auctioneer exits, releasing its
+	// Locket lock cleanly via SIGTERM so a healthy peer can
+	// acquire leadership.
+	EnableBBSHealthCheck           bool                  `json:"enable_bbs_health_check,omitempty"`
+	BBSHealthCheckInterval         durationjson.Duration `json:"bbs_health_check_interval,omitempty"`
+	BBSHealthCheckTimeout          durationjson.Duration `json:"bbs_health_check_timeout,omitempty"`
+	BBSHealthCheckFailureThreshold int                   `json:"bbs_health_check_failure_threshold,omitempty"`
+
 	debugserver.DebugServerConfig
 	lagerflags.LagerConfig
 	locket.ClientLocketConfig

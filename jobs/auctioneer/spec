@@ -89,6 +89,27 @@ properties:
     description: "Timeout in seconds to receive a response to the keepalive ping. If a response is not received within this time, the locket client will reconnect to another server."
     default: 22
 
+  # BBS-connectivity health check for the auctioneer. Mirrors the
+  # semantics of diego.bbs.enable_db_health_check but for the auction
+  # path. When enabled, the auctioneer exits on N consecutive failed
+  # BBS Ping()s so monit can restart it and its Locket lock can be
+  # picked up by a healthy standby. Fixes the pathology where a
+  # DNS-partitioned auctioneer retains its Locket lock indefinitely
+  # because renewals travel a persistent gRPC connection while auction
+  # work needs fresh DNS. See bbs_health_check_runner.go.
+  diego.auctioneer.enable_bbs_health_check:
+    description: "Enable a runner that probes BBS and exits the auctioneer on repeated failures, releasing the Locket lock cleanly for standby pickup."
+    default: false
+  diego.auctioneer.bbs_health_check_interval:
+    description: "Interval between BBS health-check probes."
+    default: "10s"
+  diego.auctioneer.bbs_health_check_timeout:
+    description: "Per-probe timeout for BBS health-check pings."
+    default: "5s"
+  diego.auctioneer.bbs_health_check_failure_threshold:
+    description: "Number of consecutive failed probes before the auctioneer exits."
+    default: 3
+
   loggregator.v2_api_port:
     description: "Local metron agent gRPC port"
     default: 3458
