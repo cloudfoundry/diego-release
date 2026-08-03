@@ -1,0 +1,16 @@
+#!/bin/bash -e
+
+run_dir=/var/vcap/sys/run/route_emitter
+log_dir=/var/vcap/sys/log/route_emitter
+conf_dir=/var/vcap/jobs/route_emitter/config
+
+pidfile=$run_dir/route_emitter.pid
+
+# Enable maximum OS thread concurrency
+export GOMAXPROCS=$(nproc)
+
+/var/vcap/packages/route_emitter/bin/route-emitter \
+  -config=$conf_dir/route_emitter.json \
+  2> >(tee -a $log_dir/route_emitter.stderr.log | logger -p user.error -t vcap.route-emitter) \
+  1> >(tee -a $log_dir/route_emitter.stdout.log | logger -p user.info -t vcap.route-emitter) & echo $! > $pidfile
+

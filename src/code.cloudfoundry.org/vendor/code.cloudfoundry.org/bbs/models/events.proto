@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "actual_lrp.proto";
+import "desired_lrp.proto";
+import "task.proto";
+import "modification_tag.proto";
+
+message ActualLRPCreatedEvent  {
+  option deprecated = true;
+  ActualLRPGroup actual_lrp_group = 1;
+}
+
+message ActualLRPChangedEvent {
+  option deprecated = true;
+  ActualLRPGroup before = 1;
+  ActualLRPGroup after = 2;
+}
+
+message ActualLRPRemovedEvent {
+  option deprecated = true;
+  ActualLRPGroup actual_lrp_group = 1;
+}
+
+message ActualLRPInstanceCreatedEvent  {
+  ActualLRP actual_lrp = 1;
+  string trace_id = 2 [(gogoproto.jsontag) =  "trace_id"];
+}
+
+message ActualLRPInfo {
+  ActualLRPNetInfo actual_lrp_net_info = 3 [(gogoproto.nullable) = false, (gogoproto.jsontag) = "", (gogoproto.embed) = true];
+  int32 crash_count = 4 [(gogoproto.jsontag) =  "crash_count"];
+  string crash_reason = 5;
+  string state = 6 [(gogoproto.jsontag) =  "state"];
+  string placement_error = 7;
+  int64 since = 8 [(gogoproto.jsontag) =  "since"];
+  ModificationTag modification_tag = 9 [(gogoproto.nullable) = false,(gogoproto.jsontag) = "modification_tag"];
+  ActualLRP.Presence presence = 10 [(gogoproto.jsontag) = "presence"];
+  oneof optional_routable {
+    bool Routable = 11;
+  }
+  string availability_zone = 12 [(gogoproto.jsontag) = "availability_zone"];
+}
+
+message ActualLRPInstanceChangedEvent {
+  ActualLRPKey actual_lrp_key                  = 1 [(gogoproto.nullable) = false, (gogoproto.jsontag) = "", (gogoproto.embed) = true];
+  ActualLRPInstanceKey actual_lrp_instance_key = 2 [(gogoproto.nullable) = false, (gogoproto.jsontag) = "", (gogoproto.embed) = true];
+  ActualLRPInfo before                         = 3;
+  ActualLRPInfo after                          = 4;
+  string trace_id                              = 5 [(gogoproto.jsontag) =  "trace_id"];
+}
+
+message ActualLRPInstanceRemovedEvent {
+  ActualLRP actual_lrp = 1;
+  string trace_id = 2 [(gogoproto.jsontag) =  "trace_id"];
+}
+
+message DesiredLRPCreatedEvent {
+  DesiredLRP desired_lrp = 1;
+  string trace_id = 2 [(gogoproto.jsontag) =  "trace_id"];
+}
+
+message DesiredLRPChangedEvent {
+  DesiredLRP before = 1;
+  DesiredLRP after = 2;
+  string trace_id = 3 [(gogoproto.jsontag) =  "trace_id"];
+}
+
+message DesiredLRPRemovedEvent {
+  DesiredLRP desired_lrp = 1;
+  string trace_id = 2 [(gogoproto.jsontag) =  "trace_id"];
+}
+
+message ActualLRPCrashedEvent {
+  ActualLRPKey actual_lrp_key = 1 [(gogoproto.nullable) = false, (gogoproto.jsontag) = "", (gogoproto.embed) = true];
+  ActualLRPInstanceKey actual_lrp_instance_key = 2 [(gogoproto.nullable) = false, (gogoproto.jsontag) = "", (gogoproto.embed) = true];
+  int32 crash_count = 3 [(gogoproto.jsontag) =  "crash_count"];
+  string crash_reason = 4;
+  int64 since = 5 [(gogoproto.jsontag) =  "since"];
+}
+
+message EventsByCellId {
+   string cell_id  = 1 [(gogoproto.jsontag) =  "cell_id"];
+}
+
+message TaskCreatedEvent {
+  Task task = 1;
+}
+
+message TaskChangedEvent {
+  Task before = 1;
+  Task after = 2;
+}
+
+message TaskRemovedEvent {
+  Task task = 1;
+}

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+gitrepo=$(cd $(dirname $0)/.. && pwd)
+
+echo "Generating updated README.md..."
+erb $gitrepo/README.md.erb > README.md
+
+echo "Staging updated README.md..."
+git add $gitrepo/README.md

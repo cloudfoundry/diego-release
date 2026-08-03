@@ -1,0 +1,244 @@
+<%=
+  conf_dir = "/var/vcap/jobs/#{p("diego.rep.job_name")}/config"
+  tmp_dir = "/var/vcap/data/rep/tmp"
+  trusted_certs_dir = "/var/vcap/data/rep/shared/garden/trusted_certs"
+  instance_identity_dir = "/var/vcap/data/rep/shared/garden/instance_identity"
+  download_cache_dir= "/var/vcap/data/rep/shared/garden/download_cache"
+  volume_mounted_files = "/var/vcap/data/rep/shared/garden/volume_mounted_files"
+
+  zone = spec.az
+  if_p("diego.rep.zone") do |value|
+    zone = value
+  end
+
+  def parse_ip (ip, var_name)
+    unless ip.empty?
+      ip = ip.split(":")[0]
+	begin
+	  parsed = IPAddr.new ip
+	rescue  => e
+	  raise "Invalid #{var_name} '#{ip}': #{e}"
+	end
+    end
+  end
+
+  parse_ip(p('diego.rep.debug_addr'), 'diego.rep.debug_addr')
+  parse_ip(p('diego.rep.listen_addr_admin'), 'diego.rep.listen_addr_admin')
+  parse_ip(p('diego.rep.listen_addr_securable'), 'diego.rep.listen_addr_securable')
+  if p("diego.executor.garden.network") == "tcp"
+    parse_ip(p('diego.executor.garden.address'), 'diego.executor.garden.address')
+  end
+
+  config = {
+    communication_timeout: p("diego.rep.bbs.request_timeout"),
+    lock_retry_interval: "5s",
+    lock_ttl: "#{p("diego.rep.locket.lock_ttl")}s",
+    session_name: "rep",
+
+    reserved_expiration_time: "1m",
+    container_reap_interval: "1m",
+    container_owner_name: "executor",
+    healthcheck_container_owner_name: "executor-health-check",
+    garden_healthcheck_emission_interval: "30s",
+
+    envoy_config_reload_duration: p("containers.proxy.configuration_reload_duration"),
+    envoy_drain_timeout: "15m",
+
+    advertise_domain: p("diego.rep.advertise_domain"),
+    auto_disk_capacity_overhead_mb: p("diego.executor.auto_disk_capacity_overhead_mb"),
+    cache_path: "#{download_cache_dir}",
+    cell_id: spec.id,
+    cell_index: spec.index,
+    cell_registrations_locket_enabled: p("cell_registrations.locket.enabled"),
+    container_inode_limit: p("diego.executor.container_inode_limit"),
+    container_max_cpu_shares: p("diego.executor.container_max_cpu_shares"),
+    set_cpu_weight: p("containers.set_cpu_weight"),
+    create_work_pool_size: p("diego.executor.create_work_pool_size"),
+    debug_address: p("diego.rep.debug_addr"),
+    delete_work_pool_size: p("diego.executor.delete_work_pool_size"),
+    disk_mb: p("diego.executor.disk_capacity_mb").to_s,
+    declarative_healthcheck_path: p("declarative_healthcheck_path"),
+    enable_healthcheck_metrics: p("enable_healthcheck_metrics"),
+    enable_container_proxy: true,
+    container_proxy_require_and_verify_client_certs: p("containers.proxy.require_and_verify_client_certificates"),
+    container_proxy_trusted_ca_certs: p("containers.proxy.trusted_ca_certificates"),
+    container_proxy_verify_subject_alt_name: p("containers.proxy.verify_subject_alt_name"),
+    container_proxy_ads_addresses: p("containers.proxy.ads_addresses"),
+    proxy_healthcheck_interval: p("diego.executor.proxy_healthcheck_interval"),
+    enable_container_proxy_healthcheck: p("diego.executor.enable_container_proxy_healthcheck"),
+    advertise_preference_for_instance_address: p("diego.rep.advertise_preference_for_instance_address"),
+    enable_unproxied_port_mappings: p("containers.proxy.enable_unproxied_port_mappings"),
+    proxy_memory_allocation_mb: p("containers.proxy.additional_memory_allocation_mb"),
+    proxy_enable_http2: p("containers.proxy.enable_http2"),
+    container_proxy_path: "/var/vcap/packages/envoy_windows",
+    container_proxy_config_path: "/var/vcap/data/rep/shared/garden/proxy_config",
+    evacuation_polling_interval: "#{p("diego.rep.evacuation_polling_interval_in_seconds")}s",
+    evacuation_timeout: "#{p("diego.rep.evacuation_timeout_in_seconds")}s",
+    extra_root_fs_dir: "#{p("diego.rep.extra_root_fs_dir")}",
+    garden_addr: p("diego.executor.garden.address"),
+    garden_healthcheck_command_retry_pause: p("diego.executor.garden_healthcheck.command_retry_pause"),
+    garden_healthcheck_interval: p("diego.executor.garden_healthcheck.interval"),
+    garden_healthcheck_process_path: p("diego.executor.garden_healthcheck.process.path"),
+    garden_healthcheck_process_user: p("diego.executor.garden_healthcheck.process.user"),
+    garden_healthcheck_timeout: p("diego.executor.garden_healthcheck.timeout"),
+    garden_network: p("diego.executor.garden.network"),
+    graceful_shutdown_interval: "#{p("containers.graceful_shutdown_interval_in_seconds")}s",
+    healthcheck_work_pool_size: p("diego.executor.healthcheck_work_pool_size"),
+    healthy_monitoring_interval: "#{p("diego.executor.healthy_monitoring_interval_in_seconds")}s",
+    listen_addr: p("diego.rep.listen_addr_admin"),
+    listen_addr_securable: p("diego.rep.listen_addr_securable"),
+    log_level: p("diego.rep.log_level"),
+    log_rate_limit_exceeded_report_interval: "5m",
+    max_cache_size_in_bytes: p("diego.executor.max_cache_size_in_bytes"),
+    max_concurrent_downloads: p("diego.executor.max_concurrent_downloads"),
+    memory_mb: p("diego.executor.memory_capacity_mb").to_s,
+    metrics_work_pool_size: p("diego.executor.metrics_work_pool_size"),
+    cell_annotations: p("diego.rep.cell_annotations"),
+    optional_placement_tags: p("diego.rep.optional_placement_tags"),
+    placement_tags: p("diego.rep.placement_tags"),
+    polling_interval: "#{p("diego.rep.polling_interval_in_seconds")}s",
+    preloaded_root_fs: p("diego.rep.preloaded_rootfses"),
+    sidecar_root_fs_path: p("diego.rep.sidecar_rootfs_path"),
+    sidecar_root_fs: p("diego.rep.sidecar_rootfs"),
+    read_work_pool_size: p("diego.executor.read_work_pool_size"),
+    skip_cert_verify: p("diego.ssl.skip_cert_verify"),
+    supported_providers: p("diego.rep.rootfs_providers"),
+    temp_dir: "#{tmp_dir}",
+    unhealthy_monitoring_interval: "#{p("diego.executor.unhealthy_monitoring_interval_in_seconds")}s",
+    use_schedulable_disk_size: p("diego.executor.use_schedulable_disk_size"),
+    zone: "#{zone}",
+    report_interval: "1m",
+    max_data_string_length: p("logging.max_data_string_length"),
+    max_log_lines_per_second: p("diego.executor.max_log_lines_per_second"),
+    volume_mounted_files: "#{volume_mounted_files}",
+    declarative_healthcheck_default_timeout: p("diego.executor.declarative_healthcheck_default_timeout"),
+  }
+
+  if p("containers.graceful_shutdown_interval_in_seconds") < 10
+    raise "graceful_shutdown_interval_in_seconds cannot be less than 10"
+  end
+
+  if config[:proxy_memory_allocation_mb] < 0
+    raise "additional_memory_allocation_mb cannot be negative"
+  end
+
+  config[:min_cache_partition_free_bytes] = p("diego.executor.min_cache_partition_free_bytes")
+
+  if_p("diego.executor.volman.driver_paths") do |value|
+    config[:volman_driver_paths] = value
+  end
+
+  if_p("diego.rep.bbs.client_session_cache_size") do |value|
+    config[:bbs_client_session_cache_size] = value
+  end
+
+  if_p("diego.rep.bbs.max_idle_conns_per_host") do |value|
+    config[:bbs_max_idle_conns_per_host] = value
+  end
+
+  if_p("containers.trusted_ca_certificates") do |value|
+    config[:trusted_system_certificates_path] = "#{trusted_certs_dir}"
+  end
+
+  if_p("diego.executor.garden_healthcheck.process.dir") do |value|
+    config[:garden_healthcheck_process_dir] = value
+  end
+
+  if_p("diego.executor.garden_healthcheck.process.args") do |value|
+    config[:garden_healthcheck_process_args] = value.split(',').map(&:strip)
+  end
+
+  if_p("diego.executor.garden_healthcheck.process.env") do |value|
+    config[:garden_healthcheck_process_env] = value.split(',').map(&:strip)
+  end
+
+  if_p("diego.executor.post_setup_user") do |value|
+    config[:post_setup_user] = value
+  end
+
+  if_p("diego.executor.post_setup_hook") do |value|
+    config[:post_setup_hook] = value
+  end
+
+  if_p("diego.executor.container_metrics_report_interval") do |value|
+    config[:container_metrics_report_interval] = value
+  end
+
+  if_p("diego.rep.locket.api_location") do |value|
+    config[:locket_address] = value
+  end
+
+  if_p("diego.rep.locket.client_keepalive_time") do |value|
+    config[:locket_client_keepalive_time] = value
+  end
+
+  if_p("diego.rep.locket.client_keepalive_timeout") do |value|
+    config[:locket_client_keepalive_timeout] = value
+  end
+
+  if config[:locket_client_keepalive_time] > config[:locket_client_keepalive_timeout] 
+    raise "The locket client keepalive time property should not be larger than the timeout"
+  end
+
+  config[:locket_ca_cert_file]     = "#{conf_dir}/certs/tls_ca.crt"
+  config[:locket_client_cert_file] = "#{conf_dir}/certs/tls.crt"
+  config[:locket_client_key_file]  = "#{conf_dir}/certs/tls.key"
+  config[:path_to_tls_ca_cert]     = "#{conf_dir}/certs/tls_ca.crt"
+  config[:path_to_tls_cert]        = "#{conf_dir}/certs/tls.crt"
+  config[:path_to_tls_key]         = "#{conf_dir}/certs/tls.key"
+  config[:ca_cert_file]            = "#{conf_dir}/certs/tls_ca.crt"
+  config[:cert_file]               = "#{conf_dir}/certs/tls.crt"
+  config[:key_file]                = "#{conf_dir}/certs/tls.key"
+
+  config[:bbs_address] = "https://#{p("diego.rep.bbs.api_location")}"
+
+  begin
+      p("diego.executor.instance_identity_ca_cert")
+      p("diego.executor.instance_identity_key")
+  rescue
+      raise '"diego.executor.instance_identity_ca_cert" and "diego.executor.instance_identity_key" must both be set'
+  end
+
+  if config[:container_proxy_require_and_verify_client_certs]
+      value = p("containers.proxy.trusted_ca_certificates")
+      if not value.is_a?(Array) or value.empty?
+	raise '"when containers.proxy.require_and_verify_client_certificates is true, "container.proxy.trusted_ca_certificates" must be set to an array of trusted certificates'
+      end
+  end
+
+  if_p("diego.executor.instance_identity_validity_period_in_hours") do |validity_period|
+    if !(validity_period < 1)
+      config[:instance_identity_ca_path] = "#{conf_dir}/certs/rep/instance_identity.crt"
+      config[:instance_identity_private_key_path] = "#{conf_dir}/certs/rep/instance_identity.key"
+      config[:instance_identity_cred_dir] = instance_identity_dir
+      config[:instance_identity_validity_period] = "#{validity_period}h"
+    elsif validity_period < 1
+      raise '"diego.executor.instance_identity_validity_period_in_hours" should be a positive integer'
+    end
+  end
+
+  config[:time_format] = "rfc3339"
+
+  if_p("containers.layering_mode") do |mode|
+    if mode != "single-layer" and mode != "two-layer"
+      raise "containers.layering_mode should be one of: 'single-layer' or 'two-layer'"
+    end
+    config[:layering_mode] = mode
+  end
+
+  config[:loggregator]={}
+  config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
+  config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"
+  config[:loggregator][:loggregator_cert_path] = "#{conf_dir}/certs/loggregator/client.crt"
+  config[:loggregator][:loggregator_key_path] = "#{conf_dir}/certs/loggregator/client.key"
+  config[:loggregator][:loggregator_job_deployment] = spec.deployment
+  config[:loggregator][:loggregator_job_name] = spec.name
+  config[:loggregator][:loggregator_job_index] = spec.id
+  config[:loggregator][:loggregator_job_ip] = spec.address
+  config[:loggregator][:loggregator_job_origin] = "rep"
+  config[:loggregator][:loggregator_source_id] = "rep"
+  config[:loggregator][:loggregator_instance_id] = spec.id
+  config[:loggregator][:loggregator_app_metric_exclusion_filter] = p("loggregator.app_metric_exclusion_filter")
+
+  config.to_json
+%>

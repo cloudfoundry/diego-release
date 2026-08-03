@@ -1,0 +1,33 @@
+. ./exiter.ps1
+
+$ErrorActionPreference = "Stop";
+trap { $host.SetShouldExit(1) }
+
+$BOSH_INSTALL_TARGET = Resolve-Path "${env:BOSH_INSTALL_TARGET}"
+
+# Create GOPATH
+New-Item -ItemType "directory" -Force src
+
+robocopy.exe /E "${PWD}" src /xd src
+if ($LASTEXITCODE -ge 8) {
+    Write-Error "robocopy.exe /E ${PWD} src /xd src"
+}
+
+. C:\var\vcap\packages\golang-*-windows\bosh\compile.ps1
+
+$rep_pkg_path="code.cloudfoundry.org/rep/cmd/rep"
+$gocurl_pkg_path="code.cloudfoundry.org/rep/cmd/gocurl"
+
+Push-Location src/code.cloudfoundry.org
+go.exe build -buildvcs=false -o "${BOSH_INSTALL_TARGET}\rep.exe" "${rep_pkg_path}"
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Error compiling: ${rep_pkg_path}"
+}
+
+go.exe build -buildvcs=false -o "${BOSH_INSTALL_TARGET}\gocurl.exe" "${gocurl_pkg_path}"
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Error compiling: ${gocurl_pkg_path}"
+}
+Pop-Location
+
+Exit 0

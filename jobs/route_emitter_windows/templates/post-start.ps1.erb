@@ -1,0 +1,30 @@
+$ErrorActionPreference = "Stop";
+trap { $host.SetShouldExit(1) }
+
+$service_name="route_emitter_windows"
+$address="http://<%= p("diego.route_emitter.healthcheck_address") %>"
+$max_retry_attempts=5
+
+
+function heartbeat {
+    try {
+        Invoke-WebRequest -UseBasicParsing -URI "${address}/ping"
+    } catch {
+        return $false
+    }
+    return $true
+}
+
+echo "$(Get-Date): checking that service '${service_name}' is running"
+$counter = 0
+while ($counter -le $max_retry_attempts) {
+    if (heartbeat) {
+        echo "$(Get-Date): service '${service_name}' healthcheck passed"
+        Exit 0
+    }
+    Start-Sleep -Seconds 5
+    $counter++
+    echo "$(Get-Date): retrying"
+}
+
+Exit 1

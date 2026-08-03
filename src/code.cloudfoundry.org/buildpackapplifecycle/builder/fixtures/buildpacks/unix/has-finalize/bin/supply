@@ -1,0 +1,24 @@
+#!/bin/bash
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+DEP_DIR=$3
+SUB_DIR=$4
+
+
+echo SUPPLYING
+
+contents="has-finalize-buildpack"
+
+echo $contents > $CACHE_DIR/supplied
+echo $contents > $DEP_DIR/$SUB_DIR/supplied
+
+cat <<EOF > $DEP_DIR/$SUB_DIR/config.yml
+---
+name: Finalize
+extra:
+- data
+more:
+  stuff: is good
+EOF
+

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+DEP_DIR=$3
+SUB_DIR=$4
+
+
+echo SUPPLYING
+
+if [ -e "$CACHE_DIR/old-supply" ]; then
+  contents=$(cat "$CACHE_DIR/old-supply")
+else
+  contents="always-detects-buildpack"
+fi
+
+echo $contents > $CACHE_DIR/supplied
+echo $contents > $DEP_DIR/$SUB_DIR/supplied

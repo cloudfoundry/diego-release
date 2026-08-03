@@ -1,0 +1,88 @@
+---
+name: vizzini
+packages:
+  - golang-1.26-linux
+  - vizzini
+
+templates:
+  run.erb: bin/run
+  vizzini.json.erb: config/vizzini.json
+  bbs_client.crt.erb: config/certs/bbs/client.crt
+  bbs_client.key.erb: config/certs/bbs/client.key
+  container_proxy_ca.crt.erb: config/certs/container_proxy/ca.crt
+  container_proxy_client.crt.erb: config/certs/container_proxy/client.crt
+  container_proxy_client.key.erb: config/certs/container_proxy/client.key
+
+properties:
+  vizzini.bbs.api_location:
+    description: The address of the BBS
+    default: bbs.service.cf.internal:8889
+  vizzini.bbs.client_cert:
+    description: "REQUIRED: PEM-encoded client certificate"
+  vizzini.bbs.client_key:
+    description: "REQUIRED: PEM-encoded client key"
+
+  vizzini.file_server.address:
+    description: The address of the file-server
+    default: file-server.service.cf.internal:8080
+
+  vizzini.rep.placement_tags:
+    description: "use placement tags for created LRPs"
+    default: []
+
+  vizzini.ssh.proxy_address:
+    description: "Host and port for the SSH proxy"
+    default: "ssh-proxy.service.cf.internal:2222"
+  vizzini.ssh.proxy_secret:
+    description: "Shared secret for the SSH proxy's Diego authenticator"
+
+  vizzini.eventually_timeout:
+    description: "default timeout for ginkgo assertions"
+
+  vizzini.routable_domain_suffix:
+    description: The deployment's routable domain name
+  vizzini.nodes:
+    description: The number of nodes to run the tests with
+    default: 4
+  vizzini.verbose:
+    description: Run tests in verbose mode
+    default: false
+
+
+  max_task_retries:
+    description: "When set, allows for rejected tasks to be retried"
+    default: 3
+
+  enable_container_proxy_tests:
+    description: "When set, enables the container proxy tests in vizzini"
+    default: false
+  vizzini.container_proxy.ca:
+    description: "When `enable_container_proxy_tests` is true, is used as the certificate authority for certs presnted by container proxies (required if `enable_container_proxy_tests` is true)"
+
+  vizzini.container_proxy.client_cert:
+    description: "When `enable_container_proxy_tests` is true, is used as the client certificate to present to container proxies"
+  vizzini.container_proxy.client_key:
+    description: "When `enable_container_proxy_tests` is true, is used as the client private key in mutual TLS connections with the container proxies"
+
+  enable_privileged_container_tests:
+    description: "When set, enables the privileged container tests in vizzini"
+    default: true
+
+  default_rootfs:
+    description: "Default preloaded rootfs to target for running Tasks and LRPs"
+    default: "preloaded:cflinuxfs4"
+
+  grace_tarball_url:
+    description: "URL for the grace test asset"
+    default: "https://storage.googleapis.com/diego-assets/grace.tar.gz"
+
+  grace_tarball_checksum:
+    description: "grace test asset sha1 checksum"
+
+  grace_busybox_image_url:
+    description: "grace test asset busybox container image"
+    default: "docker:///cloudfoundry/grace"
+
+  diego_docker_oci_image_url:
+    description: "diego docker app in OCI image format"
+    default: "docker:///cloudfoundry/diego-docker-app:oci"

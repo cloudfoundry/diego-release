@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+message PortRange {
+  uint32 start = 1 [(gogoproto.jsontag) =  "start"];
+  uint32 end = 2 [(gogoproto.jsontag) =  "end"];
+}
+
+message ICMPInfo {
+  int32 type = 1 [(gogoproto.jsontag) =  "type"];
+  int32 code = 2 [(gogoproto.jsontag) =  "code"];
+}
+
+message SecurityGroupRule {
+  string protocol = 1;
+  repeated string destinations = 2;
+  repeated uint32 ports = 3 [packed = false];
+  PortRange port_range = 4;
+  ICMPInfo icmp_info = 5;
+  bool log = 6 [(gogoproto.jsontag) = "log"];
+  repeated string annotations = 7;
+}

@@ -1,0 +1,15 @@
+{
+  "processes": [
+    {
+      "name": "route_emitter_windows",
+      "executable": "C:\\var\\vcap\\packages\\route_emitter_windows\\route-emitter.exe",
+      "args": ["-config", "/var/vcap/jobs/route_emitter_windows/config/route_emitter.json"],
+      "env": {
+        "__PIPE_SYSLOG_HOST": "<%= p('syslog_daemon_config.address') %>",
+        "__PIPE_SYSLOG_PORT": "<%= p('syslog_daemon_config.port') %>",
+        "__PIPE_SYSLOG_TRANSPORT": "<%= p('syslog_daemon_config.transport') %>"
+      }
+    }
+  ]
+}
+

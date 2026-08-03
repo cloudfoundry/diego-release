@@ -1,0 +1,38 @@
+#!/bin/bash -e
+
+run_dir=/var/vcap/sys/run/ssh_proxy
+log_dir=/var/vcap/sys/log/ssh_proxy
+
+pidfile=$run_dir/ssh_proxy.pid
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $pidfile "ssh_proxy"
+
+    mkdir -p $run_dir
+    chown -R vcap:vcap $run_dir
+
+    mkdir -p $log_dir
+    chown -R vcap:vcap $log_dir
+
+    # Allowed number of open file descriptors
+    ulimit -n 100000
+
+    exec chpst -u vcap:vcap bash -c '/var/vcap/jobs/ssh_proxy/bin/ssh_proxy_as_vcap'
+
+    ;;
+
+  stop)
+    kill_and_wait $pidfile
+
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop}"
+
+    ;;
+
+esac

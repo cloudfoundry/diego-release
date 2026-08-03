@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option (gogoproto.goproto_enum_prefix_all) = true;
+
+message CachedDependency {
+  string name = 1 [(gogoproto.jsontag) = "name"];
+  string from = 2 [(gogoproto.jsontag) = "from"];
+  string to = 3 [(gogoproto.jsontag) = "to"];
+  string cache_key = 4 [(gogoproto.jsontag) = "cache_key"];
+  string log_source = 5 [(gogoproto.jsontag) = "log_source"];
+  string checksum_algorithm = 6;
+  string checksum_value = 7;
+}

@@ -1,0 +1,121 @@
+---
+name: auctioneer
+
+templates:
+  auctioneer.json.erb: config/auctioneer.json
+  auctioneer_as_vcap.erb: bin/auctioneer_as_vcap
+  auctioneer_ca.crt.erb: config/certs/auctioneer/ca.crt
+  auctioneer_ctl.erb: bin/auctioneer_ctl
+  auctioneer_server.crt.erb: config/certs/auctioneer/server.crt
+  auctioneer_server.key.erb: config/certs/auctioneer/server.key
+  bbs_ca.crt.erb: config/certs/bbs/ca.crt
+  bbs_client.crt.erb: config/certs/bbs/client.crt
+  bbs_client.key.erb: config/certs/bbs/client.key
+  bpm.yml.erb: config/bpm.yml
+  drain.erb: bin/drain
+  rep_ca.crt.erb: config/certs/rep/ca.crt
+  rep_client.crt.erb: config/certs/rep/client.crt
+  rep_client.key.erb: config/certs/rep/client.key
+  loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
+  loggregator_client.crt.erb: config/certs/loggregator/client.crt
+  loggregator_client.key.erb: config/certs/loggregator/client.key
+  indicators.yml.erb: config/indicators.yml
+
+packages:
+  - pid_utils
+  - auctioneer
+
+properties:
+  diego.auctioneer.ca_cert:
+    description: "REQUIRED: PEM-encoded CA certificate for the auctioneer API server."
+  diego.auctioneer.server_cert:
+    description: "REQUIRED: PEM-encoded certificate for the auctioneer API server."
+  diego.auctioneer.server_key:
+    description: "REQUIRED: PEM-encoded key for the auctioneer API server."
+
+  diego.auctioneer.debug_addr:
+    description: "address at which to serve debug info"
+    default: "127.0.0.1:17001"
+  diego.auctioneer.listen_addr:
+    description: "address where auctioneer listens for LRP and task start auction requests"
+    default: "0.0.0.0:9016"
+  diego.auctioneer.log_level:
+    description: "Log level"
+    default: "info"
+  diego.auctioneer.cell_state_timeout:
+    description: "Timeout applied to HTTP requests to the Cell State endpoint."
+    default: "10s"
+  diego.auctioneer.bin_pack_first_fit_weight:
+    description: "EXPERIMENTAL: Factor to bias against BOSH instance index number of a cell. Instead of spreading containers equally accross all cells, cells with a lower index number will be deployed to first when this setting is > 0. (0.0 - 1.0)"
+    default: 0.0
+  diego.auctioneer.starting_container_weight:
+    description: "Factor to bias against cells with starting containers (0.0 - 1.0)"
+    default: 0.25
+  diego.auctioneer.starting_container_count_maximum:
+    description: "Maximum number of inflight container starts allowed globally. Value of 0 or less indicates no limit."
+    default: 0
+
+  diego.auctioneer.bbs.api_location:
+    description: "Address to the BBS Server"
+    default: "bbs.service.cf.internal:8889"
+  diego.auctioneer.bbs.ca_cert:
+    description: "REQUIRED: PEM-encoded CA certificate"
+  diego.auctioneer.bbs.client_cert:
+    description: "REQUIRED: PEM-encoded client certificate"
+  diego.auctioneer.bbs.client_key:
+    description: "REQUIRED: PEM-encoded client key"
+  diego.auctioneer.bbs.client_session_cache_size:
+    description: "capacity of the tls client cache"
+  diego.auctioneer.bbs.max_idle_conns_per_host:
+    description: "maximum number of idle http connections"
+
+  diego.auctioneer.rep.ca_cert:
+    description: "CA cert for communication to the rep."
+  diego.auctioneer.rep.client_cert:
+    description: "Client cert for communication to the rep."
+  diego.auctioneer.rep.client_key:
+    description: "Client key for communication to the rep."
+  diego.auctioneer.rep.client_session_cache_size:
+    description: "capacity of the tls client cache"
+    default: 4096
+
+  diego.auctioneer.locket.api_location:
+    description: "Hostname and port of the Locket server. When set, the auctioneer attempts to claim a lock from the Locket API."
+    default: locket.service.cf.internal:8891
+  diego.auctioneer.locket.client_keepalive_time: 
+    description: "Period in seconds after which the locket gRPC client sends keepalive ping requests to the locket server it is connected to."
+    default: 10
+  diego.auctioneer.locket.client_keepalive_timeout: 
+    description: "Timeout in seconds to receive a response to the keepalive ping. If a response is not received within this time, the locket client will reconnect to another server."
+    default: 22
+
+  # BBS-connectivity health check for the auctioneer. Mirrors the
+  # semantics of diego.bbs.enable_db_health_check but for the auction
+  # path. When enabled, the auctioneer exits on N consecutive failed
+  # BBS Ping()s so monit can restart it and its Locket lock can be
+  # picked up by a healthy standby. Fixes the pathology where a
+  # DNS-partitioned auctioneer retains its Locket lock indefinitely
+  # because renewals travel a persistent gRPC connection while auction
+  # work needs fresh DNS. See bbs_health_check_runner.go.
+  diego.auctioneer.enable_bbs_health_check:
+    description: "Enable a runner that probes BBS and exits the auctioneer on repeated failures, releasing the Locket lock cleanly for standby pickup."
+    default: false
+  diego.auctioneer.bbs_health_check_interval:
+    description: "Interval between BBS health-check probes."
+    default: "10s"
+  diego.auctioneer.bbs_health_check_timeout:
+    description: "Per-probe timeout for BBS health-check pings."
+    default: "5s"
+  diego.auctioneer.bbs_health_check_failure_threshold:
+    description: "Number of consecutive failed probes before the auctioneer exits."
+    default: 3
+
+  loggregator.v2_api_port:
+    description: "Local metron agent gRPC port"
+    default: 3458
+  loggregator.ca_cert:
+    description: "CA Cert used to communicate with local metron agent over gRPC"
+  loggregator.cert:
+    description: "Cert used to communicate with local metron agent over gRPC"
+  loggregator.key:
+    description: "Key used to communicate with local metron agent over gRPC"

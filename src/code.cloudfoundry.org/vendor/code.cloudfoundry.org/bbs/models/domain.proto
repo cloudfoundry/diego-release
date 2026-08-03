@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "error.proto";
+
+option (gogoproto.equal_all) = false;
+
+message DomainsResponse {
+  Error error = 1;
+  repeated string domains = 2;
+}
+
+message UpsertDomainResponse {
+  Error error = 1;
+}
+
+message UpsertDomainRequest {
+  string domain = 1 [(gogoproto.jsontag) = "domain"];
+  uint32 ttl = 2 [(gogoproto.jsontag) = "ttl"];
+}

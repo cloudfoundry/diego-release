@@ -1,0 +1,51 @@
+#!/bin/bash -e
+
+run_dir=/var/vcap/sys/run/bbs
+log_dir=/var/vcap/sys/log/bbs
+conf_dir=/var/vcap/jobs/bbs/config
+tmp_dir=/var/vcap/data/bbs/tmp
+bin_dir=/var/vcap/jobs/bbs/bin
+
+pidfile=$run_dir/bbs.pid
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $pidfile "bbs"
+
+    mkdir -p $run_dir
+    chown -R vcap:vcap $run_dir
+
+    mkdir -p $log_dir
+    chown -R vcap:vcap $log_dir
+
+    mkdir -p $tmp_dir
+    chown -R vcap:vcap $tmp_dir
+
+    $bin_dir/set-bbs-kernel-params
+
+    # Allowed number of open file descriptors (must be a positive integer)
+    <%
+    if !p('limits.open_files').is_a?(Integer) || p('limits.open_files') <= 0
+      raise "limits.open_files must be a positive integer"
+    end
+    %>
+    ulimit -n <%= p('limits.open_files') %>
+
+    exec chpst -u vcap:vcap bash -c  '/var/vcap/jobs/bbs/bin/bbs_as_vcap'
+
+    ;;
+
+  stop)
+    kill_and_wait $pidfile
+
+    ;;
+
+  *)
+    echo "Usage: bbs_ctl {start|stop}"
+
+    ;;
+
+esac

@@ -1,0 +1,16 @@
+#!/bin/bash
+# vim: set ft=sh
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+DEP_DIR=$3
+SUB_DIR=$4
+
+
+echo FINALIZING
+
+contents="has-finalize-no-supply-buildpack"
+
+echo $contents > $BUILD_DIR/finalized
+echo $contents > $CACHE_DIR/finalized
+echo $contents > $DEP_DIR/$SUB_DIR/finalized

@@ -1,0 +1,222 @@
+---
+packages:
+- name: tps
+  version: a8326256c530f3c344949cbfe5b9b753f4cfa2c3
+  fingerprint: a8326256c530f3c344949cbfe5b9b753f4cfa2c3
+  sha1: 33f95c3875257d17982ec0017d2546d2c2c01218
+  dependencies:
+  - golang_1.4
+- name: canary
+  version: 2f8ed5ed457e4408fe93a84068a4b146ef2ead6e
+  fingerprint: 2f8ed5ed457e4408fe93a84068a4b146ef2ead6e
+  sha1: 5f1baa1f3213aeec5a70fddea56f49f22fbd6b35
+  dependencies: []
+- name: shadow
+  version: ffd1741bd9e0a176e67c61ef70cd0ed76b0ec285
+  fingerprint: ffd1741bd9e0a176e67c61ef70cd0ed76b0ec285
+  sha1: 151206667fb4243153b50806e97b1fb7de9a94cf
+  dependencies: []
+- name: docker_app_lifecycle
+  version: 40a7e3eeade0335b15cfbfa9b8f642bda1ce0840
+  fingerprint: 40a7e3eeade0335b15cfbfa9b8f642bda1ce0840
+  sha1: 94b11d121a12c8bf8b4d76ba5b24794733dc24a4
+  dependencies:
+  - golang_1.4
+- name: nsync
+  version: 63e2c244b2e0d57bbfac162b34057c78babfdf17
+  fingerprint: 63e2c244b2e0d57bbfac162b34057c78babfdf17
+  sha1: cfabfba98cd09e6dc374a5a15e3a144123c1838c
+  dependencies:
+  - golang_1.4
+- name: receptor
+  version: 40480384346295b42f2c46d0ea9fd3e855b618e4
+  fingerprint: 40480384346295b42f2c46d0ea9fd3e855b618e4
+  sha1: 0e90c2ac88afcd93882d0fb86db557ed4ebfa5c6
+  dependencies:
+  - golang_1.4
+- name: converger
+  version: 3f264d725c0a11913892b1e9b690b0f4f3a4670d
+  fingerprint: 3f264d725c0a11913892b1e9b690b0f4f3a4670d
+  sha1: de9319aed1d4cec713904c311e30551f92773e3c
+  dependencies:
+  - golang_1.4
+- name: rootfs_lucid64
+  version: 92bdf54397f594a892fbedb727a3a5b721495c03
+  fingerprint: 92bdf54397f594a892fbedb727a3a5b721495c03
+  sha1: 38f798634a0fc758d2a677b03dff56dd1e24f677
+  dependencies: []
+- name: rootfs_cflinuxfs2
+  version: 379e0b536d788cb8fd9c81b355d705c2c0b6bdc3
+  fingerprint: 379e0b536d788cb8fd9c81b355d705c2c0b6bdc3
+  sha1: a6fea438e1fbd8209098e34e6f6781ee03e4f33a
+  dependencies: []
+- name: runtime_metrics_server
+  version: 903bd0de4970f2f160482509c748d5fb4dd3b413
+  fingerprint: 903bd0de4970f2f160482509c748d5fb4dd3b413
+  sha1: 947f1082c60e4874828cf47e87fc178f77afde91
+  dependencies:
+  - golang_1.4
+- name: route_emitter
+  version: f6257b6d24ec54c07eb0a84bc079419bede2e46b
+  fingerprint: f6257b6d24ec54c07eb0a84bc079419bede2e46b
+  sha1: 50f950850c26f9a9291267f14781a935eeb2a959
+  dependencies:
+  - golang_1.4
+- name: buildpack_app_lifecycle
+  version: 298a35286bd33ce1466f09caacc4f66e02071b93
+  fingerprint: 298a35286bd33ce1466f09caacc4f66e02071b93
+  sha1: 0d8d2fa512ac4110a7981c28444bbe0a5f19f3bd
+  dependencies:
+  - golang_1.4
+- name: smoke-tests
+  version: c31ef41edfcf98776b7e0e1c31d01a326537f74e
+  fingerprint: c31ef41edfcf98776b7e0e1c31d01a326537f74e
+  sha1: b536cd1e9b80c51189c5e9f255c59a284acb5583
+  dependencies:
+  - golang_1.4
+- name: stager
+  version: d92dd7915f7411c7c0422f19763b8ac17685b503
+  fingerprint: d92dd7915f7411c7c0422f19763b8ac17685b503
+  sha1: 7e74d5e7e6d39d5189c9b9c1b6e58e599985a565
+  dependencies:
+  - golang_1.4
+- name: rep
+  version: 359d42c06762eed635f1e4ed7055f41ffe071e41
+  fingerprint: 359d42c06762eed635f1e4ed7055f41ffe071e41
+  sha1: 4624928ef9c452882bb042254a601217ca3d174b
+  dependencies:
+  - golang_1.4
+- name: executor
+  version: e2c2d0fde78592cec22605fe99e6758a48c23ded
+  fingerprint: e2c2d0fde78592cec22605fe99e6758a48c23ded
+  sha1: 2684ed2ba539154b5a128256d29d22431c014939
+  dependencies:
+  - golang_1.4
+- name: file_server
+  version: 87bbb131a20c8c2a9fbcf43d48250b01a529aaf3
+  fingerprint: 87bbb131a20c8c2a9fbcf43d48250b01a529aaf3
+  sha1: d9045a71216e77cb79a515b0bae38f1541a9d8a2
+  dependencies:
+  - golang_1.4
+- name: windows_app_lifecycle
+  version: 004e19c62bdfd4cff51a37e4d0cac56d9751d3e3
+  fingerprint: 004e19c62bdfd4cff51a37e4d0cac56d9751d3e3
+  sha1: a10dbc588a41f49fc87e6e2043bb573d3ae34f70
+  dependencies: []
+- name: cf-cli
+  version: 2ca2636034f6ce5273c318651717631fad761095
+  fingerprint: 2ca2636034f6ce5273c318651717631fad761095
+  sha1: 71024ef7eb3b282452e92db4f99ba612057f0497
+  dependencies: []
+- name: etcd
+  version: c1bf35d2d783a95e4f50320d7a747031e9dfa6fe
+  fingerprint: c1bf35d2d783a95e4f50320d7a747031e9dfa6fe
+  sha1: e8687c2e254b24fdd223718a24ddb789db2b21ab
+  dependencies:
+  - golang_1.4
+- name: acceptance-tests
+  version: 8ae96527a1ee1e4630885058d39561dbb491f340
+  fingerprint: 8ae96527a1ee1e4630885058d39561dbb491f340
+  sha1: 5189b0d932650abe815004ff8937d5582869cddb
+  dependencies:
+  - golang_1.4
+- name: iptables
+  version: 7226d311e90f49b05287e79f339581a1de9ea82e
+  fingerprint: 7226d311e90f49b05287e79f339581a1de9ea82e
+  sha1: 5b0ffba010b23dd21ef21e7c0385d468a5daa3b3
+  dependencies: []
+- name: auctioneer
+  version: 54f4280acec785267c2fec18fbcb0487634f92ce
+  fingerprint: 54f4280acec785267c2fec18fbcb0487634f92ce
+  sha1: 516c5630d797ea605171257e488ca46da65369bb
+  dependencies:
+  - golang_1.4
+- name: garden-linux
+  version: 04ad56fdb0439232642661f7b0ec59c40bacccf2
+  fingerprint: 04ad56fdb0439232642661f7b0ec59c40bacccf2
+  sha1: 283de43ac1b89afa8c184cff6c34949dbe3f91f9
+  dependencies:
+  - golang_1.4
+- name: pid_utils
+  version: 3667b8ece3cc0743bdcfbda41bfbfaa9e242c6e7
+  fingerprint: 3667b8ece3cc0743bdcfbda41bfbfaa9e242c6e7
+  sha1: 333584f49aa846c519726856fb0afe71e2ab1b3e
+  dependencies: []
+- name: golang_1.4
+  version: 80fd10aaca7fafada6e7f228f03c5024faa0b51a
+  fingerprint: 80fd10aaca7fafada6e7f228f03c5024faa0b51a
+  sha1: f095334a87d66df974b09c7021ead51913a86305
+  dependencies: []
+jobs:
+- name: tps
+  version: 103217fd96de99e47d0099910151264a8c715a43
+  fingerprint: 103217fd96de99e47d0099910151264a8c715a43
+  sha1: c4288cefa8b576d63c9e020b3001290a56b9728d
+- name: canary
+  version: 0a59c2172c60e64ae96359860ece4a4aa025b1fd
+  fingerprint: 0a59c2172c60e64ae96359860ece4a4aa025b1fd
+  sha1: 35be9c09ab259f535139620d18e7ed8d6289817a
+- name: nsync
+  version: cc153e381eb05ebe7b2f5a2530278e0c75e2b618
+  fingerprint: cc153e381eb05ebe7b2f5a2530278e0c75e2b618
+  sha1: a587d1074ad4fb2c22dc4ab92e92eb6d2dc452ef
+- name: receptor
+  version: 64a5412f147326cb771cb28c2e28a3d861acd9ae
+  fingerprint: 64a5412f147326cb771cb28c2e28a3d861acd9ae
+  sha1: 93dce0f5bced7f183b0569b4fb730758d75dda3f
+- name: converger
+  version: 10c2989326cea969e5aa7cfe58c9c9a0decc9590
+  fingerprint: 10c2989326cea969e5aa7cfe58c9c9a0decc9590
+  sha1: 17cd7d527f3e5ad3292555a726757124d496000b
+- name: runtime_metrics_server
+  version: af467aa7aea267bc9ad614a771468faa5f987234
+  fingerprint: af467aa7aea267bc9ad614a771468faa5f987234
+  sha1: 6a9032b04c2e31cd584de27f1b9dbbedeeb0c709
+- name: route_emitter
+  version: a58e0fa29dbedb855eff45b9c5b2dbcce00194ac
+  fingerprint: a58e0fa29dbedb855eff45b9c5b2dbcce00194ac
+  sha1: 342a964ed8c6ea7322815396c73dcbafdcf4685e
+- name: smoke-tests
+  version: c8aebe676afd936e5fd02ffe565ec3797603149b
+  fingerprint: c8aebe676afd936e5fd02ffe565ec3797603149b
+  sha1: 4ff30ee9c62ab5aa4f1a2e0fb5a174640874c4ea
+- name: stager
+  version: 45ae6156abcac338864b4432759c7df33fa64116
+  fingerprint: 45ae6156abcac338864b4432759c7df33fa64116
+  sha1: ca20ff26ee82874a924814a48800929c09b5a2e9
+- name: rep
+  version: d13324d34571baacd3fc8edaa580b84055929f02
+  fingerprint: d13324d34571baacd3fc8edaa580b84055929f02
+  sha1: a2b6afad793597414b14b436eb9258c0ce4af54e
+- name: executor
+  version: cf7bfbc09ed506be2a9a3eac147ef948f4bcbf4e
+  fingerprint: cf7bfbc09ed506be2a9a3eac147ef948f4bcbf4e
+  sha1: 04d4f7d3dd85281e148bc4454f4e5f412ee094c3
+- name: file_server
+  version: aaf785736f6a6a42988cc15aba93e5763867024b
+  fingerprint: aaf785736f6a6a42988cc15aba93e5763867024b
+  sha1: d97f7438b8c209492d9f3a7867bc2dc4d8d06c88
+- name: etcd
+  version: dbe8d7ef6f32af6ab89898535a8ebf7816c5815e
+  fingerprint: dbe8d7ef6f32af6ab89898535a8ebf7816c5815e
+  sha1: a72640767e1f2183cb62c41f7cd99f3f015ca7c7
+- name: acceptance-tests
+  version: ca444fd5d9c78bbb0fea796bb0af571027bbdaa8
+  fingerprint: ca444fd5d9c78bbb0fea796bb0af571027bbdaa8
+  sha1: 8b11f37d7ba9df2f9b8a267d5792902fc0517b4d
+- name: auctioneer
+  version: 896c009044f5d965dbec5418b99ca8c65c0cfe9d
+  fingerprint: 896c009044f5d965dbec5418b99ca8c65c0cfe9d
+  sha1: 0b3c926eb1d437ea32999b179331698988506003
+- name: garden-linux
+  version: 2f036c8f775efa65a2ad56b4c94e3fe3a89f6abf
+  fingerprint: 2f036c8f775efa65a2ad56b4c94e3fe3a89f6abf
+  sha1: 4bcd63bb70ca37f230ff8fb5168b58fb08943cd0
+license:
+  version: 861d82c0d9745784acfcd026ccf44e942579824a
+  fingerprint: 861d82c0d9745784acfcd026ccf44e942579824a
+  sha1: bdcbe577858103e979ad1cbb5268553132688795
+commit_hash: 5638d12a
+uncommitted_changes: true
+name: diego
+version: 0.1050.0

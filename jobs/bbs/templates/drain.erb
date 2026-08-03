@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+/var/vcap/jobs/bpm/bin/bpm stop bbs 1>&2 || true
+echo "0"
+exit 0

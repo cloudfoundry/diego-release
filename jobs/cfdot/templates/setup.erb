@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if ! echo $PATH | grep -q 'cfdot'; then
+  export PATH=/var/vcap/packages/cfdot/bin:$PATH
+fi
+
+export BBS_URL=https://<%= p("bbs.hostname") %>:<%= p("bbs.port") %>
+export LOCKET_API_LOCATION=<%= p("locket.hostname") %>:<%= p("locket.port") %>
+export CA_CERT_FILE=/var/vcap/jobs/cfdot/config/certs/cfdot/ca.crt
+export CLIENT_CERT_FILE=/var/vcap/jobs/cfdot/config/certs/cfdot/client.crt
+export CLIENT_KEY_FILE=/var/vcap/jobs/cfdot/config/certs/cfdot/client.key

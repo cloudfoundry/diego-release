@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "actions.proto";
+import "environment_variables.proto";
+import "security_group.proto";
+import "cached_dependency.proto";
+import "volume_mount.proto";
+import "network.proto";
+import "certificate_properties.proto";
+import "image_layer.proto";
+import "log_rate_limit.proto";
+import "metric_tags.proto";
+import "file.proto";
+
+option (gogoproto.goproto_enum_prefix_all) = true;
+
+message TaskDefinition {
+  string root_fs = 1 [(gogoproto.jsontag) = "rootfs"];
+  repeated EnvironmentVariable environment_variables = 2 [(gogoproto.jsontag) = "env,omitempty"];
+  Action action = 3;
+  int32 disk_mb = 4 [(gogoproto.jsontag) =  "disk_mb"];
+  int32 memory_mb = 5 [(gogoproto.jsontag) =  "memory_mb"];
+  uint32 cpu_weight = 6 [(gogoproto.jsontag) =  "cpu_weight"];
+  bool privileged = 7 [(gogoproto.jsontag) =  "privileged"];
+  string log_source = 8 [(gogoproto.jsontag) =  "log_source"];
+  string log_guid = 9 [(gogoproto.jsontag) =  "log_guid"];
+  string metrics_guid = 10 [(gogoproto.jsontag) =  "metrics_guid"];
+  string result_file = 11 [(gogoproto.jsontag) =  "result_file"];
+  string completion_callback_url = 12;
+  string annotation = 13;
+  repeated SecurityGroupRule egress_rules = 14;
+  repeated CachedDependency cached_dependencies = 15;
+  string legacy_download_user = 16 [deprecated=true];
+  string trusted_system_certificates_path = 17;
+  repeated VolumeMount volume_mounts = 18;
+  Network network = 19;
+  repeated string placement_tags = 20;
+  int32 max_pids = 21 [(gogoproto.jsontag) =  "max_pids"];
+  CertificateProperties certificate_properties = 22;
+  string image_username = 23 [(gogoproto.jsontag) =  "image_username"];
+  string image_password = 24 [(gogoproto.jsontag) =  "image_password"];
+  repeated ImageLayer image_layers = 25;
+  LogRateLimit log_rate_limit = 26;
+  map<string, MetricTagValue> metric_tags = 27;
+  repeated File volume_mounted_files = 28 [(gogoproto.jsontag) = "volume_mounted_files"];
+}
+
+message Task {
+  enum State {
+    Invalid = 0;
+    Pending = 1;
+    Running = 2;
+    Completed = 3;
+    Resolving = 4;
+  }
+
+  TaskDefinition task_definition = 1 [(gogoproto.jsontag) = "", (gogoproto.embed) = true];
+
+  string task_guid = 2 [(gogoproto.jsontag) =  "task_guid"];
+  string domain = 3 [(gogoproto.jsontag) =  "domain"];
+  int64 created_at = 4 [(gogoproto.jsontag) =  "created_at"];
+  int64 updated_at = 5 [(gogoproto.jsontag) =  "updated_at"];
+  int64 first_completed_at = 6 [(gogoproto.jsontag) =  "first_completed_at"];
+
+  State state = 7 [(gogoproto.jsontag) =  "state"];
+
+  string cell_id = 8 [(gogoproto.jsontag) =  "cell_id"];
+
+  string result = 9 [(gogoproto.jsontag) =  "result"];
+  bool failed = 10 [(gogoproto.jsontag) =  "failed"];
+  string failure_reason = 11 [(gogoproto.jsontag) =  "failure_reason"];
+  int32 rejection_count = 12 [(gogoproto.jsontag) = "rejection_count"];
+  string rejection_reason = 13 [(gogoproto.jsontag) = "rejection_reason"];
+}
+

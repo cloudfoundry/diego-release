@@ -1,0 +1,8 @@
+---
+processes:
+- name: ssh_proxy
+  executable: /var/vcap/packages/ssh_proxy/bin/ssh-proxy
+  args:
+    - -config=/var/vcap/jobs/ssh_proxy/config/ssh_proxy.json
+  limits:
+    open_files: 100000

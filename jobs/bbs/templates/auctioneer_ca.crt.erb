@@ -1,0 +1,7 @@
+<% if p("diego.bbs.auctioneer.require_tls") %>
+<%= p("diego.bbs.auctioneer.ca_cert") %>
+<% else %>
+  <% if_p("diego.bbs.auctioneer.ca_cert") do |value| %>
+<%= value %>
+  <% end %>
+<% end %>

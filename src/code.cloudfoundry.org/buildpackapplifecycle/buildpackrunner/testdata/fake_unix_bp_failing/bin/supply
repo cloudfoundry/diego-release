@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Write config.yml to deps dir before failing
+# Args: BUILD_DIR CACHE_DIR DEPS_DIR DEPS_IDX
+DEPS_DIR=$3
+DEPS_IDX=$4
+
+mkdir -p "${DEPS_DIR}/${DEPS_IDX}"
+cat > "${DEPS_DIR}/${DEPS_IDX}/config.yml" << EOF
+name: "failing-buildpack"
+version: "1.2.3"
+EOF
+
+exit 0

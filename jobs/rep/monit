@@ -1,0 +1,5 @@
+check process rep
+  with pidfile /var/vcap/sys/run/bpm/rep/rep.pid
+  start program "/var/vcap/jobs/bpm/bin/bpm start rep"
+  stop program "/var/vcap/jobs/bpm/bin/bpm stop rep"
+  group vcap

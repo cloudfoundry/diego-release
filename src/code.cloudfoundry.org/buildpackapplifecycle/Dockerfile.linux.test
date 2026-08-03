@@ -1,0 +1,19 @@
+FROM cloudfoundry/cflinuxfs3
+
+ENV GOPATH /go
+ENV GOBIN /go/bin
+RUN /bin/bash -c '\
+  mkdir -p /usr/local/ && \
+  URL=https://go.dev/dl/go1.21.5.linux-amd64.tar.gz && \
+  curl -s -L --retry 15 --retry-delay 2 $URL -o /tmp/go.tar.gz && \
+  tar xzf /tmp/go.tar.gz -C /usr/local/ && \
+  rm /tmp/go.tar.gz'
+
+ENV PATH $GOBIN:/usr/local/go/bin:$PATH
+RUN go install github.com/onsi/ginkgo/ginkgo@latest
+
+ADD . /workdir
+WORKDIR /workdir
+RUN go mod download
+
+CMD /bin/bash

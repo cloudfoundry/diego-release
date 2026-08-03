@@ -1,0 +1,17 @@
+#!/bin/bash
+# vim: set ft=sh
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+DEP_DIR=$3
+SUB_DIR=$4
+PROFILE_D=$5
+
+echo FINALIZING
+
+contents="has-finalize-buildpack"
+
+echo $contents > $BUILD_DIR/finalized
+echo $contents > $CACHE_DIR/finalized
+echo $contents > $DEP_DIR/$SUB_DIR/finalized
+echo "echo $contents" > $PROFILE_D/finalized.sh

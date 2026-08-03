@@ -1,0 +1,10 @@
+---
+processes:
+- name: locket
+  executable: /var/vcap/packages/locket/bin/locket
+  args:
+    - -config=/var/vcap/jobs/locket/config/locket.json
+  hooks:
+    pre_start: /var/vcap/jobs/locket/bin/bpm-pre-start
+  limits:
+    open_files: 100000

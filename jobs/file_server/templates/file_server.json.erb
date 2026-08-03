@@ -1,0 +1,60 @@
+<%=
+  conf_dir = "/var/vcap/jobs/file_server/config"
+
+  def parse_ip (ip, var_name)
+    unless ip.empty?
+      ip = ip.split(":")[0]
+	begin
+	  parsed = IPAddr.new ip
+	rescue  => e
+	  raise "Invalid #{var_name} '#{ip}': #{e}"
+	end
+    end
+  end
+
+  parse_ip(p('diego.file_server.debug_addr'), 'diego.file_server.debug_addr')
+  parse_ip(p('diego.file_server.listen_addr'), 'diego.file_server.listen_addr')
+  parse_ip(p('https_listen_addr'), 'https_listen_addr')
+
+  config = {
+    server_address: p("diego.file_server.listen_addr"),
+    debug_address: p("diego.file_server.debug_addr"),
+    static_directory: p("diego.file_server.static_directory"),
+    https_server_enabled: p("https_server_enabled"),
+    https_listen_addr: p("https_listen_addr"),
+    log_level: p("diego.file_server.log_level"),
+  }
+
+  if_p("tls.cert") do |_|
+    config[:cert_file] = "#{conf_dir}/certs/tls.crt"
+  end
+
+  if_p("tls.key") do |_|
+    config[:key_file]  = "#{conf_dir}/certs/tls.key"
+  end
+
+  if_p("tls.client_ca_cert") do |_|
+    config[:client_ca_cert_file]  = "#{conf_dir}/certs/tls.client_ca_cert"
+  end
+
+  if config[:https_server_enabled] && (config[:cert_file].nil? || config[:key_file].nil?)
+    raise "tls.cert and tls.key are required if https_server_enabled is set to true"
+  end
+
+  config[:time_format] = "rfc3339"
+  config[:loggregator]={}
+  config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
+  config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"
+  config[:loggregator][:loggregator_cert_path] = "#{conf_dir}/certs/loggregator/client.crt"
+  config[:loggregator][:loggregator_key_path] = "#{conf_dir}/certs/loggregator/client.key"
+  config[:loggregator][:loggregator_job_deployment] = spec.deployment
+  config[:loggregator][:loggregator_job_name] = spec.name
+  config[:loggregator][:loggregator_job_index] = spec.id
+  config[:loggregator][:loggregator_job_ip] = spec.address
+  config[:loggregator][:loggregator_job_origin] = "file_server"
+  config[:loggregator][:loggregator_source_id] = "file_server"
+  config[:loggregator][:loggregator_instance_id] = spec.id
+
+
+  config.to_json
+%>

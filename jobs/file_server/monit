@@ -1,0 +1,5 @@
+check process file_server
+  with pidfile /var/vcap/sys/run/bpm/file_server/file_server.pid
+  start program "/var/vcap/jobs/bpm/bin/bpm start file_server"
+  stop program "/var/vcap/jobs/bpm/bin/bpm stop file_server"
+  group vcap

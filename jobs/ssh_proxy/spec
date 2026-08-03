@@ -1,0 +1,129 @@
+---
+name: ssh_proxy
+
+templates:
+  ssh_proxy_as_vcap.erb: bin/ssh_proxy_as_vcap
+  ssh_proxy_ctl.erb: bin/ssh_proxy_ctl
+  bbs_ca.crt.erb: config/certs/bbs/ca.crt
+  bbs_client.crt.erb: config/certs/bbs/client.crt
+  bbs_client.key.erb: config/certs/bbs/client.key
+  uaa_ca.crt.erb: config/certs/uaa/ca.crt
+  ssh_proxy.json.erb: config/ssh_proxy.json
+  bpm.yml.erb: config/bpm.yml
+  loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
+  loggregator_client.crt.erb: config/certs/loggregator/client.crt
+  loggregator_client.key.erb: config/certs/loggregator/client.key
+  backends_tls_ca.crt.erb: config/certs/backends_tls/ca.crt
+  backends_tls_client.crt.erb: config/certs/backends_tls/client.crt
+  backends_tls_client.key.erb: config/certs/backends_tls/client.key
+  cc_api_ca_cert.crt.erb: config/certs/cc/cc_api_ca_cert.crt
+
+provides:
+- name: ssh_proxy
+  type: ssh_proxy
+
+packages:
+  - pid_utils
+  - ssh_proxy
+
+consumes:
+- name: cloud_controller_https_endpoint
+  type: cloud_controller_https_endpoint
+  optional: true
+
+properties:
+  backends.tls.enabled:
+    default: false
+    description: "Whether to enable TLS-proxied connections to target backend instances."
+  backends.tls.ca_certificates:
+    default: []
+    description: "List of PEM-encoded CA certificate bundles for the SSH proxy to use to verify backends when connecting via TLS proxy. Should be non-empty if `backends.tls.enabled` is enabled."
+  backends.tls.client_certificate:
+    description: "PEM-encoded certificate for the SSH proxy to present to backends for verification when connecting via TLS proxy."
+  backends.tls.client_private_key:
+    description: "PEM-encoded private key associated to backends.tls.client_certificate."
+
+  diego.ssl.skip_cert_verify:
+    description: "when connecting over https, ignore bad ssl certificates"
+    default: false
+  diego.ssh_proxy.listen_addr:
+    description: "address for the proxy to listen on"
+    default: "0.0.0.0:2222"
+  diego.ssh_proxy.healthcheck_listen_addr:
+    description: "address for the ssh proxy healthcheck server"
+    default: "0.0.0.0:2223"
+  diego.ssh_proxy.disable_healthcheck_server:
+    description: "Whether to disable the ssh proxy HTTP healthcheck server. Defaults to `false`."
+    default: false
+  diego.ssh_proxy.bbs.api_location:
+    description: "Address to the BBS Server"
+    default: "bbs.service.cf.internal:8889"
+  diego.ssh_proxy.host_key:
+    description: "PEM encoded RSA private key used to identify host"
+  diego.ssh_proxy.allowed_ciphers:
+    description: "Comma separated list of allowed cipher algorithms"
+  diego.ssh_proxy.allowed_macs:
+    description: "Comma separated list of allowed MAC algorithms"
+  diego.ssh_proxy.allowed_keyexchanges:
+    description: "Comma separated list of allowed key exchange algorithms"
+  diego.ssh_proxy.allowed_host_key_algorithms:
+    description: "Comma separated list of allowed host key algorithms"
+  diego.ssh_proxy.debug_addr:
+    description: "address at which to serve debug info"
+    default: "127.0.0.1:17016"
+  diego.ssh_proxy.log_level:
+    description: "Log level"
+    default: "info"
+  diego.ssh_proxy.enable_cf_auth:
+    description: Allow ssh access for cf applications
+    default: false
+  diego.ssh_proxy.enable_diego_auth:
+    description: Allow ssh access for diego applications
+    default: false
+  diego.ssh_proxy.diego_credentials:
+    description: Diego Credentials to be used with the Diego authenitcation method
+  diego.ssh_proxy.uaa_secret:
+    description: The oauth client secret used to authenticate the ssh-proxy with the uaa
+  diego.ssh_proxy.idle_connection_timeout_in_seconds:
+    description: Idle timeout for incoming connections
+    default: 300
+
+  diego.ssh_proxy.uaa.url:
+    description: The domain name of the UAA
+    default: "https://uaa.service.cf.internal"
+  diego.ssh_proxy.uaa.port:
+    description: The port to contact UAA on
+    default: 8443
+  diego.ssh_proxy.uaa.ca_cert:
+    description: The CA certificate of the UAA
+
+  diego.ssh_proxy.cc.internal_service_hostname:
+    description: Internal service hostname of Cloud Controller API
+    default: cloud-controller-ng.service.cf.internal
+  diego.ssh_proxy.cc.external_port:
+    description: External port of the Cloud Controller API
+    default: 9022
+
+  diego.ssh_proxy.bbs.ca_cert:
+    description: "REQUIRED: PEM-encoded CA certificate"
+  diego.ssh_proxy.bbs.client_cert:
+    description: "REQUIRED: PEM-encoded client certificate"
+  diego.ssh_proxy.bbs.client_key:
+    description: "REQUIRED: PEM-encoded client key"
+  diego.ssh_proxy.bbs.client_session_cache_size:
+    description: "capacity of the tls client cache"
+  diego.ssh_proxy.bbs.max_idle_conns_per_host:
+    description: "maximum number of idle http connections"
+  connect_to_instance_address:
+    description: "Connect directly to container IP instead of to the host IP and external port. Suitable only for deployments in which the gorouters and TCP routers can route directly to the container IP of instances."
+    default: false
+
+  loggregator.v2_api_port:
+    description: "Local metron agent gRPC port"
+    default: 3458
+  loggregator.ca_cert:
+    description: "CA Cert used to communicate with local metron agent over gRPC"
+  loggregator.cert:
+    description: "Cert used to communicate with local metron agent over gRPC"
+  loggregator.key:
+    description: "Key used to communicate with local metron agent over gRPC"

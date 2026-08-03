@@ -1,0 +1,34 @@
+---
+name: cfdot
+
+templates:
+  ca.crt.erb: config/certs/cfdot/ca.crt
+  client.crt.erb: config/certs/cfdot/client.crt
+  client.key.erb: config/certs/cfdot/client.key
+  pre-start.erb: bin/pre-start
+  setup.erb: bin/setup
+
+packages:
+  - cfdot
+
+properties:
+  tls.ca_certificate:
+    description: "REQUIRED: PEM-encoded CA certificate used for client credentials."
+  tls.certificate:
+    description: "REQUIRED: PEM-encoded certificate used for client credentials."
+  tls.private_key:
+    description: "REQUIRED: PEM-encoded key used for client credentials."
+
+  bbs.hostname:
+    description: "Hostname of the BBS service."
+    default: "bbs.service.cf.internal"
+  bbs.port:
+    description: "Port of the BBS service."
+    default: 8889
+
+  locket.hostname:
+    description: "Hostname at which to discover the Locket API server."
+    default: "locket.service.cf.internal"
+  locket.port:
+    description: "Port of the Locket API server."
+    default: 8891

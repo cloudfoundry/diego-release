@@ -1,0 +1,11 @@
+#!/bin/bash
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+echo COMPILE should never run
+
+contents="has-finalize-buildpack"
+
+echo $contents > $BUILD_DIR/compiled
+echo $contents > $CACHE_DIR/compiled

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+DEP_DIR=$3
+SUB_DIR=$4
+
+
+echo SUPPLYING
+
+if [ -e "$CACHE_DIR/old-supply" ]; then
+  contents=$(cat "$CACHE_DIR/old-supply")
+else
+  contents="has-buildpack-config"
+fi
+
+echo $contents > $CACHE_DIR/supplied
+echo $contents > $DEP_DIR/$SUB_DIR/supplied
+
+cat <<EOF > $DEP_DIR/$SUB_DIR/config.yml
+---
+name: Has Buildpack Config
+version: 3.14
+config:
+  entrypoint_prefix: custom-entrypoint
+EOF

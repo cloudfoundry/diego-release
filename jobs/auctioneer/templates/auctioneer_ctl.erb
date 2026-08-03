@@ -1,0 +1,38 @@
+#!/bin/bash -e
+
+run_dir=/var/vcap/sys/run/auctioneer
+log_dir=/var/vcap/sys/log/auctioneer
+
+pidfile=$run_dir/auctioneer.pid
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $pidfile "auctioneer"
+
+    mkdir -p $run_dir
+    chown -R vcap:vcap $run_dir
+
+    mkdir -p $log_dir
+    chown -R vcap:vcap $log_dir
+
+    # Allowed number of open file descriptors
+    ulimit -n 100000
+
+    exec chpst -u vcap:vcap bash -c '/var/vcap/jobs/auctioneer/bin/auctioneer_as_vcap'
+
+    ;;
+
+  stop)
+    kill_and_wait $pidfile
+
+    ;;
+
+  *)
+    echo "Usage: auctioneer_ctl {start|stop}"
+
+    ;;
+
+esac

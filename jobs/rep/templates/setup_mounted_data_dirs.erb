@@ -1,0 +1,97 @@
+#!/bin/bash -e
+
+conf_dir=/var/vcap/jobs/rep/config
+shared_dir=/var/vcap/data/rep/shared
+garden_shared_dir=${shared_dir}/garden
+
+# Remove old data dirs so that disk space isn't wasted. This cleanup can be removed in v4
+old_data_dir=/var/vcap/data/rep
+old_instance_identity_dir=${old_data_dir}/instance_identity
+if mount | grep -q $old_instance_identity_dir; then
+  umount -f $old_instance_identity_dir
+fi
+
+old_shared_data_dir=${old_data_dir}/shared_data
+mount | grep $old_shared_data_dir | cut -d' ' -f3 | awk -F"/" '{print NF " " $0}' | sort -n -r | cut -d ' ' -f 2 | xargs -I {} umount -f {}
+
+rm -rf "${old_instance_identity_dir}"
+rm -rf "${old_data_dir}/trusted_certs"
+rm -rf "${old_data_dir}/download_cache"
+rm -rf "${old_data_dir}/proxy_config"
+rm -rf "${old_shared_data_dir}"
+
+# Key and Cert are generally ~2048 bytes. Add an extra 2048 for extra space
+# add another 4096 to account for the temp files used to do atomic replacement #141163257
+instance_cert_and_key_size=10240
+instance_ca_size=$(wc -c ${conf_dir}/certs/rep/instance_identity.crt | cut -d' ' -f1)
+<%
+  _max_containers = 250
+  if_p("diego.rep.max_containers") do |value|
+    _max_containers = value
+  end
+  if _max_containers <= 0
+    raise "The max_containers prop should be a positive integer"
+  end
+%>
+max_containers=<%= _max_containers %>
+
+instance_tmpfs_size=$((($instance_ca_size + $instance_cert_and_key_size) * $max_containers))
+
+instance_identity_dir=${garden_shared_dir}/instance_identity
+
+if mount | grep -q $instance_identity_dir; then
+  umount -f $instance_identity_dir
+fi
+
+mkdir -p "$shared_dir"
+chown vcap:vcap "$shared_dir"
+chmod 0700 "$shared_dir"
+
+mkdir -p "$garden_shared_dir"
+flock /var/vcap/sys/run/garden/mount.lock /bin/bash -c 'if ! grep -q " /var/vcap/data/rep/shared/garden " /proc/self/mountinfo; then mount --bind /var/vcap/data/rep/shared/garden /var/vcap/data/rep/shared/garden; fi'
+mount --make-shared /var/vcap/data/rep/shared/garden
+
+mkdir -p "$instance_identity_dir"
+mount -t tmpfs -o size=$instance_tmpfs_size tmpfs $instance_identity_dir
+chown -R vcap:vcap "$instance_identity_dir"
+
+cache_dir=${garden_shared_dir}/download_cache
+mkdir -p "$cache_dir"
+chown -R vcap:vcap $cache_dir
+
+# Invalidate download cache when extraction-relevant config changes.
+# The cf-pcap flag changes how archived files are extracted (xattrs
+# preservation), so a flag change requires re-extraction. Removing
+# saved_cache.json causes RecoverState() to treat this as a first boot,
+# which clears all cached files.
+cache_config_marker=/var/vcap/data/rep/cache_config
+current_cache_config="enable_cf_pcap=<%= p("diego.rep.enable_cf_pcap", false) %>"
+
+if [ -f "$cache_config_marker" ]; then
+  previous_cache_config=$(cat "$cache_config_marker")
+else
+  previous_cache_config=""
+fi
+
+if [ "$current_cache_config" != "$previous_cache_config" ]; then
+  rm -f "${cache_dir}/saved_cache.json"
+fi
+
+echo "$current_cache_config" > "$cache_config_marker"
+chown vcap:vcap "$cache_config_marker"
+
+trusted_certs_dir=${garden_shared_dir}/trusted_certs
+rm -rf "$trusted_certs_dir"
+<% if_p("containers.trusted_ca_certificates") do %>
+  mkdir -p "$trusted_certs_dir"
+  chown -R vcap:vcap $trusted_certs_dir
+
+  /var/vcap/packages/certsplitter/bin/certsplitter $conf_dir/certs/rep/trusted_ca_certificates.json $trusted_certs_dir
+
+  chmod +r ${trusted_certs_dir}/*
+<% end %>
+
+proxy_config_dir=${garden_shared_dir}/proxy_config
+rm -rf "$proxy_config_dir"
+mkdir -p "$proxy_config_dir"
+chown -R vcap:vcap "$proxy_config_dir"

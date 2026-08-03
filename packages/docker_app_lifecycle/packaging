@@ -1,0 +1,29 @@
+set -e
+
+# create GOPATH
+mkdir -p ${BOSH_INSTALL_TARGET}/src
+mv * ${BOSH_INSTALL_TARGET}/src
+mv ${BOSH_INSTALL_TARGET}/src .
+
+DEST="$PWD/bin"
+mkdir -p ${DEST}
+
+source /var/vcap/packages/golang-*-linux/bosh/compile.env
+
+pushd src/code.cloudfoundry.org
+CGO_ENABLED=0 go build -o ${DEST}/builder  -a -installsuffix static code.cloudfoundry.org/dockerapplifecycle/builder
+CGO_ENABLED=0 go build -o ${DEST}/launcher -a -installsuffix static code.cloudfoundry.org/dockerapplifecycle/launcher
+popd
+
+ldd ${DEST}/builder && echo "builder must be statically linked" && false
+ldd ${DEST}/launcher && echo "launcher must be statically linked" && false
+
+cp /var/vcap/packages/diego-sshd/diego-sshd ${DEST}/diego-sshd
+cp /var/vcap/packages/cf-pcap/cf-pcap ${DEST}/cf-pcap
+cp /var/vcap/packages/healthcheck/healthcheck ${DEST}/healthcheck
+
+setcap cap_net_raw+ep ${DEST}/cf-pcap
+
+tar -czf ${BOSH_INSTALL_TARGET}/docker_app_lifecycle.tgz \
+  --xattrs --xattrs-include='*' \
+  -C ${DEST} builder launcher healthcheck diego-sshd cf-pcap

@@ -1,0 +1,75 @@
+---
+name: file_server
+
+templates:
+  file_server.json.erb: config/file_server.json
+  bpm-pre-start.erb: bin/bpm-pre-start
+  bpm.yml.erb: config/bpm.yml
+  set-file-server-kernel-params.erb: bin/set-file-server-kernel-params
+  file_server_ctl.erb: bin/file_server_ctl
+  file_server_as_vcap.erb: bin/file_server_as_vcap
+  loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
+  loggregator_client.crt.erb: config/certs/loggregator/client.crt
+  loggregator_client.key.erb: config/certs/loggregator/client.key
+  tls.crt.erb: config/certs/tls.crt
+  tls.key.erb: config/certs/tls.key
+  tls.client_ca_cert.erb: config/certs/tls.client_ca_cert
+
+packages:
+  - pid_utils
+  - file_server
+  - buildpack_app_lifecycle
+  - docker_app_lifecycle
+  - windows_app_lifecycle
+  - cnb_app_lifecycle
+
+provides:
+- name: file_server
+  type: file_server
+  properties:
+  - https_server_enabled
+  - https_url
+
+properties:
+  diego.file_server.listen_addr:
+    description: "Address of interface on which to serve files"
+    default: "0.0.0.0:8080"
+  diego.file_server.static_directory:
+    default: "/var/vcap/jobs/file_server/packages/"
+    description: "Fully-qualified path to the doc root for the file server's static files"
+  diego.file_server.debug_addr:
+    description: "Address at which to serve debug info, e.g. 127.0.0.1:17005. Debug server is disabled when empty (default)"
+    default: ""
+  diego.file_server.log_level:
+    description: "Log level"
+    default: "info"
+
+  https_server_enabled:
+    description: "Use HTTPS for serving file_server assets"
+    default: false
+  https_listen_addr:
+    description: "Address at which HTTPS server is listening"
+    default: "0.0.0.0:8443"
+  https_url:
+    description: "The URL provided in file_server link"
+    default: "https://file-server.service.cf.internal:8443"
+  tls.cert:
+    description: "PEM-encoded tls certificate that can be used for server auth"
+  tls.key:
+    description: "PEM-encoded tls key"
+  tls.client_ca_cert:
+    description: "PEM-encoded CA certificate for mTLS, optional"
+
+  loggregator.v2_api_port:
+    description: "Port which the component should use to communicate to the metron agent's v2 API (host is assumed to be `localhost`)."
+    default: 3458
+  loggregator.ca_cert:
+    description: "CA certificate to use to verify the metron agent serving the v2 API."
+  loggregator.cert:
+    description: "Client certificate for the SSH-proxy to use when communicating to the metron agent."
+  loggregator.key:
+    description: "Private key for the SSH-proxy metron client certificate."
+
+  set_kernel_parameters:
+    description: "Enable tuning /proc/sys kernel parameters. NOTE: set this property to 'false' when deploying to BOSH-Lite or other containerized BOSH clouds."
+    default: true

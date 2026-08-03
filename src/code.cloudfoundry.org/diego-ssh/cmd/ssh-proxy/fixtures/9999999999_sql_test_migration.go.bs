@@ -1,0 +1,49 @@
+package migrations
+
+import (
+	"database/sql"
+
+	"code.cloudfoundry.org/bbs/encryption"
+	"code.cloudfoundry.org/bbs/migration"
+	"code.cloudfoundry.org/clock"
+	"code.cloudfoundry.org/lager/v3"
+)
+
+func init() {
+	appendMigration(NewSQLTestMigration())
+}
+
+type SQLTestMigration struct {
+	rawSQLDB *sql.DB
+}
+
+func NewSQLTestMigration() migration.Migration {
+	return &SQLTestMigration{}
+}
+
+func (*SQLTestMigration) SetCryptor(cryptor encryption.Cryptor) {}
+
+func (*SQLTestMigration) SetClock(clock.Clock) {}
+func (*SQLTestMigration) SetDBFlavor(string)   {}
+
+func (t *SQLTestMigration) Up(tx *sql.Tx, logger lager.Logger) error {
+	_, err := tx.Exec(`CREATE TABLE IF NOT EXISTS sweet_table (
+		something VARCHAR(255) PRIMARY KEY,
+		something_else INT DEFAULT 0
+	);`)
+
+	return err
+}
+
+func (t *SQLTestMigration) Down(logger lager.Logger) error {
+	// do nothing until we get rollback
+	return nil
+}
+
+func (t SQLTestMigration) String() string {
+	return "9999999999"
+}
+
+func (t SQLTestMigration) Version() int64 {
+	return 9999999999
+}

@@ -1,0 +1,5 @@
+check process bbs
+  with pidfile /var/vcap/sys/run/bpm/bbs/bbs.pid
+  start program "/var/vcap/jobs/bpm/bin/bpm start bbs"
+  stop program "/var/vcap/jobs/bpm/bin/bpm stop bbs"
+  group vcap

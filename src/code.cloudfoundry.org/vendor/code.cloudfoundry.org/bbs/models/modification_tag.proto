@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+message ModificationTag {
+  string epoch = 1 [(gogoproto.jsontag) =  "epoch"];
+  uint32 index = 2 [(gogoproto.jsontag) = "index"];
+}
+

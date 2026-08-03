@@ -1,0 +1,22 @@
+#!/bin/bash
+# vim: set ft=sh
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+DEPS_DIR=${3:-}
+
+echo WOO
+
+if [ -e "$CACHE_DIR/old-compile" ]; then
+  contents=$(cat "$CACHE_DIR/old-compile")
+else
+  contents="also-always-detects-buildpack"
+fi
+
+if [ -n "$DEPS_DIR" ]; then
+ contents="$contents-deps-provided"
+ echo $contents > $DEPS_DIR/compiled
+fi
+
+echo $contents > $BUILD_DIR/compiled
+echo $contents > $CACHE_DIR/compiled

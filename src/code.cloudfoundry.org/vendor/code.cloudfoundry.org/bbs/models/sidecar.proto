@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "actions.proto";
+
+message Sidecar {
+  Action action = 1;
+
+  int32 disk_mb = 2 [(gogoproto.jsontag) = "disk_mb"];
+  int32 memory_mb = 3 [(gogoproto.jsontag) = "memory_mb"];
+}

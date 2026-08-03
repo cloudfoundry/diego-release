@@ -1,0 +1,151 @@
+---
+name: route_emitter
+
+templates:
+  post-start.erb: bin/post-start
+  route_emitter_ctl.erb: bin/route_emitter_ctl
+  route_emitter_as_vcap.erb: bin/route_emitter_as_vcap
+  route_emitter.json.erb: config/route_emitter.json
+  bpm.yml.erb: config/bpm.yml
+  bbs_ca.crt.erb: config/certs/bbs/ca.crt
+  bbs_client.crt.erb: config/certs/bbs/client.crt
+  bbs_client.key.erb: config/certs/bbs/client.key
+  uaa_ca.crt.erb: config/certs/uaa/ca.crt
+  loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
+  loggregator_client.crt.erb: config/certs/loggregator/client.crt
+  loggregator_client.key.erb: config/certs/loggregator/client.key
+  nats_ca.crt.erb: config/certs/nats/ca.crt
+  nats_client.crt.erb: config/certs/nats/client.crt
+  nats_client.key.erb: config/certs/nats/client.key
+  routing_api_ca.crt.erb: config/certs/routing_api/ca.crt
+  routing_api_client.crt.erb: config/certs/routing_api/client.crt
+  routing_api_client.key.erb: config/certs/routing_api/client.key
+  indicators.yml.erb: config/indicators.yml
+
+packages:
+  - pid_utils
+  - route_emitter
+
+consumes:
+- name: nats
+  type: nats
+  optional: true
+- name: nats-tls
+  type: nats-tls
+  optional: true
+- name: routing_api
+  type: routing_api
+  optional: true
+
+properties:
+  register_direct_instance_routes:
+    description: "Use the container IP address and internal port instead of the host IP address and external port when registering route endpoints. Suitable only for deployments in which the gorouters and TCP routers can route directly to the container IP of instances."
+    default: false
+  diego.route_emitter.local_mode:
+    description: "Enable cell-local mode for the route-emitter. In this mode, the route-emitter emits route registrations only for the instances associated to its cell, as determined by the BOSH-assigned VM identifier `spec.id`."
+    default: false
+  diego.route_emitter.nats.user:
+    description: "Username for server authentication."
+  diego.route_emitter.nats.password:
+    description: "Password for server authentication."
+  diego.route_emitter.nats.port:
+    description: "The port for the NATS server to listen on."
+    default: 4222
+  diego.route_emitter.nats.machines:
+    description: "IP of each NATS cluster member."
+  diego.route_emitter.nats.tls.enabled:
+    description: "Enable connecting to NATS server via TLS."
+    default: false
+  diego.route_emitter.nats.tls.hostname:
+    description: "Hostname of the NATS cluster."
+  diego.route_emitter.nats.tls.client_cert:
+    description: "PEM-encoded certificate for the route-emitter to present to NATS for verification when connecting via TLS."
+  diego.route_emitter.nats.tls.client_key:
+    description: "PEM-encoded private key for the route-emitter to present to NATS for verification when connecting via TLS."
+
+  diego.route_emitter.debug_addr:
+    description: "address at which to serve debug info"
+    default: "127.0.0.1:17009"
+  diego.route_emitter.healthcheck_address:
+    description: "address for the route_emitter health endpoint."
+    default: "127.0.0.1:17011"
+  diego.route_emitter.sync_interval_in_seconds:
+    description: "Interval to sync routes to the router in seconds."
+    default: 60
+  diego.route_emitter.log_level:
+    description: "Log level"
+    default: "info"
+
+  diego.route_emitter.bbs.api_location:
+    description: "Address to the BBS Server"
+    default: "bbs.service.cf.internal:8889"
+  diego.route_emitter.bbs.ca_cert:
+    description: "REQUIRED: PEM-encoded CA certificate"
+  diego.route_emitter.bbs.client_cert:
+    description: "REQUIRED: PEM-encoded client certificate"
+  diego.route_emitter.bbs.client_key:
+    description: "REQUIRED: PEM-encoded client key"
+  diego.route_emitter.bbs.client_session_cache_size:
+    description: "capacity of the tls client cache"
+  diego.route_emitter.bbs.max_idle_conns_per_host:
+    description: "maximum number of idle http connections"
+
+  diego.route_emitter.jitter_factor:
+    description: "The jitter factor is the percentage of register interval used in determining the jitter interval (the time for which the emitter sleeps)"
+    default: 0.2
+
+  diego.route_emitter.job_name:
+    description: "The name of the Diego job referenced by this spec (DO NOT override)"
+    default: "route_emitter"
+
+  internal_routes.enabled:
+    description: "Experimental: Enable the route-emitter to emit registrations for internal DNS-based service discovery."
+    default: false
+
+  tcp.enabled:
+    description: "Enable the route-emitter in cell-local mode to emit TCP routes for instances to the Routing API."
+    default: false
+  tcp.enable_tls:
+    description: "When enabled route-emitter will include TLS port and instance GUID when emitting TCP routes."
+    default: false
+  routing_api.url:
+    description: "Routing API uri to be used by the tcp route-emitter"
+    default: http://routing-api.service.cf.internal
+  routing_api.port:
+    description: "Routing API port to be used by the tcp route-emitter"
+    default: 3000
+  routing_api.auth_enabled:
+    description: "Enable UAA authentication when communicating with the Routing API"
+    default: true
+
+  uaa.hostname:
+    description: "UAA hostname"
+    default: "uaa.service.cf.internal"
+  uaa.port:
+    description: "The port on which UAA accepts TLS connections"
+    default: 8443
+  uaa.client_name:
+    description: "UAA client id"
+    default: "tcp_emitter"
+  uaa.client_secret:
+    description: "UAA client secret"
+  uaa.skip_cert_verify:
+    description: "Skip certificate verification when communicating with UAA"
+    default: false
+  uaa.ca_cert:
+    description: "UAA ca certificate"
+  loggregator.v2_api_port:
+    description: "Local metron agent gRPC port"
+    default: 3458
+  loggregator.ca_cert:
+    description: "CA Cert used to communicate with local metron agent over gRPC"
+  loggregator.cert:
+    description: "Cert used to communicate with local metron agent over gRPC"
+  loggregator.key:
+    description: "Key used to communicate with local metron agent over gRPC"
+  locks.locket.hostname:
+    description: "Hostname at which to discover the Locket API server. The route-emitter will use its BBS client credentials to authenticate to the Locket API."
+    default: "locket.service.cf.internal"
+  locks.locket.port:
+    description: "Port of the Locket API server."
+    default: 8891

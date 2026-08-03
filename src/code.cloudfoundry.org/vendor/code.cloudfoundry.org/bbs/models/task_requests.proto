@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package models;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "task.proto";
+import "error.proto";
+
+message TaskLifecycleResponse {
+  Error error = 1;
+}
+
+message DesireTaskRequest {
+  TaskDefinition task_definition = 1 [(gogoproto.jsontag) = "task_definition"];
+  string task_guid = 2 [(gogoproto.jsontag) =  "task_guid"];
+  string domain = 3 [(gogoproto.jsontag) =  "domain"];
+}
+
+message StartTaskRequest {
+  string task_guid = 1 [(gogoproto.jsontag) =  "task_guid"];
+  string cell_id = 2 [(gogoproto.jsontag) =  "cell_id"];
+}
+
+message StartTaskResponse {
+  Error error = 1;
+  bool should_start = 2 [(gogoproto.jsontag) =  "should_start"];
+}
+
+message FailTaskRequest {
+  option deprecated = true;
+  string task_guid = 1 [(gogoproto.jsontag) =  "task_guid"];
+  string failure_reason = 2 [(gogoproto.jsontag) =  "failure_reason"];
+}
+
+message RejectTaskRequest {
+  string task_guid = 1 [(gogoproto.jsontag) =  "task_guid"];
+  string rejection_reason = 2 [(gogoproto.jsontag) =  "rejection_reason"];
+}
+
+message TaskGuidRequest {
+  string task_guid = 1 [(gogoproto.jsontag) =  "task_guid"];
+}
+
+message CompleteTaskRequest {
+  string task_guid = 1 [(gogoproto.jsontag) =  "task_guid"];
+  string cell_id = 2 [(gogoproto.jsontag) =  "cell_id"];
+  bool failed = 3 [(gogoproto.jsontag) =  "failed"];
+  string failure_reason = 4 [(gogoproto.jsontag) =  "failure_reason"];
+  string result = 5 [(gogoproto.jsontag) =  "result"];
+}
+
+message TaskCallbackResponse {
+  string task_guid = 1 [(gogoproto.jsontag) =  "task_guid"];
+  bool failed = 2 [(gogoproto.jsontag) =  "failed"];
+  string failure_reason = 3 [(gogoproto.jsontag) =  "failure_reason"];
+  string result = 4 [(gogoproto.jsontag) =  "result"];
+  string annotation = 5;
+  int64 created_at = 6 [(gogoproto.jsontag) =  "created_at"];
+}
+
+message TasksRequest{
+  string domain = 1 [(gogoproto.jsontag) =  "domain"];
+  string cell_id = 2 [(gogoproto.jsontag) =  "cell_id"];
+}
+
+message TasksResponse{
+  Error error = 1;
+  repeated Task tasks = 2;
+}
+
+message TaskByGuidRequest{
+  string task_guid = 1 [(gogoproto.jsontag) =  "task_guid"];
+}
+
+message TaskResponse{
+  Error error = 1;
+  Task task = 2;
+}

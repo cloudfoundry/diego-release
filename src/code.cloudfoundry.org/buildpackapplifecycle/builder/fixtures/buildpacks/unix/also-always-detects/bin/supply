@@ -1,0 +1,11 @@
+#!/bin/bash
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+DEP_DIR=$3
+SUB_DIR=$4
+
+echo ALSO-SUPPLYING
+
+echo also-always-detects-buildpack > $CACHE_DIR/supplied
+echo also-always-detects-buildpack > $DEP_DIR/$SUB_DIR/supplied

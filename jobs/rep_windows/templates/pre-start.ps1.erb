@@ -1,0 +1,87 @@
+﻿$ErrorActionPreference = "Stop";
+trap { $host.SetShouldExit(1) }
+
+function allowContainerUsersAccess {
+  param([string] $directory)
+
+  $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Users", "ReadAndExecute", "ContainerInherit, ObjectInherit", "None", "Allow")
+  $acl = Get-Acl $directory
+  $acl.AddAccessRule($rule)
+  Set-Acl $directory $acl
+}
+
+function checkAndRemove {
+  param([string] $path)
+  if (Test-Path $path) {
+    Remove-Item -Path $path -Force -Recurse -ErrorAction "Continue"
+  }
+}
+
+Write-Host "Running pre-start"
+
+$port="<%= p("diego.rep.listen_addr_admin").sub(/^127\.0\.0\.1:/, "")%>"
+
+if ($port -eq "") {
+  Write-Error "Unable to find the port for rep_windows"
+}
+if (-Not (Get-NetFirewallRule | Where-Object { $_.DisplayName -eq "RepPort" })) {
+  New-NetFirewallRule -DisplayName "RepPort" -Action Allow -Direction Inbound -Enabled True -LocalPort $port -Protocol TCP
+  if (-Not (Get-NetFirewallRule | Where-Object { $_.DisplayName -eq "RepPort" })) {
+    Write-Error "Unable to add RepPort firewall rule"
+  }
+}
+
+$port="<%= p("diego.rep.listen_addr_securable").match(/:(\d+)/)[1]%>"
+
+if ($port -eq "") {
+  Write-Error "Unable to find the listen_addr_securable port for rep_windows"
+}
+if (-Not (Get-NetFirewallRule | Where-Object { $_.DisplayName -eq "SecureRepPort" })) {
+  New-NetFirewallRule -DisplayName "SecureRepPort" -Action Allow -Direction Inbound -Enabled True -LocalPort $port -Protocol TCP
+  if (-Not (Get-NetFirewallRule | Where-Object { $_.DisplayName -eq "SecureRepPort" })) {
+    Write-Error "Unable to add RepPort firewall rule"
+  }
+}
+
+# Remove old data dirs so that disk space isn't wasted. This cleanup can be removed in v4
+checkAndRemove "/var/vcap/data/rep/shared/garden/download_cache"
+checkAndRemove "/var/vcap/data/rep/shared/garden/instance_identity"
+checkAndRemove "/var/vcap/data/rep/shared/garden/trusted_certs"
+checkAndRemove "/var/vcap/data/rep/shared/garden/proxy_config"
+checkAndRemove "/var/vcap/data/rep/shared_data"
+checkAndRemove "/var/vcap/data/rep/shared/garden/volume_mounted_files"
+
+$bindmountDirs = @()
+
+$cache_dir = "/var/vcap/data/rep/shared/garden/download_cache"
+New-Item -Path $cache_dir -ItemType "directory" -Force
+$bindmountDirs += $cache_dir
+
+$instance_identity_dir = "/var/vcap/data/rep/shared/garden/instance_identity"
+New-Item -Path $instance_identity_dir -ItemType "directory" -Force
+$bindmountDirs += $instance_identity_dir
+
+$service_bindings_dir = "/var/vcap/data/rep/shared/garden/volume_mounted_files"
+New-Item -Path $service_bindings_dir -ItemType "directory" -Force
+$bindmountDirs += $service_bindings_dir
+
+<% if_p("containers.trusted_ca_certificates") do |value| %>
+  $conf_dir = "C:/var/vcap/jobs/rep_windows/config"
+  $trusted_certs_dir = "C:/var/vcap/data/rep/shared/garden/trusted_certs"
+
+  New-Item -Path $trusted_certs_dir -ItemType "directory" -Force
+  C:/var/vcap/packages/certsplitter_windows/certsplitter $conf_dir/certs/rep/trusted_ca_certificates.json $trusted_certs_dir
+
+  $bindmountDirs += $trusted_certs_dir
+<% end %>
+
+$healthcheckDir = "<%= p("declarative_healthcheck_path") %>"
+$bindmountDirs += $healthcheckDir
+
+<% if p("diego.rep.open_bindmounts_acl") %>
+  foreach ($dir in $bindmountDirs)
+  {
+    allowContainerUsersAccess($dir)
+  }
+<% end %>
+

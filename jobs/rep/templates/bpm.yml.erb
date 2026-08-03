@@ -1,0 +1,24 @@
+---
+processes:
+- name: rep
+  executable: /var/vcap/jobs/rep/bin/rep
+<% if p("diego.rep.enable_cf_pcap", false) -%>
+  # This is required to preserve the file capabilities of cf-pcap to allow the vcap user to capture
+  # packets inside the app container without root.
+  capabilities: [ "SETFCAP" ]
+<% end -%>
+  limits:
+    open_files: 100000
+  hooks:
+    pre_start: /var/vcap/jobs/rep/bin/bpm-pre-start
+  ephemeral_disk: true
+  additional_volumes:
+    - path: <%= p("diego.executor.volman.driver_paths") %>
+    - path : /var/vcap/data/garden
+      writable: true
+    - path: <%= p("diego.rep.extra_root_fs_dir") %>
+<% p("diego.rep.disk_health_check_paths").each do |path| -%>
+<% next if path == "/" -%>
+    - path: <%= path %>
+      writable: true
+<% end -%>

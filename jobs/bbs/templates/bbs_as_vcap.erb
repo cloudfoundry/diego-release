@@ -1,0 +1,14 @@
+#!/bin/bash -e
+
+run_dir=/var/vcap/sys/run/bbs
+log_dir=/var/vcap/sys/log/bbs
+conf_dir=/var/vcap/jobs/bbs/config
+
+pidfile=$run_dir/bbs.pid
+
+export GOMAXPROCS=$(nproc)
+
+/var/vcap/packages/bbs/bin/bbs \
+    -config=$conf_dir/bbs.json \
+    2> >(tee -a $log_dir/bbs.stderr.log | logger -p user.error -t vcap.bbs) \
+    1> >(tee -a $log_dir/bbs.stdout.log | logger -p user.info -t vcap.bbs) & echo $! > $pidfile

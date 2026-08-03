@@ -1,0 +1,218 @@
+---
+name: bbs
+
+templates:
+  bbs_ctl.erb: bin/bbs_ctl
+  bbs_as_vcap.erb: bin/bbs_as_vcap
+  bbs.json.erb: config/bbs.json
+  bpm-pre-start.erb: bin/bpm-pre-start
+  bpm.yml.erb: config/bpm.yml
+  set-bbs-kernel-params.erb: bin/set-bbs-kernel-params
+  drain.erb: bin/drain
+  bbs_ca.crt.erb: config/certs/ca.crt
+  bbs_server.crt.erb: config/certs/server.crt
+  bbs_server.key.erb: config/certs/server.key
+  sql_ca.crt.erb: config/certs/sql/ca.crt
+  post-start.erb: bin/post-start
+  rep_ca.crt.erb: config/certs/rep/ca.crt
+  rep_client.crt.erb: config/certs/rep/client.crt
+  rep_client.key.erb: config/certs/rep/client.key
+  auctioneer_ca.crt.erb: config/certs/auctioneer/ca.crt
+  auctioneer_client.crt.erb: config/certs/auctioneer/client.crt
+  auctioneer_client.key.erb: config/certs/auctioneer/client.key
+  loggregator_ca.crt.erb: config/certs/loggregator/ca.crt
+  loggregator_client.crt.erb: config/certs/loggregator/client.crt
+  loggregator_client.key.erb: config/certs/loggregator/client.key
+  indicators.yml.erb: config/indicators.yml
+
+packages:
+  - pid_utils
+  - bbs
+
+properties:
+  tasks.max_retries:
+    description: "The number of times task placement should be retried after pre-execution task failure."
+    default: 3
+
+  diego.bbs.auctioneer.api_location:
+    description: "Hostname and port of the auctioneer API, without URI scheme."
+    default: "auctioneer.service.cf.internal:9016"
+  diego.bbs.auctioneer.ca_cert:
+    description: "CA cert for communication to the auctioneer."
+  diego.bbs.auctioneer.client_cert:
+    description: "Client cert for communication to the auctioneer."
+  diego.bbs.auctioneer.client_key:
+    description: "Client key for communication to the auctioneer."
+  diego.bbs.auctioneer.require_tls:
+    description: "Whether to require mutual TLS for communication with the auctioneer API. Deprecated, Diego V2 and later require Auctioneer communication to use TLS.  This is only relevant when upgrading from V1 to ensure no downtime during the upgrade"
+    default: false
+
+  diego.bbs.debug_addr:
+    description: "address at which to serve debug info"
+    default: "127.0.0.1:17017"
+  diego.bbs.listen_addr:
+    description: "address at which to serve API requests"
+    default: "0.0.0.0:8889"
+  diego.bbs.health_addr:
+    description: "address at which BBS serves '/ping' health-check endpoint"
+    default: "127.0.0.1:8890"
+  diego.bbs.health_check_timeout:
+    description: Number of seconds to wait for the DB health check insert/retrieve operation should time out
+    default: 5
+  diego.bbs.health_check_interval:
+    description: Number of seconds to wait between DB health checks
+    default: 10
+  diego.bbs.health_check_failure_threshold:
+    description: Number of consecutive failed DB health checks before restarting BBS
+    default: 3
+  diego.bbs.enable_db_health_check:
+    description: Whether or not to enable DB health checks in BBS to ensure it restarts in a timely fashion upon severe DB degradation
+    default: false
+  diego.bbs.log_level:
+    description: "Log level"
+    default: "info"
+  diego.bbs.debug_lrp_start_heartbeats:
+    description: "When this property is set to 'true', container heartbeat log messages are issued at a debug level, which reduces log volume. When this property is set to 'false', container heartbeat log messages issued at an info level."
+    default: false
+  diego.bbs.enable_access_log:
+    description: "Enable access log, i.e. log every request made to the bbs"
+    default: false
+  diego.bbs.advertisement_base_hostname:
+    description: "Suffix for the BBS advertised hostname"
+    default: "bbs.service.cf.internal"
+  diego.bbs.active_key_label:
+    description: "Label of the encryption key to be used when writing to the database"
+  diego.bbs.encryption_keys:
+    description: "List of encryption keys to be used"
+    default: []
+  diego.bbs.ca_cert:
+    description: "REQUIRED: PEM-encoded CA certificate"
+  diego.bbs.server_cert:
+    description: "REQUIRED: PEM-encoded client certificate"
+  diego.bbs.server_key:
+    description: "REQUIRED: PEM-encoded client key"
+
+  diego.bbs.sql.db_host:
+    description: "Host for SQL backend"
+    default: ""
+  diego.bbs.sql.db_port:
+    description: "Port for SQL backend"
+    default: ""
+  diego.bbs.sql.db_schema:
+    description: "Database name to use for connecting to SQL backend"
+    default: ""
+  diego.bbs.sql.db_username:
+    description: "Username to use for connecting to SQL backend"
+    default: ""
+  diego.bbs.sql.db_password:
+    description: "Password to use for connecting to SQL backend"
+    default: ""
+  diego.bbs.sql.db_driver:
+    description: "Database driver to use for SQL backend (for example: mysql,postgres)"
+    default: mysql
+  diego.bbs.sql.max_open_connections:
+    description: "Maximum number of open connections to the SQL database"
+    default: 200
+  diego.bbs.sql.max_idle_connections:
+    description: "Maximum number of idle connections to the SQL database"
+    default: 200
+  diego.bbs.sql.max_connection_lifetime:
+    description: "Maximum lifetime of connections to the SQL database before connections are recreated"
+    default: 90
+  diego.bbs.sql.db_connection_timeout: 
+    description: "Timeout in seconds for a db client to wait for a connection to be established"
+    default: "30"
+  diego.bbs.sql.db_read_timeout: 
+    description: "Timeout in seconds for a db client to wait for data to be received from the server"
+    default: "60"
+  diego.bbs.sql.db_write_timeout: 
+    description: "Timeout in seconds for a db client to wait for data to be sent to the server"
+    default: "60"
+  diego.bbs.sql.require_ssl:
+    description: "Whether to require SSL for BBS communication to the SQL backend"
+    default: false
+  diego.bbs.sql.ca_cert:
+    description: "Bundle of CA certificates for the BBS to verify the SQL server SSL certificate when connecting via SSL"
+
+  diego.bbs.convergence.repeat_interval_in_seconds:
+    description: "the interval between runs of the converge process"
+    default: 30
+  diego.bbs.convergence.kick_task_duration_in_seconds:
+    description: "the interval, in seconds, between kicks to tasks in seconds"
+    default: 30
+  diego.bbs.convergence.expire_completed_task_duration_in_seconds:
+    description: "completed, unresolved tasks are deleted after this duration in seconds"
+    default: 120
+  diego.bbs.convergence.expire_pending_task_duration_in_seconds:
+    description: "unclaimed tasks are marked as failed, after this duration in seconds"
+    default: 1800
+
+  diego.bbs.rep.require_tls:
+    description: "Whether to require TLS for communication to the securable rep API server.  Deprecated, Diego V2 and later require Rep communication to use TLS. This is only relevant when upgrading from V1 to ensure no downtime during the upgrade"
+    default: false
+  diego.bbs.rep.ca_cert:
+    description: "CA cert for communication to the rep."
+  diego.bbs.rep.client_cert:
+    description: "Client cert for communication to the rep."
+  diego.bbs.rep.client_key:
+    description: "Client key for communication to the rep."
+  diego.bbs.rep.client_session_cache_size:
+    description: "capacity of the tls client cache"
+    default: 0
+
+  diego.bbs.locket.api_location:
+    description: "Hostname and port of the Locket server. When set, the BBS attempts to claim a lock from the Locket API and will detect Diego cells registered with the Locket API."
+    default: locket.service.cf.internal:8891
+  diego.bbs.locket.client_keepalive_time: 
+    description: "Period in seconds after which the locket gRPC client sends keepalive ping requests to the locket server it is connected to."
+    default: 10
+  diego.bbs.locket.client_keepalive_timeout: 
+    description: "Timeout in seconds to receive a response to the keepalive ping. If a response is not received within this time, the locket client will reconnect to another server."
+    default: 22
+
+  diego.bbs.metrics.advanced_metrics.enabled:
+    description: Enables emitting BBS Metrics per specified routes/endpoints in advanced_metrics, useful for debugging issues. May impact performances.
+    default: false
+
+  diego.bbs.metrics.advanced_metrics.route_config.request_count:
+    description: Set the routes for which request_count should be emitted. If empty, no request_count metrics will be emitted.
+    default: []
+
+  diego.bbs.metrics.advanced_metrics.route_config.request_latency:
+    description: Set the routes for which request_latency should be emitted. If empty, no request_latency metrics will be emitted.
+    default: []
+
+  limits.open_files:
+    description: Maximum number of files (including sockets) the BBS process may have open.
+    default: 100000
+
+  diego.bbs.gogc:
+    description: "Value for the GOGC environment variable controlling Go GC trigger threshold. Accepts an integer percentage (e.g. 100 means GC triggers when heap doubles, 200 when it triples) or 'off' to disable percentage-based GC triggering. When used with gomemlimit, setting this to 'off' lets the memory limit alone govern GC pacing, which reduces GC-induced latency spikes under high load."
+  diego.bbs.gomemlimit:
+    description: "Value for the GOMEMLIMIT environment variable setting a soft memory limit for the Go runtime (e.g. '8GiB'). Valid units: B, KiB, MiB, GiB, TiB. When set, the runtime paces garbage collection to stay under this limit. Recommended to set alongside gogc='off' for latency-sensitive workloads with sufficient available memory."
+
+  logging.max_data_string_length:
+    description: "Length in bytes above which logged strings will be truncated. If set to 0, turns off truncation."
+    default: 640
+
+  cell_registrations.locket.enabled:
+    description: When set, the BBS will detect Diego cells registered with the Locket API.
+    default: true
+    
+  loggregator.v2_api_port:
+    description: "Local metron agent gRPC port"
+    default: 3458
+  loggregator.ca_cert:
+    description: "CA Cert used to communicate with local metron agent over gRPC"
+  loggregator.cert:
+    description: "Cert used to communicate with local metron agent over gRPC"
+  loggregator.key:
+    description: "Key used to communicate with local metron agent over gRPC"
+
+  set_kernel_parameters:
+    description: "Enable tuning /proc/sys kernel parameters. NOTE: set this property to 'false' when deploying to BOSH-Lite or other containerized BOSH clouds."
+    default: true
+
+  database.tls.enable_identity_verification:
+    default: true
+    description: "Whether to verify the identity of the database host when connecting with TLS. Set this to `false` to allow TLS connections to database providers that do not configure the database's TLS certificate to include its hostname or IP, such as Google Cloud SQL"

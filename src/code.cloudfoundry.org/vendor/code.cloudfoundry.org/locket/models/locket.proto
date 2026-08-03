@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package models;
+
+service Locket {
+  rpc Lock(LockRequest) returns (LockResponse) {}
+  rpc Fetch(FetchRequest) returns (FetchResponse) {}
+  rpc Release(ReleaseRequest) returns (ReleaseResponse) {}
+  rpc FetchAll(FetchAllRequest) returns (FetchAllResponse) {}
+}
+
+enum TypeCode {
+  UNKNOWN = 0;
+  LOCK = 1;
+  PRESENCE = 2;
+}
+
+message Resource {
+  string key = 1;
+  string owner = 2;
+  string value = 3;
+  string type = 4 [deprecated=true];
+  TypeCode type_code = 5;
+}
+
+message LockRequest {
+  Resource resource = 1;
+  int64 ttl_in_seconds = 2;
+}
+
+message LockResponse {}
+
+message ReleaseRequest {
+  Resource resource = 1;
+}
+
+message ReleaseResponse {}
+
+message FetchRequest {
+  string key = 1;
+}
+
+message FetchResponse {
+  Resource resource = 1;
+}
+
+message FetchAllRequest {
+  string type = 1 [deprecated=true];
+  TypeCode type_code = 2;
+}
+
+message FetchAllResponse {
+  repeated Resource resources = 1;
+}

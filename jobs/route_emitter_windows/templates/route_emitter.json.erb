@@ -1,0 +1,175 @@
+<%=
+  conf_dir = "/var/vcap/jobs/#{p("diego.route_emitter.job_name")}/config"
+
+  def parse_ip (ip, var_name)
+    unless ip.empty?
+      ip = ip.split(":")[0]
+    begin
+      parsed = IPAddr.new ip
+    rescue  => e
+      raise "Invalid #{var_name} '#{ip}': #{e}"
+    end
+    end
+  end
+
+  parse_ip(p('diego.route_emitter.debug_addr'), 'diego.route_emitter.debug_addr')
+  parse_ip(p('diego.route_emitter.healthcheck_address'), 'diego.route_emitter.healthcheck_address')
+
+  nats_machines = nil
+  if_p('diego.route_emitter.nats.machines') do |ips|
+    nats_machines = ips.compact
+  end.else_if_link('nats') do
+    link('nats').if_p("nats.hostname") do |hostname|
+      nats_machines = [hostname]
+    end.else do
+      nats_machines = link('nats').instances.map { |instance| instance.address }
+    end
+  end
+
+  nats_port = nil
+  if_p('diego.route_emitter.nats.port') do |prop|
+    nats_port = prop
+  end.else_if_link('nats') do
+    nats_port = link('nats').p("nats.port")
+  end
+
+  nats_user = nil
+  if_p('diego.route_emitter.nats.user') do |prop|
+    nats_user = prop
+  end.else_if_link('nats') do
+    nats_user = link('nats').p("nats.user")
+  end
+
+  nats_password = nil
+  if_p('diego.route_emitter.nats.password') do |prop|
+    nats_password = prop
+  end.else_if_link('nats') do
+    nats_password = link('nats').p("nats.password")
+  end
+
+  if_link('nats-tls') do |nats_link|
+    if p("diego.route_emitter.nats.tls.enabled")
+      nats_machines = nats_link.instances.map { |instance| instance.address }
+      nats_link.if_p("nats.hostname") do |hostname|
+        nats_machines = [hostname]
+      end
+      if_p("diego.route_emitter.nats.tls.hostname") do | prop |
+        nats_machines = [prop]
+      end
+      nats_port = nats_link.p("nats.port")
+      nats_link.if_p("nats.user") do |prop|
+        nats_user = prop
+      end
+      nats_link.if_p("nats.password") do |prop|
+        nats_password = prop
+      end
+    end
+  end
+
+  config = {
+    nats_username: nats_user,
+    nats_password: nats_password,
+    nats_addresses: nats_machines.collect { |addr|
+      "#{addr}:#{nats_port}"
+    }.join(","),
+    nats_tls_enabled: p("diego.route_emitter.nats.tls.enabled"),
+    nats_ca_cert_file: "#{conf_dir}/certs/nats/ca.crt",
+    nats_client_cert_file: "#{conf_dir}/certs/nats/client.crt",
+    nats_client_key_file: "#{conf_dir}/certs/nats/client.key",
+    communication_timeout: "30s",
+    sync_interval: "#{p("diego.route_emitter.sync_interval_in_seconds")}s",
+    debug_address: p("diego.route_emitter.debug_addr"),
+    log_level: p("diego.route_emitter.log_level"),
+    lock_retry_interval: "5s",
+    lock_ttl: "15s",
+    healthcheck_address: p("diego.route_emitter.healthcheck_address"),
+    route_emitting_workers: 20,
+    tcp_route_ttl: "2m",
+    unregistration_interval: "30s",
+    unregistration_send_count: 20,
+  }
+
+  if_p("diego.route_emitter.jitter_factor") do |value|
+    if !value.instance_of?(Float) or value < 0.0 or value > 1.0
+      raise "diego.route_emitter.jitter_factor must be a float between 0.0 and 1.0"
+    end
+    config[:jitter_factor] = value
+  end
+
+  config[:time_format] = "rfc3339"
+
+  config[:locket_session_name] = "route-emitter"
+  config[:locket_address] = "#{p("locks.locket.hostname")}:#{p("locks.locket.port")}"
+  config[:uuid] = spec.id
+  config[:locket_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
+  config[:locket_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"
+  config[:locket_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
+
+  config[:bbs_ca_cert_file] = "#{conf_dir}/certs/bbs/ca.crt"
+  config[:bbs_client_cert_file] = "#{conf_dir}/certs/bbs/client.crt"
+  config[:bbs_client_key_file] = "#{conf_dir}/certs/bbs/client.key"
+  config[:bbs_address] = "https://#{p("diego.route_emitter.bbs.api_location")}"
+
+  if_p("diego.route_emitter.bbs.client_session_cache_size") do |value|
+    config[:bbs_client_session_cache_size] = value
+  end
+
+  if_p("diego.route_emitter.bbs.max_idle_conns_per_host") do |value|
+    config[:bbs_max_idle_conns_per_host] = value
+  end
+
+  if p("diego.route_emitter.local_mode")
+    config[:cell_id] = spec.id
+  end
+
+  config[:enable_internal_emitter] = p("internal_routes.enabled")
+  config[:enable_tcp_emitter] = p("tcp.enabled")
+  config[:tcp_enable_tls] = p("tcp.enable_tls")
+  config[:routing_api] = {}
+  if_p("routing_api.url") do |value|
+    config[:routing_api][:url] = value
+  end
+  if_p("routing_api.port") do |value|
+    config[:routing_api][:port] = value
+  end
+  if_link("routing_api") do |routing_api_link|
+    routing_api_link.if_p("routing_api.mtls_port") do |mtls_port|
+      routing_api_url = URI.parse(config[:routing_api][:url])
+      routing_api_url.scheme = "https"
+      config[:routing_api][:url] = routing_api_url.to_s
+
+      config[:routing_api][:port] = mtls_port
+      config[:routing_api][:ca_cert_file] = "#{conf_dir}/certs/routing_api/ca.crt"
+      config[:routing_api][:client_cert_file] = "#{conf_dir}/certs/routing_api/client.crt"
+      config[:routing_api][:client_key_file] = "#{conf_dir}/certs/routing_api/client.key"
+    end
+  end
+  if_p("routing_api.auth_enabled") do |value|
+    config[:routing_api][:auth_enabled] = value
+
+    if p("tcp.enabled") && value then
+      config[:oauth] = {}
+      config[:oauth][:uaa_url] = "https://" + p("uaa.hostname") + ":" + p("uaa.port").to_s
+      config[:oauth][:uaa_request_timeout] = "10s"
+      config[:oauth][:client_name] = p("uaa.client_name")
+      config[:oauth][:client_secret] = p("uaa.client_secret")
+      config[:oauth][:skip_cert_verify] = p("uaa.skip_cert_verify")
+      config[:oauth][:ca_certs] = "#{conf_dir}/certs/uaa/ca.crt"
+    end
+  end
+
+  config[:loggregator]={}
+  config[:loggregator][:loggregator_api_port] = p("loggregator.v2_api_port")
+  config[:loggregator][:loggregator_ca_path] = "#{conf_dir}/certs/loggregator/ca.crt"
+  config[:loggregator][:loggregator_cert_path] = "#{conf_dir}/certs/loggregator/client.crt"
+  config[:loggregator][:loggregator_key_path] = "#{conf_dir}/certs/loggregator/client.key"
+  config[:loggregator][:loggregator_job_deployment] = spec.deployment
+  config[:loggregator][:loggregator_job_name] = spec.name
+  config[:loggregator][:loggregator_job_index] = spec.id
+  config[:loggregator][:loggregator_job_ip] = spec.address
+  config[:loggregator][:loggregator_job_origin] = "route_emitter"
+  config[:loggregator][:loggregator_source_id] = "route_emitter"
+  config[:loggregator][:loggregator_instance_id] = spec.id
+
+  config.to_json
+%>

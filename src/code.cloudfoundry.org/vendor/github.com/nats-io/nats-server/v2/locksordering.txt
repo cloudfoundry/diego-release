@@ -1,0 +1,49 @@
+Here is the list of some established lock ordering.
+
+In this list, A -> B means that you can have A.Lock() then B.Lock(), not the opposite.
+
+jetStream -> jsAccount -> Server -> client -> Account
+
+jetStream -> jsAccount -> stream -> consumer
+
+A lock to protect jetstream account's usage has been introduced: jsAccount.usageMu.
+This lock is independent and can be invoked under any other lock: jsAccount -> jsa.usageMu, stream -> jsa.usageMu, etc...
+
+A lock to protect the account's leafnodes list was also introduced to
+allow that lock to be held and the acquire a client lock which is not
+possible with the normal account lock.
+
+accountLeafList -> client
+
+AccountResolver interface has various implementations, but assume: AccountResolver -> Server
+
+A reloadMu lock was added to prevent newly connecting clients racing with the configuration reload.
+This must be taken out as soon as a reload is about to happen before any other locks:
+
+    reloadMu -> Server
+    reloadMu -> optsMu
+
+The "jscmMu" lock in the Account is used to serialise calls to checkJetStreamMigrate and
+clearObserverState so that they cannot interleave which would leave Raft nodes in
+inconsistent observer states.
+
+    jscmMu -> Account -> jsAccount
+    jscmMu -> stream.clsMu
+    jscmMu -> RaftNode
+
+The "clsMu" lock protects the consumer list on a stream, used for signalling consumer activity.
+
+    stream -> clsMu
+
+The "clMu", "ddMu" and "batchMu" locks protect clustered, dedupe and batch state respectively.
+The stream lock (`mset.mu`) is optional, but if holding "clMu", "ddMu" or "batchMu",
+locking the stream lock afterward would violate locking order.
+
+    stream -> clMu
+    stream -> batchMu -> clMu
+    stream -> clMu -> ddMu
+
+The "mset.batches.mu" lock protects the batching state without needing to hold the stream lock.
+If "clMu" is used to commit a batch, it should only be acquired while already holding the batch lock.
+
+    stream -> mset.batches.mu -> clMu

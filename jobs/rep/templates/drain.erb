@@ -1,0 +1,65 @@
+#!/bin/bash
+
+set -e
+
+# Redirect stdout to fd 3 so that output_for_bosh can echo correctly
+exec 3>&1
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+run_dir=/var/vcap/sys/run/rep
+pidfile=$run_dir/rep.pid
+log_dir=/var/vcap/sys/log/rep
+logfile=$log_dir/drain.log
+
+address="https://<%=p("diego.rep.listen_addr_admin")%>"
+
+mkdir -p $log_dir
+
+exec 1>> $logfile
+exec 2>> $logfile
+
+TLS_CA_CERT=<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls_ca.crt"%>
+TLS_CERT=<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls.crt"%>
+TLS_KEY=<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls.key"%>
+curlCmd="--cacert $TLS_CA_CERT --cert $TLS_CERT --key $TLS_KEY $address"
+
+evacuate() {
+  /var/vcap/packages/rep/bin/gocurl -X POST ${curlCmd}/evacuate
+}
+
+heartbeat() {
+  /var/vcap/packages/rep/bin/gocurl ${curlCmd}/ping >/dev/null 2>&1
+}
+
+output_for_bosh() {
+  exit_code=$?
+
+  if [ $exit_code -eq 0 ]; then
+    echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): rep exited"
+  else
+    echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): evacuation failed"
+  fi
+
+  echo $exit_code >&3
+}
+
+trap output_for_bosh EXIT
+
+if ! /var/vcap/jobs/bpm/bin/bpm pid rep >/dev/null 2>&1; then
+  echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): rep process not running"
+  exit 0
+fi
+
+echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): drain triggered"
+
+if evacuate; then
+  while heartbeat; do
+    sleep 5
+    echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): waiting"
+  done
+
+  /var/vcap/jobs/bpm/bin/bpm stop rep
+else
+  exit 1
+fi

@@ -1,0 +1,34 @@
+#!/bin/bash -e
+run_dir=/var/vcap/sys/run/route_emitter
+log_dir=/var/vcap/sys/log/route_emitter
+
+pidfile=$run_dir/route_emitter.pid
+
+source /var/vcap/packages/pid_utils/pid_utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $pidfile "route_emitter"
+
+    mkdir -p $run_dir
+    chown -R vcap:vcap $run_dir
+
+    mkdir -p $log_dir
+    chown -R vcap:vcap $log_dir
+
+    exec chpst -u vcap:vcap bash -c '/var/vcap/jobs/route_emitter/bin/route_emitter_as_vcap'
+
+    ;;
+
+  stop)
+    kill_and_wait $pidfile
+
+    ;;
+
+  *)
+    echo "Usage: route_emitter_ctl {start|stop}"
+
+    ;;
+
+esac

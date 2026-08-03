@@ -1,0 +1,17 @@
+#!/bin/bash -e
+
+address=<%= p("diego.route_emitter.healthcheck_address") %>
+start=`date +%s`
+i=0
+
+# wait up to 25 seconds
+while [ $(( $(date +%s) - 25 )) -lt $start ]; do
+  i=$((i + 1))
+  if curl --fail --silent http://$address/ping 1>/dev/null 2>&1; then
+    exit 0
+  fi
+  echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): Failed 'curl --fail --silent http://$address/ping' on attempt $i"
+  sleep 1
+done
+
+exit 1

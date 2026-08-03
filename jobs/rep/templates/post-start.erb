@@ -1,0 +1,53 @@
+#!/bin/bash
+
+<%
+  def convert_to_seconds(duration)
+    result = duration.scan(/([\d.]+)(ns|us|ms|s|m|h)/).map do |val_string, unit|
+      val = val_string.to_i
+      conversion = 0
+
+      case unit
+      when "h"
+	conversion = 3600
+      when "m"
+	conversion = 60
+      when "s"
+	conversion = 1
+      end
+
+      val * conversion
+    end
+
+    result.reduce(0, :+)
+  end
+%>
+
+address="https://<%=p("diego.rep.listen_addr_admin")%>"
+
+TLS_CA_CERT=<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls_ca.crt"%>
+TLS_CERT=<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls.crt"%>
+TLS_KEY=<%="/var/vcap/jobs/#{p("diego.rep.job_name")}/config/certs/tls.key"%>
+curlCmd="--cacert $TLS_CA_CERT --cert $TLS_CERT --key $TLS_KEY $address"
+
+ping() {
+  /var/vcap/packages/rep/bin/gocurl ${curlCmd}/ping >/dev/null 2>&1
+}
+
+start=`date +%s`
+timeout=<%= convert_to_seconds p("diego.executor.garden_healthcheck.timeout") %>
+
+echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): Pinging rep..."
+i=1
+
+while [ $(( $(date +%s) - $timeout )) -lt $start ]; do
+  if ping; then
+    echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): Success!"
+    exit 0
+  fi
+  echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): Attempt $i failed. Trying again..."
+  i=$((i + 1))
+  sleep 1
+done
+
+echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): Timed out pinging rep. Failing post-start."
+exit 1

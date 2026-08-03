@@ -1,0 +1,238 @@
+#@ load("@ytt:data", "data")
+#@ load("ytt-helpers.star", "helpers")
+name: unit-integration-tests
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+    branches:
+      - develop
+    paths:
+      - 'src/**'
+      - 'packages/**'
+      - 'jobs/**'
+      - 'config/**'
+      - 'scripts/**'
+      - '.github/workflows/**'
+      - '.github/helpers/**'
+
+env:
+  MAPPING: |
+    build_nats_server=src/code.cloudfoundry.org/vendor/github.com/nats-io/nats-server/v2
+  FLAGS: |
+    --keep-going
+    --trace
+    -r
+    --fail-on-pending
+    --randomize-all
+    --nodes=7
+    --race
+    --timeout 30m
+    --flake-attempts 2
+  RUN_AS: root
+  VERIFICATIONS: |
+    verify_go repo/$DIR
+    verify_gofmt repo/$DIR
+    verify_govet repo/$DIR
+    verify_staticcheck repo/$DIR
+  FUNCTIONS: ci/diego-release/helpers/build-binaries.bash
+  DB: ""
+
+jobs:
+  repo-clone:
+    runs-on: ubuntu-latest
+    steps:
+      - name: diego-release-repo
+        uses: actions/checkout@v4.3.1
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          submodules: recursive
+          path: repo
+      - name: Check out wg-appruntime code
+        uses: actions/checkout@v4.3.1
+        with:
+          repository: cloudfoundry/wg-app-platform-runtime-ci
+          path: ci
+      - name: zip repo artifacts
+        run: |
+          tar -czf repo-artifact.tar.gz repo
+          tar -czf ci-artifact.tar.gz ci
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: repo
+          path: |
+            repo-artifact.tar.gz
+            ci-artifact.tar.gz
+  determine-image-tag:
+    if: contains(github.event.pull_request.labels.*.name, 'ready-to-run')
+    runs-on: ubuntu-latest
+    outputs:
+      go_version: ${{ steps.get-version.outputs.go_version }}
+    steps:
+    - name: checkout ci repo
+      uses: actions/checkout@v4.3.1
+      with:
+        repository: cloudfoundry/wg-app-platform-runtime-ci
+        sparse-checkout: go-version.json
+        sparse-checkout-cone-mode: false
+    - name: get-version
+      id: get-version
+      run: |
+        version=$(jq -r '.releases["diego"] // .default' go-version.json)
+        echo "go_version=${version}" >> "$GITHUB_OUTPUT"
+  template-tests:
+    runs-on: ubuntu-latest
+    needs: [repo-clone]
+    container: cloudfoundry/tas-runtime-build:latest
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: repo
+    - run: |
+        tar -xzvf repo-artifact.tar.gz
+        tar -xzvf ci-artifact.tar.gz
+    - name: template-tests
+      run: |
+        "${GITHUB_WORKSPACE}"/ci/shared/tasks/run-tests-templates/task.bash
+  lint-repo:
+    runs-on: ubuntu-latest
+    needs: [repo-clone]
+    container: cloudfoundry/tas-runtime-build:latest
+    env:
+      LINTERS: |
+        sync-package-specs.bash
+        sync-submodule-config.bash
+        match-golang-os-package-versions.bash
+        check-envoy-versions.bash
+        check-for-windows-drift.bash
+        check-proto-files.bash
+        check-metrics-documentation.bash
+        check-expiring-certs.bash
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: repo
+    - run: |
+        tar -xzvf repo-artifact.tar.gz
+        tar -xzvf ci-artifact.tar.gz
+    - name: lint-repo
+      run: |
+        "${GITHUB_WORKSPACE}"/ci/shared/tasks/lint-repo/task.bash
+  test-on-mysql-5-7:
+    if: contains(github.event.pull_request.labels.*.name, 'ready-to-run')
+    runs-on: ubuntu-latest
+    needs: [repo-clone, determine-image-tag]
+    env:
+      BUILD_IMAGE: cloudfoundry/tas-runtime-mysql-5.7:${{ needs.determine-image-tag.outputs.go_version }}
+      DB_USER: root
+      DB_PASSWORD: password
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: repo
+    - run: |
+        tar -xzvf repo-artifact.tar.gz
+        tar -xzvf ci-artifact.tar.gz
+    - name: pull image
+      run: docker pull "$BUILD_IMAGE"
+    - name: build binaries
+      run: |
+        repo/.github/helpers/build.bash ${{ github.workspace }} "$BUILD_IMAGE"
+#@ for package in helpers.packages_with_configure_db(data.values.internal_repos):
+    - name: #@ "{}-mysql".format(package.name)
+      env:
+        DIR: #@ "src/code.cloudfoundry.org/{}".format(package.name)
+        DB: mysql
+      run: |
+        repo/.github/helpers/test.bash ${{ github.workspace }} "$BUILD_IMAGE"
+#@ end
+  test-repos-withoutdb:
+    if: contains(github.event.pull_request.labels.*.name, 'ready-to-run')
+    runs-on: ubuntu-latest
+    needs: [repo-clone, determine-image-tag]
+    env:
+      BUILD_IMAGE: cloudfoundry/tas-runtime-build:${{ needs.determine-image-tag.outputs.go_version }}
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: repo
+    - run: |
+        tar -xzvf repo-artifact.tar.gz
+        tar -xzvf ci-artifact.tar.gz
+    - name: pull image
+      run: docker pull "$BUILD_IMAGE"
+    - name: build binaries
+      run: |
+        repo/.github/helpers/build.bash ${{ github.workspace }} "$BUILD_IMAGE"
+#@ for package in helpers.packages_without_configure_db(data.values.internal_repos):
+    - name: #@ package.name
+      env:
+        DIR: #@ "src/code.cloudfoundry.org/{}".format(package.name)
+      run: |
+        repo/.github/helpers/test.bash ${{ github.workspace }} "$BUILD_IMAGE"
+#@ end
+  test-on-postgres:
+    if: contains(github.event.pull_request.labels.*.name, 'ready-to-run')
+    runs-on: ubuntu-latest
+    needs: [repo-clone, determine-image-tag]
+    env:
+      BUILD_IMAGE: cloudfoundry/tas-runtime-postgres:${{ needs.determine-image-tag.outputs.go_version }}
+      DB_USER: postgres
+      DB_PASSWORD: ""
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: repo
+    - run: |
+        tar -xzvf repo-artifact.tar.gz
+        tar -xzvf ci-artifact.tar.gz
+    - name: pull image
+      run: docker pull "$BUILD_IMAGE"
+    - name: build binaries
+      run: |
+        repo/.github/helpers/build.bash ${{ github.workspace }} "$BUILD_IMAGE"
+#@ for package in helpers.packages_with_configure_db(data.values.internal_repos):
+    - name: #@ "{}-postgres".format(package.name)
+      env:
+        DIR: #@ "src/code.cloudfoundry.org/{}".format(package.name)
+        DB: postgres
+      run: |
+        repo/.github/helpers/test.bash ${{ github.workspace }} "$BUILD_IMAGE"
+#@ end
+  test-on-mysql-8-0:
+    if: contains(github.event.pull_request.labels.*.name, 'ready-to-run')
+    runs-on: ubuntu-latest
+    needs: [repo-clone, determine-image-tag]
+    env:
+      BUILD_IMAGE: cloudfoundry/tas-runtime-mysql-8.0:${{ needs.determine-image-tag.outputs.go_version }}
+      DB_USER: root
+      DB_PASSWORD: password
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: repo
+    - run: |
+        tar -xzvf repo-artifact.tar.gz
+        tar -xzvf ci-artifact.tar.gz
+    - name: pull image
+      run: docker pull "$BUILD_IMAGE"
+    - name: build binaries
+      run: |
+        repo/.github/helpers/build.bash ${{ github.workspace }} "$BUILD_IMAGE"
+#@ for package in helpers.packages_with_configure_db(data.values.internal_repos):
+    - name: #@ "{}-mysql".format(package.name)
+      env:
+        DIR: #@ "src/code.cloudfoundry.org/{}".format(package.name)
+        DB: mysql
+      run: |
+        repo/.github/helpers/test.bash ${{ github.workspace }} "$BUILD_IMAGE"
+#@ end
+#! test
