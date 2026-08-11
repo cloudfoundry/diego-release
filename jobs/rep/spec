@@ -150,6 +150,9 @@ properties:
   diego.executor.min_cache_partition_free_bytes:
     description: "Minimum free space in bytes that must remain on the disk where the download cache lives. When actual disk free space falls below this threshold, the cache deletes old downloaded files to recover space. Set to 0 to disable this behavior."
     default: 5368709120
+  diego.executor.enable_droplet_caching:
+    description: "Whether to cache app droplet downloads on the local disk. Disabling this avoids ephemeral-disk-full incidents on densely-packed cells at the cost of re-downloading droplets from the blobstore on every restart/scale instead of reusing a local cache. Buildpack/lifecycle bundle caching is unaffected."
+    default: true
   diego.executor.use_schedulable_disk_size:
     description: "Use total space available to containers reported by Garden. If false the total size of image plugin store minus max_cache_size_in_bytes is used."
     default: false

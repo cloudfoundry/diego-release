@@ -169,6 +169,7 @@ func Initialize(
 		config.EnableContainerProxyHealthChecks,
 		time.Duration(config.ProxyHealthCheckInterval),
 		time.Duration(config.DeclarativeHealthCheckDefaultTimeout),
+		config.EnableDropletCaching,
 	)
 
 	hub := event.NewHub()
@@ -454,11 +455,13 @@ func initializeTransformer(
 	enableProxyHealthChecks bool,
 	proxyHealthCheckInterval time.Duration,
 	declarativeHealthCheckDefaultTimeout time.Duration,
+	enableDropletCaching bool,
 ) transformer.Transformer {
 	var options []transformer.Option
 	compressor := compressor.NewTgz()
 	options = append(options, transformer.WithSidecarRootfs(declarativeHealthcheckRootFS))
 	options = append(options, transformer.WithDeclarativeHealthChecks(declarativeHealthCheckDefaultTimeout))
+	options = append(options, transformer.WithEnableDropletCaching(enableDropletCaching))
 	if emitHealthCheckMetrics {
 		options = append(options, transformer.WithDeclarativeHealthcheckFailureMetrics())
 	}

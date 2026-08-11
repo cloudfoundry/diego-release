@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/asn1"
+	"encoding/json"
 	"encoding/pem"
 	"errors"
 	"fmt"
@@ -742,6 +743,32 @@ var _ = Describe("Initializer", func() {
 				Expect(newCachedDownloader).To(BeNil())
 				Expect(err.Error()).To(ContainSubstring("could not create cache path"))
 			})
+		})
+	})
+
+	Describe("ExecutorConfig JSON unmarshaling", func() {
+		It("unmarshals EnableDropletCaching when explicitly set to true", func() {
+			jsonConfig := []byte(`{"enable_droplet_caching": true}`)
+			var config initializer.ExecutorConfig
+			err := json.Unmarshal(jsonConfig, &config)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(config.EnableDropletCaching).To(BeTrue())
+		})
+
+		It("unmarshals EnableDropletCaching when explicitly set to false", func() {
+			jsonConfig := []byte(`{"enable_droplet_caching": false}`)
+			var config initializer.ExecutorConfig
+			err := json.Unmarshal(jsonConfig, &config)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(config.EnableDropletCaching).To(BeFalse())
+		})
+
+		It("unmarshals EnableDropletCaching as false (zero value) when absent", func() {
+			jsonConfig := []byte(`{}`)
+			var config initializer.ExecutorConfig
+			err := json.Unmarshal(jsonConfig, &config)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(config.EnableDropletCaching).To(BeFalse())
 		})
 	})
 })

@@ -79,6 +79,7 @@ var _ = Describe("DownloadAction", func() {
 				rateLimiter,
 				fakeStreamer,
 				logger,
+				true,
 			)
 
 			stepErr = <-ifrit.Invoke(step).Wait()
@@ -352,6 +353,7 @@ var _ = Describe("DownloadAction", func() {
 				rateLimiter,
 				fakeStreamer,
 				logger,
+				true,
 			)
 		})
 
@@ -386,6 +388,7 @@ var _ = Describe("DownloadAction", func() {
 				rateLimiter,
 				fakeStreamer,
 				logger,
+				true,
 			)
 		})
 
@@ -506,6 +509,7 @@ var _ = Describe("DownloadAction", func() {
 				rateLimiter,
 				fakeStreamer,
 				logger,
+				true,
 			)
 
 			downloadAction2 := models.DownloadAction{
@@ -520,6 +524,7 @@ var _ = Describe("DownloadAction", func() {
 				rateLimiter,
 				fakeStreamer,
 				logger,
+				true,
 			)
 
 			downloadAction3 := models.DownloadAction{
@@ -534,6 +539,7 @@ var _ = Describe("DownloadAction", func() {
 				rateLimiter,
 				fakeStreamer,
 				logger,
+				true,
 			)
 
 			fetchCh := make(chan struct{}, 3)
@@ -560,6 +566,45 @@ var _ = Describe("DownloadAction", func() {
 			close(barrier)
 		})
 	})
+
+	DescribeTable("droplet caching gating based on Artifact and EnableDropletCaching",
+		func(artifact string, enableDropletCaching bool, expectedCacheKey string) {
+			container, err := gardenClient.Create(garden.ContainerSpec{
+				Handle: handle,
+			})
+			Expect(err).NotTo(HaveOccurred())
+
+			action := models.DownloadAction{
+				From:     "http://mr_jones",
+				To:       "/tmp/Antarctica",
+				CacheKey: "the-cache-key",
+				User:     "notroot",
+				Artifact: artifact,
+			}
+
+			step = steps.NewDownload(
+				container,
+				action,
+				cache,
+				rateLimiter,
+				fakeStreamer,
+				logger,
+				enableDropletCaching,
+			)
+
+			err = <-ifrit.Invoke(step).Wait()
+			Expect(err).NotTo(HaveOccurred())
+
+			Expect(cache.FetchCallCount()).To(Equal(1))
+			_, _, cacheKey, _, _ := cache.FetchArgsForCall(0)
+			Expect(cacheKey).To(Equal(expectedCacheKey))
+		},
+		Entry("Artifact: droplet + EnableDropletCaching: false -> empty cache key", "droplet", false, ""),
+		Entry("Artifact: droplet + EnableDropletCaching: true -> original cache key", "droplet", true, "the-cache-key"),
+		Entry("Artifact: droplet + EnableDropletCaching: unset/false (zero value) -> empty cache key", "droplet", false, ""),
+		Entry("Non-droplet Artifact (buildpack) + EnableDropletCaching: false -> original cache key", "buildpack", false, "the-cache-key"),
+		Entry("Non-droplet Artifact (empty) + EnableDropletCaching: true -> original cache key", "", true, "the-cache-key"),
+	)
 })
 
 var _ = Describe("ReadSizer", func() {

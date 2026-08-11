@@ -16,12 +16,13 @@ import (
 )
 
 type downloadStep struct {
-	container        garden.Container
-	model            models.DownloadAction
-	cachedDownloader cacheddownloader.CachedDownloader
-	streamer         log_streamer.LogStreamer
-	rateLimiter      chan struct{}
-	cancelDownload   chan struct{}
+	container            garden.Container
+	model                models.DownloadAction
+	cachedDownloader     cacheddownloader.CachedDownloader
+	streamer             log_streamer.LogStreamer
+	rateLimiter          chan struct{}
+	cancelDownload       chan struct{}
+	enableDropletCaching bool
 
 	logger lager.Logger
 }
@@ -33,6 +34,7 @@ func NewDownload(
 	rateLimiter chan struct{},
 	streamer log_streamer.LogStreamer,
 	logger lager.Logger,
+	enableDropletCaching bool,
 ) ifrit.Runner {
 	logger = logger.Session("download-step", lager.Data{
 		"to":       model.To,
@@ -41,13 +43,14 @@ func NewDownload(
 	})
 
 	return &downloadStep{
-		container:        container,
-		model:            model,
-		cachedDownloader: cachedDownloader,
-		streamer:         streamer,
-		rateLimiter:      rateLimiter,
-		logger:           logger,
-		cancelDownload:   make(chan struct{}),
+		container:            container,
+		model:                model,
+		cachedDownloader:     cachedDownloader,
+		streamer:             streamer,
+		rateLimiter:          rateLimiter,
+		logger:               logger,
+		cancelDownload:       make(chan struct{}),
+		enableDropletCaching: enableDropletCaching,
 	}
 }
 
@@ -125,10 +128,15 @@ func (step *downloadStep) fetch() (io.ReadCloser, int64, error) {
 		return nil, 0, err
 	}
 
+	cacheKey := step.model.CacheKey
+	if !step.enableDropletCaching && step.model.Artifact == "droplet" {
+		cacheKey = ""
+	}
+
 	tarStream, downloadedSize, err := step.cachedDownloader.Fetch(
 		step.logger.Session("downloader"),
 		url,
-		step.model.CacheKey,
+		cacheKey,
 		cacheddownloader.ChecksumInfoType{
 			Algorithm: step.model.GetChecksumAlgorithm(),
 			Value:     step.model.GetChecksumValue(),
