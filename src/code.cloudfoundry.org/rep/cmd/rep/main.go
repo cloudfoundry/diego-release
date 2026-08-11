@@ -180,7 +180,7 @@ func main() {
 	)
 
 	bbsClient := initializeBBSClient(logger, repConfig)
-	url := repURL(repConfig)
+	url := repURL(logger, repConfig)
 	address := repAddress(logger, repConfig)
 	cellPresence := initializeCellPresence(address, executorClient, logger, repConfig, preloadedRootFSesWithVersions, extraRootFSesWithVersions, url)
 	batchContainerAllocator := auctioncellrep.NewContainerAllocator(auctioncellrep.GenerateGuid, rootFSMap, executorClient)
@@ -432,12 +432,23 @@ func repHost(cellID string) string {
 	return strings.Replace(cellID, "_", "-", -1)
 }
 
-func repURL(config config.RepConfig) string {
+func repURL(logger lager.Logger, config config.RepConfig) string {
 	if config.RepURL != "" {
 		return config.RepURL
 	}
 	port := strings.Split(config.ListenAddrSecurable, ":")[1]
-	return fmt.Sprintf("https://%s.%s:%s", repHost(config.CellID), config.AdvertiseDomain, port)
+
+	host := repHost(config.CellID)
+	if config.UseKubernetesGardenClient {
+		ip, err := localip.LocalIP()
+		if err != nil {
+			logger.Fatal("failed-to-fetch-ip", err)
+		}
+
+		host = strings.Replace(ip, ".", "-", -1)
+	}
+
+	return fmt.Sprintf("https://%s.%s:%s", host, config.AdvertiseDomain, port)
 }
 
 func repAddress(logger lager.Logger, config config.RepConfig) string {

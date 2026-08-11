@@ -745,3 +745,28 @@ var _ = Describe("Initializer", func() {
 		})
 	})
 })
+
+var _ = Describe("Initialize with the kubernetes garden client", func() {
+	var (
+		logger           *lagertest.TestLogger
+		fakeMetronClient *mfakes.FakeIngressClient
+		fakeClock        *fakeclock.FakeClock
+		config           initializer.ExecutorConfig
+	)
+
+	BeforeEach(func() {
+		logger = lagertest.NewTestLogger("test")
+		fakeMetronClient = new(mfakes.FakeIngressClient)
+		fakeClock = fakeclock.NewFakeClock(time.Now())
+		config = initializer.ExecutorConfig{
+			UseKubernetesGardenClient: true,
+		}
+	})
+
+	Context("when workloads_namespace is not set", func() {
+		It("fails fast before contacting the cluster", func() {
+			_, _, _, err := initializer.Initialize(logger, config, "cell-id", "some-zone", map[string]string{}, "", fakeMetronClient, fakeClock)
+			Expect(err).To(MatchError(ContainSubstring("workloads_namespace must be set")))
+		})
+	})
+})

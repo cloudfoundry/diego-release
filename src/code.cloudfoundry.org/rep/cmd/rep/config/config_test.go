@@ -117,6 +117,8 @@ var _ = Describe("RepConfig", func() {
 			"temp_dir": "/tmp/test",
 			"trusted_system_certificates_path": "/tmp/trusted",
 			"unhealthy_monitoring_interval": "10s",
+			"use_kubernetes_garden_client": true,
+			"workloads_namespace": "cf-workloads",
 			"volman_driver_paths": "/tmp/volman1:/tmp/volman2",
 			"zone": "test-zone",
 			"report_interval": "2m",
@@ -217,6 +219,8 @@ var _ = Describe("RepConfig", func() {
 				TempDir:                            "/tmp/test",
 				TrustedSystemCertificatesPath:      "/tmp/trusted",
 				UnhealthyMonitoringInterval:        10000000000,
+				UseKubernetesGardenClient:          true,
+				WorkloadsNamespace:                 "cf-workloads",
 				VolmanDriverPaths:                  "/tmp/volman1:/tmp/volman2",
 			},
 			LagerConfig: lagerflags.LagerConfig{
