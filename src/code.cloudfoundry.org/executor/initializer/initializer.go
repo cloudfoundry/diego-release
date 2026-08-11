@@ -110,6 +110,8 @@ type ExecutorConfig struct {
 	VolmanDriverPaths                     string                `json:"volman_driver_paths"`
 	VolumeMountedFiles                    string                `json:"volume_mounted_files"`
 	UseNodePortForPodService              bool                  `json:"use_node_port_for_pod_service,omitempty"`
+	UseKubernetesGardenClient             bool                  `json:"use_kubernetes_garden_client,omitempty"`
+	WorkloadsNamespace                    string                `json:"workloads_namespace,omitempty"`
 }
 
 func TLSConfigFromConfig(logger lager.Logger, certsRetriever CertPoolRetriever, config ExecutorConfig) (*tls.Config, error) {

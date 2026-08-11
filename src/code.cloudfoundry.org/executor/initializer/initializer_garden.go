@@ -84,8 +84,22 @@ func Initialize(
 		return nil, nil, grouper.Members{}, err
 	}
 
-	gardenClient := GardenClient.New(GardenConnection.New(config.GardenNetwork, config.GardenAddr))
-	gardenClientFactory := containerstore.NewGardenClientFactory(config.GardenNetwork, config.GardenAddr)
+	var gardenClient GardenClient.Client
+	var gardenClientFactory containerstore.GardenClientFactory
+	var k8sRootFSSizer configuration.RootFSSizer // non-nil only on the kubernetes path
+
+	if config.UseKubernetesGardenClient {
+		logger.Info("using-kubernetes-garden-client")
+		gardenClient, gardenClientFactory, k8sRootFSSizer, err = newKubernetesGardenClient(logger, config, sidecarRootFSPath)
+		if err != nil {
+			return nil, nil, nil, err
+		}
+	} else {
+		logger.Info("using-cf-garden-client")
+		gardenClient = GardenClient.New(GardenConnection.New(config.GardenNetwork, config.GardenAddr))
+		gardenClientFactory = containerstore.NewGardenClientFactory(config.GardenNetwork, config.GardenAddr)
+	}
+
 	err = waitForGarden(logger, gardenClient, metronClient, clock)
 	if err != nil {
 		return nil, nil, nil, err
@@ -177,9 +191,14 @@ func Initialize(
 	if err != nil {
 		return nil, nil, grouper.Members{}, err
 	}
-	rootFSSizer, err := configuration.GetRootFSSizes(logger, gardenClient, guidgen.DefaultGenerator, config.ContainerOwnerName, rootFSes)
-	if err != nil {
-		return nil, nil, grouper.Members{}, err
+	var rootFSSizer configuration.RootFSSizer
+	if k8sRootFSSizer != nil {
+		rootFSSizer = k8sRootFSSizer
+	} else {
+		rootFSSizer, err = configuration.GetRootFSSizes(logger, gardenClient, guidgen.DefaultGenerator, config.ContainerOwnerName, rootFSes)
+		if err != nil {
+			return nil, nil, grouper.Members{}, err
+		}
 	}
 
 	containerConfig := containerstore.ContainerConfig{
@@ -269,23 +288,6 @@ func Initialize(
 		metricsWorkPool,
 	)
 
-	healthcheckSpec := garden.ProcessSpec{
-		Path: config.GardenHealthcheckProcessPath,
-		Args: config.GardenHealthcheckProcessArgs,
-		User: config.GardenHealthcheckProcessUser,
-		Env:  config.GardenHealthcheckProcessEnv,
-		Dir:  config.GardenHealthcheckProcessDir,
-	}
-
-	gardenHealthcheck := gardenhealth.NewChecker(
-		sidecarRootFSPath,
-		config.HealthCheckContainerOwnerName,
-		time.Duration(config.GardenHealthcheckCommandRetryPause),
-		healthcheckSpec,
-		gardenClient,
-		guidgen.DefaultGenerator,
-	)
-
 	metricsCache := &atomic.Value{}
 	containerStatsReporter := containermetrics.NewStatsReporter(
 		metronClient,
@@ -304,36 +306,62 @@ func Initialize(
 		cpuSpikeReporter,
 	)
 
-	return depotClient, containerStatsReporter,
-		grouper.Members{
-			{Name: "volman-driver-syncer", Runner: volmanDriverSyncer},
-			{Name: "metrics-reporter", Runner: &metrics.Reporter{
-				ExecutorSource: depotClient,
-				Interval:       metricsReportInterval,
-				Clock:          clock,
-				Logger:         logger,
-				MetronClient:   metronClient,
-				Tags:           map[string]string{"zone": zone},
-			}},
-			{Name: "hub-closer", Runner: closeHub(logger, hub)},
-			{Name: "container-metrics-reporter", Runner: reportersRunner},
-			{Name: "garden_health_checker", Runner: gardenhealth.NewRunner(
-				time.Duration(config.GardenHealthcheckInterval),
-				time.Duration(config.GardenHealthcheckEmissionInterval),
-				time.Duration(config.GardenHealthcheckTimeout),
-				logger,
-				gardenHealthcheck,
-				depotClient,
-				metronClient,
-				clock,
-			)},
-			{Name: "registry-pruner", Runner: containerStore.NewRegistryPruner(logger)},
-			{Name: "container-reaper", Runner: containerStore.NewContainerReaper(logger)},
-		},
-		nil
+	members := grouper.Members{
+		{Name: "volman-driver-syncer", Runner: volmanDriverSyncer},
+		{Name: "metrics-reporter", Runner: &metrics.Reporter{
+			ExecutorSource: depotClient,
+			Interval:       metricsReportInterval,
+			Clock:          clock,
+			Logger:         logger,
+			MetronClient:   metronClient,
+			Tags:           map[string]string{"zone": zone},
+		}},
+		{Name: "hub-closer", Runner: closeHub(logger, hub)},
+		{Name: "container-metrics-reporter", Runner: reportersRunner},
+	}
+
+	// The kubernetes-backed garden client does not need the classic garden
+	// healthcheck (which creates and runs a real healthcheck container), so the
+	// healthcheck runner is only wired on the classic path.
+	if !config.UseKubernetesGardenClient {
+		healthcheckSpec := garden.ProcessSpec{
+			Path: config.GardenHealthcheckProcessPath,
+			Args: config.GardenHealthcheckProcessArgs,
+			User: config.GardenHealthcheckProcessUser,
+			Env:  config.GardenHealthcheckProcessEnv,
+			Dir:  config.GardenHealthcheckProcessDir,
+		}
+
+		gardenHealthcheck := gardenhealth.NewChecker(
+			sidecarRootFSPath,
+			config.HealthCheckContainerOwnerName,
+			time.Duration(config.GardenHealthcheckCommandRetryPause),
+			healthcheckSpec,
+			gardenClient,
+			guidgen.DefaultGenerator,
+		)
+
+		members = append(members, grouper.Member{Name: "garden_health_checker", Runner: gardenhealth.NewRunner(
+			time.Duration(config.GardenHealthcheckInterval),
+			time.Duration(config.GardenHealthcheckEmissionInterval),
+			time.Duration(config.GardenHealthcheckTimeout),
+			logger,
+			gardenHealthcheck,
+			depotClient,
+			metronClient,
+			clock,
+		)})
+	}
+
+	members = append(members,
+		grouper.Member{Name: "registry-pruner", Runner: containerStore.NewRegistryPruner(logger)},
+		grouper.Member{Name: "container-reaper", Runner: containerStore.NewContainerReaper(logger)},
+	)
+
+	return depotClient, containerStatsReporter, members, nil
 }
 
-func waitForGarden(logger lager.Logger, gardenClient GardenClient.Client, metronClient loggingclient.IngressClient, clock clock.Clock) error {
+func waitForGarden(logger lager.Logger, gardenClient garden.Client, metronClient loggingclient.IngressClient, clock clock.Clock) error {
 	pingStart := clock.Now()
 	logger = logger.Session("wait-for-garden", lager.Data{"initialTime:": pingStart})
 	pingRequest := clock.NewTimer(0)
