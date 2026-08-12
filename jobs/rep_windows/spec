@@ -135,6 +135,9 @@ properties:
   diego.executor.use_schedulable_disk_size:
     description: "Use total space available to containers reported by Garden. If false the total size of image plugin store minus max_cache_size_in_bytes is used."
     default: false
+  diego.executor.enable_droplet_caching:
+    description: "Whether to cache app droplet downloads on the local disk. Disabling this avoids ephemeral-disk-full incidents on densely-packed cells at the cost of re-downloading droplets from the blobstore on every restart/scale instead of reusing a local cache. Buildpack/lifecycle bundle caching is unaffected."
+    default: true
   diego.executor.proxy_healthcheck_interval:
     description: "Interval that checks envoy responsiveness."
     default: "30s"
