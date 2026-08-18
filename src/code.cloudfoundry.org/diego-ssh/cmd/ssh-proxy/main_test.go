@@ -814,7 +814,7 @@ var _ = Describe("SSH proxy", Serial, func() {
 
 			It("errors when the client doesn't provide any of the algorithms: 'aes128-gcm@openssh.com', 'aes128-gcm@openssh.com', 'aes256-ctr', 'aes192-ctr', 'aes128-ctr'", func() {
 				_, err := ssh.Dial("tcp", address, clientConfig)
-				Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for client to server cipher; we offered: [arcfour128], peer offered: [aes128-gcm@openssh.com aes256-ctr aes192-ctr aes128-ctr]"))
+				Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for client to server cipher; we offered: [\"arcfour128\"], peer offered: [\"aes128-gcm@openssh.com\" \"aes256-ctr\" \"aes192-ctr\" \"aes128-ctr\"]"))
 				Expect(fakeBBS.ReceivedRequests()).To(HaveLen(0))
 			})
 		})
@@ -917,7 +917,7 @@ var _ = Describe("SSH proxy", Serial, func() {
 
 				It("errors when the client doesn't provide one of the algorithms: 'hmac-sha2-256-etm@openssh.com', 'hmac-sha2-256'", func() {
 					_, err := ssh.Dial("tcp", address, clientConfig)
-					Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for client to server MAC; we offered: [hmac-sha1], peer offered: [hmac-sha2-256-etm@openssh.com hmac-sha2-256]"))
+					Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for client to server MAC; we offered: [\"hmac-sha1\"], peer offered: [\"hmac-sha2-256-etm@openssh.com\" \"hmac-sha2-256\"]"))
 					Expect(fakeBBS.ReceivedRequests()).To(HaveLen(0))
 				})
 			})
@@ -961,7 +961,7 @@ var _ = Describe("SSH proxy", Serial, func() {
 
 			It("errors when the client doesn't provide the algorithm: 'curve25519-sha256@libssh.org'", func() {
 				_, err := ssh.Dial("tcp", address, clientConfig)
-				Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for key exchange; we offered: [diffie-hellman-group14-sha1 ext-info-c kex-strict-c-v00@openssh.com], peer offered: [curve25519-sha256@libssh.org kex-strict-s-v00@openssh.com]"))
+				Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for key exchange; we offered: [\"diffie-hellman-group14-sha1\" \"ext-info-c\" \"kex-strict-c-v00@openssh.com\"], peer offered: [\"curve25519-sha256@libssh.org\" \"kex-strict-s-v00@openssh.com\"]"))
 				Expect(fakeBBS.ReceivedRequests()).To(HaveLen(0))
 			})
 		})
@@ -1002,7 +1002,7 @@ var _ = Describe("SSH proxy", Serial, func() {
 
 			It("errors when the client doesn't provide the host key algorithm: 'ssh-ed25519'", func() {
 				_, err := ssh.Dial("tcp", address, clientConfig)
-				Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for host key; we offered: [ssh-ed25519], peer offered: [rsa-sha2-256 rsa-sha2-512 ssh-rsa]"))
+				Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for host key; we offered: [\"ssh-ed25519\"], peer offered: [\"rsa-sha2-256\" \"rsa-sha2-512\" \"ssh-rsa\"]"))
 				Expect(fakeBBS.ReceivedRequests()).To(HaveLen(0))
 			})
 		})

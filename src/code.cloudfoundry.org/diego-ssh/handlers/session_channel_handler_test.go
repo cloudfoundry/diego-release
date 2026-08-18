@@ -576,7 +576,7 @@ var _ = Describe("SessionChannelHandler", func() {
 					go func() {
 						defer GinkgoRecover()
 
-						result, err := session.Output("echo -n hi")
+						result, err := session.Output("/bin/echo -n hi")
 						Expect(string(result)).To(Equal("hi"))
 						errCh <- err
 					}()
