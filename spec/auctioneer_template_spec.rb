@@ -3,6 +3,7 @@
 # rubocop: disable Metrics/BlockLength
 require 'rspec'
 require 'json'
+require 'ipaddr'
 require 'bosh/template/test'
 
 describe 'auctioneer' do
@@ -59,6 +60,60 @@ describe 'auctioneer' do
         expect do
           rendered_template
         end.to raise_error(/The locket client keepalive time property should not be larger than the timeout/)
+      end
+    end
+
+    context 'BBS health check (CFAR-1457)' do
+      let(:rendered_config) { JSON.parse(rendered_template) }
+
+      context 'when enable_bbs_health_check is not set' do
+        it 'defaults to disabled and omits the health-check config' do
+          expect(rendered_config).not_to have_key('enable_bbs_health_check')
+          expect(rendered_config).not_to have_key('bbs_health_check_interval')
+          expect(rendered_config).not_to have_key('bbs_health_check_timeout')
+          expect(rendered_config).not_to have_key('bbs_health_check_failure_threshold')
+        end
+      end
+
+      context 'when enable_bbs_health_check is false' do
+        before do
+          deployment_manifest_fragment['diego']['auctioneer']['enable_bbs_health_check'] = false
+        end
+
+        it 'omits the health-check config' do
+          expect(rendered_config).not_to have_key('enable_bbs_health_check')
+          expect(rendered_config).not_to have_key('bbs_health_check_interval')
+          expect(rendered_config).not_to have_key('bbs_health_check_timeout')
+          expect(rendered_config).not_to have_key('bbs_health_check_failure_threshold')
+        end
+      end
+
+      context 'when enable_bbs_health_check is true' do
+        before do
+          deployment_manifest_fragment['diego']['auctioneer']['enable_bbs_health_check'] = true
+        end
+
+        it 'renders the health-check config with default probe settings' do
+          expect(rendered_config['enable_bbs_health_check']).to eq(true)
+          expect(rendered_config['bbs_health_check_interval']).to eq('10s')
+          expect(rendered_config['bbs_health_check_timeout']).to eq('5s')
+          expect(rendered_config['bbs_health_check_failure_threshold']).to eq(3)
+        end
+
+        context 'with overridden probe settings' do
+          before do
+            deployment_manifest_fragment['diego']['auctioneer']['bbs_health_check_interval'] = '30s'
+            deployment_manifest_fragment['diego']['auctioneer']['bbs_health_check_timeout'] = '15s'
+            deployment_manifest_fragment['diego']['auctioneer']['bbs_health_check_failure_threshold'] = 5
+          end
+
+          it 'renders the overridden values' do
+            expect(rendered_config['enable_bbs_health_check']).to eq(true)
+            expect(rendered_config['bbs_health_check_interval']).to eq('30s')
+            expect(rendered_config['bbs_health_check_timeout']).to eq('15s')
+            expect(rendered_config['bbs_health_check_failure_threshold']).to eq(5)
+          end
+        end
       end
     end
   end
