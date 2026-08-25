@@ -96,7 +96,7 @@
     max_concurrent_downloads: p("diego.executor.max_concurrent_downloads"),
     memory_mb: p("diego.executor.memory_capacity_mb").to_s,
     metrics_work_pool_size: p("diego.executor.metrics_work_pool_size"),
-    cell_annotations: p("diego.rep.cell_annotations"),
+    cell_annotations: p("diego.rep.cell_annotations").merge("deployment_guid" => spec.deployment),
     optional_placement_tags: p("diego.rep.optional_placement_tags"),
     placement_tags: p("diego.rep.placement_tags"),
     polling_interval: "#{p("diego.rep.polling_interval_in_seconds")}s",

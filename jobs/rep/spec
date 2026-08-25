@@ -83,7 +83,7 @@ properties:
     description: "Array of optional tags used for scheduling Tasks and LRPs"
     default: []
   diego.rep.cell_annotations:
-    description: "Map of string key-value annotations to attach to the cell presence"
+    description: "Map of string key-value annotations to attach to the cell presence. A deployment_guid key set to the BOSH deployment name is automatically added."
     default: {}
 
   loggregator.v2_api_port:
