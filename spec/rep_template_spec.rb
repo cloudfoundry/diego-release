@@ -135,6 +135,31 @@ describe 'rep' do
       end
     end
 
+    context 'cell_annotations' do
+      it 'includes the deployment_guid based on the bosh deployment name' do
+        expect(JSON.parse(rendered_template)['cell_annotations']).to eq('deployment_guid' => 'my-deployment')
+      end
+
+      it 'merges the deployment_guid into operator-provided annotations' do
+        deployment_manifest_fragment['diego']['rep']['cell_annotations'] = { 'team' => 'diego' }
+        expect(JSON.parse(rendered_template)['cell_annotations']).to eq(
+          'team' => 'diego',
+          'deployment_guid' => 'my-deployment'
+        )
+      end
+
+      it 'always overrides an operator-provided deployment_guid with the bosh deployment name' do
+        deployment_manifest_fragment['diego']['rep']['cell_annotations'] = { 'deployment_guid' => 'user-provided' }
+        expect(JSON.parse(rendered_template)['cell_annotations']).to eq('deployment_guid' => 'my-deployment')
+      end
+
+      it 'reflects a custom bosh deployment name' do
+        spec = Bosh::Template::Test::InstanceSpec.new(deployment: 'cf-4f4d28d91b17601281d4')
+        rendered = template.render(deployment_manifest_fragment, spec: spec)
+        expect(JSON.parse(rendered)['cell_annotations']).to eq('deployment_guid' => 'cf-4f4d28d91b17601281d4')
+      end
+    end
+
     context 'min_cache_partition_free_bytes' do
       it 'defaults to 5368709120 (5GB)' do
         expect(JSON.parse(rendered_template)['min_cache_partition_free_bytes']).to eq(5_368_709_120)
