@@ -30,6 +30,7 @@ function setup_gardenrunc() {
     cp "${GROOTFS_BINARY}" "${GARDEN_BINPATH}/grootfs"
     cp "${GROOTFS_TARDIS_BINARY}" "${GARDEN_BINPATH}/tardis"
     cp "${INIT_BINARY}" "${GARDEN_BINPATH}/init"
+    cp "${GDN_BINARY}" "${GARDEN_BINPATH}/gdn"
   popd
 }
 
@@ -81,7 +82,6 @@ setup_diego_release() {
   pushd ${DIEGO_RELEASE_PATH}
 
   export CODE_CLOUDFOUNDRY_ORG_MODULE="$PWD/src/code.cloudfoundry.org"
-  export GUARDIAN_MODULE="$PWD/src/guardian"
   popd
 }
 
@@ -168,7 +168,7 @@ export REP_GOPATH=${CODE_CLOUDFOUNDRY_ORG_MODULE}
 export ROUTE_EMITTER_GOPATH=${CODE_CLOUDFOUNDRY_ORG_MODULE}
 export SSHD_GOPATH=${CODE_CLOUDFOUNDRY_ORG_MODULE}
 export SSH_PROXY_GOPATH=${CODE_CLOUDFOUNDRY_ORG_MODULE}
-export GARDEN_GOPATH=${GUARDIAN_MODULE}
+export GARDEN_GOPATH=${CODE_CLOUDFOUNDRY_ORG_MODULE}
 
 # used for routing to apps; same logic that Garden uses.
 EXTERNAL_ADDRESS=$(ip route get 8.8.8.8 | sed 's/.*src\s\(.*\)\suid.*/\1/;tx;d;:x')

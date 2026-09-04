@@ -219,11 +219,8 @@ func CompileTestedExecutables() world.BuiltExecutables {
 
 	builtExecutables := world.BuiltExecutables{}
 
-	Expect(err).NotTo(HaveOccurred())
-	Expect(os.Chdir(os.Getenv("GARDEN_GOPATH"))).To(Succeed())
-	builtExecutables["garden"], err = gexec.Build("./cmd/gdn", "-race", "-a", "-tags", "daemon")
-	Expect(err).NotTo(HaveOccurred())
-	Expect(os.Chdir(cwd)).To(Succeed())
+	builtExecutables["garden"] = os.Getenv("GDN_BINARY")
+	Expect(builtExecutables["garden"]).NotTo(BeEmpty(), "must provide $GDN_BINARY")
 
 	builtExecutables["local-driver"], err = gexec.Build("code.cloudfoundry.org/localdriver/cmd/localdriver", "-race")
 	Expect(err).NotTo(HaveOccurred())

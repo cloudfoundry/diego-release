@@ -3,17 +3,13 @@ module code.cloudfoundry.org
 go 1.26.6
 
 replace (
-	code.cloudfoundry.org/garden => ../garden
-	code.cloudfoundry.org/grootfs => ../grootfs
-	code.cloudfoundry.org/guardian => ../guardian
-	code.cloudfoundry.org/idmapper => ../idmapper
 	github.com/cactus/go-statsd-client => github.com/cactus/go-statsd-client v2.0.2-0.20150911070441-6fa055a7b594+incompatible
 	// pin ifrit until https://github.com/tedsuo/ifrit/pull/48 is merged
 	github.com/tedsuo/ifrit => github.com/tedsuo/ifrit v0.0.0-20260418191334-846868129986
 )
 
 require (
-	code.cloudfoundry.org/archiver v0.85.0
+	code.cloudfoundry.org/archiver v0.86.0
 	code.cloudfoundry.org/bbs v1.12.0
 	code.cloudfoundry.org/bbs/encryption v1.9.0
 	code.cloudfoundry.org/bbs/format v1.9.0
@@ -24,17 +20,17 @@ require (
 	code.cloudfoundry.org/clock v1.86.0
 	code.cloudfoundry.org/cnbapplifecycle v0.0.8
 	code.cloudfoundry.org/credhub-cli v0.0.0-20260824191323-ca2ae25cb1f8
-	code.cloudfoundry.org/debugserver v0.112.0
+	code.cloudfoundry.org/debugserver v0.113.0
 	code.cloudfoundry.org/diego-logging-client v0.122.0
 	code.cloudfoundry.org/dockerdriver v0.104.0
 	code.cloudfoundry.org/durationjson v0.87.0
 	code.cloudfoundry.org/eventhub v0.87.0
-	code.cloudfoundry.org/garden v0.0.0-20260826021137-674e52f7c65b
+	code.cloudfoundry.org/garden v0.2.0
 	code.cloudfoundry.org/go-loggregator/v9 v9.2.1
 	code.cloudfoundry.org/goshims v0.110.0
-	code.cloudfoundry.org/guardian v0.0.0-20260820194234-c2d9348cfdee
-	code.cloudfoundry.org/lager/v3 v3.84.0
-	code.cloudfoundry.org/localip v0.86.0
+	code.cloudfoundry.org/guardian v0.0.0-20260902161120-8a4bd5473238
+	code.cloudfoundry.org/lager/v3 v3.85.0
+	code.cloudfoundry.org/localip v0.87.0
 	code.cloudfoundry.org/locket v1.10.0
 	code.cloudfoundry.org/routing-api v0.12.0
 	code.cloudfoundry.org/routing-info v1.11.0
@@ -162,7 +158,7 @@ require (
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/go-containerregistry v0.22.0 // indirect
 	github.com/google/go-tpm v0.9.8 // indirect
-	github.com/google/pprof v0.0.0-20260830191439-4932ad3515ea // indirect
+	github.com/google/pprof v0.0.0-20260902005441-ca85771921e4 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/hashicorp/go-version v1.9.0 // indirect
@@ -190,6 +186,7 @@ require (
 	github.com/moby/sys/reexec v0.1.0 // indirect
 	github.com/moby/sys/user v0.4.1 // indirect
 	github.com/moby/sys/userns v0.2.0 // indirect
+	github.com/modern-go/reflect2 v1.0.3-0.20250322232337-35a7c28c31ee // indirect
 	github.com/nats-io/jwt/v2 v2.8.2 // indirect
 	github.com/nats-io/nkeys v0.4.16 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect

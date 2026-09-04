@@ -248,12 +248,8 @@ func CompileTestedExecutables() world.BuiltExecutables {
 
 	builtExecutables := world.BuiltExecutables{}
 
-	cwd, err := os.Getwd()
-	Expect(err).NotTo(HaveOccurred())
-	Expect(os.Chdir(os.Getenv("GARDEN_GOPATH"))).To(Succeed())
-	builtExecutables["garden"], err = gexec.Build("./cmd/gdn", "-race", "-a", "-tags", "daemon")
-	Expect(err).NotTo(HaveOccurred())
-	Expect(os.Chdir(cwd)).To(Succeed())
+	builtExecutables["garden"] = os.Getenv("GDN_BINARY")
+	Expect(builtExecutables["garden"]).NotTo(BeEmpty(), "must provide $GDN_BINARY")
 
 	builtExecutables["auctioneer"], err = gexec.Build("code.cloudfoundry.org/auctioneer/cmd/auctioneer", "-race")
 	Expect(err).NotTo(HaveOccurred())
@@ -274,6 +270,8 @@ func CompileTestedExecutables() world.BuiltExecutables {
 	Expect(err).NotTo(HaveOccurred())
 
 	if runtime.GOOS != "windows" {
+		cwd, err := os.Getwd()
+		Expect(err).NotTo(HaveOccurred())
 		Expect(os.Chdir(os.Getenv("ROUTER_GOPATH"))).To(Succeed())
 		builtExecutables["router"], err = gexec.Build("code.cloudfoundry.org/gorouter/cmd/gorouter", "-race")
 		Expect(err).NotTo(HaveOccurred())

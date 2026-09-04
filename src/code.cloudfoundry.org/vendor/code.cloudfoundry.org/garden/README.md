@@ -22,8 +22,7 @@ Reference](https://pkg.go.dev/badge/code.cloudfoundry.org/garden.svg)](https://p
                                                \__._| |_.__/
 
 A rich golang client and server for container creation and management
-with pluggable backends for [The Open Container Initiative
-Spec](https://github.com/cloudfoundry/guardian/).
+with pluggable backends for the Open Container Initiative Spec
 
 > \[!NOTE\]
 >

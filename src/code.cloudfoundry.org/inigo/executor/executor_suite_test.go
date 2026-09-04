@@ -9,7 +9,6 @@ import (
 	"code.cloudfoundry.org/localip"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/onsi/gomega/gexec"
 	"github.com/tedsuo/ifrit"
 	ginkgomon "github.com/tedsuo/ifrit/ginkgomon_v2"
 
@@ -116,16 +115,10 @@ func TestExecutor(t *testing.T) {
 }
 
 func CompileTestedExecutables() world.BuiltExecutables {
-	var err error
-
 	builtExecutables := world.BuiltExecutables{}
 
-	cwd, err := os.Getwd()
-	Expect(err).NotTo(HaveOccurred())
-	Expect(os.Chdir(os.Getenv("GARDEN_GOPATH"))).To(Succeed())
-	builtExecutables["garden"], err = gexec.Build("./cmd/gdn", "-race", "-a", "-tags", "daemon")
-	Expect(err).NotTo(HaveOccurred())
-	Expect(os.Chdir(cwd)).To(Succeed())
+	builtExecutables["garden"] = os.Getenv("GDN_BINARY")
+	Expect(builtExecutables["garden"]).NotTo(BeEmpty(), "must provide $GDN_BINARY")
 
 	return builtExecutables
 }
