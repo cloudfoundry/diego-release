@@ -4,6 +4,7 @@ package models
 // to break the bbs <-> auctioneer module cycle.
 
 import (
+	"encoding/json"
 	"errors"
 
 	"code.cloudfoundry.org/lager/v3"
@@ -20,6 +21,20 @@ type AuctioneerClient interface {
 
 type TaskStartRequest struct {
 	Task SchedulingTask
+}
+
+// MarshalJSON serialises TaskStartRequest as a flat object (the fields of Task
+// promoted to the top level) so that the JSON wire format is identical to the
+// pre-8b9ea83 auctioneer.TaskStartRequest{rep.Task} shape.  This keeps BBS
+// and auctioneer wire-compatible across rolling deploys.
+func (t TaskStartRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(t.Task)
+}
+
+// UnmarshalJSON is the inverse of MarshalJSON: it reads the flat wire format
+// and populates the nested Task field.
+func (t *TaskStartRequest) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &t.Task)
 }
 
 func NewTaskStartRequest(task SchedulingTask) TaskStartRequest {
