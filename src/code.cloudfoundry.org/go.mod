@@ -31,7 +31,7 @@ require (
 	code.cloudfoundry.org/guardian v0.0.0-20260902161120-8a4bd5473238
 	code.cloudfoundry.org/lager/v3 v3.86.0
 	code.cloudfoundry.org/localip v0.88.0
-	code.cloudfoundry.org/locket v1.11.0
+	code.cloudfoundry.org/locket v1.12.0
 	code.cloudfoundry.org/routing-api v0.14.0
 	code.cloudfoundry.org/routing-info v1.13.0
 	code.cloudfoundry.org/tlsconfig v0.66.0
@@ -209,7 +209,7 @@ require (
 	golang.org/x/mod v0.41.0 // indirect
 	golang.org/x/net v0.58.0 // indirect
 	golang.org/x/sync v0.23.0 // indirect
-	golang.org/x/term v0.45.0 // indirect
+	golang.org/x/term v0.46.0 // indirect
 	golang.org/x/text v0.41.0 // indirect
 	golang.org/x/tools v0.49.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260908043556-f8649ddbbfe6 // indirect
