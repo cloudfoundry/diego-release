@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+	"strings"
 
 	"code.cloudfoundry.org/diego-db-helpers/sqldb/helpers"
 	"code.cloudfoundry.org/lager/v3"
@@ -65,7 +66,7 @@ func (p *PostgresRunner) Run(signals <-chan os.Signal, ready chan<- struct{}) er
 
 	Expect(p.db.Close()).To(Succeed())
 
-	connStringWithDB := fmt.Sprintf("%s/%s", baseConnString, p.sqlDBName)
+	connStringWithDB := connStringForDB(baseConnString, p.sqlDBName)
 	dbParams = &helpers.ConnectParams{
 		DriverName:                    "postgres",
 		DatabaseConnectionString:      connStringWithDB,
@@ -103,6 +104,12 @@ func (p *PostgresRunner) Run(signals <-chan os.Signal, ready chan<- struct{}) er
 	Expect(p.db.Close()).To(Succeed())
 
 	return nil
+}
+
+// connStringForDB appends dbName to baseConnString, tolerating whether or
+// not baseConnString already ends in "/".
+func connStringForDB(baseConnString, dbName string) string {
+	return fmt.Sprintf("%s/%s", strings.TrimSuffix(baseConnString, "/"), dbName)
 }
 
 func (p *PostgresRunner) ConnectionString() string {

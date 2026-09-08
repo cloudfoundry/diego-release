@@ -11,8 +11,8 @@ replace (
 require (
 	code.cloudfoundry.org/archiver v0.87.0
 	code.cloudfoundry.org/bbs v1.16.0
-	code.cloudfoundry.org/bbs/encryption v1.11.0
-	code.cloudfoundry.org/bbs/format v1.10.0
+	code.cloudfoundry.org/bbs/encryption v1.12.0
+	code.cloudfoundry.org/bbs/format v1.11.0
 	code.cloudfoundry.org/bbs/models v1.13.0
 	code.cloudfoundry.org/bytefmt v0.89.0
 	code.cloudfoundry.org/certsplitter v0.87.0
@@ -75,9 +75,9 @@ require (
 	github.com/tedsuo/rata v1.0.0
 	github.com/vito/go-sse v1.1.3
 	golang.org/x/crypto v0.56.0
-	golang.org/x/oauth2 v0.36.0
-	golang.org/x/sys v0.47.0
-	golang.org/x/time v0.15.0
+	golang.org/x/oauth2 v0.37.0
+	golang.org/x/sys v0.48.0
+	golang.org/x/time v0.16.0
 	google.golang.org/grpc v1.83.2
 	google.golang.org/protobuf v1.36.12
 	gopkg.in/yaml.v2 v2.4.0
@@ -87,7 +87,7 @@ require (
 require (
 	cel.dev/expr v0.25.3 // indirect
 	code.cloudfoundry.org/commandrunner v0.76.0 // indirect
-	code.cloudfoundry.org/diego-db-helpers v0.16.0 // indirect
+	code.cloudfoundry.org/diego-db-helpers v0.17.0 // indirect
 	code.cloudfoundry.org/go-diodes v0.0.0-20260831145205-e8366a756183 // indirect
 	filippo.io/edwards25519 v1.2.0 // indirect
 	github.com/Azure/azure-sdk-for-go v68.0.0+incompatible // indirect
@@ -206,14 +206,14 @@ require (
 	go.opentelemetry.io/otel/trace v1.46.0 // indirect
 	go.step.sm/crypto v0.90.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
-	golang.org/x/mod v0.40.0 // indirect
+	golang.org/x/mod v0.41.0 // indirect
 	golang.org/x/net v0.58.0 // indirect
-	golang.org/x/sync v0.22.0 // indirect
+	golang.org/x/sync v0.23.0 // indirect
 	golang.org/x/term v0.45.0 // indirect
 	golang.org/x/text v0.41.0 // indirect
 	golang.org/x/tools v0.49.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20260904194346-d0f1323225a4 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260904194346-d0f1323225a4 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20260908043556-f8649ddbbfe6 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260908043556-f8649ddbbfe6 // indirect
 	gorm.io/driver/mysql v1.6.0 // indirect
 	gorm.io/driver/postgres v1.6.2 // indirect
 	gorm.io/gorm v1.31.2 // indirect
