@@ -1,6 +1,7 @@
 package initializer
 
 import (
+	"cmp"
 	"context"
 	"errors"
 	"os"
@@ -30,7 +31,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 )
 
-const kubeletPort = "10250"
+const defaultKubeletPort = "10250"
 
 // newKubernetesGardenClient constructs the kubernetes-backed garden.Client from
 // github.com/cloudfoundry/k8s-garden-client
@@ -38,6 +39,10 @@ func newKubernetesGardenClient(logger lager.Logger, config ExecutorConfig, sidec
 	workloadsNamespace := config.WorkloadsNamespace
 	if workloadsNamespace == "" {
 		return nil, nil, nil, errors.New("workloads_namespace must be set when use_kubernetes_garden_client is enabled")
+	}
+
+	if config.KubeletCACertPath != "" && config.KubeletSkipTLSVerify {
+		return nil, nil, nil, errors.New("kubelet_ca_cert_path is set but kubelet_skip_tls_verify is true")
 	}
 
 	mgr, err := newControllerManager(logger, workloadsNamespace)
@@ -56,7 +61,7 @@ func newKubernetesGardenClient(logger lager.Logger, config ExecutorConfig, sidec
 		return nil, nil, nil, errors.New("failed to sync controller-runtime cache")
 	}
 
-	kubeletClient, err := newKubeletClientFromConfig(mgr.GetConfig(), os.Getenv("NODE_IP"), kubeletPort)
+	kubeletClient, err := newKubeletClientFromConfig(mgr.GetConfig(), config, os.Getenv("NODE_IP"), cmp.Or(config.KubeletPort, defaultKubeletPort))
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -86,11 +91,17 @@ func newKubernetesGardenClient(logger lager.Logger, config ExecutorConfig, sidec
 	return gardenClient, k8sgarden.NewFactory(gardenClient), k8sgarden.ZeroRootFSSizer{}, nil
 }
 
-func newKubeletClientFromConfig(config *rest.Config, addr, port string) (kubelet.Client, error) {
+func newKubeletClientFromConfig(config *rest.Config, execConfig ExecutorConfig, addr, port string) (kubelet.Client, error) {
 	configCopy := rest.CopyConfig(config)
-	configCopy.Insecure = true
-	configCopy.CAData = nil
-	configCopy.CAFile = ""
+	configCopy.Insecure = execConfig.KubeletSkipTLSVerify
+
+	if execConfig.KubeletSkipTLSVerify {
+		configCopy.CAFile = ""
+		configCopy.CAData = nil
+	} else if execConfig.KubeletCACertPath != "" {
+		configCopy.CAFile = execConfig.KubeletCACertPath
+		configCopy.CAData = nil
+	}
 
 	httpClient, err := rest.HTTPClientFor(configCopy)
 	if err != nil {
