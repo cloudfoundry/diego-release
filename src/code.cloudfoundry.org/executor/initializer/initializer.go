@@ -111,6 +111,9 @@ type ExecutorConfig struct {
 	VolumeMountedFiles                    string                `json:"volume_mounted_files"`
 	UseNodePortForPodService              bool                  `json:"use_node_port_for_pod_service,omitempty"`
 	UseKubernetesGardenClient             bool                  `json:"use_kubernetes_garden_client,omitempty"`
+	KubeletSkipTLSVerify                  bool                  `json:"kubelet_skip_tls_verify,omitempty"`
+	KubeletCACertPath                     string                `json:"kubelet_ca_cert_path,omitempty"`
+	KubeletPort                           string                `json:"kubelet_port,omitempty"`
 	WorkloadsNamespace                    string                `json:"workloads_namespace,omitempty"`
 }
 
