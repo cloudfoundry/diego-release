@@ -108,6 +108,7 @@ type ExecutorConfig struct {
 	UnhealthyMonitoringInterval           durationjson.Duration `json:"unhealthy_monitoring_interval,omitempty"`
 	UseSchedulableDiskSize                bool                  `json:"use_schedulable_disk_size,omitempty"`
 	VolmanDriverPaths                     string                `json:"volman_driver_paths"`
+	InjectWorkloadIdentity                bool                  `json:"inject_workload_identity,omitempty"`
 	VolumeMountedFiles                    string                `json:"volume_mounted_files"`
 	UseNodePortForPodService              bool                  `json:"use_node_port_for_pod_service,omitempty"`
 }

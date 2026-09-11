@@ -127,7 +127,7 @@ var _ = Describe("injectWorkloadIdentity", func() {
 	})
 
 	Context("when config is nil", func() {
-		It("returns a new map with identity keys for an LRP", func() {
+		It("returns an enriched map for an LRP (nil config is treated as empty)", func() {
 			container = executor.Container{
 				Guid: "instance-guid",
 				Tags: executor.Tags{
@@ -136,11 +136,12 @@ var _ = Describe("injectWorkloadIdentity", func() {
 				},
 			}
 			result := injectWorkloadIdentity(nil, container)
+			Expect(result).NotTo(BeNil())
 			Expect(result[executor.WorkloadGuidKey]).To(Equal("pg-1"))
 			Expect(result[executor.WorkloadTypeKey]).To(Equal(executor.LRPLifecycle))
 		})
 
-		It("returns a new map with identity keys for a Task", func() {
+		It("returns an enriched map for a Task (nil config is treated as empty)", func() {
 			container = executor.Container{
 				Guid: "task-guid",
 				Tags: executor.Tags{
@@ -148,6 +149,7 @@ var _ = Describe("injectWorkloadIdentity", func() {
 				},
 			}
 			result := injectWorkloadIdentity(nil, container)
+			Expect(result).NotTo(BeNil())
 			Expect(result[executor.WorkloadGuidKey]).To(Equal("task-guid"))
 			Expect(result[executor.WorkloadTypeKey]).To(Equal(executor.TaskLifecycle))
 		})

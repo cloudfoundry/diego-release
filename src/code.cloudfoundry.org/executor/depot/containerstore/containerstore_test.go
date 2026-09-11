@@ -164,6 +164,7 @@ var _ = Describe("Container Store", func() {
 			cellID,
 			true,
 			advertisePreferenceForInstanceAddress,
+			false,
 			volumeMountedFilesHandler,
 			json.Marshal,
 		)
@@ -494,6 +495,7 @@ var _ = Describe("Container Store", func() {
 						cellID,
 						true,
 						advertisePreferenceForInstanceAddress,
+						false,
 						volumeMountedFilesHandler,
 						json.Marshal,
 					)
@@ -736,6 +738,7 @@ var _ = Describe("Container Store", func() {
 						cellID,
 						true,
 						advertisePreferenceForInstanceAddress,
+						false,
 						volumeMountedFilesHandler,
 						json.Marshal,
 					)
@@ -819,6 +822,32 @@ var _ = Describe("Container Store", func() {
 							}
 							return volman.MountResponse{Path: "hpath2"}, nil
 						}
+				})
+
+				BeforeEach(func() {
+					containerStore = containerstore.New(
+						containerConfig,
+						&totalCapacity,
+						gardenClientFactory,
+						dependencyManager,
+						volumeManager,
+						credManager,
+						logManager,
+						clock,
+						eventEmitter,
+						megatron,
+						"/var/vcap/data/cf-system-trusted-certs",
+						metronClient,
+						rootFSSizer,
+						"/var/vcap/packages/healthcheck",
+						proxyManager,
+						cellID,
+						true,
+						advertisePreferenceForInstanceAddress,
+						true,
+						volumeMountedFilesHandler,
+						json.Marshal,
+					)
 				})
 
 				It("mounts the correct volumes via the volume manager", func() {
@@ -1403,6 +1432,7 @@ var _ = Describe("Container Store", func() {
 						cellID,
 						true,
 						advertisePreferenceForInstanceAddress,
+						false,
 						volumeMountedFilesHandler,
 						json.Marshal,
 					)
@@ -1493,6 +1523,7 @@ var _ = Describe("Container Store", func() {
 							cellID,
 							false,
 							advertisePreferenceForInstanceAddress,
+							false,
 							volumeMountedFilesHandler,
 							json.Marshal,
 						)
@@ -2642,6 +2673,7 @@ var _ = Describe("Container Store", func() {
 						cellID,
 						true,
 						advertisePreferenceForInstanceAddress,
+						false,
 						volumeMountedFilesHandler,
 						fm.Marshal,
 					)
@@ -3215,6 +3247,7 @@ var _ = Describe("Container Store", func() {
 						cellID,
 						true,
 						advertisePreferenceForInstanceAddress,
+						false,
 						volumeMountedFilesHandler,
 						json.Marshal,
 					)

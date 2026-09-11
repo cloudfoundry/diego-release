@@ -196,6 +196,9 @@ properties:
     description: "Experimental: arbitrary command to run after setup action"
   diego.executor.post_setup_user:
     description: "Experimental: user to run post setup hook command"
+  diego.executor.inject_workload_identity:
+    description: "When true, Rep injects _workload_guid and _workload_type into every volume mount config before calling the volume driver. Enable only when all volume drivers on this cell are known to accept these keys."
+    default: false
   diego.executor.instance_identity_ca_cert:
     description: "PEM-encoded CA used to sign instance identity credentials. Enables instance identity if set along with instance_identity_key"
   diego.executor.instance_identity_key:
