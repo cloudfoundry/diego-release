@@ -217,6 +217,9 @@ properties:
   diego.executor.volman.driver_paths:
     description: "OS style path string containing the directories volman will look in for voldriver specs (delimited by : or ; depending on the OS)"
     default: "/var/vcap/data/voldrivers"
+  diego.executor.inject_workload_identity:
+    description: "When true, Rep injects _workload_guid and _workload_type into every volume mount config before calling the volume driver. Enable only when all volume drivers on this cell are known to accept these keys."
+    default: false
   diego.executor.instance_identity_ca_cert:
     description: "PEM-encoded CA used to sign instance identity credentials. Enables instance identity if set along with instance_identity_key"
   diego.executor.instance_identity_key:

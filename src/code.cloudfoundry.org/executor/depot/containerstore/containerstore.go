@@ -87,6 +87,7 @@ type containerStore struct {
 
 	enableUnproxiedPortMappings           bool
 	advertisePreferenceForInstanceAddress bool
+	injectWorkloadIdentity                bool
 
 	volumeMountedFiles VolumeMountedFilesImplementor
 
@@ -112,6 +113,7 @@ func New(
 	cellID string,
 	enableUnproxiedPortMappings bool,
 	advertisePreferenceForInstanceAddress bool,
+	injectWorkloadIdentity bool,
 	volumeMountedFiles VolumeMountedFilesImplementor,
 	jsonMarshaller func(any) ([]byte, error),
 ) ContainerStore {
@@ -136,6 +138,7 @@ func New(
 
 		enableUnproxiedPortMappings:           enableUnproxiedPortMappings,
 		advertisePreferenceForInstanceAddress: advertisePreferenceForInstanceAddress,
+		injectWorkloadIdentity:                injectWorkloadIdentity,
 		volumeMountedFiles:                    volumeMountedFiles,
 		jsonMarshaller:                        jsonMarshaller,
 	}
@@ -176,6 +179,7 @@ func (cs *containerStore) Reserve(logger lager.Logger, traceID string, req *exec
 			cs.cellID,
 			cs.enableUnproxiedPortMappings,
 			cs.advertisePreferenceForInstanceAddress,
+			cs.injectWorkloadIdentity,
 			cs.volumeMountedFiles,
 			cs.jsonMarshaller,
 		))

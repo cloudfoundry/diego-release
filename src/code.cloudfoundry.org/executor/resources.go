@@ -326,9 +326,7 @@ const (
 	TaskLifecycle = "task"
 )
 
-// Keys injected into a volume mount config to forward the workload identity to
-// the volume driver. Underscore-prefixed to distinguish them from
-// broker-supplied config.
+// Keys added to the volume mount config when inject_workload_identity is enabled.
 const (
 	WorkloadGuidKey = "_workload_guid"
 	WorkloadTypeKey = "_workload_type"

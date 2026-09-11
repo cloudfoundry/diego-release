@@ -252,6 +252,7 @@ func Initialize(
 		cellID,
 		config.EnableUnproxiedPortMappings,
 		config.AdvertisePreferenceForInstanceAddress,
+		config.InjectWorkloadIdentity,
 		volumeMountedFilesHandler,
 		json.Marshal,
 	)
