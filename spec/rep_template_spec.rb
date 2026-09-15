@@ -170,6 +170,17 @@ describe 'rep' do
         expect(JSON.parse(rendered_template)['min_cache_partition_free_bytes']).to eq(1_073_741_824)
       end
     end
+
+    context 'inject_workload_identity' do
+      it 'defaults to false' do
+        expect(JSON.parse(rendered_template)['inject_workload_identity']).to eq(false)
+      end
+
+      it 'is configurable' do
+        deployment_manifest_fragment['diego']['executor']['inject_workload_identity'] = true
+        expect(JSON.parse(rendered_template)['inject_workload_identity']).to eq(true)
+      end
+    end
   end
 
   describe 'setup_mounted_data_dirs.erb' do

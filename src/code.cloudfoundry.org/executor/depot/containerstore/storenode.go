@@ -86,6 +86,7 @@ type storeNode struct {
 	cellID                                string
 	enableUnproxiedPortMappings           bool
 	advertisePreferenceForInstanceAddress bool
+	injectWorkloadIdentity                bool
 
 	destroying, stopping int32
 
@@ -117,6 +118,7 @@ func newStoreNode(
 	cellID string,
 	enableUnproxiedPortMappings bool,
 	advertisePreferenceForInstanceAddress bool,
+	injectWorkloadIdentity bool,
 	volumeMountedFiles VolumeMountedFilesImplementor,
 	jsonMarshaller func(any) ([]byte, error),
 ) *storeNode {
@@ -143,6 +145,7 @@ func newStoreNode(
 		cellID:                                cellID,
 		enableUnproxiedPortMappings:           enableUnproxiedPortMappings,
 		advertisePreferenceForInstanceAddress: advertisePreferenceForInstanceAddress,
+		injectWorkloadIdentity:                injectWorkloadIdentity,
 		regenerateCertsCh:                     make(chan struct{}, 1),
 		volumeMountedFiles:                    volumeMountedFiles,
 		jsonMarshaller:                        jsonMarshaller,
@@ -310,7 +313,10 @@ func (n *storeNode) Create(logger lager.Logger, traceID string) error {
 func (n *storeNode) mountVolumes(logger lager.Logger, info executor.Container) ([]garden.BindMount, error) {
 	gardenMounts := []garden.BindMount{}
 	for _, volume := range info.VolumeMounts {
-		config := injectWorkloadIdentity(volume.Config, info)
+		config := volume.Config
+		if n.injectWorkloadIdentity {
+			config = injectWorkloadIdentity(config, info)
+		}
 		hostMount, err := n.volumeManager.Mount(logger, volume.Driver, volume.VolumeId, info.Guid, config)
 		if err != nil {
 			return nil, err

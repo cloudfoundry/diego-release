@@ -131,6 +131,8 @@
     config[:volman_driver_paths] = value
   end
 
+  config[:inject_workload_identity] = p("diego.executor.inject_workload_identity")
+
   if_p("diego.rep.bbs.client_session_cache_size") do |value|
     config[:bbs_client_session_cache_size] = value
   end
