@@ -928,6 +928,55 @@ var _ = Describe("Container Store", func() {
 					})
 				})
 
+				Context("when workload identity injection is disabled (the default)", func() {
+					BeforeEach(func() {
+						runReq.Tags = executor.Tags{
+							executor.LifecycleTag:   executor.LRPLifecycle,
+							executor.ProcessGuidTag: "app-guid-123",
+						}
+
+						containerStore = containerstore.New(
+							containerConfig,
+							&totalCapacity,
+							gardenClientFactory,
+							dependencyManager,
+							volumeManager,
+							credManager,
+							logManager,
+							clock,
+							eventEmitter,
+							megatron,
+							"/var/vcap/data/cf-system-trusted-certs",
+							metronClient,
+							rootFSSizer,
+							"/var/vcap/packages/healthcheck",
+							proxyManager,
+							cellID,
+							true,
+							advertisePreferenceForInstanceAddress,
+							false,
+							volumeMountedFilesHandler,
+							json.Marshal,
+						)
+					})
+
+					It("does not inject the workload identity keys into the mount config", func() {
+						_, err := containerStore.Create(logger, "some-trace-id", containerGuid)
+						Expect(err).NotTo(HaveOccurred())
+						Expect(volumeManager.MountCallCount()).To(Equal(2))
+
+						_, _, _, _, config := volumeManager.MountArgsForCall(0)
+						Expect(config).NotTo(HaveKey(executor.WorkloadGuidKey))
+						Expect(config).NotTo(HaveKey(executor.WorkloadTypeKey))
+						Expect(config["some-config"]).To(Equal("interface"))
+
+						_, _, _, _, config = volumeManager.MountArgsForCall(1)
+						Expect(config).NotTo(HaveKey(executor.WorkloadGuidKey))
+						Expect(config).NotTo(HaveKey(executor.WorkloadTypeKey))
+						Expect(config["some-config"]).To(Equal("interface"))
+					})
+				})
+
 				Context("when it errors on mount", func() {
 					Context("when the driver returns a safeError", func() {
 						BeforeEach(func() {
