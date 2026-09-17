@@ -1,6 +1,6 @@
 module code.cloudfoundry.org
 
-go 1.26.6
+go 1.27
 
 replace (
 	github.com/cactus/go-statsd-client => github.com/cactus/go-statsd-client v2.0.2-0.20150911070441-6fa055a7b594+incompatible
