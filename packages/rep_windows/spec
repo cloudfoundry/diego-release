@@ -146,6 +146,7 @@ files:
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/internal/v4a/internal/v4/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/ecr/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/ecr/internal/endpoints/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/ecr/schemas/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/ecr/types/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/ecrpublic/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/ecrpublic/internal/endpoints/*.go # gosub
@@ -309,6 +310,7 @@ files:
   - code.cloudfoundry.org/vendor/github.com/containerd/errdefs/pkg/internal/types/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/containerd/fifo/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/containerd/log/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/containerd/log/otel/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/containerd/platforms/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/containerd/plugin/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/containerd/ttrpc/*.go # gosub
@@ -393,12 +395,15 @@ files:
   - code.cloudfoundry.org/vendor/github.com/hashicorp/go-multierror/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/json-iterator/go/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/klauspost/compress/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/klauspost/compress/flate/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/klauspost/compress/fse/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/klauspost/compress/gzip/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/klauspost/compress/huff0/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/klauspost/compress/huff0/*.s # gosub
   - code.cloudfoundry.org/vendor/github.com/klauspost/compress/internal/cpuinfo/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/klauspost/compress/internal/cpuinfo/*.s # gosub
   - code.cloudfoundry.org/vendor/github.com/klauspost/compress/internal/le/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/klauspost/compress/internal/regmask/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/klauspost/compress/internal/snapref/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/klauspost/compress/zstd/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/klauspost/compress/zstd/*.s # gosub
@@ -439,8 +444,9 @@ files:
   - code.cloudfoundry.org/vendor/github.com/prometheus/common/model/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/prometheus/procfs/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/prometheus/procfs/internal/fs/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/prometheus/procfs/internal/util/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/prometheus/procfs/internal/parsers/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/sirupsen/logrus/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/sirupsen/logrus/hooks/slog/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/spf13/pflag/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/tedsuo/ifrit/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/tedsuo/ifrit/grouper/*.go # gosub
@@ -619,7 +625,6 @@ files:
   - code.cloudfoundry.org/vendor/k8s.io/api/admissionregistration/v1alpha1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/admissionregistration/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/apidiscovery/v2/*.go # gosub
-  - code.cloudfoundry.org/vendor/k8s.io/api/apidiscovery/v2beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/apiserverinternal/v1alpha1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/apps/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/apps/v1beta1/*.go # gosub
@@ -649,6 +654,7 @@ files:
   - code.cloudfoundry.org/vendor/k8s.io/api/flowcontrol/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/flowcontrol/v1beta2/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/flowcontrol/v1beta3/*.go # gosub
+  - code.cloudfoundry.org/vendor/k8s.io/api/lifecycle/v1alpha1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/networking/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/networking/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/node/v1/*.go # gosub
@@ -664,11 +670,12 @@ files:
   - code.cloudfoundry.org/vendor/k8s.io/api/resource/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/resource/v1beta2/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/scheduling/v1/*.go # gosub
-  - code.cloudfoundry.org/vendor/k8s.io/api/scheduling/v1alpha2/*.go # gosub
+  - code.cloudfoundry.org/vendor/k8s.io/api/scheduling/v1alpha3/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/scheduling/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/storage/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/storage/v1alpha1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/storage/v1beta1/*.go # gosub
+  - code.cloudfoundry.org/vendor/k8s.io/api/storagemigration/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/api/storagemigration/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1/*.go # gosub
@@ -759,6 +766,7 @@ files:
   - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/flowcontrol/v1beta2/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/flowcontrol/v1beta3/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/internal/*.go # gosub
+  - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/lifecycle/v1alpha1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/meta/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/networking/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/networking/v1beta1/*.go # gosub
@@ -775,11 +783,12 @@ files:
   - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/resource/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/resource/v1beta2/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/scheduling/v1/*.go # gosub
-  - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/scheduling/v1alpha2/*.go # gosub
+  - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/scheduling/v1alpha3/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/scheduling/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/storage/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/storage/v1alpha1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/storage/v1beta1/*.go # gosub
+  - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/storagemigration/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/applyconfigurations/storagemigration/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/discovery/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/dynamic/*.go # gosub
@@ -826,6 +835,8 @@ files:
   - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/flowcontrol/v1beta2/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/flowcontrol/v1beta3/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/internalinterfaces/*.go # gosub
+  - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/lifecycle/*.go # gosub
+  - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/lifecycle/v1alpha1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/networking/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/networking/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/networking/v1beta1/*.go # gosub
@@ -847,13 +858,14 @@ files:
   - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/resource/v1beta2/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/scheduling/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/scheduling/v1/*.go # gosub
-  - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/scheduling/v1alpha2/*.go # gosub
+  - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/scheduling/v1alpha3/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/scheduling/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/storage/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/storage/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/storage/v1alpha1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/storage/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/storagemigration/*.go # gosub
+  - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/storagemigration/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/informers/storagemigration/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/scheme/*.go # gosub
@@ -889,6 +901,7 @@ files:
   - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/flowcontrol/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/flowcontrol/v1beta2/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/flowcontrol/v1beta3/*.go # gosub
+  - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/lifecycle/v1alpha1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/networking/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/networking/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/node/v1/*.go # gosub
@@ -904,11 +917,12 @@ files:
   - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/resource/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/resource/v1beta2/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/scheduling/v1/*.go # gosub
-  - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/scheduling/v1alpha2/*.go # gosub
+  - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/scheduling/v1alpha3/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/scheduling/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/storage/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/storage/v1alpha1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/storage/v1beta1/*.go # gosub
+  - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/storagemigration/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/kubernetes/typed/storagemigration/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/admissionregistration/v1/*.go # gosub
@@ -938,6 +952,7 @@ files:
   - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/flowcontrol/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/flowcontrol/v1beta2/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/flowcontrol/v1beta3/*.go # gosub
+  - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/lifecycle/v1alpha1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/networking/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/networking/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/node/v1/*.go # gosub
@@ -953,11 +968,12 @@ files:
   - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/resource/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/resource/v1beta2/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/scheduling/v1/*.go # gosub
-  - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/scheduling/v1alpha2/*.go # gosub
+  - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/scheduling/v1alpha3/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/scheduling/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/storage/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/storage/v1alpha1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/storage/v1beta1/*.go # gosub
+  - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/storagemigration/v1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/listers/storagemigration/v1beta1/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/metadata/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/client-go/openapi/*.go # gosub
@@ -1032,12 +1048,15 @@ files:
   - code.cloudfoundry.org/vendor/k8s.io/utils/ptr/*.go # gosub
   - code.cloudfoundry.org/vendor/k8s.io/utils/trace/*.go # gosub
   - code.cloudfoundry.org/vendor/sigs.k8s.io/controller-runtime/pkg/cache/*.go # gosub
+  - code.cloudfoundry.org/vendor/sigs.k8s.io/controller-runtime/pkg/cache/cacheapi/*.go # gosub
   - code.cloudfoundry.org/vendor/sigs.k8s.io/controller-runtime/pkg/cache/internal/*.go # gosub
   - code.cloudfoundry.org/vendor/sigs.k8s.io/controller-runtime/pkg/certwatcher/*.go # gosub
   - code.cloudfoundry.org/vendor/sigs.k8s.io/controller-runtime/pkg/certwatcher/metrics/*.go # gosub
   - code.cloudfoundry.org/vendor/sigs.k8s.io/controller-runtime/pkg/client/*.go # gosub
   - code.cloudfoundry.org/vendor/sigs.k8s.io/controller-runtime/pkg/client/apiutil/*.go # gosub
   - code.cloudfoundry.org/vendor/sigs.k8s.io/controller-runtime/pkg/client/config/*.go # gosub
+  - code.cloudfoundry.org/vendor/sigs.k8s.io/controller-runtime/pkg/client/internal/consistencyhandler/*.go # gosub
+  - code.cloudfoundry.org/vendor/sigs.k8s.io/controller-runtime/pkg/client/internal/writebarrier/*.go # gosub
   - code.cloudfoundry.org/vendor/sigs.k8s.io/controller-runtime/pkg/cluster/*.go # gosub
   - code.cloudfoundry.org/vendor/sigs.k8s.io/controller-runtime/pkg/config/*.go # gosub
   - code.cloudfoundry.org/vendor/sigs.k8s.io/controller-runtime/pkg/conversion/*.go # gosub
