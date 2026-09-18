@@ -6,6 +6,12 @@ jetStream -> jsAccount -> Server -> client -> Account
 
 jetStream -> jsAccount -> stream -> consumer
 
+The "prMu" lock protects the peer reconcile signaling state on jetStream, so
+signaling is cheap and never contends on the JS lock. It must not be held while
+acquiring the JetStream lock.
+
+  jetStream -> prMu
+
 A lock to protect jetstream account's usage has been introduced: jsAccount.usageMu.
 This lock is independent and can be invoked under any other lock: jsAccount -> jsa.usageMu, stream -> jsa.usageMu, etc...
 
@@ -53,3 +59,17 @@ mirrors/sources, info requests, etc.) are sequentially consistent and may observ
 an inflight batch. It must be acquired before the stream lock, never while holding it.
 
     isolateMu -> stream
+
+The "eventIdsMu" lock protects the server's event ID generator. It may be acquired
+while holding the Server lock, but the Server lock must not be acquired while
+holding eventIdsMu.
+
+    Server -> eventIdsMu
+
+The "cmu" lock in the Account serializes claim updates for that account so that
+rebuilding its exports/imports cannot overlap with another update's validity checks.
+It must be acquired before the account lock, and must not be held while updating
+another account (which would take that account's locks in unknown order).
+
+    cmu -> Account
+    cmu -> client

@@ -1,4 +1,4 @@
-// Copyright 2012-2025 The NATS Authors
+// Copyright 2012-2026 The NATS Authors
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -44,6 +44,7 @@ Server Options:
 Logging Options:
     -l, --log <file>                 File to redirect log output
     -T, --logtime                    Timestamp log entries (default: true)
+        --logtime_utc                Timestamps in UTC instead of local timezone (default: false)
     -s, --syslog                     Log to syslog or windows event log
     -r, --remote_syslog <addr>       Syslog server addr (udp://localhost:514)
     -D, --debug                      Enable debugging output
