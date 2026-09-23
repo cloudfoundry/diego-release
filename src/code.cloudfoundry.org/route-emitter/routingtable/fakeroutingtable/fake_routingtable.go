@@ -24,6 +24,15 @@ type FakeRoutingTable struct {
 		result1 routingtable.TCPRouteMappings
 		result2 routingtable.MessagesToEmit
 	}
+	GetAllUnregistrationMessagesStub        func() routingtable.MessagesToEmit
+	getAllUnregistrationMessagesMutex       sync.RWMutex
+	getAllUnregistrationMessagesArgsForCall []struct{}
+	getAllUnregistrationMessagesReturns     struct {
+		result1 routingtable.MessagesToEmit
+	}
+	getAllUnregistrationMessagesReturnsOnCall map[int]struct {
+		result1 routingtable.MessagesToEmit
+	}
 	GetExternalRoutingEventsStub        func() (routingtable.TCPRouteMappings, routingtable.MessagesToEmit)
 	getExternalRoutingEventsMutex       sync.RWMutex
 	getExternalRoutingEventsArgsForCall []struct {
@@ -861,11 +870,63 @@ func (fake *FakeRoutingTable) TableSizeReturnsOnCall(i int, result1 int) {
 	}{result1}
 }
 
+func (fake *FakeRoutingTable) GetAllUnregistrationMessages() routingtable.MessagesToEmit {
+	fake.getAllUnregistrationMessagesMutex.Lock()
+	ret, specificReturn := fake.getAllUnregistrationMessagesReturnsOnCall[len(fake.getAllUnregistrationMessagesArgsForCall)]
+	fake.getAllUnregistrationMessagesArgsForCall = append(fake.getAllUnregistrationMessagesArgsForCall, struct{}{})
+	fake.recordInvocation("GetAllUnregistrationMessages", []interface{}{})
+	fake.getAllUnregistrationMessagesMutex.Unlock()
+	if fake.GetAllUnregistrationMessagesStub != nil {
+		return fake.GetAllUnregistrationMessagesStub()
+	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fake.getAllUnregistrationMessagesReturns.result1
+}
+
+func (fake *FakeRoutingTable) GetAllUnregistrationMessagesCallCount() int {
+	fake.getAllUnregistrationMessagesMutex.RLock()
+	defer fake.getAllUnregistrationMessagesMutex.RUnlock()
+	return len(fake.getAllUnregistrationMessagesArgsForCall)
+}
+
+func (fake *FakeRoutingTable) GetAllUnregistrationMessagesCalls(stub func() routingtable.MessagesToEmit) {
+	fake.getAllUnregistrationMessagesMutex.Lock()
+	defer fake.getAllUnregistrationMessagesMutex.Unlock()
+	fake.GetAllUnregistrationMessagesStub = stub
+}
+
+func (fake *FakeRoutingTable) GetAllUnregistrationMessagesReturns(result1 routingtable.MessagesToEmit) {
+	fake.getAllUnregistrationMessagesMutex.Lock()
+	defer fake.getAllUnregistrationMessagesMutex.Unlock()
+	fake.GetAllUnregistrationMessagesStub = nil
+	fake.getAllUnregistrationMessagesReturns = struct {
+		result1 routingtable.MessagesToEmit
+	}{result1}
+}
+
+func (fake *FakeRoutingTable) GetAllUnregistrationMessagesReturnsOnCall(i int, result1 routingtable.MessagesToEmit) {
+	fake.getAllUnregistrationMessagesMutex.Lock()
+	defer fake.getAllUnregistrationMessagesMutex.Unlock()
+	fake.GetAllUnregistrationMessagesStub = nil
+	if fake.getAllUnregistrationMessagesReturnsOnCall == nil {
+		fake.getAllUnregistrationMessagesReturnsOnCall = make(map[int]struct {
+			result1 routingtable.MessagesToEmit
+		})
+	}
+	fake.getAllUnregistrationMessagesReturnsOnCall[i] = struct {
+		result1 routingtable.MessagesToEmit
+	}{result1}
+}
+
 func (fake *FakeRoutingTable) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
 	fake.addEndpointMutex.RLock()
 	defer fake.addEndpointMutex.RUnlock()
+	fake.getAllUnregistrationMessagesMutex.RLock()
+	defer fake.getAllUnregistrationMessagesMutex.RUnlock()
 	fake.getExternalRoutingEventsMutex.RLock()
 	defer fake.getExternalRoutingEventsMutex.RUnlock()
 	fake.getInternalRoutingEventsMutex.RLock()

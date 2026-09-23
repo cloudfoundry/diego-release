@@ -32,6 +32,19 @@ heartbeat() {
   /var/vcap/packages/rep/bin/gocurl ${curlCmd}/ping >/dev/null 2>&1
 }
 
+emergency_unregister_routes() {
+  local re_pid
+  re_pid=$(/var/vcap/jobs/bpm/bin/bpm pid route_emitter 2>/dev/null) || true
+  if [ -n "$re_pid" ]; then
+    echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): sending SIGUSR2 to route-emitter (pid $re_pid) for emergency route unregistration"
+    kill -USR2 "$re_pid" || true
+    sleep 35
+    echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): emergency route unregistration window complete"
+  else
+    echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): route-emitter not running, skipping emergency unregistration"
+  fi
+}
+
 output_for_bosh() {
   exit_code=$?
 
@@ -58,6 +71,8 @@ if evacuate; then
     sleep 5
     echo "$(date +%Y-%m-%dT%H:%M:%S.%sZ): waiting"
   done
+
+  emergency_unregister_routes
 
   /var/vcap/jobs/bpm/bin/bpm stop rep
 else
