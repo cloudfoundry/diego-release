@@ -57,14 +57,6 @@ func (p *DefaultMetricsProcessor) ProcessAndSend(
 				"tags":          metricsConfig.Tags,
 			})
 		}
-
-		if err := metronClient.SendAppLogRate(0, 0, metricsConfig.Tags); err != nil {
-			logger.Error("failed-to-send-log-rate", err, lager.Data{
-				"metrics_guid":  applicationId,
-				"metrics_index": metricsConfig.Index,
-				"tags":          metricsConfig.Tags,
-			})
-		}
 	}
 
 	return currentInfo, &CachedContainerMetrics{
