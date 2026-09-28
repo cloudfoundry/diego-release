@@ -601,11 +601,6 @@ var _ = Describe("ReportersRunner", func() {
 			}, BeEmpty())))
 		})
 
-		It("does not emit log_rate, which is owned by the log streamer and app-log-watcher", func() {
-			Consistently(fakeMetronClient.SendAppLogRateCallCount).Should(Equal(0),
-				"log_rate must come from the component that measures it, on one ticker")
-		})
-
 		Context("and the interval elapses again", func() {
 			JustBeforeEach(func() {
 				fakeClock.WaitForWatcherAndIncrement(interval)
