@@ -68,6 +68,7 @@ var _ = Describe("Proxy", func() {
 
 			proxyDone  chan struct{}
 			daemonDone chan struct{}
+			maxConnectionDuration time.Duration
 		)
 
 		BeforeEach(func() {
@@ -129,7 +130,7 @@ var _ = Describe("Proxy", func() {
 		})
 
 		JustBeforeEach(func() {
-			sshProxy = proxy.New(logger.Session("proxy"), proxySSHConfig, fakeMetronClient, nil)
+			sshProxy = proxy.New(logger.Session("proxy"), proxySSHConfig, fakeMetronClient, nil, maxConnectionDuration)
 			proxyServer = server.NewServer(logger.Session("proxy-server"), "", sshProxy, 500*time.Millisecond)
 			proxyServer.SetListener(proxyListener)
 			go func() {
@@ -208,6 +209,16 @@ var _ = Describe("Proxy", func() {
 					metadata, password := daemonAuthenticator.AuthenticateArgsForCall(0)
 					Expect(metadata.User()).To(Equal("some-user"))
 					Expect(string(password)).To(Equal("fake-some-password"))
+				})
+
+				Context("when the maximum connection duration is reached", func() {
+					BeforeEach(func() {
+						maxConnectionDuration = 100 * time.Millisecond
+					})
+
+					It("closes the SSH connection even while it is active", func() {
+						Eventually(client.Wait).Should(HaveOccurred())
+					})
 				})
 
 				Context("metron", func() {

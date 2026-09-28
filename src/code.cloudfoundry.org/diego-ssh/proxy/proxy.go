@@ -8,6 +8,7 @@ import (
 	"net"
 	"strings"
 	"sync"
+	"time"
 	"unicode/utf8"
 
 	loggingclient "code.cloudfoundry.org/diego-logging-client"
@@ -40,14 +41,15 @@ type LogMessage struct {
 }
 
 type Proxy struct {
-	logger       lager.Logger
-	serverConfig *ssh.ServerConfig
+	logger                lager.Logger
+	serverConfig          *ssh.ServerConfig
 
 	connectionLock *sync.Mutex
 	connections    int
 	metronClient   loggingclient.IngressClient
 
-	tlsConfig *tls.Config
+	tlsConfig             *tls.Config
+	maxConnectionDuration time.Duration
 }
 
 func New(
@@ -55,13 +57,15 @@ func New(
 	serverConfig *ssh.ServerConfig,
 	metronClient loggingclient.IngressClient,
 	tlsConfig *tls.Config,
+	maxConnectionDuration time.Duration,
 ) *Proxy {
 	return &Proxy{
-		logger:         logger,
-		serverConfig:   serverConfig,
-		connectionLock: &sync.Mutex{},
-		metronClient:   metronClient,
-		tlsConfig:      tlsConfig,
+		logger:                logger,
+		serverConfig:          serverConfig,
+		connectionLock:        &sync.Mutex{},
+		metronClient:          metronClient,
+		tlsConfig:             tlsConfig,
+		maxConnectionDuration: maxConnectionDuration,
 	}
 }
 
@@ -78,6 +82,14 @@ func (p *Proxy) HandleConnection(netConn net.Conn) {
 	clientConn, clientChannels, clientRequests, err := NewClientConn(logger, serverConn.Permissions, p.tlsConfig)
 	if err != nil {
 		return
+	}
+	if p.maxConnectionDuration > 0 {
+		timer := time.AfterFunc(p.maxConnectionDuration, func() {
+			logger.Info("maximum-connection-duration-reached", lager.Data{"duration": p.maxConnectionDuration})
+			_ = serverConn.Close()
+			_ = clientConn.Close()
+		})
+		defer timer.Stop()
 	}
 
 	logMessage := extractLogMessage(logger, serverConn.Permissions)

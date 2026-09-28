@@ -48,6 +48,7 @@ var _ = Describe("SSHProxyConfig", func() {
 			"debug_address": "5.5.5.5:9090",
 			"connect_to_instance_address": true,
 			"idle_connection_timeout": "5ms",
+			"max_connection_duration": "1h",
 
 			"backends_tls_enabled": true,
 			"backends_tls_ca_certificates": "./some_filepath/ca.crt",
@@ -106,6 +107,7 @@ var _ = Describe("SSHProxyConfig", func() {
 				AllowedHostKeyAlgorithms:  "hostkeyalg1,hostkeyalg2,hostkeyalg3",
 				ConnectToInstanceAddress:  true,
 				IdleConnectionTimeout:     durationjson.Duration(5 * time.Millisecond),
+				MaxConnectionDuration:     durationjson.Duration(time.Hour),
 				LagerConfig: lagerflags.LagerConfig{
 					LogLevel: lagerflags.DEBUG,
 				},
@@ -124,6 +126,17 @@ var _ = Describe("SSHProxyConfig", func() {
 			It("returns an error", func() {
 				_, err := config.NewSSHProxyConfig("foobar")
 				Expect(err).To(HaveOccurred())
+			})
+		})
+
+		Context("when the max connection duration exceeds one hour", func() {
+			BeforeEach(func() {
+				configData = `{"max_connection_duration": "1h1s"}`
+			})
+
+			It("returns an error", func() {
+				_, err := config.NewSSHProxyConfig(configFilePath)
+				Expect(err).To(MatchError("max_connection_duration must not exceed 1h"))
 			})
 		})
 

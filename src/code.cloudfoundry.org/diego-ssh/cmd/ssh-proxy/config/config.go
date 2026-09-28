@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
+	"time"
 
 	"code.cloudfoundry.org/debugserver"
 	loggingclient "code.cloudfoundry.org/diego-logging-client"
@@ -44,6 +45,7 @@ type SSHProxyConfig struct {
 	LoggregatorConfig         loggingclient.Config  `json:"loggregator"`
 	CommunicationTimeout      durationjson.Duration `json:"communication_timeout,omitempty"`
 	IdleConnectionTimeout     durationjson.Duration `json:"idle_connection_timeout,omitempty"`
+	MaxConnectionDuration     durationjson.Duration `json:"max_connection_duration,omitempty"`
 	ConnectToInstanceAddress  bool                  `json:"connect_to_instance_address"`
 
 	BackendsTLSEnabled    bool   `json:"backends_tls_enabled,omitempty"`
@@ -67,6 +69,9 @@ func NewSSHProxyConfig(configPath string) (SSHProxyConfig, error) {
 	err = decoder.Decode(&proxyConfig)
 	if err != nil {
 		return SSHProxyConfig{}, err
+	}
+	if proxyConfig.MaxConnectionDuration < 0 || proxyConfig.MaxConnectionDuration > durationjson.Duration(time.Hour) {
+		return SSHProxyConfig{}, errors.New("max_connection_duration must not exceed 1h")
 	}
 
 	return proxyConfig, nil

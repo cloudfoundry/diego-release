@@ -39,6 +39,22 @@
     config[:idle_connection_timeout] = "#{value}s"
   end
 
+  max_connection_duration = p("diego.ssh_proxy.max_connection_duration_in_seconds")
+  unless max_connection_duration.to_s.empty?
+    unless max_connection_duration.is_a?(Integer) || max_connection_duration.to_s.match(/\A\d+\z/)
+      raise "diego.ssh_proxy.max_connection_duration_in_seconds must be an integer between 1 and 3600, or empty for unlimited"
+    end
+    begin
+      max_connection_duration = Integer(max_connection_duration)
+    rescue ArgumentError, TypeError
+      raise "diego.ssh_proxy.max_connection_duration_in_seconds must be an integer between 1 and 3600, or empty for unlimited"
+    end
+    if max_connection_duration < 1 || max_connection_duration > 3600
+      raise "diego.ssh_proxy.max_connection_duration_in_seconds must be between 1 and 3600, or empty for unlimited"
+    end
+    config[:max_connection_duration] = "#{max_connection_duration}s"
+  end
+
   config[:bbs_address] = "https://" + p("diego.ssh_proxy.bbs.api_location")
   config[:bbs_client_cert] = "/var/vcap/jobs/ssh_proxy/config/certs/bbs/client.crt"
   config[:bbs_client_key] = "/var/vcap/jobs/ssh_proxy/config/certs/bbs/client.key"
@@ -122,4 +138,3 @@
 
   config.to_json
 %>
-
