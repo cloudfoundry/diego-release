@@ -3,7 +3,6 @@
 # rubocop: disable Metrics/BlockLength
 require 'rspec'
 require 'json'
-require 'ipaddr'
 require 'bosh/template/test'
 
 describe 'ssh_proxy' do
