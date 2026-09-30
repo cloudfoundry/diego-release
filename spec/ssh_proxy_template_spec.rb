@@ -42,21 +42,21 @@ describe 'ssh_proxy' do
 
     context 'when max_connection_duration_in_seconds is configured' do
       before do
-        deployment_manifest_fragment['diego']['ssh_proxy']['max_connection_duration_in_seconds'] = 3600
+        deployment_manifest_fragment['diego']['ssh_proxy']['max_connection_duration_in_seconds'] = 86_400
       end
 
       it 'renders the duration in seconds' do
-        expect(rendered_config['max_connection_duration']).to eq('3600s')
+        expect(rendered_config['max_connection_duration']).to eq('86400s')
       end
     end
 
-    context 'when max_connection_duration_in_seconds exceeds one hour' do
+    context 'when max_connection_duration_in_seconds is zero' do
       before do
-        deployment_manifest_fragment['diego']['ssh_proxy']['max_connection_duration_in_seconds'] = 3601
+        deployment_manifest_fragment['diego']['ssh_proxy']['max_connection_duration_in_seconds'] = 0
       end
 
-      it 'fails rendering' do
-        expect { rendered_config }.to raise_error(/must be between 1 and 3600/)
+      it 'fails rendering because finite durations must be positive' do
+        expect { rendered_config }.to raise_error(/must be a positive integer/)
       end
     end
 
@@ -66,7 +66,7 @@ describe 'ssh_proxy' do
       end
 
       it 'fails rendering' do
-        expect { rendered_config }.to raise_error(/must be an integer between 1 and 3600/)
+        expect { rendered_config }.to raise_error(/must be a positive integer/)
       end
     end
   end

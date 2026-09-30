@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
-	"time"
 
 	"code.cloudfoundry.org/debugserver"
 	loggingclient "code.cloudfoundry.org/diego-logging-client"
@@ -70,8 +69,8 @@ func NewSSHProxyConfig(configPath string) (SSHProxyConfig, error) {
 	if err != nil {
 		return SSHProxyConfig{}, err
 	}
-	if proxyConfig.MaxConnectionDuration < 0 || proxyConfig.MaxConnectionDuration > durationjson.Duration(time.Hour) {
-		return SSHProxyConfig{}, errors.New("max_connection_duration must not exceed 1h")
+	if proxyConfig.MaxConnectionDuration < 0 {
+		return SSHProxyConfig{}, errors.New("max_connection_duration must not be negative")
 	}
 
 	return proxyConfig, nil

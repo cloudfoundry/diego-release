@@ -129,14 +129,26 @@ var _ = Describe("SSHProxyConfig", func() {
 			})
 		})
 
-		Context("when the max connection duration exceeds one hour", func() {
+		Context("when the max connection duration is negative", func() {
 			BeforeEach(func() {
-				configData = `{"max_connection_duration": "1h1s"}`
+				configData = `{"max_connection_duration": "-1s"}`
 			})
 
 			It("returns an error", func() {
 				_, err := config.NewSSHProxyConfig(configFilePath)
-				Expect(err).To(MatchError("max_connection_duration must not exceed 1h"))
+				Expect(err).To(MatchError("max_connection_duration must not be negative"))
+			})
+		})
+
+		Context("when the max connection duration is greater than one hour", func() {
+			BeforeEach(func() {
+				configData = `{"max_connection_duration": "24h"}`
+			})
+
+			It("accepts the configured duration", func() {
+				proxyConfig, err := config.NewSSHProxyConfig(configFilePath)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(proxyConfig.MaxConnectionDuration).To(Equal(durationjson.Duration(24 * time.Hour)))
 			})
 		})
 

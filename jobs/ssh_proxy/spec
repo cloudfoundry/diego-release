@@ -88,7 +88,7 @@ properties:
     description: Idle timeout for incoming connections
     default: 300
   diego.ssh_proxy.max_connection_duration_in_seconds:
-    description: Maximum lifetime of an SSH connection, in seconds. Leave empty for unlimited; maximum is 3600.
+    description: Maximum lifetime of an SSH connection, in seconds. Leave empty for unlimited.
     default: ""
 
   diego.ssh_proxy.uaa.url:
