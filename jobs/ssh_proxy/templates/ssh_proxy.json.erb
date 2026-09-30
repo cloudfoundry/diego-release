@@ -40,18 +40,10 @@
   end
 
   max_connection_duration = p("diego.ssh_proxy.max_connection_duration_in_seconds")
-  unless max_connection_duration.to_s.empty?
-    unless max_connection_duration.is_a?(Integer) || max_connection_duration.to_s.match(/\A\d+\z/)
-      raise "diego.ssh_proxy.max_connection_duration_in_seconds must be a positive integer, or empty for unlimited"
-    end
-    begin
-      max_connection_duration = Integer(max_connection_duration)
-    rescue ArgumentError, TypeError
-      raise "diego.ssh_proxy.max_connection_duration_in_seconds must be a positive integer, or empty for unlimited"
-    end
-    if max_connection_duration < 1
-      raise "diego.ssh_proxy.max_connection_duration_in_seconds must be a positive integer, or empty for unlimited"
-    end
+  unless max_connection_duration.is_a?(Integer) && max_connection_duration >= 0
+    raise "diego.ssh_proxy.max_connection_duration_in_seconds must be a non-negative integer; 0 means unlimited"
+  end
+  if max_connection_duration > 0
     config[:max_connection_duration] = "#{max_connection_duration}s"
   end
 

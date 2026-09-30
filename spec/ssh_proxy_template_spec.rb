@@ -34,7 +34,7 @@ describe 'ssh_proxy' do
     let(:template) { job.template('config/ssh_proxy.json') }
     let(:rendered_config) { JSON.parse(template.render(deployment_manifest_fragment)) }
 
-    context 'when max_connection_duration_in_seconds is empty' do
+    context 'when max_connection_duration_in_seconds is not configured' do
       it 'omits the connection duration to allow unlimited sessions' do
         expect(rendered_config).not_to have_key('max_connection_duration')
       end
@@ -55,18 +55,20 @@ describe 'ssh_proxy' do
         deployment_manifest_fragment['diego']['ssh_proxy']['max_connection_duration_in_seconds'] = 0
       end
 
-      it 'fails rendering because finite durations must be positive' do
-        expect { rendered_config }.to raise_error(/must be a positive integer/)
+      it 'omits the connection duration to allow unlimited sessions' do
+        expect(rendered_config).not_to have_key('max_connection_duration')
       end
     end
 
-    context 'when max_connection_duration_in_seconds is not an integer' do
-      before do
-        deployment_manifest_fragment['diego']['ssh_proxy']['max_connection_duration_in_seconds'] = 1.5
-      end
+    [-1, 1.5, '', '3600', false].each do |value|
+      context "when max_connection_duration_in_seconds is #{value.inspect}" do
+        before do
+          deployment_manifest_fragment['diego']['ssh_proxy']['max_connection_duration_in_seconds'] = value
+        end
 
-      it 'fails rendering' do
-        expect { rendered_config }.to raise_error(/must be a positive integer/)
+        it 'rejects values that are not non-negative integers' do
+          expect { rendered_config }.to raise_error(/must be a non-negative integer/)
+        end
       end
     end
   end
