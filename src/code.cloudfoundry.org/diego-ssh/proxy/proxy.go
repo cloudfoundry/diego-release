@@ -1,6 +1,7 @@
 package proxy
 
 import (
+	"context"
 	"crypto/tls"
 	"encoding/json"
 	"errors"
@@ -41,8 +42,8 @@ type LogMessage struct {
 }
 
 type Proxy struct {
-	logger                lager.Logger
-	serverConfig          *ssh.ServerConfig
+	logger       lager.Logger
+	serverConfig *ssh.ServerConfig
 
 	connectionLock *sync.Mutex
 	connections    int
@@ -79,18 +80,24 @@ func (p *Proxy) HandleConnection(netConn net.Conn) {
 	}
 	defer serverConn.Close()
 
-	clientConn, clientChannels, clientRequests, err := NewClientConn(logger, serverConn.Permissions, p.tlsConfig)
+	ctx := context.Background()
+	if p.maxConnectionDuration > 0 {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, p.maxConnectionDuration)
+		defer cancel()
+		stop := context.AfterFunc(ctx, func() {
+			logger.Info("maximum-connection-duration-reached", lager.Data{"duration": p.maxConnectionDuration})
+			_ = serverConn.Close()
+		})
+		defer stop()
+	}
+
+	clientConn, clientChannels, clientRequests, err := NewClientConn(ctx, logger, serverConn.Permissions, p.tlsConfig)
 	if err != nil {
 		return
 	}
-	if p.maxConnectionDuration > 0 {
-		timer := time.AfterFunc(p.maxConnectionDuration, func() {
-			logger.Info("maximum-connection-duration-reached", lager.Data{"duration": p.maxConnectionDuration})
-			_ = serverConn.Close()
-			_ = clientConn.Close()
-		})
-		defer timer.Stop()
-	}
+	stop := context.AfterFunc(ctx, func() { _ = clientConn.Close() })
+	defer stop()
 
 	logMessage := extractLogMessage(logger, serverConn.Permissions)
 
@@ -332,7 +339,7 @@ func Wait(logger lager.Logger, waiters ...Waiter) {
 	wg.Wait()
 }
 
-func NewClientConn(logger lager.Logger, permissions *ssh.Permissions, tlsConfig *tls.Config) (ssh.Conn, <-chan ssh.NewChannel, <-chan *ssh.Request, error) {
+func NewClientConn(ctx context.Context, logger lager.Logger, permissions *ssh.Permissions, tlsConfig *tls.Config) (ssh.Conn, <-chan ssh.NewChannel, <-chan *ssh.Request, error) {
 	if permissions == nil || permissions.CriticalOptions == nil {
 		err := errors.New("Invalid permissions from authentication")
 		logger.Error("permissions-and-critical-options-required", err)
@@ -356,7 +363,8 @@ func NewClientConn(logger lager.Logger, permissions *ssh.Permissions, tlsConfig 
 	dialer := func() (net.Conn, error) {
 		tlsConfig := tlsConfigWithServerName(tlsConfig, targetConfig.ServerCertDomainSAN)
 		if tlsConfig != nil && targetConfig.TLSAddress != "" {
-			nConn, err := tls.Dial("tcp", targetConfig.TLSAddress, tlsConfig)
+			tlsDialer := &tls.Dialer{Config: tlsConfig}
+			nConn, err := tlsDialer.DialContext(ctx, "tcp", targetConfig.TLSAddress)
 			if err == nil {
 				return nConn, nil
 			}
@@ -365,9 +373,12 @@ func NewClientConn(logger lager.Logger, permissions *ssh.Permissions, tlsConfig 
 				"tcp_address":            targetConfig.TLSAddress,
 				"server_cert_domain_san": targetConfig.ServerCertDomainSAN,
 			})
+			if ctx.Err() != nil {
+				return nil, ctx.Err()
+			}
 		}
 
-		nConn, err := net.Dial("tcp", targetConfig.Address)
+		nConn, err := (&net.Dialer{}).DialContext(ctx, "tcp", targetConfig.Address)
 		if err != nil {
 			logger.Error("dial-failed", err, lager.Data{
 				"address": targetConfig.Address,
@@ -382,6 +393,16 @@ func NewClientConn(logger lager.Logger, permissions *ssh.Permissions, tlsConfig 
 	if err != nil {
 		return nil, nil, nil, err
 	}
+	// SSH handshakes do not accept a context. Closing the socket interrupts a
+	// stalled handshake when the same deadline used for dialing expires.
+	stop := context.AfterFunc(ctx, func() { _ = nConn.Close() })
+	defer stop()
+	handshakeComplete := false
+	defer func() {
+		if !handshakeComplete {
+			_ = nConn.Close()
+		}
+	}()
 
 	logger.Info("connected-to-backend", lager.Data{
 		"backend-address": nConn.RemoteAddr().String(),
@@ -439,6 +460,7 @@ func NewClientConn(logger lager.Logger, permissions *ssh.Permissions, tlsConfig 
 		return nil, nil, nil, err
 	}
 
+	handshakeComplete = true
 	return conn, ch, req, nil
 }
 
