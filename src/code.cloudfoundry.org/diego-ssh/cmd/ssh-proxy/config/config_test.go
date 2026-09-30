@@ -140,6 +140,30 @@ var _ = Describe("SSHProxyConfig", func() {
 			})
 		})
 
+		Context("when the max connection duration is omitted", func() {
+			BeforeEach(func() {
+				configData = `{}`
+			})
+
+			It("defaults to zero for unlimited sessions", func() {
+				proxyConfig, err := config.NewSSHProxyConfig(configFilePath)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(proxyConfig.MaxConnectionDuration).To(Equal(durationjson.Duration(0)))
+			})
+		})
+
+		Context("when the max connection duration is zero", func() {
+			BeforeEach(func() {
+				configData = `{"max_connection_duration": "0s"}`
+			})
+
+			It("accepts zero for unlimited sessions", func() {
+				proxyConfig, err := config.NewSSHProxyConfig(configFilePath)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(proxyConfig.MaxConnectionDuration).To(Equal(durationjson.Duration(0)))
+			})
+		})
+
 		Context("when the max connection duration is greater than one hour", func() {
 			BeforeEach(func() {
 				configData = `{"max_connection_duration": "24h"}`

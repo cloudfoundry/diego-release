@@ -225,16 +225,79 @@ var _ = Describe("Proxy", func() {
 				})
 
 				Context("when the maximum connection duration is reached", func() {
+					var backendChannelClosed chan struct{}
+
 					BeforeEach(func() {
-						maxConnectionDuration = 100 * time.Millisecond
+						maxConnectionDuration = time.Second
 						idleConnectionTimeout = 5 * time.Second
+						backendChannelClosed = make(chan struct{})
+						handler := &fake_handlers.FakeNewChannelHandler{}
+						handler.HandleNewChannelStub = func(logger lager.Logger, newChannel ssh.NewChannel) {
+							defer GinkgoRecover()
+							channel, requests, err := newChannel.Accept()
+							Expect(err).NotTo(HaveOccurred())
+							defer channel.Close()
+							defer close(backendChannelClosed)
+							go ssh.DiscardRequests(requests)
+							_, _ = io.Copy(channel, channel)
+						}
+						daemonNewChannelHandlers["session"] = handler
 					})
 
 					It("closes the SSH connection even while it is active", func() {
+						defer client.Close()
+						channel, requests, err := client.OpenChannel("session", nil)
+						Expect(err).NotTo(HaveOccurred())
+						defer channel.Close()
+						go ssh.DiscardRequests(requests)
+
+						traffic := make(chan struct{}, 256)
+						streamEnded := make(chan error, 1)
+						go func() {
+							defer GinkgoRecover()
+							ticker := time.NewTicker(10 * time.Millisecond)
+							defer ticker.Stop()
+							for range ticker.C {
+								if _, err := channel.Write([]byte("ping")); err != nil {
+									streamEnded <- err
+									return
+								}
+								response := make([]byte, 4)
+								if _, err := io.ReadFull(channel, response); err != nil {
+									streamEnded <- err
+									return
+								}
+								Expect(string(response)).To(Equal("ping"))
+								select {
+								case traffic <- struct{}{}:
+								default:
+								}
+							}
+						}()
+
+						// Establish that data travels through both proxy directions,
+						// then keep streaming until the lifetime closes the channel.
+						Eventually(traffic).Should(Receive())
+						Eventually(traffic).Should(Receive())
+						Eventually(streamEnded, 3*time.Second).Should(Receive(HaveOccurred()))
+						Eventually(backendChannelClosed).Should(BeClosed())
 						closed := make(chan error, 1)
 						go func() { closed <- client.Wait() }()
 						Eventually(closed).Should(Receive(HaveOccurred()))
 						Eventually(handledConnections).Should(Receive())
+						Eventually(logger).Should(gbytes.Say(`maximum-connection-duration-reached.*"duration-in-seconds":1`))
+					})
+				})
+
+				Context("when the client closes before the maximum duration", func() {
+					BeforeEach(func() {
+						maxConnectionDuration = 200 * time.Millisecond
+					})
+
+					It("does not log a timeout on normal closure or after the cancelled deadline", func() {
+						Expect(client.Close()).To(Succeed())
+						Eventually(handledConnections).Should(Receive())
+						Consistently(logger, 300*time.Millisecond).ShouldNot(gbytes.Say("maximum-connection-duration-reached"))
 					})
 				})
 

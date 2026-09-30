@@ -86,7 +86,7 @@ func (p *Proxy) HandleConnection(netConn net.Conn) {
 		ctx, cancel = context.WithTimeout(ctx, p.maxConnectionDuration)
 		defer cancel()
 		stop := context.AfterFunc(ctx, func() {
-			logger.Info("maximum-connection-duration-reached", lager.Data{"duration": p.maxConnectionDuration})
+			logger.Info("maximum-connection-duration-reached", lager.Data{"duration-in-seconds": p.maxConnectionDuration.Seconds()})
 			_ = serverConn.Close()
 		})
 		defer stop()
@@ -96,8 +96,10 @@ func (p *Proxy) HandleConnection(netConn net.Conn) {
 	if err != nil {
 		return
 	}
-	stop := context.AfterFunc(ctx, func() { _ = clientConn.Close() })
-	defer stop()
+	if ctx.Done() != nil {
+		stop := context.AfterFunc(ctx, func() { _ = clientConn.Close() })
+		defer stop()
+	}
 
 	logMessage := extractLogMessage(logger, serverConn.Permissions)
 
@@ -395,8 +397,10 @@ func NewClientConn(ctx context.Context, logger lager.Logger, permissions *ssh.Pe
 	}
 	// SSH handshakes do not accept a context. Closing the socket interrupts a
 	// stalled handshake when the same deadline used for dialing expires.
-	stop := context.AfterFunc(ctx, func() { _ = nConn.Close() })
-	defer stop()
+	if ctx.Done() != nil {
+		stop := context.AfterFunc(ctx, func() { _ = nConn.Close() })
+		defer stop()
+	}
 	handshakeComplete := false
 	defer func() {
 		if !handshakeComplete {
