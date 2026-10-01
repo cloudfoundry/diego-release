@@ -1,3 +1,4 @@
+<% require 'ipaddr' %>
 <%=
 
   def parse_ip (ip, var_name)
@@ -37,6 +38,14 @@
 
   if_p("diego.ssh_proxy.idle_connection_timeout_in_seconds") do |value|
     config[:idle_connection_timeout] = "#{value}s"
+  end
+
+  max_connection_duration = p("diego.ssh_proxy.max_connection_duration_in_seconds")
+  unless max_connection_duration.is_a?(Integer) && max_connection_duration >= 0
+    raise "diego.ssh_proxy.max_connection_duration_in_seconds must be a non-negative integer; 0 means unlimited"
+  end
+  if max_connection_duration > 0
+    config[:max_connection_duration] = "#{max_connection_duration}s"
   end
 
   config[:bbs_address] = "https://" + p("diego.ssh_proxy.bbs.api_location")
@@ -122,4 +131,3 @@
 
   config.to_json
 %>
-

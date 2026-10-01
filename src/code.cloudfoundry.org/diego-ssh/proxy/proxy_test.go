@@ -1,6 +1,7 @@
 package proxy_test
 
 import (
+	"context"
 	"crypto/tls"
 	"encoding/json"
 	"errors"
@@ -66,11 +67,19 @@ var _ = Describe("Proxy", func() {
 			proxyServer *server.Server
 			sshdServer  *server.Server
 
-			proxyDone  chan struct{}
-			daemonDone chan struct{}
+			proxyDone             chan struct{}
+			daemonDone            chan struct{}
+			maxConnectionDuration time.Duration
+			idleConnectionTimeout time.Duration
+			backendTLSConfig      *tls.Config
+			handledConnections    chan struct{}
 		)
 
 		BeforeEach(func() {
+			maxConnectionDuration = 0
+			idleConnectionTimeout = 500 * time.Millisecond
+			backendTLSConfig = nil
+			handledConnections = make(chan struct{}, 10)
 			proxyDone = make(chan struct{})
 			daemonDone = make(chan struct{})
 
@@ -129,8 +138,13 @@ var _ = Describe("Proxy", func() {
 		})
 
 		JustBeforeEach(func() {
-			sshProxy = proxy.New(logger.Session("proxy"), proxySSHConfig, fakeMetronClient, nil)
-			proxyServer = server.NewServer(logger.Session("proxy-server"), "", sshProxy, 500*time.Millisecond)
+			sshProxy = proxy.New(logger.Session("proxy"), proxySSHConfig, fakeMetronClient, backendTLSConfig, maxConnectionDuration)
+			handler := &server_fakes.FakeConnectionHandler{}
+			handler.HandleConnectionStub = func(conn net.Conn) {
+				sshProxy.HandleConnection(conn)
+				handledConnections <- struct{}{}
+			}
+			proxyServer = server.NewServer(logger.Session("proxy-server"), "", handler, idleConnectionTimeout)
 			proxyServer.SetListener(proxyListener)
 			go func() {
 				proxyServer.Serve()
@@ -208,6 +222,141 @@ var _ = Describe("Proxy", func() {
 					metadata, password := daemonAuthenticator.AuthenticateArgsForCall(0)
 					Expect(metadata.User()).To(Equal("some-user"))
 					Expect(string(password)).To(Equal("fake-some-password"))
+				})
+
+				Context("when the maximum connection duration is reached", func() {
+					var backendChannelClosed chan struct{}
+
+					BeforeEach(func() {
+						maxConnectionDuration = time.Second
+						idleConnectionTimeout = 5 * time.Second
+						backendChannelClosed = make(chan struct{})
+						handler := &fake_handlers.FakeNewChannelHandler{}
+						handler.HandleNewChannelStub = func(logger lager.Logger, newChannel ssh.NewChannel) {
+							defer GinkgoRecover()
+							channel, requests, err := newChannel.Accept()
+							Expect(err).NotTo(HaveOccurred())
+							defer channel.Close()
+							defer close(backendChannelClosed)
+							go ssh.DiscardRequests(requests)
+							_, _ = io.Copy(channel, channel)
+						}
+						daemonNewChannelHandlers["session"] = handler
+					})
+
+					It("closes the SSH connection even while it is active", func() {
+						defer client.Close()
+						channel, requests, err := client.OpenChannel("session", nil)
+						Expect(err).NotTo(HaveOccurred())
+						defer channel.Close()
+						go ssh.DiscardRequests(requests)
+
+						traffic := make(chan struct{}, 256)
+						streamEnded := make(chan error, 1)
+						go func() {
+							defer GinkgoRecover()
+							ticker := time.NewTicker(10 * time.Millisecond)
+							defer ticker.Stop()
+							for range ticker.C {
+								if _, err := channel.Write([]byte("ping")); err != nil {
+									streamEnded <- err
+									return
+								}
+								response := make([]byte, 4)
+								if _, err := io.ReadFull(channel, response); err != nil {
+									streamEnded <- err
+									return
+								}
+								Expect(string(response)).To(Equal("ping"))
+								select {
+								case traffic <- struct{}{}:
+								default:
+								}
+							}
+						}()
+
+						// Establish that data travels through both proxy directions,
+						// then keep streaming until the lifetime closes the channel.
+						Eventually(traffic).Should(Receive())
+						Eventually(traffic).Should(Receive())
+						Eventually(streamEnded, 3*time.Second).Should(Receive(HaveOccurred()))
+						Eventually(backendChannelClosed).Should(BeClosed())
+						closed := make(chan error, 1)
+						go func() { closed <- client.Wait() }()
+						Eventually(closed).Should(Receive(HaveOccurred()))
+						Eventually(handledConnections).Should(Receive())
+						Eventually(logger).Should(gbytes.Say(`maximum-connection-duration-reached.*"duration-in-seconds":1`))
+					})
+				})
+
+				Context("when the client closes before the maximum duration", func() {
+					BeforeEach(func() {
+						maxConnectionDuration = 200 * time.Millisecond
+					})
+
+					It("does not log a timeout on normal closure or after the cancelled deadline", func() {
+						Expect(client.Close()).To(Succeed())
+						Eventually(handledConnections).Should(Receive())
+						Consistently(logger, 300*time.Millisecond).ShouldNot(gbytes.Say("maximum-connection-duration-reached"))
+					})
+				})
+
+				Context("when backend setup stalls", func() {
+					var backend net.Listener
+					var backendClosed chan struct{}
+
+					BeforeEach(func() {
+						maxConnectionDuration = 200 * time.Millisecond
+						idleConnectionTimeout = 5 * time.Second
+						var err error
+						backend, err = net.Listen("tcp", "127.0.0.1:0")
+						Expect(err).NotTo(HaveOccurred())
+						DeferCleanup(backend.Close)
+						backendClosed = make(chan struct{})
+						go func() {
+							defer GinkgoRecover()
+							conn, err := backend.Accept()
+							if err != nil {
+								return
+							}
+							defer conn.Close()
+							// Bound cleanup even if the proxy fails to close this socket.
+							Expect(conn.SetDeadline(time.Now().Add(5 * time.Second))).To(Succeed())
+							_, err = io.Copy(io.Discard, conn)
+							if err == nil {
+								close(backendClosed)
+							}
+						}()
+
+						targetJSON, err := json.Marshal(proxy.TargetConfig{
+							Address:             backend.Addr().String(),
+							TLSAddress:          backend.Addr().String(),
+							ServerCertDomainSAN: "backend.example",
+						})
+						Expect(err).NotTo(HaveOccurred())
+						proxyAuthenticator.AuthenticateReturns(&ssh.Permissions{
+							CriticalOptions: map[string]string{"proxy-target-config": string(targetJSON)},
+						}, nil)
+					})
+
+					assertSetupExpires := func() {
+						defer client.Close()
+						closed := make(chan error, 1)
+						go func() { closed <- client.Wait() }()
+						Eventually(closed, 2*time.Second).Should(Receive(HaveOccurred()))
+						Eventually(backendClosed, 2*time.Second).Should(BeClosed())
+						Eventually(handledConnections, 2*time.Second).Should(Receive())
+					}
+
+					It("closes both connections and returns when the backend SSH handshake stalls", assertSetupExpires)
+
+					Context("with backend TLS enabled", func() {
+						BeforeEach(func() {
+							backendTLSConfig = &tls.Config{}
+						})
+
+						It("closes both connections and returns when the TLS handshake stalls", assertSetupExpires)
+					})
 				})
 
 				Context("metron", func() {
@@ -1158,9 +1307,11 @@ var _ = Describe("Proxy", func() {
 
 			newClientConnErr error
 			tlsCfg           *tls.Config
+			ctx              context.Context
 		)
 
 		BeforeEach(func() {
+			ctx = context.Background()
 			permissions = &ssh.Permissions{
 				CriticalOptions: map[string]string{},
 			}
@@ -1180,11 +1331,26 @@ var _ = Describe("Proxy", func() {
 			sshdServer.SetListener(sshdListener)
 			go sshdServer.Serve()
 
-			_, _, _, newClientConnErr = proxy.NewClientConn(logger, permissions, tlsCfg)
+			_, _, _, newClientConnErr = proxy.NewClientConn(ctx, logger, permissions, tlsCfg)
 		})
 
 		AfterEach(func() {
 			sshdServer.Shutdown()
+		})
+
+		Context("when backend dialing is cancelled", func() {
+			BeforeEach(func() {
+				var cancel context.CancelFunc
+				ctx, cancel = context.WithCancel(context.Background())
+				cancel()
+				targetJSON, err := json.Marshal(proxy.TargetConfig{Address: sshdListener.Addr().String()})
+				Expect(err).NotTo(HaveOccurred())
+				permissions.CriticalOptions["proxy-target-config"] = string(targetJSON)
+			})
+
+			It("returns the cancellation error without establishing a connection", func() {
+				Expect(errors.Is(newClientConnErr, context.Canceled)).To(BeTrue())
+			})
 		})
 
 		Context("when permissions is nil", func() {

@@ -62,7 +62,7 @@ func main() {
 		logger.Error("failed-to-get-tls-config", err)
 		os.Exit(1)
 	}
-	sshProxy := proxy.New(logger, proxySSHServerConfig, metronClient, tlsConfig)
+	sshProxy := proxy.New(logger, proxySSHServerConfig, metronClient, tlsConfig, time.Duration(sshProxyConfig.MaxConnectionDuration))
 	server := server.NewServer(logger, sshProxyConfig.Address, sshProxy, time.Duration(sshProxyConfig.IdleConnectionTimeout))
 
 	healthCheckHandler := healthcheck.NewHandler(logger)
