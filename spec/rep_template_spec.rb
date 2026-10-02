@@ -65,12 +65,12 @@ describe 'rep' do
       }
     }
   end
-  
+
   let(:rendered_template) { template.render(deployment_manifest_fragment) }
 
   describe 'rep.json.erb' do
     let(:template) { job.template('config/rep.json') }
-    
+
     context 'lock_ttl' do
       it 'defaults to 15s' do
         expect(JSON.parse(rendered_template)['lock_ttl']).to eq('15s')
@@ -225,11 +225,11 @@ describe 'rep' do
 
   describe 'setup_mounted_data_dirs.erb' do
     let(:template) { job.template('bin/setup_mounted_data_dirs') }
-   
-    context 'checks the max_containers value' do 
+
+    context 'checks the max_containers value' do
       it 'raises an error if max_containers is <= 0' do
         deployment_manifest_fragment['diego']['rep']['max_containers'] = -10
-        expect do 
+        expect do
           rendered_template
         end.to raise_error(/The max_containers prop should be a positive integer/)
       end

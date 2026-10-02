@@ -190,7 +190,7 @@
     config[:locket_client_keepalive_timeout] = value
   end
 
-  if config[:locket_client_keepalive_time] > config[:locket_client_keepalive_timeout] 
+  if config[:locket_client_keepalive_time] > config[:locket_client_keepalive_timeout]
     raise "The locket client keepalive time property should not be larger than the timeout"
   end
 
