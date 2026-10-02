@@ -16,6 +16,8 @@ const (
 
 	PingRoute     = "Ping"
 	EvacuateRoute = "Evacuate"
+
+	HealthRoute = "Health"
 )
 
 func NewRoutes(networkAccessible bool) rata.Routes {
@@ -47,3 +49,8 @@ func NewRoutes(networkAccessible bool) rata.Routes {
 var RoutesLocalhostOnly = NewRoutes(false)
 var RoutesNetworkAccessible = NewRoutes(true)
 var Routes = append(RoutesLocalhostOnly, RoutesNetworkAccessible...)
+
+// RoutesHealth are served by the optional plain-HTTP health check listener.
+var RoutesHealth = rata.Routes{
+	{Path: "/health", Method: "GET", Name: HealthRoute},
+}

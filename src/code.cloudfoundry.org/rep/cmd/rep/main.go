@@ -255,6 +255,13 @@ func main() {
 
 	members = append(executorMembers, members...)
 
+	if repConfig.HealthCheckListenAddr != "" {
+		members = append(members, grouper.Member{
+			Name:   "health_server",
+			Runner: initializeHealthServer(executorClient, logger, repConfig.HealthCheckListenAddr),
+		})
+	}
+
 	if len(repConfig.DiskHealthCheckPaths) > 0 {
 		diskInterval := time.Duration(repConfig.DiskHealthCheckInterval)
 		if diskInterval <= 0 {
@@ -388,6 +395,28 @@ func initializeServer(
 		logger.Fatal("tls-configuration-failed", err)
 	}
 	return startTLSServer(listenAddress, router, tlsConfig)
+}
+
+func initializeHealthServer(executorClient executor.Client, logger lager.Logger, addr string) ifrit.Runner {
+	router, err := rata.NewRouter(rep.RoutesHealth, handlers.NewHealth(executorClient, logger))
+	if err != nil {
+		logger.Fatal("failed-to-construct-health-router", err)
+	}
+
+	return ifrit.RunFunc(func(signals <-chan os.Signal, ready chan<- struct{}) error {
+		listener, err := net.Listen("tcp", addr)
+		if err != nil {
+			return err
+		}
+		close(ready)
+		server := &http.Server{
+			Handler:           router,
+			ReadHeaderTimeout: 5 * time.Second,
+		}
+		go server.Serve(listener)
+		<-signals
+		return listener.Close()
+	})
 }
 
 func startTLSServer(addr string, handler http.Handler, tlsConfig *tls.Config) ifrit.Runner {
