@@ -1186,6 +1186,50 @@ dYbCU/DMZjsv+Pt9flhj7ELLo+WKHyI767hJSq9A7IT3GzFt8iGiEAt1qj2yS0DX
 			})
 		})
 
+		Describe("health check listener", func() {
+			getHealth := func() (int, error) {
+				resp, err := http.Get(fmt.Sprintf("http://127.0.0.1:%d/health", healthPort))
+				if err != nil {
+					return 0, err
+				}
+				resp.Body.Close()
+				return resp.StatusCode, nil
+			}
+
+			Context("when health_check_listen_addr is not configured", func() {
+				It("does not listen", func() {
+					_, err := getHealth()
+					Expect(err).To(HaveOccurred())
+				})
+			})
+
+			Context("when health_check_listen_addr is configured", func() {
+				BeforeEach(func() {
+					repConfig.HealthCheckListenAddr = fmt.Sprintf("127.0.0.1:%d", healthPort)
+				})
+
+				It("responds with 200 OK over plain HTTP while the cell is healthy", func() {
+					Eventually(getHealth).Should(Equal(http.StatusOK))
+				})
+
+				Context("when the garden healthcheck fails", func() {
+					BeforeEach(func() {
+						firstResponse, err := json.Marshal(transport.ProcessPayload{})
+						Expect(err).NotTo(HaveOccurred())
+						exitStatus := 1
+						secondResponse, err := json.Marshal(transport.ProcessPayload{ExitStatus: &exitStatus})
+						Expect(err).NotTo(HaveOccurred())
+						fakeGarden.RouteToHandler("POST", "/containers/healthcheck-container/processes",
+							ghttp.RespondWith(http.StatusOK, string(firstResponse)+string(secondResponse), http.Header{"Content-Type": []string{"application/json"}}))
+					})
+
+					It("responds with 503 Service Unavailable", func() {
+						Eventually(getHealth).Should(Equal(http.StatusServiceUnavailable))
+					})
+				})
+			})
+		})
+
 		It("serves the localhost-only endpoints over TLS", func() {
 			resp, err := client.Get(fmt.Sprintf("https://127.0.0.1:%d/ping", serverPort))
 			Expect(err).NotTo(HaveOccurred())

@@ -181,6 +181,46 @@ describe 'rep' do
         expect(JSON.parse(rendered_template)['inject_workload_identity']).to eq(true)
       end
     end
+
+    context 'health_check_listen_addr' do
+      it 'is empty by default' do
+        expect(JSON.parse(rendered_template)['health_check_listen_addr']).to eq('')
+      end
+
+      it 'is configurable with a loopback address' do
+        deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = '127.0.0.1:1801'
+        expect(JSON.parse(rendered_template)['health_check_listen_addr']).to eq('127.0.0.1:1801')
+      end
+
+      it 'raises an error for a non-loopback address' do
+        deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = '0.0.0.0:1801'
+        expect { rendered_template }.to raise_error(/must be a loopback address/)
+      end
+    end
+  end
+
+  describe 'monit' do
+    let(:template) do
+      Bosh::Template::Test::Template.new(
+        YAML.load_file(File.join(release_path, 'jobs', 'rep', 'spec')),
+        File.join(release_path, 'jobs', 'rep', 'monit')
+      )
+    end
+
+    it 'does not add a health check by default' do
+      expect(rendered_template).not_to include('if failed')
+    end
+
+    context 'when health_check_listen_addr is set' do
+      before do
+        deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = '127.0.0.1:1801'
+      end
+
+      it 'alerts when /health does not respond with success' do
+        expected_check = "host 127.0.0.1\n    port 1801\n    protocol http\n    request \"/health\"\n  then alert"
+        expect(rendered_template).to include(expected_check)
+      end
+    end
   end
 
   describe 'setup_mounted_data_dirs.erb' do

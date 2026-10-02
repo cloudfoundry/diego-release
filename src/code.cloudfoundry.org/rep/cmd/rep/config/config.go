@@ -113,6 +113,7 @@ type RepConfig struct {
 	DiskHealthCheckPaths            []string              `json:"disk_health_check_paths,omitempty"`
 	DiskHealthCheckInterval         durationjson.Duration `json:"disk_health_check_interval,omitempty"`
 	DiskHealthCheckFailureThreshold int                   `json:"disk_health_check_failure_threshold,omitempty"`
+	HealthCheckListenAddr           string                `json:"health_check_listen_addr,omitempty"`
 	LoggregatorConfig               loggingclient.Config  `json:"loggregator"`
 	debugserver.DebugServerConfig
 	executorinit.ExecutorConfig
