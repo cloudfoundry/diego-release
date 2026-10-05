@@ -11,6 +11,7 @@ import (
 	"math/big"
 	"net"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 
@@ -391,6 +392,9 @@ func (c *credManager) generateC2cCred(logger lager.Logger, container executor.Co
 }
 
 func (c *credManager) generateCredForSAN(logger lager.Logger, certSAN certificateSAN, certGUID string) (Credential, error) {
+	if certSAN.ServiceAccount != nil && !serviceAccountNamePattern.MatchString(certSAN.ServiceAccount.Name) {
+		return Credential{}, fmt.Errorf("invalid service account name")
+	}
 	for _, route := range certSAN.InternalRoutes {
 		name := strings.ToLower(strings.TrimSuffix(route.Hostname, "."))
 		if name == "svc.identity" || strings.HasSuffix(name, ".svc.identity") {
@@ -470,6 +474,8 @@ type certificateSAN struct {
 	OrganizationalUnits []string
 	ServiceAccount      *executor.ServiceAccount
 }
+
+var serviceAccountNamePattern = regexp.MustCompile(`\A[a-z0-9][a-z0-9-]{1,61}[a-z0-9]\z`)
 
 func createCertificateTemplate(guid string, certSAN certificateSAN, notBefore, notAfter time.Time) *x509.Certificate {
 	var ipaddr []net.IP
