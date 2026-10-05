@@ -222,6 +222,9 @@ properties:
     default: false
   diego.executor.instance_identity_ca_cert:
     description: "PEM-encoded CA used to sign instance identity credentials. Enables instance identity if set along with instance_identity_key"
+  diego.executor.service_account_identity_enabled:
+    description: "Enable platform-owned service account SANs. Requires instance identity credentials and compatible CAPI/BBS/rep rollout before enabling account workloads."
+    default: false
   diego.executor.instance_identity_key:
     description: "PEM-encoded key used to sign instance identity credentials. Enables instance identity if set along with instance_identity_ca_cert"
   diego.executor.instance_identity_validity_period_in_hours:
