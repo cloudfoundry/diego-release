@@ -172,6 +172,9 @@ func TLSConfigFromConfig(logger lager.Logger, certsRetriever CertPoolRetriever, 
 }
 
 func CredManagerFromConfig(logger lager.Logger, metronClient loggingclient.IngressClient, config ExecutorConfig, clock clock.Clock, handlers ...containerstore.CredentialHandler) (containerstore.CredManager, error) {
+	if config.ServiceAccountIdentityEnabled && config.InstanceIdentityCredDir == "" {
+		return nil, errors.New("service account identity requires instance identity credentials")
+	}
 	if config.InstanceIdentityCredDir != "" {
 		logger.Info("instance-identity-enabled")
 		keyData, err := os.ReadFile(config.InstanceIdentityPrivateKeyPath)
@@ -213,6 +216,7 @@ func CredManagerFromConfig(logger lager.Logger, metronClient loggingclient.Ingre
 			certs[0],
 			privateKey,
 			handlers,
+			containerstore.WithServiceAccountIdentity(config.ServiceAccountIdentityEnabled),
 		), nil
 	}
 
