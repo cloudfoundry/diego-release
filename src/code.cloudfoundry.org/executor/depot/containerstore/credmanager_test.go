@@ -115,6 +115,13 @@ var _ = Describe("CredManager", func() {
 		})
 	})
 
+	It("rejects service account credentials unless the cell gate is enabled", func() {
+		manager := containerstore.NewCredManager(logger, fakeMetronClient, validityPeriod, reader, clock, CaCert, privateKey, []containerstore.CredentialHandler{fakeCredHandler})
+		container := executor.Container{Guid: "instance-guid", RunInfo: executor.RunInfo{CertificateProperties: executor.CertificateProperties{ServiceAccount: &executor.ServiceAccount{Name: "payments-worker"}}}}
+		_, err := manager.GenerateInitialCredentials(logger, container)
+		Expect(err).To(MatchError(ContainSubstring("service account identity is not enabled")))
+	})
+
 	Context("RemoveCredDir", func() {
 		var (
 			fakeCredHandler1, fakeCredHandler2 *containerstorefakes.FakeCredentialHandler
