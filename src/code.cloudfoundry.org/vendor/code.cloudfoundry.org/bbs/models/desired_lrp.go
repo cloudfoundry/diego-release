@@ -124,6 +124,7 @@ func (desiredLRP *DesiredLRP) AddRunInfo(runInfo DesiredLRPRunInfo) {
 	desiredLRP.TrustedSystemCertificatesPath = runInfo.TrustedSystemCertificatesPath
 	desiredLRP.VolumeMounts = runInfo.VolumeMounts
 	desiredLRP.Network = runInfo.Network
+	desiredLRP.CertificateProperties = runInfo.CertificateProperties
 	desiredLRP.CheckDefinition = runInfo.CheckDefinition
 	desiredLRP.VolumeMountedFiles = volumeMountedFiles
 }

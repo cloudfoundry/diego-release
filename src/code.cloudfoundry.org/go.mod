@@ -16,7 +16,7 @@ require (
 	code.cloudfoundry.org/bbs v1.19.0
 	code.cloudfoundry.org/bbs/encryption v1.17.0
 	code.cloudfoundry.org/bbs/format v1.14.0
-	code.cloudfoundry.org/bbs/models v1.15.1-0.20261005211002-bd154ac377fb
+	code.cloudfoundry.org/bbs/models v1.15.1-0.20261005213824-869b0650f414
 	code.cloudfoundry.org/bytefmt v0.92.0
 	code.cloudfoundry.org/certsplitter v0.90.0
 	code.cloudfoundry.org/cfhttp/v2 v2.97.0

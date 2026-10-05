@@ -56,6 +56,10 @@ func TestServiceAccountWireToInstanceCredentials(t *testing.T) {
 		if err := proto.Unmarshal(wire, decoded); err != nil {
 			t.Fatal(err)
 		}
+		// Exercise the same split run-info assembly used by stored BBS LRPs.
+		runInfo := decoded.DesiredLRPRunInfo(time.Now())
+		decoded.CertificateProperties = nil
+		decoded.AddRunInfo(runInfo)
 		actual := model_helpers.NewValidActualLRP(guid, 0)
 		request, err := helper.NewRunRequestFromDesiredLRP(guid, decoded, &actual.ActualLRPKey, &actual.ActualLRPInstanceKey, stack, rep.LayeringModeSingleLayer)
 		if err != nil {
