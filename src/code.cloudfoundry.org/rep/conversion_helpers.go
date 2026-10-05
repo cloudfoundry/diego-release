@@ -179,6 +179,11 @@ func (rrch RunRequestConversionHelper) NewRunRequestFromDesiredLRP(
 	stackPathMap StackPathMap,
 	layeringMode string,
 ) (executor.RunRequest, error) {
+	if desiredLRP.CertificateProperties != nil {
+		if err := desiredLRP.CertificateProperties.Validate(); err != nil {
+			return executor.RunRequest{}, err
+		}
+	}
 	desiredLRPCopy := *desiredLRP
 	desiredLRP = &desiredLRPCopy
 	desiredLRP.RootFs, desiredLRP.ImageLayers = ConvertPreloadedRootFS(desiredLRP.RootFs, desiredLRP.ImageLayers, layeringMode)
@@ -268,6 +273,11 @@ func (rrch RunRequestConversionHelper) NewRunRequestFromDesiredLRP(
 }
 
 func (rrch RunRequestConversionHelper) NewRunRequestFromTask(task *models.Task, stackPathMap StackPathMap, layeringMode string) (executor.RunRequest, error) {
+	if task.CertificateProperties != nil {
+		if err := task.CertificateProperties.Validate(); err != nil {
+			return executor.RunRequest{}, err
+		}
+	}
 	taskDefinitionCopy := *task.TaskDefinition
 	taskCopy := *task
 	task = &taskCopy
