@@ -302,6 +302,20 @@ var _ = Describe("CredManager", func() {
 				})
 			})
 
+			Context("invalid service account names", func() {
+				for _, name := range []string{"", "ab", "Worker", "worker.other", "worker\n", "-worker", "worker-"} {
+					Context(fmt.Sprintf("%q", name), func() {
+						BeforeEach(func() {
+							container.CertificateProperties.ServiceAccount = &executor.ServiceAccount{Name: name}
+						})
+						It("rejects the assignment without publishing credentials", func() {
+							Eventually(containerProcess.Wait()).Should(Receive(MatchError("invalid service account name")))
+							Expect(fakeCredHandler.UpdateCallCount()).To(BeZero())
+						})
+					})
+				}
+			})
+
 			Context("service account SAN injection through internal routes", func() {
 				for _, hostname := range []string{
 					"payments-worker.svc.identity",
