@@ -71,6 +71,15 @@ describe 'rep' do
   describe 'rep.json.erb' do
     let(:template) { job.template('config/rep.json') }
 
+    it 'defaults service account identity to disabled' do
+      expect(JSON.parse(rendered_template)['service_account_identity_enabled']).to eq(false)
+    end
+
+    it 'renders explicitly enabled service account identity' do
+      deployment_manifest_fragment['diego']['executor']['service_account_identity_enabled'] = true
+      expect(JSON.parse(rendered_template)['service_account_identity_enabled']).to eq(true)
+    end
+
     context 'lock_ttl' do
       it 'defaults to 15s' do
         expect(JSON.parse(rendered_template)['lock_ttl']).to eq('15s')
