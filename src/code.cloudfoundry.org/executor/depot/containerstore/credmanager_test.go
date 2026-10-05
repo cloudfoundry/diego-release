@@ -83,6 +83,19 @@ var _ = Describe("CredManager", func() {
 	})
 
 	Context("NoopCredManager", func() {
+		It("rejects a service account when instance identity is unavailable", func() {
+			container := executor.Container{RunInfo: executor.RunInfo{CertificateProperties: executor.CertificateProperties{ServiceAccount: &executor.ServiceAccount{Name: "payments-worker"}}}}
+			manager := containerstore.NewNoopCredManager()
+			_, _, err := manager.CreateCredDir(logger, container)
+			Expect(err).To(MatchError(ContainSubstring("service account")))
+			_, err = manager.GenerateInitialCredentials(logger, container)
+			Expect(err).To(MatchError(ContainSubstring("service account")))
+			containerInfoProvider.InfoReturns(container)
+			process := ifrit.Background(manager.Runner(logger, containerInfoProvider, make(chan struct{})))
+			defer process.Signal(os.Interrupt)
+			Eventually(process.Wait()).Should(Receive(MatchError(ContainSubstring("service account"))))
+		})
+
 		It("returns a dummy runner", func() {
 			container := executor.Container{
 				Guid:       fmt.Sprintf("container-guid-%d", GinkgoParallelProcess()),
