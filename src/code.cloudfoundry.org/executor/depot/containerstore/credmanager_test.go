@@ -123,6 +123,12 @@ var _ = Describe("CredManager", func() {
 		Expect(err).To(MatchError(ContainSubstring("service account identity is not enabled")))
 	})
 
+	It("rejects service account SAN injection through the instance GUID", func() {
+		container := executor.Container{Guid: "payments-worker.svc.identity"}
+		_, err := credManager.GenerateInitialCredentials(logger, container)
+		Expect(err).To(MatchError(ContainSubstring("reserved service account identity")))
+	})
+
 	Context("RemoveCredDir", func() {
 		var (
 			fakeCredHandler1, fakeCredHandler2 *containerstorefakes.FakeCredentialHandler
