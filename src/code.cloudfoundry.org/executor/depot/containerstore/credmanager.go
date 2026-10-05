@@ -418,6 +418,9 @@ func (c *credManager) generateC2cCred(logger lager.Logger, container executor.Co
 }
 
 func (c *credManager) generateCredForSAN(logger lager.Logger, certSAN certificateSAN, certGUID string) (Credential, error) {
+	if reservedAccountIdentity(certGUID) {
+		return Credential{}, fmt.Errorf("instance GUID uses reserved service account identity namespace")
+	}
 	if certSAN.ServiceAccount != nil && !c.serviceAccountIdentityEnabled {
 		return Credential{}, fmt.Errorf("service account identity is not enabled")
 	}
@@ -425,8 +428,7 @@ func (c *credManager) generateCredForSAN(logger lager.Logger, certSAN certificat
 		return Credential{}, fmt.Errorf("invalid service account name")
 	}
 	for _, route := range certSAN.InternalRoutes {
-		name := strings.ToLower(strings.TrimSuffix(route.Hostname, "."))
-		if name == "svc.identity" || strings.HasSuffix(name, ".svc.identity") {
+		if reservedAccountIdentity(route.Hostname) {
 			return Credential{}, fmt.Errorf("internal route uses reserved service account identity namespace")
 		}
 	}
@@ -505,6 +507,11 @@ type certificateSAN struct {
 }
 
 var serviceAccountNamePattern = regexp.MustCompile(`\A[a-z0-9][a-z0-9-]{1,61}[a-z0-9]\z`)
+
+func reservedAccountIdentity(hostname string) bool {
+	name := strings.ToLower(strings.TrimSuffix(hostname, "."))
+	return name == "svc.identity" || strings.HasSuffix(name, ".svc.identity")
+}
 
 func createCertificateTemplate(guid string, certSAN certificateSAN, notBefore, notAfter time.Time) *x509.Certificate {
 	var ipaddr []net.IP
