@@ -461,9 +461,13 @@ func convertCertificateProperties(props *models.CertificateProperties) executor.
 		return executor.CertificateProperties{}
 	}
 
-	return executor.CertificateProperties{
+	properties := executor.CertificateProperties{
 		OrganizationalUnit: props.OrganizationalUnit,
 	}
+	if props.ServiceAccount != nil {
+		properties.ServiceAccount = &executor.ServiceAccount{Name: props.ServiceAccount.Name}
+	}
+	return properties
 }
 
 func convertSidecars(sidecars []*models.Sidecar) []executor.Sidecar {
