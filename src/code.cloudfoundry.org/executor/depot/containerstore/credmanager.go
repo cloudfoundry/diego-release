@@ -6,10 +6,12 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
+	"fmt"
 	"io"
 	"math/big"
 	"net"
 	"os"
+	"strings"
 	"time"
 
 	multierror "github.com/hashicorp/go-multierror"
@@ -389,6 +391,12 @@ func (c *credManager) generateC2cCred(logger lager.Logger, container executor.Co
 }
 
 func (c *credManager) generateCredForSAN(logger lager.Logger, certSAN certificateSAN, certGUID string) (Credential, error) {
+	for _, route := range certSAN.InternalRoutes {
+		name := strings.ToLower(strings.TrimSuffix(route.Hostname, "."))
+		if name == "svc.identity" || strings.HasSuffix(name, ".svc.identity") {
+			return Credential{}, fmt.Errorf("internal route uses reserved service account identity namespace")
+		}
+	}
 	logger.Debug("generating-private-key")
 	privateKey, err := c.generateKey(c.entropyReader, RSAPrivateKeySize)
 	if err != nil {
