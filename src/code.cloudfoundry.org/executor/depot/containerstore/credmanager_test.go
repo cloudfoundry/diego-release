@@ -302,6 +302,26 @@ var _ = Describe("CredManager", func() {
 				})
 			})
 
+			Context("service account SAN injection through internal routes", func() {
+				for _, hostname := range []string{
+					"payments-worker.svc.identity",
+					"PAYMENTS-WORKER.SVC.IDENTITY",
+					"payments-worker.svc.identity.",
+					"nested.payments-worker.svc.identity",
+				} {
+					Context(hostname, func() {
+						BeforeEach(func() {
+							container.InternalRoutes = bbsmodels.InternalRoutes{{Hostname: hostname}}
+						})
+
+						It("refuses to issue credentials for the reserved identity namespace", func() {
+							Eventually(containerProcess.Wait()).Should(Receive(MatchError(ContainSubstring("reserved service account identity"))))
+							Expect(fakeCredHandler.UpdateCallCount()).To(BeZero())
+						})
+					})
+				}
+			})
+
 			Context("when runner becomes ready", func() {
 				AfterEach(func() {
 					containerProcess.Signal(os.Interrupt)
