@@ -79,6 +79,7 @@ var _ = Describe("CredManager", func() {
 			privateKey,
 			[]containerstore.CredentialHandler{fakeCredHandler},
 			containerstore.WithKeyGenerator(credManagerKeyGen),
+			containerstore.WithServiceAccountIdentity(true),
 		)
 	})
 
