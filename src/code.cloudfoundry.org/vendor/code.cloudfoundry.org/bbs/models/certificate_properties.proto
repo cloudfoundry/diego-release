@@ -4,5 +4,9 @@ package models;
 
 message CertificateProperties {
   repeated string organizational_unit = 1;
+  ServiceAccount service_account = 2;
 }
 
+message ServiceAccount {
+  string name = 1;
+}

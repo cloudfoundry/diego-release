@@ -93,6 +93,9 @@ func (t *TaskDefinition) Copy() *TaskDefinition {
 
 func (def *TaskDefinition) Validate() error {
 	var validationError ValidationError
+	if def.CertificateProperties != nil {
+		validationError = validationError.Check(def.CertificateProperties)
+	}
 
 	if def.RootFs == "" {
 		validationError = validationError.Append(ErrInvalidField{"rootfs"})

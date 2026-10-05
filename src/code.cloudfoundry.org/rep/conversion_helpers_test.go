@@ -444,6 +444,15 @@ var _ = Describe("Resources", func() {
 				})
 			})
 
+			It("propagates a service account from an LRP without aliasing its identity", func() {
+				desiredLRP.CertificateProperties.ServiceAccount = &models.ServiceAccount{Name: "payments-worker"}
+				runReq, err := runRequestConversionHelper.NewRunRequestFromDesiredLRP(containerGuid, desiredLRP, &actualLRP.ActualLRPKey, &actualLRP.ActualLRPInstanceKey, stackPathMap, rep.LayeringModeSingleLayer)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(runReq.CertificateProperties.ServiceAccount).To(Equal(&executor.ServiceAccount{Name: "payments-worker"}))
+				desiredLRP.CertificateProperties.ServiceAccount.Name = "reporting-reader"
+				Expect(runReq.CertificateProperties.ServiceAccount.Name).To(Equal("payments-worker"))
+			})
+
 			Context("when the certificate properties are nil", func() {
 				BeforeEach(func() {
 					desiredLRP.CertificateProperties = nil
@@ -900,6 +909,15 @@ var _ = Describe("Resources", func() {
 				runReq, err := runRequestConversionHelper.NewRunRequestFromTask(task, stackPathMap, rep.LayeringModeSingleLayer)
 				Expect(err).NotTo(HaveOccurred())
 				Expect(runReq.EnableContainerProxy).To(BeFalse())
+			})
+
+			It("propagates a service account from a runtime task without aliasing its identity", func() {
+				task.CertificateProperties.ServiceAccount = &models.ServiceAccount{Name: "payments-worker"}
+				runReq, err := runRequestConversionHelper.NewRunRequestFromTask(task, stackPathMap, rep.LayeringModeSingleLayer)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(runReq.CertificateProperties.ServiceAccount).To(Equal(&executor.ServiceAccount{Name: "payments-worker"}))
+				task.CertificateProperties.ServiceAccount.Name = "reporting-reader"
+				Expect(runReq.CertificateProperties.ServiceAccount.Name).To(Equal("payments-worker"))
 			})
 
 			Context("when the rootfs is not preloaded", func() {

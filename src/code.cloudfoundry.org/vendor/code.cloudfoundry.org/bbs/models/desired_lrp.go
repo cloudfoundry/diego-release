@@ -18,6 +18,7 @@ const ExtraRootFSScheme = "extra"
 const volumeMountedFilesMaxAllowedSize = 1 * 1024 * 1024 // 1MB in bytes
 
 var processGuidPattern = regexp.MustCompile(`^[a-zA-Z0-9_-]+$`)
+var serviceAccountNamePattern = regexp.MustCompile(`\A[a-z0-9][a-z0-9-]{1,61}[a-z0-9]\z`)
 
 type DesiredLRPChange struct {
 	Before *DesiredLRP
@@ -786,6 +787,9 @@ func NewDesiredLRPRunInfo(
 
 func (runInfo DesiredLRPRunInfo) Validate() error {
 	var validationError ValidationError
+	if runInfo.CertificateProperties != nil {
+		validationError = validationError.Check(runInfo.CertificateProperties)
+	}
 
 	validationError = validationError.Check(runInfo.DesiredLRPKey)
 
@@ -877,7 +881,10 @@ func (*CertificateProperties) Version() format.Version {
 	return format.V0
 }
 
-func (CertificateProperties) Validate() error {
+func (properties CertificateProperties) Validate() error {
+	if properties.ServiceAccount != nil && !serviceAccountNamePattern.MatchString(properties.ServiceAccount.Name) {
+		return ErrInvalidField{"certificate_properties.service_account.name"}
+	}
 	return nil
 }
 
