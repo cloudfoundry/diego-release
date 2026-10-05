@@ -228,6 +228,17 @@ func (c *credManager) Runner(logger lager.Logger, containerInfoProvider Containe
 		defer logger.Info("complete")
 
 		initialContainer := containerInfoProvider.Info()
+		var launchAccount *executor.ServiceAccount
+		if initialContainer.CertificateProperties.ServiceAccount != nil {
+			account := *initialContainer.CertificateProperties.ServiceAccount
+			launchAccount = &account
+		}
+		// Route/IP updates remain live, but identity changes require a new runner.
+		launchIdentityContainer := func() executor.Container {
+			container := containerInfoProvider.Info()
+			container.CertificateProperties.ServiceAccount = launchAccount
+			return container
+		}
 		idCred, err := c.generateInstanceIdentityCred(logger, initialContainer, initialContainer.Guid)
 		if err != nil {
 			return err
@@ -256,7 +267,7 @@ func (c *credManager) Runner(logger lager.Logger, containerInfoProvider Containe
 			select {
 			case <-regenCertTimer.C():
 				regenLogger.Debug("on-timer")
-				container := containerInfoProvider.Info()
+				container := launchIdentityContainer()
 				idCred, err := c.generateInstanceIdentityCred(logger, container, container.Guid)
 				if err != nil {
 					return err
@@ -279,7 +290,7 @@ func (c *credManager) Runner(logger lager.Logger, containerInfoProvider Containe
 				regenLogger.Debug("completed")
 			case <-regenerateCertsCh:
 				regenLogger.Debug("on-update")
-				container := containerInfoProvider.Info()
+				container := launchIdentityContainer()
 				cred, err := c.generateC2cCred(logger, container, container.Guid)
 				if err != nil {
 					return err
@@ -296,7 +307,7 @@ func (c *credManager) Runner(logger lager.Logger, containerInfoProvider Containe
 				regenLogger.Debug("completed")
 			case signal := <-signals:
 				logger.Info("on-signal", lager.Data{"signal": signal.String()})
-				container := containerInfoProvider.Info()
+				container := launchIdentityContainer()
 				idCred, err := c.generateInstanceIdentityCred(logger, container, "")
 				if err != nil {
 					return err
