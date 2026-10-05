@@ -614,6 +614,13 @@ var _ = Describe("Initializer", func() {
 				Expect(bindMounts).To(BeEmpty())
 				Expect(err).NotTo(HaveOccurred())
 			})
+
+			Context("when service account identity is enabled", func() {
+				BeforeEach(func() { config.ServiceAccountIdentityEnabled = true })
+				It("rejects enabled account identity without instance credentials", func() {
+					Expect(err).To(MatchError(ContainSubstring("service account identity requires instance identity")))
+				})
+			})
 		})
 
 		Describe("when the instance identity creds directory is set", func() {
@@ -629,6 +636,20 @@ var _ = Describe("Initializer", func() {
 				defer os.RemoveAll(filepath.Join(config.InstanceIdentityCredDir, container.Guid))
 				Expect(err).NotTo(HaveOccurred())
 				Expect(bindMounts).NotTo(BeEmpty())
+			})
+
+			Context("when service account identity is enabled", func() {
+				BeforeEach(func() { config.ServiceAccountIdentityEnabled = true })
+				It("passes the enabled service account gate to the credential manager", func() {
+					Expect(err).NotTo(HaveOccurred())
+					container.CertificateProperties.ServiceAccount = &executor.ServiceAccount{Name: "payments-worker"}
+					credentials, err := credManager.GenerateInitialCredentials(logger, container)
+					Expect(err).NotTo(HaveOccurred())
+					block, _ := pem.Decode([]byte(credentials.InstanceIdentityCredential.Cert))
+					cert, err := x509.ParseCertificate(block.Bytes)
+					Expect(err).NotTo(HaveOccurred())
+					Expect(cert.DNSNames).To(ContainElement("payments-worker.svc.identity"))
+				})
 			})
 
 			Context("when the private key does not exist", func() {
