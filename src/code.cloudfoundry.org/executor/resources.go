@@ -164,7 +164,13 @@ type CachedDependency struct {
 }
 
 type CertificateProperties struct {
-	OrganizationalUnit []string `json:"organizational_unit"`
+	OrganizationalUnit []string        `json:"organizational_unit"`
+	ServiceAccount     *ServiceAccount `json:"service_account,omitempty"`
+}
+
+// ServiceAccount is platform-owned launch-time identity, not an arbitrary SAN.
+type ServiceAccount struct {
+	Name string `json:"name"`
 }
 
 type Sidecar struct {

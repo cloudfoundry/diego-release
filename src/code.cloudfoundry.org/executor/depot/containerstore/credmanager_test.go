@@ -331,6 +331,25 @@ var _ = Describe("CredManager", func() {
 					Eventually(containerProcess.Ready()).Should(BeClosed())
 				})
 
+				Context("with a service account", func() {
+					BeforeEach(func() {
+						container.CertificateProperties.ServiceAccount = &executor.ServiceAccount{Name: "payments-worker"}
+					})
+
+					It("adds one derived SAN to both credentials while preserving instance and route identities", func() {
+						Eventually(fakeCredHandler.UpdateCallCount).Should(Equal(1))
+						creds, _ := fakeCredHandler.UpdateArgsForCall(0)
+						id, _ := parseCert(creds.InstanceIdentityCredential)
+						c2c, _ := parseCert(creds.C2CCredential)
+						Expect(id.DNSNames).To(ConsistOf(container.Guid, "payments-worker.svc.identity"))
+						Expect(c2c.DNSNames).To(ConsistOf(container.Guid, "a.apps.internal", "b.apps.internal", "payments-worker.svc.identity"))
+						Expect(id.Subject.CommonName).To(Equal(container.Guid))
+						Expect(id.Subject.OrganizationalUnit).To(Equal(container.CertificateProperties.OrganizationalUnit))
+						Expect(id.IPAddresses).To(ConsistOf(net.ParseIP(container.InternalIP)))
+						Expect(creds.InstanceIdentityCredential.Key).NotTo(Equal(creds.C2CCredential.Key))
+					})
+				})
+
 				It("emits metrics on successful creation", func() {
 					Expect(fakeMetronClient.IncrementCounterCallCount()).To(Equal(2))
 					metric := fakeMetronClient.IncrementCounterArgsForCall(0)
