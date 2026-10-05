@@ -106,6 +106,10 @@ func (c *Container) TransitionToComplete(failed bool, failureReason string, retr
 
 func (newContainer Container) Copy() Container {
 	newContainer.Tags = newContainer.Tags.Copy()
+	if account := newContainer.CertificateProperties.ServiceAccount; account != nil {
+		identity := *account
+		newContainer.CertificateProperties.ServiceAccount = &identity
+	}
 	return newContainer
 }
 
