@@ -72,6 +72,9 @@ func NewNoopCredManager() CredManager {
 }
 
 func (c *noopManager) CreateCredDir(logger lager.Logger, container executor.Container) ([]garden.BindMount, []executor.EnvironmentVariable, error) {
+	if container.CertificateProperties.ServiceAccount != nil {
+		return nil, nil, fmt.Errorf("service account requires instance identity credentials")
+	}
 	return nil, nil, nil
 }
 
@@ -79,15 +82,21 @@ func (c *noopManager) RemoveCredDir(logger lager.Logger, container executor.Cont
 	return nil
 }
 
-func (c *noopManager) Runner(lager.Logger, ContainerInfoProvider, <-chan struct{}) ifrit.Runner {
+func (c *noopManager) Runner(_ lager.Logger, provider ContainerInfoProvider, _ <-chan struct{}) ifrit.Runner {
 	return ifrit.RunFunc(func(signals <-chan os.Signal, ready chan<- struct{}) error {
+		if provider.Info().CertificateProperties.ServiceAccount != nil {
+			return fmt.Errorf("service account requires instance identity credentials")
+		}
 		close(ready)
 		<-signals
 		return nil
 	})
 }
 
-func (c *noopManager) GenerateInitialCredentials(lager.Logger, executor.Container) (Credentials, error) {
+func (c *noopManager) GenerateInitialCredentials(_ lager.Logger, container executor.Container) (Credentials, error) {
+	if container.CertificateProperties.ServiceAccount != nil {
+		return Credentials{}, fmt.Errorf("service account requires instance identity credentials")
+	}
 	return Credentials{}, nil
 }
 
