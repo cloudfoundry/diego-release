@@ -453,6 +453,12 @@ var _ = Describe("Resources", func() {
 				Expect(runReq.CertificateProperties.ServiceAccount.Name).To(Equal("payments-worker"))
 			})
 
+			It("rejects malformed service account identity before converting an LRP", func() {
+				desiredLRP.CertificateProperties.ServiceAccount = &models.ServiceAccount{Name: "payments.svc.identity"}
+				_, err := runRequestConversionHelper.NewRunRequestFromDesiredLRP(containerGuid, desiredLRP, &actualLRP.ActualLRPKey, &actualLRP.ActualLRPInstanceKey, stackPathMap, rep.LayeringModeSingleLayer)
+				Expect(err).To(MatchError(ContainSubstring("service_account")))
+			})
+
 			Context("when the certificate properties are nil", func() {
 				BeforeEach(func() {
 					desiredLRP.CertificateProperties = nil
@@ -918,6 +924,12 @@ var _ = Describe("Resources", func() {
 				Expect(runReq.CertificateProperties.ServiceAccount).To(Equal(&executor.ServiceAccount{Name: "payments-worker"}))
 				task.CertificateProperties.ServiceAccount.Name = "reporting-reader"
 				Expect(runReq.CertificateProperties.ServiceAccount.Name).To(Equal("payments-worker"))
+			})
+
+			It("rejects malformed service account identity before converting a task", func() {
+				task.CertificateProperties.ServiceAccount = &models.ServiceAccount{Name: "payments.svc.identity"}
+				_, err := runRequestConversionHelper.NewRunRequestFromTask(task, stackPathMap, rep.LayeringModeSingleLayer)
+				Expect(err).To(MatchError(ContainSubstring("service_account")))
 			})
 
 			Context("when the rootfs is not preloaded", func() {
