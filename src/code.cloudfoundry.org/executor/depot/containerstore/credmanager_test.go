@@ -363,6 +363,26 @@ var _ = Describe("CredManager", func() {
 						Expect(id.IPAddresses[0].Equal(net.ParseIP(container.InternalIP))).To(BeTrue())
 						Expect(creds.InstanceIdentityCredential.Key).NotTo(Equal(creds.C2CCredential.Key))
 					})
+
+					It("retains launch-time account identity during renewal and route updates", func() {
+						Eventually(fakeCredHandler.UpdateCallCount).Should(Equal(1))
+						updated := container
+						updated.CertificateProperties.ServiceAccount = &executor.ServiceAccount{Name: "reporting-reader"}
+						updated.InternalRoutes = bbsmodels.InternalRoutes{{Hostname: "new.apps.internal"}}
+						containerInfoProvider.InfoReturns(updated)
+						clock.WaitForWatcherAndIncrement(validityPeriod)
+						Eventually(fakeCredHandler.UpdateCallCount).Should(Equal(2))
+						creds, _ := fakeCredHandler.UpdateArgsForCall(1)
+						id, _ := parseCert(creds.InstanceIdentityCredential)
+						c2c, _ := parseCert(creds.C2CCredential)
+						Expect(id.DNSNames).To(ConsistOf(container.Guid, "payments-worker.svc.identity"))
+						Expect(c2c.DNSNames).To(ConsistOf(container.Guid, "new.apps.internal", "payments-worker.svc.identity"))
+						regenerateCertsCh <- struct{}{}
+						Eventually(fakeCredHandler.UpdateCallCount).Should(Equal(3))
+						creds, _ = fakeCredHandler.UpdateArgsForCall(2)
+						c2c, _ = parseCert(creds.C2CCredential)
+						Expect(c2c.DNSNames).To(ConsistOf(container.Guid, "new.apps.internal", "payments-worker.svc.identity"))
+					})
 				})
 
 				It("emits metrics on successful creation", func() {
