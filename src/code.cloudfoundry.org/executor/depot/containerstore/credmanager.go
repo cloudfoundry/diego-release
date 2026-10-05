@@ -334,7 +334,7 @@ func (c *credManager) generateInstanceIdentityCred(logger lager.Logger, containe
 
 	start := c.clock.Now()
 	idCred, err := c.generateCredForSAN(logger,
-		certificateSAN{IPAddress: ipForCert, OrganizationalUnits: container.CertificateProperties.OrganizationalUnit},
+		certificateSAN{IPAddress: ipForCert, OrganizationalUnits: container.CertificateProperties.OrganizationalUnit, ServiceAccount: container.CertificateProperties.ServiceAccount},
 		certGUID,
 	)
 	var metricErr error
@@ -365,7 +365,7 @@ func (c *credManager) generateC2cCred(logger lager.Logger, container executor.Co
 	defer logger.Debug("complete")
 	start := c.clock.Now()
 	c2cCred, err := c.generateCredForSAN(logger,
-		certificateSAN{InternalRoutes: container.InternalRoutes, OrganizationalUnits: container.CertificateProperties.OrganizationalUnit},
+		certificateSAN{InternalRoutes: container.InternalRoutes, OrganizationalUnits: container.CertificateProperties.OrganizationalUnit, ServiceAccount: container.CertificateProperties.ServiceAccount},
 		certGUID,
 	)
 	duration := c.clock.Since(start)
@@ -468,6 +468,7 @@ type certificateSAN struct {
 	IPAddress           string
 	InternalRoutes      models.InternalRoutes
 	OrganizationalUnits []string
+	ServiceAccount      *executor.ServiceAccount
 }
 
 func createCertificateTemplate(guid string, certSAN certificateSAN, notBefore, notAfter time.Time) *x509.Certificate {
@@ -478,6 +479,9 @@ func createCertificateTemplate(guid string, certSAN certificateSAN, notBefore, n
 		ipaddr = []net.IP{net.ParseIP(certSAN.IPAddress)}
 	}
 	dnsNames := []string{guid}
+	if certSAN.ServiceAccount != nil {
+		dnsNames = append(dnsNames, certSAN.ServiceAccount.Name+".svc.identity")
+	}
 	for _, route := range certSAN.InternalRoutes {
 		dnsNames = append(dnsNames, route.Hostname)
 	}
