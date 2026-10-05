@@ -372,6 +372,20 @@ var _ = Describe("CredManager", func() {
 					Eventually(containerProcess.Ready()).Should(BeClosed())
 				})
 
+				It("keeps an initially unbound launch account-free during renewal", func() {
+					Eventually(fakeCredHandler.UpdateCallCount).Should(Equal(1))
+					updated := container
+					updated.CertificateProperties.ServiceAccount = &executor.ServiceAccount{Name: "payments-worker"}
+					containerInfoProvider.InfoReturns(updated)
+					clock.WaitForWatcherAndIncrement(validityPeriod)
+					Eventually(fakeCredHandler.UpdateCallCount).Should(Equal(2))
+					creds, _ := fakeCredHandler.UpdateArgsForCall(1)
+					id, _ := parseCert(creds.InstanceIdentityCredential)
+					c2c, _ := parseCert(creds.C2CCredential)
+					Expect(id.DNSNames).To(ConsistOf(container.Guid))
+					Expect(c2c.DNSNames).To(ConsistOf(container.Guid, "a.apps.internal", "b.apps.internal"))
+				})
+
 				Context("with a service account", func() {
 					BeforeEach(func() {
 						container.CertificateProperties.ServiceAccount = &executor.ServiceAccount{Name: "payments-worker"}
@@ -409,6 +423,25 @@ var _ = Describe("CredManager", func() {
 						creds, _ = fakeCredHandler.UpdateArgsForCall(2)
 						c2c, _ = parseCert(creds.C2CCredential)
 						Expect(c2c.DNSNames).To(ConsistOf(container.Guid, "new.apps.internal", "payments-worker.svc.identity"))
+					})
+
+					It("retains a bound launch account after unbind and rotates its keys", func() {
+						Eventually(fakeCredHandler.UpdateCallCount).Should(Equal(1))
+						initial, _ := fakeCredHandler.UpdateArgsForCall(0)
+						updated := container
+						updated.CertificateProperties.ServiceAccount = nil
+						containerInfoProvider.InfoReturns(updated)
+						clock.WaitForWatcherAndIncrement(validityPeriod)
+						Eventually(fakeCredHandler.UpdateCallCount).Should(Equal(2))
+						creds, _ := fakeCredHandler.UpdateArgsForCall(1)
+						id, _ := parseCert(creds.InstanceIdentityCredential)
+						c2c, _ := parseCert(creds.C2CCredential)
+						Expect(id.DNSNames).To(ConsistOf(container.Guid, "payments-worker.svc.identity"))
+						Expect(c2c.DNSNames).To(ContainElement("payments-worker.svc.identity"))
+						Expect(creds.InstanceIdentityCredential.Key).NotTo(Equal(initial.InstanceIdentityCredential.Key))
+						Expect(creds.C2CCredential.Key).NotTo(Equal(initial.C2CCredential.Key))
+						Expect(id.NotAfter.Sub(id.NotBefore)).To(Equal(validityPeriod))
+						Expect(id.ExtKeyUsage).To(ConsistOf(x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth))
 					})
 				})
 
