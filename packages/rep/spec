@@ -471,10 +471,13 @@ files:
   - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/internal/baggage/*.go # gosub
   - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/internal/errorhandler/*.go # gosub
   - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/internal/global/*.go # gosub
+  - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/log/*.go # gosub
+  - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/log/embedded/*.go # gosub
   - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/metric/*.go # gosub
   - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/metric/embedded/*.go # gosub
   - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/metric/noop/*.go # gosub
   - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/propagation/*.go # gosub
+  - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/propagation/internal/hextable/*.go # gosub
   - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/semconv/internal/metricpool/*.go # gosub
   - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/semconv/v1.37.0/*.go # gosub
   - code.cloudfoundry.org/vendor/go.opentelemetry.io/otel/semconv/v1.43.0/*.go # gosub
