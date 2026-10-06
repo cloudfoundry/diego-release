@@ -89,7 +89,7 @@ properties:
     description: "serve (insecure) ping and evacuate requests on this address and port"
     default: "127.0.0.1:1800"
   diego.rep.health_check_listen_addr:
-    description: "Loopback address and port (e.g. 127.0.0.1:1801) on which rep serves an unauthenticated plain-HTTP GET /health endpoint. It returns 503 while rep considers the cell unhealthy (e.g. failing garden healthcheck) and 200 otherwise. When set, a Monit check alerts on non-200 responses. If empty, the listener is disabled."
+    description: "Loopback address and port (e.g. 127.0.0.1:1801) on which rep serves an unauthenticated plain-HTTP GET /health endpoint. It returns 503 while rep considers the cell unhealthy (e.g. failing garden healthcheck) and 200 otherwise. This Windows job only provides the endpoint; it does not configure any automatic monitoring. If empty, the listener is disabled."
     default: ""
   diego.rep.listen_addr_securable:
     description: "address where rep listens for LRP and task start auction requests"
