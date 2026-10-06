@@ -245,8 +245,15 @@ describe 'rep' do
         deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = '127.0.0.1:1801'
       end
 
-      it 'alerts when /health does not respond with success' do
-        expected_check = "host 127.0.0.1\n    port 1801\n    protocol http\n    request \"/health\"\n  then alert"
+      it 'alerts after 15 consecutive failed health checks with a 5-second timeout' do
+        expected_check = <<~MONIT
+          host 127.0.0.1
+              port 1801
+              protocol http
+              request "/health"
+              with timeout 5 seconds
+            for 15 cycles then alert
+        MONIT
         expect(rendered_template).to include(expected_check)
       end
     end

@@ -16,5 +16,6 @@ check process rep
     port <%= port %>
     protocol http
     request "/health"
-  then alert
+    with timeout 5 seconds
+  for 15 cycles then alert
 <% end -%>
