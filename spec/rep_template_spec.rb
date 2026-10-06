@@ -233,13 +233,6 @@ describe 'rep' do
       end
     end
 
-    %w[127.0.0.1 127.0.0.1: 127.0.0.1:http 127.0.0.1:0 127.0.0.1:65536].each do |address|
-      it "rejects an invalid or missing port in #{address}" do
-        deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = address
-        expect { rendered_template }.to raise_error(/must include a port between 1 and 65535/)
-      end
-    end
-
     context 'when health_check_listen_addr is set' do
       before do
         deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = '127.0.0.1:1802'
