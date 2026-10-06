@@ -46,6 +46,7 @@ var (
 	representativePath  string
 	serverPort          uint16
 	serverPortSecurable uint16
+	healthPort          uint16
 
 	bbsConfig        bbsconfig.BBSConfig
 	bbsBinPath       string
@@ -118,6 +119,8 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 	serverPort, err = portAllocator.ClaimPorts(1)
 	Expect(err).NotTo(HaveOccurred())
 	serverPortSecurable, err = portAllocator.ClaimPorts(1)
+	Expect(err).NotTo(HaveOccurred())
+	healthPort, err = portAllocator.ClaimPorts(1)
 	Expect(err).NotTo(HaveOccurred())
 
 	dbName := fmt.Sprintf("diego_rep_%d", GinkgoParallelProcess())

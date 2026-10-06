@@ -53,6 +53,9 @@ properties:
   diego.rep.disk_health_check_failure_threshold:
     description: "Number of consecutive periodic check failures required before rep triggers evacuation. The startup check is always immediate regardless of this value."
     default: 3
+  diego.rep.health_check_listen_addr:
+    description: "Loopback address and port (e.g. 127.0.0.1:1802) on which rep serves an unauthenticated plain-HTTP GET /health endpoint. It returns 503 while rep considers the cell unhealthy (e.g. failing garden healthcheck) and 200 otherwise. When set, a Monit check alerts on non-200 responses. If empty, the listener is disabled."
+    default: ""
   diego.rep.zone:
     description: "The zone associated with the rep. This will override the BOSH-provided spec.az property if present."
   diego.rep.use_azure_fault_domains:

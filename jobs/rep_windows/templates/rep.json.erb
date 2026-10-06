@@ -25,6 +25,17 @@
   parse_ip(p('diego.rep.debug_addr'), 'diego.rep.debug_addr')
   parse_ip(p('diego.rep.listen_addr_admin'), 'diego.rep.listen_addr_admin')
   parse_ip(p('diego.rep.listen_addr_securable'), 'diego.rep.listen_addr_securable')
+
+  health_check_listen_addr = p('diego.rep.health_check_listen_addr')
+  unless health_check_listen_addr.empty?
+    host, port = health_check_listen_addr.match(/\A([^:]+):([0-9]+)\z/)&.captures
+    unless port && (1..65535).cover?(port.to_i)
+      raise "Invalid diego.rep.health_check_listen_addr '#{health_check_listen_addr}': must include a port between 1 and 65535"
+    end
+    unless IPAddr.new(host).loopback?
+      raise "Invalid diego.rep.health_check_listen_addr '#{health_check_listen_addr}': must be a loopback address"
+    end
+  end
   if p("diego.executor.garden.network") == "tcp"
     parse_ip(p('diego.executor.garden.address'), 'diego.executor.garden.address')
   end
@@ -74,6 +85,7 @@
     container_proxy_config_path: "/var/vcap/data/rep/shared/garden/proxy_config",
     evacuation_polling_interval: "#{p("diego.rep.evacuation_polling_interval_in_seconds")}s",
     evacuation_timeout: "#{p("diego.rep.evacuation_timeout_in_seconds")}s",
+    health_check_listen_addr: health_check_listen_addr,
     extra_root_fs_dir: "#{p("diego.rep.extra_root_fs_dir")}",
     garden_addr: p("diego.executor.garden.address"),
     garden_healthcheck_command_retry_pause: p("diego.executor.garden_healthcheck.command_retry_pause"),
@@ -178,7 +190,7 @@
     config[:locket_client_keepalive_timeout] = value
   end
 
-  if config[:locket_client_keepalive_time] > config[:locket_client_keepalive_timeout] 
+  if config[:locket_client_keepalive_time] > config[:locket_client_keepalive_timeout]
     raise "The locket client keepalive time property should not be larger than the timeout"
   end
 

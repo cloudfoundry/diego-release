@@ -3,3 +3,14 @@ check process rep
   start program "/var/vcap/jobs/bpm/bin/bpm start rep"
   stop program "/var/vcap/jobs/bpm/bin/bpm stop rep"
   group vcap
+<% health_check_listen_addr = p('diego.rep.health_check_listen_addr') -%>
+<% unless health_check_listen_addr.empty? -%>
+<% host, port = health_check_listen_addr.split(':') -%>
+  if failed
+    host <%= host %>
+    port <%= port %>
+    protocol http
+    request "/health"
+    with timeout 5 seconds
+  for 15 cycles then alert
+<% end -%>
