@@ -48,6 +48,7 @@ import (
 	uuid "github.com/nu7hatch/gouuid"
 	"github.com/tedsuo/ifrit"
 	"github.com/tedsuo/ifrit/grouper"
+	"github.com/tedsuo/ifrit/http_server"
 	"github.com/tedsuo/ifrit/sigmon"
 	"github.com/tedsuo/rata"
 )
@@ -403,20 +404,7 @@ func initializeHealthServer(executorClient executor.Client, logger lager.Logger,
 		logger.Fatal("failed-to-construct-health-router", err)
 	}
 
-	return ifrit.RunFunc(func(signals <-chan os.Signal, ready chan<- struct{}) error {
-		listener, err := net.Listen("tcp", addr)
-		if err != nil {
-			return err
-		}
-		close(ready)
-		server := &http.Server{
-			Handler:           router,
-			ReadHeaderTimeout: 5 * time.Second,
-		}
-		go server.Serve(listener)
-		<-signals
-		return listener.Close()
-	})
+	return http_server.New(addr, router)
 }
 
 func startTLSServer(addr string, handler http.Handler, tlsConfig *tls.Config) ifrit.Runner {
