@@ -188,8 +188,8 @@ describe 'rep' do
       end
 
       it 'is configurable with a loopback address' do
-        deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = '127.0.0.1:1801'
-        expect(JSON.parse(rendered_template)['health_check_listen_addr']).to eq('127.0.0.1:1801')
+        deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = '127.0.0.1:1802'
+        expect(JSON.parse(rendered_template)['health_check_listen_addr']).to eq('127.0.0.1:1802')
       end
 
       [1, 65535].each do |port|
@@ -201,7 +201,7 @@ describe 'rep' do
       end
 
       it 'raises an error for a non-loopback address' do
-        deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = '0.0.0.0:1801'
+        deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = '0.0.0.0:1802'
         expect { rendered_template }.to raise_error(/must be a loopback address/)
       end
 
@@ -242,13 +242,13 @@ describe 'rep' do
 
     context 'when health_check_listen_addr is set' do
       before do
-        deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = '127.0.0.1:1801'
+        deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = '127.0.0.1:1802'
       end
 
       it 'alerts after 15 consecutive failed health checks with a 5-second timeout' do
         expected_check = <<~MONIT
           host 127.0.0.1
-              port 1801
+              port 1802
               protocol http
               request "/health"
               with timeout 5 seconds
