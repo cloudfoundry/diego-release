@@ -5,7 +5,12 @@ check process rep
   group vcap
 <% health_check_listen_addr = p('diego.rep.health_check_listen_addr') -%>
 <% unless health_check_listen_addr.empty? -%>
-<% host, port = health_check_listen_addr.split(':') -%>
+<%
+  host, port = health_check_listen_addr.match(/\A([^:]+):([0-9]+)\z/)&.captures
+  unless port && (1..65535).cover?(port.to_i)
+    raise "Invalid diego.rep.health_check_listen_addr '#{health_check_listen_addr}': must include a port between 1 and 65535"
+  end
+-%>
   if failed
     host <%= host %>
     port <%= port %>

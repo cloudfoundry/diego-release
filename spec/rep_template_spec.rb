@@ -192,9 +192,24 @@ describe 'rep' do
         expect(JSON.parse(rendered_template)['health_check_listen_addr']).to eq('127.0.0.1:1801')
       end
 
+      [1, 65535].each do |port|
+        it "accepts port #{port}" do
+          address = "127.0.0.1:#{port}"
+          deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = address
+          expect(JSON.parse(rendered_template)['health_check_listen_addr']).to eq(address)
+        end
+      end
+
       it 'raises an error for a non-loopback address' do
         deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = '0.0.0.0:1801'
         expect { rendered_template }.to raise_error(/must be a loopback address/)
+      end
+
+      %w[127.0.0.1 127.0.0.1: 127.0.0.1:http 127.0.0.1:0 127.0.0.1:65536].each do |address|
+        it "rejects an invalid or missing port in #{address}" do
+          deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = address
+          expect { rendered_template }.to raise_error(/must include a port between 1 and 65535/)
+        end
       end
     end
   end
@@ -209,6 +224,20 @@ describe 'rep' do
 
     it 'does not add a health check by default' do
       expect(rendered_template).not_to include('if failed')
+    end
+
+    [1, 65535].each do |port|
+      it "renders port #{port}" do
+        deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = "127.0.0.1:#{port}"
+        expect(rendered_template).to include("host 127.0.0.1\n    port #{port}\n")
+      end
+    end
+
+    %w[127.0.0.1 127.0.0.1: 127.0.0.1:http 127.0.0.1:0 127.0.0.1:65536].each do |address|
+      it "rejects an invalid or missing port in #{address}" do
+        deployment_manifest_fragment['diego']['rep']['health_check_listen_addr'] = address
+        expect { rendered_template }.to raise_error(/must include a port between 1 and 65535/)
+      end
     end
 
     context 'when health_check_listen_addr is set' do
