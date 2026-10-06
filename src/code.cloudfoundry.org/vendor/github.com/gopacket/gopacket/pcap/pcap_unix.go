@@ -30,7 +30,6 @@ import (
 #cgo freebsd LDFLAGS: -lpcap
 #cgo openbsd LDFLAGS: -lpcap
 #cgo netbsd LDFLAGS: -lpcap
-#cgo darwin LDFLAGS: -lpcap
 #include <stdlib.h>
 #include <pcap.h>
 #include <stdint.h>
@@ -269,6 +268,10 @@ func (p *Handle) pcapClose() {
 		C.pcap_close(p.cptr)
 	}
 	p.cptr = nil
+}
+
+func (p *Handle) pcapBreakloop() {
+	C.pcap_breakloop(p.cptr)
 }
 
 func (p *Handle) pcapGeterr() error {
