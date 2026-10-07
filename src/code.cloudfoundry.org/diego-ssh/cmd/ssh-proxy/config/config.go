@@ -24,6 +24,8 @@ type SSHProxyConfig struct {
 	BBSAddress                string                `json:"bbs_address"`
 	CCAPIURL                  string                `json:"cc_api_url"`
 	CCAPICACert               string                `json:"cc_api_ca_cert"`
+	CCAPIClientCert           string                `json:"cc_api_client_cert"`
+	CCAPIClientKey            string                `json:"cc_api_client_key"`
 	UAATokenURL               string                `json:"uaa_token_url"`
 	UAAPassword               string                `json:"uaa_password"`
 	UAAUsername               string                `json:"uaa_username"`

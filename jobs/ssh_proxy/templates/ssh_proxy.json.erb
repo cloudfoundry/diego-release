@@ -36,6 +36,16 @@
     end
   end
 
+  # When mutual-TLS properties are provided, talk to Cloud Controller's mTLS
+  # listener (cc.tls_port) using a client certificate. This takes precedence
+  # over public-TLS path above.
+  if_p("diego.ssh_proxy.cc.tls_port", "diego.ssh_proxy.cc.ca_cert", "diego.ssh_proxy.cc.client_cert", "diego.ssh_proxy.cc.client_key") do |tls_port, _ca_cert, _client_cert, _client_key|
+    config[:cc_api_url] = "https://#{p("diego.ssh_proxy.cc.internal_service_hostname")}:#{tls_port}"
+    config[:cc_api_ca_cert] = "/var/vcap/jobs/ssh_proxy/config/certs/cc/cc_api_ca_cert.crt"
+    config[:cc_api_client_cert] = "/var/vcap/jobs/ssh_proxy/config/certs/cc/client.crt"
+    config[:cc_api_client_key] = "/var/vcap/jobs/ssh_proxy/config/certs/cc/client.key"
+  end
+
   if_p("diego.ssh_proxy.idle_connection_timeout_in_seconds") do |value|
     config[:idle_connection_timeout] = "#{value}s"
   end
