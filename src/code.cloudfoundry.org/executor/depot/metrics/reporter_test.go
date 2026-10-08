@@ -75,6 +75,12 @@ var _ = Describe("Reporter", func() {
 			Containers: 512,
 		}, nil)
 
+		executorClient.AllocatedResourcesReturns(executor.ExecutorResources{
+			MemoryMB:   896,
+			DiskMB:     1792,
+			Containers: 3584,
+		}, nil)
+
 		executorClient.ListContainersReturns([]executor.Container{
 			{Guid: "container-1", State: executor.StateInitializing},
 			{Guid: "container-2", State: executor.StateReserved},
@@ -147,9 +153,9 @@ var _ = Describe("Reporter", func() {
 		Eventually(metricMap["CapacityRemainingContainers"].value).Should(Equal(512))
 		Eventually(metricMap["CapacityRemainingContainers"].tags).Should(Equal(expectedTags))
 
-		Eventually(metricMap["CapacityAllocatedMemory"].value).Should(Equal(totalMemory.value - remainingMemory.value))
+		Eventually(metricMap["CapacityAllocatedMemory"].value).Should(Equal(896))
 		Eventually(metricMap["CapacityAllocatedMemory"].tags).Should(Equal(expectedTags))
-		Eventually(metricMap["CapacityAllocatedDisk"].value).Should(Equal(totalDisk.value - remainingDisk.value))
+		Eventually(metricMap["CapacityAllocatedDisk"].value).Should(Equal(1792))
 		Eventually(metricMap["CapacityAllocatedDisk"].tags).Should(Equal(expectedTags))
 
 		Eventually(metricMap["ContainerUsageMemory"].value).Should(Equal(556))
@@ -185,6 +191,12 @@ var _ = Describe("Reporter", func() {
 			Containers: 513,
 		}, nil)
 
+		executorClient.AllocatedResourcesReturns(executor.ExecutorResources{
+			MemoryMB:   895,
+			DiskMB:     1791,
+			Containers: 3583,
+		}, nil)
+
 		executorClient.ListContainersReturns([]executor.Container{
 			{Guid: "container-1"},
 			{Guid: "container-2"},
@@ -205,8 +217,8 @@ var _ = Describe("Reporter", func() {
 		Eventually(metricMap["CapacityRemainingMemory"].value).Should(Equal(129))
 		Eventually(metricMap["CapacityRemainingDisk"].value).Should(Equal(257))
 		Eventually(metricMap["CapacityRemainingContainers"].value).Should(Equal(513))
-		Eventually(metricMap["CapacityAllocatedMemory"].value).Should(Equal(totalMemory.value - remainingMemory.value))
-		Eventually(metricMap["CapacityAllocatedDisk"].value).Should(Equal(totalDisk.value - remainingDisk.value))
+		Eventually(metricMap["CapacityAllocatedMemory"].value).Should(Equal(895))
+		Eventually(metricMap["CapacityAllocatedDisk"].value).Should(Equal(1791))
 
 		Eventually(metricMap["ContainerUsageMemory"].value).Should(Equal(500))
 		Eventually(metricMap["ContainerUsageDisk"].value).Should(Equal(700))
@@ -239,6 +251,23 @@ var _ = Describe("Reporter", func() {
 			Eventually(metricMap["CapacityAllocatedMemory"].value).Should(Equal(-1))
 			Eventually(metricMap["CapacityAllocatedDisk"].value).Should(Equal(-1))
 			m.RUnlock()
+		})
+	})
+
+	Context("when getting allocated resources fails", func() {
+		BeforeEach(func() {
+			executorClient.AllocatedResourcesReturns(executor.ExecutorResources{}, errors.New("oh no!"))
+		})
+
+		It("sends missing allocated resources and still reports total and remaining", func() {
+			Eventually(fakeMetronClient.SendMebiBytesCallCount).Should(Equal(8))
+
+			m.RLock()
+			defer m.RUnlock()
+			Expect(metricMap["CapacityAllocatedMemory"].value).To(Equal(-1))
+			Expect(metricMap["CapacityAllocatedDisk"].value).To(Equal(-1))
+			Expect(metricMap["CapacityTotalDisk"].value).To(Equal(2048))
+			Expect(metricMap["CapacityRemainingDisk"].value).To(Equal(256))
 		})
 	})
 

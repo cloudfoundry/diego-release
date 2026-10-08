@@ -776,6 +776,42 @@ var _ = Describe("Depot", func() {
 		})
 	})
 
+	Describe("AllocatedResources", func() {
+		BeforeEach(func() {
+			resources = executor.NewExecutorResources(2048, 4096, 10)
+			containerStore.RemainingResourcesReturns(executor.NewExecutorResources(1024, 1024, 3))
+		})
+
+		It("returns total minus the bookkeeping remaining", func() {
+			allocated, err := depotClient.AllocatedResources(logger)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(allocated).To(Equal(executor.NewExecutorResources(1024, 3072, 7)))
+		})
+
+		Context("when disk path is configured and the partition has less space than the store reports", func() {
+			var tmpDir string
+
+			BeforeEach(func() {
+				var err error
+				tmpDir, err = os.MkdirTemp("", "depot-allocated-disk-test")
+				Expect(err).NotTo(HaveOccurred())
+				diskPath = tmpDir
+				resources.DiskMB = math.MaxInt32
+				containerStore.RemainingResourcesReturns(executor.NewExecutorResources(1024, math.MaxInt32-1000, 3))
+			})
+
+			AfterEach(func() {
+				os.RemoveAll(tmpDir)
+			})
+
+			It("is not affected by the live free-space cap", func() {
+				allocated, err := depotClient.AllocatedResources(logger)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(allocated.DiskMB).To(Equal(1000))
+			})
+		})
+	})
+
 	Describe("VolumeDrivers", func() {
 		Context("when getting volume drivers succeeds", func() {
 			BeforeEach(func() {
