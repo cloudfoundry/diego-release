@@ -10,10 +10,9 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func registerDiskCapacityTest(resources *executor.ExecutorResources, cachePath *string, _ *int) {
-	It("returns live disk space at cache path", Serial, func() {
-		expected := liveFreeDiskMB(*cachePath)
-		Expect((*resources).DiskMB).To(Equal(expected))
+func registerDiskCapacityTest(resources *executor.ExecutorResources, _ *string, expectedDiskCapacityMB *int) {
+	It("returns static configured disk capacity", func() {
+		Expect((*resources).DiskMB).To(Equal(*expectedDiskCapacityMB))
 	})
 }
 
