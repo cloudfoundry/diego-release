@@ -21,6 +21,7 @@ type Client interface {
 	GetBulkMetrics(lager.Logger) (map[string]Metrics, error)
 	RemainingResources(lager.Logger) (ExecutorResources, error)
 	TotalResources(lager.Logger) (ExecutorResources, error)
+	AllocatedResources(lager.Logger) (ExecutorResources, error)
 	GetFiles(logger lager.Logger, guid string, path string) (io.ReadCloser, error)
 	VolumeDrivers(logger lager.Logger) ([]string, error)
 	SubscribeToEvents(lager.Logger) (EventSource, error)

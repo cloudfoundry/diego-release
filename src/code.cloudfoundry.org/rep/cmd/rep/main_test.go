@@ -1055,11 +1055,10 @@ dYbCU/DMZjsv+Pt9flhj7ELLo+WKHyI767hJSq9A7IT3GzFt8iGiEAt1qj2yS0DX
 					Expect(state.OptionalPlacementTags).To(Equal([]string{"optional_tag"}))
 				})
 
-				It("returns actual total disk capacity", Serial, func() {
+				It("returns the static total disk capacity", func() {
 					state, err := repClient.State(logger)
 					Expect(err).NotTo(HaveOccurred())
-					cachePath := fmt.Sprintf("%s-%d", "/tmp/cache", node)
-					Expect(state.TotalResources.DiskMB).To(Equal(expectedTotalDiskMB(cachePath)))
+					Expect(state.TotalResources.DiskMB).To(Equal(int32(10 * 1024)))
 				})
 
 				Context("when the container is removed", func() {

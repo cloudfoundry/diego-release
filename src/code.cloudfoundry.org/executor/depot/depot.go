@@ -232,22 +232,25 @@ func (c *client) RemainingResources(logger lager.Logger) (executor.ExecutorResou
 	return remaining, nil
 }
 
+// AllocatedResources is the capacity reserved by containers: total minus the
+// bookkeeping remaining, without the live free-space cap applied to
+// RemainingResources.
+func (c *client) AllocatedResources(logger lager.Logger) (executor.ExecutorResources, error) {
+	logger = logger.Session("allocated-resources")
+	remaining := c.containerStore.RemainingResources(logger)
+	return executor.ExecutorResources{
+		MemoryMB:   c.totalCapacity.MemoryMB - remaining.MemoryMB,
+		DiskMB:     c.totalCapacity.DiskMB - remaining.DiskMB,
+		Containers: c.totalCapacity.Containers - remaining.Containers,
+	}, nil
+}
+
 func (c *client) Ping(logger lager.Logger) error {
 	return c.gardenClient.Ping()
 }
 
 func (c *client) TotalResources(logger lager.Logger) (executor.ExecutorResources, error) {
-	diskMB := c.totalCapacity.DiskMB
-	if c.diskPath != "" {
-		if liveMB, ok := liveDiskMB(c.diskPath); ok {
-			diskMB = liveMB
-		}
-	}
-	return executor.ExecutorResources{
-		MemoryMB:   c.totalCapacity.MemoryMB,
-		DiskMB:     diskMB,
-		Containers: c.totalCapacity.Containers,
-	}, nil
+	return c.totalCapacity, nil
 }
 
 func (c *client) GetFiles(logger lager.Logger, guid, sourcePath string) (io.ReadCloser, error) {

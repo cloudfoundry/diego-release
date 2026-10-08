@@ -34,6 +34,7 @@ type ExecutorSource interface {
 	GetBulkMetrics(logger lager.Logger) (map[string]executor.Metrics, error)
 	RemainingResources(lager.Logger) (executor.ExecutorResources, error)
 	TotalResources(lager.Logger) (executor.ExecutorResources, error)
+	AllocatedResources(lager.Logger) (executor.ExecutorResources, error)
 	ListContainers(lager.Logger) ([]executor.Container, error)
 }
 
@@ -82,9 +83,14 @@ func (reporter *Reporter) Run(signals <-chan os.Signal, ready chan<- struct{}) e
 				allocatedMemoryMB = -1
 			}
 
-			if allocatedDiskMB == 0 && allocatedMemoryMB == 0 {
-				allocatedDiskMB = totalCapacity.DiskMB - remainingCapacity.DiskMB
-				allocatedMemoryMB = totalCapacity.MemoryMB - remainingCapacity.MemoryMB
+			allocatedCapacity, err := reporter.ExecutorSource.AllocatedResources(logger)
+			if err != nil {
+				reporter.Logger.Error("failed-allocated-resources", err)
+				allocatedDiskMB = -1
+				allocatedMemoryMB = -1
+			} else if allocatedDiskMB == 0 && allocatedMemoryMB == 0 {
+				allocatedDiskMB = allocatedCapacity.DiskMB
+				allocatedMemoryMB = allocatedCapacity.MemoryMB
 			}
 
 			bulkMetrics, err := reporter.ExecutorSource.GetBulkMetrics(logger)

@@ -23,6 +23,19 @@ type FakeClient struct {
 	allocateContainersReturnsOnCall map[int]struct {
 		result1 []executor.AllocationFailure
 	}
+	AllocatedResourcesStub        func(lager.Logger) (executor.ExecutorResources, error)
+	allocatedResourcesMutex       sync.RWMutex
+	allocatedResourcesArgsForCall []struct {
+		arg1 lager.Logger
+	}
+	allocatedResourcesReturns struct {
+		result1 executor.ExecutorResources
+		result2 error
+	}
+	allocatedResourcesReturnsOnCall map[int]struct {
+		result1 executor.ExecutorResources
+		result2 error
+	}
 	CleanupStub        func(lager.Logger)
 	cleanupMutex       sync.RWMutex
 	cleanupArgsForCall []struct {
@@ -289,6 +302,70 @@ func (fake *FakeClient) AllocateContainersReturnsOnCall(i int, result1 []executo
 	fake.allocateContainersReturnsOnCall[i] = struct {
 		result1 []executor.AllocationFailure
 	}{result1}
+}
+
+func (fake *FakeClient) AllocatedResources(arg1 lager.Logger) (executor.ExecutorResources, error) {
+	fake.allocatedResourcesMutex.Lock()
+	ret, specificReturn := fake.allocatedResourcesReturnsOnCall[len(fake.allocatedResourcesArgsForCall)]
+	fake.allocatedResourcesArgsForCall = append(fake.allocatedResourcesArgsForCall, struct {
+		arg1 lager.Logger
+	}{arg1})
+	stub := fake.AllocatedResourcesStub
+	fakeReturns := fake.allocatedResourcesReturns
+	fake.recordInvocation("AllocatedResources", []interface{}{arg1})
+	fake.allocatedResourcesMutex.Unlock()
+	if stub != nil {
+		return stub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeClient) AllocatedResourcesCallCount() int {
+	fake.allocatedResourcesMutex.RLock()
+	defer fake.allocatedResourcesMutex.RUnlock()
+	return len(fake.allocatedResourcesArgsForCall)
+}
+
+func (fake *FakeClient) AllocatedResourcesCalls(stub func(lager.Logger) (executor.ExecutorResources, error)) {
+	fake.allocatedResourcesMutex.Lock()
+	defer fake.allocatedResourcesMutex.Unlock()
+	fake.AllocatedResourcesStub = stub
+}
+
+func (fake *FakeClient) AllocatedResourcesArgsForCall(i int) lager.Logger {
+	fake.allocatedResourcesMutex.RLock()
+	defer fake.allocatedResourcesMutex.RUnlock()
+	argsForCall := fake.allocatedResourcesArgsForCall[i]
+	return argsForCall.arg1
+}
+
+func (fake *FakeClient) AllocatedResourcesReturns(result1 executor.ExecutorResources, result2 error) {
+	fake.allocatedResourcesMutex.Lock()
+	defer fake.allocatedResourcesMutex.Unlock()
+	fake.AllocatedResourcesStub = nil
+	fake.allocatedResourcesReturns = struct {
+		result1 executor.ExecutorResources
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeClient) AllocatedResourcesReturnsOnCall(i int, result1 executor.ExecutorResources, result2 error) {
+	fake.allocatedResourcesMutex.Lock()
+	defer fake.allocatedResourcesMutex.Unlock()
+	fake.AllocatedResourcesStub = nil
+	if fake.allocatedResourcesReturnsOnCall == nil {
+		fake.allocatedResourcesReturnsOnCall = make(map[int]struct {
+			result1 executor.ExecutorResources
+			result2 error
+		})
+	}
+	fake.allocatedResourcesReturnsOnCall[i] = struct {
+		result1 executor.ExecutorResources
+		result2 error
+	}{result1, result2}
 }
 
 func (fake *FakeClient) Cleanup(arg1 lager.Logger) {

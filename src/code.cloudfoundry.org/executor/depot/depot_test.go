@@ -755,13 +755,59 @@ var _ = Describe("Depot", func() {
 				os.RemoveAll(tmpDir)
 			})
 
-			It("returns the resources it was configured with, with live disk capacity", func() {
+			It("returns the static startup resources, unaffected by live free space", func() {
 				result, err := depotClient.TotalResources(logger)
 				Expect(err).NotTo(HaveOccurred())
-				Expect(result.MemoryMB).To(Equal(resources.MemoryMB))
-				Expect(result.Containers).To(Equal(resources.Containers))
-				Expect(result.DiskMB).NotTo(Equal(math.MaxInt32))
-				Expect(result.DiskMB).To(BeNumerically(">", 0))
+				Expect(result).To(Equal(resources))
+				Expect(result.DiskMB).To(Equal(math.MaxInt32))
+			})
+
+			It("keeps total - remaining positive when live free space caps remaining", func() {
+				containerStore.RemainingResourcesReturns(executor.NewExecutorResources(1024, math.MaxInt32-1000, 3))
+
+				total, err := depotClient.TotalResources(logger)
+				Expect(err).NotTo(HaveOccurred())
+				remaining, err := depotClient.RemainingResources(logger)
+				Expect(err).NotTo(HaveOccurred())
+
+				Expect(remaining.DiskMB).To(BeNumerically("<", math.MaxInt32-1000))
+				Expect(total.DiskMB - remaining.DiskMB).To(BeNumerically(">", 0))
+			})
+		})
+	})
+
+	Describe("AllocatedResources", func() {
+		BeforeEach(func() {
+			resources = executor.NewExecutorResources(2048, 4096, 10)
+			containerStore.RemainingResourcesReturns(executor.NewExecutorResources(1024, 1024, 3))
+		})
+
+		It("returns total minus the bookkeeping remaining", func() {
+			allocated, err := depotClient.AllocatedResources(logger)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(allocated).To(Equal(executor.NewExecutorResources(1024, 3072, 7)))
+		})
+
+		Context("when disk path is configured and the partition has less space than the store reports", func() {
+			var tmpDir string
+
+			BeforeEach(func() {
+				var err error
+				tmpDir, err = os.MkdirTemp("", "depot-allocated-disk-test")
+				Expect(err).NotTo(HaveOccurred())
+				diskPath = tmpDir
+				resources.DiskMB = math.MaxInt32
+				containerStore.RemainingResourcesReturns(executor.NewExecutorResources(1024, math.MaxInt32-1000, 3))
+			})
+
+			AfterEach(func() {
+				os.RemoveAll(tmpDir)
+			})
+
+			It("is not affected by the live free-space cap", func() {
+				allocated, err := depotClient.AllocatedResources(logger)
+				Expect(err).NotTo(HaveOccurred())
+				Expect(allocated.DiskMB).To(Equal(1000))
 			})
 		})
 	})
