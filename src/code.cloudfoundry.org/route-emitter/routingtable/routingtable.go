@@ -36,6 +36,7 @@ type RoutingTable interface {
 	Swap(logger lager.Logger, t RoutingTable, domains models.DomainSet) (TCPRouteMappings, MessagesToEmit)
 	GetInternalRoutingEvents() (TCPRouteMappings, MessagesToEmit)
 	GetExternalRoutingEvents() (TCPRouteMappings, MessagesToEmit)
+	GetAllUnregistrationMessages() MessagesToEmit
 
 	// routes
 
@@ -421,6 +422,25 @@ func (t *internalRoutingTable) GetRoutingEvents() (TCPRouteMappings, MessagesToE
 	}
 
 	return mappings, messagesToEmit
+}
+
+func (t *internalRoutingTable) GetAllUnregistrationMessages() MessagesToEmit {
+	t.Lock()
+	defer t.Unlock()
+
+	var messagesToEmit MessagesToEmit
+	for key, route := range t.entries {
+		_, message, _ := t.emitDiffMessages(key, route, RoutableEndpoints{})
+		messagesToEmit = messagesToEmit.Merge(message)
+	}
+	return messagesToEmit
+}
+
+func (t *routingTable) GetAllUnregistrationMessages() MessagesToEmit {
+	http := t.httpRoutesRoutingTable.GetAllUnregistrationMessages()
+	tcp := t.tcpRoutesRoutingTable.GetAllUnregistrationMessages()
+	internal := t.internalRoutesRoutingTable.GetAllUnregistrationMessages()
+	return http.Merge(tcp).Merge(internal)
 }
 
 type routeMapping interface {

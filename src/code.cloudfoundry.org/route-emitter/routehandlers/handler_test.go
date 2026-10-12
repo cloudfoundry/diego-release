@@ -2,6 +2,7 @@ package routehandlers_test
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	mfakes "code.cloudfoundry.org/diego-logging-client/testhelpers"
@@ -1532,6 +1533,57 @@ var _ = Describe("Handler", func() {
 
 			It("returns true", func() {
 				Expect(routeHandler.ShouldRefreshDesired(actualLRP)).To(BeFalse())
+			})
+		})
+	})
+
+	Describe("EmitAllUnregistrations", func() {
+		var dummyUnregMessages routingtable.MessagesToEmit
+
+		BeforeEach(func() {
+			dummyUnregMessages = routingtable.MessagesToEmit{
+				UnregistrationMessages: []routingtable.RegistryMessage{
+					{
+						Host: "1.1.1.1",
+						URIs: []string{"foo.example.com"},
+						Port: 11,
+					},
+				},
+			}
+			fakeTable.GetAllUnregistrationMessagesReturns(dummyUnregMessages)
+		})
+
+		It("calls GetAllUnregistrationMessages on the routing table", func() {
+			routeHandler.EmitAllUnregistrations(logger)
+			Expect(fakeTable.GetAllUnregistrationMessagesCallCount()).To(Equal(1))
+		})
+
+		It("emits unregistration messages via the NATS emitter", func() {
+			routeHandler.EmitAllUnregistrations(logger)
+			Expect(natsEmitter.EmitCallCount()).To(Equal(1))
+			emitted := natsEmitter.EmitArgsForCall(0)
+			Expect(emitted.UnregistrationMessages).To(HaveLen(1))
+			Expect(emitted.UnregistrationMessages[0].Host).To(Equal("1.1.1.1"))
+		})
+
+		Context("when the NATS emitter returns an error", func() {
+			BeforeEach(func() {
+				natsEmitter.EmitReturns(errors.New("nats-down"))
+			})
+
+			It("logs the error and does not panic", func() {
+				Expect(func() { routeHandler.EmitAllUnregistrations(logger) }).NotTo(Panic())
+				Expect(logger.Buffer()).To(gbytes.Say("failed-emergency-unregistration"))
+			})
+		})
+
+		Context("when the NATS emitter is nil", func() {
+			BeforeEach(func() {
+				routeHandler = routehandlers.NewHandler(fakeTable, nil, fakeRoutingAPIEmitter, false, false, fakeMetronClient, fakeUnregistrationCache)
+			})
+
+			It("does not panic", func() {
+				Expect(func() { routeHandler.EmitAllUnregistrations(logger) }).NotTo(Panic())
 			})
 		})
 	})
