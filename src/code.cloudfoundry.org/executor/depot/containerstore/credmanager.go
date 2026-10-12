@@ -473,12 +473,19 @@ func createCertificateTemplate(guid string, certSAN certificateSAN, notBefore, n
 	for _, route := range certSAN.InternalRoutes {
 		dnsNames = append(dnsNames, route.Hostname)
 	}
+    organizationalUnits := []pkix.AttributeTypeAndValue{}
+    for _, ou := range certSAN.OrganizationalUnits {
+        organizationalUnits = append(organizationalUnits, pkix.AttributeTypeAndValue{
+            Type:  []int{2, 5, 4, 11}, // OID for Organizational Unit RDN
+            Value: ou,
+        })
+    }
 
 	return &x509.Certificate{
 		SerialNumber: big.NewInt(0),
 		Subject: pkix.Name{
-			CommonName:         guid,
-			OrganizationalUnit: certSAN.OrganizationalUnits,
+			CommonName: guid,
+			ExtraNames: organizationalUnits,
 		},
 		IPAddresses: ipaddr,
 		DNSNames:    dnsNames,
