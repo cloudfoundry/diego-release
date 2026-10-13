@@ -159,6 +159,21 @@ func configureProxy(logger lager.Logger, sshProxyConfig config.SSHProxyConfig) (
 			sshProxyConfig.UAAPassword,
 			permissionsBuilder,
 		)
+
+		if sshProxyConfig.CCAPIClientCert != "" && sshProxyConfig.CCAPIClientKey != "" {
+			ccClient, err := helpers.NewMutualTLSClient(
+				sshProxyConfig.SkipCertVerify,
+				[]string{sshProxyConfig.CCAPICACert},
+				sshProxyConfig.CCAPIClientCert,
+				sshProxyConfig.CCAPIClientKey,
+				time.Duration(sshProxyConfig.CommunicationTimeout),
+			)
+			if err != nil {
+				return nil, err
+			}
+			cfAuthenticator.SetCCHTTPClient(ccClient)
+		}
+
 		authens = append(authens, cfAuthenticator)
 	}
 

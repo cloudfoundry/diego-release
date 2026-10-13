@@ -3,3 +3,6 @@
 <%= ca_cert %>
 <% end %>
 <% end %>
+<% if_p("diego.ssh_proxy.cc.ca_cert") do |ca_cert| %>
+<%= ca_cert %>
+<% end %>

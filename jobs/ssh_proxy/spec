@@ -17,6 +17,8 @@ templates:
   backends_tls_client.crt.erb: config/certs/backends_tls/client.crt
   backends_tls_client.key.erb: config/certs/backends_tls/client.key
   cc_api_ca_cert.crt.erb: config/certs/cc/cc_api_ca_cert.crt
+  cc_client.crt.erb: config/certs/cc/client.crt
+  cc_client.key.erb: config/certs/cc/client.key
 
 provides:
 - name: ssh_proxy
@@ -106,6 +108,14 @@ properties:
   diego.ssh_proxy.cc.external_port:
     description: External port of the Cloud Controller API
     default: 9022
+  diego.ssh_proxy.cc.tls_port:
+    description: Mutual-TLS port of the Cloud Controller API. When set together with cc.ca_cert/client_cert/client_key, the ssh-proxy calls Cloud Controller over mutual TLS on this port instead of using the external_port.
+  diego.ssh_proxy.cc.ca_cert:
+    description: PEM-encoded CA certificate that signed the Cloud Controller mutual-TLS server certificate. Required for mutual-TLS access to Cloud Controller.
+  diego.ssh_proxy.cc.client_cert:
+    description: PEM-encoded client certificate the ssh-proxy presents to the Cloud Controller mutual-TLS listener. Required for mutual-TLS access to Cloud Controller.
+  diego.ssh_proxy.cc.client_key:
+    description: PEM-encoded private key associated to diego.ssh_proxy.cc.client_cert.
 
   diego.ssh_proxy.bbs.ca_cert:
     description: "REQUIRED: PEM-encoded CA certificate"
