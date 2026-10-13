@@ -1,4 +1,4 @@
-// +build windows
+//go:build windows
 
 package winterm
 
@@ -8,7 +8,7 @@ import (
 	"unsafe"
 )
 
-//===========================================================================================================
+// ===========================================================================================================
 // IMPORTANT NOTE:
 //
 //	The methods below make extensive use of the "unsafe" package to obtain the required pointers.
@@ -26,7 +26,7 @@ import (
 //	-- The value is not referenced by the method after passing the pointer to Windows
 //
 //	See http://golang.org/doc/go1.3.
-//===========================================================================================================
+// ===========================================================================================================
 
 var (
 	kernel32DLL = syscall.NewLazyDLL("kernel32.dll")
