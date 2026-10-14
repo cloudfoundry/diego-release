@@ -91,6 +91,7 @@ var _ = Describe("RepConfig", func() {
 				"loggregator_job_ip": "job-ip",
 				"loggregator_job_origin": "job-origin"
 			},
+			"log_container_network_info": true,
 			"log_rate_limit_exceeded_report_interval": "5m",
 			"max_cache_size_in_bytes": 101,
 			"max_concurrent_downloads": 11,
@@ -248,6 +249,7 @@ var _ = Describe("RepConfig", func() {
 			DiskHealthCheckPaths:            []string{"/var/vcap/data/rep", "/var/vcap/store"},
 			DiskHealthCheckInterval:         durationjson.Duration(15 * time.Second),
 			DiskHealthCheckFailureThreshold: 3,
+			LogContainerNetworkInfo:         true,
 			LoggregatorConfig: loggingclient.Config{
 				APIPort:       1234,
 				CACertPath:    "ca-path",

@@ -115,6 +115,7 @@ type RepConfig struct {
 	DiskHealthCheckFailureThreshold int                   `json:"disk_health_check_failure_threshold,omitempty"`
 	HealthCheckListenAddr           string                `json:"health_check_listen_addr,omitempty"`
 	LoggregatorConfig               loggingclient.Config  `json:"loggregator"`
+	LogContainerNetworkInfo         bool                  `json:"log_container_network_info,omitempty"`
 	debugserver.DebugServerConfig
 	executorinit.ExecutorConfig
 	lagerflags.LagerConfig
