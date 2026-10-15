@@ -337,11 +337,12 @@ var _ = Describe("Operation", func() {
 
 	Describe("ContainerOperation", func() {
 		var (
-			containerDelegate  *fake_internal.FakeContainerDelegate
-			lrpProcessor       *fake_internal.FakeLRPProcessor
-			taskProcessor      *fake_internal.FakeTaskProcessor
-			containerOperation *generator.ContainerOperation
-			guid               string
+			containerDelegate       *fake_internal.FakeContainerDelegate
+			lrpProcessor            *fake_internal.FakeLRPProcessor
+			taskProcessor           *fake_internal.FakeTaskProcessor
+			containerOperation      *generator.ContainerOperation
+			guid                    string
+			logContainerNetworkInfo bool
 		)
 
 		BeforeEach(func() {
@@ -349,7 +350,11 @@ var _ = Describe("Operation", func() {
 			lrpProcessor = new(fake_internal.FakeLRPProcessor)
 			taskProcessor = new(fake_internal.FakeTaskProcessor)
 			guid = "the-guid"
-			containerOperation = generator.NewContainerOperation(logger, "some-trace-id", lrpProcessor, taskProcessor, containerDelegate, guid)
+			logContainerNetworkInfo = true
+		})
+
+		JustBeforeEach(func() {
+			containerOperation = generator.NewContainerOperation(logger, "some-trace-id", lrpProcessor, taskProcessor, containerDelegate, guid, logContainerNetworkInfo)
 		})
 
 		Describe("Key", func() {
@@ -418,6 +423,40 @@ var _ = Describe("Operation", func() {
 						Expect(traceID).To(Equal("some-trace-id"))
 						Expect(actualLogger.SessionName()).To(Equal(sessionName))
 						Expect(actualContainer).To(Equal(container))
+					})
+				})
+
+				Context("when the container has an internal IP", func() {
+					BeforeEach(func() {
+						container = executor.Container{
+							InternalIP: "10.153.148.11",
+							Tags: executor.Tags{
+								rep.LifecycleTag: rep.LRPLifecycle,
+							},
+						}
+						containerDelegate.GetContainerReturns(container, true)
+					})
+
+					It("logs the container's instance address for query attribution", func() {
+						Expect(logger).To(Say("container-network-info"))
+						Expect(logger).To(Say("10.153.148.11"))
+					})
+				})
+
+				Context("when the container has an internal IP but container-network-info logging is disabled", func() {
+					BeforeEach(func() {
+						logContainerNetworkInfo = false
+						container = executor.Container{
+							InternalIP: "10.153.148.11",
+							Tags: executor.Tags{
+								rep.LifecycleTag: rep.LRPLifecycle,
+							},
+						}
+						containerDelegate.GetContainerReturns(container, true)
+					})
+
+					It("does not log the container's instance address", func() {
+						Expect(logger).NotTo(Say("container-network-info"))
 					})
 				})
 

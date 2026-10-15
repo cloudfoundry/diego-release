@@ -218,6 +218,7 @@ func main() {
 		executorClient,
 		metronClient,
 		evacuationReporter,
+		repConfig.LogContainerNetworkInfo,
 	)
 
 	cleanup := evacuation.NewEvacuationCleanup(
