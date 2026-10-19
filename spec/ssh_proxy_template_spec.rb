@@ -171,5 +171,65 @@ describe 'ssh_proxy' do
       end
     end
   end
+
+  describe 'cc_api_ca_cert.crt.erb' do
+    let(:template) { job.template('config/certs/cc/cc_api_ca_cert.crt') }
+
+    context 'when the cloud_controller_https_endpoint link is not present' do
+      it 'renders an empty file' do
+        expect(template.render(deployment_manifest_fragment).strip).to be_empty
+      end
+    end
+
+    context 'when the cloud_controller_https_endpoint link provides a public TLS CA cert' do
+      let(:cc_link) do
+        Bosh::Template::Test::Link.new(
+          name: 'cloud_controller_https_endpoint',
+          properties: {
+            'cc' => {
+              'internal_service_hostname' => 'cloud-controller-ng.service.cf.internal',
+              'public_tls' => {
+                'port' => 9024,
+                'ca_cert' => 'CC PUBLIC TLS CA CERT'
+              }
+            }
+          }
+        )
+      end
+
+      it 'renders the public TLS CA cert' do
+        rendered = template.render(deployment_manifest_fragment, consumes: [cc_link])
+        expect(rendered).to include('CC PUBLIC TLS CA CERT')
+      end
+    end
+  end
+
+  describe 'cc_mtls_ca_cert.crt.erb' do
+    let(:template) { job.template('config/certs/cc/cc_mtls_ca_cert.crt') }
+
+    context 'when diego.ssh_proxy.cc.ca_cert is not set' do
+      it 'renders an empty file' do
+        expect(template.render(deployment_manifest_fragment).strip).to be_empty
+      end
+    end
+
+    context 'when diego.ssh_proxy.cc.ca_cert is set' do
+      before do
+        deployment_manifest_fragment['diego']['ssh_proxy']['cc'] = {
+          'ca_cert' => 'CC MUTUAL TLS CA CERT'
+        }
+      end
+
+      it 'renders the mutual TLS CA cert' do
+        rendered = template.render(deployment_manifest_fragment)
+        expect(rendered).to include('CC MUTUAL TLS CA CERT')
+      end
+
+      it 'does not include the public TLS CA cert' do
+        rendered = template.render(deployment_manifest_fragment)
+        expect(rendered).not_to include('PUBLIC TLS')
+      end
+    end
+  end
 end
 # rubocop: enable Metrics/BlockLength
