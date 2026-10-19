@@ -28,12 +28,13 @@ type Generator interface {
 }
 
 type generator struct {
-	cellID            string
-	bbs               bbs.InternalClient
-	executorClient    executor.Client
-	lrpProcessor      internal.LRPProcessor
-	taskProcessor     internal.TaskProcessor
-	containerDelegate internal.ContainerDelegate
+	cellID                  string
+	bbs                     bbs.InternalClient
+	executorClient          executor.Client
+	lrpProcessor            internal.LRPProcessor
+	taskProcessor           internal.TaskProcessor
+	containerDelegate       internal.ContainerDelegate
+	logContainerNetworkInfo bool
 }
 
 func New(
@@ -45,18 +46,20 @@ func New(
 	executorClient executor.Client,
 	metronClient loggingclient.IngressClient,
 	evacuationReporter evacuation_context.EvacuationReporter,
+	logContainerNetworkInfo bool,
 ) Generator {
 	containerDelegate := internal.NewContainerDelegate(executorClient)
 	lrpProcessor := internal.NewLRPProcessor(bbs, containerDelegate, metronClient, cellID, availabilityZone, stackPathMap, layeringMode, evacuationReporter)
 	taskProcessor := internal.NewTaskProcessor(bbs, containerDelegate, cellID, stackPathMap, layeringMode)
 
 	return &generator{
-		cellID:            cellID,
-		bbs:               bbs,
-		executorClient:    executorClient,
-		lrpProcessor:      lrpProcessor,
-		taskProcessor:     taskProcessor,
-		containerDelegate: containerDelegate,
+		cellID:                  cellID,
+		bbs:                     bbs,
+		executorClient:          executorClient,
+		lrpProcessor:            lrpProcessor,
+		taskProcessor:           taskProcessor,
+		containerDelegate:       containerDelegate,
+		logContainerNetworkInfo: logContainerNetworkInfo,
 	}
 }
 
@@ -211,5 +214,5 @@ func (g *generator) OperationStream(logger lager.Logger) (<-chan operationq.Oper
 }
 
 func (g *generator) operationFromContainer(logger lager.Logger, traceID string, guid string) operationq.Operation {
-	return NewContainerOperation(logger, traceID, g.lrpProcessor, g.taskProcessor, g.containerDelegate, guid)
+	return NewContainerOperation(logger, traceID, g.lrpProcessor, g.taskProcessor, g.containerDelegate, guid, g.logContainerNetworkInfo)
 }

@@ -97,6 +97,9 @@ properties:
   diego.rep.advertise_preference_for_instance_address:
     description: "advertise that containers managed by this rep are directly accessible on the infrastructure network at their instance address. Components like ssh-proxy or routers may use this property when determining how to connect to a container. Set this flag only when using a third-party container-networking solution that provides direct connectivity between containers and VMs"
     default: false
+  diego.rep.log_container_network_info:
+    description: "when true, the rep logs each container's internal (instance) IP address under the 'container-network-info' log key on every container-operation sweep (per diego.rep.polling_interval_in_seconds, default 30s), for every container with an internal IP. Useful for connection-independent correlation of a container IP to its instance over time. Off by default; produces one log line per container per poll."
+    default: false
 
   diego.ssl.skip_cert_verify:
     description: "when connecting over https, ignore bad ssl certificates"
