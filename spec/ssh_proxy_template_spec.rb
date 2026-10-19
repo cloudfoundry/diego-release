@@ -163,10 +163,8 @@ describe 'ssh_proxy' do
           }
         end
 
-        it 'does not switch to the mutual TLS listener' do
-          expect(rendered_config['cc_api_url']).to eq('http://cloud-controller-ng.service.cf.internal:9022')
-          expect(rendered_config['cc_api_client_cert']).to be_nil
-          expect(rendered_config['cc_api_client_key']).to be_nil
+        it 'raises an error naming the missing properties' do
+          expect { rendered_config }.to raise_error(/Incomplete mutual-TLS configuration.*client_cert.*client_key/)
         end
       end
     end

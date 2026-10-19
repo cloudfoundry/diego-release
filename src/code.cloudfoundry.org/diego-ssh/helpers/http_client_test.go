@@ -1,6 +1,7 @@
 package helpers_test
 
 import (
+	"crypto/tls"
 	"crypto/x509"
 	"net/http"
 	"os"
@@ -117,5 +118,101 @@ var _ = Describe("NewHTTPSClient", func() {
 				Expect(err.Error()).To(ContainSubstring("failed to read ca cert file"))
 			})
 		})
+	})
+})
+
+var _ = Describe("NewMutualTLSClient", func() {
+	var (
+		certDepotDir string
+		ca           certauthority.CertAuthority
+		caCertFile   string
+		clientCert   string
+		clientKey    string
+		timeout      time.Duration
+	)
+
+	BeforeEach(func() {
+		var err error
+		certDepotDir, err = os.MkdirTemp("", "mtls-cert-depot-")
+		Expect(err).NotTo(HaveOccurred())
+
+		ca, err = certauthority.NewCertAuthority(certDepotDir, "test-ca")
+		Expect(err).NotTo(HaveOccurred())
+
+		_, caCertFile = ca.CAAndKey()
+		clientKey, clientCert, err = ca.GenerateSelfSignedCertAndKey("ssh-proxy-client", []string{"ssh-proxy-client"}, false)
+		Expect(err).NotTo(HaveOccurred())
+	})
+
+	AfterEach(func() {
+		Expect(os.RemoveAll(certDepotDir)).To(Succeed())
+	})
+
+	It("returns an error when clientCertFile is empty", func() {
+		_, err := helpers.NewMutualTLSClient(false, []string{caCertFile}, "", clientKey, timeout)
+		Expect(err).To(MatchError("client certificate and key are required for mutual TLS"))
+	})
+
+	It("returns an error when clientKeyFile is empty", func() {
+		_, err := helpers.NewMutualTLSClient(false, []string{caCertFile}, clientCert, "", timeout)
+		Expect(err).To(MatchError("client certificate and key are required for mutual TLS"))
+	})
+
+	It("returns an error when the client cert/key files do not exist", func() {
+		_, err := helpers.NewMutualTLSClient(false, []string{caCertFile}, "no-such-cert", "no-such-key", timeout)
+		Expect(err).To(HaveOccurred())
+		Expect(err.Error()).To(ContainSubstring("failed to load client cert/key pair"))
+	})
+
+	It("returns an error when the client cert and key do not match", func() {
+		_, otherCert, err := ca.GenerateSelfSignedCertAndKey("other", []string{"other"}, false)
+		Expect(err).NotTo(HaveOccurred())
+		_, err = helpers.NewMutualTLSClient(false, []string{caCertFile}, otherCert, clientKey, timeout)
+		Expect(err).To(HaveOccurred())
+		Expect(err.Error()).To(ContainSubstring("failed to load client cert/key pair"))
+	})
+
+	It("loads the client certificate into the TLS config", func() {
+		client, err := helpers.NewMutualTLSClient(false, []string{caCertFile}, clientCert, clientKey, timeout)
+		Expect(err).NotTo(HaveOccurred())
+
+		httpTrans, ok := client.Transport.(*http.Transport)
+		Expect(ok).To(BeTrue())
+		Expect(httpTrans.TLSClientConfig.Certificates).To(HaveLen(1))
+
+		expectedCert, err := tls.LoadX509KeyPair(clientCert, clientKey)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(httpTrans.TLSClientConfig.Certificates[0].Certificate).To(Equal(expectedCert.Certificate))
+	})
+
+	It("sets the CA cert pool", func() {
+		client, err := helpers.NewMutualTLSClient(false, []string{caCertFile}, clientCert, clientKey, timeout)
+		Expect(err).NotTo(HaveOccurred())
+
+		httpTrans, ok := client.Transport.(*http.Transport)
+		Expect(ok).To(BeTrue())
+
+		expectedPool := x509.NewCertPool()
+		certBytes, err := os.ReadFile(caCertFile)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(expectedPool.AppendCertsFromPEM(certBytes)).To(BeTrue())
+
+		//lint:ignore SA1019 - ignoring tlsCert.RootCAs.Subjects is deprecated ERR because cert does not come from SystemCertPool.
+		Expect(httpTrans.TLSClientConfig.RootCAs.Subjects()).To(Equal(expectedPool.Subjects()))
+	})
+
+	It("sets InsecureSkipVerify on the TLS config", func() {
+		client, err := helpers.NewMutualTLSClient(true, []string{caCertFile}, clientCert, clientKey, timeout)
+		Expect(err).NotTo(HaveOccurred())
+
+		httpTrans, ok := client.Transport.(*http.Transport)
+		Expect(ok).To(BeTrue())
+		Expect(httpTrans.TLSClientConfig.InsecureSkipVerify).To(BeTrue())
+	})
+
+	It("sets the client timeout", func() {
+		client, err := helpers.NewMutualTLSClient(false, []string{caCertFile}, clientCert, clientKey, 7*time.Second)
+		Expect(err).NotTo(HaveOccurred())
+		Expect(client.Timeout).To(Equal(7 * time.Second))
 	})
 })
