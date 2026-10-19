@@ -123,7 +123,7 @@ describe 'ssh_proxy' do
 
         it 'targets the mutual TLS listener and presents a client certificate' do
           expect(rendered_config['cc_api_url']).to eq('https://cloud-controller-ng.service.cf.internal:9023')
-          expect(rendered_config['cc_api_ca_cert']).to eq('/var/vcap/jobs/ssh_proxy/config/certs/cc/cc_api_ca_cert.crt')
+          expect(rendered_config['cc_api_ca_cert']).to eq('/var/vcap/jobs/ssh_proxy/config/certs/cc/cc_mtls_ca_cert.crt')
           expect(rendered_config['cc_api_client_cert']).to eq('/var/vcap/jobs/ssh_proxy/config/certs/cc/client.crt')
           expect(rendered_config['cc_api_client_key']).to eq('/var/vcap/jobs/ssh_proxy/config/certs/cc/client.key')
         end
