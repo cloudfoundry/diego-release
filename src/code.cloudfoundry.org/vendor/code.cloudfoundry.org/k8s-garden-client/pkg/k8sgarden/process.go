@@ -3,6 +3,7 @@ package k8sgarden
 import (
 	"context"
 	"errors"
+	"sync"
 	"syscall"
 	"time"
 
@@ -14,13 +15,14 @@ import (
 )
 
 type process struct {
-	log     lager.Logger
-	id      string
-	io      garden.ProcessIO
-	process ctrdclient.Process
-
+	log  lager.Logger
+	id   string
+	io   garden.ProcessIO
 	task ctrdclient.Task
 	spec *specs.Process
+
+	mu   sync.Mutex
+	proc ctrdclient.Process
 }
 
 type Process interface {
@@ -52,27 +54,32 @@ func (p *process) ID() string {
 
 // Signal implements [garden.Process].
 func (p *process) Signal(signal garden.Signal) error {
+	proc := p.ctrdProcess()
+	if proc == nil {
+		return errors.New("process not started")
+	}
+
 	s := syscall.SIGTERM
 	if signal == garden.SignalKill {
 		s = syscall.SIGKILL
 	}
 
-	p.log.Info("signaling-process", lager.Data{"signal": s, "pid": p.process.Pid()})
-	return p.process.Kill(context.Background(), s)
+	p.log.Info("signaling-process", lager.Data{"signal": s, "pid": proc.Pid()})
+	return proc.Kill(context.Background(), s)
 }
 
 // Wait implements [garden.Process].
 func (p *process) Wait() (int, error) {
 	p.log.Info("waiting-for-process-to-exit")
 	defer p.log.Info("process-exited")
-	var err error
 
-	p.process, err = p.task.Exec(context.Background(), p.id, p.spec, cio.NewCreator(cio.WithStreams(p.io.Stdin, p.io.Stdout, p.io.Stderr), cio.WithFIFODir("/var/lib/rep/containerd_fifo")))
+	proc, err := p.task.Exec(context.Background(), p.id, p.spec, cio.NewCreator(cio.WithStreams(p.io.Stdin, p.io.Stdout, p.io.Stderr), cio.WithFIFODir("/var/lib/rep/containerd_fifo")))
 	if err != nil {
 		return -1, err
 	}
+	p.setCtrdProcess(proc)
 
-	if err := p.process.Start(context.Background()); err != nil {
+	if err := proc.Start(context.Background()); err != nil {
 		return -1, err
 	}
 
@@ -82,10 +89,10 @@ func (p *process) Wait() (int, error) {
 	// bytes still flow through cio's own stdin writer; this only drops the shim's
 	// redundant keep-alive writer.
 	if p.io.Stdin != nil {
-		go p.closeStdin()
+		go p.closeStdin(proc)
 	}
 
-	statusChan, err := p.process.Wait(context.Background())
+	statusChan, err := proc.Wait(context.Background())
 	if err != nil {
 		return -1, err
 	}
@@ -93,23 +100,35 @@ func (p *process) Wait() (int, error) {
 
 	// wait for io to also catch daemon processes
 	var closeErr error
-	if io := p.process.IO(); io != nil {
+	if io := proc.IO(); io != nil {
 		p.log.Info("waiting-for-io-to-finish")
 		io.Wait()
 		p.log.Info("io-finished")
 		closeErr = io.Close()
 	}
-	_, err = p.process.Delete(context.Background())
+	_, err = proc.Delete(context.Background())
 
 	return int(exitStatus.ExitCode()), errors.Join(exitStatus.Error(), err, closeErr)
 }
 
+func (p *process) ctrdProcess() ctrdclient.Process {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	return p.proc
+}
+
+func (p *process) setCtrdProcess(proc ctrdclient.Process) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.proc = proc
+}
+
 // closeStdin closes the process's stdin so stdin-reading processes get EOF,
 // retrying with exponential backoff as the shim may not yet have wired up IO.
-func (p *process) closeStdin() {
+func (p *process) closeStdin(proc ctrdclient.Process) {
 	backoff := 100 * time.Millisecond
 	for i := 0; i < 10; i++ {
-		if err := p.process.CloseIO(context.Background(), ctrdclient.WithStdinCloser); err != nil {
+		if err := proc.CloseIO(context.Background(), ctrdclient.WithStdinCloser); err != nil {
 			p.log.Error("failed-closing-stdin", err)
 			time.Sleep(backoff)
 			backoff *= 2

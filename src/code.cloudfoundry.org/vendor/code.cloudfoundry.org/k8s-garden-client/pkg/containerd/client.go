@@ -11,10 +11,10 @@ import (
 	"github.com/containerd/containerd/v2/core/mount"
 	"github.com/containerd/containerd/v2/core/remotes/docker"
 	"github.com/containerd/continuity/fs"
+	"github.com/distribution/reference"
 	"github.com/opencontainers/image-spec/identity"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/utils/ptr"
-	"github.com/distribution/reference"
 )
 
 //go:generate go tool counterfeiter -generate
@@ -23,10 +23,16 @@ import (
 //counterfeiter:generate github.com/containerd/containerd/v2/client.Process
 //counterfeiter:generate github.com/containerd/containerd/v2/client.Image
 
+// RunningContainer bundles a containerd task with its container id
+type RunningContainer struct {
+	Task ctrdclient.Task
+	ID   string
+}
+
 //counterfeiter:generate . Client
 type Client interface {
 	IsServing(ctx context.Context) (bool, error)
-	LoadTasks(ctx context.Context, statuses []corev1.ContainerStatus) (map[string]ctrdclient.Task, error)
+	LoadContainers(ctx context.Context, statuses []corev1.ContainerStatus) (map[string]RunningContainer, error)
 	Pull(ctx context.Context, ref, username, password string) (ctrdclient.Image, int64, error)
 	Delete(ctx context.Context, img ctrdclient.Image) error
 }
@@ -43,8 +49,8 @@ func (w *clientWrapper) IsServing(ctx context.Context) (bool, error) {
 	return w.client.IsServing(ctx)
 }
 
-func (w *clientWrapper) LoadTasks(ctx context.Context, statuses []corev1.ContainerStatus) (map[string]ctrdclient.Task, error) {
-	taskMap := make(map[string]ctrdclient.Task)
+func (w *clientWrapper) LoadContainers(ctx context.Context, statuses []corev1.ContainerStatus) (map[string]RunningContainer, error) {
+	loaded := make(map[string]RunningContainer, len(statuses))
 	for _, status := range statuses {
 		containerdID, _ := strings.CutPrefix(status.ContainerID, "containerd://")
 		cntr, err := w.client.LoadContainer(ctx, containerdID)
@@ -55,10 +61,10 @@ func (w *clientWrapper) LoadTasks(ctx context.Context, statuses []corev1.Contain
 		if err != nil {
 			return nil, err
 		}
-		taskMap[status.Name] = task
+		loaded[status.Name] = RunningContainer{Task: task, ID: containerdID}
 	}
 
-	return taskMap, nil
+	return loaded, nil
 }
 
 func (w *clientWrapper) Pull(ctx context.Context, ref, username, password string) (ctrdclient.Image, int64, error) {

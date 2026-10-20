@@ -6,7 +6,6 @@ import (
 	"io"
 	"path/filepath"
 	"strings"
-	"sync"
 	"time"
 
 	"code.cloudfoundry.org/garden"
@@ -14,8 +13,8 @@ import (
 	"code.cloudfoundry.org/guardian/rundmc/goci"
 	"code.cloudfoundry.org/guardian/rundmc/processes"
 	"code.cloudfoundry.org/guardian/rundmc/users"
+	"code.cloudfoundry.org/k8s-garden-client/pkg/containerd"
 	"code.cloudfoundry.org/lager/v3"
-	ctrdclient "github.com/containerd/containerd/v2/client"
 	"github.com/google/uuid"
 	"github.com/opencontainers/runtime-spec/specs-go"
 	corev1 "k8s.io/api/core/v1"
@@ -26,17 +25,15 @@ var (
 )
 
 type container struct {
-	log             lager.Logger
-	pod             *corev1.Pod
-	env             []string
-	cpuAssignment   float64
-	rootfsSize      uint64
-	userLookupper   users.UserLookupper
-	taskMap         map[string]ctrdclient.Task
-	containerIDMap  map[string]string
-	propertyManager gardener.PropertyManager
-	sandboxPath     string
-	mu              sync.RWMutex
+	log               lager.Logger
+	pod               *corev1.Pod
+	env               []string
+	cpuAssignment     float64
+	rootfsSize        uint64
+	userLookupper     users.UserLookupper
+	runningContainers map[string]containerd.RunningContainer
+	propertyManager   gardener.PropertyManager
+	sandboxPath       string
 }
 
 func NewContainer(
@@ -47,20 +44,19 @@ func NewContainer(
 	userLookupper users.UserLookupper,
 	propertyManager gardener.PropertyManager,
 	rootfsSize uint64,
-	taskMap map[string]ctrdclient.Task,
+	runningContainers map[string]containerd.RunningContainer,
 	sandboxPath string,
 ) *container {
 	return &container{
-		log:             log,
-		pod:             pod,
-		env:             env,
-		cpuAssignment:   cpuAssignment,
-		rootfsSize:      rootfsSize,
-		userLookupper:   userLookupper,
-		taskMap:         taskMap,
-		propertyManager: propertyManager,
-		sandboxPath:     sandboxPath,
-		mu:              sync.RWMutex{},
+		log:               log,
+		pod:               pod,
+		env:               env,
+		cpuAssignment:     cpuAssignment,
+		rootfsSize:        rootfsSize,
+		userLookupper:     userLookupper,
+		runningContainers: runningContainers,
+		propertyManager:   propertyManager,
+		sandboxPath:       sandboxPath,
 	}
 }
 
@@ -108,7 +104,12 @@ func (c *container) run(spec garden.ProcessSpec, io garden.ProcessIO, cleanEnv b
 		targetContainer = sidecarContainerName
 	}
 
-	execUser, err := c.userLookupper.Lookup(filepath.Join(c.sandboxPath, c.containerIDMap[targetContainer], "rootfs"), spec.User)
+	rc, ok := c.runningContainers[targetContainer]
+	if !ok || rc.Task == nil {
+		return nil, fmt.Errorf("no containerd container found for %q", targetContainer)
+	}
+
+	execUser, err := c.userLookupper.Lookup(filepath.Join(c.sandboxPath, rc.ID, "rootfs"), spec.User)
 	if err != nil {
 		return nil, fmt.Errorf("get user %q: %w", spec.User, err)
 	}
@@ -151,7 +152,7 @@ func (c *container) run(spec garden.ProcessSpec, io garden.ProcessIO, cleanEnv b
 		id,
 		processSpec,
 		io,
-		c.taskMap[targetContainer],
+		rc.Task,
 	), nil
 }
 
