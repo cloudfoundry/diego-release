@@ -246,6 +246,15 @@ func makeCommonComponentMaker(builtArtifacts BuiltArtifacts, worldAddresses Comp
 		CACert:     caCert,
 	}
 
+	natsCertsDir := filepath.Join("..", "fixtures", "certs", "nats")
+	natsSSLConfig := SSLConfig{
+		ServerCert: filepath.Join(natsCertsDir, "nats_server.crt"),
+		ServerKey:  filepath.Join(natsCertsDir, "nats_server.key"),
+		ClientCert: filepath.Join(natsCertsDir, "client.crt"),
+		ClientKey:  filepath.Join(natsCertsDir, "client.key"),
+		CACert:     filepath.Join(natsCertsDir, "nats-ca.crt"),
+	}
+
 	locketSSLConfig := SSLConfig{
 		ServerCert: bbsServerCert,
 		ServerKey:  bbsServerKey,
@@ -327,6 +336,7 @@ func makeCommonComponentMaker(builtArtifacts BuiltArtifacts, worldAddresses Comp
 		gardenConfig:           gardenConfig,
 		sshConfig:              sshKeys,
 		bbsSSL:                 bbsSSLConfig,
+		natsSSL:                natsSSLConfig,
 		locketSSL:              locketSSLConfig,
 		repSSL:                 repSSLConfig,
 		auctioneerSSL:          auctioneerSSLConfig,
@@ -396,6 +406,7 @@ type commonComponentMaker struct {
 	gardenConfig           GardenSettingsConfig
 	sshConfig              SSHKeys
 	bbsSSL                 SSLConfig
+	natsSSL                SSLConfig
 	locketSSL              SSLConfig
 	repSSL                 SSLConfig
 	auctioneerSSL          SSLConfig
@@ -474,6 +485,11 @@ func (maker commonComponentMaker) NATS(argv ...string) ifrit.Runner {
 			append([]string{
 				"--addr", host,
 				"--port", port,
+				"--tls",
+				"--tlscert", maker.natsSSL.ServerCert,
+				"--tlskey", maker.natsSSL.ServerKey,
+				"--tlscacert", maker.natsSSL.CACert,
+				"--tlsverify",
 			}, argv...)...,
 		),
 	})
@@ -785,6 +801,10 @@ func (maker commonComponentMaker) RouteEmitterN(n int, fs ...func(config *routee
 		LockTTL:                      durationjson.Duration(locket.DefaultSessionTTL),
 		NATSUsername:                 "nats",
 		NATSPassword:                 "nats",
+		NATSTLSEnabled:               true,
+		NATSCACertFile:               maker.natsSSL.CACert,
+		NATSClientCertFile:           maker.natsSSL.ClientCert,
+		NATSClientKeyFile:            maker.natsSSL.ClientKey,
 		RouteEmittingWorkers:         20,
 		SyncInterval:                 durationjson.Duration(time.Minute),
 		TCPRouteTTL:                  durationjson.Duration(2 * time.Minute),
@@ -896,6 +916,19 @@ func (maker commonComponentMaker) FileServer(modifyConfigFuncs ...func(*fileserv
 	}), servedFilesDir
 }
 
+// indentedFileContents returns the file's contents indented for embedding in a
+// YAML block scalar nested two levels deep.
+func indentedFileContents(path string) string {
+	contents, err := os.ReadFile(path)
+	Expect(err).NotTo(HaveOccurred())
+
+	lines := strings.Split(strings.TrimSpace(string(contents)), "\n")
+	for i, line := range lines {
+		lines[i] = "    " + line
+	}
+	return strings.Join(lines, "\n")
+}
+
 func (maker commonComponentMaker) Router() *ginkgomon.Runner {
 	_, routerPort, err := net.SplitHostPort(maker.addresses.Router)
 	Expect(err).NotTo(HaveOccurred())
@@ -939,6 +972,13 @@ nats:
     port: %d
   user: ""
   pass: ""
+  tls_enabled: true
+  ca_certs: |
+%s
+  cert_chain: |
+%s
+  private_key: |
+%s
 logging:
   file: /dev/stdout
   syslog: ""
@@ -1001,7 +1041,14 @@ token_fetcher_retry_interval: 0s
 token_fetcher_expiration_buffer_time: 0
 pid_file: ""
 `
-	routerConfig = fmt.Sprintf(routerConfig, uint16(routerStatusPortInt), uint16(routerRoutesPortInt), natsHost, uint16(natsPortInt), uint16(routerPortInt), uint16(routerRouteServicesPortInt))
+	routerConfig = fmt.Sprintf(routerConfig,
+		uint16(routerStatusPortInt), uint16(routerRoutesPortInt),
+		natsHost, uint16(natsPortInt),
+		indentedFileContents(maker.natsSSL.CACert),
+		indentedFileContents(maker.natsSSL.ClientCert),
+		indentedFileContents(maker.natsSSL.ClientKey),
+		uint16(routerPortInt), uint16(routerRouteServicesPortInt),
+	)
 
 	configFile, err := os.CreateTemp(TempDirWithParent(maker.tmpDir, "router-config"), "router-config")
 	Expect(err).NotTo(HaveOccurred())
