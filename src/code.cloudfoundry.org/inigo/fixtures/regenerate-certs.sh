@@ -43,4 +43,15 @@ mv -f out/localhost.key ./certs/sql-certs/server.key
 mv -f out/* ./certs/sql-certs
 rm -rf out
 
+# ./nats/* certs: nats-server (TLS, client verification) and its clients (gorouter, route-emitter)
+mkdir -p ./certs/nats
+certstrap init --common-name "nats-ca" --passphrase ""
+certstrap request-cert --common-name "nats_server" --domain "nats_server" --ip "127.0.0.1" --passphrase ""
+certstrap sign nats_server --CA "nats-ca"
+certstrap request-cert --common-name "client" --domain "client" --passphrase ""
+certstrap sign client --CA "nats-ca"
+
+mv -f out/* ./certs/nats
+rm -rf out
+
 popd
