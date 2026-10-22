@@ -17,6 +17,7 @@ import (
 type CFAuthenticator struct {
 	logger             lager.Logger
 	httpClient         *http.Client
+	ccHTTPClient       *http.Client
 	ccURL              string
 	uaaTokenURL        string
 	uaaPassword        string
@@ -47,12 +48,17 @@ func NewCFAuthenticator(
 	return &CFAuthenticator{
 		logger:             logger,
 		httpClient:         httpClient,
+		ccHTTPClient:       httpClient,
 		ccURL:              ccURL,
 		uaaTokenURL:        uaaTokenURL,
 		uaaUsername:        uaaUsername,
 		uaaPassword:        uaaPassword,
 		permissionsBuilder: permissionsBuilder,
 	}
+}
+
+func (cfa *CFAuthenticator) SetCCHTTPClient(client *http.Client) {
+	cfa.ccHTTPClient = client
 }
 
 func (cfa *CFAuthenticator) UserRegexp() *regexp.Regexp {
@@ -174,7 +180,7 @@ func (cfa *CFAuthenticator) checkAccess(logger lager.Logger, appGuid string, ind
 	}
 	req.Header.Add("Authorization", token)
 
-	resp, err := cfa.httpClient.Do(req)
+	resp, err := cfa.ccHTTPClient.Do(req)
 	if err != nil {
 		logger.Error("fetching-app-failed", err)
 		return "", err
