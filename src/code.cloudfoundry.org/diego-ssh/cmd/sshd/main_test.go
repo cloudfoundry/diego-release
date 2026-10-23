@@ -550,7 +550,7 @@ var _ = Describe("SSH daemon", func() {
 			})
 		})
 
-		Context("when the daemon provides an unsupported KeyExchange algorithm", func() {
+		Context("when the daemon provides the default KeyExchange algorithms", func() {
 			BeforeEach(func() {
 				allowUnauthenticatedClients = true
 				clientConfig = &ssh.ClientConfig{
@@ -563,9 +563,35 @@ var _ = Describe("SSH daemon", func() {
 				Expect(process).NotTo(BeNil())
 			})
 
-			It("errors when the client doesn't provide the algorithm: 'curve25519-sha256@libssh.org'", func() {
-				Expect(dialErr).To(MatchError("ssh: handshake failed: ssh: no common algorithm for key exchange; we offered: [\"diffie-hellman-group14-sha1\" \"ext-info-c\" \"kex-strict-c-v00@openssh.com\"], peer offered: [\"curve25519-sha256@libssh.org\" \"kex-strict-s-v00@openssh.com\"]"))
+			It("errors when the client doesn't provide one of the default algorithms", func() {
+				Expect(dialErr).To(MatchError("ssh: handshake failed: ssh: no common algorithm for key exchange; we offered: [\"diffie-hellman-group14-sha1\" \"ext-info-c\" \"kex-strict-c-v00@openssh.com\"], peer offered: [\"curve25519-sha256@libssh.org\" \"ecdh-sha2-nistp256\" \"ecdh-sha2-nistp384\" \"ecdh-sha2-nistp521\" \"kex-strict-s-v00@openssh.com\"]"))
 				Expect(client).To(BeNil())
+			})
+		})
+
+		Context("when a FIPS-mode client offers only NIST P-curve key exchanges", func() {
+			BeforeEach(func() {
+				// A FIPS-enforced Go client (GODEBUG=fips140=on) strips
+				// curve25519, so it offers only the NIST P-curves. With the
+				// widened default the daemon must still negotiate a handshake.
+				allowUnauthenticatedClients = true
+				clientConfig = &ssh.ClientConfig{
+					HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+				}
+				clientConfig.KeyExchanges = []string{
+					"ecdh-sha2-nistp256",
+					"ecdh-sha2-nistp384",
+					"ecdh-sha2-nistp521",
+				}
+			})
+
+			It("starts the daemon", func() {
+				Expect(process).NotTo(BeNil())
+			})
+
+			It("allows the client to complete a handshake without any explicit AllowedKeyExchanges config", func() {
+				Expect(dialErr).NotTo(HaveOccurred())
+				Expect(client).NotTo(BeNil())
 			})
 		})
 	})

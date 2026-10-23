@@ -268,7 +268,15 @@ func configure(logger lager.Logger) (*ssh.ServerConfig, error) {
 	if *allowedKeyExchanges != "" {
 		sshConfig.Config.KeyExchanges = strings.Split(*allowedKeyExchanges, ",")
 	} else {
-		sshConfig.Config.KeyExchanges = []string{"curve25519-sha256@libssh.org"}
+		// Mirror the ssh-proxy default: curve25519 first for non-FIPS clients,
+		// plus the NIST P-curves so a FIPS-mode client can still negotiate a
+		// key exchange.
+		sshConfig.Config.KeyExchanges = []string{
+			"curve25519-sha256@libssh.org",
+			"ecdh-sha2-nistp256",
+			"ecdh-sha2-nistp384",
+			"ecdh-sha2-nistp521",
+		}
 	}
 
 	err = nil
