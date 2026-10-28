@@ -954,15 +954,41 @@ var _ = Describe("SSH proxy", Serial, func() {
 			})
 		})
 
-		Context("when the proxy provides the default KeyExchange algorithm", func() {
+		Context("when the proxy provides the default KeyExchange algorithms", func() {
 			BeforeEach(func() {
 				clientConfig.KeyExchanges = []string{"diffie-hellman-group14-sha1"}
 			})
 
-			It("errors when the client doesn't provide the algorithm: 'curve25519-sha256@libssh.org'", func() {
+			It("errors when the client doesn't provide one of the default algorithms", func() {
 				_, err := ssh.Dial("tcp", address, clientConfig)
-				Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for key exchange; we offered: [\"diffie-hellman-group14-sha1\" \"ext-info-c\" \"kex-strict-c-v00@openssh.com\"], peer offered: [\"curve25519-sha256@libssh.org\" \"kex-strict-s-v00@openssh.com\"]"))
+				Expect(err).To(MatchError("ssh: handshake failed: ssh: no common algorithm for key exchange; we offered: [\"diffie-hellman-group14-sha1\" \"ext-info-c\" \"kex-strict-c-v00@openssh.com\"], peer offered: [\"curve25519-sha256@libssh.org\" \"ecdh-sha2-nistp256\" \"ecdh-sha2-nistp384\" \"ecdh-sha2-nistp521\" \"kex-strict-s-v00@openssh.com\"]"))
 				Expect(fakeBBS.ReceivedRequests()).To(HaveLen(0))
+			})
+		})
+
+		Context("when a FIPS-mode client offers only NIST P-curve key exchanges", func() {
+			BeforeEach(func() {
+				// A FIPS-enforced Go client (GODEBUG=fips140=on) strips
+				// curve25519, so it offers only the NIST P-curves. With the
+				// widened default the proxy must still negotiate a handshake.
+				clientConfig = &ssh.ClientConfig{
+					User:            "diego:" + processGuid + "/99",
+					Auth:            []ssh.AuthMethod{ssh.Password(diegoCredentials)},
+					HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+				}
+				clientConfig.KeyExchanges = []string{
+					"ecdh-sha2-nistp256",
+					"ecdh-sha2-nistp384",
+					"ecdh-sha2-nistp521",
+				}
+			})
+
+			It("allows the client to complete a handshake without any explicit AllowedKeyExchanges config", func() {
+				client, err := ssh.Dial("tcp", address, clientConfig)
+				Expect(err).NotTo(HaveOccurred())
+
+				err = client.Close()
+				Expect(err).NotTo(HaveOccurred())
 			})
 		})
 

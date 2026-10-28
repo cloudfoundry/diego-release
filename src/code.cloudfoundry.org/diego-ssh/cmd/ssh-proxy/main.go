@@ -221,7 +221,16 @@ func configureProxy(logger lager.Logger, sshProxyConfig config.SSHProxyConfig) (
 	if sshProxyConfig.AllowedKeyExchanges != "" {
 		sshConfig.Config.KeyExchanges = strings.Split(sshProxyConfig.AllowedKeyExchanges, ",")
 	} else {
-		sshConfig.Config.KeyExchanges = []string{"curve25519-sha256@libssh.org"}
+		// curve25519 stays first so non-FIPS clients negotiate it exactly as
+		// before; the NIST P-curves let a FIPS-mode client (one that has had
+		// curve25519 removed, e.g. a Go client running with GODEBUG=fips140=on)
+		// still complete the key exchange.
+		sshConfig.Config.KeyExchanges = []string{
+			"curve25519-sha256@libssh.org",
+			"ecdh-sha2-nistp256",
+			"ecdh-sha2-nistp384",
+			"ecdh-sha2-nistp521",
+		}
 	}
 
 	return sshConfig, err
