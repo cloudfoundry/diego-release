@@ -750,12 +750,18 @@ func (n *storeNode) Update(logger lager.Logger, req *executor.UpdateRequest) err
 	}
 
 	if req.MetricTags != nil {
-		n.logStreamer.UpdateTags(req.MetricTags)
+		// logStreamer is only set once the container runs and gardenContainer once
+		// it is created; earlier states pick up n.info.LogConfig when they get there.
+		if n.logStreamer != nil {
+			n.logStreamer.UpdateTags(req.MetricTags)
+		}
 
-		err := n.gardenContainer.SetProperty("log_config", string(logConfigJSON))
-		if err != nil {
-			logger.Error("failed-to-set-log-config-property", err, lager.Data{"guid": req.Guid})
-			return err
+		if n.gardenContainer != nil {
+			err := n.gardenContainer.SetProperty("log_config", string(logConfigJSON))
+			if err != nil {
+				logger.Error("failed-to-set-log-config-property", err, lager.Data{"guid": req.Guid})
+				return err
+			}
 		}
 	}
 	return nil

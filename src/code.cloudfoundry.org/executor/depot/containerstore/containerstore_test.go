@@ -2810,6 +2810,29 @@ var _ = Describe("Container Store", func() {
 
 		})
 
+		Context("when the container has been created but not yet run", func() {
+			BeforeEach(func() {
+				updateReq.InternalRoutes = nil
+			})
+
+			It("does not panic and the log streamer picks up the new tags on Run", func() {
+				Expect(func() {
+					err := containerStore.Update(logger, updateReq)
+					Expect(err).NotTo(HaveOccurred())
+				}).NotTo(Panic())
+
+				Expect(logStreamer.UpdateTagsCallCount()).To(Equal(0))
+				Expect(gardenContainer.SetPropertyCallCount()).To(Equal(1))
+
+				err := containerStore.Run(logger, "some-trace-id", containerGuid)
+				Expect(err).NotTo(HaveOccurred())
+
+				Expect(logManager.NewLogStreamerCallCount()).To(Equal(1))
+				logConfig, _, _, _, _ := logManager.NewLogStreamerArgsForCall(0)
+				Expect(logConfig.Tags).To(Equal(metricTags))
+			})
+		})
+
 		Context("when the container does not exist", func() {
 			It("returns an ErrContainerNotFound", func() {
 				updateReq.Guid = "unknown-guid"
