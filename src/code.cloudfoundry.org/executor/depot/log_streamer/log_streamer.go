@@ -33,6 +33,7 @@ type LogStreamer interface {
 type logStreamer struct {
 	ctx        context.Context
 	cancelFunc context.CancelFunc
+	tags       *tagStore
 	stdout     *streamDestination
 	stderr     *streamDestination
 }
@@ -42,14 +43,16 @@ func New(config models.LogConfig, metronClient loggingclient.IngressClient, maxL
 		return noopStreamer{}
 	}
 
-	sourceName, tags := config.GetSourceNameAndTagsForLogging()
+	sourceName, tagMap := config.GetSourceNameAndTagsForLogging()
+	tags := newTagStore(tagMap)
 
 	ctx, cancelFunc := context.WithCancel(context.Background())
-	logRateLimiter := NewLogRateLimiter(ctx, metronClient, tags, maxLogLinesPerSecond, maxLogBytesPerSecond, metricReportInterval)
+	logRateLimiter := newLogRateLimiter(ctx, metronClient, tags, maxLogLinesPerSecond, maxLogBytesPerSecond, metricReportInterval)
 
 	return &logStreamer{
 		ctx:        ctx,
 		cancelFunc: cancelFunc,
+		tags:       tags,
 		stdout: newStreamDestination(
 			ctx,
 			sourceName,
@@ -79,8 +82,7 @@ func (e *logStreamer) Stderr() io.Writer {
 }
 
 func (e *logStreamer) UpdateTags(tags map[string]string) {
-	e.stdout.updateTags(tags)
-	e.stderr.updateTags(tags)
+	e.tags.Store(tags)
 }
 
 func (e *logStreamer) Flush() {
@@ -98,6 +100,7 @@ func (e *logStreamer) WithSource(sourceName string) LogStreamer {
 	return &logStreamer{
 		ctx:        ctx,
 		cancelFunc: cancelFunc,
+		tags:       e.tags,
 		stdout:     e.stdout.withSource(ctx, sourceName),
 		stderr:     e.stderr.withSource(ctx, sourceName),
 	}

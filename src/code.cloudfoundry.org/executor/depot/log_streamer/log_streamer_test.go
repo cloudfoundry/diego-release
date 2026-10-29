@@ -2,6 +2,7 @@ package log_streamer_test
 
 import (
 	"fmt"
+	"io"
 	"runtime"
 	"strings"
 	"sync"
@@ -10,6 +11,8 @@ import (
 	"code.cloudfoundry.org/bbs/models"
 	mfakes "code.cloudfoundry.org/diego-logging-client/testhelpers"
 	"code.cloudfoundry.org/executor/depot/log_streamer"
+	loggregator "code.cloudfoundry.org/go-loggregator/v9"
+	"code.cloudfoundry.org/go-loggregator/v9/rpc/loggregator_v2"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/types"
@@ -738,6 +741,51 @@ var _ = Describe("LogStreamer", func() {
 			})
 		})
 
+		Context("when tags are updated while stdout, stderr, child streamers and log rate metrics are emitting", func() {
+			var tagReadingClient tagReadingIngressClient
+
+			BeforeEach(func() {
+				tagReadingClient = tagReadingIngressClient{FakeIngressClient: fakeClient}
+				streamer = log_streamer.New(logConfig, tagReadingClient, maxLogLinesPerSecond, maxLogBytesPerSecond, time.Millisecond)
+			})
+
+			AfterEach(func() {
+				streamer.Stop()
+			})
+
+			It("does not trigger data races on the shared tags", func() {
+				child := streamer.WithSource("CELL")
+				writers := []io.Writer{streamer.Stdout(), streamer.Stderr(), child.Stdout(), child.Stderr()}
+
+				wg := new(sync.WaitGroup)
+				for _, w := range writers {
+					wg.Add(1)
+					go func(w io.Writer) {
+						defer GinkgoRecover()
+						defer wg.Done()
+						for i := 0; i < 1000; i++ {
+							_, _ = fmt.Fprintln(w, "this is a log")
+						}
+					}(w)
+				}
+
+				wg.Add(1)
+				go func() {
+					defer GinkgoRecover()
+					defer wg.Done()
+					for i := 0; i < 1000; i++ {
+						streamer.UpdateTags(map[string]string{"source_id": guid, "instance_id": "11", "iteration": fmt.Sprint(i)})
+					}
+				}()
+				wg.Wait()
+
+				streamer.UpdateTags(map[string]string{"final": "tags"})
+				_, _ = fmt.Fprintln(child.Stdout(), "this is a log")
+				_, _, tags := fakeClient.SendAppLogArgsForCall(fakeClient.SendAppLogCallCount() - 1)
+				Expect(tags).To(Equal(map[string]string{"final": "tags"}))
+			})
+		})
+
 	})
 
 	Describe("Stop", func() {
@@ -794,3 +842,31 @@ var _ = Describe("LogStreamer", func() {
 		})
 	})
 })
+
+// tagReadingIngressClient reads the tags map the same way the real
+// diego-logging-client/go-loggregator do (index lookups plus
+// WithEnvelopeTags iteration), so the race detector can see concurrent
+// access. The counterfeiter fake alone only stores the map reference.
+type tagReadingIngressClient struct {
+	*mfakes.FakeIngressClient
+}
+
+func readTags(tags map[string]string) {
+	_ = tags["source_id"]
+	loggregator.WithEnvelopeTags(tags)(&loggregator_v2.Envelope{Tags: map[string]string{}})
+}
+
+func (c tagReadingIngressClient) SendAppLog(message, sourceName string, tags map[string]string) error {
+	readTags(tags)
+	return c.FakeIngressClient.SendAppLog(message, sourceName, tags)
+}
+
+func (c tagReadingIngressClient) SendAppErrorLog(message, sourceName string, tags map[string]string) error {
+	readTags(tags)
+	return c.FakeIngressClient.SendAppErrorLog(message, sourceName, tags)
+}
+
+func (c tagReadingIngressClient) SendAppLogRate(rate, rateLimit float64, tags map[string]string) error {
+	readTags(tags)
+	return c.FakeIngressClient.SendAppLogRate(rate, rateLimit, tags)
+}
