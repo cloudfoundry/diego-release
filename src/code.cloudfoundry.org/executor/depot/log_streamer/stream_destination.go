@@ -12,7 +12,7 @@ import (
 type streamDestination struct {
 	ctx            context.Context
 	sourceName     string
-	tags           map[string]string
+	tags           *tagStore
 	messageType    loggregator_v2.Log_Type
 	buffer         []byte
 	processLock    sync.Mutex
@@ -23,7 +23,7 @@ type streamDestination struct {
 func newStreamDestination(
 	ctx context.Context,
 	sourceName string,
-	tags map[string]string,
+	tags *tagStore,
 	messageType loggregator_v2.Log_Type,
 	metronClient loggingclient.IngressClient,
 	limiter *logRateLimiter,
@@ -36,19 +36,6 @@ func newStreamDestination(
 		buffer:         make([]byte, 0, MAX_MESSAGE_SIZE),
 		metronClient:   metronClient,
 		logRateLimiter: limiter,
-	}
-}
-
-func (destination *streamDestination) updateTags(tags map[string]string) {
-	destination.processLock.Lock()
-	defer destination.processLock.Unlock()
-
-	for k := range destination.tags {
-		delete(destination.tags, k)
-	}
-
-	for k, v := range tags {
-		destination.tags[k] = v
 	}
 }
 
@@ -70,11 +57,12 @@ func (destination *streamDestination) flush() {
 		if destination.logRateLimiter.Limit(destination.sourceName, len(msg)) != nil {
 			return
 		}
+		tags := destination.tags.Load()
 		switch destination.messageType {
 		case loggregator_v2.Log_OUT:
-			_ = destination.metronClient.SendAppLog(string(msg), destination.sourceName, destination.tags)
+			_ = destination.metronClient.SendAppLog(string(msg), destination.sourceName, tags)
 		case loggregator_v2.Log_ERR:
-			_ = destination.metronClient.SendAppErrorLog(string(msg), destination.sourceName, destination.tags)
+			_ = destination.metronClient.SendAppErrorLog(string(msg), destination.sourceName, tags)
 		}
 	}
 }

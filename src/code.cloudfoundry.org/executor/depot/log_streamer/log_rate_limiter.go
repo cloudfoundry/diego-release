@@ -30,13 +30,24 @@ type logRateLimiter struct {
 	logMetricsEmitInterval      time.Duration
 	lastOverage                 time.Time
 	bytesEmittedLastInterval    uint64
-	tags                        map[string]string
+	tags                        *tagStore
 }
 
 func NewLogRateLimiter(
 	ctx context.Context,
 	metronClient loggingclient.IngressClient,
 	tags map[string]string,
+	maxLogLinesPerSecond int,
+	maxLogBytesPerSecond int64,
+	logMetricsEmitInterval time.Duration,
+) *logRateLimiter {
+	return newLogRateLimiter(ctx, metronClient, newTagStore(tags), maxLogLinesPerSecond, maxLogBytesPerSecond, logMetricsEmitInterval)
+}
+
+func newLogRateLimiter(
+	ctx context.Context,
+	metronClient loggingclient.IngressClient,
+	tags *tagStore,
 	maxLogLinesPerSecond int,
 	maxLogBytesPerSecond int64,
 	logMetricsEmitInterval time.Duration,
@@ -106,7 +117,7 @@ func (r *logRateLimiter) emitMetrics() {
 			lastIntervalEmitted := atomic.SwapUint64(&r.bytesEmittedLastInterval, 0)
 			perSecondValue := float64(lastIntervalEmitted) / intervalDivider
 			// #nosec G104 - ignore error returned by sending metric here
-			r.metronClient.SendAppLogRate(perSecondValue, float64(r.maxLogBytesPerSecond), r.tags)
+			r.metronClient.SendAppLogRate(perSecondValue, float64(r.maxLogBytesPerSecond), r.tags.Load())
 		case <-r.ctx.Done():
 			return
 		}
@@ -123,5 +134,5 @@ func (r *logRateLimiter) reportLogRateLimitExceededMetric() {
 }
 
 func (r *logRateLimiter) reportLogRateLimitExceededLog(sourceName string, reportMessage string) {
-	_ = r.metronClient.SendAppLog(reportMessage, sourceName, r.tags)
+	_ = r.metronClient.SendAppLog(reportMessage, sourceName, r.tags.Load())
 }

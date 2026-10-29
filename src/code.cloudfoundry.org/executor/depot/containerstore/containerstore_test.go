@@ -2610,15 +2610,14 @@ var _ = Describe("Container Store", func() {
 
 			err = containerStore.Initialize(logger, runReq)
 			Expect(err).NotTo(HaveOccurred())
-
-			_, err = containerStore.Create(logger, "some-trace-id", containerGuid)
-			Expect(err).NotTo(HaveOccurred())
 		})
 
 		Context("when the container exists", func() {
 			JustBeforeEach(func() {
+				_, err := containerStore.Create(logger, "some-trace-id", containerGuid)
+				Expect(err).NotTo(HaveOccurred())
 
-				err := containerStore.Run(logger, "some-trace-id", containerGuid)
+				err = containerStore.Run(logger, "some-trace-id", containerGuid)
 				Expect(err).NotTo(HaveOccurred())
 			})
 
@@ -2808,6 +2807,79 @@ var _ = Describe("Container Store", func() {
 				})
 			})
 
+		})
+
+		Context("when the container has been created but not yet run", func() {
+			BeforeEach(func() {
+				updateReq.InternalRoutes = nil
+			})
+
+			JustBeforeEach(func() {
+				_, err := containerStore.Create(logger, "some-trace-id", containerGuid)
+				Expect(err).NotTo(HaveOccurred())
+			})
+
+			It("does not panic and the log streamer picks up the new tags on Run", func() {
+				Expect(func() {
+					err := containerStore.Update(logger, updateReq)
+					Expect(err).NotTo(HaveOccurred())
+				}).NotTo(Panic())
+
+				Expect(logStreamer.UpdateTagsCallCount()).To(Equal(0))
+				Expect(gardenContainer.SetPropertyCallCount()).To(Equal(1))
+
+				err := containerStore.Run(logger, "some-trace-id", containerGuid)
+				Expect(err).NotTo(HaveOccurred())
+
+				Expect(logManager.NewLogStreamerCallCount()).To(Equal(1))
+				logConfig, _, _, _, _ := logManager.NewLogStreamerArgsForCall(0)
+				Expect(logConfig.Tags).To(Equal(metricTags))
+			})
+		})
+
+		Context("when the container has been initialized but not yet created", func() {
+			BeforeEach(func() {
+				updateReq.InternalRoutes = nil
+			})
+
+			It("does not panic and the container is created with the new tags in its log config", func() {
+				Expect(func() {
+					err := containerStore.Update(logger, updateReq)
+					Expect(err).NotTo(HaveOccurred())
+				}).NotTo(Panic())
+
+				Expect(logStreamer.UpdateTagsCallCount()).To(Equal(0))
+				Expect(gardenContainer.SetPropertyCallCount()).To(Equal(0))
+
+				_, err := containerStore.Create(logger, "some-trace-id", containerGuid)
+				Expect(err).NotTo(HaveOccurred())
+
+				Expect(gardenClient.CreateCallCount()).To(Equal(1))
+				containerSpec := gardenClient.CreateArgsForCall(0)
+				var logConfig models.LogConfig
+				Expect(json.Unmarshal([]byte(containerSpec.Properties["log_config"]), &logConfig)).To(Succeed())
+				Expect(logConfig.Tags).To(Equal(metricTags))
+			})
+		})
+
+		Context("when the container has been reserved but not yet initialized", func() {
+			BeforeEach(func() {
+				updateReq.Guid = "reserved-guid"
+				updateReq.InternalRoutes = nil
+			})
+
+			It("does not panic", func() {
+				_, err := containerStore.Reserve(logger, "some-trace-id", &executor.AllocationRequest{Guid: "reserved-guid"})
+				Expect(err).NotTo(HaveOccurred())
+
+				Expect(func() {
+					err := containerStore.Update(logger, updateReq)
+					Expect(err).NotTo(HaveOccurred())
+				}).NotTo(Panic())
+
+				Expect(logStreamer.UpdateTagsCallCount()).To(Equal(0))
+				Expect(gardenContainer.SetPropertyCallCount()).To(Equal(0))
+			})
 		})
 
 		Context("when the container does not exist", func() {
