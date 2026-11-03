@@ -52,7 +52,6 @@ files:
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/aws/defaults/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/aws/middleware/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/aws/protocol/query/*.go # gosub
-  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/aws/protocol/restjson/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/aws/protocol/xml/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/aws/ratelimit/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/aws/retry/*.go # gosub
@@ -101,12 +100,15 @@ files:
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/internal/presigned-url/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/signin/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/signin/internal/endpoints/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/signin/schemas/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/signin/types/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/sso/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/sso/internal/endpoints/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/sso/schemas/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/sso/types/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/ssooidc/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/ssooidc/internal/endpoints/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/ssooidc/schemas/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/ssooidc/types/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/sts/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/aws-sdk-go-v2/service/sts/internal/endpoints/*.go # gosub
@@ -146,8 +148,10 @@ files:
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/transport/http/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/transport/http/internal/io/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/transport/http/protocol/awsjson/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/transport/http/protocol/internal/httpbinding/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/transport/http/protocol/internal/json/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/transport/http/protocol/internal/json/internal/stdlib/*.go # gosub
+  - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/transport/http/protocol/restjson1/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/aws/smithy-go/waiter/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/awslabs/amazon-ecr-credential-helper/ecr-login/api/*.go # gosub
   - code.cloudfoundry.org/vendor/github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cache/*.go # gosub
