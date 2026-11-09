@@ -6,6 +6,7 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
+	"encoding/json"
 	"math/big"
 	"testing"
 	"time"
@@ -43,6 +44,7 @@ func TestServiceAccountWireToInstanceCredentials(t *testing.T) {
 	helper := rep.RunRequestConversionHelper{ECRHelper: &fakeecrhelper.FakeECRHelper{}}
 	stack := rep.StackPathMap{"stack": "stack:/rootfs"}
 	account := &models.CertificateProperties{OrganizationalUnit: []string{"app:app-guid", "space:space-guid", "organization:org-guid"}, ServiceAccount: &models.ServiceAccount{Name: "payments-worker"}}
+	if err := json.Unmarshal([]byte(`{"service_account":{"name":"payments-worker","prefix":"payments-team"},"organizational_unit":["app:app-guid","space:space-guid","organization:org-guid"]}`), account); err != nil { t.Fatal(err) }
 	requests := []executor.RunRequest{}
 	for _, guid := range []string{"app-one", "app-two"} {
 		desired := model_helpers.NewValidDesiredLRP(guid)
@@ -98,7 +100,7 @@ func TestServiceAccountWireToInstanceCredentials(t *testing.T) {
 			}
 			count := 0
 			for _, name := range cert.DNSNames {
-				if name == "payments-worker.svc.identity" {
+				if name == "payments-worker.payments-team.svc.identity" {
 					count++
 				}
 			}
