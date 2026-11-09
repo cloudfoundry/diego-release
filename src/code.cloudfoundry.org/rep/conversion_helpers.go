@@ -475,7 +475,7 @@ func convertCertificateProperties(props *models.CertificateProperties) executor.
 		OrganizationalUnit: props.OrganizationalUnit,
 	}
 	if props.ServiceAccount != nil {
-		properties.ServiceAccount = &executor.ServiceAccount{Name: props.ServiceAccount.Name}
+		properties.ServiceAccount = &executor.ServiceAccount{Name: props.ServiceAccount.Name, Prefix: props.ServiceAccount.Prefix}
 	}
 	return properties
 }

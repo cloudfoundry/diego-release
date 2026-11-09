@@ -174,7 +174,8 @@ type CertificateProperties struct {
 
 // ServiceAccount is platform-owned launch-time identity, not an arbitrary SAN.
 type ServiceAccount struct {
-	Name string `json:"name"`
+	Prefix string `json:"prefix,omitempty"`
+	Name   string `json:"name"`
 }
 
 type Sidecar struct {

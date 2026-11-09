@@ -9,4 +9,5 @@ message CertificateProperties {
 
 message ServiceAccount {
   string name = 1;
+  string prefix = 2;
 }

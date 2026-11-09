@@ -522,7 +522,11 @@ func createCertificateTemplate(guid string, certSAN certificateSAN, notBefore, n
 	}
 	dnsNames := []string{guid}
 	if certSAN.ServiceAccount != nil {
-		dnsNames = append(dnsNames, certSAN.ServiceAccount.Name+".svc.identity")
+		name := certSAN.ServiceAccount.Name
+		if certSAN.ServiceAccount.Prefix != "" {
+			name += "." + certSAN.ServiceAccount.Prefix
+		}
+		dnsNames = append(dnsNames, name+".svc.identity")
 	}
 	for _, route := range certSAN.InternalRoutes {
 		dnsNames = append(dnsNames, route.Hostname)
