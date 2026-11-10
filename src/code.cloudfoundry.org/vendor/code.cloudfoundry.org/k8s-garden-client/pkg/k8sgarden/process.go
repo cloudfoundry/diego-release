@@ -127,7 +127,7 @@ func (p *process) setCtrdProcess(proc ctrdclient.Process) {
 // retrying with exponential backoff as the shim may not yet have wired up IO.
 func (p *process) closeStdin(proc ctrdclient.Process) {
 	backoff := 100 * time.Millisecond
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		if err := proc.CloseIO(context.Background(), ctrdclient.WithStdinCloser); err != nil {
 			p.log.Error("failed-closing-stdin", err)
 			time.Sleep(backoff)

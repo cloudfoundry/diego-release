@@ -23,6 +23,13 @@ import (
 	"github.com/gopacket/gopacket/endian"
 )
 
+// defaultCaptureLength is the capture length of a new EthernetHandle:
+// libpcap's MAXIMUM_SNAPLEN, the most a packet socket hands over.
+const defaultCaptureLength = 262144
+
+// vlanIDMask selects the VLAN id from an 802.1Q tag control field.
+const vlanIDMask = 0xfff
+
 var hdrLen = unix.CmsgSpace(0)
 var auxLen = unix.CmsgSpace(int(unsafe.Sizeof(unix.TpacketAuxdata{})))
 var timensLen = unix.CmsgSpace(int(unsafe.Sizeof(unix.Timespec{})))
@@ -112,7 +119,8 @@ func (h *EthernetHandle) readOne() (ci gopacket.CaptureInfo, vlan int, haveVlan 
 			aux := (*unix.TpacketAuxdata)(unsafe.Pointer(&oob[hdrLen]))
 			ci.CaptureLength = int(n)
 			ci.Length = int(aux.Len)
-			vlan = int(aux.Vlan_tci)
+			// The tag control field also carries priority and DEI bits.
+			vlan = int(aux.Vlan_tci & vlanIDMask)
 			haveVlan = (aux.Status & unix.TP_STATUS_VLAN_VALID) != 0
 			gotAux = true
 		case hdr.Level == unix.SOL_SOCKET && hdr.Type == unix.SO_TIMESTAMPNS && len(oob) >= timensLen:
@@ -327,9 +335,12 @@ func NewEthernetHandle(ifname string) (*EthernetHandle, error) {
 		ooblen += timensLen
 	}
 
+	// The MTU does not include the link-layer header, so a frame that fills
+	// it does not fit an MTU-sized buffer, and segmentation offload hands
+	// over merged frames many times the MTU. Capture what libpcap would.
 	handle := &EthernetHandle{
 		file:   os.NewFile(uintptr(fd), ""),
-		buffer: make([]byte, intf.MTU),
+		buffer: make([]byte, defaultCaptureLength),
 		oob:    make([]byte, ooblen),
 		ancil:  make([]interface{}, 1),
 		intf:   intf.Index,

@@ -13,6 +13,7 @@ type Config struct {
 	SidecarRootfs                 string
 	TrustedSystemCertificatesPath string
 	EnableContainerProxy          bool
+	EnableUserNamespaces          bool
 }
 
 type Option func(*client)
@@ -35,4 +36,8 @@ func WithSandboxPath(sandboxPath string) Option {
 
 func WithUserLookupper(u users.UserLookupper) Option {
 	return func(cl *client) { cl.userLookupper = u }
+}
+
+func WithEnableUserNamespaces(enable bool) Option {
+	return func(cl *client) { cl.enableUserNamespaces = enable }
 }

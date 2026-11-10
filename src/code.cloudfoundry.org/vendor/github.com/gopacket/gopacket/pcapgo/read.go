@@ -78,9 +78,11 @@ func (r *Reader) readHeader() error {
 	}
 
 	if gzipMagic[0] == magicGzip1 && gzipMagic[1] == magicGzip2 {
-		if r.r, err = gzip.NewReader(br); err != nil {
+		gzipReader, err := gzip.NewReader(br)
+		if err != nil {
 			return err
 		}
+		r.r = &eofAfterError{r: gzipReader}
 	} else {
 		r.r = br
 	}
@@ -118,12 +120,23 @@ func (r *Reader) readHeader() error {
 	return nil
 }
 
+// maxCaptureLength is the longest record the reader takes. Writers that do
+// not truncate to the snap length they declare (dpkt, older versions of this
+// package) produce longer records; tcpdump and Wireshark read those up to
+// their own maximum snap length, as the SetSnaplen comment describes.
+func (r *Reader) maxCaptureLength() int {
+	if r.snaplen > eagerReadMax {
+		return int(r.snaplen)
+	}
+	return eagerReadMax
+}
+
 // ReadPacketData reads next packet from file.
 func (r *Reader) ReadPacketData() (data []byte, ci gopacket.CaptureInfo, err error) {
 	if ci, err = r.readPacketHeader(); err != nil {
 		return
 	}
-	if ci.CaptureLength > int(r.snaplen) {
+	if ci.CaptureLength > r.maxCaptureLength() {
 		err = fmt.Errorf("capture length exceeds snap length: %d > %d", ci.CaptureLength, r.snaplen)
 		return
 	}
@@ -131,8 +144,7 @@ func (r *Reader) ReadPacketData() (data []byte, ci gopacket.CaptureInfo, err err
 		err = fmt.Errorf("capture length exceeds original packet length: %d > %d", ci.CaptureLength, ci.Length)
 		return
 	}
-	data = make([]byte, ci.CaptureLength)
-	_, err = io.ReadFull(r.r, data)
+	data, err = readFull(r.r, ci.CaptureLength)
 	return data, ci, err
 }
 
@@ -145,7 +157,7 @@ func (r *Reader) ZeroCopyReadPacketData() (data []byte, ci gopacket.CaptureInfo,
 	if ci, err = r.readPacketHeader(); err != nil {
 		return
 	}
-	if ci.CaptureLength > int(r.snaplen) {
+	if ci.CaptureLength > r.maxCaptureLength() {
 		err = fmt.Errorf("capture length exceeds snap length: %d > %d", ci.CaptureLength, r.snaplen)
 		return
 	}
@@ -154,12 +166,14 @@ func (r *Reader) ZeroCopyReadPacketData() (data []byte, ci gopacket.CaptureInfo,
 		return
 	}
 
+	if !eagerRead(ci.CaptureLength) {
+		data, err = readFull(r.r, ci.CaptureLength)
+		r.packetBuf = data
+		return data, ci, err
+	}
+
 	if cap(r.packetBuf) < ci.CaptureLength {
-		snaplen := int(r.snaplen)
-		if snaplen < ci.CaptureLength {
-			snaplen = ci.CaptureLength
-		}
-		r.packetBuf = make([]byte, snaplen)
+		r.packetBuf = make([]byte, bufferSize(int(r.snaplen), ci.CaptureLength))
 	}
 	data = r.packetBuf[:ci.CaptureLength]
 	_, err = io.ReadFull(r.r, data)

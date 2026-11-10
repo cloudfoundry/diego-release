@@ -14,7 +14,6 @@ import (
 	"github.com/distribution/reference"
 	"github.com/opencontainers/image-spec/identity"
 	corev1 "k8s.io/api/core/v1"
-	"k8s.io/utils/ptr"
 )
 
 //go:generate go tool counterfeiter -generate
@@ -129,5 +128,5 @@ func (w *clientWrapper) Pull(ctx context.Context, ref, username, password string
 }
 
 func (w *clientWrapper) Delete(ctx context.Context, img ctrdclient.Image) error {
-	return w.client.ImageService().Delete(ctx, img.Name(), images.DeleteTarget(ptr.To(img.Target())))
+	return w.client.ImageService().Delete(ctx, img.Name(), images.DeleteTarget(new(img.Target())))
 }

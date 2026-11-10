@@ -18,7 +18,6 @@ import (
 	"code.cloudfoundry.org/lager/v3"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/utils/ptr"
 	ctrlclient "sigs.k8s.io/controller-runtime/pkg/client"
@@ -75,6 +74,7 @@ type client struct {
 	nodeMemoryInB        int64
 	sidecarRootfs        string
 	enableContainerProxy bool
+	enableUserNamespaces bool
 	workloadsNamespace   string
 	sandboxPath          string
 }
@@ -88,6 +88,7 @@ func NewClient(logger lager.Logger, k8sclient ctrlclient.Client, cfg Config, opt
 		trustedCertsDir:      cfg.TrustedSystemCertificatesPath,
 		sidecarRootfs:        cfg.SidecarRootfs,
 		enableContainerProxy: cfg.EnableContainerProxy,
+		enableUserNamespaces: cfg.EnableUserNamespaces,
 		workloadsNamespace:   cfg.WorkloadsNamespace,
 		portManager:          newPortManager(),
 	}
@@ -295,17 +296,15 @@ func (c *client) Create(spec garden.ContainerSpec) (garden.Container, error) {
 	}
 
 	pod = &corev1.Pod{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      spec.Handle,
-			Namespace: c.workloadsNamespace,
-			Labels:    podLabels(spec.Properties),
-		},
+		Name:      spec.Handle,
+		Namespace: c.workloadsNamespace,
+		Labels:    podLabels(spec.Properties),
 		Spec: corev1.PodSpec{
-			AutomountServiceAccountToken:  ptr.To(false),
-			EnableServiceLinks:            ptr.To(false),
+			AutomountServiceAccountToken:  new(false),
+			EnableServiceLinks:            new(false),
 			NodeName:                      c.node.GetName(),
-			TerminationGracePeriodSeconds: ptr.To(int64(5)),
-			HostUsers:                     ptr.To(spec.Privileged),
+			TerminationGracePeriodSeconds: new(int64(5)),
+			HostUsers:                     new(!c.enableUserNamespaces || spec.Privileged),
 			RestartPolicy:                 corev1.RestartPolicyNever,
 			Resources: &corev1.ResourceRequirements{
 				Requests: corev1.ResourceList{
@@ -318,26 +317,20 @@ func (c *client) Create(spec garden.ContainerSpec) (garden.Container, error) {
 			Volumes: []corev1.Volume{
 				{
 					Name: "init-bin",
-					VolumeSource: corev1.VolumeSource{
-						HostPath: &corev1.HostPathVolumeSource{
-							Path: "/var/lib/rep/bin/init",
-						},
+					HostPath: &corev1.HostPathVolumeSource{
+						Path: "/var/lib/rep/bin/init",
 					},
 				},
 				{
 					Name: "tar-bin",
-					VolumeSource: corev1.VolumeSource{
-						HostPath: &corev1.HostPathVolumeSource{
-							Path: "/var/lib/rep/bin/tar",
-						},
+					HostPath: &corev1.HostPathVolumeSource{
+						Path: "/var/lib/rep/bin/tar",
 					},
 				},
 				{
 					Name: "untar-bin",
-					VolumeSource: corev1.VolumeSource{
-						HostPath: &corev1.HostPathVolumeSource{
-							Path: "/var/lib/rep/bin/untar",
-						},
+					HostPath: &corev1.HostPathVolumeSource{
+						Path: "/var/lib/rep/bin/untar",
 					},
 				},
 			},
@@ -377,9 +370,10 @@ func (c *client) Create(spec garden.ContainerSpec) (garden.Container, error) {
 
 	if spec.Properties[ContainerWorkloadProperty] == appContainerName { // can be one if these https://github.com/cloudfoundry/cloud_controller_ng/blob/169b6202c7a05f36e22cb1e6e7595e07f2872cf4/lib/cloud_controller/diego/protocol/container_network_info.rb#L7-L9
 		pod.Spec.Containers = append(pod.Spec.Containers, corev1.Container{
-			Name:    sidecarContainerName,
-			Image:   c.sidecarRootfs,
-			Command: []string{"/tmp/garden-init"},
+			Name:            sidecarContainerName,
+			Image:           c.sidecarRootfs,
+			ImagePullPolicy: corev1.PullIfNotPresent,
+			Command:         []string{"/tmp/garden-init"},
 			VolumeMounts: []corev1.VolumeMount{
 				{
 					Name:      "init-bin",
@@ -406,9 +400,7 @@ func (c *client) Create(spec garden.ContainerSpec) (garden.Container, error) {
 		if mount.SrcPath == c.trustedCertsDir {
 			volumeSource = corev1.VolumeSource{
 				ConfigMap: &corev1.ConfigMapVolumeSource{
-					LocalObjectReference: corev1.LocalObjectReference{
-						Name: "trusted-system-certs",
-					},
+					Name: "trusted-system-certs",
 				},
 			}
 		}
