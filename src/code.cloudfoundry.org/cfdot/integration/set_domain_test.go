@@ -69,7 +69,7 @@ var _ = Describe("set-domain", func() {
 			Expect(err).NotTo(HaveOccurred())
 
 			Eventually(sess).Should(gexec.Exit(3))
-			Expect(sess.Err).To(gbytes.Say(`invalid duration`))
+			Expect(sess.Err).To(gbytes.Say(`invalid argument "asdf" for "-t, --ttl" flag`))
 			Expect(sess.Err).To(gbytes.Say(`Usage:`))
 		})
 
