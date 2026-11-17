@@ -1,9 +1,6 @@
 package processes
 
 import (
-	"os"
-	"path/filepath"
-
 	"code.cloudfoundry.org/garden"
 	"code.cloudfoundry.org/guardian/rundmc/goci"
 	"code.cloudfoundry.org/guardian/rundmc/users"
@@ -106,22 +103,4 @@ func toUint32Slice(slice []int) []uint32 {
 		result = append(result, uint32(i))
 	}
 	return result
-}
-
-func getRootDir(rootFS, specDir, home string) string {
-	dir := specDir
-	if dir == "" {
-		dir = home
-	}
-
-	if dir == "" {
-		return "/"
-	}
-
-	fullPath := filepath.Join(rootFS, dir)
-	if _, err := os.Stat(fullPath); os.IsNotExist(err) {
-		return "/"
-	}
-
-	return dir
 }

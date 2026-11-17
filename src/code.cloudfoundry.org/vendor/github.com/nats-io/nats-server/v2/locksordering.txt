@@ -17,9 +17,10 @@ This lock is independent and can be invoked under any other lock: jsAccount -> j
 
 A lock to protect the account's leafnodes list was also introduced to
 allow that lock to be held and the acquire a client lock which is not
-possible with the normal account lock.
+possible with the normal account lock. So the account lock must not be
+held while acquiring it.
 
-accountLeafList -> client
+accountLeafList -> client -> Account
 
 AccountResolver interface has various implementations, but assume: AccountResolver -> Server
 
@@ -59,6 +60,13 @@ mirrors/sources, info requests, etc.) are sequentially consistent and may observ
 an inflight batch. It must be acquired before the stream lock, never while holding it.
 
     isolateMu -> stream
+
+The "writeMu" lock is held for reading while a write decides between storing locally and proposing.
+Switching between local R1 and replicated writes holds it for writing, and applies the log meanwhile.
+It must be acquired before any other JetStream lock, and never again while holding it for reading.
+
+    writeMu -> jetStream
+    writeMu -> isolateMu -> stream
 
 The "eventIdsMu" lock protects the server's event ID generator. It may be acquired
 while holding the Server lock, but the Server lock must not be acquired while

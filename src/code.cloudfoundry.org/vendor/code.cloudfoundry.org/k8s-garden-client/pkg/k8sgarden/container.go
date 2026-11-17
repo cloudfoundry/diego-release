@@ -2,10 +2,13 @@ package k8sgarden
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io"
 	"path/filepath"
+	"slices"
 	"strings"
+	"sync/atomic"
 	"time"
 
 	"code.cloudfoundry.org/garden"
@@ -15,8 +18,11 @@ import (
 	"code.cloudfoundry.org/guardian/rundmc/users"
 	"code.cloudfoundry.org/k8s-garden-client/pkg/containerd"
 	"code.cloudfoundry.org/lager/v3"
+	"github.com/containerd/errdefs"
 	"github.com/google/uuid"
 	"github.com/opencontainers/runtime-spec/specs-go"
+	"google.golang.org/grpc/codes"
+	grpcstatus "google.golang.org/grpc/status"
 	corev1 "k8s.io/api/core/v1"
 )
 
@@ -34,6 +40,9 @@ type container struct {
 	runningContainers map[string]containerd.RunningContainer
 	propertyManager   gardener.PropertyManager
 	sandboxPath       string
+	containerdClient  containerd.Client
+	oom               atomic.Bool
+	destroyed         atomic.Bool
 }
 
 func NewContainer(
@@ -46,6 +55,7 @@ func NewContainer(
 	rootfsSize uint64,
 	runningContainers map[string]containerd.RunningContainer,
 	sandboxPath string,
+	containerdClient containerd.Client,
 ) *container {
 	return &container{
 		log:               log,
@@ -57,6 +67,7 @@ func NewContainer(
 		runningContainers: runningContainers,
 		propertyManager:   propertyManager,
 		sandboxPath:       sandboxPath,
+		containerdClient:  containerdClient,
 	}
 }
 
@@ -67,12 +78,15 @@ func (c *container) Handle() string {
 
 // Info implements [garden.Container].
 func (c *container) Info() (garden.ContainerInfo, error) {
+	if c.destroyed.Load() {
+		return garden.ContainerInfo{}, garden.ContainerNotFoundError{Handle: c.Handle()}
+	}
+	events := []string{}
+	if c.oomKilled() {
+		events = append(events, "out of memory")
+	}
 	portMapping := []garden.PortMapping{}
 	for _, container := range c.pod.Spec.Containers {
-		if len(container.Ports) == 0 {
-			continue
-		}
-
 		for _, containerPort := range container.Ports {
 			portMapping = append(portMapping, garden.PortMapping{
 				HostPort:      uint32(containerPort.HostPort),
@@ -83,7 +97,7 @@ func (c *container) Info() (garden.ContainerInfo, error) {
 
 	return garden.ContainerInfo{
 		State:         "active",
-		Events:        []string{},
+		Events:        events,
 		HostIP:        c.pod.Status.HostIP,
 		ContainerIP:   c.pod.Status.PodIP,
 		ContainerIPv6: "",
@@ -92,13 +106,36 @@ func (c *container) Info() (garden.ContainerInfo, error) {
 	}, nil
 }
 
+func (c *container) oomKilled() bool {
+	if c.oom.Load() {
+		return true
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), apiOperationTimeout)
+	defer cancel()
+	for _, running := range c.runningContainers {
+		oom, err := c.containerdClient.OOMKilled(ctx, running.ID)
+		if err != nil {
+			if grpcstatus.Code(err) != codes.NotFound {
+				c.log.Error("failed-to-get-oom-status", err, lager.Data{"container-id": running.ID})
+			}
+			continue
+		}
+		if oom {
+			// Guardian retains OOM events for the lifetime of the Garden container.
+			c.oom.Store(true)
+			return true
+		}
+	}
+	return c.oom.Load()
+}
+
 // Run implements [garden.Container].
 func (c *container) Run(spec garden.ProcessSpec, io garden.ProcessIO) (garden.Process, error) {
 	return c.run(spec, io, false)
 }
 
 func (c *container) run(spec garden.ProcessSpec, io garden.ProcessIO, cleanEnv bool) (garden.Process, error) {
-	c.log.Info("running-process", lager.Data{"processSpec": spec})
+	c.log.Info("running-process", lager.Data{"path": spec.Path, "processID": spec.ID})
 	targetContainer := appContainerName
 	if spec.Image.URI != "" {
 		targetContainer = sidecarContainerName
@@ -114,9 +151,9 @@ func (c *container) run(spec garden.ProcessSpec, io garden.ProcessIO, cleanEnv b
 		return nil, fmt.Errorf("get user %q: %w", spec.User, err)
 	}
 
-	baseEnv := c.env
-	if cleanEnv {
-		baseEnv = nil
+	var baseEnv []string
+	if !cleanEnv && targetContainer == appContainerName {
+		baseEnv = slices.Clip(c.env)
 	}
 
 	processSpec := &specs.Process{
@@ -136,7 +173,12 @@ func (c *container) run(spec garden.ProcessSpec, io garden.ProcessIO, cleanEnv b
 		NoNewPrivileges: false,
 	}
 	processSpec.Env = processes.UnixEnvFor(goci.Bndl{Spec: specs.Spec{Process: processSpec}}, spec, execUser.Uid)
-	processSpec.Env = append(processSpec.Env, spec.Env...)
+	for _, gid := range execUser.Sgids {
+		processSpec.User.AdditionalGids = append(processSpec.User.AdditionalGids, uint32(gid))
+	}
+	if spec.Limits.Nofile != nil {
+		processSpec.Rlimits = []specs.POSIXRlimit{{Type: "RLIMIT_NOFILE", Soft: *spec.Limits.Nofile, Hard: *spec.Limits.Nofile}}
+	}
 
 	if spec.Dir == "" {
 		processSpec.Cwd = execUser.Home
@@ -147,13 +189,17 @@ func (c *container) run(spec garden.ProcessSpec, io garden.ProcessIO, cleanEnv b
 		id = uuid.NewString()
 	}
 
-	return NewProcess(
+	p := newProcess(
 		c.log.Session("process", lager.Data{"processID": id}),
 		id,
 		processSpec,
 		io,
 		rc.Task,
-	), nil
+	)
+	if err := p.start(); err != nil {
+		return nil, err
+	}
+	return p, nil
 }
 
 // StreamIn implements [garden.Container].
@@ -206,6 +252,7 @@ func (c *container) StreamOut(spec garden.StreamOutSpec) (io.ReadCloser, error) 
 
 	errOut := new(bytes.Buffer)
 	reader, writer := io.Pipe()
+	stdout := &streamOutWriter{PipeWriter: writer}
 
 	c.log.Info("stream-out-running-tar", lager.Data{"sourcePath": sourcePath, "compressPath": compressPath, "user": spec.User})
 	streamProcess, err := c.run(garden.ProcessSpec{
@@ -214,7 +261,7 @@ func (c *container) StreamOut(spec garden.StreamOutSpec) (io.ReadCloser, error) 
 		Args: []string{"--no-same-permissions", "--no-same-owner", "--xattrs", "--xattrs-include=*", "-C", sourcePath, "-cf", "-", compressPath},
 		User: streamUser(spec.User),
 	}, garden.ProcessIO{
-		Stdout: writer,
+		Stdout: stdout,
 		Stderr: errOut,
 	}, true)
 	if err != nil {
@@ -222,6 +269,11 @@ func (c *container) StreamOut(spec garden.StreamOutSpec) (io.ReadCloser, error) 
 		return nil, fmt.Errorf("stream-out: failed to run tar: %w", err)
 	}
 
+	stdout.onClose = func() {
+		if err := streamProcess.Signal(garden.SignalKill); err != nil && !errdefs.IsNotFound(err) {
+			c.log.Error("failed-to-stop-stream-out-tar", err)
+		}
+	}
 	go func() {
 		exitCode, waitErr := streamProcess.Wait()
 		switch {
@@ -237,6 +289,24 @@ func (c *container) StreamOut(spec garden.StreamOutSpec) (io.ReadCloser, error) 
 	}()
 
 	return reader, nil
+}
+
+type streamOutWriter struct {
+	*io.PipeWriter
+	onClose func()
+}
+
+func (w *streamOutWriter) Write(p []byte) (int, error) {
+	n, err := w.PipeWriter.Write(p)
+	if err == io.ErrClosedPipe {
+		if w.onClose != nil {
+			w.onClose()
+			w.onClose = nil
+		}
+
+		return len(p), nil
+	}
+	return n, err
 }
 
 func streamUser(user string) string {

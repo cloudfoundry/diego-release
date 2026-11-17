@@ -272,7 +272,7 @@ func NewGardenRunner(config GdnRunnerConfig) *GardenRunner {
 	}
 
 	runner.Command.Env = append(
-		os.Environ(),
+		filterEnv(os.Environ(), "TMPDIR", "TEMP", "TMP"),
 		[]string{
 			fmt.Sprintf("TMPDIR=%s", runner.TmpDir),
 			fmt.Sprintf("TEMP=%s", runner.TmpDir),
@@ -534,6 +534,23 @@ func (r *RunningGarden) StackDump() (string, error) {
 	}
 
 	return string(stack), nil
+}
+
+func filterEnv(env []string, keys ...string) []string {
+	filtered := make([]string, 0, len(env))
+	for _, kv := range env {
+		excluded := false
+		for _, key := range keys {
+			if strings.EqualFold(strings.SplitN(kv, "=", 2)[0], key) {
+				excluded = true
+				break
+			}
+		}
+		if !excluded {
+			filtered = append(filtered, kv)
+		}
+	}
+	return filtered
 }
 
 func intptr(i int) *int {

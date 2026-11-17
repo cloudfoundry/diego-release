@@ -10,7 +10,6 @@ import (
 	"github.com/moby/moby/api/types/image"
 	"github.com/moby/moby/client"
 	"github.com/moby/moby/client/pkg/versions"
-	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
 
 	"github.com/buildpacks/imgutil"
 )
@@ -176,14 +175,13 @@ func getInspectAndHistory(repoName string, dockerClient DockerClient) (*image.In
 }
 
 func getPlatformAwareInspectAndHistory(repoName string, platform imgutil.Platform, dockerClient DockerClient) (*image.InspectResponse, []image.HistoryResponseItem, error) {
-	ociPlatform := ocispec.Platform{
-		Architecture: platform.Architecture,
-		OS:           platform.OS,
-		OSVersion:    platform.OSVersion,
-		Variant:      platform.Variant,
+	platformSpec, ok := ociPlatform(platform)
+	if !ok {
+		// Same as not finding the platform: the caller falls back to the generic inspect.
+		return nil, nil, nil
 	}
 
-	platformHistoryResult, err := dockerClient.ImageHistory(context.Background(), repoName, client.ImageHistoryWithPlatform(ociPlatform))
+	platformHistoryResult, err := dockerClient.ImageHistory(context.Background(), repoName, client.ImageHistoryWithPlatform(platformSpec))
 	if err != nil {
 		if cerrdefs.IsNotFound(err) {
 			return nil, nil, nil
@@ -191,7 +189,7 @@ func getPlatformAwareInspectAndHistory(repoName string, platform imgutil.Platfor
 		return nil, nil, fmt.Errorf("get history for image %q: %w", repoName, err)
 	}
 
-	platformInspect, err := dockerClient.ImageInspect(context.Background(), repoName, client.ImageInspectWithPlatform(&ociPlatform))
+	platformInspect, err := dockerClient.ImageInspect(context.Background(), repoName, client.ImageInspectWithPlatform(&platformSpec))
 	if err != nil {
 		if cerrdefs.IsNotFound(err) {
 			return nil, nil, nil

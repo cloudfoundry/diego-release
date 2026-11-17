@@ -6,7 +6,6 @@ import (
 	"net"
 	"net/http"
 	"net/url"
-	"slices"
 	"time"
 
 	"code.cloudfoundry.org/lager/v3"
@@ -74,10 +73,14 @@ func (kc *kubeletClient) GetMetrics(logger lager.Logger, guids []string) (map[st
 }
 
 func (kc *kubeletClient) toContainerMetrics(logger lager.Logger, podStats []statsapi.PodStats, guids []string) map[string]Metrics {
-	containerMetrics := make(map[string]Metrics, len(podStats))
+	requested := make(map[string]struct{}, len(guids))
+	for _, guid := range guids {
+		requested[guid] = struct{}{}
+	}
+	containerMetrics := make(map[string]Metrics, min(len(podStats), len(guids)))
 
 	for _, podStat := range podStats {
-		if !slices.Contains(guids, podStat.PodRef.Name) {
+		if _, ok := requested[podStat.PodRef.Name]; !ok {
 			logger.Debug("skipping-pod-not-in-guid-list", lager.Data{"name": podStat.PodRef.Name, "namespace": podStat.PodRef.Namespace})
 			continue
 		}

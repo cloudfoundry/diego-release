@@ -147,7 +147,8 @@ func (c *client) BulkMetrics(handles []string) (map[string]garden.ContainerMetri
 	for handle, metric := range metrics {
 		ctr, err := c.containers.Get(handle)
 		if err != nil {
-			return nil, fmt.Errorf("failed to get container %s for metrics: %w", handle, err)
+			metricsMap[handle] = garden.ContainerMetricsEntry{Err: garden.NewError(err.Error())}
+			continue
 		}
 
 		metricEntry := garden.ContainerMetricsEntry{
@@ -218,7 +219,7 @@ func (c *client) Containers(properties garden.Properties) ([]garden.Container, e
 }
 
 func (c *client) Create(spec garden.ContainerSpec) (garden.Container, error) {
-	c.logger.Info("create-container-start", lager.Data{"spec": spec})
+	c.logger.Info("create-container-start", lager.Data{"handle": spec.Handle})
 	defer c.logger.Info("create-container-end")
 
 	if c.containers.Exists(spec.Handle) {
@@ -273,7 +274,6 @@ func (c *client) Create(spec garden.ContainerSpec) (garden.Container, error) {
 	var (
 		dockerEnv  []string
 		rootfsSize uint64
-		err        error
 	)
 	if cutImg, ok := strings.CutPrefix(baseImage, "docker:"); ok {
 		img, imgSize, err := c.containerdClient.Pull(context.Background(), strings.TrimLeft(strings.ReplaceAll(cutImg, "#", ":"), "/"), spec.Image.Username, spec.Image.Password)
@@ -282,9 +282,8 @@ func (c *client) Create(spec garden.ContainerSpec) (garden.Container, error) {
 		}
 		rootfsSize = uint64(imgSize)
 
-		if rootfsSize >= spec.Limits.Disk.ByteHard {
-			err = c.containerdClient.Delete(context.Background(), img)
-			return nil, errors.Join(fmt.Errorf("image size %d exceeds container disk limit %d", rootfsSize, spec.Limits.Disk.ByteHard), err)
+		if spec.Limits.Disk.ByteHard > 0 && rootfsSize >= spec.Limits.Disk.ByteHard {
+			return nil, fmt.Errorf("image size %d exceeds container disk limit %d", rootfsSize, spec.Limits.Disk.ByteHard)
 		}
 
 		baseImage = img.Name()
@@ -358,14 +357,15 @@ func (c *client) Create(spec garden.ContainerSpec) (garden.Container, error) {
 							ReadOnly:  true,
 						},
 					},
-					Resources: corev1.ResourceRequirements{
-						Limits: corev1.ResourceList{
-							corev1.ResourceEphemeralStorage: byteToQuantity(int64(spec.Limits.Disk.ByteHard-rootfsSize), resource.DecimalSI),
-						},
-					},
 				},
 			},
 		},
+	}
+
+	if spec.Limits.Disk.ByteHard > 0 {
+		pod.Spec.Containers[0].Resources.Limits = corev1.ResourceList{
+			corev1.ResourceEphemeralStorage: byteToQuantity(int64(spec.Limits.Disk.ByteHard-rootfsSize), resource.DecimalSI),
+		}
 	}
 
 	if spec.Properties[ContainerWorkloadProperty] == appContainerName { // can be one if these https://github.com/cloudfoundry/cloud_controller_ng/blob/169b6202c7a05f36e22cb1e6e7595e07f2872cf4/lib/cloud_controller/diego/protocol/container_network_info.rb#L7-L9
@@ -434,12 +434,21 @@ func (c *client) Create(spec garden.ContainerSpec) (garden.Container, error) {
 			return false, fmt.Errorf("failed to get pod after creation: %w", err)
 		}
 
-		if pod.Status.Phase == corev1.PodRunning {
-			return true, nil
+		for _, status := range pod.Status.ContainerStatuses {
+			if terminated := status.State.Terminated; terminated != nil {
+				return false, fmt.Errorf("pod %s container %s terminated before running: %s: %s", pod.Name, status.Name, terminated.Reason, terminated.Message)
+			}
 		}
 
-		c.logger.Info("waiting-for-pod-to-be-running", lager.Data{"pod-name": spec.Handle, "current-phase": pod.Status.Phase})
-		return false, nil
+		switch pod.Status.Phase {
+		case corev1.PodRunning:
+			return true, nil
+		case corev1.PodFailed, corev1.PodSucceeded:
+			return false, fmt.Errorf("pod %s reached phase %s before running: %s: %s", pod.Name, pod.Status.Phase, pod.Status.Reason, pod.Status.Message)
+		default:
+			c.logger.Info("waiting-for-pod-to-be-running", lager.Data{"pod-name": spec.Handle, "current-phase": pod.Status.Phase})
+			return false, nil
+		}
 	})
 	if waitErr != nil {
 		return nil, waitErr
@@ -460,6 +469,7 @@ func (c *client) Create(spec garden.ContainerSpec) (garden.Container, error) {
 		rootfsSize,
 		runningContainers,
 		c.sandboxPath,
+		c.containerdClient,
 	)
 	_ = container.SetProperty(ContainerStateProperty, "created")
 
@@ -480,6 +490,7 @@ func (c *client) Destroy(handle string) error {
 	if err := deletePod(c.logger, container.pod, c.k8sclient, false); err != nil {
 		return fmt.Errorf("failed to delete pod: %w", err)
 	}
+	container.destroyed.Store(true)
 
 	for _, container := range container.pod.Spec.Containers {
 		for _, port := range container.Ports {
@@ -613,6 +624,7 @@ func containerRestoreInfo(logger lager.Logger, client ctrlclient.Client, contain
 			0,
 			runningContainers,
 			sandboxPath,
+			containerdClient,
 		)
 		if err := containerMap.Add(pod.Name, container); err != nil {
 			return nil, nil, fmt.Errorf("failed to add container to map: %w", err)

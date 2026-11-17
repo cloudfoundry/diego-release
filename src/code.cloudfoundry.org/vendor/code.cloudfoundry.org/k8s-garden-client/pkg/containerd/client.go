@@ -13,7 +13,9 @@ import (
 	"github.com/containerd/continuity/fs"
 	"github.com/distribution/reference"
 	"github.com/opencontainers/image-spec/identity"
+	"google.golang.org/grpc"
 	corev1 "k8s.io/api/core/v1"
+	runtimeapi "k8s.io/cri-api/pkg/apis/runtime/v1"
 )
 
 //go:generate go tool counterfeiter -generate
@@ -31,21 +33,31 @@ type RunningContainer struct {
 //counterfeiter:generate . Client
 type Client interface {
 	IsServing(ctx context.Context) (bool, error)
+	OOMKilled(ctx context.Context, containerID string) (bool, error)
 	LoadContainers(ctx context.Context, statuses []corev1.ContainerStatus) (map[string]RunningContainer, error)
 	Pull(ctx context.Context, ref, username, password string) (ctrdclient.Image, int64, error)
 	Delete(ctx context.Context, img ctrdclient.Image) error
 }
 
 type clientWrapper struct {
-	client *ctrdclient.Client
+	client    *ctrdclient.Client
+	criclient runtimeapi.RuntimeServiceClient
 }
 
 func NewClientWrapper(client *ctrdclient.Client) Client {
-	return &clientWrapper{client: client}
+	return &clientWrapper{
+		client:    client,
+		criclient: runtimeapi.NewRuntimeServiceClient(client.Conn().(*grpc.ClientConn)),
+	}
 }
 
 func (w *clientWrapper) IsServing(ctx context.Context) (bool, error) {
 	return w.client.IsServing(ctx)
+}
+
+func (w *clientWrapper) OOMKilled(ctx context.Context, containerID string) (bool, error) {
+	status, err := w.criclient.ContainerStatus(ctx, &runtimeapi.ContainerStatusRequest{ContainerId: containerID})
+	return status.GetStatus().GetReason() == "OOMKilled", err
 }
 
 func (w *clientWrapper) LoadContainers(ctx context.Context, statuses []corev1.ContainerStatus) (map[string]RunningContainer, error) {
@@ -89,7 +101,7 @@ func (w *clientWrapper) Pull(ctx context.Context, ref, username, password string
 		})))
 	}
 
-	img, err := w.client.Pull(ctx, normalizedRef.String(), opts...)
+	img, err := w.client.Pull(ctx, reference.TagNameOnly(normalizedRef).String(), opts...)
 	if err != nil {
 		return nil, 0, err
 	}
