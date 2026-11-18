@@ -1,5 +1,5 @@
 check process route_emitter
   with pidfile /var/vcap/sys/run/bpm/route_emitter/route_emitter.pid
   start program "/var/vcap/jobs/bpm/bin/bpm start route_emitter"
-  stop program "/var/vcap/jobs/bpm/bin/bpm stop route_emitter"
+  stop program "/var/vcap/jobs/bpm/bin/bpm stop route_emitter"<% if_p("diego.route_emitter.monit_stop_timeout_in_seconds") do |timeout| %> with timeout <%= Integer(timeout) %> seconds<% end %>
   group vcap
