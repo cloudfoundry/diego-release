@@ -427,6 +427,9 @@ func (c *credManager) generateCredForSAN(logger lager.Logger, certSAN certificat
 	if certSAN.ServiceAccount != nil && !serviceAccountNamePattern.MatchString(certSAN.ServiceAccount.Name) {
 		return Credential{}, fmt.Errorf("invalid service account name")
 	}
+	if certSAN.ServiceAccount != nil && !serviceAccountNamePattern.MatchString(certSAN.ServiceAccount.Prefix) {
+		return Credential{}, fmt.Errorf("invalid service account prefix")
+	}
 	for _, route := range certSAN.InternalRoutes {
 		if reservedAccountIdentity(route.Hostname) {
 			return Credential{}, fmt.Errorf("internal route uses reserved service account identity namespace")
@@ -522,11 +525,7 @@ func createCertificateTemplate(guid string, certSAN certificateSAN, notBefore, n
 	}
 	dnsNames := []string{guid}
 	if certSAN.ServiceAccount != nil {
-		name := certSAN.ServiceAccount.Name
-		if certSAN.ServiceAccount.Prefix != "" {
-			name += "." + certSAN.ServiceAccount.Prefix
-		}
-		dnsNames = append(dnsNames, name+".svc.identity")
+		dnsNames = append(dnsNames, certSAN.ServiceAccount.Name+"."+certSAN.ServiceAccount.Prefix+".svc.identity")
 	}
 	for _, route := range certSAN.InternalRoutes {
 		dnsNames = append(dnsNames, route.Hostname)
