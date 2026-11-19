@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"encoding/pem"
 	"math/big"
+	"strings"
 	"testing"
 	"time"
 
@@ -23,6 +24,28 @@ import (
 	"github.com/gogo/protobuf/proto"
 	"github.com/onsi/gomega"
 )
+
+func TestServiceAccountRuntimeContractRequiresPrefix(t *testing.T) {
+	for _, kind := range []string{"LRP", "task"} {
+		t.Run(kind, func(t *testing.T) {
+			gomega.RegisterTestingT(t)
+			properties := &models.CertificateProperties{ServiceAccount: &models.ServiceAccount{Name: "payments-worker"}}
+			var err error
+			if kind == "LRP" {
+				desired := model_helpers.NewValidDesiredLRP("app-one")
+				desired.CertificateProperties = properties
+				err = desired.Validate()
+			} else {
+				task := model_helpers.NewValidTask("runtime-task")
+				task.CertificateProperties = properties
+				err = task.TaskDefinition.Validate()
+			}
+			if err == nil || !strings.Contains(err.Error(), "certificate_properties.service_account.prefix") {
+				t.Fatalf("expected runtime contract to reject missing prefix, got: %v", err)
+			}
+		})
+	}
+}
 
 func TestServiceAccountWireToInstanceCredentials(t *testing.T) {
 	gomega.RegisterTestingT(t)
@@ -64,6 +87,9 @@ func TestServiceAccountWireToInstanceCredentials(t *testing.T) {
 		runInfo := decoded.DesiredLRPRunInfo(time.Now())
 		decoded.CertificateProperties = nil
 		decoded.AddRunInfo(runInfo)
+		if err := decoded.Validate(); err != nil {
+			t.Fatal(err)
+		}
 		actual := model_helpers.NewValidActualLRP(guid, 0)
 		request, err := helper.NewRunRequestFromDesiredLRP(guid, decoded, &actual.ActualLRPKey, &actual.ActualLRPInstanceKey, stack, rep.LayeringModeSingleLayer)
 		if err != nil {
@@ -80,6 +106,9 @@ func TestServiceAccountWireToInstanceCredentials(t *testing.T) {
 	}
 	decodedTask := &models.Task{}
 	if err := proto.Unmarshal(wire, decodedTask); err != nil {
+		t.Fatal(err)
+	}
+	if err := decodedTask.TaskDefinition.Validate(); err != nil {
 		t.Fatal(err)
 	}
 	request, err := helper.NewRunRequestFromTask(decodedTask, stack, rep.LayeringModeSingleLayer)
