@@ -883,7 +883,7 @@ func (*CertificateProperties) Version() format.Version {
 }
 
 func (properties CertificateProperties) Validate() error {
-	if properties.ServiceAccount != nil && properties.ServiceAccount.Prefix != "" && !serviceAccountNamePattern.MatchString(properties.ServiceAccount.Prefix) {
+	if properties.ServiceAccount != nil && !serviceAccountNamePattern.MatchString(properties.ServiceAccount.Prefix) {
 		return ErrInvalidField{"certificate_properties.service_account.prefix"}
 	}
 	if properties.ServiceAccount != nil && !serviceAccountNamePattern.MatchString(properties.ServiceAccount.Name) {

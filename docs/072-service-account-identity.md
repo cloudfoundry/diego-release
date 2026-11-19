@@ -1,13 +1,14 @@
 # Service-account instance identity (experimental)
 
 Compatible Cloud Controller versions supply one optional platform-owned
-`certificate_properties.service_account.name` for authorized app launches and
-runtime tasks. Names are canonical lowercase DNS labels of 3–63 characters.
-BBS validates the field, retains it in stored LRP run-info assembly, and rep
+`certificate_properties.service_account` with both `name` and organization `prefix`
+for authorized app launches and runtime tasks. Both fields are canonical lowercase
+RFC 1123 labels of 3–63 characters; accounts without a prefix are invalid.
+BBS validates the identity, retains it in stored LRP run-info assembly, and rep
 copies it into executor credential input. Empty certificate properties retain
 the existing unbound/staging behavior.
 
-When enabled, executor adds exactly one `<name>.svc.identity` DNS SAN to both
+When enabled, executor adds exactly one `<name>.<prefix>.svc.identity` DNS SAN to both
 instance-identity and C2C certificates. Instance CN/GUID SAN, IP SAN, caller
 app/space/organization OUs, C2C internal routes, usages and validity remain intact.
 Each credential and each instance uses independent keys; rotation generates new
@@ -46,18 +47,19 @@ Disabling/unbinding does not revoke certificates already issued to a workload.
 
 CAPI excludes account identity from staging and captures runtime task/process
 assignments. Diego consumes the trusted typed contract rather than environment
-variables or user-supplied SANs. Account authorization, same-space ownership and
+variables or user-supplied SANs. Org-owned account authorization, same-org space entitlements and
 UAA client reconciliation remain CAPI responsibilities.
 
 ## Local contract provenance
 
 The POC pins `code.cloudfoundry.org/bbs/models` to
-`v1.15.1-0.20261005213824-869b0650f414`, from the separately versioned BBS
-source SHA `869b0650f4147bb24d790f52153ef571fc11bda0`. Go bindings were generated
+`v1.15.1-0.20261119082436-7fc64d1d37a1`, from the separately versioned BBS
+source SHA `7fc64d1d37a1bb2f5bcb6619c87ac27f859ea62e`. Go bindings were generated
 from the authoritative protobuf and vendor was populated through `go mod vendor`.
-The local revision is unpublished. Vendored builds are self-contained; refreshing
-dependencies requires the committed BBS checkout and workspace
-`scripts/bbs-models-proxy.py` file-proxy helper until an upstream revision exists.
+The revision is published on `github.com/rkoster/bbs/models` and selected through
+an explicit versioned `replace` with committed checksums. Vendored and module-mode
+builds use that same source without a local proxy. Remove the fork replacement
+and select the upstream module version once BBS PR #168 is merged and published.
 
 Local verification covers protobuf-to-rep-to-real-certificate flow for two apps
 and a runtime task, independent keys, renewal, unbind invariance, malformed and

@@ -16,7 +16,7 @@ require (
 	code.cloudfoundry.org/bbs v1.19.0
 	code.cloudfoundry.org/bbs/encryption v1.17.0
 	code.cloudfoundry.org/bbs/format v1.14.0
-	code.cloudfoundry.org/bbs/models v1.15.1-0.20261109161608-f974b85f8320
+	code.cloudfoundry.org/bbs/models v1.15.1-0.20261119082436-7fc64d1d37a1
 	code.cloudfoundry.org/bytefmt v0.92.0
 	code.cloudfoundry.org/certsplitter v0.90.0
 	code.cloudfoundry.org/cfhttp/v2 v2.97.0
@@ -282,3 +282,5 @@ require (
 	sigs.k8s.io/structured-merge-diff/v6 v6.4.2 // indirect
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )
+
+replace code.cloudfoundry.org/bbs/models => github.com/rkoster/bbs/models v1.15.1-0.20261119082436-7fc64d1d37a1

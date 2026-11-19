@@ -445,16 +445,18 @@ var _ = Describe("Resources", func() {
 			})
 
 			It("propagates a service account from an LRP without aliasing its identity", func() {
-				desiredLRP.CertificateProperties.ServiceAccount = &models.ServiceAccount{Name: "payments-worker"}
+				desiredLRP.CertificateProperties.ServiceAccount = &models.ServiceAccount{Name: "payments-worker", Prefix: "payments-team"}
 				runReq, err := runRequestConversionHelper.NewRunRequestFromDesiredLRP(containerGuid, desiredLRP, &actualLRP.ActualLRPKey, &actualLRP.ActualLRPInstanceKey, stackPathMap, rep.LayeringModeSingleLayer)
 				Expect(err).NotTo(HaveOccurred())
-				Expect(runReq.CertificateProperties.ServiceAccount).To(Equal(&executor.ServiceAccount{Name: "payments-worker"}))
+				Expect(runReq.CertificateProperties.ServiceAccount).To(Equal(&executor.ServiceAccount{Name: "payments-worker", Prefix: "payments-team"}))
 				desiredLRP.CertificateProperties.ServiceAccount.Name = "reporting-reader"
+				desiredLRP.CertificateProperties.ServiceAccount.Prefix = "reporting-team"
 				Expect(runReq.CertificateProperties.ServiceAccount.Name).To(Equal("payments-worker"))
+				Expect(runReq.CertificateProperties.ServiceAccount.Prefix).To(Equal("payments-team"))
 			})
 
 			It("rejects malformed service account identity before converting an LRP", func() {
-				desiredLRP.CertificateProperties.ServiceAccount = &models.ServiceAccount{Name: "payments.svc.identity"}
+				desiredLRP.CertificateProperties.ServiceAccount = &models.ServiceAccount{Name: "payments.svc.identity", Prefix: "payments-team"}
 				_, err := runRequestConversionHelper.NewRunRequestFromDesiredLRP(containerGuid, desiredLRP, &actualLRP.ActualLRPKey, &actualLRP.ActualLRPInstanceKey, stackPathMap, rep.LayeringModeSingleLayer)
 				Expect(err).To(MatchError(ContainSubstring("service_account")))
 			})
@@ -918,16 +920,18 @@ var _ = Describe("Resources", func() {
 			})
 
 			It("propagates a service account from a runtime task without aliasing its identity", func() {
-				task.CertificateProperties.ServiceAccount = &models.ServiceAccount{Name: "payments-worker"}
+				task.CertificateProperties.ServiceAccount = &models.ServiceAccount{Name: "payments-worker", Prefix: "payments-team"}
 				runReq, err := runRequestConversionHelper.NewRunRequestFromTask(task, stackPathMap, rep.LayeringModeSingleLayer)
 				Expect(err).NotTo(HaveOccurred())
-				Expect(runReq.CertificateProperties.ServiceAccount).To(Equal(&executor.ServiceAccount{Name: "payments-worker"}))
+				Expect(runReq.CertificateProperties.ServiceAccount).To(Equal(&executor.ServiceAccount{Name: "payments-worker", Prefix: "payments-team"}))
 				task.CertificateProperties.ServiceAccount.Name = "reporting-reader"
+				task.CertificateProperties.ServiceAccount.Prefix = "reporting-team"
 				Expect(runReq.CertificateProperties.ServiceAccount.Name).To(Equal("payments-worker"))
+				Expect(runReq.CertificateProperties.ServiceAccount.Prefix).To(Equal("payments-team"))
 			})
 
 			It("rejects malformed service account identity before converting a task", func() {
-				task.CertificateProperties.ServiceAccount = &models.ServiceAccount{Name: "payments.svc.identity"}
+				task.CertificateProperties.ServiceAccount = &models.ServiceAccount{Name: "payments.svc.identity", Prefix: "payments-team"}
 				_, err := runRequestConversionHelper.NewRunRequestFromTask(task, stackPathMap, rep.LayeringModeSingleLayer)
 				Expect(err).To(MatchError(ContainSubstring("service_account")))
 			})
