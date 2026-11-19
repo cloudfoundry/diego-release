@@ -7,10 +7,11 @@ import (
 )
 
 func TestContainerCopyIsolatesServiceAccountIdentity(t *testing.T) {
-	original := executor.Container{RunInfo: executor.RunInfo{CertificateProperties: executor.CertificateProperties{ServiceAccount: &executor.ServiceAccount{Name: "payments-worker"}}}}
+	original := executor.Container{RunInfo: executor.RunInfo{CertificateProperties: executor.CertificateProperties{ServiceAccount: &executor.ServiceAccount{Name: "payments-worker", Prefix: "payments-team"}}}}
 	copy := original.Copy()
 	copy.CertificateProperties.ServiceAccount.Name = "reporting-reader"
-	if original.CertificateProperties.ServiceAccount.Name != "payments-worker" {
+	copy.CertificateProperties.ServiceAccount.Prefix = "reporting-team"
+	if original.CertificateProperties.ServiceAccount.Name != "payments-worker" || original.CertificateProperties.ServiceAccount.Prefix != "payments-team" {
 		t.Fatal("container copy exposes mutable launch account identity")
 	}
 	if executor.NewContainerFromResource("unbound", &executor.Resource{}, nil).Copy().CertificateProperties.ServiceAccount != nil {

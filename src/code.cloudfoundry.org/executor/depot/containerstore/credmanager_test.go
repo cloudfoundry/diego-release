@@ -11,6 +11,7 @@ import (
 	"math/big"
 	"net"
 	"os"
+	"strings"
 	"time"
 
 	bbsmodels "code.cloudfoundry.org/bbs/models"
@@ -85,7 +86,7 @@ var _ = Describe("CredManager", func() {
 
 	Context("NoopCredManager", func() {
 		It("rejects a service account when instance identity is unavailable", func() {
-			container := executor.Container{RunInfo: executor.RunInfo{CertificateProperties: executor.CertificateProperties{ServiceAccount: &executor.ServiceAccount{Name: "payments-worker"}}}}
+			container := executor.Container{RunInfo: executor.RunInfo{CertificateProperties: executor.CertificateProperties{ServiceAccount: &executor.ServiceAccount{Name: "payments-worker", Prefix: "payments-team"}}}}
 			manager := containerstore.NewNoopCredManager()
 			_, _, err := manager.CreateCredDir(logger, container)
 			Expect(err).To(MatchError(ContainSubstring("service account")))
@@ -118,7 +119,7 @@ var _ = Describe("CredManager", func() {
 
 	It("rejects service account credentials unless the cell gate is enabled", func() {
 		manager := containerstore.NewCredManager(logger, fakeMetronClient, validityPeriod, reader, clock, CaCert, privateKey, []containerstore.CredentialHandler{fakeCredHandler})
-		container := executor.Container{Guid: "instance-guid", RunInfo: executor.RunInfo{CertificateProperties: executor.CertificateProperties{ServiceAccount: &executor.ServiceAccount{Name: "payments-worker"}}}}
+		container := executor.Container{Guid: "instance-guid", RunInfo: executor.RunInfo{CertificateProperties: executor.CertificateProperties{ServiceAccount: &executor.ServiceAccount{Name: "payments-worker", Prefix: "payments-team"}}}}
 		_, err := manager.GenerateInitialCredentials(logger, container)
 		Expect(err).To(MatchError(ContainSubstring("service account identity is not enabled")))
 	})
@@ -127,6 +128,32 @@ var _ = Describe("CredManager", func() {
 		container := executor.Container{Guid: "payments-worker.svc.identity"}
 		_, err := credManager.GenerateInitialCredentials(logger, container)
 		Expect(err).To(MatchError(ContainSubstring("reserved service account identity")))
+	})
+
+	Context("invalid service account prefixes", func() {
+		for _, prefix := range []string{"", "ab", "Payments", "payments.team", "payments\n", "-payments", "payments-", "payments_team", strings.Repeat("a", 64)} {
+			It(fmt.Sprintf("rejects %q before generating any credentials", prefix), func() {
+				container := executor.Container{Guid: "instance-guid", RunInfo: executor.RunInfo{CertificateProperties: executor.CertificateProperties{ServiceAccount: &executor.ServiceAccount{Name: "payments-worker", Prefix: prefix}}}}
+				creds, err := credManager.GenerateInitialCredentials(logger, container)
+				Expect(err).To(MatchError("invalid service account prefix"))
+				Expect(creds.InstanceIdentityCredential.IsEmpty()).To(BeTrue())
+				Expect(creds.C2CCredential.IsEmpty()).To(BeTrue())
+			})
+		}
+	})
+
+	Context("valid service account label boundaries", func() {
+		for _, label := range []string{"a-0", strings.Repeat("a", 63)} {
+			It(fmt.Sprintf("issues a qualified identity with %d-character labels", len(label)), func() {
+				container := executor.Container{Guid: "instance-guid", RunInfo: executor.RunInfo{CertificateProperties: executor.CertificateProperties{ServiceAccount: &executor.ServiceAccount{Name: label, Prefix: label}}}}
+				creds, err := credManager.GenerateInitialCredentials(logger, container)
+				Expect(err).NotTo(HaveOccurred())
+				for _, credential := range []containerstore.Credential{creds.InstanceIdentityCredential, creds.C2CCredential} {
+					cert, _ := parseCert(credential)
+					Expect(cert.DNSNames).To(ConsistOf(container.Guid, label+"."+label+".svc.identity"))
+				}
+			})
+		}
 	})
 
 	Context("RemoveCredDir", func() {
@@ -333,7 +360,7 @@ var _ = Describe("CredManager", func() {
 				for _, name := range []string{"", "ab", "Worker", "worker.other", "worker\n", "-worker", "worker-"} {
 					Context(fmt.Sprintf("%q", name), func() {
 						BeforeEach(func() {
-							container.CertificateProperties.ServiceAccount = &executor.ServiceAccount{Name: name}
+							container.CertificateProperties.ServiceAccount = &executor.ServiceAccount{Name: name, Prefix: "payments-team"}
 						})
 						It("rejects the assignment without publishing credentials", func() {
 							Eventually(containerProcess.Wait()).Should(Receive(MatchError("invalid service account name")))
@@ -375,7 +402,7 @@ var _ = Describe("CredManager", func() {
 				It("keeps an initially unbound launch account-free during renewal", func() {
 					Eventually(fakeCredHandler.UpdateCallCount).Should(Equal(1))
 					updated := container
-					updated.CertificateProperties.ServiceAccount = &executor.ServiceAccount{Name: "payments-worker"}
+					updated.CertificateProperties.ServiceAccount = &executor.ServiceAccount{Name: "payments-worker", Prefix: "payments-team"}
 					containerInfoProvider.InfoReturns(updated)
 					clock.WaitForWatcherAndIncrement(validityPeriod)
 					Eventually(fakeCredHandler.UpdateCallCount).Should(Equal(2))
@@ -388,7 +415,7 @@ var _ = Describe("CredManager", func() {
 
 				Context("with a service account", func() {
 					BeforeEach(func() {
-						container.CertificateProperties.ServiceAccount = &executor.ServiceAccount{Name: "payments-worker"}
+						container.CertificateProperties.ServiceAccount = &executor.ServiceAccount{Name: "payments-worker", Prefix: "payments-team"}
 					})
 
 					It("adds one derived SAN to both credentials while preserving instance and route identities", func() {
@@ -396,8 +423,8 @@ var _ = Describe("CredManager", func() {
 						creds, _ := fakeCredHandler.UpdateArgsForCall(0)
 						id, _ := parseCert(creds.InstanceIdentityCredential)
 						c2c, _ := parseCert(creds.C2CCredential)
-						Expect(id.DNSNames).To(ConsistOf(container.Guid, "payments-worker.svc.identity"))
-						Expect(c2c.DNSNames).To(ConsistOf(container.Guid, "a.apps.internal", "b.apps.internal", "payments-worker.svc.identity"))
+						Expect(id.DNSNames).To(ConsistOf(container.Guid, "payments-worker.payments-team.svc.identity"))
+						Expect(c2c.DNSNames).To(ConsistOf(container.Guid, "a.apps.internal", "b.apps.internal", "payments-worker.payments-team.svc.identity"))
 						Expect(id.Subject.CommonName).To(Equal(container.Guid))
 						Expect(id.Subject.OrganizationalUnit).To(Equal(container.CertificateProperties.OrganizationalUnit))
 						Expect(id.IPAddresses).To(HaveLen(1))
@@ -408,7 +435,7 @@ var _ = Describe("CredManager", func() {
 					It("retains launch-time account identity during renewal and route updates", func() {
 						Eventually(fakeCredHandler.UpdateCallCount).Should(Equal(1))
 						updated := container
-						updated.CertificateProperties.ServiceAccount = &executor.ServiceAccount{Name: "reporting-reader"}
+						updated.CertificateProperties.ServiceAccount = &executor.ServiceAccount{Name: "reporting-reader", Prefix: "reporting-team"}
 						updated.InternalRoutes = bbsmodels.InternalRoutes{{Hostname: "new.apps.internal"}}
 						containerInfoProvider.InfoReturns(updated)
 						clock.WaitForWatcherAndIncrement(validityPeriod)
@@ -416,13 +443,13 @@ var _ = Describe("CredManager", func() {
 						creds, _ := fakeCredHandler.UpdateArgsForCall(1)
 						id, _ := parseCert(creds.InstanceIdentityCredential)
 						c2c, _ := parseCert(creds.C2CCredential)
-						Expect(id.DNSNames).To(ConsistOf(container.Guid, "payments-worker.svc.identity"))
-						Expect(c2c.DNSNames).To(ConsistOf(container.Guid, "new.apps.internal", "payments-worker.svc.identity"))
+						Expect(id.DNSNames).To(ConsistOf(container.Guid, "payments-worker.payments-team.svc.identity"))
+						Expect(c2c.DNSNames).To(ConsistOf(container.Guid, "new.apps.internal", "payments-worker.payments-team.svc.identity"))
 						regenerateCertsCh <- struct{}{}
 						Eventually(fakeCredHandler.UpdateCallCount).Should(Equal(3))
 						creds, _ = fakeCredHandler.UpdateArgsForCall(2)
 						c2c, _ = parseCert(creds.C2CCredential)
-						Expect(c2c.DNSNames).To(ConsistOf(container.Guid, "new.apps.internal", "payments-worker.svc.identity"))
+						Expect(c2c.DNSNames).To(ConsistOf(container.Guid, "new.apps.internal", "payments-worker.payments-team.svc.identity"))
 					})
 
 					It("retains a bound launch account after unbind and rotates its keys", func() {
@@ -436,8 +463,8 @@ var _ = Describe("CredManager", func() {
 						creds, _ := fakeCredHandler.UpdateArgsForCall(1)
 						id, _ := parseCert(creds.InstanceIdentityCredential)
 						c2c, _ := parseCert(creds.C2CCredential)
-						Expect(id.DNSNames).To(ConsistOf(container.Guid, "payments-worker.svc.identity"))
-						Expect(c2c.DNSNames).To(ContainElement("payments-worker.svc.identity"))
+						Expect(id.DNSNames).To(ConsistOf(container.Guid, "payments-worker.payments-team.svc.identity"))
+						Expect(c2c.DNSNames).To(ContainElement("payments-worker.payments-team.svc.identity"))
 						Expect(creds.InstanceIdentityCredential.Key).NotTo(Equal(initial.InstanceIdentityCredential.Key))
 						Expect(creds.C2CCredential.Key).NotTo(Equal(initial.C2CCredential.Key))
 						Expect(id.NotAfter.Sub(id.NotBefore)).To(Equal(validityPeriod))

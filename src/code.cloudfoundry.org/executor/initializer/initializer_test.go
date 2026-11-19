@@ -642,13 +642,13 @@ var _ = Describe("Initializer", func() {
 				BeforeEach(func() { config.ServiceAccountIdentityEnabled = true })
 				It("passes the enabled service account gate to the credential manager", func() {
 					Expect(err).NotTo(HaveOccurred())
-					container.CertificateProperties.ServiceAccount = &executor.ServiceAccount{Name: "payments-worker"}
+					container.CertificateProperties.ServiceAccount = &executor.ServiceAccount{Name: "payments-worker", Prefix: "payments-team"}
 					credentials, err := credManager.GenerateInitialCredentials(logger, container)
 					Expect(err).NotTo(HaveOccurred())
 					block, _ := pem.Decode([]byte(credentials.InstanceIdentityCredential.Cert))
 					cert, err := x509.ParseCertificate(block.Bytes)
 					Expect(err).NotTo(HaveOccurred())
-					Expect(cert.DNSNames).To(ContainElement("payments-worker.svc.identity"))
+					Expect(cert.DNSNames).To(ContainElement("payments-worker.payments-team.svc.identity"))
 				})
 			})
 
