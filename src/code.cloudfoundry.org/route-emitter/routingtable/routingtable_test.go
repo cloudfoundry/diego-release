@@ -1181,4 +1181,58 @@ var _ = Describe("RoutingTable", func() {
 			})
 		})
 	})
+
+	Describe("GetAllUnregistrationMessages", func() {
+		Context("when the table is empty", func() {
+			It("returns empty MessagesToEmit", func() {
+				result := table.GetAllUnregistrationMessages()
+				Expect(result.UnregistrationMessages).To(BeEmpty())
+				Expect(result.RegistrationMessages).To(BeEmpty())
+			})
+		})
+
+		Context("when the table has an HTTP route and endpoint", func() {
+			BeforeEach(func() {
+				desiredLRP := createDesiredLRP(key.ProcessGUID, int32(1), key.ContainerPort, logGuid, "", *currentTag, runInfo, hostname1)
+				table.SetRoutes(logger, nil, desiredLRP)
+				actualLRP := createActualLRP(key, endpoint1, domain)
+				table.AddEndpoint(logger, actualLRP)
+			})
+
+			It("returns unregistration messages for all active routes", func() {
+				result := table.GetAllUnregistrationMessages()
+				Expect(result.UnregistrationMessages).NotTo(BeEmpty())
+				var hosts []string
+				for _, msg := range result.UnregistrationMessages {
+					hosts = append(hosts, msg.URIs...)
+				}
+				Expect(hosts).To(ContainElement(hostname1))
+			})
+
+			It("returns no registration messages", func() {
+				result := table.GetAllUnregistrationMessages()
+				Expect(result.RegistrationMessages).To(BeEmpty())
+			})
+		})
+
+		Context("when the table has multiple HTTP routes", func() {
+			hostname2 := "bar.example.com"
+
+			BeforeEach(func() {
+				desiredLRP := createDesiredLRP(key.ProcessGUID, int32(1), key.ContainerPort, logGuid, "", *currentTag, runInfo, hostname1, hostname2)
+				table.SetRoutes(logger, nil, desiredLRP)
+				actualLRP := createActualLRP(key, endpoint1, domain)
+				table.AddEndpoint(logger, actualLRP)
+			})
+
+			It("returns unregistration messages for all routes", func() {
+				result := table.GetAllUnregistrationMessages()
+				var uris []string
+				for _, msg := range result.UnregistrationMessages {
+					uris = append(uris, msg.URIs...)
+				}
+				Expect(uris).To(ConsistOf(hostname1, hostname2))
+			})
+		})
+	})
 })

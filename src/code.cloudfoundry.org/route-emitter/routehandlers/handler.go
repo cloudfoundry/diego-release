@@ -331,3 +331,15 @@ func (handler *Handler) emitMessages(logger lager.Logger, messagesToEmit routing
 		}
 	}
 }
+
+func (handler *Handler) EmitAllUnregistrations(logger lager.Logger) {
+	messages := handler.routingTable.GetAllUnregistrationMessages()
+	logger.Info("emergency-route-unregistration", lager.Data{
+		"unregistration-count": len(messages.UnregistrationMessages),
+	})
+	if handler.natsEmitter != nil {
+		if err := handler.natsEmitter.Emit(messages); err != nil {
+			logger.Error("failed-emergency-unregistration", err)
+		}
+	}
+}

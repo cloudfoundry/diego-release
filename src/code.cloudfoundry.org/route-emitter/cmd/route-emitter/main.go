@@ -8,7 +8,9 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/signal"
 	"strconv"
+	"syscall"
 	"time"
 
 	"code.cloudfoundry.org/bbs"
@@ -125,6 +127,15 @@ func main() {
 	unregistrationCache := unregistration.NewCache(logger)
 
 	handler := routehandlers.NewHandler(table, natsEmitter, routingAPIEmitter, localMode, cfg.TCPEnableTLS, metronClient, unregistrationCache)
+
+	usr2Chan := make(chan os.Signal, 1)
+	signal.Notify(usr2Chan, syscall.SIGUSR2)
+	go func() {
+		for range usr2Chan {
+			logger.Info("received-sigusr2-triggering-emergency-unregistration")
+			handler.EmitAllUnregistrations(logger)
+		}
+	}()
 
 	watcher := watcher.NewWatcher(
 		cfg.CellID,
